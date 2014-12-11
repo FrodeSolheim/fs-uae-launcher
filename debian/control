@@ -1,0 +1,15 @@
+Source: fs-uae-launcher
+Section: otherosfs
+Priority: extra
+X-Python3-Version: >= 3.2
+Maintainer: Frode Solheim <frode@fs-uae.net>
+Build-Depends: debhelper (>= 9), dh-python, python3-all (>= 3.2), python3-setuptools
+Standards-Version: 3.9.4
+Homepage: http://fs-uae.net/
+
+Package: fs-uae-launcher
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}, python3-pyqt4, python3-pyqt4.qtopengl, python3-setuptools, fs-uae
+Recommends: python3-lhafile
+Description: Launcher and configuration program for FS-UAE.
+ FS-UAE Launcher is a graphical user interface for setting up FS-UAE.

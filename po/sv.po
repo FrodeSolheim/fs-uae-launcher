@@ -1,0 +1,1109 @@
+msgid ""
+msgstr "Project-Id-Version: fs-uae\n"
+"Report-Msgid-Bugs-To: fs-uae@fengestad.no\n"
+"POT-Creation-Date: 2014-05-04 22:11+0200\n"
+"PO-Revision-Date: 2014-05-11 15:57-0400\n"
+"Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
+"Language-Team: Swedish\n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.net\n"
+
+msgid "16-bit"
+msgstr ""
+
+msgid "32-bit BGRA"
+msgstr ""
+
+msgid "32-bit RGBA"
+msgstr ""
+
+msgid "640x400 + Border"
+msgstr ""
+
+msgid "640x480 + Border"
+msgstr ""
+
+msgid "640x512 + Border"
+msgstr ""
+
+msgid "A change of language will only affect applications which are restarted after the change."
+msgstr ""
+
+msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
+msgstr ""
+
+msgid "ADF - Standard Floppy Disk Image"
+msgstr ""
+
+msgid "ADF Creator"
+msgstr ""
+
+msgid "ADF Disk Image Creator"
+msgstr ""
+
+msgid "Abort"
+msgstr ""
+
+msgid "About OAGD.net"
+msgstr ""
+
+#, python-brace-format
+msgid "About {name}"
+msgstr ""
+
+msgid "Accept"
+msgstr ""
+
+msgid "Accurate"
+msgstr ""
+
+msgid "Add Directory to Search Path"
+msgstr ""
+
+msgid "Add Files to List"
+msgstr ""
+
+msgid "Add Multiple CD-ROMs at Once"
+msgstr ""
+
+msgid "Add Multiple Floppies at Once"
+msgstr ""
+
+msgid "Advanced Audio Options"
+msgstr ""
+
+msgid "Advanced Settings"
+msgstr ""
+
+msgid "Advanced Video Settings"
+msgstr ""
+
+msgid "All games and configurations"
+msgstr ""
+
+msgid "Also synchronize emulation with display when possible (smooth scrolling)"
+msgstr ""
+
+msgid "Amiga Forever Import"
+msgstr ""
+
+msgid "Amiga Forever import task started"
+msgstr ""
+
+msgid "Amiga Model"
+msgstr ""
+
+msgid "An Error Occurred"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Audio Settings"
+msgstr ""
+
+msgid "Audio buffer target size (bytes)"
+msgstr ""
+
+msgid "Audio buffer target size (ms)"
+msgstr ""
+
+msgid "Audio output freqency"
+msgstr ""
+
+msgid "Auto"
+msgstr ""
+
+msgid "Auto + Border"
+msgstr ""
+
+msgid "Auto-Fire is Off"
+msgstr ""
+
+msgid "Auto-Fire is On"
+msgstr ""
+
+msgid "Automatic"
+msgstr ""
+
+msgid "Available Kickstart Versions"
+msgstr ""
+
+msgid "Browse"
+msgstr ""
+
+msgid "Browse for File"
+msgstr ""
+
+msgid "Browse for Folder"
+msgstr ""
+
+msgid "Buffer swap only"
+msgstr ""
+
+msgid "Built-in TCP/IP Stack"
+msgstr ""
+
+msgid "Built-in TCP/IP Stack (bsdsocket.library)"
+msgstr ""
+
+msgid "CD-ROM Drive"
+msgstr ""
+
+msgid "CD-ROM Drives"
+msgstr ""
+
+msgid "CD-ROMs"
+msgstr ""
+
+msgid "CD32 Pad"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Checksumming"
+msgstr ""
+
+msgid "Checksumming file..."
+msgstr ""
+
+msgid "Chip RAM"
+msgstr ""
+
+msgid "Choose CD-ROM Image"
+msgstr ""
+
+msgid "Choose Extended ROM"
+msgstr ""
+
+msgid "Choose Floppy Image"
+msgstr ""
+
+msgid "Choose Hard Drive"
+msgstr ""
+
+msgid "Choose Kickstart ROM"
+msgstr ""
+
+msgid "Choose what folders you want to scan for Amiga files"
+msgstr ""
+
+msgid "Cleaning up..."
+msgstr ""
+
+msgid "Clear List"
+msgstr ""
+
+msgid "Click 'Scan' button if you want to re-scan"
+msgstr ""
+
+msgid "Click 'Scan' button to start scan"
+msgstr ""
+
+msgid "Click here to download"
+msgstr ""
+
+msgid "Click here to import kickstarts"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Committing data..."
+msgstr ""
+
+msgid "Committing locker data..."
+msgstr ""
+
+msgid "Config"
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+msgid "Configuration Browser"
+msgstr ""
+
+msgid "Configuration Warning"
+msgstr ""
+
+msgid "Configurations"
+msgstr ""
+
+msgid "Configure joysticks and set preferred joystick devices"
+msgstr ""
+
+msgid "Connect"
+msgstr ""
+
+#, python-brace-format
+msgid "Copy {0}\nto {1}"
+msgstr ""
+
+msgid "Could not open file for writing"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Create a blank or formatted ADF floppy disk image"
+msgstr ""
+
+msgid "Create a single-partition or partitionable hard drive image"
+msgstr ""
+
+msgid "Create an account now"
+msgstr ""
+
+msgid "Create disk image of type:"
+msgstr ""
+
+msgid "Cursor Keys and Right Ctrl/Alt"
+msgstr ""
+
+msgid "Custom"
+msgstr ""
+
+msgid "Custom Configuration"
+msgstr ""
+
+msgid "Custom IRC server address"
+msgstr ""
+
+msgid "Custom Joystick Port"
+msgstr ""
+
+msgid "Custom game database server address"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+#, python-brace-format
+msgid "Default ({0})"
+msgstr ""
+
+msgid "Defragment Databases"
+msgstr ""
+
+msgid "Defragmenting the databases will improve performance by ensuring that tables and indices are stored contiguously on disk. It will also reclaim some storage space."
+msgstr ""
+
+#, python-brace-format
+msgid "Defragmenting {name}"
+msgstr ""
+
+msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
+msgstr ""
+
+msgid "Device ID used with OAGD.net authentication"
+msgstr ""
+
+msgid "Disconnect"
+msgstr ""
+
+msgid "Disk image created"
+msgstr ""
+
+msgid "Dislike This Game Variant"
+msgstr ""
+
+msgid "Don't have an account already?"
+msgstr ""
+
+msgid "Double-click a device entry to configure it (map joystick buttons)."
+msgstr ""
+
+msgid "Download Game Manually"
+msgstr ""
+
+#, python-brace-format
+msgid "Download failed (attempt {0}) - retrying in {0} seconds"
+msgstr ""
+
+#, python-brace-format
+msgid "Download to the following directory, and then click '{0}':"
+msgstr ""
+
+#, python-brace-format
+msgid "Downloading {0}..."
+msgstr ""
+
+msgid "E-mail:"
+msgstr ""
+
+msgid "Edit Custom Options"
+msgstr ""
+
+msgid "Eject"
+msgstr ""
+
+msgid "Enable experimental net play GUI (requires restart)"
+msgstr ""
+
+msgid "Enable online database support (requires restart)"
+msgstr ""
+
+msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
+msgstr ""
+
+msgid "Error moving file into place"
+msgstr ""
+
+msgid "Error writing disk image"
+msgstr ""
+
+msgid "Expansions"
+msgstr ""
+
+msgid "Experimental Features"
+msgstr ""
+
+msgid "Extended ROM:"
+msgstr ""
+
+msgid "FS-UAE Launcher Settings"
+msgstr ""
+
+msgid "Fast RAM"
+msgstr ""
+
+#, python-brace-format
+msgid "Fetching database entries ({0})"
+msgstr ""
+
+#, python-brace-format
+msgid "Fetching game ratings ({0})"
+msgstr ""
+
+msgid "Fetching locker data..."
+msgstr ""
+
+msgid "Fetching synchronization information..."
+msgstr ""
+
+#, python-brace-format
+msgid "Fetching user game ratings ({0})"
+msgstr ""
+
+msgid "File already exists"
+msgstr ""
+
+msgid "Filename for the new disk image:"
+msgstr ""
+
+msgid "Files for this game are still missing. Did you download the game and put the file(s) in the Downloads directory?"
+msgstr ""
+
+msgid "Filter Settings"
+msgstr ""
+
+msgid "Filters"
+msgstr ""
+
+msgid "Filters:"
+msgstr ""
+
+msgid "Finding files eligible for OAGD.net Locker"
+msgstr ""
+
+msgid "First rendered line (NTSC)"
+msgstr ""
+
+msgid "First rendered line (PAL)"
+msgstr ""
+
+msgid "Floppies"
+msgstr ""
+
+msgid "Floppy Drive Sound Emulation"
+msgstr ""
+
+msgid "Floppy Drives"
+msgstr ""
+
+msgid "Floppy drive volume"
+msgstr ""
+
+msgid "Forgot your password?"
+msgstr ""
+
+msgid "Full Frame"
+msgstr ""
+
+msgid "Full-scene anti-aliasing (FSAA)"
+msgstr ""
+
+msgid "Fullscreen"
+msgstr ""
+
+msgid "Game Database"
+msgstr ""
+
+msgid "Game Database Settings"
+msgstr ""
+
+msgid "Game database authentication"
+msgstr ""
+
+msgid "Game database email"
+msgstr ""
+
+msgid "Game database password"
+msgstr ""
+
+msgid "Game database user name"
+msgstr ""
+
+msgid "Games you have and all downloadable games"
+msgstr ""
+
+msgid "Games you have and automatically downloadable"
+msgstr ""
+
+msgid "Grab mouse and keyboard input when FS-UAE starts"
+msgstr ""
+
+msgid "Grab mouse and keyboard input when clicking on FS-UAE window"
+msgstr ""
+
+msgid "HDF - Partitionable Hard Drive Image (RDB)"
+msgstr ""
+
+msgid "HDF - Single Partition Hard Disk File"
+msgstr ""
+
+msgid "HDF Creator"
+msgstr ""
+
+msgid "HDF Disk Image Creator"
+msgstr ""
+
+msgid "Hard Drives"
+msgstr ""
+
+msgid "Hardware"
+msgstr ""
+
+msgid "Hardware Options"
+msgstr ""
+
+msgid "How to achieve perfectly smooth scrolling"
+msgstr ""
+
+msgid "IRC nickname"
+msgstr ""
+
+#, python-brace-format
+msgid "If you own Amiga Forever, select the drive/folder and click \"{0}\""
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Import From Amiga Forever CD/DVD"
+msgstr ""
+
+msgid "Import Kickstarts"
+msgstr ""
+
+msgid "Import Kickstarts and ROMs"
+msgstr ""
+
+msgid "Import task is done"
+msgstr ""
+
+msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
+msgstr ""
+
+msgid "Include built-in configurations"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+msgid "Input Options"
+msgstr ""
+
+msgid "Internal"
+msgstr ""
+
+msgid "Invalid size specified"
+msgstr ""
+
+msgid "Joystick"
+msgstr ""
+
+msgid "Joystick & Mouse Port"
+msgstr ""
+
+msgid "Joystick Ports"
+msgstr ""
+
+msgid "Joystick Settings"
+msgstr ""
+
+msgid "Keep aspect ratio when scaling (do not stretch)"
+msgstr ""
+
+msgid "Keyboard"
+msgstr ""
+
+msgid "Keyboard Setting"
+msgstr ""
+
+msgid "Keyboard Settings"
+msgstr ""
+
+msgid "Kickstart ROM"
+msgstr ""
+
+msgid "Kickstart ROMs are missing"
+msgstr ""
+
+msgid "Kickstart import task started"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Language Preference"
+msgstr ""
+
+msgid "Launching FS-UAE"
+msgstr ""
+
+msgid "Launching Game"
+msgstr ""
+
+msgid "Least Accurate"
+msgstr ""
+
+msgid "Less Accurate"
+msgstr ""
+
+msgid "Like This Game Variant"
+msgstr ""
+
+msgid "Load state by number"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Log In"
+msgstr ""
+
+msgid "Log In / Register"
+msgstr ""
+
+msgid "Log In to Your OAGD.net Account"
+msgstr ""
+
+msgid "Log Out"
+msgstr ""
+
+msgid "Log Out from Your OAGD.net Account"
+msgstr ""
+
+msgid "Log in to enable online game DB"
+msgstr ""
+
+msgid "Logged In"
+msgstr ""
+
+msgid "Logging in will enable the online game database and more"
+msgstr ""
+
+msgid "Low latency video sync"
+msgstr ""
+
+msgid "MB"
+msgstr ""
+
+msgid "Main Configuration Options"
+msgstr ""
+
+msgid "Main Menu"
+msgstr ""
+
+msgid "Main volume control"
+msgstr ""
+
+msgid "Maintenance"
+msgstr ""
+
+msgid "Mark This Game Variant as Personal Favorite"
+msgstr ""
+
+msgid "Media Swap List"
+msgstr ""
+
+msgid "Memory"
+msgstr ""
+
+#, python-brace-format
+msgid "Miscellaneous functions to optimize {name}"
+msgstr ""
+
+msgid "Missing Files"
+msgstr ""
+
+msgid "Mouse"
+msgstr ""
+
+msgid "Mouse Setting"
+msgstr ""
+
+msgid "Mouse Settings"
+msgstr ""
+
+msgid "Mouse speed (%)"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "Net Play"
+msgstr ""
+
+msgid "Net Play Settings"
+msgstr ""
+
+msgid "Net play tag (max 3 characters)"
+msgstr ""
+
+msgid "Netplay Settings"
+msgstr ""
+
+msgid "New Configuration"
+msgstr ""
+
+msgid "Nick:"
+msgstr ""
+
+msgid "No Device"
+msgstr ""
+
+msgid "No Host Device"
+msgstr ""
+
+msgid "No Protection"
+msgstr ""
+
+msgid "No extended kickstart found for this model. Try 'scan' function."
+msgstr ""
+
+msgid "No kickstart found for this model. Use the 'Import Kickstarts' function from the menu."
+msgstr ""
+
+msgid "No scan in progress"
+msgstr ""
+
+msgid "Not logged in"
+msgstr ""
+
+msgid "Nothing"
+msgstr ""
+
+msgid "OAGD.net Locker Uploader"
+msgstr ""
+
+msgid "OAGD.net Locker is not enabled for your user. It may be available only to a few select beta users."
+msgstr ""
+
+msgid "OAGD.net upload task completed successfully"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "Only games you have"
+msgstr ""
+
+msgid "Open Scan Dialog"
+msgstr ""
+
+msgid "OpenGL Settings"
+msgstr ""
+
+msgid "Override Installed Memory"
+msgstr ""
+
+msgid "Parallel Port Joysticks"
+msgstr ""
+
+msgid "Password:"
+msgstr ""
+
+msgid "Picasso96 Support"
+msgstr ""
+
+msgid "Picasso96 Support (uaegfx.card)"
+msgstr ""
+
+msgid "Please open the following web page and download the game from there:"
+msgstr ""
+
+msgid "Please wait..."
+msgstr ""
+
+msgid "Preferred Joysticks"
+msgstr ""
+
+msgid "Preferred device for secondary joystick:"
+msgstr ""
+
+msgid "Preparing WHDLoad..."
+msgstr ""
+
+msgid "Preparing floppy images..."
+msgstr ""
+
+msgid "Preparing hard drives..."
+msgstr ""
+
+msgid "Preparing kickstart ROMs..."
+msgstr ""
+
+msgid "Preparing..."
+msgstr ""
+
+msgid "Purging old entries..."
+msgstr ""
+
+#, python-brace-format
+msgid "Re-trying in {0} seconds..."
+msgstr ""
+
+msgid "Read more"
+msgstr ""
+
+msgid "Refresh Game Configurations from Online Database"
+msgstr ""
+
+msgid "Refresh Game Database"
+msgstr ""
+
+msgid "Refresh List of Connected Joystick Devices"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid "Remove Directory from Search Path"
+msgstr ""
+
+msgid "Remove Selected Files"
+msgstr ""
+
+#, python-brace-format
+msgid "Removing list {0}"
+msgstr ""
+
+msgid "Render scan lines"
+msgstr ""
+
+msgid "Render scan lines in RTG graphics mode"
+msgstr ""
+
+msgid "Reset password via e-mail"
+msgstr ""
+
+msgid "Resetting game database..."
+msgstr ""
+
+msgid "Restoring changes..."
+msgstr ""
+
+#, python-brace-format
+msgid "Retrying last operation (attempt {0})"
+msgstr ""
+
+msgid "Save Configuration"
+msgstr ""
+
+msgid "Save to directory:"
+msgstr ""
+
+msgid "Saving changes..."
+msgstr ""
+
+msgid "Scaling"
+msgstr ""
+
+msgid "Scaling Options"
+msgstr ""
+
+msgid "Scan"
+msgstr ""
+
+msgid "Scan & Indexing"
+msgstr ""
+
+msgid "Scan Downloads"
+msgstr ""
+
+msgid "Scan Files and Configurations"
+msgstr ""
+
+msgid "Scan Settings"
+msgstr ""
+
+msgid "Scan complete"
+msgstr ""
+
+msgid "Scan error"
+msgstr ""
+
+msgid "Scan for Files"
+msgstr ""
+
+msgid "Scan for Kickstarts, Files and Configurations"
+msgstr ""
+
+msgid "Scanning .fs-uae files..."
+msgstr ""
+
+msgid "Scanning configurations"
+msgstr ""
+
+msgid "Scanning files"
+msgstr ""
+
+#, python-brace-format
+msgid "Scanning files ({count} scanned)"
+msgstr ""
+
+msgid "Scanning game database entries..."
+msgstr ""
+
+#, python-brace-format
+msgid "Scanning game variants ({count} scanned)"
+msgstr ""
+
+msgid "Scanning games"
+msgstr ""
+
+#, python-brace-format
+msgid "Scanning games ({count} scanned)"
+msgstr ""
+
+msgid "Select Destination Directory"
+msgstr ""
+
+msgid "Select Multiple CD-ROMs"
+msgstr ""
+
+msgid "Select Multiple Files..."
+msgstr ""
+
+msgid "Select Multiple Floppies"
+msgstr ""
+
+msgid "Select Source Directory"
+msgstr ""
+
+#, python-brace-format
+msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
+msgstr ""
+
+msgid "Set preferred language for FS-UAE applications"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Show games from database"
+msgstr ""
+
+msgid "Show kickstart setup page on startup when all ROMs are missing"
+msgstr ""
+
+msgid "Size:"
+msgstr ""
+
+msgid "Slow RAM"
+msgstr ""
+
+msgid "Some required files are missing"
+msgstr ""
+
+msgid "Sound emulation"
+msgstr ""
+
+msgid "Specified directory does not exist"
+msgstr ""
+
+msgid "Specify global options and settings which does not have UI controls"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "Start FS-UAE in fullscreen mode"
+msgstr ""
+
+msgid "Starting scan"
+msgstr ""
+
+msgid "Stereo separation"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
+msgid "Stopped by user"
+msgstr ""
+
+msgid "Swap left and right CTRL keys"
+msgstr ""
+
+msgid "Synchronize FS-UAE with your display for smooth video"
+msgstr ""
+
+msgid "Synchronize buffer swaps with display (prevents tearing)"
+msgstr ""
+
+msgid "Synchronizing game database..."
+msgstr ""
+
+msgid "Synchronizing personal ratings..."
+msgstr ""
+
+msgid "Synchronizing with the display can in some cases cause increased stuttering and low frame rates (esp. in some Linux desktop environments with compositing enabled)."
+msgstr ""
+
+msgid "Terms of Download"
+msgstr ""
+
+msgid "Texture filter"
+msgstr ""
+
+msgid "The following joystick will be preferred, if present:"
+msgstr ""
+
+msgid "The game may not start properly"
+msgstr ""
+
+msgid "This game can be automatically downloaded if you accept the terms"
+msgstr ""
+
+msgid "This game must be downloaded"
+msgstr ""
+
+msgid "This game must be downloaded before you can play it"
+msgstr ""
+
+msgid "This game variant cannot be started because you don't have all required files."
+msgstr ""
+
+msgid "Toggle Between Windowed and Full-Screen Mode"
+msgstr ""
+
+msgid "Ungrab mouse and keyboard on middle mouse click"
+msgstr ""
+
+#, python-brace-format
+msgid "Update available ({version})"
+msgstr ""
+
+msgid "Updating Database"
+msgstr ""
+
+msgid "Updating database"
+msgstr ""
+
+msgid "Updating game lists..."
+msgstr ""
+
+#, python-brace-format
+msgid "Updating list '{0}'..."
+msgstr ""
+
+msgid "Updating locker data..."
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Upload Files to OAGD.net Locker"
+msgstr ""
+
+msgid "Upload recognized Amiga files to your OAGD.net locker"
+msgstr ""
+
+#, python-brace-format
+msgid "Uploading {name}"
+msgstr ""
+
+#, python-brace-format
+msgid "Use RDB disk images for size >= {0}"
+msgstr ""
+
+msgid "User Menu"
+msgstr ""
+
+msgid "Video"
+msgstr ""
+
+msgid "Video (Advanced)"
+msgstr ""
+
+msgid "Video Settings"
+msgstr ""
+
+msgid "Video Synchronization"
+msgstr ""
+
+msgid "Video Synchronization Settings"
+msgstr ""
+
+msgid "Video buffer format and color depth"
+msgstr ""
+
+msgid "Video synchronization"
+msgstr ""
+
+msgid "Video synchronization method"
+msgstr ""
+
+msgid "Video texture format (on the GPU)"
+msgstr ""
+
+msgid "WHDLoad Arguments"
+msgstr ""
+
+msgid "Web Links"
+msgstr ""
+
+msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
+msgstr ""
+
+msgid "While logged out you will not get database updates"
+msgstr ""
+
+msgid "You should have kickstart files for each Amiga model you want to use:"
+msgstr ""
+
+msgid "Zoom Amiga display (crop)"
+msgstr ""
+
+msgid "Zorro III RAM"
+msgstr ""
+
+#, python-brace-format
+msgid "{amiga_model} with < 2 MB chip memory"
+msgstr ""
+

@@ -1,0 +1,1109 @@
+msgid ""
+msgstr "Project-Id-Version: fs-uae\n"
+"Report-Msgid-Bugs-To: fs-uae@fengestad.no\n"
+"POT-Creation-Date: 2014-05-04 22:11+0200\n"
+"PO-Revision-Date: 2014-05-11 15:57-0400\n"
+"Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
+"Language-Team: Norwegian Bokmal\n"
+"Language: nb_NO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.net\n"
+
+msgid "16-bit"
+msgstr "16-bit"
+
+msgid "32-bit BGRA"
+msgstr "32-bit BGRA"
+
+msgid "32-bit RGBA"
+msgstr "32-bit RGBA"
+
+msgid "640x400 + Border"
+msgstr "640x400 + kant"
+
+msgid "640x480 + Border"
+msgstr "640x480 + kant"
+
+msgid "640x512 + Border"
+msgstr "640x512 + kant"
+
+msgid "A change of language will only affect applications which are restarted after the change."
+msgstr "Forandring av språk vil kun påvirke programmer som blir startet på nytt etter forandringen."
+
+msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
+msgstr "ADF - Utvidet diskettfil (MFM-enkodet)"
+
+msgid "ADF - Standard Floppy Disk Image"
+msgstr "ADF - Standard diskettfil"
+
+msgid "ADF Creator"
+msgstr "ADF-skaper"
+
+msgid "ADF Disk Image Creator"
+msgstr "ADF diskfil-skaper"
+
+msgid "Abort"
+msgstr "Avbryt"
+
+msgid "About OAGD.net"
+msgstr "Om OAGD.net"
+
+#, python-brace-format
+msgid "About {name}"
+msgstr "Om {name}"
+
+msgid "Accept"
+msgstr "Godta"
+
+msgid "Accurate"
+msgstr "Nøyaktig"
+
+msgid "Add Directory to Search Path"
+msgstr "Legg til mappe i søkebanen"
+
+msgid "Add Files to List"
+msgstr "Legg til filer i liste"
+
+msgid "Add Multiple CD-ROMs at Once"
+msgstr "Legg til flere CD-er på en gang"
+
+msgid "Add Multiple Floppies at Once"
+msgstr "Legg til flere diskettfiler på en gang"
+
+msgid "Advanced Audio Options"
+msgstr "Avanserte lydinnstillinger"
+
+msgid "Advanced Settings"
+msgstr "Avanserte innstillinger"
+
+msgid "Advanced Video Settings"
+msgstr "Avanserte videoinnstillinger"
+
+msgid "All games and configurations"
+msgstr "Alle spill og konfigurasjoner"
+
+msgid "Also synchronize emulation with display when possible (smooth scrolling)"
+msgstr "Synkroniser også emulering med skjerm når det er mulig (jevn scrolling)"
+
+msgid "Amiga Forever Import"
+msgstr "Importer fra Amiga Forever"
+
+msgid "Amiga Forever import task started"
+msgstr "Importjobb for Amiga Forever er startet"
+
+msgid "Amiga Model"
+msgstr "Amiga-modell"
+
+msgid "An Error Occurred"
+msgstr "En feil oppstod"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Audio Settings"
+msgstr "Innstillinger for audio"
+
+msgid "Audio buffer target size (bytes)"
+msgstr "Lydbuffer (bytes)"
+
+msgid "Audio buffer target size (ms)"
+msgstr "Lydbuffer (ms)"
+
+msgid "Audio output freqency"
+msgstr "Audiofrekvens"
+
+msgid "Auto"
+msgstr "Auto"
+
+msgid "Auto + Border"
+msgstr "Auto + kant"
+
+msgid "Auto-Fire is Off"
+msgstr "Auto-fire er av"
+
+msgid "Auto-Fire is On"
+msgstr "Auto-fire er på"
+
+msgid "Automatic"
+msgstr "Automatisk"
+
+msgid "Available Kickstart Versions"
+msgstr "Tilgjengelige kickstart-versjoner"
+
+msgid "Browse"
+msgstr "Velg"
+
+msgid "Browse for File"
+msgstr "Bla etter filer"
+
+msgid "Browse for Folder"
+msgstr "Bla etter mapper"
+
+msgid "Buffer swap only"
+msgstr "Kun bufferbytte"
+
+msgid "Built-in TCP/IP Stack"
+msgstr "Innebygd TCP/IP-stakk"
+
+msgid "Built-in TCP/IP Stack (bsdsocket.library)"
+msgstr "Innebygd TCP/IP-stakk (bsdsocket.library)"
+
+msgid "CD-ROM Drive"
+msgstr "CD-ROM-stasjon"
+
+msgid "CD-ROM Drives"
+msgstr "CD-ROM-stasjoner"
+
+msgid "CD-ROMs"
+msgstr "CD-er"
+
+msgid "CD32 Pad"
+msgstr "CD32-kontroll"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Checksumming"
+msgstr "Sjekksummer"
+
+msgid "Checksumming file..."
+msgstr "Sjekksummer fil..."
+
+msgid "Chip RAM"
+msgstr "Chip-RAM"
+
+msgid "Choose CD-ROM Image"
+msgstr "Velg CD-fil"
+
+msgid "Choose Extended ROM"
+msgstr "Velg utvidet ROM"
+
+msgid "Choose Floppy Image"
+msgstr "Velg diskettfil"
+
+msgid "Choose Hard Drive"
+msgstr "Velg harddisk"
+
+msgid "Choose Kickstart ROM"
+msgstr "Velg Kickstart-ROM"
+
+msgid "Choose what folders you want to scan for Amiga files"
+msgstr "Velg hvilke mapper du vil søke gjennom etter Amiga-filer"
+
+msgid "Cleaning up..."
+msgstr "Rydder opp..."
+
+msgid "Clear List"
+msgstr "Tøm liste"
+
+msgid "Click 'Scan' button if you want to re-scan"
+msgstr "Bruk 'søk'-knappen hvis du vil søke på nytt"
+
+msgid "Click 'Scan' button to start scan"
+msgstr "Bruk 'søk'-knappen for å starte søk"
+
+msgid "Click here to download"
+msgstr "Klikk her for å laste ned"
+
+msgid "Click here to import kickstarts"
+msgstr "Klikk her for å importere kickstart-filer"
+
+msgid "Close"
+msgstr "Lukk"
+
+msgid "Committing data..."
+msgstr "Lagrer data..."
+
+msgid "Committing locker data..."
+msgstr "Lagrer locker-data..."
+
+msgid "Config"
+msgstr "Konfigurasjon"
+
+msgid "Configuration"
+msgstr "Konfigurasjon"
+
+msgid "Configuration Browser"
+msgstr "Konfigurasjonsvelger"
+
+msgid "Configuration Warning"
+msgstr "Konfigurasjonsadvarsel"
+
+msgid "Configurations"
+msgstr "Konfigurasjoner"
+
+msgid "Configure joysticks and set preferred joystick devices"
+msgstr "Konfigurer joysticker og velg foretrukne enheter"
+
+msgid "Connect"
+msgstr "Koble til"
+
+#, python-brace-format
+msgid "Copy {0}\nto {1}"
+msgstr "Kopier {0}\ntil {1}"
+
+msgid "Could not open file for writing"
+msgstr "Kunne ikke åpne fil for skriving"
+
+msgid "Create"
+msgstr "Opprett"
+
+msgid "Create a blank or formatted ADF floppy disk image"
+msgstr "Lag en blank eller formatert ADF diskettfil"
+
+msgid "Create a single-partition or partitionable hard drive image"
+msgstr "Lag en enkeltparsjons eller partisjonerbar hard disk-fil"
+
+msgid "Create an account now"
+msgstr "Opprett en konto nå"
+
+msgid "Create disk image of type:"
+msgstr "Lag diskfil av type:"
+
+msgid "Cursor Keys and Right Ctrl/Alt"
+msgstr "Piltaster og høyre ctrl/alt"
+
+msgid "Custom"
+msgstr "Egendefinert"
+
+msgid "Custom Configuration"
+msgstr "Egendefinert konfigurasjon"
+
+msgid "Custom IRC server address"
+msgstr "Egendefinert adresse for IRC-server"
+
+msgid "Custom Joystick Port"
+msgstr "Egendefinert joystick-port"
+
+msgid "Custom game database server address"
+msgstr "Egendefinert serveradresse for spilldatabase"
+
+msgid "Default"
+msgstr "Standard"
+
+#, python-brace-format
+msgid "Default ({0})"
+msgstr "Standard ({0})"
+
+msgid "Defragment Databases"
+msgstr "Defragmenter databaser"
+
+msgid "Defragmenting the databases will improve performance by ensuring that tables and indices are stored contiguously on disk. It will also reclaim some storage space."
+msgstr "Defragmentering av databasene vil øke ytelsen ved å sørge for at tabeller og indekser er lagret sammenhengende på disk. Det vil også kunne frigjøre noe lagringsplass."
+
+#, python-brace-format
+msgid "Defragmenting {name}"
+msgstr "Defragmenterer {name}"
+
+msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
+msgstr "Avhengig av OS og OpenGL-driver, så kan synkronisering bruke unødvendig mye CPU (spes. i Linux). Du kan eksperimentere med ulike synkroniseringsmetoder for å få bedre ytelse."
+
+msgid "Device ID used with OAGD.net authentication"
+msgstr "Device-ID for OAGD.net-autentisering"
+
+msgid "Disconnect"
+msgstr "Koble fra"
+
+msgid "Disk image created"
+msgstr "Diskfil er opprettet"
+
+msgid "Dislike This Game Variant"
+msgstr "Mislik denne spillvarianten"
+
+msgid "Don't have an account already?"
+msgstr "Har du ingen konto ennå?"
+
+msgid "Double-click a device entry to configure it (map joystick buttons)."
+msgstr "Dobbeltklikk på en oppføring for å konfigurere enheten (stille inn knapper)."
+
+msgid "Download Game Manually"
+msgstr "Last ned spill manuelt"
+
+#, python-brace-format
+msgid "Download failed (attempt {0}) - retrying in {0} seconds"
+msgstr "Nedlasting feilet (forsøk {0}) - prøver på nytt om {0} sekunder"
+
+#, python-brace-format
+msgid "Download to the following directory, and then click '{0}':"
+msgstr "Last ned til følgende mappe og deretter klikk '{0}':"
+
+#, python-brace-format
+msgid "Downloading {0}..."
+msgstr "Laster ned {0}..."
+
+msgid "E-mail:"
+msgstr "E-post:"
+
+msgid "Edit Custom Options"
+msgstr "Rediger egendefinerte valg"
+
+msgid "Eject"
+msgstr "Løs ut"
+
+msgid "Enable experimental net play GUI (requires restart)"
+msgstr "Eksperimentelt GUI for online-spilling (krever omstart)"
+
+msgid "Enable online database support (requires restart)"
+msgstr "Støtte for online database (krever omstart)"
+
+msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
+msgstr "Slår du på følgende funksjon vil dette hindre sømmer i grafikken, men vil også bruke mer CPU. Det kan også bli litt mer forsinkelse på input."
+
+msgid "Error moving file into place"
+msgstr "Feil under flytting av fil"
+
+msgid "Error writing disk image"
+msgstr "Feil under skriving av diskfil"
+
+msgid "Expansions"
+msgstr "Utvidelser"
+
+msgid "Experimental Features"
+msgstr "Eksperimentelle funksjoner"
+
+msgid "Extended ROM:"
+msgstr "Utvidet ROM:"
+
+msgid "FS-UAE Launcher Settings"
+msgstr "Innstillinger for FS-UAE Launcher"
+
+msgid "Fast RAM"
+msgstr "Fast-RAM"
+
+#, python-brace-format
+msgid "Fetching database entries ({0})"
+msgstr "Henter databaseoppføringer ({0})"
+
+#, python-brace-format
+msgid "Fetching game ratings ({0})"
+msgstr "Henter spill-poengsummer ({0})"
+
+msgid "Fetching locker data..."
+msgstr "Henter locker-data..."
+
+msgid "Fetching synchronization information..."
+msgstr "Henter synkroniseringsinformasjon..."
+
+#, python-brace-format
+msgid "Fetching user game ratings ({0})"
+msgstr "Henter spill-poengsummer for bruker ({0})"
+
+msgid "File already exists"
+msgstr "Filen finnes allerede"
+
+msgid "Filename for the new disk image:"
+msgstr "Filnavn for den nye diskfilen:"
+
+msgid "Files for this game are still missing. Did you download the game and put the file(s) in the Downloads directory?"
+msgstr "Filer for dette spillet mangler fremdeles. Lastet du ned spillet og puttet filen(e) i Downloads-katalogen?"
+
+msgid "Filter Settings"
+msgstr "Innstillinger for filtre"
+
+msgid "Filters"
+msgstr "Filtere"
+
+msgid "Filters:"
+msgstr "Filtere:"
+
+msgid "Finding files eligible for OAGD.net Locker"
+msgstr "Finner filer som kan lagres i OAGD.net Locker"
+
+msgid "First rendered line (NTSC)"
+msgstr "Første renderte linje (NTSC)"
+
+msgid "First rendered line (PAL)"
+msgstr "Første renderte linje (PAL)"
+
+msgid "Floppies"
+msgstr "Disketter"
+
+msgid "Floppy Drive Sound Emulation"
+msgstr "Emulering av diskettstasjonlyd"
+
+msgid "Floppy Drives"
+msgstr "Diskettstasjoner"
+
+msgid "Floppy drive volume"
+msgstr "Volum for diskettstasjon"
+
+msgid "Forgot your password?"
+msgstr "Glemt passordet ditt?"
+
+msgid "Full Frame"
+msgstr "Fullt bilde"
+
+msgid "Full-scene anti-aliasing (FSAA)"
+msgstr "Anti-alias (FSAA)"
+
+msgid "Fullscreen"
+msgstr "Fullskjerm"
+
+msgid "Game Database"
+msgstr "Spill-database"
+
+msgid "Game Database Settings"
+msgstr "Innstillinger for spill-database"
+
+msgid "Game database authentication"
+msgstr "Autentisering for spilldatabase"
+
+msgid "Game database email"
+msgstr "E-post for spilldatabase"
+
+msgid "Game database password"
+msgstr "Passord for spill-database"
+
+msgid "Game database user name"
+msgstr "Brukernavn for spill-database"
+
+msgid "Games you have and all downloadable games"
+msgstr "Spill du har og alle nedlastbare spill"
+
+msgid "Games you have and automatically downloadable"
+msgstr "Spill du har og automatisk nedlastbare"
+
+msgid "Grab mouse and keyboard input when FS-UAE starts"
+msgstr "Ta kontroll over mus og tastatur når FS-UAE starter"
+
+msgid "Grab mouse and keyboard input when clicking on FS-UAE window"
+msgstr "Ta kontroll over mus og tastatur ved klikk på FS-UAE-vinduet"
+
+msgid "HDF - Partitionable Hard Drive Image (RDB)"
+msgstr "HDF - Partisjonerbar harddisk fil (RDB)"
+
+msgid "HDF - Single Partition Hard Disk File"
+msgstr "HDF - Harddisk-fil med en enkelt partisjon"
+
+msgid "HDF Creator"
+msgstr "HDF-skaper"
+
+msgid "HDF Disk Image Creator"
+msgstr "HDF diskfil-skaper"
+
+msgid "Hard Drives"
+msgstr "Harddisker"
+
+msgid "Hardware"
+msgstr "Maskinvare"
+
+msgid "Hardware Options"
+msgstr "Maskinvarevalg"
+
+msgid "How to achieve perfectly smooth scrolling"
+msgstr "Hvordan oppnå jevn scrolling"
+
+msgid "IRC nickname"
+msgstr "IRC-kallenavn"
+
+#, python-brace-format
+msgid "If you own Amiga Forever, select the drive/folder and click \"{0}\""
+msgstr "Hvis du har Amiga Forever, velg stasjon/mappe og klikk \"{0}\""
+
+msgid "Import"
+msgstr "Importer"
+
+msgid "Import From Amiga Forever CD/DVD"
+msgstr "Importer fra Amiga Forever CD/DVD"
+
+msgid "Import Kickstarts"
+msgstr "Importer kickstart-filer"
+
+msgid "Import Kickstarts and ROMs"
+msgstr "Importer kickstart- og ROM-filer"
+
+msgid "Import task is done"
+msgstr "Importjobb er fullført"
+
+msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
+msgstr "For å få virkelig jevn flyt på Amiga-grafikken må du slå på følgende funksjon, og også sørge for at skjermen din oppdaterer seg med 50Hz (for PAL) eller 60Hz (for NTSC)."
+
+msgid "Include built-in configurations"
+msgstr "Inkluder innebygde konfigurasjoner"
+
+msgid "Input"
+msgstr "Innganger"
+
+msgid "Input Options"
+msgstr "Inngangsalternativer"
+
+msgid "Internal"
+msgstr "Intern"
+
+msgid "Invalid size specified"
+msgstr "Ugyldig størrelse spesifisert"
+
+msgid "Joystick"
+msgstr "Joystick"
+
+msgid "Joystick & Mouse Port"
+msgstr "Joystick & mus-inngang"
+
+msgid "Joystick Ports"
+msgstr "Joystickinnganger"
+
+msgid "Joystick Settings"
+msgstr "Joystick-innstillinger"
+
+msgid "Keep aspect ratio when scaling (do not stretch)"
+msgstr "Behold aspektratio ved skalering (ikke strekk)"
+
+msgid "Keyboard"
+msgstr "Tastatur"
+
+msgid "Keyboard Setting"
+msgstr "Tastaturinnstillinger"
+
+msgid "Keyboard Settings"
+msgstr "Innstillinger for tastatur"
+
+msgid "Kickstart ROM"
+msgstr "Kickstart-ROM"
+
+msgid "Kickstart ROMs are missing"
+msgstr "Kickstart-filer mangler"
+
+msgid "Kickstart import task started"
+msgstr "Importjobb for kickstarter er startet"
+
+msgid "Language"
+msgstr "Språk"
+
+msgid "Language Preference"
+msgstr "Språkpreferanse"
+
+msgid "Launching FS-UAE"
+msgstr "Starter FS-UAE"
+
+msgid "Launching Game"
+msgstr "Starter spill"
+
+msgid "Least Accurate"
+msgstr "Minst nøyaktig"
+
+msgid "Less Accurate"
+msgstr "Mindre nøyaktig"
+
+msgid "Like This Game Variant"
+msgstr "Lik denne spillvarianten"
+
+msgid "Load state by number"
+msgstr "Last inn nummerert tilstand"
+
+msgid "Loading..."
+msgstr "Laster inn..."
+
+msgid "Log In"
+msgstr "Logg inn"
+
+msgid "Log In / Register"
+msgstr "Logg inn / registrer"
+
+msgid "Log In to Your OAGD.net Account"
+msgstr "Logg inn med din OAGD.net-konto"
+
+msgid "Log Out"
+msgstr "Logg ut"
+
+msgid "Log Out from Your OAGD.net Account"
+msgstr "Logg ut fra din OAGD.net-konto"
+
+msgid "Log in to enable online game DB"
+msgstr "Logg inn for å aktivere online spilldatabase"
+
+msgid "Logged In"
+msgstr "Logget inn"
+
+msgid "Logging in will enable the online game database and more"
+msgstr "Innlogging vil aktivere online spilldatabase og mer"
+
+msgid "Low latency video sync"
+msgstr "Lav-forsinkelse video synk"
+
+msgid "MB"
+msgstr "MB"
+
+msgid "Main Configuration Options"
+msgstr "Hovedvalg"
+
+msgid "Main Menu"
+msgstr "Hovedmeny"
+
+msgid "Main volume control"
+msgstr "Hovedvolumkontroll"
+
+msgid "Maintenance"
+msgstr "Vedlikehold"
+
+msgid "Mark This Game Variant as Personal Favorite"
+msgstr "Merk denne spillvarianten som personlig favoritt"
+
+msgid "Media Swap List"
+msgstr "Bytteliste for medier"
+
+msgid "Memory"
+msgstr "Minne"
+
+#, python-brace-format
+msgid "Miscellaneous functions to optimize {name}"
+msgstr "Ulike funksjoner for å optimisere {name}"
+
+msgid "Missing Files"
+msgstr "Mangler filer"
+
+msgid "Mouse"
+msgstr "Mus"
+
+msgid "Mouse Setting"
+msgstr "Instillinger for mus"
+
+msgid "Mouse Settings"
+msgstr "Innstillinger for mus"
+
+msgid "Mouse speed (%)"
+msgstr "Mushastighet (%)"
+
+msgid "N/A"
+msgstr "N/A"
+
+msgid "Net Play"
+msgstr "Nettspill"
+
+msgid "Net Play Settings"
+msgstr "Innstillinger for nettspill"
+
+msgid "Net play tag (max 3 characters)"
+msgstr "Tagg for nettspill (maks 3 tegn)"
+
+msgid "Netplay Settings"
+msgstr "Innstillinger for online-spilling"
+
+msgid "New Configuration"
+msgstr "Ny konfigurasjon"
+
+msgid "Nick:"
+msgstr "Kallenavn:"
+
+msgid "No Device"
+msgstr "Ingen enhet"
+
+msgid "No Host Device"
+msgstr "Ingen vertsenhet"
+
+msgid "No Protection"
+msgstr "Ingen beskyttelse"
+
+msgid "No extended kickstart found for this model. Try 'scan' function."
+msgstr "Ingen utvidet kickstart ble funnet for denne modellen. Prøv 'Søk'-funksjonen."
+
+msgid "No kickstart found for this model. Use the 'Import Kickstarts' function from the menu."
+msgstr "Ingen kickstart ble funnet for denne modellen. Bruk 'Importer kickstart-filer'-funksjonen fra menyen."
+
+msgid "No scan in progress"
+msgstr "Ingen søk pågår"
+
+msgid "Not logged in"
+msgstr "Ikke logget inn"
+
+msgid "Nothing"
+msgstr "Ingenting"
+
+msgid "OAGD.net Locker Uploader"
+msgstr "OAGD.net Locker - Opplaster"
+
+msgid "OAGD.net Locker is not enabled for your user. It may be available only to a few select beta users."
+msgstr "OAGD.net Locker er ikke aktivert for brukeren din. Det kan vere bare tilgjengelig for utvalgte betabrukere."
+
+msgid "OAGD.net upload task completed successfully"
+msgstr "OAGD.net opplastingsjobb fullført med suksess"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Off"
+msgstr "Av"
+
+msgid "On"
+msgstr "På"
+
+msgid "Only games you have"
+msgstr "Kun spill du har"
+
+msgid "Open Scan Dialog"
+msgstr "Åpne søkedialog"
+
+msgid "OpenGL Settings"
+msgstr "OpenGL-innstillinger"
+
+msgid "Override Installed Memory"
+msgstr "Overstyr installert minne"
+
+msgid "Parallel Port Joysticks"
+msgstr "Parallellport-joysticker"
+
+msgid "Password:"
+msgstr "Passord:"
+
+msgid "Picasso96 Support"
+msgstr "Støtte for Picasso96"
+
+msgid "Picasso96 Support (uaegfx.card)"
+msgstr "Støtte for Picasso96 (uaegfx.card)"
+
+msgid "Please open the following web page and download the game from there:"
+msgstr "Vennligst åpne følgende webside og last ned spillet derfra:"
+
+msgid "Please wait..."
+msgstr "Vennligst vent..."
+
+msgid "Preferred Joysticks"
+msgstr "Foretrukne joysticker"
+
+msgid "Preferred device for secondary joystick:"
+msgstr "Foretrukken enhet for sekundær joystick:"
+
+msgid "Preparing WHDLoad..."
+msgstr "Forbereder WHDLoad..."
+
+msgid "Preparing floppy images..."
+msgstr "Forbereder diskettfiler"
+
+msgid "Preparing hard drives..."
+msgstr "Forbereder harddisker..."
+
+msgid "Preparing kickstart ROMs..."
+msgstr "Forbederer Kickstart-ROM-filer..."
+
+msgid "Preparing..."
+msgstr "Forbereder..."
+
+msgid "Purging old entries..."
+msgstr "Fjerner gamle oppføringer..."
+
+#, python-brace-format
+msgid "Re-trying in {0} seconds..."
+msgstr "Prøver på nytt om {0} sekunder..."
+
+msgid "Read more"
+msgstr "Les mer"
+
+msgid "Refresh Game Configurations from Online Database"
+msgstr "Oppdater spillkonfigurasjoner fra online database"
+
+msgid "Refresh Game Database"
+msgstr "Oppdater spill-database"
+
+msgid "Refresh List of Connected Joystick Devices"
+msgstr "Oppdater liste over tilkoblede joysticker"
+
+msgid "Reject"
+msgstr "Avvis"
+
+msgid "Remove Directory from Search Path"
+msgstr "Fjern mappe fra søkeliste"
+
+msgid "Remove Selected Files"
+msgstr "Fjern valgte filer"
+
+#, python-brace-format
+msgid "Removing list {0}"
+msgstr "Fjerner liste {0}"
+
+msgid "Render scan lines"
+msgstr "Tegn scanlines"
+
+msgid "Render scan lines in RTG graphics mode"
+msgstr "Tegn scanlines i RTG video-modus"
+
+msgid "Reset password via e-mail"
+msgstr "Nullstill passord via e-post"
+
+msgid "Resetting game database..."
+msgstr "Nullstiller spilldatabase..."
+
+msgid "Restoring changes..."
+msgstr "Gjenoppretter endringer..."
+
+#, python-brace-format
+msgid "Retrying last operation (attempt {0})"
+msgstr "Forsøker siste operasjon på nytt (forsøk {0})"
+
+msgid "Save Configuration"
+msgstr "Lagre konfigurasjon"
+
+msgid "Save to directory:"
+msgstr "Lagre i mappe:"
+
+msgid "Saving changes..."
+msgstr "Lagrer endringer"
+
+msgid "Scaling"
+msgstr "Skalering"
+
+msgid "Scaling Options"
+msgstr "Valg for skalering"
+
+msgid "Scan"
+msgstr "Søk"
+
+msgid "Scan & Indexing"
+msgstr "Skanning og indeksering"
+
+msgid "Scan Downloads"
+msgstr "Søk i Downloads"
+
+msgid "Scan Files and Configurations"
+msgstr "Skann filer og konfigurasjoner"
+
+msgid "Scan Settings"
+msgstr "Innstillinger for gjennomsøk"
+
+msgid "Scan complete"
+msgstr "Søket er fullført"
+
+msgid "Scan error"
+msgstr "Feil ved skanning"
+
+msgid "Scan for Files"
+msgstr "Skann etter filer"
+
+msgid "Scan for Kickstarts, Files and Configurations"
+msgstr "Søk etter kickstarter, filer og konfigurasjoner"
+
+msgid "Scanning .fs-uae files..."
+msgstr "Undersøker .fs-uae-filer..."
+
+msgid "Scanning configurations"
+msgstr "Søker etter konfigurasjoner"
+
+msgid "Scanning files"
+msgstr "Undersøker filer"
+
+#, python-brace-format
+msgid "Scanning files ({count} scanned)"
+msgstr "Søker etter filer ({count})"
+
+msgid "Scanning game database entries..."
+msgstr "Skanner oppføringer i spill-database..."
+
+#, python-brace-format
+msgid "Scanning game variants ({count} scanned)"
+msgstr "Søker etter spillvarianter ({count} gjennomsøkt)"
+
+msgid "Scanning games"
+msgstr "Søker etter spill"
+
+#, python-brace-format
+msgid "Scanning games ({count} scanned)"
+msgstr "Søker etter spill ({count} gjennomsøkt)"
+
+msgid "Select Destination Directory"
+msgstr "Velg destinasjonsmappe"
+
+msgid "Select Multiple CD-ROMs"
+msgstr "Velg flere CD-er"
+
+msgid "Select Multiple Files..."
+msgstr "Velg flere filer..."
+
+msgid "Select Multiple Floppies"
+msgstr "Velg flere disketter"
+
+msgid "Select Source Directory"
+msgstr "Velg kildemappe"
+
+#, python-brace-format
+msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
+msgstr "Velg en mappe som inneholder Amiga kickstart-filer og klikk \"{0}\""
+
+msgid "Set preferred language for FS-UAE applications"
+msgstr "Set foretrukket språk for FS-UAE-programmer"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Show games from database"
+msgstr "Vis spill fra database"
+
+msgid "Show kickstart setup page on startup when all ROMs are missing"
+msgstr "Vis side for kickstart-oppsett ved oppstart når alle ROM-filer mangler"
+
+msgid "Size:"
+msgstr "Størrelse:"
+
+msgid "Slow RAM"
+msgstr "Slow-RAM"
+
+msgid "Some required files are missing"
+msgstr "Noen påkrevde filer mangler"
+
+msgid "Sound emulation"
+msgstr "Emulering av lyd"
+
+msgid "Specified directory does not exist"
+msgstr "Spesifisert mappe finnes ikke"
+
+msgid "Specify global options and settings which does not have UI controls"
+msgstr "Her kan du spesifisere globale innstillinger som mangler UI-kontroller"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "Start FS-UAE in fullscreen mode"
+msgstr "Start FS-UAE i fullskjerm-modus"
+
+msgid "Starting scan"
+msgstr "Starter søk"
+
+msgid "Stereo separation"
+msgstr "Stereoseperasjon"
+
+msgid "Stop"
+msgstr "Stopp"
+
+msgid "Stopped by user"
+msgstr "Stoppet av bruker"
+
+msgid "Swap left and right CTRL keys"
+msgstr "Bytt venstre og høyre CTRL-taster"
+
+msgid "Synchronize FS-UAE with your display for smooth video"
+msgstr "Synkroniser FS-UAE med skjermen din for jevn grafikk"
+
+msgid "Synchronize buffer swaps with display (prevents tearing)"
+msgstr "Synkroniser bufferbytte med skjerm (forhindrer sømmer)"
+
+msgid "Synchronizing game database..."
+msgstr "Synkroniserer spilldatabase..."
+
+msgid "Synchronizing personal ratings..."
+msgstr "Synkroniserer personlige poengsummer..."
+
+msgid "Synchronizing with the display can in some cases cause increased stuttering and low frame rates (esp. in some Linux desktop environments with compositing enabled)."
+msgstr "Synkronisering med skjerm kan i noen tilfeller føre til økt hakking og lave video-oppdateringer (spes. i noen Linux desktop-miljøer med \"compositing\")."
+
+msgid "Terms of Download"
+msgstr "Vilkår for nedlasting"
+
+msgid "Texture filter"
+msgstr "Teksturfiler"
+
+msgid "The following joystick will be preferred, if present:"
+msgstr "Følgende joystick vil bli foretrukket viss den er tilkoblet:"
+
+msgid "The game may not start properly"
+msgstr "Spillet vil kanskje ikke starte ordentlig"
+
+msgid "This game can be automatically downloaded if you accept the terms"
+msgstr "Dette spillet kan lastes ned automatisk hvis du godtar vilkårene"
+
+msgid "This game must be downloaded"
+msgstr "Dette spillet må lastest ned"
+
+msgid "This game must be downloaded before you can play it"
+msgstr "Dette spillet må lastes ned før du kan spille det"
+
+msgid "This game variant cannot be started because you don't have all required files."
+msgstr "Spillvarianten kan ikke startes fordi du mangler noen filer."
+
+msgid "Toggle Between Windowed and Full-Screen Mode"
+msgstr "Bytt mellom vindu- og fullskjerm-modus"
+
+msgid "Ungrab mouse and keyboard on middle mouse click"
+msgstr "Frigi mus og tastatur ved klikk på midterste museknapp"
+
+#, python-brace-format
+msgid "Update available ({version})"
+msgstr "Oppdatering tilgjengelig ({version})"
+
+msgid "Updating Database"
+msgstr "Oppdaterer database"
+
+msgid "Updating database"
+msgstr "Opdaterer database"
+
+msgid "Updating game lists..."
+msgstr "Oppdater spill-lister..."
+
+#, python-brace-format
+msgid "Updating list '{0}'..."
+msgstr "Oppdaterer liste '{0}'..."
+
+msgid "Updating locker data..."
+msgstr "Oppdaterer locker-data..."
+
+msgid "Upload"
+msgstr "Last opp"
+
+msgid "Upload Files to OAGD.net Locker"
+msgstr "Last opp filer til OAGD.net Locker"
+
+msgid "Upload recognized Amiga files to your OAGD.net locker"
+msgstr "Last opp gjenkjente filer til OAGD.net Locker-en din"
+
+#, python-brace-format
+msgid "Uploading {name}"
+msgstr "Laster opp {name}"
+
+#, python-brace-format
+msgid "Use RDB disk images for size >= {0}"
+msgstr "Bruk RDB diskfiler for størrelse >= {0}"
+
+msgid "User Menu"
+msgstr "Brukermeny"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Video (Advanced)"
+msgstr "Video (avansert)"
+
+msgid "Video Settings"
+msgstr "Innstillinger for video"
+
+msgid "Video Synchronization"
+msgstr "Videosynkronsering"
+
+msgid "Video Synchronization Settings"
+msgstr "Innstillinger for videosynkronisering"
+
+msgid "Video buffer format and color depth"
+msgstr "Format og fargedybde for video-buffer"
+
+msgid "Video synchronization"
+msgstr "Synkronisering av video"
+
+msgid "Video synchronization method"
+msgstr "Synkroniseringsmåte for video"
+
+msgid "Video texture format (on the GPU)"
+msgstr "Teksturformat for video (på GPU)"
+
+msgid "WHDLoad Arguments"
+msgstr "WHDLoad-argumenter"
+
+msgid "Web Links"
+msgstr "Web-linker"
+
+msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
+msgstr "Når automatisk er valgt, så blir foretrukket språk satt basert på informasjon fra operativsystemet (eller engelsk, viss foretrukket språk ikke er støttet)."
+
+msgid "While logged out you will not get database updates"
+msgstr "Når du er logget ut får du ikke lenger database-oppdateringer."
+
+msgid "You should have kickstart files for each Amiga model you want to use:"
+msgstr "Du bør ha kickstart-filer for de Amiga-modellene du ønsker å bruke:"
+
+msgid "Zoom Amiga display (crop)"
+msgstr "Zoom Amiga-bilde (crop)"
+
+msgid "Zorro III RAM"
+msgstr "Zorro III-RAM"
+
+#, python-brace-format
+msgid "{amiga_model} with < 2 MB chip memory"
+msgstr "{amiga_model} med < 2 MB chip-RAM"
+

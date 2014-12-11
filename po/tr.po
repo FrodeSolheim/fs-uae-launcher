@@ -1,0 +1,1109 @@
+msgid ""
+msgstr "Project-Id-Version: fs-uae\n"
+"Report-Msgid-Bugs-To: fs-uae@fengestad.no\n"
+"POT-Creation-Date: 2014-05-04 22:11+0200\n"
+"PO-Revision-Date: 2014-05-11 15:57-0400\n"
+"Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
+"Language-Team: Turkish\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: crowdin.net\n"
+
+msgid "16-bit"
+msgstr "16-bit"
+
+msgid "32-bit BGRA"
+msgstr "32-bit BGRA"
+
+msgid "32-bit RGBA"
+msgstr "32-bit RGBA"
+
+msgid "640x400 + Border"
+msgstr "640x400 + Kenar"
+
+msgid "640x480 + Border"
+msgstr "640x480 + Kenar"
+
+msgid "640x512 + Border"
+msgstr "640x512 + Kenar"
+
+msgid "A change of language will only affect applications which are restarted after the change."
+msgstr "Dil değişimi yalnızca değişimden sonra yeniden başlatılan uygulamaları etkileyecektir."
+
+msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
+msgstr "ADF - Genişletilmiş Disket İmajı (MFM Şifreli)"
+
+msgid "ADF - Standard Floppy Disk Image"
+msgstr "ADF - Standart Disket İmajı"
+
+msgid "ADF Creator"
+msgstr "ADF Yaratıcı"
+
+msgid "ADF Disk Image Creator"
+msgstr "ADF Disk İmajı Yaratıcı"
+
+msgid "Abort"
+msgstr "İptal Et"
+
+msgid "About OAGD.net"
+msgstr "OAGD.net Hakkında"
+
+#, python-brace-format
+msgid "About {name}"
+msgstr "{name} hakkında"
+
+msgid "Accept"
+msgstr "Kabul Et"
+
+msgid "Accurate"
+msgstr "İsabetli"
+
+msgid "Add Directory to Search Path"
+msgstr "Arama Adresine Klasör Ekle"
+
+msgid "Add Files to List"
+msgstr "Listeye Dosya Ekle"
+
+msgid "Add Multiple CD-ROMs at Once"
+msgstr "Tek Seferde Birden Çok CD-ROM Ekle"
+
+msgid "Add Multiple Floppies at Once"
+msgstr "Tek Seferde Birden Çok Disket Ekle"
+
+msgid "Advanced Audio Options"
+msgstr "Gelişmiş Ses Ayarları"
+
+msgid "Advanced Settings"
+msgstr "Gelişmiş Ayarlar"
+
+msgid "Advanced Video Settings"
+msgstr "Gelişmiş Görüntü Ayarları"
+
+msgid "All games and configurations"
+msgstr "Tüm oyunlar ve konfigürasyonlar"
+
+msgid "Also synchronize emulation with display when possible (smooth scrolling)"
+msgstr "Mümkün olduğunda emülasyonu görüntüyle senkronize et (yumuşak kaydırma)"
+
+msgid "Amiga Forever Import"
+msgstr "Amiga Forever'dan Aktar"
+
+msgid "Amiga Forever import task started"
+msgstr "Amiga Forever'dan aktarma işlemi başladı"
+
+msgid "Amiga Model"
+msgstr "Amiga Modeli"
+
+msgid "An Error Occurred"
+msgstr "Bir Hata Meydana Geldi"
+
+msgid "Audio"
+msgstr "Ses"
+
+msgid "Audio Settings"
+msgstr "Ses Ayarları"
+
+msgid "Audio buffer target size (bytes)"
+msgstr "Ses arabelleği hedef boyutu (bayt)"
+
+msgid "Audio buffer target size (ms)"
+msgstr "Ses arabelleği hedef boyutu (ms)"
+
+msgid "Audio output freqency"
+msgstr "Ses çıkışı frekansı"
+
+msgid "Auto"
+msgstr "Otomatik"
+
+msgid "Auto + Border"
+msgstr "Otomatik + Kenar"
+
+msgid "Auto-Fire is Off"
+msgstr "Otomatik Ateş Kapalı"
+
+msgid "Auto-Fire is On"
+msgstr "Otomatik Ateş Açık"
+
+msgid "Automatic"
+msgstr ""
+
+msgid "Available Kickstart Versions"
+msgstr "Mevcut Kickstart Versiyonları"
+
+msgid "Browse"
+msgstr "Gözat"
+
+msgid "Browse for File"
+msgstr "Dosya için Gözat"
+
+msgid "Browse for Folder"
+msgstr "Klasör için Gözat"
+
+msgid "Buffer swap only"
+msgstr "Yalnızca arabellek değişimi"
+
+msgid "Built-in TCP/IP Stack"
+msgstr "Dahili TCP/IP Yığını"
+
+msgid "Built-in TCP/IP Stack (bsdsocket.library)"
+msgstr "Dahili TCP/IP Yığını (bsdsocket.library)"
+
+msgid "CD-ROM Drive"
+msgstr "CD-ROM Sürücü"
+
+msgid "CD-ROM Drives"
+msgstr "CD-ROM Sürücüleri"
+
+msgid "CD-ROMs"
+msgstr "CD-ROM'lar"
+
+msgid "CD32 Pad"
+msgstr "CD32 Pedi"
+
+msgid "Cancel"
+msgstr "Vazgeç"
+
+msgid "Checksumming"
+msgstr "Sağlama Toplamı"
+
+msgid "Checksumming file..."
+msgstr "Dosyanın sağlaması yapılıyor..."
+
+msgid "Chip RAM"
+msgstr "Çip RAM"
+
+msgid "Choose CD-ROM Image"
+msgstr "CD-ROM İmajını Seçin"
+
+msgid "Choose Extended ROM"
+msgstr "Genişletilmiş ROM'u Seçin"
+
+msgid "Choose Floppy Image"
+msgstr "Disket İmajını Seçin"
+
+msgid "Choose Hard Drive"
+msgstr "Hard Diski Seçin"
+
+msgid "Choose Kickstart ROM"
+msgstr "Kickstart ROM'unu Seçin"
+
+msgid "Choose what folders you want to scan for Amiga files"
+msgstr "Amiga dosyaları için taramak istediğiniz klasörleri seçin"
+
+msgid "Cleaning up..."
+msgstr "Temizleniyor..."
+
+msgid "Clear List"
+msgstr "Listeyi Temizle"
+
+msgid "Click 'Scan' button if you want to re-scan"
+msgstr "Tekrar taramak istiyorsanız 'Tara' düğmesine tıklayın"
+
+msgid "Click 'Scan' button to start scan"
+msgstr "Taramayı başlatmak için 'Tara' düğmesine tıklayın"
+
+msgid "Click here to download"
+msgstr "İndirmek için buraya tıklayın"
+
+msgid "Click here to import kickstarts"
+msgstr "Kickstart yüklemek için buraya tıklayın"
+
+msgid "Close"
+msgstr "Kapat"
+
+msgid "Committing data..."
+msgstr "Veri işleniyor..."
+
+msgid "Committing locker data..."
+msgstr ""
+
+msgid "Config"
+msgstr "Konfig"
+
+msgid "Configuration"
+msgstr "Konfigürasyon"
+
+msgid "Configuration Browser"
+msgstr "Konfigürasyon Gezgini"
+
+msgid "Configuration Warning"
+msgstr "Konfigürasyon Uyarısı"
+
+msgid "Configurations"
+msgstr "Konfigürasyonlar"
+
+msgid "Configure joysticks and set preferred joystick devices"
+msgstr "Joystickleri ayarla ve tercih edilen joystick ayarlarını belirle"
+
+msgid "Connect"
+msgstr "Bağlan"
+
+#, python-brace-format
+msgid "Copy {0}\nto {1}"
+msgstr "{0}'ı\n{1}'e kopyala"
+
+msgid "Could not open file for writing"
+msgstr "Dosyayı yazmak için açamıyorum"
+
+msgid "Create"
+msgstr "Yarat"
+
+msgid "Create a blank or formatted ADF floppy disk image"
+msgstr "Boş veya formatlanmış ADF disket imajı yarat"
+
+msgid "Create a single-partition or partitionable hard drive image"
+msgstr "Tek parçalı veya parçalanabilir hard disk imajı yarat"
+
+msgid "Create an account now"
+msgstr "Bir hesap yaratın"
+
+msgid "Create disk image of type:"
+msgstr "Şu türde bir disk imajı yarat:"
+
+msgid "Cursor Keys and Right Ctrl/Alt"
+msgstr "İmleç Tuşları ve Sağ Ctrl/Alt"
+
+msgid "Custom"
+msgstr "Özel"
+
+msgid "Custom Configuration"
+msgstr "Özel Konfigürasyon"
+
+msgid "Custom IRC server address"
+msgstr "Özel IRC sunucu adresi"
+
+msgid "Custom Joystick Port"
+msgstr "Özel Joystick Portu"
+
+msgid "Custom game database server address"
+msgstr "Özel oyun veritabanı sunucu adresi"
+
+msgid "Default"
+msgstr "Varsayılan"
+
+#, python-brace-format
+msgid "Default ({0})"
+msgstr "Varsayılan ({0})"
+
+msgid "Defragment Databases"
+msgstr "Veritabanlarına birleştirme uygula"
+
+msgid "Defragmenting the databases will improve performance by ensuring that tables and indices are stored contiguously on disk. It will also reclaim some storage space."
+msgstr "Veritabanlarına birleştirme uyguladığınızda tablolar ve indeksler diskte bitişik olarak saklanırlar ve bu da performansı arttırır. Ayrıca bu sayede yerden de tasarruf edersiniz."
+
+#, python-brace-format
+msgid "Defragmenting {name}"
+msgstr "{name} birleştiriliyor"
+
+msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
+msgstr "İşletim sisteminize ve OpenGL sürücülerine bağlı olarak, senkronize işlemi gereksiz yere fazla CPU kullanabilir (özellikle de Linux'ta). Performansı arttırmak için farklı senkronizasyon yöntemlerini deneyebilirsiniz."
+
+msgid "Device ID used with OAGD.net authentication"
+msgstr "OAGD.net kimlik doğrulaması ile kullanılan Aygıt kimliği"
+
+msgid "Disconnect"
+msgstr "Bağlantıyı Kes"
+
+msgid "Disk image created"
+msgstr "Disk imajı yaratıldı"
+
+msgid "Dislike This Game Variant"
+msgstr "Bu Oyun Varyantını Beğenme"
+
+msgid "Don't have an account already?"
+msgstr "Henüz bir hesabınız yok mu?"
+
+msgid "Double-click a device entry to configure it (map joystick buttons)."
+msgstr "Ayarlamak için cihaz ismine çift tıklayın (joystick düğmelerini atamak için)."
+
+msgid "Download Game Manually"
+msgstr "Oyunu manuel olarak indir"
+
+#, python-brace-format
+msgid "Download failed (attempt {0}) - retrying in {0} seconds"
+msgstr "İndirme başarısız (deneme {0}) - {0} saniye içinde tekrar denenecek"
+
+#, python-brace-format
+msgid "Download to the following directory, and then click '{0}':"
+msgstr "Şu klasöre indirin, sonra da '{0}'a tıklayın:"
+
+#, python-brace-format
+msgid "Downloading {0}..."
+msgstr "İndiriliyor {0}..."
+
+msgid "E-mail:"
+msgstr "E-posta:"
+
+msgid "Edit Custom Options"
+msgstr "Özel Seçenekleri Düzenle"
+
+msgid "Eject"
+msgstr "Çıkar"
+
+msgid "Enable experimental net play GUI (requires restart)"
+msgstr "Deneysel net oyunu arayüzünü aktifleştir (yeniden başlatmanız gerekir)"
+
+msgid "Enable online database support (requires restart)"
+msgstr "Online veritabanı desteğini aktifleştir (yeniden başlatmanız gerekir)"
+
+msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
+msgstr "Aşağıdaki seçeneğe aktifleştirerek yırtılma efektini engelleyebilirsiniz, ama bu işlem daha fazla CPU kullanılır. Komut gecikmesi biraz daha fazlalaşabilir."
+
+msgid "Error moving file into place"
+msgstr "Dosyayı taşırken hata oluştu"
+
+msgid "Error writing disk image"
+msgstr "Disk imajını yazarken hata oluştu"
+
+msgid "Expansions"
+msgstr "Genişlemeler"
+
+msgid "Experimental Features"
+msgstr "Deneysel Özellikler"
+
+msgid "Extended ROM:"
+msgstr "Genişletilmiş ROM:"
+
+msgid "FS-UAE Launcher Settings"
+msgstr "FS-UAE Çalıştırıcı Ayarları"
+
+msgid "Fast RAM"
+msgstr "Hızlı RAM"
+
+#, python-brace-format
+msgid "Fetching database entries ({0})"
+msgstr "Veritabanı girdileri alınıyor ({0})"
+
+#, python-brace-format
+msgid "Fetching game ratings ({0})"
+msgstr "Oyunların puanları alınıyor ({0})"
+
+msgid "Fetching locker data..."
+msgstr "Dolap verisi alınıyor..."
+
+msgid "Fetching synchronization information..."
+msgstr "Senkronizasyon bilgisi alınıyor..."
+
+#, python-brace-format
+msgid "Fetching user game ratings ({0})"
+msgstr "Oyunun kullanıcı puanları alınıyor ({0})"
+
+msgid "File already exists"
+msgstr "Dosya zaten mevcut"
+
+msgid "Filename for the new disk image:"
+msgstr "Yeni disk imajı için dosya ismi:"
+
+msgid "Files for this game are still missing. Did you download the game and put the file(s) in the Downloads directory?"
+msgstr "Bu oyunun dosyaları hala eksik. Oyunu indirip dosyalarını İndirilenler klasörüne kopyaladınız mı?"
+
+msgid "Filter Settings"
+msgstr "Filtre Ayarları"
+
+msgid "Filters"
+msgstr "Filtreler"
+
+msgid "Filters:"
+msgstr "Filtreler:"
+
+msgid "Finding files eligible for OAGD.net Locker"
+msgstr "OAGD.net Dolabına uygun dosyalar bulunuyor"
+
+msgid "First rendered line (NTSC)"
+msgstr "İlk çizilen satır (NTSC)"
+
+msgid "First rendered line (PAL)"
+msgstr "İlk çizilen satır (PAL)"
+
+msgid "Floppies"
+msgstr "Disketler"
+
+msgid "Floppy Drive Sound Emulation"
+msgstr "Disket Sürücü Ses Emülasyonu"
+
+msgid "Floppy Drives"
+msgstr "Disket Sürücüler"
+
+msgid "Floppy drive volume"
+msgstr "Disket sürücü sesi"
+
+msgid "Forgot your password?"
+msgstr "Şifrenizi mi unuttunuz?"
+
+msgid "Full Frame"
+msgstr "Tam Pencere"
+
+msgid "Full-scene anti-aliasing (FSAA)"
+msgstr "Tam ekran anti-aliasing (FSAA)"
+
+msgid "Fullscreen"
+msgstr "Tam Ekran"
+
+msgid "Game Database"
+msgstr "Oyun Veritabanı"
+
+msgid "Game Database Settings"
+msgstr "Oyun Veritabanı Ayarları"
+
+msgid "Game database authentication"
+msgstr "Oyun veritabanı kimlik doğrulama"
+
+msgid "Game database email"
+msgstr "Oyun veritabanı e-postası"
+
+msgid "Game database password"
+msgstr "Oyun veritabanı şifresi"
+
+msgid "Game database user name"
+msgstr "Oyun veritabanı kullanıcı ismi"
+
+msgid "Games you have and all downloadable games"
+msgstr "Sahip olduğunuz ve indirilebilir tüm oyunlar"
+
+msgid "Games you have and automatically downloadable"
+msgstr "Sahip olduğunuz ve otomatik indirilebilir oyunlar"
+
+msgid "Grab mouse and keyboard input when FS-UAE starts"
+msgstr "FS-UAE başladığında fare ve klavye girişini kap"
+
+msgid "Grab mouse and keyboard input when clicking on FS-UAE window"
+msgstr "FS-UAE penceresine tıklandığında fare ve klavye girişini kap"
+
+msgid "HDF - Partitionable Hard Drive Image (RDB)"
+msgstr "HDF - Bölünebilir Hard Disk İmajı (RDB)"
+
+msgid "HDF - Single Partition Hard Disk File"
+msgstr "HDF - Tek Parça Hard Disk Dosyası"
+
+msgid "HDF Creator"
+msgstr "HDF Yaratıcı"
+
+msgid "HDF Disk Image Creator"
+msgstr "HDF Disk İmajı Yaratıcı"
+
+msgid "Hard Drives"
+msgstr "Hard Diskler"
+
+msgid "Hardware"
+msgstr "Donanım"
+
+msgid "Hardware Options"
+msgstr "Donanım Ayarları"
+
+msgid "How to achieve perfectly smooth scrolling"
+msgstr "Kusursuz yumuşak kaydırma nasıl elde edilir"
+
+msgid "IRC nickname"
+msgstr "IRC takma ismi"
+
+#, python-brace-format
+msgid "If you own Amiga Forever, select the drive/folder and click \"{0}\""
+msgstr "Eğer Amiga Forever sahibiyseniz, sürücü/klasör seçin ve  \"{0}\"ye tıklayın"
+
+msgid "Import"
+msgstr "Yükle"
+
+msgid "Import From Amiga Forever CD/DVD"
+msgstr "Amiga Forever CD/DVD'sinden Yükle"
+
+msgid "Import Kickstarts"
+msgstr "Kickstart Yükle"
+
+msgid "Import Kickstarts and ROMs"
+msgstr "Kickstart ve ROM Yükle"
+
+msgid "Import task is done"
+msgstr "Yükleme işlemi tamamlandı"
+
+msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
+msgstr "Gerçekten yumuşak Amiga grafikleri elde etmek için, aşağıdaki seçeneği aktifleştirmelisiniz ve ekranınızın 50Hz (PAL için) veya 60Hz (NTSC için) değerlerinde çalıştığından emin olmalısınız."
+
+msgid "Include built-in configurations"
+msgstr "Dahili konfigürasyonları ekle"
+
+msgid "Input"
+msgstr "Giriş"
+
+msgid "Input Options"
+msgstr "Giriş Seçenekleri"
+
+msgid "Internal"
+msgstr "Dahili"
+
+msgid "Invalid size specified"
+msgstr "Geçersiz boyut seçildi"
+
+msgid "Joystick"
+msgstr "Joystick"
+
+msgid "Joystick & Mouse Port"
+msgstr "Joystick & Fare Portu"
+
+msgid "Joystick Ports"
+msgstr "Joystick Portları"
+
+msgid "Joystick Settings"
+msgstr "Joystick Ayarları"
+
+msgid "Keep aspect ratio when scaling (do not stretch)"
+msgstr "Büyütme sırasında en boy oranını koru (kenarı uzatma)"
+
+msgid "Keyboard"
+msgstr "Klavye"
+
+msgid "Keyboard Setting"
+msgstr "Klavye Ayarı"
+
+msgid "Keyboard Settings"
+msgstr "Klavye Ayarları"
+
+msgid "Kickstart ROM"
+msgstr "Kickstart ROM'u"
+
+msgid "Kickstart ROMs are missing"
+msgstr "Kickstart ROM'ları eksik"
+
+msgid "Kickstart import task started"
+msgstr "Kickstart yükleme işlemi başladı"
+
+msgid "Language"
+msgstr "Dil"
+
+msgid "Language Preference"
+msgstr "Dil Tercihi"
+
+msgid "Launching FS-UAE"
+msgstr "FS-UAE Başlatılıyor"
+
+msgid "Launching Game"
+msgstr "Oyun Başlatılıyor"
+
+msgid "Least Accurate"
+msgstr "En Az İsabetli"
+
+msgid "Less Accurate"
+msgstr "Az İsabetli"
+
+msgid "Like This Game Variant"
+msgstr "Bu Oyun Varyantını Beğen"
+
+msgid "Load state by number"
+msgstr "Sayıyla durum yükle"
+
+msgid "Loading..."
+msgstr "Yükleniyor..."
+
+msgid "Log In"
+msgstr "Giriş Yap"
+
+msgid "Log In / Register"
+msgstr "Giriş Yap / Kayıt Ol"
+
+msgid "Log In to Your OAGD.net Account"
+msgstr "OAGD.net Hesabınıza Giriş Yapın"
+
+msgid "Log Out"
+msgstr "Çıkış Yap"
+
+msgid "Log Out from Your OAGD.net Account"
+msgstr "OAGD.net Hesabınızdan Çıkış Yapın"
+
+msgid "Log in to enable online game DB"
+msgstr "Çevrimiçi oyun veritabanını aktifleştirmek için giriş yapın"
+
+msgid "Logged In"
+msgstr "Giriş Yapıldı"
+
+msgid "Logging in will enable the online game database and more"
+msgstr "Giriş yaptığınızda çevrimiçi oyun veritabanı ve fazlası aktifleşecektir"
+
+msgid "Low latency video sync"
+msgstr "Düşük gecikmeli görüntü senkronu"
+
+msgid "MB"
+msgstr "MB"
+
+msgid "Main Configuration Options"
+msgstr "Ana Konfigürasyon Ayarları"
+
+msgid "Main Menu"
+msgstr "Ana Menü"
+
+msgid "Main volume control"
+msgstr "Ana ses kontrolü"
+
+msgid "Maintenance"
+msgstr "Bakım"
+
+msgid "Mark This Game Variant as Personal Favorite"
+msgstr "Bu Oyun Varyantını Kişisel Favori Olarak İşaretle"
+
+msgid "Media Swap List"
+msgstr "Medya Değişim Listesi"
+
+msgid "Memory"
+msgstr "Hafıza"
+
+#, python-brace-format
+msgid "Miscellaneous functions to optimize {name}"
+msgstr "{name} optimizasyonu için çeşitli işlevler"
+
+msgid "Missing Files"
+msgstr "Eksik Dosyalar"
+
+msgid "Mouse"
+msgstr "Fare"
+
+msgid "Mouse Setting"
+msgstr "Fare Ayarı"
+
+msgid "Mouse Settings"
+msgstr "Fare Ayarları"
+
+msgid "Mouse speed (%)"
+msgstr "Fare hızı (%)"
+
+msgid "N/A"
+msgstr "Yok"
+
+msgid "Net Play"
+msgstr "Net Oyunu"
+
+msgid "Net Play Settings"
+msgstr "Net Oyunu Ayarları"
+
+msgid "Net play tag (max 3 characters)"
+msgstr "Net oyunu etiketi (max 3 karakter)"
+
+msgid "Netplay Settings"
+msgstr "Netplay Ayarları"
+
+msgid "New Configuration"
+msgstr "Yeni Konfigürasyon"
+
+msgid "Nick:"
+msgstr "Takma isim:"
+
+msgid "No Device"
+msgstr "Cihaz Yok"
+
+msgid "No Host Device"
+msgstr "Sunucu Cihaz Yok"
+
+msgid "No Protection"
+msgstr "Koruma Yok"
+
+msgid "No extended kickstart found for this model. Try 'scan' function."
+msgstr "Bu model için genişletilmiş kickstart bulunamadı. 'Tara' işlevini deneyin."
+
+msgid "No kickstart found for this model. Use the 'Import Kickstarts' function from the menu."
+msgstr "Bu model için kickstart bulunamadı. Menüden 'Kickstart Yükle' seçeneğini kullanın."
+
+msgid "No scan in progress"
+msgstr "Devam eden tarama yok"
+
+msgid "Not logged in"
+msgstr "Giriş yapılmadı"
+
+msgid "Nothing"
+msgstr "Hiçbir şey"
+
+msgid "OAGD.net Locker Uploader"
+msgstr "OAGD.net Dolap Yükleyicisi"
+
+msgid "OAGD.net Locker is not enabled for your user. It may be available only to a few select beta users."
+msgstr "OAGD.net Dolabı bu kullanıcı için aktif değildir. Yalnızca bazı seçilmiş beta kullanıcıları için aktiftir."
+
+msgid "OAGD.net upload task completed successfully"
+msgstr "OAGD.net yükleme işlemi başarıyla tamamlandı"
+
+msgid "OK"
+msgstr "Tamam"
+
+msgid "Off"
+msgstr "Kapalı"
+
+msgid "On"
+msgstr "Açık"
+
+msgid "Only games you have"
+msgstr "Yalnızca sahip olduğunuz oyunlar"
+
+msgid "Open Scan Dialog"
+msgstr "Tarama Diyaloğunu Aç"
+
+msgid "OpenGL Settings"
+msgstr "OpenGL Ayarları"
+
+msgid "Override Installed Memory"
+msgstr "Kurulu Hafızanın Üzerine Yaz"
+
+msgid "Parallel Port Joysticks"
+msgstr "Paralel Port Joystickleri"
+
+msgid "Password:"
+msgstr "Şifre:"
+
+msgid "Picasso96 Support"
+msgstr "Picasso96 Desteği"
+
+msgid "Picasso96 Support (uaegfx.card)"
+msgstr "Picasso96 Desteği (uaegfx.card)"
+
+msgid "Please open the following web page and download the game from there:"
+msgstr "Lütfen aşağıdaki web sayfasını açın ve oyunu oradan indirin:"
+
+msgid "Please wait..."
+msgstr "Lütfen bekleyin..."
+
+msgid "Preferred Joysticks"
+msgstr "Tercih Edilen Joystickler"
+
+msgid "Preferred device for secondary joystick:"
+msgstr "İkinci joystick için tercih edilen cihaz:"
+
+msgid "Preparing WHDLoad..."
+msgstr "WHDLoad hazırlanıyor..."
+
+msgid "Preparing floppy images..."
+msgstr "Disket imajları hazırlanıyor..."
+
+msgid "Preparing hard drives..."
+msgstr "Hard diskler hazırlanıyor..."
+
+msgid "Preparing kickstart ROMs..."
+msgstr "Kickstart ROM'ları hazırlanıyor..."
+
+msgid "Preparing..."
+msgstr "Hazırlanıyor..."
+
+msgid "Purging old entries..."
+msgstr "Eski girdiler temizleniyor..."
+
+#, python-brace-format
+msgid "Re-trying in {0} seconds..."
+msgstr "{0} saniye içinde tekrar deniyorum..."
+
+msgid "Read more"
+msgstr "Daha fazlasını okuyun"
+
+msgid "Refresh Game Configurations from Online Database"
+msgstr "Çevrimiçi Veritabanından Oyun Konfigürasyonlarını Yenile"
+
+msgid "Refresh Game Database"
+msgstr "Oyun Veritabanını Yenile"
+
+msgid "Refresh List of Connected Joystick Devices"
+msgstr "Bağlı Joystick Cihazlarının Listesini Yenile"
+
+msgid "Reject"
+msgstr "Reddet"
+
+msgid "Remove Directory from Search Path"
+msgstr "Arama Adresinden Klasörü Sil"
+
+msgid "Remove Selected Files"
+msgstr "Seçili Dosyaları Kaldır"
+
+#, python-brace-format
+msgid "Removing list {0}"
+msgstr "Liste {0} çıkarılıyor"
+
+msgid "Render scan lines"
+msgstr "Tarama çizgilerini göster"
+
+msgid "Render scan lines in RTG graphics mode"
+msgstr "RTG grafik modunda tarama çizgilerini göster"
+
+msgid "Reset password via e-mail"
+msgstr "Şifreyi e-posta yoluyla sıfırla"
+
+msgid "Resetting game database..."
+msgstr "Oyun veritabanı sıfırlanıyor..."
+
+msgid "Restoring changes..."
+msgstr "Değişiklikler geri alınıyor..."
+
+#, python-brace-format
+msgid "Retrying last operation (attempt {0})"
+msgstr "Son işlem tekrar deneniyor (deneme {0})"
+
+msgid "Save Configuration"
+msgstr "Konfigürasyonu Kaydet"
+
+msgid "Save to directory:"
+msgstr "Şu klasöre kaydet:"
+
+msgid "Saving changes..."
+msgstr "Değişiklikler kaydediliyor..."
+
+msgid "Scaling"
+msgstr "Ölçekleme"
+
+msgid "Scaling Options"
+msgstr "Büyütme Seçenekleri"
+
+msgid "Scan"
+msgstr "Tara"
+
+msgid "Scan & Indexing"
+msgstr "Tarama & İndeksleme"
+
+msgid "Scan Downloads"
+msgstr "İndirilenleri Tara"
+
+msgid "Scan Files and Configurations"
+msgstr "Dosya ve Konfigürasyonları Tara"
+
+msgid "Scan Settings"
+msgstr "Tarama Ayarları"
+
+msgid "Scan complete"
+msgstr "Tarama tamamlandı"
+
+msgid "Scan error"
+msgstr "Tarama hatası"
+
+msgid "Scan for Files"
+msgstr "Dosyaları tara"
+
+msgid "Scan for Kickstarts, Files and Configurations"
+msgstr "Kickstart, Dosya ve Konfigürasyonlar İçin Tara"
+
+msgid "Scanning .fs-uae files..."
+msgstr ".fs-uae dosyaları taranıyor..."
+
+msgid "Scanning configurations"
+msgstr "Konfigürasyonlar taranıyor"
+
+msgid "Scanning files"
+msgstr "Dosyalar taranıyor"
+
+#, python-brace-format
+msgid "Scanning files ({count} scanned)"
+msgstr "Dosyalar taranıyor ({count} tarandı)"
+
+msgid "Scanning game database entries..."
+msgstr "Oyun veritabanı girdileri taranıyor..."
+
+#, python-brace-format
+msgid "Scanning game variants ({count} scanned)"
+msgstr "Oyun varyantları taranıyor ({count} tarandı)"
+
+msgid "Scanning games"
+msgstr "Oyunlar taranıyor"
+
+#, python-brace-format
+msgid "Scanning games ({count} scanned)"
+msgstr "Oyunlar taranıyor ({count} tarandı)"
+
+msgid "Select Destination Directory"
+msgstr "Hedef Klasörü Seçin"
+
+msgid "Select Multiple CD-ROMs"
+msgstr "Birden Çok CD-ROM Seçin"
+
+msgid "Select Multiple Files..."
+msgstr "Birden Çok Dosya Seçin..."
+
+msgid "Select Multiple Floppies"
+msgstr "Birden Çok Disket Seçin"
+
+msgid "Select Source Directory"
+msgstr "Kaynak Klasörü Seçin"
+
+#, python-brace-format
+msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
+msgstr "İçinde Amiga kickstart dosyalarının bulunduğu klasörü seçin ve \"{0}\"'e tıklayın"
+
+msgid "Set preferred language for FS-UAE applications"
+msgstr "FS-UAE uygulamaları için tercih edilen dili ayarla"
+
+msgid "Settings"
+msgstr "Ayarlar"
+
+msgid "Show games from database"
+msgstr "Veritabanından oyun gösterimi"
+
+msgid "Show kickstart setup page on startup when all ROMs are missing"
+msgstr "Tüm ROM'lar eksikse başlangıçta kickstart ayar sayfasını göster"
+
+msgid "Size:"
+msgstr "Boyut:"
+
+msgid "Slow RAM"
+msgstr "Yavaş RAM"
+
+msgid "Some required files are missing"
+msgstr "Gerekli bazı dosyalar eksik"
+
+msgid "Sound emulation"
+msgstr "Ses emülasyonu"
+
+msgid "Specified directory does not exist"
+msgstr "Belirtilen klasör mevcut değil"
+
+msgid "Specify global options and settings which does not have UI controls"
+msgstr "Genel ayarları ve UI kontrolleri olmayan ayarları belirleyin"
+
+msgid "Start"
+msgstr "Başlat"
+
+msgid "Start FS-UAE in fullscreen mode"
+msgstr "FS-UAE'yi tam ekran modunda başlat"
+
+msgid "Starting scan"
+msgstr "Tarama başlatılıyor"
+
+msgid "Stereo separation"
+msgstr "Stereo ayırma"
+
+msgid "Stop"
+msgstr "Durdur"
+
+msgid "Stopped by user"
+msgstr "Kullanıcı tarafından durduruldu"
+
+msgid "Swap left and right CTRL keys"
+msgstr "Sol ve sağ CTRL tuşlarının yerini değiştir"
+
+msgid "Synchronize FS-UAE with your display for smooth video"
+msgstr "Yumuşak görüntü için FS-UAE'yi ekranla senkronla"
+
+msgid "Synchronize buffer swaps with display (prevents tearing)"
+msgstr "Ekranla arabellek geçişlerini senkronla (yırtılma efektini engeller)"
+
+msgid "Synchronizing game database..."
+msgstr "Oyun veritabanı senkronize ediliyor..."
+
+msgid "Synchronizing personal ratings..."
+msgstr "Kişisel puanlar senkronlanıyor..."
+
+msgid "Synchronizing with the display can in some cases cause increased stuttering and low frame rates (esp. in some Linux desktop environments with compositing enabled)."
+msgstr "Ekranla senkronizasyon bazı durumlarda tekleme ve düşük kare hızlarına yol açabilir (özellikle de compositing kullanan Linux masaüstü ortamlarında)."
+
+msgid "Terms of Download"
+msgstr "İndirme Şartları"
+
+msgid "Texture filter"
+msgstr "Doku filtresi"
+
+msgid "The following joystick will be preferred, if present:"
+msgstr "Mevcut olduğu taktirde aşağıdaki joystick tercih edilecektir:"
+
+msgid "The game may not start properly"
+msgstr "Oyun düzgün başlamayabilir"
+
+msgid "This game can be automatically downloaded if you accept the terms"
+msgstr ""
+
+msgid "This game must be downloaded"
+msgstr "Bu oyun indirilmelidir"
+
+msgid "This game must be downloaded before you can play it"
+msgstr "Bu oyunu oynayabilmek için önce indirmeniz gerekir"
+
+msgid "This game variant cannot be started because you don't have all required files."
+msgstr "Gerekli tüm dosyalara sahip olmadığınızdan bu oyun varyantını çalıştıramazsınız."
+
+msgid "Toggle Between Windowed and Full-Screen Mode"
+msgstr "Pencere ve Tam-Ekran Modu Arasında Geçiş Yap"
+
+msgid "Ungrab mouse and keyboard on middle mouse click"
+msgstr "Orta fare düğmesine tıklandığında fare ve klavyeyi serbest bırak"
+
+#, python-brace-format
+msgid "Update available ({version})"
+msgstr "Güncelleme mevcut ({version})"
+
+msgid "Updating Database"
+msgstr "Veritabanı Güncelleniyor"
+
+msgid "Updating database"
+msgstr "Veritabanı güncelleniyor"
+
+msgid "Updating game lists..."
+msgstr "Oyun listeleri güncelleniyor"
+
+#, python-brace-format
+msgid "Updating list '{0}'..."
+msgstr "Liste  '{0}' güncelleniyor..."
+
+msgid "Updating locker data..."
+msgstr "Dolap verisi güncelleniyor..."
+
+msgid "Upload"
+msgstr "Yükle"
+
+msgid "Upload Files to OAGD.net Locker"
+msgstr "OAGD.net Dolabına Dosya Yükle"
+
+msgid "Upload recognized Amiga files to your OAGD.net locker"
+msgstr "Tanınmış Amiga dosyalarını OAGD.net Dolabına Yükle"
+
+#, python-brace-format
+msgid "Uploading {name}"
+msgstr "{name} yükleniyor"
+
+#, python-brace-format
+msgid "Use RDB disk images for size >= {0}"
+msgstr ">= {0} boyutu için RDB disk imajları kullan"
+
+msgid "User Menu"
+msgstr "Kullanıcı Menüsü"
+
+msgid "Video"
+msgstr "Görüntü"
+
+msgid "Video (Advanced)"
+msgstr "Görüntü (Gelişmiş)"
+
+msgid "Video Settings"
+msgstr "Video Ayarları"
+
+msgid "Video Synchronization"
+msgstr "Görüntü Senkronizasyonu"
+
+msgid "Video Synchronization Settings"
+msgstr "Görüntü Senkronizasyonu Ayarları"
+
+msgid "Video buffer format and color depth"
+msgstr "Video arabellek formatı ve renk derinliği"
+
+msgid "Video synchronization"
+msgstr "Video senkronizasyonu"
+
+msgid "Video synchronization method"
+msgstr "Video senkronizasyon formatı"
+
+msgid "Video texture format (on the GPU)"
+msgstr "Video doku formatı (GPU üzerinde)"
+
+msgid "WHDLoad Arguments"
+msgstr "WHDLoad Argümanları"
+
+msgid "Web Links"
+msgstr "Web Bağlantıları"
+
+msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
+msgstr "Otomatik seçili olduğunda, dil seçimi işletim sisteminize bağlı olarak yapılacaktır (eğer desteklenen dil tespit edilmezse İngilizce kullanılacaktır)"
+
+msgid "While logged out you will not get database updates"
+msgstr "Giriş yapmadığınız taktirde veritabanı güncellemelerini alamazsınız"
+
+msgid "You should have kickstart files for each Amiga model you want to use:"
+msgstr "Kullanmak istediğiniz her Amiga modeli için kickstart dosyasına sahip olmalısınız:"
+
+msgid "Zoom Amiga display (crop)"
+msgstr "Amiga görüntüsüne zum yap (kenarlardan kes)"
+
+msgid "Zorro III RAM"
+msgstr "Zorro III RAM"
+
+#, python-brace-format
+msgid "{amiga_model} with < 2 MB chip memory"
+msgstr "< 2 MB çip belleğe sahip {amiga_model} "
+

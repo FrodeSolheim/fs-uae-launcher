@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+%:
+	dh $@ --with python3 --buildsystem pybuild
+
+override_dh_auto_install:
+	python3 setup.py install --root=debian/fs-uae-launcher --install-layout=deb --install-lib=/usr/share/fs-uae-launcher --install-scripts=/usr/share/fs-uae-launcher
+	make install DESTDIR=$$(pwd)/debian/fs-uae-launcher prefix=/usr install
+
+override_dh_auto_build:
+	make mo
