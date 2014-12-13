@@ -1,0 +1,81 @@
+Version 2.5.21dev:
+
+* Allow clearing preferred joystick(s) via settings UI.
+* Can start with path to .fs-uae file as final argument (auto-runs
+  configuration via FS-UAE Launcher).
+* Can start with game uuid as final argument (auto-runs preferred variant).
+* Can start with variant uuid as final argument (autu-runs specified variant).
+* Fixed issue caused by QT normalizing (NFC) paths on OS X.
+
+Version 2.5.19dev:
+
+* Fixed launcher net play GUI (broken in dev versions since the move to QT).
+
+Version 2.5.15dev:
+
+* Added awareness of required ROMs for Picasso IV, Cyberstorm PPC.
+* Added new models A4000/PPC, A4000/OS4, A4000, A500/512K.
+* Added .bin extension to rom scanner (useful for Picasso IV ROM).
+
+Version 2.5.12dev:
+
+* Fixed bugs in ADF and HDF creator.
+
+Version 2.5.8dev:
+
+* Added settings GUI control for keyboard_input_grab option.
+
+Version 2.5.6dev:
+
+* Add .nobackup file to Documents/FS-UAE/Cache.
+* Fixed a bug in adf/hdf creator.
+* Include "show all database games" (database_show_games = 0) in settings.
+
+Version 2.5.5dev:
+
+* Added GUI control for option database_show_adult.
+* Automatically update game list when database_show_[games/adult] changes.
+* Fixed (python 3) bug in download hard drive via HTTP feature.
+
+Version 2.5.4dev:
+
+* Fixed startup error when base-dir config file is used.
+
+Version 2.5.3dev:
+
+* Disable strict mode when parsing .fs-uae files.
+
+Version 2.5.2dev:
+
+* Can download kickstarts for WHDLoad from OAGD.net locker.
+* Python 3 compatibility fixes.
+* Python 3.2 is the target minimum requirement now.
+* PyQt4 is the preferred Qt Python API if found.
+* Windows / OS X packages are assembled with cx_Freeze.
+* Dialogs work better in desktop environments w/o close buttons.
+
+Version 2.5.1dev:
+
+* Case insensitive kickstart scan on startup.
+* Added support for Greek language.
+
+Version 2.5.0dev:
+
+* Windows portable version didn't store relative paths.
+* Properly locate A500 kickstart on first startup when it exists.
+* Don't refresh the online database when running the file scanner.
+* Game database changes for better forward compatibility.
+* Adult filter for game database, enabled by default.
+* Use search term tag:adult to show adult games.
+* New option database_show_adult to show adult games by default.
+* Can search for quoted words to require exact word match.
+* Fixed some translated strings used incorrectly.
+* Updated translations: pl [grimi].
+* Fixed multiple file selection when using PyQt.
+* Added 256 kB chip RAM to the chip memory selector.
+* Updated translations: de [jbl007], es [albconde], it [Speedvicio],
+  da [tomse], nb.
+* Fixed a bug preventing hd_requirements = workbench from working.
+* Fixed a bug which is also a syntax error with Python < v2.7.
+* Fixed a potential startup problem when PATH has non-ASCII
+  characters.

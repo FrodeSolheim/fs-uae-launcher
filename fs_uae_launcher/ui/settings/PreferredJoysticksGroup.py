@@ -69,8 +69,7 @@ class PreferredJoystickSelector(fsui.Group):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
 
-        devices = []
-        devices.append(get_keyboard_title())
+        devices = ["", get_keyboard_title()]
         # for i, name in enumerate(DeviceManager.get_joystick_names()):
         #     devices.append(name)
         for device_name in DeviceManager.get_joystick_names():
@@ -81,7 +80,7 @@ class PreferredJoystickSelector(fsui.Group):
 
         self.layout.add(self.device_choice, expand=True)
 
-        #Config.add_listener(self)
+        # Config.add_listener(self)
 
         self.initialize_from_settings()
         self.set_settings_handlers()
