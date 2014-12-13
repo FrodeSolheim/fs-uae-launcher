@@ -21,8 +21,9 @@ package_map = {
     "fsui": "../python",
     "game_center": "../python",
     "lhafile": "../python-lhafile",
-    "six": "../python",
     "OpenGL": "../python",
+    "six": "../python",
+    "typing": "../python",
 }
 packages = sorted(package_map.keys())
 #import sys
@@ -52,6 +53,7 @@ res_dirs.append('fsui/res')
 res_dirs.append('game_center/res')
 res_dirs.append('lhafile/res')
 res_dirs.append('six/res')
+res_dirs.append('typing/res')
 
 
 def add_package(package_name, package_dir_name):

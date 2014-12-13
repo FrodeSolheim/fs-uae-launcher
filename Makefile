@@ -197,7 +197,7 @@ macosx-dist: distdir
 	rm -Rf $(dist_dir)
 
 clean-dist:
-	rm -Rf dist fs-uae-launcher-* fs-uae-launcher_*
+	rm -Rf fs-uae-launcher-* fs-uae-launcher_*
 	rm -Rf debian/fs-uae-launcher*
 
 clean:
