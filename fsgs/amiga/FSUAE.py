@@ -116,7 +116,11 @@ class FSUAE(object):
 
         if windows:
             exe = os.path.join(
-                application.executable_dir(), "fs-uae/" + executable + ".exe")
+                application.executable_dir(), executable + ".exe")
+            if not os.path.exists(exe):
+                exe = os.path.join(
+                    application.executable_dir(),
+                    "fs-uae/" + executable + ".exe")
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(), "../" + executable + ".exe")

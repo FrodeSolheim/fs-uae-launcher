@@ -9,9 +9,15 @@ from fsbc.system import windows, macosx
 
 if windows:
     #noinspection PyUnresolvedReferences
-    import win32api
+    try:
+        import win32api
+    except ImportError:
+        win32api = None
     #noinspection PyUnresolvedReferences
-    import win32con
+    try:
+        import win32con
+    except ImportError:
+        win32con = None
     EDS_RAWMODE = 2
 elif macosx:
     #noinspection PyUnresolvedReferences

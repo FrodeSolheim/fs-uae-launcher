@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import shutil
 import tempfile
@@ -10,11 +5,12 @@ import time
 import weakref
 import threading
 import traceback
-import hashlib
+# import hashlib
 
 import six
-from fsbc.task import current_task
+# from fsbc.task import current_task
 from fsgs.Archive import Archive
+from fsbc.util import unused
 from .BaseContext import BaseContext
 from .Downloader import Downloader
 from .FileDatabase import FileDatabase
@@ -63,8 +59,8 @@ class FileContext(BaseContext):
             database = LockerDatabase.instance()
             result = database.check_sha1(sha1)
             # print("check sha1", sha1, "in locker database - result", result)
-        #if not result:
-        #    result = self.context.get_game_database().find_file_by_sha1(sha1)
+        # if not result:
+        #     result = self.context.get_game_database().find_file_by_sha1(sha1)
         return result
 
     def get_license_code_for_url(self, url):
@@ -175,6 +171,7 @@ class FileContext(BaseContext):
         return self.on_show_license_information(license_text)
 
     def on_show_license_information(self, license_text):
+        unused(license_text)
         print("*** on_show_license_information not implemented ***")
         raise Exception("on_show_license_information not implemented")
 
@@ -213,12 +210,12 @@ class FileContext(BaseContext):
         else:
             dst_partial = dst + ".partial"
             with open(dst_partial, "wb") as ofs:
-                #ifs_sha1 = hashlib.sha1()
+                # ifs_sha1 = hashlib.sha1()
                 while True:
                     data = ifs.read()
                     if not data:
                         break
-                    #ifs_sha1.update(data)
+                    # ifs_sha1.update(data)
                     ofs.write(data)
             print("rename file from", dst_partial, "to", dst)
             os.rename(dst_partial, dst)
@@ -284,18 +281,18 @@ class FSGameSystemContext(object):
             self._plugins = PluginsContext(self)
         return self._plugins
 
-    #@property
-    #def variant(self):
-    #    if self._variant is None:
-    #        self._variant = VariantContext(self)
-    #    return self._variant
+    # @property
+    # def variant(self):
+    #     if self._variant is None:
+    #         self._variant = VariantContext(self)
+    #     return self._variant
 
     @property
     def signal(self):
         if self._signal is None:
             from .SignalContext import SignalContext
             self._signal = SignalContext(self)
-            #self._signal = Signal()
+            # self._signal = Signal()
         return self._signal
 
     @property
@@ -327,6 +324,52 @@ class FSGameSystemContext(object):
     def temp_file(self, suffix):
         return TemporaryFile(suffix)
 
+    def find_preferred_game_variant(self, game_uuid):
+        from .Database import Database
+        database = Database.instance()
+        variants = database.find_game_variants_new(game_uuid=game_uuid)
+        print(variants)
+        ordered_list = []
+        for variant in variants:
+            variant["like_rating"], variant["work_rating"] = \
+                database.get_ratings_for_game(variant["uuid"])
+            variant["personal_rating"], ignored = \
+                database.get_ratings_for_game(variant["uuid"])
+            variant_uuid = variant["uuid"]
+            variant_name = variant["name"]
+            variant_name = variant_name.replace("\n", " (")
+            variant_name = variant_name.replace(" \u00b7 ", ", ")
+            variant_name += ")"
+            ordered_list.append(
+                ((1 - bool(variant["have"]),
+                  1000 - variant["personal_rating"],
+                  1000 - variant["like_rating"]),
+                 (variant_uuid, variant_name)))
+        ordered_list.sort()
+        print("ordered variant list:")
+        for variant in ordered_list:
+            print("-", variant[1][1])
+        # item.configurations = [x[1] for x in ordered_list]
+        return ordered_list[0][1][0]
+
+    def load_game_variant(self, variant_uuid):
+        # game_database = fsgs.get_game_database()
+        # values = game_database.get_game_values_for_uuid(variant_uuid)
+        values = self.game.set_from_variant_uuid(variant_uuid)
+        if not values:
+            return False
+
+        # print("")
+        # for key in sorted(values.keys()):
+        #     print(" * {0} = {1}".format(key, values[key]))
+        # print("")
+
+        from fsgs.platform import PlatformHandler
+        platform_handler = PlatformHandler.create(self.game.platform.id)
+        loader = platform_handler.get_loader(self)
+        self.config.load(loader.load_values(values))
+        return True
+
 
 class TemporaryDirectory(object):
 
@@ -348,7 +391,7 @@ class TemporaryDirectory(object):
 class TemporaryFile(object):
 
     def __init__(self, suffix):
-        #self.path = tempfile.mkstemp(suffix=suffix)
+        # self.path = tempfile.mkstemp(suffix=suffix)
         self.dir_path = tempfile.mkdtemp(suffix="-fsgs-" + suffix)
         self.path = os.path.join(self.dir_path, suffix)
 
@@ -383,6 +426,8 @@ class GameContext(object):
     def set_from_variant_uuid(self, variant_uuid):
         game_database = self.fsgs.get_game_database()
         values = game_database.get_game_values_for_uuid(variant_uuid)
+        if not values.get("_type", "") == "2":
+            return {}
         print("")
         for key in sorted(values.keys()):
             print(" * {0} = {1}".format(key, values[key]))
@@ -424,15 +469,15 @@ class GamePlatform(object):
     def name(self):
         from .platform import PlatformHandler
         return PlatformHandler.get_platform_name(self._id)
-        #if self._id == "atari-7800":
-        #    return "Atari 7800"
-        #if self._id == "amiga":
-        #    return "Amiga"
-        #if self._id == "cdtv":
-        #    return "CDTV"
-        #if self._id == "cd32":
-        #    return "CD32"
-        #raise Exception("Unrecognized platform ({0})".format(self._id))
+        # if self._id == "atari-7800":
+        #     return "Atari 7800"
+        # if self._id == "amiga":
+        #     return "Amiga"
+        # if self._id == "cdtv":
+        #     return "CDTV"
+        # if self._id == "cd32":
+        #     return "CD32"
+        # raise Exception("Unrecognized platform ({0})".format(self._id))
 
 
 class VariantContext(object):

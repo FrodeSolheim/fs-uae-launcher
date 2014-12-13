@@ -11,13 +11,15 @@ import subprocess
 import six
 from fsbc.configparser import ConfigParser, NoOptionError, NoSectionError
 from fsbc.system import windows, macosx, linux
+from fsbc.user import get_data_dir
 
 
 if windows:
     #noinspection PyUnresolvedReferences
-    from win32com.shell import shell, shellcon
+    #from win32com.shell import shell, shellcon
     #noinspection PyUnresolvedReferences
-    import win32api
+    #import win32api
+    pass
 else:
     import getpass
 
@@ -85,21 +87,6 @@ def get_app_id():
     #    return "fs-uae"
     #else:
     #    return "fs-game-center"
-
-
-@cache
-def get_data_dir():
-    if windows:
-        path = shell.SHGetFolderPath(0, shellcon.CSIDL_APPDATA, 0, 0)
-    elif macosx:
-        path = os.path.join(get_home_dir(), 'Library', 'Application Support')
-    else:
-        path = os.path.join(get_home_dir(), '.local', 'share')
-        path = os.environ.get('XDG_DATA_HOME', path)
-        path = unicode_path(path)
-    if not os.path.exists(path):
-        os.makedirs(path)
-    return path
 
 
 @memoize

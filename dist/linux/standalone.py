@@ -5,7 +5,8 @@ import shutil
 import subprocess
 
 
-steam_runtime = os.getenv("STEAM_RUNTIME", "")
+#steam_runtime = os.getenv("STEAM_RUNTIME", "")
+steam_runtime = os.getenv("STEAMOS", "")
 
 
 def fix_binary(path):
@@ -48,7 +49,8 @@ def fix_binary(path):
         library_source = library_locations[library]
         library_source = os.path.normpath(library_source)
         print(library, library_source)
-        if steam_runtime and library_source.startswith(steam_runtime):
+        #if steam_runtime and library_source.startswith(steam_runtime):
+        if steam_runtime and not library_source.startswith("/usr/local"):
             print("skipping steam runtime library")
             continue
         dst = os.path.join(os.path.dirname(path), library)

@@ -5,15 +5,32 @@ from __future__ import unicode_literals
 
 import os
 import six
+import ctypes
 import subprocess
 from fsbc.path import unicode_path
 from fsbc.system import windows, macosx
 from fsbc.util import memoize
+
 if windows:
     # noinspection PyUnresolvedReferences
-    from win32com.shell import shell, shellcon
+    #from win32com.shell import shell, shellcon
     # noinspection PyUnresolvedReferences
-    import win32api
+    #import win32api
+    from ctypes import windll, wintypes
+    _SHGetFolderPath = windll.shell32.SHGetFolderPathW
+    _SHGetFolderPath.argtypes = [wintypes.HWND,
+                                ctypes.c_int,
+                                wintypes.HANDLE,
+                                wintypes.DWORD, wintypes.LPCWSTR]
+
+    def _err_unless_zero(result):
+        if result == 0:
+            return result
+        else:
+            raise WinPathsException(
+                "Failed to retrieve windows path: %s" % result)
+
+    _SHGetFolderPath.restype = _err_unless_zero
 else:
     import getpass
 
@@ -46,10 +63,22 @@ def xdg_user_dir(name):
     return path
 
 
+class WinPathsException(Exception):
+    pass
+
+
+# _get_path_buf from winpaths.py
+def _get_path_buf(csidl):
+    path_buf = ctypes.create_unicode_buffer(wintypes.MAX_PATH)
+    result = _SHGetFolderPath(0, csidl, 0, 0, path_buf)
+    return path_buf.value
+
+
 @memoize
 def get_desktop_dir(allow_create=True):
     if windows:
-        path = shell.SHGetFolderPath(0, shellcon.CSIDL_DESKTOP, 0, 0)
+        CSIDL_DESKTOP = 0
+        path = _get_path_buf(CSIDL_DESKTOP)
     else:
         path = xdg_user_dir("DESKTOP")
         if not path:
@@ -63,7 +92,8 @@ def get_desktop_dir(allow_create=True):
 @memoize
 def get_documents_dir(create=False):
     if windows:
-        path = shell.SHGetFolderPath(0, shellcon.CSIDL_PERSONAL, 0, 0)
+        CSIDL_PERSONAL = 5
+        path = _get_path_buf(CSIDL_PERSONAL)
     elif macosx:
         path = os.path.join(get_home_dir(), 'Documents')
     else:
@@ -77,9 +107,21 @@ def get_documents_dir(create=False):
 
 
 @memoize
+def get_common_documents_dir():
+    if windows:
+        CSIDL_COMMON_DOCUMENTS = 46
+        path = _get_path_buf(CSIDL_COMMON_DOCUMENTS)
+    else:
+        raise NotImplementedError("Only for windows")
+    path = unicode_path(path)
+    return path
+
+
+@memoize
 def get_pictures_dir(allow_create=True):
     if windows:
-        path = shell.SHGetFolderPath(0, shellcon.CSIDL_MYPICTURES, 0, 0)
+        CSIDL_MYPICTURES = 39
+        path = _get_path_buf(CSIDL_MYPICTURES)
     else:
         path = xdg_user_dir("PICTURES")
         if not path:
@@ -93,6 +135,26 @@ def get_pictures_dir(allow_create=True):
 @memoize
 def get_home_dir():
     if windows:
-        path = shell.SHGetFolderPath(0, shellcon.CSIDL_PROFILE, 0, 0)
-        return path
-    return unicode_path(os.path.expanduser("~"))
+        CSIDL_PROFILE = 40
+        path = _get_path_buf(CSIDL_PROFILE)
+    else:
+        path = os.path.expanduser("~")
+    path = unicode_path(path)
+    return path
+
+
+@memoize
+def get_data_dir(allow_create=True):
+    if windows:
+        CSIDL_APPDATA = 26
+        path = _get_path_buf(CSIDL_APPDATA)
+    elif macosx:
+        path = os.path.join(get_home_dir(), "Library", "Application Support")
+    else:
+        path = os.path.join(get_home_dir(), ".local", "share")
+        path = os.environ.get("XDG_DATA_HOME", path)
+    path = unicode_path(path)
+    if allow_create and not os.path.exists(path):
+        os.makedirs(path)
+    return path
+

@@ -78,8 +78,9 @@ def setup_logging(log_name):
 
     if sys.platform == "win32" and not "FS_FORCE_STDOUT" in os.environ:
         # noinspection PyUnresolvedReferences
-        import win32console
-        if hasattr(sys, "frozen") or win32console.GetConsoleWindow() == 0:
+        #import win32console
+        if hasattr(sys, "frozen"):
+            # or win32console.GetConsoleWindow() == 0:
             sys.stdout = NullOutput()
             sys.stderr = NullOutput()
 

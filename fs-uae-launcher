@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
 
 import sys
 
@@ -24,7 +20,7 @@ series = "devel"
 #         Gdk = None
 
 for arg in sys.argv:
-    #if not isinstance(arg, unicode):
+    # if not isinstance(arg, unicode):
     if isinstance(arg, bytes):
         arg = arg.decode(sys.getfilesystemencoding())
     if arg.startswith("--") and "=" in arg:
@@ -101,11 +97,11 @@ else:
         task_bar_window.setCentralWidget(task_bar_widget)
         task_bar_window.show()
 
-        #desktop_window = RealDesktopWindow()
-        #shell_widget = ShellWidget(desktop_window, window_handler)
-        #desktop_window.set_shell_widget(shell_widget)
+        # desktop_window = RealDesktopWindow()
+        # shell_widget = ShellWidget(desktop_window, window_handler)
+        # desktop_window.set_shell_widget(shell_widget)
 
-        #desktop_window.show()
+        # desktop_window.show()
         application.run()
 
         sys.exit(0)
@@ -115,8 +111,8 @@ else:
             from fs_uae_workspace.shell import shell_open
             shell_open(sys.argv[-1])
 
-    application.start()
-    application.run()
+    if application.start():
+        application.run()
     application.save_settings()
 
     from fs_uae_launcher.netplay.IRC import IRC

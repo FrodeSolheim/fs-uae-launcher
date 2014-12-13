@@ -6,6 +6,8 @@ from __future__ import unicode_literals
 import os
 import sys
 import six
+import unicodedata
+from fsbc.system import macosx
 from fsbc.user import get_home_dir
 from fsbc.util import memoize
 
@@ -132,18 +134,31 @@ class Paths(object):
         combined = combined.upper()
         k = 1
         for part in parts:
+            part_compare = part
+            part_compare = part_compare.lower()
+            if macosx:
+                part_compare = unicodedata.normalize("NFC", part_compare)
             #print("part is", part)
             if os.path.isdir(combined):
                 #print("checking case of", combined+ "/" + part)
                 for name in os.listdir(combined):
-                    if name.lower() == part.lower():
-                        #print("found case =", name)
+                    name_compare = name
+                    name_compare = name_compare.lower()
+                    if macosx:
+                        name_compare = unicodedata.normalize(
+                            "NFC", name_compare)
+                    if name_compare == part_compare:
+                        print("found case =", name)
                         combined += "/" + name
                         result[k] = name
                         break
                 else:
                     raise Exception("could not find case for path " + path)
             k += 1
+
+        # FIXME: could be an idea to always normalize to NFC on OS X too,
+        # to make the database even more portable
+
         # normalizing slashes to forward slash to make the database more
         # portable
         result_path = os.path.join(*result).replace("\\", "/")

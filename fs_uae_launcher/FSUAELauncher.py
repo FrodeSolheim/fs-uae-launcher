@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import sys
 import shutil
@@ -17,6 +12,8 @@ from fsbc.Application import app
 from fsbc.configparser import ConfigParser, NoSectionError
 from fsbc.system import windows, macosx
 from fsbc.task import Task
+import fsbc.user
+from fsbc.util import unused, is_uuid
 from fsgs.application import ApplicationMixin
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.platform import PlatformHandler
@@ -34,7 +31,7 @@ from fsgs.amiga.ROMManager import ROMManager
 from .Config import Config
 from .ConfigurationScanner import ConfigurationScanner
 from fsgs.FSGSDirectories import FSGSDirectories
-from .I18N import _, gettext, initialize_locale
+from .I18N import gettext, initialize_locale
 from .Settings import Settings
 from .UpdateManager import UpdateManager
 
@@ -51,14 +48,14 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 self.qapplication.setStyle(QStyleFactory.create("Fusion"))
             if "--dark-theme" in sys.argv:
                 dark_p = QPalette()
-                dark_p.setColor(QPalette.Window, QColor(53,53,53))
+                dark_p.setColor(QPalette.Window, QColor(53, 53, 53))
                 dark_p.setColor(QPalette.WindowText, Qt.white)
-                dark_p.setColor(QPalette.Base, QColor(25,25,25))
-                dark_p.setColor(QPalette.AlternateBase, QColor(53,53,53))
+                dark_p.setColor(QPalette.Base, QColor(25, 25, 25))
+                dark_p.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
                 dark_p.setColor(QPalette.ToolTipBase, Qt.white)
                 dark_p.setColor(QPalette.ToolTipText, Qt.white)
                 dark_p.setColor(QPalette.Text, Qt.white)
-                dark_p.setColor(QPalette.Button, QColor(53,53,53))
+                dark_p.setColor(QPalette.Button, QColor(53, 53, 53))
                 dark_p.setColor(QPalette.ButtonText, Qt.white)
                 dark_p.setColor(QPalette.BrightText, Qt.red)
                 dark_p.setColor(QPalette.Link, QColor(42, 130, 218))
@@ -84,7 +81,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         path = os.path.join(launcher_dir, "Game Database.sqlite")
         return path
 
-    #noinspection PyMethodMayBeStatic
+    # noinspection PyMethodMayBeStatic
     def on_idle(self):
         fsgs.signal.process()
 
@@ -103,13 +100,13 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         self.config_startup_scan()
         self.kickstart_startup_scan()
 
-        #sys.exit(1)
+        # sys.exit(1)
 
         # FIXME: should now sanitize check some options -for instance,
         # - check if configured joysticks are still connected
         # - check if paths still exists, etc
 
-        #Config.update_kickstart()
+        # Config.update_kickstart()
 
         icon = None
 
@@ -148,17 +145,62 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             finally:
                 sys.dont_write_bytecode = dont_write_bytecode
 
-        window = MainWindow(icon=icon)
-        MainWindow.instance = window
-        window.show()
+        config_path = None
+        config_uuid = None
+        if sys.argv[-1].endswith(".fs-uae"):
+            config_path = sys.argv[-1]
+        elif is_uuid(sys.argv[-1]):
+            config_uuid = sys.argv[-1].lower()
 
-        if "--workspace" in sys.argv:
-            window.set_position((300, 200))
+        if config_path:
+            print("config path given:", config_path)
+            if os.path.exists(config_path):
+                print("config path exists")
+                Config.load_file(config_path)
+                Settings.set("parent_uuid", "")
+                self.start_game()
+            else:
+                print("config path does not exist")
+            return False
+        elif config_uuid:
+            print("config uuid given:", config_uuid)
+            variant_uuid = config_uuid
+            # values = fsgs.game.set_from_variant_uuid(variant_uuid)
+            if fsgs.load_game_variant(variant_uuid):
+                print("loaded variant")
+            else:
+                print("could not load variant, try to load game")
+                game_uuid = config_uuid
+                variant_uuid = fsgs.find_preferred_game_variant(game_uuid)
+                print("preferred variant:", variant_uuid)
+                fsgs.load_game_variant(variant_uuid)
 
-            from fs_uae_workspace.desktop import get_desktop_window
-            get_desktop_window()
+            # print("")
+            # for key in sorted(values.keys()):
+            #     print(" * {0} = {1}".format(key, values[key]))
+            # print("")
 
-        UpdateManager.run_update_check()
+            # platform_handler = PlatformHandler.create(fsgs.game.platform.id)
+            # loader = platform_handler.get_loader(fsgs)
+            # fsgs.config.load(loader.load_values(values))
+
+            # Config.load_
+            # Settings.set("parent_uuid", "")
+            self.start_game()
+            return False
+        else:
+            window = MainWindow(icon=icon)
+            MainWindow.instance = window
+            window.show()
+
+            if "--workspace" in sys.argv:
+                window.set_position((300, 200))
+
+                from fs_uae_workspace.desktop import get_desktop_window
+                get_desktop_window()
+
+            UpdateManager.run_update_check()
+            return True
 
     @staticmethod
     def load_plugins(plugins_dir):
@@ -173,8 +215,8 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             print(name)
             import imp
             try:
-                #with open(path, "r") as f:
-                #    plugin = imp.load_source(name, name, f)
+                # with open(path, "r") as f:
+                #     plugin = imp.load_source(name, name, f)
                 plugin = imp.load_source(name, path)
                 print("name:", getattr(plugin, "name", ""))
                 print("version:", getattr(plugin, "version", ""))
@@ -214,36 +256,36 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             print("loaded", key, value)
             fsgs.config.values[key] = value
 
-        #settings = {}
-        #try:
-        #    keys = cp.options("settings")
-        #except configparser.NoSectionError:
-        #    keys = []
-        #for key in keys:
-        #    settings[key] = fs.from_utf8_str(cp.get("settings", key))
-        #for key, value in six.iteritems(settings):
-        #    #if key in Settings.settings:
-        #    #    # this setting is already initialized, possibly via
-        #    #    # command line arguments
-        #    #    pass
-        #    #else:
+        # settings = {}
+        # try:
+        #     keys = cp.options("settings")
+        # except configparser.NoSectionError:
+        #     keys = []
+        # for key in keys:
+        #     settings[key] = fs.from_utf8_str(cp.get("settings", key))
+        # for key, value in six.iteritems(settings):
+        #     #if key in Settings.settings:
+        #     #    # this setting is already initialized, possibly via
+        #     #    # command line arguments
+        #     #    pass
+        #     #else:
         #
-        #    #Settings.settings[key] = value
+        #     #Settings.settings[key] = value
         #
-        #    # FIXME: setting values directly in settings dict
-        #    app.settings.values[key] = value
+        #     # FIXME: setting values directly in settings dict
+        #     app.settings.values[key] = value
         #
-        ##Settings.set("config_search", "")
+        # #Settings.set("config_search", "")
 
     def parse_arguments(self):
         pass
-        #for arg in sys.argv:
-        #    if arg.startswith("--"):
-        #        if "=" in arg:
-        #            key, value = arg[2:].split("=", 1)
-        #            key = key.replace("-", "_")
-        #            if key == "base_dir":
-        #                Settings.set("base_dir", value)
+        # for arg in sys.argv:
+        #     if arg.startswith("--"):
+        #         if "=" in arg:
+        #             key, value = arg[2:].split("=", 1)
+        #             key = key.replace("-", "_")
+        #             if key == "base_dir":
+        #                 Settings.set("base_dir", value)
 
     def save_settings(self):
         path = app.get_settings_path()
@@ -258,11 +300,11 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         cp.add_section("settings")
 
         for key, value in six.iteritems(app.settings.values):
-            #lines.append("{0} = {1}".format(key, value))
+            # lines.append("{0} = {1}".format(key, value))
             cp.set("settings", str(key), fs.to_utf8_str(value))
 
         cp.add_section("config")
-        #lines.append("[config]")
+        # lines.append("[config]")
 
         for key, value in six.iteritems(fsgs.config.values):
             if key.startswith("__"):
@@ -312,7 +354,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                     # already exists in database
                     continue
                 name, ext = os.path.splitext(file_name)
-                #search = ConfigurationScanner.create_configuration_search(
+                # search = ConfigurationScanner.create_configuration_search(
                 # name)
                 scanner = ConfigurationScanner()
                 print("[startup] adding config", path)
@@ -382,9 +424,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
     def amiga_forever_kickstart_scan(self):
         if windows:
             print("amiga forever kickstart scan")
-            # noinspection PyUnresolvedReferences
-            from win32com.shell import shell, shellcon
-            path = shell.SHGetFolderPath(0, shellcon.CSIDL_COMMON_DOCUMENTS, 0, 0)
+            path = fsbc.user.get_common_documents_dir()
             path = os.path.join(path, "Amiga Files", "Shared", "rom")
             self.scan_dir_for_kickstarts(path)
 
@@ -397,9 +437,6 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                     continue
                 path = Paths.join(dir_path, file_name)
                 if file_database.find_file(path=path):
-                #if path in local_roms:
-                #    local_roms[path] = None
-                #    # already exists in database
                     continue
                 print("[startup] adding kickstart", path)
                 ROMManager.add_rom_to_database(path, file_database)
@@ -430,13 +467,13 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
             elif Config.get("download_page"):
                 from .ui.MainWindow import MainWindow
-                #fsui.show_error(_("This game must be downloaded first."))
+                # fsui.show_error(_("This game must be downloaded first."))
                 DownloadGameWindow(MainWindow.instance, fsgs).show()
                 return
             else:
                 fsui.show_error(
-                    _("This game variant cannot be started "
-                      "because you don't have all required files."))
+                    gettext("This game variant cannot be started "
+                            "because you don't have all required files."))
                 return
 
         platform_id = Config.get("platform")
@@ -471,16 +508,17 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
         if not Config.get("x_kickstart_file"):  # or not \
             #  os.path.exists(Config.get("kickstart_file")):
-            fsui.show_error(_("No kickstart found for this model. "
-                              "Use the 'Import Kickstarts' function from "
-                              "the menu."))
+            fsui.show_error(
+                gettext("No kickstart found for this model. Use the 'Import "
+                        "Kickstarts' function from the menu."))
             return
         cs = Amiga.get_model_config(Config.get("amiga_model"))["ext_roms"]
         if len(cs) > 0:
             # extended kickstart ROM is needed
             if not Config.get("x_kickstart_ext_file"):
-                fsui.show_error(_("No extended kickstart found for this "
-                                  "model. Try 'scan' function."))
+                fsui.show_error(
+                    gettext("No extended kickstart found for this model. "
+                            "Try 'scan' function."))
                 return
 
         config = Config.copy()
@@ -506,20 +544,21 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         from .ui.LaunchDialog import LaunchDialog
         from .ui.MainWindow import MainWindow
         task = AmigaLaunchTask(launch_handler)
-        #dialog = LaunchDialog(MainWindow.instance, launch_handler)
+        # dialog = LaunchDialog(MainWindow.instance, launch_handler)
         dialog = LaunchDialog(
             MainWindow.instance, gettext("Launching FS-UAE"), task)
 
         def on_show_license_information(license_text):
+            unused(license_text)
             # FIXME: don't depend on wx here
             # noinspection PyUnresolvedReferences
-            #import wx
-            #license_dialog = wx.MessageDialog(
-            #    dialog, license_text, _("Terms of Use"),
-            #    wx.OK | wx.CANCEL | wx.CENTRE)
-            #license_dialog.CenterOnParent()
-            #result = license_dialog.ShowModal()
-            #return result == wx.ID_OK
+            # import wx
+            # license_dialog = wx.MessageDialog(
+            #     dialog, license_text, _("Terms of Use"),
+            #     wx.OK | wx.CANCEL | wx.CENTRE)
+            # license_dialog.CenterOnParent()
+            # result = license_dialog.ShowModal()
+            # return result == wx.ID_OK
             # FIXME
             return True
         fsgs.file.on_show_license_information = on_show_license_information

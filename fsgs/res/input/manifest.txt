@@ -63,6 +63,7 @@ microsoft/x_box_360_pad.ini
 microsoft/xbox_360_for_windows_controller.ini
 microsoft/xbox_360_wireless_receiver.ini
 microsoft/xbox_360_wireless_receiver_for_windows_controller.ini
+microsoft_x_box_one_pad_11_6_1_0_linux.conf
 mosic/a_speed_link_competition_pro.ini
 mosic/speed_link_competition_pro.ini
 mosic/usb_2a4k_gamepad.ini
@@ -78,12 +79,14 @@ saitek/p880.ini
 sony/computer_entertainment_wireless_inputdevice.ini
 sony/playstation_r_3_controller.ini
 sony/playstation_r_3_inputdevice.ini
+sony_computer_entertainment_wireless_controller_14_10_1_0_linux.conf
 speed_link_competition_pro_4_2_0_0_windows.conf
 speedlink_strike_2_gamepad_12_5_1_0_windows.conf
 thrustmaster/2_in_1_dt.ini
 thrustmaster/t_mini_wireless.ini
 universal_gamepad.ini
 unknown.ini
+wireless_controller_14_6_1_0_macosx.conf
 wisegroup_ltd/mp_8866_dual_usb_joypad.ini
 wisegroup_ltd/tigergame_ps_ps2_game_controller_adapter.ini
 xgaming/x_arcade.ini

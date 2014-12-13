@@ -9,6 +9,16 @@ import functools
 import six
 
 
+def unused(_):
+    pass
+
+
+def is_uuid(value):
+    return re.match(
+        "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+        value.lower())
+
+
 def memoize(func):
     memoize_dict = {}
 

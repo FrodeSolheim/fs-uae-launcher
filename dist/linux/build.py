@@ -13,7 +13,8 @@ elif "x86-64" in exe_info:
 else:
     raise Exception("unrecognized arch")
 
-if os.environ.get("STEAM_RUNTIME", ""):
+#if os.environ.get("STEAM_RUNTIME", ""):
+if os.environ.get("STEAMOS", ""):
     os_name = "steamos"
     if arch == "i386":
         # steam runtime sdk compiles with -mtune=generic -march=i686
@@ -23,9 +24,11 @@ else:
 
 package_name = "fs-uae-launcher"
 package_version = sys.argv[1]
-package_dir = "{0}-{1}-{2}-{3}".format(
-    package_name, package_version, os_name, arch)
 dbg_package_dir = "{0}-dbg-{1}-{2}-{3}".format(
+    package_name, package_version, os_name, arch)
+package_dir = "../{2}/{0}-{1}-{2}-{3}".format(
+    package_name, package_version, os_name, arch)
+full_package_name = "{0}-{1}-{2}-{3}".format(
     package_name, package_version, os_name, arch)
 
 
@@ -71,7 +74,7 @@ s("rm -Rf {package_dir}")
 # s("make -C ..")
 #s("rm -Rf ../build ../dist")
 s("cd ../.. && python3 setup.py build_exe")
-s("mv ../../build/exe.linux-*-3.3 {package_dir}")
+s("mv ../../build/exe.linux-*-3.4 {package_dir}")
 
 # we want to perform our own standalone/library management, so we remove the
 # libraries added by cx_Freeze
@@ -91,7 +94,7 @@ s("mv {package_dir}/fs-uae-launcher {package_dir}/fs-uae-launcher.bin")
 wrap("fs-uae-launcher", "fs-uae-launcher.bin")
 wrap("fs-uae-arcade", "fs-uae-launcher.bin", ["--fs-uae-arcade", "$@"])
 
-s("cd {package_dir} && tar Jcfv ../../../{package_dir}.tar.xz *")
+s("cd {package_dir} && tar Jcfv ../../../{full_package_name}.tar.xz *")
 
 #s("rm -Rf {dbg_package_dir}")
 #s("mkdir {dbg_package_dir}")

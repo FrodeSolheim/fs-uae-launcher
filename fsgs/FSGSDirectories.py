@@ -6,6 +6,7 @@ import fsbc.fs as fs
 from fsbc.Paths import Paths
 from fsbc.path import unicode_path
 from fsbc.user import get_home_dir, get_documents_dir
+from fsbc.user import get_common_documents_dir
 from fsbc.util import memoize
 from fsbc.system import windows
 
@@ -115,11 +116,7 @@ class FSGSDirectories(object):
         paths.append(path)
 
         if windows:
-            # noinspection PyUnresolvedReferences
-            from win32com.shell import shell, shellcon
-            path = shell.SHGetFolderPath(
-                0, shellcon.CSIDL_COMMON_DOCUMENTS, 0, 0)
-            path = unicode_path(path)
+            path = get_common_documents_dir()
             path = os.path.join(path, "Amiga Files")
             if os.path.exists(path):
                 paths.append(path)

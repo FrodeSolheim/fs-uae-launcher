@@ -59,6 +59,12 @@ else
 	six_dir := "."
 endif
 
+ifeq ($(wildcard typing),)
+	typing_dir := "../python"
+else
+	typing_dir := "."
+endif
+
 all: mo
 
 share/locale/%/LC_MESSAGES/fs-uae-launcher.mo: po/%.po
@@ -106,6 +112,7 @@ distdir:
 	cp -a $(game_center_dir)/game_center $(dist_dir)/
 	cp -a $(lhafile_dir)/lhafile $(dist_dir)/
 	cp -a $(six_dir)/six $(dist_dir)/
+	cp -a $(typing_dir)/typing $(dist_dir)/
 	cp -a share $(dist_dir)/
 	mkdir $(dist_dir)/po/
 
@@ -120,12 +127,6 @@ distdir:
 	cp README $(dist_dir)/
 	cp SERIES $(dist_dir)/
 	cp VERSION $(dist_dir)/
-	mkdir -p $(dist_dir)/build/linux-dist
-	cp build/linux-dist/Makefile $(dist_dir)/build/linux-dist
-	cp build/linux-dist/build.py $(dist_dir)/build/linux-dist
-	cp build/linux-dist/standalone.py $(dist_dir)/build/linux-dist
-	mkdir -p $(dist_dir)/build/steamos-dist
-	cp build/steamos-dist/Makefile $(dist_dir)/build/steamos-dist
 	mkdir -p $(dist_dir)/debian
 	cp debian/changelog $(dist_dir)/debian
 	cp debian/compat $(dist_dir)/debian
@@ -135,6 +136,17 @@ distdir:
 	cp debian/rules $(dist_dir)/debian
 	mkdir -p $(dist_dir)/debian/source
 	cp debian/source/format $(dist_dir)/debian/source
+	mkdir -p $(dist_dir)/dist/linux
+	cp dist/linux/Makefile $(dist_dir)/dist/linux
+	cp dist/linux/build.py $(dist_dir)/dist/linux
+	cp dist/linux/standalone.py $(dist_dir)/dist/linux
+	mkdir -p $(dist_dir)/dist/steamos
+	cp dist/steamos/Makefile $(dist_dir)/dist/steamos
+	mkdir -p $(dist_dir)/dist/windows
+	cp dist/windows/Makefile $(dist_dir)/dist/windows
+	cp dist/windows/fs-uae-launcher.iss $(dist_dir)/dist/windows
+	cp dist/windows/iscc.py $(dist_dir)/dist/windows
+	cp dist/windows/sign.py $(dist_dir)/dist/windows
 	cp extra_imports.py $(dist_dir)/
 	cp fs-uae-launcher $(dist_dir)/
 	cp fs-uae-launcher.spec $(dist_dir)/
@@ -164,10 +176,6 @@ distdir:
 	cp po/tr.po $(dist_dir)/po
 	cp setup.py $(dist_dir)/
 	cp update-version.py $(dist_dir)/
-	mkdir -p $(dist_dir)/windows
-	cp windows/Makefile $(dist_dir)/windows
-	cp windows/fs-uae-launcher.iss $(dist_dir)/windows
-	cp windows/replace-icon.py $(dist_dir)/windows
 	cd $(dist_dir) && python update-version.py setup.py --strict
 	cd $(dist_dir) && python update-version.py debian/changelog
 	cd $(dist_dir) && python update-version.py macosx/Info.plist --strict
@@ -179,7 +187,7 @@ dist: distdir
 	cd "$(build_dir)" && tar zcfv $(dist_name).tar.gz $(dist_name)
 
 windows-dist: distdir
-	cd $(dist_dir)/windows && make
+	cd $(dist_dir)/dist/windows && make
 	mv $(dist_dir)/fs-uae-launcher_*windows* .
 	rm -Rf $(dist_dir)
 

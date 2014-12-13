@@ -16,7 +16,7 @@ from fsbc.Application import Application
 from ..Config import Config
 from ..Signal import Signal
 from ..Settings import Settings
-from ..I18N import _
+from ..I18N import _, gettext
 from .AboutDialog import AboutDialog
 from .Book import Book
 from .CDPanel import CDPanel
@@ -76,8 +76,8 @@ class MainWindow(WindowWithTabs):
                 right_width += extra_screen_width
                 pass
 
-        #if Skin.EXTRA_GROUP_MARGIN:
-        #    self.main_layout.add_spacer(Skin.EXTRA_GROUP_MARGIN)
+        # if Skin.EXTRA_GROUP_MARGIN:
+        #     self.main_layout.add_spacer(Skin.EXTRA_GROUP_MARGIN)
 
         self.create_column(2, min_width=right_width, expand=True)
 
@@ -94,11 +94,11 @@ class MainWindow(WindowWithTabs):
         self.realize_tabs()
         self.menu = self.create_menu()
         if fsui.System.macosx and fsui.toolkit == 'wx':
-            #import wx
-            #self.tools_menu = self.create_menu()
-            #menu_bar = wx.MenuBar()
-            #menu_bar.Append(self.tools_menu._menu, _("Tools"))
-            #self.SetMenuBar(menu_bar)
+            # import wx
+            # self.tools_menu = self.create_menu()
+            # menu_bar = wx.MenuBar()
+            # menu_bar.Append(self.tools_menu._menu, _("Tools"))
+            # self.SetMenuBar(menu_bar)
             pass
 
         self.status_bar = StatusBar(self)
@@ -187,7 +187,7 @@ class MainWindow(WindowWithTabs):
                     None, icon, _("Main Menu"),
                     menu_function=self.open_main_menu, left_padding=5)
                 default_tab_index_offset = 1
-                #self.add_tab_spacer(60)
+                # self.add_tab_spacer(60)
             else:
                 self.add_tab_spacer(10)
 
@@ -205,29 +205,31 @@ class MainWindow(WindowWithTabs):
                           _("Hardware"), _("Hardware Options"))
 
             if USE_MAIN_MENU:
-                #self.add_tab_spacer(20)
+                # self.add_tab_spacer(20)
                 if Skin.use_unified_toolbar():
                     self.add_tab_spacer(64)
                 else:
                     self.add_tab_spacer(80)
             else:
                 icon = fsui.Image("fs_uae_launcher:res/tab_custom.png")
-                self.add_tab_button(self.on_custom_button, icon, _("Custom"),
-                        _("Edit Custom Options"))
+                self.add_tab_button(
+                    self.on_custom_button, icon, gettext("Custom"),
+                    gettext("Edit Custom Options"))
                 self.add_tab_spacer(60)
 
         elif column == 2:
             self.new_tab_group()
             page_index = 0
             self.add_page(column, ConfigurationsPanel, "tab_configs",
-                    _("Configurations"), _("Configuration Browser"))
+                          gettext("Configurations"),
+                          gettext("Configuration Browser"))
             if Settings.get("netplay_feature") == "1":
                 page_index += 1
                 self.add_page(column, NetplayPanel, "tab_netplay",
-                        _("Net Play"))
+                              gettext("Net Play"))
 
             if Skin.use_unified_toolbar():
-                #self.add_tab_separator()
+                # self.add_tab_separator()
                 self.add_tab_spacer(64)
                 pass
             else:
@@ -259,14 +261,14 @@ class MainWindow(WindowWithTabs):
 
     def create_menu(self):
         menu = fsui.Menu()
-        text = _("Scan for Files")
+        # text = _("Scan for Files")
         menu.add_item(_("Scan Files and Configurations"), self.on_scan_button)
         # if Settings.get("database_feature") == "1":
         # if True:
         #     menu.add_item(_("Refresh Game Database"),
         #                   self.on_game_database_refresh)
         menu.add_separator()
-        #menu.add_item(_("Custom Options & Settings"),
+        # menu.add_item(_("Custom Options & Settings"),
         menu.add_item(_("Custom Configuration"), self.on_custom_button)
         menu.add_separator()
         menu.add_item(_("ADF Creator"), self.on_adf_creator)
@@ -275,7 +277,7 @@ class MainWindow(WindowWithTabs):
         menu.add_item(_("Import Kickstarts"), self.on_import_kickstarts)
         menu.add_item(_("Amiga Forever Import"), self.on_import_kickstarts)
         menu.add_separator()
-        #menu.add_preferences_item(_("Preferences"), self.on_settings_button)
+        # menu.add_preferences_item(_("Preferences"), self.on_settings_button)
         menu.add_preferences_item(_("Settings"), self.on_settings_button)
         menu.add_separator()
         menu.add_about_item(
