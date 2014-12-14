@@ -5,8 +5,8 @@
 *.egg-info
 Lib
 debian/fs-uae-launcher
-/fs-uae-launcher-*
-/fs-uae-launcher_*
+fs-uae-launcher-*
+fs-uae-launcher_*
 /.pybuild/
 /Makefile
 /setup.py

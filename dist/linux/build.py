@@ -24,11 +24,11 @@ else:
 
 package_name = "fs-uae-launcher"
 package_version = sys.argv[1]
-dbg_package_dir = "{0}-dbg-{1}-{2}-{3}".format(
+dbg_package_dir = "{0}-dbg_{1}_{2}_{3}".format(
     package_name, package_version, os_name, arch)
-package_dir = "../{2}/{0}-{1}-{2}-{3}".format(
+package_dir = "../{2}/{0}_{1}_{2}_{3}".format(
     package_name, package_version, os_name, arch)
-full_package_name = "{0}-{1}-{2}-{3}".format(
+full_package_name = "{0}_{1}_{2}_{3}".format(
     package_name, package_version, os_name, arch)
 
 
@@ -81,9 +81,11 @@ s("mv ../../build/exe.linux-*-3.4 {package_dir}")
 s("rm -f {package_dir}/*.so.*")
 s("rm -f {package_dir}/imageformats/*.so.*")
 
-s("python3 standalone.py {package_dir}/imageformats")
+s("./standalone.py {package_dir}/platforms")
+s("mv {package_dir}/platforms/*.so.* {package_dir}")
+s("./standalone.py {package_dir}/imageformats")
 s("mv {package_dir}/imageformats/*.so.* {package_dir}")
-s("python3 standalone.py {package_dir}")
+s("./standalone.py {package_dir}")
 s("strip {package_dir}/*.so.*")
 s("strip {package_dir}/*.so")
 s("strip {package_dir}/imageformats/*.so")

@@ -125,9 +125,11 @@ class FSUAE(object):
                 exe = os.path.join(
                     application.executable_dir(), "../" + executable + ".exe")
         elif macosx:
-            exe = os.path.join(
-                application.executable_dir(),
-                "../FS-UAE.app/Contents/MacOS/" + executable)
+            exe = os.path.join(application.executable_dir(), executable)
+            if not os.path.exists(exe):
+                exe = os.path.join(
+                    application.executable_dir(),
+                    "../FS-UAE.app/Contents/MacOS/" + executable)
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
