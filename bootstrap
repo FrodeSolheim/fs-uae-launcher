@@ -262,14 +262,14 @@ copy_files = [
     "dist/linux/build.py",
     "dist/linux/Makefile",
     "dist/linux/standalone.py",
+    "dist/macosx/Makefile",
+    "dist/macosx/fs-make-standalone-app.py",
+    "dist/macosx/Info.plist",
     "dist/steamos/Makefile",
     "dist/windows/iscc.py",
     "dist/windows/Makefile",
     "dist/windows/sign.py",
     "dist/windows/{0}.iss".format(project.tar_name),
-    "macosx/Makefile",
-    "macosx/fs-make-standalone-app.py",
-    "macosx/Info.plist",
 ]
 for locale in locales:
     copy_files.append("po/{0}.po".format(locale))
@@ -305,7 +305,7 @@ for copy_file in copy_files:
 write("""\
     cd $(dist_dir) && ./update-version setup.py --strict
     cd $(dist_dir) && ./update-version debian/changelog
-    cd $(dist_dir) && ./update-version macosx/Info.plist --strict
+    cd $(dist_dir) && ./update-version dist/macosx/Info.plist --strict
     cd $(dist_dir) && ./update-version {project} --update-series
     cd $(dist_dir) && ./update-version {project}.spec
 
@@ -326,7 +326,7 @@ windows-dist: distdir
     rm -Rf $(dist_dir)
 
 macosx-dist: distdir
-    cd $(dist_dir)/macosx && make
+    cd $(dist_dir)/dist/macosx && make
     mv $(dist_dir)/{project}_*macosx* .
     rm -Rf $(dist_dir)
 

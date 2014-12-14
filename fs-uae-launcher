@@ -9,7 +9,7 @@ elif "--fs-uae-arcade" in sys.argv:
 else:
     app = "fs-uae-launcher"
 
-version = "2.5.20dev"
+version = "2.5.21dev"
 series = "devel"
 
 # if "--fs-uae-workspace=real" in sys.argv:

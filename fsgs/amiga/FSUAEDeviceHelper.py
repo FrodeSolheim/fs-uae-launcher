@@ -1,12 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import subprocess
-from fsbc.system import windows, macosx
-from fsbc.Application import Application
 from .FSUAE import FSUAE
 
 try:
@@ -25,9 +18,9 @@ class FSUAEDeviceHelper(object):
         print("using fs-uae executable:", exe)
         args = [exe] + args
         print(args)
-
-        proc = subprocess.Popen(args, **kwargs)
-        return proc
+        process = subprocess.Popen(
+            args, stdin=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
+        return process
 
     @classmethod
     def find_executable(cls):
