@@ -6,7 +6,7 @@
 
 override_dh_auto_install:
 	python3 setup.py install --root=debian/fs-uae-launcher --install-layout=deb --install-lib=/usr/share/fs-uae-launcher --install-scripts=/usr/share/fs-uae-launcher
-	make install DESTDIR=$$(pwd)/debian/fs-uae-launcher prefix=/usr install
+	make DESTDIR=$$(pwd)/debian/fs-uae-launcher prefix=/usr install-data
 
 override_dh_auto_build:
 	make mo
