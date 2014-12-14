@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import os
-import project
+import config as project
 
 f = open("setup.py", "w", newline="\n")
 f.write("""\
@@ -14,7 +14,7 @@ else:
 
 """)
 
-with open("project.py", "r") as pf:
+with open("config.py", "r") as pf:
     f.write(pf.read())
 
 f.write("""
