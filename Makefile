@@ -6,61 +6,55 @@ dist_name = fs-uae-launcher-$(version)
 dist_dir := $(build_dir)/$(dist_name)
 
 ifeq ($(wildcard OpenGL),)
-	OpenGL_dir := "../python"
+	OpenGL_dir := "."
 else
 	OpenGL_dir := "."
 endif
 
 ifeq ($(wildcard fs_uae_launcher),)
-	fs_uae_launcher_dir := "../python"
+	fs_uae_launcher_dir := "."
 else
 	fs_uae_launcher_dir := "."
 endif
 
 ifeq ($(wildcard fs_uae_workspace),)
-	fs_uae_workspace_dir := "../python"
+	fs_uae_workspace_dir := "."
 else
 	fs_uae_workspace_dir := "."
 endif
 
 ifeq ($(wildcard fsbc),)
-	fsbc_dir := "../python"
+	fsbc_dir := "."
 else
 	fsbc_dir := "."
 endif
 
 ifeq ($(wildcard fsgs),)
-	fsgs_dir := "../python"
+	fsgs_dir := "."
 else
 	fsgs_dir := "."
 endif
 
 ifeq ($(wildcard fsui),)
-	fsui_dir := "../python"
+	fsui_dir := "."
 else
 	fsui_dir := "."
 endif
 
 ifeq ($(wildcard game_center),)
-	game_center_dir := "../python"
+	game_center_dir := "."
 else
 	game_center_dir := "."
 endif
 
-ifeq ($(wildcard lhafile),)
-	lhafile_dir := "../python-lhafile"
-else
-	lhafile_dir := "."
-endif
-
 ifeq ($(wildcard six),)
-	six_dir := "../python"
+	six_dir := "."
 else
 	six_dir := "."
 endif
 
 ifeq ($(wildcard typing),)
-	typing_dir := "../python"
+	typing_dir := "."
 else
 	typing_dir := "."
 endif
@@ -110,7 +104,6 @@ distdir:
 	cp -a $(fsgs_dir)/fsgs $(dist_dir)/
 	cp -a $(fsui_dir)/fsui $(dist_dir)/
 	cp -a $(game_center_dir)/game_center $(dist_dir)/
-	cp -a $(lhafile_dir)/lhafile $(dist_dir)/
 	cp -a $(six_dir)/six $(dist_dir)/
 	cp -a $(typing_dir)/typing $(dist_dir)/
 	cp -a share $(dist_dir)/
