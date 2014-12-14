@@ -962,7 +962,7 @@ def amiga_filename_to_host_filename(amiga_filename, ascii=False):
 
     return filename
 
-DEFAULT_WHDLOAD_VERSION = "17.2"
+DEFAULT_WHDLOAD_VERSION = "18.0"
 
 whdload_support_files = {
     "1ad1b55e7226bd5cd66def8370a69f19244da796": "Devs/Kickstarts/kick40068.A1200.RTB",
@@ -1020,6 +1020,9 @@ whdload_files = {
     },
     "17.2": {
         "d8f45f7808fb1ac356d88b8848660a6b96f04349": "C/WHDLoad",
+    },
+    "18.0": {
+        "6f778e28673e9f931f81212ab03d9617a41cee40": "C/WHDLoad",
     },
 }
 
