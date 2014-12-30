@@ -1,10 +1,4 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import json
-import six
 from collections import defaultdict
 from fsgs.ogd.client import OGDClient
 
@@ -68,7 +62,7 @@ class SimpleLoader:
 
     def load_values(self, key_values):
         # print(key_values)
-        values = defaultdict(six.text_type)
+        values = defaultdict(str)
         values.update(key_values)
 
         self.load_basic(values)

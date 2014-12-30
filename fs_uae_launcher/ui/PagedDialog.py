@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from fsui.qt import Signal
 
@@ -36,7 +31,7 @@ class PagedDialog(fsui.Dialog):
         self.page_container.layout = fsui.VerticalLayout()
         hor_layout.add(self.page_container, fill=True, expand=True)
 
-        #self.layout.add_spacer(20)
+        # self.layout.add_spacer(20)
 
         hor_layout = fsui.HorizontalLayout()
         layout.add(hor_layout, fill=True)
@@ -44,9 +39,9 @@ class PagedDialog(fsui.Dialog):
         self.page_titles = []
         self.pages = []
 
-        #self.add_page(_("Hardware"), HardwarePage)
-        #self.add_page(_("Hard Drives"), HardDrivesPage)
-        #elf.add_page(_("Custom Options"), CustomOptionsPage)
+        # self.add_page(_("Hardware"), HardwarePage)
+        # self.add_page(_("Hard Drives"), HardDrivesPage)
+        # elf.add_page(_("Custom Options"), CustomOptionsPage)
 
         self.current_page = None
         self.set_size((800, 640))
@@ -87,7 +82,7 @@ class PagedDialog(fsui.Dialog):
         self.page_container.layout.add(page, fill=True, expand=True)
         self.current_page = page
         page.show()
-        #print("calling self.layout.update")
+        # print("calling self.layout.update")
         self.page_container.layout.update()
         self.layout.update()
 

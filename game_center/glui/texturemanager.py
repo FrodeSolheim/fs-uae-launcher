@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import threading
 from game_center.glui.opengl import gl
 from game_center.glui.texture import Texture
@@ -43,7 +38,7 @@ class TextureManager(object):
             for ip in reversed(image_paths):
                 if ip in self.image_dict:
                     self.image_list.remove(ip)
-                    #self.image_list.insert(0, ip)
+                    # self.image_list.insert(0, ip)
                 else:
                     # texture = False means not loaded
                     # texture = None means failure loading
@@ -89,12 +84,12 @@ class TextureManager(object):
                     pixels, size = self.image_dict[ip]
                     if pixels is False:
                         # queued
-                        #self.texture_dict[ip] = Texture.default_item
+                        # self.texture_dict[ip] = Texture.default_item
                         continue
                     if pixels is None:
                         # could not load
-                        #self.texture_dict[ip] = Texture(0, size=(0, 0))
-                        #self.texture_dict[ip] = Texture.default_item
+                        # self.texture_dict[ip] = Texture(0, size=(0, 0))
+                        # self.texture_dict[ip] = Texture.default_item
                         self.texture_dict[ip] = Texture.default_item
                         continue
 

@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 from fsgs import fsgs
 from fsgs.ChecksumTool import ChecksumTool
@@ -10,7 +5,7 @@ from .ui.LauncherFilePicker import LauncherFilePicker
 from fsgs.amiga.Amiga import Amiga
 from fsgs.Archive import Archive
 from .Config import Config
-from .I18N import _
+from .I18N import gettext
 from fsbc.Paths import Paths
 from fsgs.FSGSDirectories import FSGSDirectories
 
@@ -25,10 +20,10 @@ class FloppyManager(object):
 
     @classmethod
     def eject(cls, drive):
-        #values = []
-        #values.append(("floppy_drive_{0}".format(drive), ""))
-        #values.append(("x_floppy_drive_{0}_sha1".format(drive), ""))
-        #Config.set_multiple(values)
+        # values = []
+        # values.append(("floppy_drive_{0}".format(drive), ""))
+        # values.append(("x_floppy_drive_{0}_sha1".format(drive), ""))
+        # Config.set_multiple(values)
         fsgs.amiga.eject_floppy(drive)
 
     @classmethod
@@ -42,8 +37,9 @@ class FloppyManager(object):
     @classmethod
     def multiselect(cls, parent=None):
         default_dir = FSGSDirectories.get_floppies_dir()
-        dialog = LauncherFilePicker(parent,_("Select Multiple Floppies"),
-                "floppy", multiple=True)
+        dialog = LauncherFilePicker(
+            parent, gettext("Select Multiple Floppies"),
+            "floppy", multiple=True)
         if not dialog.show_modal():
             return
         original_paths = dialog.get_paths()
@@ -78,20 +74,20 @@ class FloppyManager(object):
 
             if i < 4:
                 Config.set_multiple([
-                        ("floppy_drive_{0}".format(i), path),
-                        ("x_floppy_drive_{0}_sha1".format(i), sha1)])
+                    ("floppy_drive_{0}".format(i), path),
+                    ("x_floppy_drive_{0}_sha1".format(i), sha1)])
             Config.set_multiple([
-                    ("floppy_image_{0}".format(i), path),
-                    ("x_floppy_image_{0}_sha1".format(i), sha1)])
+                ("floppy_image_{0}".format(i), path),
+                ("x_floppy_image_{0}_sha1".format(i), sha1)])
 
         # blank the rest of the drives
         for i in range(len(paths), 4):
             Config.set_multiple([
-                    ("floppy_drive_{0}".format(i), ""),
-                    ("x_floppy_drive_{0}_sha1".format(i), "")])
+                ("floppy_drive_{0}".format(i), ""),
+                ("x_floppy_drive_{0}_sha1".format(i), "")])
         # blank the rest of the image list
         for i in range(len(paths), 20):
             Config.set_multiple([
-                    ("floppy_image_{0}".format(i), ""),
-                    ("x_floppy_image_{0}_sha1".format(i), "")])
-        #dialog.destroy()
+                ("floppy_image_{0}".format(i), ""),
+                ("x_floppy_image_{0}_sha1".format(i), "")])
+        # dialog.destroy()

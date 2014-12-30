@@ -1,16 +1,11 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsbc.desktop import open_url_in_browser
 from fs_uae_launcher.ui.download import DownloadGameWindow
 from fs_uae_workspace.shell import shell_open
+from fsbc.util import unused
 from fsgs import fsgs
 import fsui as fsui
 from fsgs.amiga.Amiga import Amiga
-#from ..Config import Config
-from ..I18N import _, ngettext
+from ..I18N import gettext
 from ..Settings import Settings
 from ..Config import Config
 from ..Signal import Signal
@@ -18,17 +13,17 @@ from .SetupDialog import SetupDialog
 from .Skin import Skin
 from .TabPanel import TabPanel
 
-if Skin.use_unified_toolbar():
-    base_class = fsui.Control
-else:
-    base_class= fsui.Panel
+# if Skin.use_unified_toolbar():
+#     base_class = fsui.Control
+# else:
+#    base_class = fsui.Panel
 
 
-class InfoPanel(base_class):
+class InfoPanel(fsui.Panel):
 
     def __init__(
             self, parent, toolbar_mode=False, padding_top=0, padding_bottom=0):
-        base_class.__init__(self, parent, paintable=True)
+        fsui.Panel.__init__(self, parent, paintable=True)
         Skin.set_background_color(self)
         self.update_web_url = ""
         self.update_version = ""
@@ -36,14 +31,14 @@ class InfoPanel(base_class):
         self.padding_top = padding_top
         self.padding_bottom = padding_bottom
 
-        self.chip_memory_warning = None
-        self.kickstarts_missing = False
-        self.update_available = False
-        self.config_error = ""
-        self.missing_files = ""
-        self.download_page = ""
-        self.download_file = ""
-        #self.downloadable = ""
+        self.chip_memory_warning = ["", ""]
+        self.kickstarts_missing = ["", ""]
+        self.update_available = ["", ""]
+        self.config_error = ["", ""]
+        self.missing_files = ["", ""]
+        self.download_page = ["", ""]
+        self.download_file = ["", ""]
+        # self.downloadable = ["", ""]
 
         self.update_available_icon = fsui.Image(
             "fs_uae_launcher:res/update_available_32.png")
@@ -54,8 +49,8 @@ class InfoPanel(base_class):
         self.kickstarts_missing_icon = self.warning_icon
 
         self.check_kickstarts()
-        #Config.add_listener(self)
-        #Settings.add_listener(self)
+        # Config.add_listener(self)
+        # Settings.add_listener(self)
         Signal.add_listener("update_available", self)
         Signal.add_listener("scan_done", self)
         # Signal.add_listener("locker-updated", self)
@@ -67,8 +62,8 @@ class InfoPanel(base_class):
             self.on_config(key, Config.get(key))
 
     def on_destroy(self):
-        #Config.remove_listener(self)
-        #Settings.remove_listener(self)
+        # Config.remove_listener(self)
+        # Settings.remove_listener(self)
         Settings.remove_listener(self)
         Config.remove_listener(self)
         Signal.remove_listener("scan_done", self)
@@ -81,6 +76,7 @@ class InfoPanel(base_class):
 #        pass
 
     def on_setting(self, key, value):
+        unused(value)
         if key in ["database_auth", "database_username", "database_email"]:
             self.refresh()
 
@@ -96,9 +92,9 @@ class InfoPanel(base_class):
             if chip_memory and chip_memory < 2048 and \
                     amiga_model in ["A1200", "A1200/020", "A4000/040"]:
                 new_chip_memory_warning = [
-                    _("Configuration Warning"),
-                    _("{amiga_model} with < 2 MB chip memory"
-                        "").format(amiga_model=amiga_model)]
+                    gettext("Configuration Warning"),
+                    gettext("{amiga_model} with < 2 MB chip memory"
+                            "").format(amiga_model=amiga_model)]
             else:
                 new_chip_memory_warning = None
             if new_chip_memory_warning != self.chip_memory_warning:
@@ -110,7 +106,7 @@ class InfoPanel(base_class):
                 if len(self.config_error) == 1:
                     self.config_error.append("")
             else:
-                self.config_error = None
+                self.config_error = ["", ""]
             self.refresh()
         elif key == "x_missing_files":
             self.missing_files = value
@@ -138,7 +134,7 @@ class InfoPanel(base_class):
                 ok = False
                 break
         self.kickstarts_missing = ok
-        #self.kickstarts_missing = True
+        # self.kickstarts_missing = True
         self.refresh()
 
     def on_update_available_signal(self, version, web_url):
@@ -150,10 +146,10 @@ class InfoPanel(base_class):
     def on_left_up(self):
         if self.missing_files:
             if self.download_page and not self.download_file:
-                #open_url_in_browser(self.download_page)
-                #self.window = DownloadGameWindow(self.get_window(),
-                #                                 fsgs)
-                #self.window.show()
+                # open_url_in_browser(self.download_page)
+                # self.window = DownloadGameWindow(self.get_window(),
+                #                                  fsgs)
+                # self.window.show()
                 DownloadGameWindow(self.get_window(), fsgs).show()
         elif self.kickstarts_missing:
             SetupDialog(self.get_window()).show()
@@ -170,54 +166,54 @@ class InfoPanel(base_class):
         if not self.toolbar_mode:
             TabPanel.draw_background(self, dc)
 
-        #print(self.missing_files, "file", self.download_file,
-        #      "page", self.download_page)
-        if self.missing_files and not self.download_file:
+        # print(self.missing_files, "file", self.download_file,
+        #       "page", self.download_page)
+        if is_warning(self.missing_files) and not self.download_file:
             if self.download_page:
                 self.draw_notification(
                     dc, self.download_icon,
-                    _("This game must be downloaded"),
-                    _("Click here to download"))
+                    gettext("This game must be downloaded"),
+                    gettext("Click here to download"))
             else:
                 self.draw_notification(
                     dc, self.warning_icon,
-                    _("Some required files are missing"),
-                    _("The game may not start properly"))
-        elif self.config_error:
+                    gettext("Some required files are missing"),
+                    gettext("The game may not start properly"))
+        elif is_warning(self.config_error):
             self.draw_notification(
                 dc, self.warning_icon, *self.config_error)
-        elif self.chip_memory_warning:
+        elif is_warning(self.chip_memory_warning):
             self.draw_notification(
                 dc, self.warning_icon, *self.chip_memory_warning)
-        elif self.kickstarts_missing:
+        elif is_warning(self.kickstarts_missing):
             self.draw_kickstarts_missing_notification(dc)
-        elif self.update_available:
+        elif is_warning(self.update_available):
             self.draw_update_available_notification(dc)
         else:
             self.draw_user_notification(dc)
 
     def draw_user_notification(self, dc):
         username = Settings.get("database_username")
-        #email = Settings.get("database_email")
+        # email = Settings.get("database_email")
         auth = Settings.get("database_auth")
         if auth:
-            self.draw_notification(dc, None, _("Logged In"), username)
+            self.draw_notification(dc, None, gettext("Logged In"), username)
         else:
-            self.draw_notification(dc, None, _("Not logged in"),
-                                   _("Log in to enable online game DB"))
+            self.draw_notification(dc, None, gettext("Not logged in"),
+                                   gettext("Log in to enable online game DB"))
 
     def draw_update_available_notification(self, dc):
         self.draw_notification(
             dc, self.update_available_icon,
-            _("Update available ({version})").format(
+            gettext("Update available ({version})").format(
                 version=self.update_version),
-            _("Click here to download"))
+            gettext("Click here to download"))
 
     def draw_kickstarts_missing_notification(self, dc):
         self.draw_notification(
             dc, self.kickstarts_missing_icon,
-            _("Kickstart ROMs are missing"),
-            _("Click here to import kickstarts"))
+            gettext("Kickstart ROMs are missing"),
+            gettext("Click here to import kickstarts"))
 
     def draw_notification(self, dc, icon, text1, text2):
         available_height = self.size[1]
@@ -271,3 +267,13 @@ class InfoPanel(base_class):
             # tw, th = dc.measure_text(text2)
             # dc.draw_text(text, right_x - tw, y)
             dc.draw_text(text2, x, y)
+
+
+def is_warning(w):
+    if w is None:
+        return False
+    if isinstance(w, str):
+        return bool(w)
+    if isinstance(w, bool):
+        return w
+    return w[0] or w[1]

@@ -1,15 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import time
-
-try:
-    from urllib.parse import quote_plus
-except ImportError:
-    from urllib import quote_plus
-
+from urllib.parse import quote_plus
 from .I18N import gettext
 from fsgs.GameDatabaseSynchronizer import GameDatabaseSynchronizer
 
@@ -25,7 +15,7 @@ class GameRatingSynchronizer(GameDatabaseSynchronizer):
         self.database = database
 
     def synchronize(self):
-        if not "game-database-version" in self.context.meta:
+        if "game-database-version" not in self.context.meta:
             # we haven't looked up synchronization information from the server,
             # that probably means we didn't want to synchronize with the
             # server now, therefore we just return
@@ -49,9 +39,9 @@ class GameRatingSynchronizer(GameDatabaseSynchronizer):
                 cursor = self.database.cursor()
                 cursor.execute("SELECT count(*) FROM rating WHERE game_uuid = "
                                "? AND work_rating = ? AND like_rating = ? "
-                               "AND updated = ?", (update["game"],
-                               update["work"], update["like"],
-                               update["updated"]))
+                               "AND updated = ?",
+                               (update["game"], update["work"], update["like"],
+                                update["updated"]))
                 if cursor.fetchone()[0] == 1:
                     # we want to avoid needlessly creating update transactions
                     continue
@@ -80,6 +70,6 @@ class GameRatingSynchronizer(GameDatabaseSynchronizer):
             server, quote_plus(last_time))
         print(url)
         data, json_data = self.fetch_json(url)
-        #self.downloaded_size += len(data)
+        # self.downloaded_size += len(data)
 
         return json_data

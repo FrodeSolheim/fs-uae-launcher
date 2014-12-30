@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsbc.task import Task
 import fsui as fsui
 from fsui.extra.taskdialog import TaskDialog
@@ -11,7 +6,6 @@ from fsui.extra.iconheader import IconHeader
 from fsgs import fsgs
 from fsgs.Database import Database
 from fsgs.FileDatabase import FileDatabase
-#from fsgs.GameDatabase import GameDatabase
 from fsgs.LockerDatabase import LockerDatabase
 from fsgs.ogd.client import OGDClient
 
@@ -30,16 +24,16 @@ class MaintenanceSettingsPage(fsui.Panel):
                 name="FS-UAE Launcher"))
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
-        #label = fsui.HeadingLabel(self, gettext("Defragment Databases"))
-        #self.layout.add(label, fill=True, margin_top=20)
+        # label = fsui.HeadingLabel(self, gettext("Defragment Databases"))
+        # self.layout.add(label, fill=True, margin_top=20)
 
-        #hori_layout = fsui.HorizontalLayout()
-        #self.layout.add(hori_layout, fill=True, margin_top=10)
-        #label = fsui.Label(self, gettext(
-        #    "Defragmenting the databases will improve performance"))
-        #hori_layout.add(label, expand=True)
+        # hori_layout = fsui.HorizontalLayout()
+        # self.layout.add(hori_layout, fill=True, margin_top=10)
+        # label = fsui.Label(self, gettext(
+        #     "Defragmenting the databases will improve performance"))
+        # hori_layout.add(label, expand=True)
 
-        label = fsui.MultilineLabel(self, gettext(
+        label = fsui.MultiLineLabel(self, gettext(
             "Defragmenting the databases will improve performance "
             "by ensuring that tables and indices are stored contiguously "
             "on disk. It will also reclaim some storage space."), 640)
@@ -47,7 +41,7 @@ class MaintenanceSettingsPage(fsui.Panel):
 
         button = fsui.Button(self, gettext("Defragment Databases"))
         button.activated.connect(self.on_defragment_button)
-        #hori_layout.add(button, margin_left=20)
+        # hori_layout.add(button, margin_left=20)
         self.layout.add(button, margin_top=20)
 
     def on_defragment_button(self):

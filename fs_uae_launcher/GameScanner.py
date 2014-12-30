@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import time
 import json
 from binascii import hexlify
@@ -13,7 +8,6 @@ from fsgs.FileDatabase import FileDatabase
 from fsgs.GameDatabaseClient import GameDatabaseClient
 from fsgs.GameDatabaseSynchronizer import GameDatabaseSynchronizer
 from fsgs.util.GameNameUtil import GameNameUtil
-
 # from fsgs.ogd.context import SynchronizerContext
 # from fsgs.ogd.meta import MetaSynchronizer
 from fsgs.ogd.locker import LockerSynchronizer
@@ -55,9 +49,9 @@ class GameScanner(object):
                         gettext("Scanning game database entries..."))
 
         with fsgs.get_game_database() as game_database:
-            #self.update_game_database(game_database)
-            #if self.stop_check():
-            #    return
+            # self.update_game_database(game_database)
+            # if self.stop_check():
+            #     return
 
             self.scan_game_database(database, game_database)
             if self.stop_check():
@@ -113,16 +107,16 @@ class GameScanner(object):
             cached_file_stamps["last_file_delete"]
 
         game_cursor = game_database.cursor()
-        #game_cursor.execute(
-        #    "SELECT a.uuid, a.game, a.variant, a.name, a.platform, "
-        #    "a.downloadable, a.update_stamp, value, b.uuid, b.game, "
-        #    "b.sort_key, "
-        #    "b.year, b.publisher, b.front_sha1, b.title_sha1, "
-        #    "b.screen1_sha1, b.screen2_sha1, b.screen3_sha1, "
-        #    "b.screen4_sha1, b.screen5_sha1 "
-        #    "FROM game a LEFT JOIN game b ON a.parent = b.id, value "
-        #    "WHERE a.id = value.game AND value.status = 1 AND "
-        #    "value.name = 'file_list' AND a.status > -30")
+        # game_cursor.execute(
+        #     "SELECT a.uuid, a.game, a.variant, a.name, a.platform, "
+        #     "a.downloadable, a.update_stamp, value, b.uuid, b.game, "
+        #     "b.sort_key, "
+        #     "b.year, b.publisher, b.front_sha1, b.title_sha1, "
+        #     "b.screen1_sha1, b.screen2_sha1, b.screen3_sha1, "
+        #     "b.screen4_sha1, b.screen5_sha1 "
+        #     "FROM game a LEFT JOIN game b ON a.parent = b.id, value "
+        #     "WHERE a.id = value.game AND value.status = 1 AND "
+        #     "value.name = 'file_list' AND a.status > -30")
 
         # this list will contain game entries which are not variants
         game_rows = []
@@ -135,15 +129,15 @@ class GameScanner(object):
             variant_id, variant_uuid_bin = row
             variant_uuid = binary_to_uuid(variant_uuid_bin)
             update_stamp = variant_id
-            #(uuid, game_name, variant, alt_name, platform, downloadable,
-            # update_stamp,
+            # (uuid, game_name, variant, alt_name, platform, downloadable,
+            #  update_stamp,
             # file_list_json, parent_uuid, parent_game, parent_sort_key, year,
             # publisher, front_sha1, title_sha1, screen1_sha1, screen2_sha1,
             # screen3_sha1, screen4_sha1, screen5_sha1) = row
 
-            #if not file_list_json:
-            #    # not a game variant (with files)
-            #    continue
+            # if not file_list_json:
+            #     # not a game variant (with files)
+            #     continue
 
             existing_variant = existing_variants.get(
                 variant_uuid, (None, None, None))
@@ -187,27 +181,28 @@ class GameScanner(object):
                 # needs to be corrected)
                 pass
 
-            #print("\nscanning", alt_name, update_stamp, existing_variant)
+            # print("\nscanning", alt_name, update_stamp, existing_variant)
 
             self.scan_count += 1
             self.set_status(
                 gettext("Scanning game variants ({count} scanned)").format(
                     count=self.scan_count), variant_uuid)
 
-            #cursor.execute("SELECT data FROM game WHERE id = ?", (variant_id,))
-            #doc = json.loads(cursor.fetchone()[0])
-            #next_parent_uuid = doc.get("parent_uuid", "")
-            #while next_parent_uuid:
-            #    cursor.execute(
-            #        "SELECT data FROM game WHERE uuid = ?",
-            #        (sqlite3.Binary(unhexlify(next_parent_uuid)),))
-            #    next_doc = json.loads(cursor.fetchone()[0])
-            #    next_parent_uuid = next_doc.get("parent_uuid", "")
-            #    # let child doc overwrite and append values to parent doc
-            #    next_doc.update(doc)
-            #    doc = next_doc
-            #del next_parent_uuid
-            #del next_doc
+            # cursor.execute("SELECT data FROM game WHERE id = ?",
+            #                (variant_id,))
+            # doc = json.loads(cursor.fetchone()[0])
+            # next_parent_uuid = doc.get("parent_uuid", "")
+            # while next_parent_uuid:
+            #     cursor.execute(
+            #         "SELECT data FROM game WHERE uuid = ?",
+            #         (sqlite3.Binary(unhexlify(next_parent_uuid)),))
+            #     next_doc = json.loads(cursor.fetchone()[0])
+            #     next_parent_uuid = next_doc.get("parent_uuid", "")
+            #     # let child doc overwrite and append values to parent doc
+            #     next_doc.update(doc)
+            #     doc = next_doc
+            # del next_parent_uuid
+            # del next_doc
 
             doc = game_database.get_game_values(variant_id)
 
@@ -217,9 +212,9 @@ class GameScanner(object):
                 game_rows.append(row)
                 continue
 
-            #print(sorted(doc.items()))
+            # print(sorted(doc.items()))
             entry_type = int(doc.get("_type", "0"))
-            #print("\n\n\nentry type:", entry_type, "\n\n\n")
+            # print("\n\n\nentry type:", entry_type, "\n\n\n")
             if (entry_type & GAME_ENTRY_TYPE_VARIANT) == 0:
                 # game entry is not tagged with variant -- add to game list
                 # instead
@@ -241,8 +236,8 @@ class GameScanner(object):
                 if file_item["name"].endswith("/"):
                     # skip directory entries:
                     continue
-                #location = fsgs.file.find_by_sha1(file_item["sha1"])
-                #location = fsgs.file.check_sha1(file_item["sha1"])
+                # location = fsgs.file.find_by_sha1(file_item["sha1"])
+                # location = fsgs.file.check_sha1(file_item["sha1"])
                 result = fsgs.file.check_sha1(file_item["sha1"])
                 if not result:
                     all_files_found = False
@@ -268,40 +263,40 @@ class GameScanner(object):
             name = "{0} ({1}, {2})".format(
                 game_name, platform_name, variant_name)
 
-            ## search = self.create_configuration_search(name)
-            ## config_name = self.create_configuration_name(name)
+            # # search = self.create_configuration_search(name)
+            # # config_name = self.create_configuration_name(name)
             #
-            #if not parent_uuid:
+            # if not parent_uuid:
             #    have_variant = 0
             #
-            ##    reference = parent_uuid
-            ##    type = game_entry_type + 4
-            ## else:
-            ##    reference = uuid
-            ##    type = game_entry_type
+            # #    reference = parent_uuid
+            # #    type = game_entry_type + 4
+            # # else:
+            # #    reference = uuid
+            # #    type = game_entry_type
             #
-            ## cursor = game_database.cursor()
-            ## cursor.execute("SELECT like_rating, work_rating FROM game_rating "
-            ##               "WHERE game = ?", (uuid,))
-            ## row = cursor.fetchone()
-            ## if row is None:
-            ##    like_rating, work_rating = 0, 0
-            ## else:
-            ##    like_rating, work_rating = row
+            # # cursor = game_database.cursor()
+            # # cursor.execute("SELECT like_rating, work_rating FROM "
+            # #               "game_rating WHERE game = ?", (uuid,))
+            # # row = cursor.fetchone()
+            # # if row is None:
+            # #    like_rating, work_rating = 0, 0
+            # # else:
+            # #    like_rating, work_rating = row
             #
-            ## the following is used by FS-UAE Launcher for the combined
-            ## game / configurations list
+            # # the following is used by FS-UAE Launcher for the combined
+            # # game / configurations list
             #
-            ## database.add_configuration(
-            ##    path="", uuid=uuid, name=config_name, scan=self.scan_version,
-            ##    search=search, type=type, reference=reference,
-            ##    like_rating=like_rating, work_rating=work_rating)
-            ##
-            ## if parent_uuid:
-            ##    parent_name = "{0}\n{1}".format(parent_game, platform)
-            ##    database.ensure_game_configuration(
-            ##        parent_uuid, parent_name, parent_sort_key,
-            ##        scan=self.scan_version, type=game_entry_type)
+            # # database.add_configuration(
+            # #    path="", uuid=uuid, name=config_name, scan=self.scan_version,
+            # #    search=search, type=type, reference=reference,
+            # #    like_rating=like_rating, work_rating=work_rating)
+            # #
+            # # if parent_uuid:
+            # #    parent_name = "{0}\n{1}".format(parent_game, platform)
+            # #    database.ensure_game_configuration(
+            # #        parent_uuid, parent_name, parent_sort_key,
+            # #        scan=self.scan_version, type=game_entry_type)
 
             # the following is used by the FS Game Center frontend
 
@@ -345,15 +340,15 @@ class GameScanner(object):
             #         screen3_sha1, screen4_sha1, screen5_sha1,
             #         parent_sort_key, scanned=self.scan_version)
 
-        #game_cursor = game_database.cursor()
-        #game_cursor.execute(
-        #    "SELECT b.uuid, b.game, b.update_stamp, "
-        #    "b.sort_key, b.platform, "
-        #    "b.year, b.publisher, b.front_sha1, b.title_sha1, "
-        #    "b.screen1_sha1, b.screen2_sha1, b.screen3_sha1, "
-        #    "b.screen4_sha1, b.screen5_sha1, b.id "
-        #    "FROM game b WHERE files = 0")
-        #for row in game_cursor:
+        # game_cursor = game_database.cursor()
+        # game_cursor.execute(
+        #     "SELECT b.uuid, b.game, b.update_stamp, "
+        #     "b.sort_key, b.platform, "
+        #     "b.year, b.publisher, b.front_sha1, b.title_sha1, "
+        #     "b.screen1_sha1, b.screen2_sha1, b.screen3_sha1, "
+        #     "b.screen4_sha1, b.screen5_sha1, b.id "
+        #     "FROM game b WHERE files = 0")
+        # for row in game_cursor:
         for row in game_rows:
             if self.stop_check():
                 return
@@ -389,9 +384,9 @@ class GameScanner(object):
 
             doc = game_database.get_game_values(game_id)
 
-            #print(sorted(doc.items()))
+            # print(sorted(doc.items()))
             entry_type = int(doc.get("_type", "0"))
-            #print("\n\n\nentry type:", entry_type, "\n\n\n")
+            # print("\n\n\nentry type:", entry_type, "\n\n\n")
             if (entry_type & GAME_ENTRY_TYPE_GAME) == 0:
                 continue
 
@@ -402,9 +397,9 @@ class GameScanner(object):
             except KeyError:
                 pass
 
-            #if not game_name:
-            #    game_name = alt_name.split("(", 1)[0]
-            #name = "{0} ({1}, {2})".format(game_name, platform, variant)
+            # if not game_name:
+            #     game_name = alt_name.split("(", 1)[0]
+            # name = "{0} ({1}, {2})".format(game_name, platform, variant)
             game_name = doc.get("game_name", "")
             search = self.create_configuration_search(game_name)
             config_name = self.create_configuration_name(game_name)
@@ -531,17 +526,17 @@ class GameScanner(object):
                        "AND (have IS NULL OR have "
                        "!= (SELECT coalesce(max(have), 0) FROM game_variant "
                        "WHERE game_uuid = game.uuid))")
-        #if cursor.rowcount > 0:
+        # if cursor.rowcount > 0:
         update_rows = cursor.fetchone()[0]
         print(update_rows, "game entries need update for have field")
         if update_rows > 0:
-            #print("c1")
+            # print("c1")
             cursor.execute(
                 "UPDATE game SET have = (SELECT coalesce(max(have), 0) FROM "
                 "game_variant WHERE game_uuid = game.uuid) WHERE uuid IS NOT "
                 "NULL AND (have IS NULL OR have != (SELECT coalesce(max("
                 "have), 0) FROM game_variant WHERE game_uuid = game.uuid))")
-        #print("d")
+        # print("d")
         FileDatabase.get_instance().get_last_event_stamps()
         database.update_last_file_event_stamps(file_stamps)
 
@@ -554,7 +549,7 @@ class GameScanner(object):
         if "(" in name:
             primary, secondary = name.split("(", 1)
             secondary = secondary.replace(", ", " \u00b7 ")
-            #name = primary.rstrip() + " \u2013 " + secondary.lstrip()
+            # name = primary.rstrip() + " \u2013 " + secondary.lstrip()
             name = primary.rstrip() + "\n" + secondary.lstrip()
             if name[-1] == ")":
                 name = name[:-1]

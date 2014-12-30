@@ -17,17 +17,19 @@
 
 """ contains helper functions for common irc commands """
 
-import six
 import random
+
 
 def msg(cli, user, msg):
     for line in msg.split('\n'):
         cli.send("PRIVMSG", user, ":%s" % line)
 
+
 def msgrandom(cli, choices, dest, user=None):
     o = "%s: " % user if user else ""
     o += random.choice(choices)
     msg(cli, dest, o)
+
 
 def _makeMsgRandomFunc(choices):
     def func(cli, dest, user=None):
@@ -42,19 +44,23 @@ msgNo = _makeMsgRandomFunc(['no', 'no-way'])
 def ns(cli, *args):
     msg(cli, "NickServ", " ".join(args))
 
+
 def cs(cli, *args):
     msg(cli, "ChanServ", " ".join(args))
 
+
 def identify(cli, passwd, authuser="NickServ"):
     msg(cli, authuser, "IDENTIFY %s" % passwd)
+
 
 def quit(cli, msg='gone'):
     cli.send("QUIT :%s" % msg)
     cli._end = 1
 
+
 def user(cli, username, realname=None):
-    cli.send("USER", username, cli.host, cli.host,
-        realname or username)
+    cli.send("USER", username, cli.host, cli.host, realname or username)
+
 
 _simple = (
     'join',
@@ -62,6 +68,8 @@ _simple = (
     'nick',
     'notice',
 )
+
+
 def _addsimple():
     import sys
     def simplecmd(cmd_name):
@@ -71,18 +79,24 @@ def _addsimple():
     m = sys.modules[__name__]
     for t in _simple:
         setattr(m, t, simplecmd(t.upper()))
+
+
 _addsimple()
 
+
+# noinspection PyPep8Naming
 def _addNumerics():
     import sys
-    from . import ircevents
+    from oyoyo import ircevents
+
     def numericcmd(cmd_num, cmd_name):
         def f(cli, *args):
             cli.send(cmd_num, *args)
         return f
+
     m = sys.modules[__name__]
-    for num, name in six.iteritems(ircevents.numeric_events):
+    for num, name in ircevents.numeric_events.items():
         setattr(m, name, numericcmd(num, name))
 
-_addNumerics()
 
+_addNumerics()

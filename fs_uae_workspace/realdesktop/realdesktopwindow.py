@@ -1,4 +1,4 @@
-from fsui.qt import Qt, QDesktopWidget, QMainWindow, QDialog, QWidget
+from fsui.qt import QDesktopWidget, QMainWindow
 try:
     from Xlib import X
     from Xlib.display import Display
@@ -35,22 +35,23 @@ class RealDesktopWindow(QMainWindow):
         # self.setAttribute(Qt.WA_ShowWithoutActivating)
         self.set_x11_properties()
 
+    # noinspection PyPep8Naming
     def set_x11_properties(self):
         xid = self.winId()
         display = Display()
         window = display.create_resource_object("window", xid)
-        _NET_WM_DESKTOP = display.intern_atom("_NET_WM_DESKTOP")
+        # _NET_WM_DESKTOP = display.intern_atom("_NET_WM_DESKTOP")
         _NET_WM_STRUT = display.intern_atom("_NET_WM_STRUT")
         _NET_WM_STATE = display.intern_atom("_NET_WM_STATE")
         ATOM = display.intern_atom("ATOM")
-        _NET_WM_STATE_SKIP_TASKBAR = display.intern_atom(
-            "_NET_WM_STATE_SKIP_TASKBAR")
-        _NET_WM_STATE_SKIP_PAGER = display.intern_atom(
-            "_NET_WM_STATE_SKIP_PAGER")
+        # _NET_WM_STATE_SKIP_TASKBAR = display.intern_atom(
+        #     "_NET_WM_STATE_SKIP_TASKBAR")
+        # _NET_WM_STATE_SKIP_PAGER = display.intern_atom(
+        #     "_NET_WM_STATE_SKIP_PAGER")
         _NET_WM_STATE_BELOW = display.intern_atom(
             "_NET_WM_STATE_BELOW")
-        _NET_WM_USER_TIME = display.intern_atom(
-            "_NET_WM_USER_TIME")
+        # _NET_WM_USER_TIME = display.intern_atom(
+        #     "_NET_WM_USER_TIME")
         _NET_WM_WINDOW_TYPE = display.intern_atom(
             "_NET_WM_WINDOW_TYPE")
         _NET_WM_WINDOW_TYPE_DOCK = display.intern_atom(
@@ -78,7 +79,6 @@ class RealDesktopWindow(QMainWindow):
 
         #
         window.change_property(_NET_WM_STATE, ATOM, 32, [_NET_WM_STATE_BELOW])
-
 
         display.sync()
 

@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import traceback
 from fsgs.ChecksumTool import ChecksumTool
@@ -10,7 +5,7 @@ import fsui as fsui
 from fsgs.Archive import Archive
 from ...Config import Config
 from fsgs.FSGSDirectories import FSGSDirectories
-from ...I18N import _
+from ...I18N import gettext
 from ..IconButton import IconButton
 from ..LauncherFilePicker import LauncherFilePicker
 
@@ -26,9 +21,9 @@ class HardDriveGroup(fsui.Group):
         self.config_key_sha1 = "x_hard_drive_{0}_sha1".format(index)
 
         if index == 0:
-            #heading_label = fsui.HeadingLabel(self,
-            #        _("Hard Drive {0}").format(index + 1))
-            heading_label = fsui.HeadingLabel(self, _("Hard Drives"))
+            # heading_label = fsui.HeadingLabel(self,
+            #         _("Hard Drive {0}").format(index + 1))
+            heading_label = fsui.HeadingLabel(self, gettext("Hard Drives"))
             self.layout.add(heading_label, margin_bottom=20)
             self.layout.add_spacer(0)
 
@@ -36,7 +31,7 @@ class HardDriveGroup(fsui.Group):
         self.layout.add(hori_layout, fill=True)
 
         self.eject_button = IconButton(self, "eject_button.png")
-        self.eject_button.set_tooltip(_("Eject"))
+        self.eject_button.set_tooltip(gettext("Eject"))
         self.eject_button.activated.connect(self.on_eject_button)
         hori_layout.add(self.eject_button)
 
@@ -44,12 +39,12 @@ class HardDriveGroup(fsui.Group):
         hori_layout.add(self.text_field, expand=True, margin_left=10)
 
         self.browse_button = IconButton(self, "browse_folder_16.png")
-        self.browse_button.set_tooltip(_("Browse for Folder"))
+        self.browse_button.set_tooltip(gettext("Browse for Folder"))
         self.browse_button.activated.connect(self.on_browse_folder_button)
         hori_layout.add(self.browse_button, margin_left=10)
 
         self.browse_button = IconButton(self, "browse_file_16.png")
-        self.browse_button.set_tooltip(_("Browse for File"))
+        self.browse_button.set_tooltip(gettext("Browse for File"))
         self.browse_button.activated.connect(self.on_browse_file_button)
         hori_layout.add(self.browse_button, margin_left=10)
 
@@ -88,7 +83,7 @@ class HardDriveGroup(fsui.Group):
     def browse(self, dir_mode):
         default_dir = FSGSDirectories.get_hard_drives_dir()
         dialog = LauncherFilePicker(
-            self.get_window(), _("Choose Hard Drive"), "hd",
+            self.get_window(), gettext("Choose Hard Drive"), "hd",
             Config.get(self.config_key), dir_mode=dir_mode)
         if not dialog.show_modal():
             dialog.destroy()
@@ -134,14 +129,14 @@ class HardDriveGroup(fsui.Group):
         slave = ""
         for path in archive.list_files():
             name = os.path.basename(path)
-            lname = name.lower()
-            if lname.endswith(".slave"):
+            name_lower = name.lower()
+            if name_lower.endswith(".slave"):
                 if slave:
                     print("already found one slave, don't know which "
                           "one to choose")
                     return ""
                 slave = name
-            elif lname == "startup-sequence":
+            elif name_lower == "startup-sequence":
                 print("found startup-sequence, assuming non-whdload "
                       "archive")
         return slave

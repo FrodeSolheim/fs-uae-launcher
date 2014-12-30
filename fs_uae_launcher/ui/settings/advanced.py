@@ -1,14 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from fsui.extra.iconheader import IconHeader
 from ...I18N import gettext
-from .PreferredJoysticksGroup import PreferredJoysticksGroup
-from fs_uae_workspace.shell import shell_open
-from fs_uae_launcher.DeviceManager import DeviceManager
 from .CustomSettingsPage import CustomSettingsPage
 
 

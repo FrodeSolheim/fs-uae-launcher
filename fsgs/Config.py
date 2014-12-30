@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six
 from collections import defaultdict
 from .ContextAware import ContextAware
 
@@ -15,8 +9,8 @@ class Config(ContextAware):
         self.values = {}
 
     def copy(self):
-        # return a defultdict so lookups for unset keys return an empty string
-        return defaultdict(six.text_type, self.values)
+        # return a defaultdict so lookups for unset keys return an empty string
+        return defaultdict(str, self.values)
 
     def get(self, key, default=""):
         return self.values.get(key, default)
@@ -29,8 +23,8 @@ class Config(ContextAware):
             value = self.values[key]
             if value:
                 self.set(key, "")
-        #for key in self.values.keys():
-        #    del self.values[key]
+        # for key in self.values.keys():
+        #     del self.values[key]
 
     def load(self, values):
         self.clear()
@@ -49,26 +43,27 @@ class Config(ContextAware):
         item_keys = [x[0] for x in items]
         changed_keys = set()
 
-        def add_changed_key(key):
+        def add_changed_key(added_key):
             # try:
-            #     priority = cls.key_order.index(key)
+            #     added_priority = cls.key_order.index(added_key)
             # except ValueError:
-            #     priority = 1000
-            priority = 0
+            #     added_priority = 1000
+            added_priority = 0
             # FIXME: re-introduce support for key priority if necessary
-            changed_keys.add((priority, key))
+            changed_keys.add((added_priority, added_key))
 
-        def change(key, value):
-            #print("change", key, value)
+        def change(changed_key, changed_value):
+            # print("change", changed_key, changed_value)
             # if key == "joystick_port_1_mode":
             #     pass
-            if old_config.get(key, None) == value:
-                if value:
-                    print("set {0} to {1} (no change)".format(key, value))
+            if old_config.get(changed_key, None) == changed_value:
+                if changed_value:
+                    print("set {0} to {1} (no change)".format(
+                        changed_key, changed_value))
                 return
-            print("set {0} to {1}".format(key, value))
-            add_changed_key(key)
-            self.values[key] = value
+            print("set {0} to {1}".format(changed_key, changed_value))
+            add_changed_key(changed_key)
+            self.values[changed_key] = changed_value
 
         old_config = self.values.copy()
         for key, value in items:
@@ -88,11 +83,11 @@ class Config(ContextAware):
                 change("__ready", "0")
             change("__changed", "1")
             for priority, key in sorted(changed_keys):
-                #for listener in cls.config_listeners:
-                #    listener.on_config(key, cls.get(key))
+                # for listener in cls.config_listeners:
+                #     listener.on_config(key, cls.get(key))
 
                 value = self.get(key)
-                #Signal.broadcast("config", key, value)
+                # Signal.broadcast("config", key, value)
                 self.context.signal.notify("config", (key, value))
 
             # FIXME: reset __netplay_ready...

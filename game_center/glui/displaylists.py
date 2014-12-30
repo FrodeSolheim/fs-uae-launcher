@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from game_center.glui.opengl import glDeleteLists, glCallList, glNewList, glGenLists
 from game_center.glui.opengl import GL_COMPILE_AND_EXECUTE
 

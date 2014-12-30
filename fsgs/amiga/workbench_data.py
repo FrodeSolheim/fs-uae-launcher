@@ -4,11 +4,6 @@ disks. The data is used when creating a Workbench environment on demand.
 Some files are removed because they differ between Cloanto WB floppies and
 original WB floppies.
 """
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import sys
 import hashlib
@@ -696,7 +691,72 @@ wb_300_floppies = [
 ]
 
 
+def update_files():
+    base_dir = os.path.expanduser("~/Documents/FS-UAE/Floppies/Workbench")
+    # floppies = {}
+    floppy_file_sets = {}
+    files = {}
+    for floppy in os.listdir(base_dir):
+        if not floppy.lower().endswith(".adf"):
+            continue
+        path = os.path.join(base_dir, floppy)
+        with open(path, "rb") as f:
+            floppy_sha1 = hashlib.sha1(f.read()).hexdigest()
+        sha1sums = set()
+        try:
+            adf = ADFFile(path)
+        except Exception:
+            print("error parsing", path)
+            traceback.print_exc()
+            continue
+        names = adf.namelist()
+        for name in names:
+            if name.endswith("/"):
+                continue
+            data = adf.open(name, "r").read()
+            sha1 = hashlib.sha1(data).hexdigest()
+            sha1sums.add(sha1)
+            # floppies[floppy.lower()] = os.path.join(base_dir, floppy)
+            files.setdefault(sha1, set()).add((floppy_sha1, name))
+        floppy_file_sets[(floppy, floppy_sha1)] = sha1sums
+
+    interesting_files = set()
+    for file_map in [wb_204_files, wb_300_files]:
+        for name, sha1 in file_map.items():
+            if sha1:
+                interesting_files.add(sha1)
+
+    # print("")
+    # print("workbench_file_map = {")
+    # for sha1 in sorted(interesting_files):
+    #     print("    \"{0}\": [".format(sha1))
+    #     #print("        \"{0}\",".format(floppy_sha1))
+    #     for floppy_sha1, name in sorted(files[sha1]):
+    #         #print("        \"{0}\",".format(floppy_sha1))
+    #         print("        (\"{0}\", \"{1}\"),".format(floppy_sha1, name))
+    #     print("    ],")
+    # print("}")
+    # print("")
+
+    for name, file_map in [
+            ("wb_133_floppies", wb_133_files),
+            ("wb_204_floppies", wb_204_files),
+            ("wb_300_floppies", wb_300_files)]:
+        print("\n" + name + " = [")
+        file_set = set([x for x in file_map.values() if x])
+        for floppy_data, floppy_file_set in floppy_file_sets.items():
+            floppy_name, floppy_sha1 = floppy_data
+            if floppy_file_set.issuperset(file_set):
+                print("    # {0}".format(floppy_name))
+                print("    \"{0}\",".format(floppy_sha1))
+        print("]")
+
+
 def main():
+    if sys.argv[1] == "--update-files":
+        update_files()
+        return
+
     base_dir = os.path.expanduser("~/Documents/FS-UAE/Floppies/Workbench")
     floppies = {}
     for floppy in os.listdir(base_dir):
@@ -730,69 +790,5 @@ def main():
     print(startup_sequence)
 
 
-def update_files():
-    base_dir = os.path.expanduser("~/Documents/FS-UAE/Floppies/Workbench")
-    #floppies = {}
-    floppy_file_sets = {}
-    files = {}
-    for floppy in os.listdir(base_dir):
-        if not floppy.lower().endswith(".adf"):
-            continue
-        path = os.path.join(base_dir, floppy)
-        with open(path, "rb") as f:
-            floppy_sha1 = hashlib.sha1(f.read()).hexdigest()
-        sha1sums = set()
-        try:
-            adf = ADFFile(path)
-        except Exception:
-            print("error parsing", path)
-            traceback.print_exc()
-            continue
-        names = adf.namelist()
-        for name in names:
-            if name.endswith("/"):
-                continue
-            data = adf.open(name, "r").read()
-            sha1 = hashlib.sha1(data).hexdigest()
-            sha1sums.add(sha1)
-            #floppies[floppy.lower()] = os.path.join(base_dir, floppy)
-            files.setdefault(sha1, set()).add((floppy_sha1, name))
-        floppy_file_sets[(floppy, floppy_sha1)] = sha1sums
-
-    interesting_files = set()
-    for file_map in [wb_204_files, wb_300_files]:
-        for name, sha1 in file_map.items():
-            if sha1:
-                interesting_files.add(sha1)
-
-    #print("")
-    #print("workbench_file_map = {")
-    #for sha1 in sorted(interesting_files):
-    #    print("    \"{0}\": [".format(sha1))
-    #    #print("        \"{0}\",".format(floppy_sha1))
-    #    for floppy_sha1, name in sorted(files[sha1]):
-    #        #print("        \"{0}\",".format(floppy_sha1))
-    #        print("        (\"{0}\", \"{1}\"),".format(floppy_sha1, name))
-    #    print("    ],")
-    #print("}")
-    #print("")
-
-    for name, file_map in [
-            ("wb_133_floppies", wb_133_files),
-            ("wb_204_floppies", wb_204_files),
-            ("wb_300_floppies", wb_300_files)]:
-        print("\n" + name + " = [")
-        file_set = set([x for x in file_map.values() if x])
-        for floppy_data, floppy_file_set in floppy_file_sets.items():
-            floppy_name, floppy_sha1 = floppy_data
-            if floppy_file_set.issuperset(file_set):
-                print("    # {0}".format(floppy_name))
-                print("    \"{0}\",".format(floppy_sha1))
-        print("]")
-
-
 if __name__ == "__main__":
-    if sys.argv[1] == "--update-files":
-        update_files()
-    else:
-        main()
+    main()

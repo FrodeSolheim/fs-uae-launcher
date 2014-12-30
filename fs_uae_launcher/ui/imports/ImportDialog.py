@@ -1,10 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
-from ...I18N import _, ngettext
+from ...I18N import gettext
 from .ImportTask import ImportTask
 
 TIMER_INTERVAL = 100
@@ -16,9 +11,9 @@ class ImportDialog(fsui.Dialog):
 
     def __init__(self, parent, path, type):
         if type == self.AMIGA_FOREVER:
-            title = _("Import From Amiga Forever CD/DVD")
+            title = gettext("Import From Amiga Forever CD/DVD")
         else:
-            title = _("Import Kickstarts and ROMs")
+            title = gettext("Import Kickstarts and ROMs")
         super().__init__(parent, title)
         self.layout = fsui.VerticalLayout()
         self.layout.padding_left = 20
@@ -34,7 +29,7 @@ class ImportDialog(fsui.Dialog):
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True, margin_top=20)
         hori_layout.add_spacer(0, expand=True)
-        self.close_button = fsui.Button(self, _("Close"))
+        self.close_button = fsui.Button(self, gettext("Close"))
         self.close_button.activated.connect(self.on_close_button)
         self.close_button.disable()
         hori_layout.add(self.close_button)

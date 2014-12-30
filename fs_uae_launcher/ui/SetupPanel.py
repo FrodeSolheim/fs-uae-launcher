@@ -1,12 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from .imports.ImportGroup import ImportGroup
 from .ScanKickstartGroup import ScanKickstartGroup
-from .Skin import Skin
 
 
 class SetupPanel(fsui.Panel):

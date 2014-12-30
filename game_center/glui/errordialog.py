@@ -1,10 +1,4 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import sys
-#import pygame
 import time
 from game_center.resources import resources
 from game_center.glui.opengl import *
@@ -57,21 +51,21 @@ class ErrorDialog(Dialog):
     def render_content(self):
         Render.dirty = True
 
-        ##x1 = -16 / 9 + 0.1
-        #x1 = 0.1
-        ##x2 = 16 / 9 - 0.1
-        #x2 = self.width - 0.1
-        ##y1 = 0.7
-        ##y2 = 0.9
-        #y1 = 1.6
-        #y2 = 1.9
+        # #x1 = -16 / 9 + 0.1
+        # x1 = 0.1
+        # #x2 = 16 / 9 - 0.1
+        # x2 = self.width - 0.1
+        # #y1 = 0.7
+        # #y2 = 0.9
+        # y1 = 1.6
+        # y2 = 1.9
         x1 = 0
         x2 = self.width
         y1 = 1.7
         y2 = 2.0
         w = 0.03
 
-        #t = (pygame.time.get_ticks() - self.start_time) // 1000
+        # t = (pygame.time.get_ticks() - self.start_time) // 1000
         alert_color = (1.0, 0.8, 0.0)
         t = int((time.time() - self.start_time * 1.6))
         if t % 2 == 0:

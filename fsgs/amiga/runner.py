@@ -1,15 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
 import os
 from fsbc.Application import app
-from fsbc.system import linux, macosx
 from fsgs.runner import GameRunner
-from fsgs import fsgs
 from fsgs.amiga.FSUAE import FSUAE
 from fsgs.amiga.LaunchHandler import LaunchHandler
-# from fengestad.game_center.GameHandler import GameHandler
 
 
 class AmigaRunner(GameRunner):
@@ -36,47 +29,47 @@ class AmigaRunner(GameRunner):
         },
     ]
 
-    #def init(self):
-    #    print("AmigaGameHandler.init")
+    # def init(self):
+    #     print("AmigaGameHandler.init")
     #
-    #    loader = ValueConfigLoader(self.fsgs.game.variant_uuid)
-    #    loader.load_values(self.fsgs.game.config)
+    #     loader = ValueConfigLoader(self.fsgs.game.variant_uuid)
+    #     loader.load_values(self.fsgs.game.config)
     #
-    #    config = defaultdict(six.text_type)
+    #     config = defaultdict(six.text_type)
     #
-    #    for key, value in six.iteritems(app.settings.values):
-    #        # FIXME: re-enable this check?
-    #        # if key in Config.config_keys:
-    #        #     print("... ignoring config key from settings:", key)
-    #        #     continue
-    #        config[key] = value
+    #     for key, value in six.iteritems(app.settings.values):
+    #         # FIXME: re-enable this check?
+    #         # if key in Config.config_keys:
+    #         #     print("... ignoring config key from settings:", key)
+    #         #     continue
+    #         config[key] = value
     #
-    #    original_config = loader.get_config()
-    #    for key, value in six.iteritems(original_config):
-    #        config[key] = value
+    #     original_config = loader.get_config()
+    #     for key, value in six.iteritems(original_config):
+    #         config[key] = value
     #
-    #    # make sure FS-UAE does not load other config files (Host.fs-uae)
-    #    config["end_config"] = "1"
+    #     # make sure FS-UAE does not load other config files (Host.fs-uae)
+    #     config["end_config"] = "1"
     #
-    #    self.port1_option = InputOption(
-    #        1, self.fsgs.game.config.get("port1", "joystick"))
-    #    #self.options.append(self.port1_option)
+    #     self.port1_option = InputOption(
+    #         1, self.fsgs.game.config.get("port1", "joystick"))
+    #     #self.options.append(self.port1_option)
     #
-    #    self.port0_option = InputOption(
-    #        0, self.fsgs.game.config.get("port0", "mouse"))
-    #    #self.options.append(self.port0_option)
+    #     self.port0_option = InputOption(
+    #         0, self.fsgs.game.config.get("port0", "mouse"))
+    #     #self.options.append(self.port0_option)
     #
-    #    self.amiga_config = config
+    #     self.amiga_config = config
 
     def prepare(self):
         print("AmigaRunner.prepare")
 
         # self.temp_dir = self.fsgs.temp_dir("amiga")
 
-        #self.change_handler = GameChangeHandler(self.temp_dir)
+        # self.change_handler = GameChangeHandler(self.temp_dir)
 
-        #self.firmware_dir = self.prepare_firmware("Amiga Firmware")
-        #config = self.fsgs.config.copy()
+        # self.firmware_dir = self.prepare_firmware("Amiga Firmware")
+        # config = self.fsgs.config.copy()
 
         model = self.config["amiga_model"]
         if model.startswith("CD32"):
@@ -85,11 +78,11 @@ class AmigaRunner(GameRunner):
             platform = "CDTV"
         else:
             platform = "Amiga"
-        #name = Settings.get("config_name")
+        # name = Settings.get("config_name")
         # name = self.fsgs.game.name
 
-        #uuid = Config.get("x_game_uuid")
-        #uuid = None
+        # uuid = Config.get("x_game_uuid")
+        # uuid = None
 
         from fsgs.SaveStateHandler import SaveStateHandler
         save_state_handler = SaveStateHandler(
@@ -101,13 +94,13 @@ class AmigaRunner(GameRunner):
         self.launch_handler = LaunchHandler(
             self.fsgs, self.get_name(), self.config, save_state_handler)
 
-        #self.change_handler.init(self.fsgs.get_game_state_dir(),
-        #        ignore=["*.uss", "*.sdf"])
+        # self.change_handler.init(self.fsgs.get_game_state_dir(),
+        #         ignore=["*.uss", "*.sdf"])
 
-        #self.launch_handler.config["joystick_port_0"] = \
-        #        self.inputs[1].device_id
-        #self.launch_handler.config["joystick_port_1"] = \
-        #        self.inputs[0].device_id
+        # self.launch_handler.config["joystick_port_0"] = \
+        #         self.inputs[1].device_id
+        # self.launch_handler.config["joystick_port_1"] = \
+        #         self.inputs[0].device_id
 
         if self.use_fullscreen():
             self.launch_handler.config["fullscreen"] = "1"
@@ -119,43 +112,43 @@ class AmigaRunner(GameRunner):
 
         self.launch_handler.prepare()
 
-    #def configure(self):
-    #    print("AmigaGameHandler.configure")
+    # def configure(self):
+    #     print("AmigaGameHandler.configure")
     #
-    #    #temp_dir = self.fsgs.temp.dir("amiga-config")
-    #    #config_file = os.path.join(temp_dir, "amiga-config.fs-uae")
-    #    #with open(config_file, "wb") as f:
-    #    #    #self._configure_emulator(f)
-    #    #    self.launch_handler.write_config(f)
-    #    #    self.write_additional_config(f)#
-    #    #
-    #    ##self.args.extend(["--config", config_file])
-    #    #self.args.extend([config_file])
+    #     #temp_dir = self.fsgs.temp.dir("amiga-config")
+    #     #config_file = os.path.join(temp_dir, "amiga-config.fs-uae")
+    #     #with open(config_file, "wb") as f:
+    #     #    #self._configure_emulator(f)
+    #     #    self.launch_handler.write_config(f)
+    #     #    self.write_additional_config(f)#
+    #     #
+    #     ##self.args.extend(["--config", config_file])
+    #     #self.args.extend([config_file])
 
-    #def write_additional_config(self, f):
-    #    #if self.get_option("fullscreen"):
-    #    #    f.write("fullscreen = 1\n")
+    # def write_additional_config(self, f):
+    #     #if self.get_option("fullscreen"):
+    #     #    f.write("fullscreen = 1\n")
     #
-    #    #if self.configure_vsync():
-    #    #    f.write("video_sync = full\n")
-    #    #else:
-    #    #    f.write("video_sync = none\n")
+    #     #if self.configure_vsync():
+    #     #    f.write("video_sync = full\n")
+    #     #else:
+    #     #    f.write("video_sync = none\n")
     #
-    #    if self.get_option("fsaa"):
-    #        f.write("fsaa = {0}\n".format(str(self.get_option("fsaa"))))
+    #     if self.get_option("fsaa"):
+    #         f.write("fsaa = {0}\n".format(str(self.get_option("fsaa"))))
 
     def run(self):
         print("AmigaGameHandler.run")
-        #self.on_progress(_("Starting FS-UAE..."))
+        # self.on_progress(_("Starting FS-UAE..."))
         config = self.launch_handler.create_config()
         process, self.temp_config_file = FSUAE.start_with_config(config)
-        #process.wait()
-        #print("LaunchHandler.start is done")
-        #print("removing", config_file)
-        #try:
-        #    os.remove(config_file)
-        #except Exception:
-        #    print("could not remove config file", config_file)
+        # process.wait()
+        # print("LaunchHandler.start is done")
+        # print("removing", config_file)
+        # try:
+        #     os.remove(config_file)
+        # except Exception:
+        #     print("could not remove config file", config_file)
         return process
 
     def finish(self):
@@ -167,7 +160,7 @@ class AmigaRunner(GameRunner):
 
         self.launch_handler.update_changes()
         self.launch_handler.cleanup()
-        #self.change_handler.update(self.fsgs.get_game_state_dir())
+        # self.change_handler.update(self.fsgs.get_game_state_dir())
 
     def get_supported_filters(self):
         supported = []
@@ -221,13 +214,13 @@ class AmigaRunner(GameRunner):
                 "down": "JOY1_DOWN",
             }]
 
-        #f.write("input.config=1\n")
+        # f.write("input.config=1\n")
 
         f.write("\n[input]\n")
-        #f.write("joyport0=none\n")
-        #f.write("joyport1=none\n")
-        #f.write("input.1.keyboard.0.empty=false\n")
-        #f.write("input.1.keyboard.0.disabled=false\n")
+        # f.write("joyport0=none\n")
+        # f.write("joyport1=none\n")
+        # f.write("input.1.keyboard.0.empty=false\n")
+        # f.write("input.1.keyboard.0.disabled=false\n")
 
         for i, input in enumerate(self.inputs):
             if not input.device:

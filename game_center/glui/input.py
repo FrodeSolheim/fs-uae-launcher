@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import time
 import traceback
 
@@ -29,9 +24,9 @@ def get_controller_config(name, sdl_name, axes=0, hats=0, buttons=0, balls=0):
     except Exception:
         print("error initializing device " + repr(name) + " for menu")
         traceback.print_exc()
-        #print(repr(e))
+        # print(repr(e))
         return None
-    #config_inv = []
+    # config_inv = []
     for key, val in list(config.items()):
         val = val.upper()
         config[key] = val
@@ -41,10 +36,10 @@ def get_controller_config(name, sdl_name, axes=0, hats=0, buttons=0, balls=0):
 
 @memoize
 def get_controller_instance(name):
-    #print("get_controller_instance")
-    #name = name.upper()
-    #instances = {}
-    #for ext in pyapp.ext.ExtensionHook(
+    # print("get_controller_instance")
+    # name = name.upper()
+    # instances = {}
+    # for ext in pyapp.ext.ExtensionHook(
     #        "exthook:no.fengestad.input/device"):
     #    klass = ext.object
     #    print(klass)
@@ -75,7 +70,7 @@ def get_controller_instance(name):
     #    #    print(name)
     #    #    instances[name.upper()] = instance
     #    return instance
-    #print("no input device class found")
+    # print("no input device class found")
     return None
 
 
@@ -87,7 +82,7 @@ class InputHandler(object):
     current_button = None
     repeat_info = None
     repeatable_buttons = ["UP", "DOWN", "LEFT", "RIGHT", "BACK"]
-    #last_joystick_count = 0
+    # last_joystick_count = 0
     joysticks = []
     axis_status = {}
     first_init = True
@@ -105,7 +100,7 @@ class InputHandler(object):
                 key = Keyboard.key(event)
             except Exception:
                 traceback.print_exc()
-                #print(repr(e))
+                # print(repr(e))
                 return None, None
             try:
                 button, device_id = cls.key_table[key.name]
@@ -113,18 +108,18 @@ class InputHandler(object):
                 traceback.print_exc()
                 return None, None
 
-            #if button:
-            #    #cls.last_device = "KEYBOARD #1"
-            #    cls.last_device = device_id
-            #print("get_virtual_button", button, cls.last_device)
+            # if button:
+            #     #cls.last_device = "KEYBOARD #1"
+            #     cls.last_device = device_id
+            # print("get_virtual_button", button, cls.last_device)
             return button, device_id
         elif event["type"] in ["joy-button-down", "joy-button-up",
                                "joy-axis-motion", "joy-hat-motion"]:
             if event["type"] == "joy-axis-motion":
                 # print(event)
-                #if event.value > -0.5 and event.value < 0.5:
-                #    return None
-                #sign = "-" if event.value < 0 else "+"
+                # if event.value > -0.5 and event.value < 0.5:
+                #     return None
+                # sign = "-" if event.value < 0 else "+"
                 sign = "neg" if event["state"] < 0 else "pos"
                 cfg_name = "axis_{0}_{1}".format(event["axis"], sign)
             elif event["type"] == "joy-hat-motion":
@@ -143,17 +138,17 @@ class InputHandler(object):
             else:
                 cfg_name = "button_{0}".format(event["button"])
 
-            #try:
-            #    joystick = cls.joysticks[event["device"]]
-            #except IndexError:
-            #    return None, None
-            #print(joystick)
-            #controller = get_controller_instance(joystick.name)
-            #if controller is None:
-            #    return None
-            ##klass.get_
-            #config = controller.get_config()
-            #config_inv = controller.get_config_inverted()
+            # try:
+            #     joystick = cls.joysticks[event["device"]]
+            # except IndexError:
+            #     return None, None
+            # print(joystick)
+            # controller = get_controller_instance(joystick.name)
+            # if controller is None:
+            #     return None
+            # #klass.get_
+            # config = controller.get_config()
+            # config_inv = controller.get_config_inverted()
 
             config = cls.get_controller_config(event["device"])
             if config is None:
@@ -165,7 +160,7 @@ class InputHandler(object):
             except KeyError:
                 return None, None
 
-            #print(button)
+            # print(button)
             if button == "START":
                 combine = "SELECT"
             elif button == "SELECT":
@@ -273,8 +268,8 @@ class InputHandler(object):
         elif event["type"] == "joy-axis-motion":
             virtual_button, device_id = cls.get_virtual_button(event)
             axis_name = "%d_%d" % (event["device"], event["axis"])
-            #if event.axis == 6:
-            #    print(axis_name, virtual_button, event.value)
+            # if event.axis == 6:
+            #     print(axis_name, virtual_button, event.value)
             if event["state"] < -0.66 * 32768:
                 if cls.axis_status.setdefault(axis_name, 0) != -1:
                     cls.axis_status[axis_name] = -1
@@ -285,7 +280,7 @@ class InputHandler(object):
                     down_event = True
             elif -0.33 * 32768 < event["state"] < 0.33 * 32768:
                 if cls.axis_status.setdefault(axis_name, 0) != 0:
-                    #print("axis status", cls.axis_status[axis_name])
+                    # print("axis status", cls.axis_status[axis_name])
                     cls.axis_status[axis_name] = 0
                     up_event = True
         elif event["type"] == "joy-device-added":
@@ -294,17 +289,17 @@ class InputHandler(object):
             return
         if down_event:
             if virtual_button:
-                #print(virtual_button, down_event, up_event)
+                # print(virtual_button, down_event, up_event)
                 cls.current_button = virtual_button
                 if virtual_button in cls.repeatable_buttons:
                     t = time.time()
                     cls.repeat_info = [virtual_button, t, t]
-                #cls.last_device_id = device_id
+                # cls.last_device_id = device_id
                 cls.last_device = device_id
                 # print("last device is", device_id)
         elif up_event:
             if virtual_button:
-                #print("up event", event)
+                # print("up event", event)
                 cls.repeat_info = None
 
     @classmethod
@@ -333,8 +328,8 @@ class InputHandler(object):
 
     @classmethod
     def add_event(cls, event):
-        #if event["type"] == "text":
-        #    cls.text_events.append(event)
+        # if event["type"] == "text":
+        #     cls.text_events.append(event)
         cls.event_queue.append(event)
 
     @classmethod

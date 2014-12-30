@@ -18,22 +18,16 @@
 Game Runner for DOS.
 
 """
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import io
 import json
-import shutil
 import hashlib
 from fsbc.path import str_path
 from fsbc.system import windows
 from fsgs.runner import GameRunner
 
 
-#noinspection PyAttributeOutsideInit
+# noinspection PyAttributeOutsideInit
 class DOSRunner(GameRunner):
 
     def prepare(self):
@@ -55,8 +49,8 @@ class DOSRunner(GameRunner):
         drives_added = set()
         dir_path = self.drives_dir.path
         for file_entry in file_list:
-            #if self.stop_flag:
-            #    return
+            # if self.stop_flag:
+            #     return
             name = file_entry["name"].upper()
             drives_added.add(name[0])
 
@@ -66,11 +60,11 @@ class DOSRunner(GameRunner):
             rel_path = name
             print("rel_path", rel_path)
             rel_parts = rel_path.split("/")
-            #for i, part in enumerate(rel_parts):
-            #    # part can be blank if rel_parts is a directory
-            #    # (ending with /)
-            #    if part:
-            #        rel_parts[i] = amiga_filename_to_host_filename(part)
+            # for i, part in enumerate(rel_parts):
+            #     # part can be blank if rel_parts is a directory
+            #     # (ending with /)
+            #     if part:
+            #         rel_parts[i] = amiga_filename_to_host_filename(part)
             rel_path = "/".join(rel_parts)
 
             dst_file = os.path.join(dir_path, rel_path)
@@ -123,8 +117,8 @@ class DOSRunner(GameRunner):
 
         f.write("\n[autoexec]\n")
         f.write("@echo off\n")
-        #for drive, drive_path in self.drives:
-        #    pass
+        # for drive, drive_path in self.drives:
+        #     pass
         for name in os.listdir(self.drives_dir.path):
             if name in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
                 if name in "DEF":
@@ -135,8 +129,8 @@ class DOSRunner(GameRunner):
                             os.path.join(self.drives_dir.path, name)))
         f.write("C:\n")
         f.write("CLS\n")
-        #for i in range(25):
-        #    f.write("echo.\n")
+        # for i in range(25):
+        #     f.write("echo.\n")
         for command in self.config["hd_startup"].split(";"):
             command = command.strip()
             f.write("{0}\n".format(command))

@@ -1,8 +1,4 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+from fsbc.util import unused
 from fsgs.Database import Database
 import fsui as fsui
 
@@ -13,8 +9,8 @@ class GameListView(fsui.ListView):
         fsui.ListView.__init__(self, parent)
         self.items = []
 
-    def on_select_item(self):
-        index = self.get_index()
+    def on_select_item(self, index):
+        # index = self.get_index()
         database = Database.get_instance()
         info = database.get_game_info(self.items[index][0])
         self.set_game_info(info)
@@ -24,9 +20,11 @@ class GameListView(fsui.ListView):
         self.set_item_count(len(self.items))
 
     def on_get_item_text(self, row, column):
+        unused(column)
         return self.items[row][1]
 
     def on_get_item_tooltip(self, row, column):
+        unused(column)
         return self.items[row][1]
 
     def search(self, search):

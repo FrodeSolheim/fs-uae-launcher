@@ -6,8 +6,6 @@ import weakref
 import threading
 import traceback
 # import hashlib
-
-import six
 # from fsbc.task import current_task
 from fsgs.Archive import Archive
 from fsbc.util import unused
@@ -86,7 +84,7 @@ class FileContext(BaseContext):
             return Archive(uri).open(uri)
 
     def open(self, uri, prefer_path=False):
-        while isinstance(uri, six.string_types):
+        while isinstance(uri, str):
             uri = self.convert_uri(uri, prefer_path=prefer_path)
         if prefer_path and isinstance(uri, File):
             # is a path
@@ -197,7 +195,7 @@ class FileContext(BaseContext):
             print("removing existing file", dst)
             os.remove(dst)
 
-        if isinstance(ifs, six.string_types):
+        if isinstance(ifs, str):
             # we got a direct path
             try:
                 os.link(ifs, dst)

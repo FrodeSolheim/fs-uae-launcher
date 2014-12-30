@@ -57,14 +57,14 @@ class Texture(object):
     sidebar_background_shadow = None
 
     def __init__(self, name, target=gl.GL_TEXTURE_2D, **kwargs):
-        #print(repr(type(name)))
-        #if isinstance(name, (int, long)):
+        # print(repr(type(name)))
+        # if isinstance(name, (int, long)):
         if isinstance(name, int):
             self.size = kwargs["size"]
             self.texture = name
         else:
             self.size = [0, 0]
-            #print(name, kwargs)
+            # print(name, kwargs)
             out_data = {}
             self.texture = self.from_resource(
                 name, target=target, size=self.size, out_data=out_data,

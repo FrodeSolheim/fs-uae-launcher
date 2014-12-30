@@ -115,7 +115,7 @@ def check_setting(name):
 
 def main():
     global main_window, g_callbacks
-    #import logging; logging.shutdown(); import sys; sys.exit()
+    # import logging; logging.shutdown(); import sys; sys.exit()
     print("Fengestad Game System...")
     application = Application()
     fs_width, fs_height = fsui.get_screen_size()
@@ -149,7 +149,7 @@ def main():
         use_fullscreen_window = True
         app.settings["fs-uae:fullscreen-mode::default"] = "window"
     else:
-        #app.settings["fs-uae:fullscreen-mode::default"] = "window"
+        # app.settings["fs-uae:fullscreen-mode::default"] = "window"
         pass
 
     if check_setting("fullscreen"):
@@ -181,9 +181,9 @@ def main():
     app.settings["game-center:top-logo"] = "1" if use_top_logo else "0"
 
     if macosx and use_fullscreen and use_fullscreen_window:
-        #noinspection PyUnresolvedReferences
+        # noinspection PyUnresolvedReferences
         import objc
-        #noinspection PyUnresolvedReferences
+        # noinspection PyUnresolvedReferences
         from Foundation import NSBundle
         bundle = NSBundle.bundleWithPath_(
             "/System/Library/Frameworks/Carbon.framework")
@@ -191,11 +191,11 @@ def main():
             bundle, globals(), (("SetSystemUIMode", b"III", ""),))
         # kUIModeAllHidden = 3
         # kUIOptionAutoShowMenuBar = 1 << 0
-        #noinspection PyUnresolvedReferences
+        # noinspection PyUnresolvedReferences
         SetSystemUIMode(3, 1 << 0)
 
     from game_center.qtui.qtwindow import QtWindow
-    #main_window = QtWindow(timer_callback, 16)
+    # main_window = QtWindow(timer_callback, 16)
     g_callbacks = Callbacks()
     main_window = QtWindow(g_callbacks, 16)
     g_callbacks.set_window(main_window)
@@ -204,10 +204,10 @@ def main():
         # must move the cursor after the window is created
         if cursor_position is not None:
             QCursor.setPos(cursor_position[0], cursor_position[1])
-            #os.environ["FSGS_RETURN_CURSOR_TO"] = "{0},{1}".format(
-            #    cursor_position[0], cursor_position[1])
+            # os.environ["FSGS_RETURN_CURSOR_TO"] = "{0},{1}".format(
+            #     cursor_position[0], cursor_position[1])
 
-    #main_window.show()
+    # main_window.show()
     if use_fullscreen:
         # fs_width += 1
         main_window.resize(fs_width, fs_height)
@@ -224,7 +224,7 @@ def main():
             main_window.setWindowFlags(
                 main_window.windowFlags() | Qt.FramelessWindowHint)
             main_window.show()
-            #main_window.activateWindow()
+            # main_window.activateWindow()
         else:
             main_window.showFullScreen()
     else:
@@ -241,8 +241,8 @@ def main():
         os.environ["FSGS_RETURN_CURSOR_TO"] = "{0},{1}".format(
             cursor_position[0], cursor_position[1])
 
-    #main_window.setTim
-    #main_loop_iteration
+    # main_window.setTim
+    # main_loop_iteration
 
     application.run()
     print("application.run returned")

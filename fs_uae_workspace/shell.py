@@ -1,10 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from weakref import WeakValueDictionary
 from fs_uae_workspace.vfs import get_vfs_item
+
 
 window_uris = WeakValueDictionary()
 # window_uris = {}
@@ -61,7 +57,7 @@ def shell_open(uri, args=None, parent=None, center=None):
             fsui.default_window_center.pop()
 
 
-#noinspection PyPep8Naming
+# noinspection PyPep8Naming
 def SimpleApplication(window_class):
 
     def application(uri, args):
@@ -74,4 +70,5 @@ def SimpleApplication(window_class):
     return application
 
 
+# noinspection PyUnresolvedReferences
 from .window import Window, QWindow

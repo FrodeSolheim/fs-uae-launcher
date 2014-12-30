@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from .IRC import IRC
 from .IRCColor import IRCColor
 from .IRCBroadcaster import IRCBroadcaster
@@ -97,7 +92,7 @@ class Channel:
         IRCBroadcaster.broadcast(
             "part", {"channel": self.name, "nick": nick})
         if nick not in self.nicks:
-            #print("Channel.parted - warning, nick not in list", nick)
+            # print("Channel.parted - warning, nick not in list", nick)
             pass
         else:
             self.nicks.remove(nick)
@@ -151,7 +146,7 @@ class Channel:
             if nick in self.nicks:
                 print("Channel.joined - warning, nick already in list", nick)
             else:
-                #self.nicks.add(nick)
+                # self.nicks.add(nick)
                 self.add_nick(nick)
         IRCBroadcaster.broadcast("nick_list", {"channel": self.name})
 
@@ -198,15 +193,15 @@ class Channel:
     def on_namreply(self, nicks):
         for nick in nicks:
             if nick.startswith('@'):
-                #self.nicks.add(nick[1:])
+                # self.nicks.add(nick[1:])
                 self.ops.add(nick[1:])
                 self.add_nick(nick[1:])
             elif nick.startswith('+'):
-                #self.nicks.add(nick[1:])
+                # self.nicks.add(nick[1:])
                 self.voices.add(nick[1:])
                 self.add_nick(nick[1:])
             else:
-                #self.nicks.add(nick)
+                # self.nicks.add(nick)
                 self.add_nick(nick)
         IRCBroadcaster.broadcast("nick_list", {"channel": self.name})
 

@@ -1,10 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from itertools import combinations
-
-import six
 import os
 import re
 import unicodedata
@@ -57,7 +50,7 @@ class GameNameUtil(object):
 
     @classmethod
     def create_cmp_name(cls, name):
-        name = six.text_type(name)
+        name = str(name)
         decomposed = unicodedata.normalize('NFD', name)
         cmpname = []
         for c in decomposed.lower():
@@ -134,16 +127,17 @@ class GameNameUtil(object):
     @classmethod
     def find_number(cls, name):
         # find medium number, if any
-        #number = None
+
+        # number = None
         lname = name.lower()
         for prefix in 'reel', 'disk', 'cd':
-            #print(prefix)
+            # print(prefix)
             pprefix = '(' + prefix + ' '
             index = lname.find(pprefix)
-            #print(index)
+            # print(index)
             if index >= 0:
                 rname = lname[index+len(pprefix):].strip()
-                #print(rname)
+                # print(rname)
                 num = ''
                 onlydigits = True
                 for c in rname:
@@ -157,7 +151,7 @@ class GameNameUtil(object):
                 if not num:
                     pass
                 elif onlydigits:
-                    #number = int(num)
+                    # number = int(num)
                     return int(num)
                 else:
                     num = num.lower()
@@ -185,8 +179,8 @@ class GameNameUtil(object):
                         return 1 + ord(num) - ord('a')
                     else:
                         return num
-                #print(' ----------- ', rname, '---', num, number)
-        #return number
+                # print(' ----------- ', rname, '---', num, number)
+        # return number
 
     @classmethod
     def strip_number(cls, name):
@@ -202,7 +196,7 @@ class GameNameUtil(object):
         # remove 'track x' from multi-part bin files
         name = re.sub('\\([Tt][Tr][Aa][Cc][Kk][^)]*\\)', '', name)
         # remove 'xxx disk' from name
-        #name = re.sub('\\([^\\(]* [Dd][Ii][Ss][Kk]\\)', '', name)
+        # name = re.sub('\\([^\\(]* [Dd][Ii][Ss][Kk]\\)', '', name)
         return name
 
     @classmethod
@@ -223,43 +217,43 @@ class GameNameUtil(object):
                     break
 
         if not primary and name.endswith(".ipf"):
-            usename = name.replace("Disc", "Disk")
+            use_name = name.replace("Disc", "Disk")
 
-            #if "ProgramDisc" in name:
-            #    primary = "Program Disk"
-            #if "ProgramDisk" in name:
-            #    primary = "Program Disk"
-            #elif "DataDisc" in name:
-            #    primary = "Data Disk"
-            #elif "DataDisk" in name:
-            #    primary = "Data Disk"
+            # if "ProgramDisc" in name:
+            #     primary = "Program Disk"
+            # if "ProgramDisk" in name:
+            #     primary = "Program Disk"
+            # elif "DataDisc" in name:
+            #     primary = "Data Disk"
+            # elif "DataDisk" in name:
+            #     primary = "Data Disk"
             if not primary:
                 for i in range(30, -1, -1):
                     n = "disk" + str(i)
-                    if n in usename.lower().replace(" ", ""):
+                    if n in use_name.lower().replace(" ", ""):
                         primary = "Disk " + str(i)
                         break
             if not primary:
-                fname, ext = os.path.splitext(usename)
+                fname, ext = os.path.splitext(use_name)
                 label = fname.split("_")[-1]
                 label = label.replace("Disk", " Disk ")
                 label = label.replace("  ", " ").strip()
                 primary = label
 
-            #if not primary:
-            #    raise Exception("unknown IPF name")
+            # if not primary:
+            #     raise Exception("unknown IPF name")
 
         # remove 'disc x' from name
-        #name = re.sub('\\([Dd][Ii][Ss][Cc][^)]*\\)', '', name)
-        # 'reel x' is used by Cinemaware games
-        #name = re.sub('\\([Rr][Ee][Ee][Ll][^)]*\\)', '', name)
-        # remove 'cd x'
-        #name = re.sub('\\([Cc][Dd][^)]*\\)', '', name)
-        # remove 'track x' from multi-part bin files
-        #name = re.sub('\\([Tt][Tr][Aa][Cc][Kk][^)]*\\)', '', name)
-        # remove 'xxx disk' from name
-        #name = re.sub('\\([^\\(]* [Dd][Ii][Ss][Kk]\\)', '', name)
-        #return ""name""
+        # name = re.sub('\\([Dd][Ii][Ss][Cc][^)]*\\)', '', name)
+        #  'reel x' is used by Cinemaware games
+        # name = re.sub('\\([Rr][Ee][Ee][Ll][^)]*\\)', '', name)
+        #  remove 'cd x'
+        # name = re.sub('\\([Cc][Dd][^)]*\\)', '', name)
+        #  remove 'track x' from multi-part bin files
+        # name = re.sub('\\([Tt][Tr][Aa][Cc][Kk][^)]*\\)', '', name)
+        #  remove 'xxx disk' from name
+        # name = re.sub('\\([^\\(]* [Dd][Ii][Ss][Kk]\\)', '', name)
+        # return ""name""
 
         if not primary:
             primary = "Game Disk"
@@ -268,23 +262,23 @@ class GameNameUtil(object):
             primary = m.group(1).strip()
             primary = primary.split("of")[0].strip()
             if m.group(2):
-                #secondary = " (" + m.group(2).strip() + ")"
+                # secondary = " (" + m.group(2).strip() + ")"
                 secondary = " " + m.group(2).strip()
         else:
             secondary = ""
-        #if secondary:
+        # if secondary:
         return "{0}{1}{2}".format(base_name, primary, secondary)
-        #return "{0}{1}".format(base_name, primary)
+        # return "{0}{1}".format(base_name, primary)
 
     @classmethod
     def strip_flags(cls, name):
         name = re.sub('\\[[^\\]]*\\]', '', name)
-        #name = name.replace('(Boot)', '')
+        # name = name.replace('(Boot)', '')
         return name
 
     @classmethod
     def extract_names(cls, path, info={}, style=TOSEC):
-        #game_name = ""
+        # game_name = ""
         config_name = ""
 
         name = os.path.basename(path)
@@ -293,15 +287,16 @@ class GameNameUtil(object):
             print("WARNING: slash (or backslash in extract_names arg:",
                   repr(path))
 
-        #name = path
+        # name = path
+        # print(name)
 
-        #print(name)
         # find real case of file name
-        #if os.path.dirname(path):
-        #    for item in os.listdir(os.path.dirname(path)):
-        #        if os.path.normcase(item) == os.path.normcase(name):
-        #            name = item
-        #            break
+
+        # if os.path.dirname(path):
+        #     for item in os.listdir(os.path.dirname(path)):
+        #         if os.path.normcase(item) == os.path.normcase(name):
+        #             name = item
+        #             break
         name, ext = os.path.splitext(name)
 
         # def ireplace(s, search, replace):
@@ -311,16 +306,17 @@ class GameNameUtil(object):
         #     return s
 
         name = cls.strip_number(name)
-        #name = ireplace(name, '(save disk)', '')
-        #name = ireplace(name, '(intro disk)', '')
+        # name = ireplace(name, '(save disk)', '')
+        # name = ireplace(name, '(intro disk)', '')
 
         # TOSEC naming convention places vx.yy right after name,
         # without paranthesis - put paranthesis around version
-        #print(name)
+
+        # print(name)
         name = re.sub('( v[0-9A-Z][^ ]*) \\(', '(\\1) (', name)
         # also sometimes rXX where XX is the revision
         name = re.sub('( r[0-9A-Z][^ ]*) \\(', '(\\1) (', name)
-        #print("...", name)
+        # print("...", name)
 
         # remove adjacent spaces
         name = re.sub('[ ]+', ' ', name)
@@ -359,20 +355,20 @@ class GameNameUtil(object):
             config_name = config_name.replace('[!]', ' ')
             config_name = config_name.replace(',', ', ')
             config_name = config_name.replace(')', ', ')
-            #config_name = config_name.replace(']', ', ')
+            # config_name = config_name.replace(']', ', ')
             config_name = config_name.replace('(', '')
-            #config_name = config_name.replace('[', '')
+            # config_name = config_name.replace('[', '')
             config_name = config_name.replace(' ,', ',')
             config_name = config_name.strip(' ,')
             config_name = re.sub('[ ]+', ' ', config_name)
         else:
             game_name = name.strip()
-        #if game_name.lower().endswith(', the'):
-        #    game_name = 'The ' + game_name[:-5]
-        #    game_name = game_name.strip()
-        #elif game_name.lower().endswith(', a'):
-        #    game_name = 'A ' + game_name[:-3]
-        #    game_name = game_name.strip()
+        # if game_name.lower().endswith(', the'):
+        #     game_name = 'The ' + game_name[:-5]
+        #     game_name = game_name.strip()
+        # elif game_name.lower().endswith(', a'):
+        #     game_name = 'A ' + game_name[:-3]
+        #     game_name = game_name.strip()
         return game_name, config_name
 
     @classmethod
@@ -385,9 +381,9 @@ class GameNameUtil(object):
 
         new_words = []
         for word in words:
-            #if word.endswith("n'"):
-            #    print("- replacing n' with ng")
-            #    word = word[:-2] + "ng"
+            # if word.endswith("n'"):
+            #     print("- replacing n' with ng")
+            #     word = word[:-2] + "ng"
             print("word:", word)
             letters = [" "]
             for letter in word:
@@ -399,7 +395,8 @@ class GameNameUtil(object):
                 else:
                     c = decomposed
                     # we want to include original punctuation, for now
-                    #letters.append(c)
+
+                    # letters.append(c)
                     if c in "abcdefghijklmnopqrstuvwxyz0123456789+":
                         letters.append(c)
                     else:
@@ -559,8 +556,8 @@ normalize_words = {
     "miss": ["ms"],
     "television": ["tv"],
 }
-for i in range(1980, 2000):
-    normalize_words[str(i - 1900)] = [str(i)]
+for _year_i in range(1980, 2000):
+    normalize_words[str(_year_i - 1900)] = [str(_year_i)]
 
 
 class TestGameNameUtil(unittest.TestCase):
@@ -735,6 +732,7 @@ class TestGameNameUtil(unittest.TestCase):
             GameNameUtil.extract_index_terms("Alien 3")
             .issuperset(
                 GameNameUtil.extract_search_terms("Alien\u00b3")))
+
 
 if __name__ == "__main__":
     unittest.main()

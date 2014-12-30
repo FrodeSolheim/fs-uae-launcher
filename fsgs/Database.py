@@ -1,17 +1,12 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import re
 from fsbc.Application import app
 from fsgs.BaseDatabase import BaseDatabase
 from fsgs.FSGSDirectories import FSGSDirectories
-
 import threading
-thread_local = threading.local()
 
+
+thread_local = threading.local()
 VERSION = 23
 RESET_VERSION = 22
 QUOTED_TERMS_RE = re.compile("[\"].*?[\"]")
@@ -135,9 +130,9 @@ class Database(BaseDatabase):
 
     def find_local_configurations(self):
         cursor = self.internal_cursor()
-        #query = "SELECT id, path FROM configuration WHERE path like ?"
-        #args = ["$BASE/Configurations/%"]
-        #self._cursor.execute(query, args)
+        # query = "SELECT id, path FROM configuration WHERE path like ?"
+        # args = ["$BASE/Configurations/%"]
+        # self._cursor.execute(query, args)
         a = "$/Configurations/"
         b = "$/Configurations" + "\u0030"  # one more than forward slash
         query = "SELECT id, path FROM game WHERE " \
@@ -282,35 +277,35 @@ class Database(BaseDatabase):
     def find_file(self, name="", sha1="", path="", result=None):
         cursor = self.internal_cursor()
         if sha1:
-            #print("xxx", repr(sha1))
-            #import traceback
-            #traceback.print_stack()
-            #print("check sha1")
+            # print("xxx", repr(sha1))
+            # import traceback
+            # traceback.print_stack()
+            # print("check sha1")
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size FROM file "
                 "WHERE sha1 = ? LIMIT 1", (sha1,))
         elif name:
-            #print("check name")
+            # print("check name")
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size FROM file "
                 "WHERE name = ? COLLATE NOCASE LIMIT 1", (name.lower(),))
         else:
             path = self.encode_path(path)
-            #print(path)
-            #path = six.text_type(path)
-            #print("SELECT path, sha1, mtime, size FROM file "
-            #        "WHERE path = '{0}' LIMIT 1".format(path))
-            #self._cursor.execute("SELECT count(*) FROM file "
-            #        "WHERE lower(path) = ?", (path.lower(),))
+            # print(path)
+            # path = six.text_type(path)
+            # print("SELECT path, sha1, mtime, size FROM file "
+            #         "WHERE path = '{0}' LIMIT 1".format(path))
+            # self._cursor.execute("SELECT count(*) FROM file "
+            #         "WHERE lower(path) = ?", (path.lower(),))
 
-            #self._cursor.execute("SELECT * FROM file LIMIT 1 OFFSET 100")
-            #print(self._cursor.fetchall())
+            # self._cursor.execute("SELECT * FROM file LIMIT 1 OFFSET 100")
+            # print(self._cursor.fetchall())
 
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size FROM file "
                 "WHERE path = ? LIMIT 1", (path,))
         row = cursor.fetchone()
-        #print("---------", row)
+        # print("---------", row)
         if row:
             path = self.decode_path(row[1])
             if result is not None:
@@ -336,8 +331,8 @@ class Database(BaseDatabase):
             name = os.path.basename(path)
         path = self.encode_path(path)
 
-        #print("adding path", path)
-        #p, name = os.path.split(path)
+        # print("adding path", path)
+        # p, name = os.path.split(path)
         cursor.execute(
             "INSERT INTO file (path, sha1, mtime, size, "
             "md5, crc32, name, scan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -356,7 +351,7 @@ class Database(BaseDatabase):
             "work_rating, sort_key) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "
             "?, ?)",
             (path, name, scan, search, uuid, data, type, reference,
-            like_rating, work_rating, sort_key))
+             like_rating, work_rating, sort_key))
 
     # def ensure_game_configuration(self, uuid, name, sort_key, scan=0, type=1):
     #     cursor = self.internal_cursor()
@@ -416,10 +411,10 @@ class Database(BaseDatabase):
     #     cursor = self.internal_cursor()
     #     cursor.execute("DELETE FROM configuration WHERE scan != ?", (scan,))
 
-    #def remove_unscanned_games(self, scan):
-    #    self.init()
-    #    self._cursor.execute("DELETE FROM game WHERE scan != ?",
-    #            (scan,))
+    # def remove_unscanned_games(self, scan):
+    #     self.init()
+    #     self._cursor.execute("DELETE FROM game WHERE scan != ?",
+    #             (scan,))
 
     def get_variant_for_list_and_game(self, list_uuid, game_uuid):
         cursor = self.internal_cursor()
@@ -493,9 +488,9 @@ class Database(BaseDatabase):
                 continue
             if term:
                 # searching for quoted terms with space won't generally work
-                #if " " in term:
-                #    #additional_clauses.append(" AND search like ?")
-                #    #additional_args.append("%" + term + "%")
+                # if " " in term:
+                #     #additional_clauses.append(" AND search like ?")
+                #     #additional_args.append("%" + term + "%")
                 if exact_term:
                     query += (" INNER JOIN search_term as st{0} ON "
                               "game.id = st{0}.game AND "
@@ -530,43 +525,43 @@ class Database(BaseDatabase):
         cursor.execute(query, args)
         return cursor.fetchall()
 
-    #def add_game_new(self, uuid, name, platform, year, publisher, front_image,
-    #                 title_image, screen1_image, screen2_image, screen3_image,
-    #                 screen4_image, screen5_image, sort_key, scanned=0):
-    #    cursor = self.internal_cursor()
-    #    cursor.execute(
-    #        "SELECT * FROM game WHERE uuid = ? "
-    #        "AND name = ? AND platform = ? AND year = ? "
-    #        "AND publisher = ? AND front_image = ? AND title_image = ? "
-    #        "AND screen1_image = ? AND screen2_image = ? "
-    #        "AND screen3_image = ? AND screen4_image = ? "
-    #        "AND screen5_image = ? AND sort_key = ? AND scanned = ?",
-    #        (uuid, name, platform, year, publisher, front_image,
-    #        title_image, screen1_image, screen2_image, screen3_image,
-    #        screen4_image, screen5_image, sort_key, scanned))
-    #    row = cursor.fetchone()
-    #    if row is None:
-    #        cursor.execute("DELETE from game WHERE uuid = ?", (uuid,))
-    #        cursor.execute(
-    #            "INSERT INTO game(uuid, name, "
-    #            "platform, year, publisher, front_image, title_image, "
-    #            "screen1_image, screen2_image, screen3_image, "
-    #            "screen4_image, screen5_image, sort_key, scanned) "
-    #            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    #            (uuid, name, platform, year, publisher, front_image,
-    #            title_image, screen1_image, screen2_image, screen3_image,
-    #            screen4_image, screen5_image, sort_key, scanned))
+    # def add_game_new(self, uuid, name, platform, year, publisher, front_image,
+    #                  title_image, screen1_image, screen2_image, screen3_image,
+    #                  screen4_image, screen5_image, sort_key, scanned=0):
+    #     cursor = self.internal_cursor()
+    #     cursor.execute(
+    #         "SELECT * FROM game WHERE uuid = ? "
+    #         "AND name = ? AND platform = ? AND year = ? "
+    #         "AND publisher = ? AND front_image = ? AND title_image = ? "
+    #         "AND screen1_image = ? AND screen2_image = ? "
+    #         "AND screen3_image = ? AND screen4_image = ? "
+    #         "AND screen5_image = ? AND sort_key = ? AND scanned = ?",
+    #         (uuid, name, platform, year, publisher, front_image,
+    #         title_image, screen1_image, screen2_image, screen3_image,
+    #         screen4_image, screen5_image, sort_key, scanned))
+    #     row = cursor.fetchone()
+    #     if row is None:
+    #         cursor.execute("DELETE from game WHERE uuid = ?", (uuid,))
+    #         cursor.execute(
+    #             "INSERT INTO game(uuid, name, "
+    #             "platform, year, publisher, front_image, title_image, "
+    #             "screen1_image, screen2_image, screen3_image, "
+    #             "screen4_image, screen5_image, sort_key, scanned) "
+    #             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    #             (uuid, name, platform, year, publisher, front_image,
+    #             title_image, screen1_image, screen2_image, screen3_image,
+    #             screen4_image, screen5_image, sort_key, scanned))
 
-    #def add_game_variant_new(
-    #        self, uuid="", name="", game_uuid="", like_rating=0,
-    #        work_rating=0, scanned=0):
-    #    cursor = self.internal_cursor()
-    #    query = "INSERT INTO game_variant(uuid, name, game_uuid, " \
-    #            "like_rating, work_rating, scanned) VALUES " \
-    #            "(?, ?, ?, ?, ?, ?)"
-    #    args = (uuid, name, game_uuid, like_rating, work_rating, scanned)
-    #    cursor.execute(query, args)
-    #    return cursor.fetchall()
+    # def add_game_variant_new(
+    #         self, uuid="", name="", game_uuid="", like_rating=0,
+    #         work_rating=0, scanned=0):
+    #     cursor = self.internal_cursor()
+    #     query = "INSERT INTO game_variant(uuid, name, game_uuid, " \
+    #             "like_rating, work_rating, scanned) VALUES " \
+    #             "(?, ?, ?, ?, ?, ?)"
+    #     args = (uuid, name, game_uuid, like_rating, work_rating, scanned)
+    #     cursor.execute(query, args)
+    #     return cursor.fetchall()
 
     def get_ratings_for_game(self, game_uuid):
         cursor = self.internal_cursor()

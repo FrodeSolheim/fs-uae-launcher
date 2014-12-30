@@ -1,9 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import traceback
+from fsbc.util import unused
 from fsui.qt import Qt, QWidget, QPainter
 from .Widget import Widget
 
@@ -11,13 +7,16 @@ from .Widget import Widget
 class Panel(QWidget, Widget):
 
     def __init__(self, parent, paintable=False):
+        unused(paintable)
         QWidget.__init__(self, parent.get_container())
         self.init_widget(parent)
+        self.layout = None
+        self._painter = None
 
-        #QWidget.__init__(self)
-        #self.setParent(parent.get_container())
-        #super(Panel, self).__init__(parent.get_container())
-        #super().__init__()
+        # QWidget.__init__(self)
+        # self.setParent(parent.get_container())
+        # super(Panel, self).__init__(parent.get_container())
+        # super().__init__()
         self.move(0, 2000)
         self.setAutoFillBackground(True)
 
@@ -42,9 +41,9 @@ class Panel(QWidget, Widget):
         return DrawingContext(self._painter)
 
     def paintEvent(self, event):
-        #if not self._paintable:
-        #    #dc = wx.PaintDC(self)
-        #    return
+        # if not self._paintable:
+        #     #dc = wx.PaintDC(self)
+        #     return
         
         self._painter = QPainter(self)
         self._painter.setRenderHint(QPainter.Antialiasing)

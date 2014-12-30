@@ -1,13 +1,7 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsbc.desktop import open_url_in_browser
 from fsgs.ogd.client import OGDClient
-from fsui import Image, Panel, Color
+from fsui import Image, Panel
 from ...Config import Config
-from ...I18N import _
 from ..Skin import Skin
 
 
@@ -19,7 +13,7 @@ class WebButton(Panel):
         else:
             self.icon = Image("fs_uae_launcher:res/16/world.png")
         Panel.__init__(self, parent, paintable=True)
-        #self.set_tooltip(tooltip)
+        # self.set_tooltip(tooltip)
         Config.add_listener(self)
         self.on_config("variant_rating", "")
 
@@ -50,15 +44,15 @@ class WebButton(Panel):
             if value:
                 if not self.is_enabled():
                     self.enable()
-                    #self.refresh()
+                    # self.refresh()
                     self.show()
                     self.set_hand_cursor()
             else:
                 if self.is_enabled():
                     self.disable()
                     self.hide()
-                    #self.refresh()
-                    #self.set_default_cursor()
+                    # self.refresh()
+                    # self.set_default_cursor()
 
     def on_paint(self):
         dc = self.create_dc()

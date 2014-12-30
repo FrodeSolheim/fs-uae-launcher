@@ -1,14 +1,10 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsgs.platform import PlatformHandler
 from fsgs.mednafen.lynx import LynxRunner
 from .loader import SimpleLoader
 
 
 class LynxPlatformHandler(PlatformHandler):
+
     PLATFORM_NAME = "Lynx"
 
     def __init__(self):

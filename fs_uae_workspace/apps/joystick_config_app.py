@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import io
 import threading
@@ -10,20 +5,12 @@ import traceback
 import weakref
 import subprocess
 from fsbc.Application import Application
-from fsbc.configparser import ConfigParser
-from fsbc.system import platform, windows
+from configparser import ConfigParser
+from fsbc.system import platform
 from fs_uae_launcher.DeviceManager import DeviceManager
 from fsgs.amiga.FSUAEDeviceHelper import FSUAEDeviceHelper
 import fsui
-
-if windows:
-    # noinspection PyUnresolvedReferences
-    from win32com.shell import shell, shellcon
-    # noinspection PyUnresolvedReferences
-    import win32api
-
 from fsgs.FSGSDirectories import FSGSDirectories
-from fs_uae_launcher.I18N import _
 from fs_uae_workspace.shell import register_window, raise_window
 
 HAT_UP = 0x01
@@ -90,7 +77,7 @@ class Button(fsui.Panel):
 
     def on_paint(self):
         dc = self.create_dc()
-        dc.set_font(self.get_font()) # SetFont(self.GetFont())
+        dc.set_font(self.get_font())  # SetFont(self.GetFont())
         if self.text:
             text = self.text
             dc.set_text_color(fsui.Color(0x00, 0x80, 0x00))
@@ -132,8 +119,8 @@ class JoystickConfigWindow(fsui.Window):
         existing_config = {}
         if config_file is not None:
             try:
-                with io.open(config_file, "r", encoding="UTF-8") as f:
-                    parser.readfp(f)
+                with open(config_file, "r", encoding="UTF-8") as f:
+                    parser.read_file(f)
                 if parser.has_section("default"):
                     for key in parser.options("default"):
                         value = parser.get("default", key)
@@ -220,8 +207,8 @@ class JoystickConfigWindow(fsui.Window):
                 if state[key] and state[key] != self.initial_state[key]:
                     self.set_result(key)
 
-        if self.stopped:
         # if not self.is_shown():
+        if self.stopped:
             return
         # continue timer
         fsui.call_later(100, self.on_timer_callback)
@@ -278,11 +265,13 @@ class JoystickConfigWindow(fsui.Window):
                   "[default]",
                   "include = universal_gamepad"]
 
-        #config.append("# buttons: {0}".format(current_joystick.get_numbuttons()))
-        #config.append("# axes: {0}".format(current_joystick.get_numaxes()))
-        #config.append("# hats: {0}".format(current_joystick.get_numhats()))
-        #config.append("# balls: {0}".format(current_joystick.get_numballs()))
-        #config.append("# platform: {0}".format(platform))
+        # config.append("# buttons: {0}".format(
+        #     current_joystick.get_numbuttons()))
+        # config.append("# axes: {0}".format(
+        #     current_joystick.get_numaxes()))
+        # config.append("# hats: {0}".format(current_joystick.get_numhats()))
+        # config.append("# balls: {0}".format(current_joystick.get_numballs()))
+        # config.append("# platform: {0}".format(platform))
 
         button_config = []
         for i, button in enumerate(BUTTONS):

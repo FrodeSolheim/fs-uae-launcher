@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsbc.Application import app
 from fsgs.res import gettext
 from .base import SynchronizerBase

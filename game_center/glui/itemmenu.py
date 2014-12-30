@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import math
 from game_center.glui.bottombar import render_bottom_bar, render_bottom_bar_transparent
 from game_center.glui.displaylists import DisplayLists
@@ -29,27 +24,27 @@ def render_menu(menu, what=None, skip_center_item=False):
 def _render_menu(menu, what=None, skip_center_item=False):
     if what is None:
         what = ["ITEMS", "SHADOWS"]
-    #print "render menu with", len(menu), "items"
+    # print "render menu with", len(menu), "items"
     position = menu.get_current_position()
-    #selected = menu.get_selected_index()
+    # selected = menu.get_selected_index()
     assert not skip_center_item
 
-    #min_item = 0
-    #max_item = len(menu) - 1
+    # min_item = 0
+    # max_item = len(menu) - 1
     num_items = len(menu)
-    #i_position = min(max_item, int(round(position)))
+    # i_position = min(max_item, int(round(position)))
     i_position = int(round(position))
 
-    #print position, " (", selected, ")"
-    #print "selected", selected
+    # print position, " (", selected, ")"
+    # print "selected", selected
 
-    #glEnable(GL_DEPTH_TEST)
+    # glEnable(GL_DEPTH_TEST)
 
     def get_item_position(ip_distance):
         inverse = ip_distance < 0
         ip_distance = abs(ip_distance)
-        #y = 0.02 - 0.5
-        #y = 0.243
+        # y = 0.02 - 0.5
+        # y = 0.243
         y = 0.293
         z = -3.1
         if ip_distance < 1.0:
@@ -57,8 +52,8 @@ def _render_menu(menu, what=None, skip_center_item=False):
             ip_rotation = -45.0 * ip_distance
             z = z + 0.6 - 0.6 * ip_distance
         else:
-            #x = 0.8 + 0.15 * (ip_distance - 1.0)
-            #x = 0.8 + 0.20 * (ip_distance - 1.0)
+            # x = 0.8 + 0.15 * (ip_distance - 1.0)
+            # x = 0.8 + 0.20 * (ip_distance - 1.0)
             x = 0.8 + 0.33 * (ip_distance - 1.0)
             ip_rotation = -45.0
         if inverse:
@@ -69,24 +64,24 @@ def _render_menu(menu, what=None, skip_center_item=False):
     def yield_render_item_sequence():
         if not skip_center_item:
             yield i_position
-        #if MenuGameTransition.value == 0: #< 0.00001:
-        #for i in range(9, 0, -1):
+        # if MenuGameTransition.value == 0: #< 0.00001:
+        # for i in range(9, 0, -1):
         for i in range(1, 10):
-            #if (i_position - i) >= min_item:
+            # if (i_position - i) >= min_item:
             yield i_position - i
-            #if (i_position + i) <= max_item:
+            # if (i_position + i) <= max_item:
             yield i_position + i
 
     def yield_image_file_sequence():
         for img in menu[i_position % num_items].get_image_files():
             yield img
         for i in range(1, 12):
-            #if (i_position - i) >= min_item:
-            #    for img in menu[i_position - i].get_image_files():
-            #        yield img
-            #if (i_position + i) <= max_item:
-            #    for img in menu[i_position + i].get_image_files():
-            #        yield img
+            # if (i_position - i) >= min_item:
+            #     for img in menu[i_position - i].get_image_files():
+            #         yield img
+            # if (i_position + i) <= max_item:
+            #     for img in menu[i_position + i].get_image_files():
+            #         yield img
             for img in menu[(i_position - i) % num_items].get_image_files():
                 yield img
             for img in menu[(i_position + i) % num_items].get_image_files():
@@ -95,12 +90,12 @@ def _render_menu(menu, what=None, skip_center_item=False):
     item_data = []
     if "ITEMS" in what:
         TextureManager.get().load_images(list(yield_image_file_sequence()))
-        #TextureManager.get().load_textures(1)
+        # TextureManager.get().load_textures(1)
 
         center_item = None
         light1_position = [-1.5, 0.2, -2.3, 1.0]
         light2_position = [-0.5, 2.5, -2.3, 1.0]
-        #glDisable(GL_LIGHT2)
+        # glDisable(GL_LIGHT2)
 
         if LIGHTING:
             glEnable(GL_LIGHTING)
@@ -164,7 +159,7 @@ def _render_menu(menu, what=None, skip_center_item=False):
             item_data.append(("ITEM", menu, item_index, pos, rotation, scale,
                               item.ratio, 1.0, area))
 
-            #reflections.append((item, pos, rotation, width, height, spec * 0.3))
+            # reflections.append((item, pos, rotation, width, height, spec * 0.3))
 
         if not center_item:
             State.center_item = None
@@ -174,22 +169,22 @@ def _render_menu(menu, what=None, skip_center_item=False):
             light2_position[1] = -light2_position[1]
             glLightfv(GL_LIGHT1, GL_POSITION, light1_position)
             glLightfv(GL_LIGHT2, GL_POSITION, light2_position)
-            #glLightfv(GL_LIGHT1, GL_POSITION, (-5.0, -1.5, 1.2, 1.0))
-            #glLightfv(GL_LIGHT2, GL_POSITION, (-0.5, -5.0, 1.2, 1.0))
+            # glLightfv(GL_LIGHT1, GL_POSITION, (-5.0, -1.5, 1.2, 1.0))
+            # glLightfv(GL_LIGHT2, GL_POSITION, (-0.5, -5.0, 1.2, 1.0))
             glMaterialfv(GL_FRONT, GL_DIFFUSE, (0.3, 0.3, 0.3, 0.0))
 
-        #glColor3f(0.3, 0.3, 0.3)
-        #for item, pos, rotation, width, height, spec in reflections:
-        #    #if LIGHTING:
-        #    #    glMaterialfv(GL_FRONT, GL_SPECULAR, (spec, spec, spec, 1.0))
-        #    #else:
-        #    #    glColor4f(0.33, 0.33, 0.33, 0.33)
-        #    #    fs_emu_blending(True)
-        #    glPushMatrix()
-        #    glTranslate(*pos)
-        #    glRotate(rotation, 0.0, 1.0, 0.0)
-        #    item.render(width, height, reflection=True)
-        #    glPopMatrix()
+        # glColor3f(0.3, 0.3, 0.3)
+        # for item, pos, rotation, width, height, spec in reflections:
+        #     #if LIGHTING:
+        #     #    glMaterialfv(GL_FRONT, GL_SPECULAR, (spec, spec, spec, 1.0))
+        #     #else:
+        #     #    glColor4f(0.33, 0.33, 0.33, 0.33)
+        #     #    fs_emu_blending(True)
+        #     glPushMatrix()
+        #     glTranslate(*pos)
+        #     glRotate(rotation, 0.0, 1.0, 0.0)
+        #     item.render(width, height, reflection=True)
+        #     glPopMatrix()
 
         if LIGHTING:
             glDisable(GL_LIGHTING)
@@ -212,7 +207,7 @@ def render_item_gloss(alpha, ratio=1.0, brightness=1.0, area=None):
     glPolygonOffset(0.0, -4.0)
     glEnable(GL_POLYGON_OFFSET_FILL)
     glDepthMask(False)
-    #glBindTexture(GL_TEXTURE_2D, Texture.gloss)
+    # glBindTexture(GL_TEXTURE_2D, Texture.gloss)
     texture = Texture.gloss
     texture.bind()
     area = area or 0.8
@@ -232,15 +227,15 @@ def render_item_gloss(alpha, ratio=1.0, brightness=1.0, area=None):
     glPolygonOffset(0.0, 0.0)
     glDisable(GL_POLYGON_OFFSET_FILL)
     glDepthMask(True)
-    #fs_emu_blending(False)
+    # fs_emu_blending(False)
     if creating_list:
         glEndList()
 
 
 def render_item_shadows(itemdata, front=False, back=True):
     Render.standard_perspective()
-    #glEnable(GL_STENCIL_TEST)
-    #glStencilFunc(GL_EQUAL, 1, 1)
+    # glEnable(GL_STENCIL_TEST)
+    # glStencilFunc(GL_EQUAL, 1, 1)
     if front:
         glPolygonOffset(0.0, -4.0)
         glEnable(GL_POLYGON_OFFSET_FILL)
@@ -261,15 +256,15 @@ def render_item_shadows(itemdata, front=False, back=True):
         render_item_shadow(ratio=ratio, brightness=brightness, area=area)
         glScalef(1.0, -1.0, 1.0)
         glTranslatef(0.0, 0.5, 0.0)
-        #render_item_shadow(ratio=ratio, brightness=brightness * 0.33, area=area)
+        # render_item_shadow(ratio=ratio, brightness=brightness * 0.33, area=area)
         render_item_shadow(ratio=ratio, brightness=brightness, area=area)
         glPopMatrix()
 
     glPolygonOffset(0.0, 0.0)
     glDisable(GL_POLYGON_OFFSET_FILL)
     glDepthMask(True)
-    #fs_emu_blending(False)
-    #glDisable(GL_STENCIL_TEST)
+    # fs_emu_blending(False)
+    # glDisable(GL_STENCIL_TEST)
 
 
 def render_item_shadow(ratio=1.0, brightness=1.0, area=None):

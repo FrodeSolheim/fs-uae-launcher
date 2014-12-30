@@ -1,14 +1,9 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six
 import json
 import sqlite3
 from binascii import unhexlify
 import zlib
 from .BaseDatabase import BaseDatabase
+
 
 VERSION = 17
 RESET_VERSION = 17
@@ -20,8 +15,8 @@ class GameDatabase(BaseDatabase):
     def __init__(self, path):
         BaseDatabase.__init__(self, BaseDatabase.SENTINEL)
         self._path = path
-        #self._connection = None
-        #self._cursor = None
+        # self._connection = None
+        # self._cursor = None
 
     def get_path(self):
         return self._path
@@ -84,7 +79,7 @@ class GameDatabase(BaseDatabase):
     def get_game_values_for_uuid(self, game_uuid, recursive=True):
         print("get_game_values_for_uuid", game_uuid)
         assert game_uuid
-        assert isinstance(game_uuid, six.string_types)
+        assert isinstance(game_uuid, str)
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT id FROM game WHERE uuid = ?",

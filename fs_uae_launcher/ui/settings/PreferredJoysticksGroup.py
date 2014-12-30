@@ -1,21 +1,15 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import os
-import sys
-import subprocess
 import fsui as fsui
-from ...Config import Config
 from ...DeviceManager import DeviceManager
-from ...I18N import _, ngettext
+from ...I18N import gettext
 from ...Settings import Settings
 
-joystick_mode_values = ["nothing", "mouse", "joystick"]
-joystick_mode_titles = [_("Nothing"), _("Mouse"), _("Joystick")]
 
+joystick_mode_values = ["nothing", "mouse", "joystick"]
 joystick_values = ["none", "mouse", "keyboard"]
+
+
+# def get_joystick_mode_titles():
+#     return [gettext("Nothing"), gettext("Mouse"), gettext("Joystick")]
 
 
 class PreferredJoysticksGroup(fsui.Group):
@@ -35,13 +29,13 @@ class PreferredJoysticksGroup(fsui.Group):
         self.layout2 = fsui.VerticalLayout()
         self.layout.add(self.layout2, fill=True, expand=True)
 
-        heading = _("Preferred Joysticks")
+        heading = gettext("Preferred Joysticks")
         label = fsui.HeadingLabel(self, heading)
         self.layout2.add(label)
 
         self.layout2.add_spacer(20)
-        label = fsui.Label(self, _("The following joystick will be "
-                                   "preferred, if present:"))
+        label = fsui.Label(self, gettext("The following joystick will be "
+                                         "preferred, if present:"))
         self.layout2.add(label)
 
         self.layout2.add_spacer(6)
@@ -49,7 +43,8 @@ class PreferredJoysticksGroup(fsui.Group):
         self.layout2.add(selector, fill=True)
 
         self.layout2.add_spacer(20)
-        label = fsui.Label(self, _("Preferred device for secondary joystick:"))
+        label = fsui.Label(
+            self, gettext("Preferred device for secondary joystick:"))
         self.layout2.add(label)
 
         self.layout2.add_spacer(6)
@@ -110,4 +105,4 @@ class PreferredJoystickSelector(fsui.Group):
 
 
 def get_keyboard_title():
-    return _("Cursor Keys and Right Ctrl/Alt")
+    return gettext("Cursor Keys and Right Ctrl/Alt")

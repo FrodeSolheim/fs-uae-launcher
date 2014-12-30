@@ -1,12 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsbc.Application import app
 from game_center.glui.animation import AnimateValueBezier
 from game_center.glui.navigatable import Navigatable
-#from .items import GameCenterItem, HomeItem, AddItem
 from game_center.glui.state import State
 from game_center.glui.topmenu import TopMenu
 
@@ -16,7 +10,7 @@ class Menu(Navigatable):
     def __init__(self, title=""):
         self.navigatable = None
         self.top = TopMenu()
-        #self.top_mode = False
+        # self.top_mode = False
         self.title = title
         self.parent_menu = None
         self.parents = []
@@ -36,12 +30,12 @@ class Menu(Navigatable):
 
     def update_path(self, menu_path):
         # FIXME: UPDATE PATH
-        #return
+        # return
         print("update_path", menu_path)
         if self.use_game_center_item():
             from game_center.glui.items import GameCenterItem
             self.top.append_left(GameCenterItem())
-        #if len(menu_path) > 0:
+        # if len(menu_path) > 0:
         from game_center.glui.items import HomeItem
         self.top.append_left(HomeItem())
         last_index = len(menu_path) - 1
@@ -49,10 +43,10 @@ class Menu(Navigatable):
             if item.path_title or last_index == i:
                 print("adding item", item)
                 self.top.append_left(item)
-                #if last_index == i:
-                #    item.enabled = False
-                #else:
-                #    item.enabled = True
+                # if last_index == i:
+                #     item.enabled = False
+                # else:
+                #     item.enabled = True
 
                 # FIXME: FOR NOW, ALWAYS DISABLE PATH ELEMENTS
                 item.enabled = False
@@ -68,7 +62,7 @@ class Menu(Navigatable):
         from .items import AddItem
         self.top.append_left(AddItem())
         self.set_default_top_selected()
-        #print("FIXME: add_add_item temporarily disabled")
+        # print("FIXME: add_add_item temporarily disabled")
 
     def append(self, item):
         self.items.append(item)
@@ -82,8 +76,8 @@ class Menu(Navigatable):
 
     @property
     def selected_item(self):
-        #if self.top_mode:
-        #    return self.top.selected_item
+        # if self.top_mode:
+        #     return self.top.selected_item
         return self.items[self._selected_index % len(self.items)]
 
     def get_selected_index(self):
@@ -100,7 +94,7 @@ class Menu(Navigatable):
             self.cur_scroll_speed = 0
         self.last_scroll_pos = self.position
         self.last_scroll_time = t
-        #print "speed", self.cur_scroll_speed
+        # print "speed", self.cur_scroll_speed
 
         return self.position
 

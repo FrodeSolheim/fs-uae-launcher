@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import weakref
 from fsui.qt import QDialog, Signal
 
@@ -18,11 +13,11 @@ class LegacyDialog(QDialog):
         self.layout = None
         self.setWindowTitle(title)
 
-        #self.container = wx.Panel(self)
-        #self.container.get_window = self.get_window
-        #self.Bind(wx.EVT_SIZE, self.__resize_event)
-        #self.Bind(wx.EVT_WINDOW_DESTROY, self.__destroy_event)
-        #self.Bind(wx.EVT_CLOSE, self.__close_event)
+        # self.container = wx.Panel(self)
+        # self.container.get_window = self.get_window
+        # self.Bind(wx.EVT_SIZE, self.__resize_event)
+        # self.Bind(wx.EVT_WINDOW_DESTROY, self.__destroy_event)
+        # self.Bind(wx.EVT_CLOSE, self.__close_event)
         self.destroy_listeners = []
         self.close_listeners = []
 
@@ -49,19 +44,19 @@ class LegacyDialog(QDialog):
     def get_container(self):
         return self
 
-    #def show(self):
-    #    self.Show()
+    # def show(self):
+    #     self.Show()
 
-    #def close(self):
-    #    self.Close()
+    # def close(self):
+    #     self.Close()
 
     def show_modal(self):
-        #self.setModal(True)
-        #return self.showModal()
+        # self.setModal(True)
+        # return self.showModal()
         return self.exec_()
 
     def end_modal(self, value):
-        #self.EndModal(value)
+        # self.EndModal(value)
         self.done(value)
 
     def center_on_parent(self):
@@ -77,16 +72,16 @@ class LegacyDialog(QDialog):
         #     ss = self.get_size()
         #     self.move(x - ss[0] // 2, y - ss[1] // 2,)
 
-    #def destroy(self):
-    #    #self.Destroy()
-    #    print("FIXME: Dialog.destroy does nothing")
+    # def destroy(self):
+    #     #self.Destroy()
+    #     print("FIXME: Dialog.destroy does nothing")
 
     def set_title(self, title):
         self.setWindowTitle(title)
 
     def set_size(self, size):
-        #self.SetClientSize(size)
-        #print("FIXME:\n\nDialog.set_size")
+        # self.SetClientSize(size)
+        # print("FIXME:\n\nDialog.set_size")
         self.resize(size[0], size[1])
 
     def on_create(self):

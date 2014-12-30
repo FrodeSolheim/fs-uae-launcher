@@ -1,9 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui
+
 
 volumes = None
 
@@ -11,9 +7,8 @@ volumes = None
 def get_vfs_volumes():
     global volumes
     if volumes is None:
-        volumes = []
-        volumes.append(BuiltinItem(
-            "Workspace", "Workspace:", default_items["Workspace"]))
+        volumes = [BuiltinItem(
+            "Workspace", "Workspace:", default_items["Workspace"])]
     return volumes[:]
 
 
@@ -90,6 +85,7 @@ class VFSVolume(VFSItem):
 class BuiltinItem(VFSItem):
 
     def __init__(self, name, uri, node):
+        VFSItem.__init__(self, uri)
         self._name = name
         self._uri = uri
         self._node = node
@@ -130,6 +126,7 @@ class BuiltinItem(VFSItem):
 class VFSDesktopItem(VFSItem):
 
     def __init__(self):
+        # noinspection PyDictCreation
         self._items = {}
         # self._items["FS-UAE (Old)"] = FSUAEVolume()
 
@@ -142,21 +139,21 @@ class VFSDesktopItem(VFSItem):
 
         self._items["Clock"] = BuiltinItem(
             "Clock", "Workspace:Utilities/Clock",
-                    default_items["Workspace"]["children"]["Utilities"][
-                        "children"]["Clock"])
+            default_items["Workspace"]["children"]["Utilities"][
+                "children"]["Clock"])
         self._items["Language"] = BuiltinItem(
             "Language", "Workspace:Utilities/Language",
-                    default_items["Workspace"]["children"]["Prefs"][
-                        "children"]["Language"])
+            default_items["Workspace"]["children"]["Prefs"][
+                "children"]["Language"])
 
         self._items["ADFCreator"] = BuiltinItem(
             "Language", "Workspace:Tools/ADFCreator",
-                    default_items["Workspace"]["children"]["Tools"][
-                        "children"]["ADFCreator"])
+            default_items["Workspace"]["children"]["Tools"][
+                "children"]["ADFCreator"])
         self._items["HDFCreator"] = BuiltinItem(
             "Language", "Workspace:Tools/HDFCreator",
-                    default_items["Workspace"]["children"]["Tools"][
-                        "children"]["HDFCreator"])
+            default_items["Workspace"]["children"]["Tools"][
+                "children"]["HDFCreator"])
 
         # self._items["Floppies"] = FloppiesVolume()
         # self._items["Configs"] = ConfigsVolume()
@@ -177,12 +174,13 @@ class VFSDesktopItem(VFSItem):
 class FileSystemDirectory(VFSItem):
 
     def __init__(self, uri, path):
-        pass
+        VFSItem.__init__(self, uri)
 
 
 class FileSystemVolume(FileSystemDirectory):
 
     def __init__(self, uri, name, path):
+        VFSItem.__init__(self, uri)
         pass
 
 

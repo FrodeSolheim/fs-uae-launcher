@@ -1,12 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from ...I18N import gettext
 from ...Settings import Settings
-from ...Signal import Signal
 from ...Options import Options
 from ..HelpButton import HelpButton
 
@@ -46,11 +40,13 @@ class OptionUI(object):
                 choice_values.append((option[0], gettext(option[1])))
 
         elif option["type"] == "string":
+
             def on_change():
-                value = text_field.get_text()
-                Settings.set(name, value.strip())
+                val = text_field.get_text()
+                Settings.set(name, val.strip())
+
             text_field = fsui.TextField(group)
-            #text_field.set_min_width(400)
+            # text_field.set_min_width(400)
             text_field.set_text(Settings.get(name))
             text_field.on_change = on_change
             group.layout.add(text_field, expand=True)
@@ -67,7 +63,7 @@ class OptionUI(object):
             current_int = max(option["min"], min(option["max"], current_int))
             check_box = fsui.CheckBox(group, gettext("Default"))
             spin_ctrl = fsui.SpinCtrl(group, option["min"],
-                    option["max"], current_int)
+                                      option["max"], current_int)
             if current == "":
                 check_box.check()
                 spin_ctrl.disable()
@@ -83,9 +79,9 @@ class OptionUI(object):
             check_box.on_change = on_checkbox
 
             def on_spin():
-                value = spin_ctrl.get_value()
-                value = max(option["min"], min(option["max"], value))
-                Settings.set(name, str(value))
+                val = spin_ctrl.get_value()
+                val = max(option["min"], min(option["max"], val))
+                Settings.set(name, str(val))
 
             spin_ctrl.on_change = on_spin
             group.layout.add_spacer(0, expand=True)

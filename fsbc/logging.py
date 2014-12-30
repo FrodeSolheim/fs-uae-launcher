@@ -1,11 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import sys
-import six
 import logging
 import threading
 
@@ -50,7 +44,7 @@ class FileOutput(object):
         return False
 
     def write(self, msg):
-        if isinstance(msg, six.text_type):
+        if isinstance(msg, str):
             # FIXME: legacy hack, should be removed in the future
             if "database_password" in msg:
                 return
@@ -75,10 +69,9 @@ class NullOutput(object):
 
 
 def setup_logging(log_name):
-
-    if sys.platform == "win32" and not "FS_FORCE_STDOUT" in os.environ:
+    if sys.platform == "win32" and "FS_FORCE_STDOUT" not in os.environ:
         # noinspection PyUnresolvedReferences
-        #import win32console
+        # import win32console
         if hasattr(sys, "frozen"):
             # or win32console.GetConsoleWindow() == 0:
             sys.stdout = NullOutput()

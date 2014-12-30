@@ -1,16 +1,12 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import fsui as fsui
+import fsui
+import fsbc.system
 from fsbc.util import memoize
 from .Constants import Constants
 from ..Settings import Settings
 
-#LEVEL = 0xce
+# LEVEL = 0xce
 LEVEL = 0xeb
-#LEVEL = 0xe4
+# LEVEL = 0xe4
 
 
 class Skin(object):
@@ -39,9 +35,9 @@ class Skin(object):
             g = convert(value[3:5])
             b = convert(value[5:7])
             return fsui.Color(r, g, b)
-        if fsui.System.windows:
+        if fsbc.system.windows:
             return fsui.Color(LEVEL, LEVEL, LEVEL)
-        elif fsui.System.macosx:
+        elif fsbc.system.macosx:
             return fsui.Color(237, 237, 237)
         return None
 
@@ -69,5 +65,5 @@ class Skin(object):
 
     @classmethod
     def get_bottom_panel_height(cls):
-        return Constants.SCREEN_SIZE[1] + 20 + 2 + 1 + 1 + \
-                cls.get_bottom_margin()
+        return (Constants.SCREEN_SIZE[1] + 20 + 2 + 1 + 1 +
+                cls.get_bottom_margin())

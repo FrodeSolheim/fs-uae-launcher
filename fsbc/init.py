@@ -1,13 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import sys
 import platform
 import fsbc.debug
 import fsbc.logging
-import fsbc.unicode
+# import fsbc.unicode
 from fsbc.Application import Application
 
 init_called = False
@@ -47,7 +42,8 @@ def initialize_application(
     if patch_unicode:
         # patch system libraries (and argv) to work better with
         # unicode-enabled programs
-        fsbc.unicode.patch_all()
+        # FIXME: removed for Python 3
+        # fsbc.unicode.patch_all()
         unicode_patched = True
 
     print(platform.uname())

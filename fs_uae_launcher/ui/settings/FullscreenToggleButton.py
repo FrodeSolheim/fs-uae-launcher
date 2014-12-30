@@ -1,11 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsbc.Application import app
 import fsui as fsui
-from ...I18N import _, ngettext
+from ...I18N import gettext
 from ...Settings import Settings
 
 
@@ -17,7 +12,8 @@ class FullscreenToggleButton(fsui.ImageButton):
         self.fullscreen_icon = fsui.Image(
             "fs_uae_launcher:res/fullscreen_16.png")
         fsui.ImageButton.__init__(self, parent, self.windowed_icon)
-        self.set_tooltip(_("Toggle Between Windowed and Full-Screen Mode"))
+        self.set_tooltip(
+            gettext("Toggle Between Windowed and Full-Screen Mode"))
         self.set_min_width(40)
         self.fullscreen_mode = False
         self.on_setting("fullscreen", app.settings["fullscreen"])

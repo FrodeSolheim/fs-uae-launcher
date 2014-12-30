@@ -16,15 +16,8 @@
 # THE SOFTWARE.
 
 import logging
-import sys
 
-from fs_uae_launcher.netplay.oyoyo.ircevents import *
-
-# Python < 3 compatibility
-if sys.version_info < (3,):
-    class bytes(object):
-        def __new__(cls, b='', encoding='utf8'):
-            return str(b)
+from oyoyo.ircevents import *
 
 
 def parse_raw_irc_command(element):
@@ -62,7 +55,7 @@ def parse_raw_irc_command(element):
         try:
             command = numeric_events[command]
         except KeyError:
-            logging.warn('unknown numeric event %s' % command)
+            logging.warning('unknown numeric event %s' % command)
     command = command.lower()
 
     if args[0].startswith(":"):
@@ -96,4 +89,3 @@ def parse_nick(name):
         return name, mode, rest, None
 
     return name, mode, user, host
-

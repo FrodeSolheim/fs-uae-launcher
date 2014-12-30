@@ -26,7 +26,7 @@ class Netplay:
 
     @classmethod
     def new_host_port(cls):
-        if not cls.host_ports is None:
+        if cls.host_ports is not None:
             cls.host_ports = list(range(25102, 25500))
             random.shuffle(cls.host_ports)
         return cls.host_ports.pop()
@@ -319,9 +319,9 @@ class Netplay:
         if not channel.is_op():
             IRC.warning("verify: you need to be an operator")
             return
-        #for arg in args:
-        #    cls.game_info("requesting verification of {0} = {1}".format(arg,
-        #            Config.get(arg)))
+        # for arg in args:
+        #     cls.game_info("requesting verification of {0} = {1}".format(arg,
+        #             Config.get(arg)))
         cls.print_verify_request(IRC.my_nick)
         IRC.channel(cls.game_channel).privmsg("__beginverify")
         for key in Config.checksum_keys:
@@ -448,7 +448,8 @@ class Netplay:
                 ("__netplay_addresses", game_addresses)])
             channel.info("started game id: {0} password: {1} "
                          "server: {2} port: {3}".format(
-                         game_id, game_password, game_addresses, game_port))
+                             game_id, game_password, game_addresses,
+                             game_port))
 
     @classmethod
     def command_hostgame(cls, args):
@@ -483,7 +484,7 @@ class Netplay:
             ("__netplay_addresses", host)])
         channel.info("started game id: {0} password: {1} "
                      "server: {2} port: {3}".format(
-                     game_id, password, host, port))
+                         game_id, password, host, port))
 
     @classmethod
     def command_setserver(cls, args):
@@ -515,7 +516,7 @@ class Netplay:
             ("__netplay_addresses", addresses)])
         channel.info("started game id: {0} password: {1} "
                      "server: {2} port: {3}".format(
-                     game_id, password, addresses, port))
+                         game_id, password, addresses, port))
 
     @classmethod
     def command_set(cls, args):
@@ -539,10 +540,10 @@ class Netplay:
     def handle_game_instruction(cls, nick, message):
         channel = IRC.channel(cls.game_channel)
 
-        #if Netplay.game_channel != self.name:
-        #    self.warning(self, "ignored command in "
-        #            "non-active game: {0}".format(command), IRCColor.WARNING)
-        #    return
+        # if Netplay.game_channel != self.name:
+        #     self.warning(self, "ignored command in "
+        #             "non-active game: {0}".format(command), IRCColor.WARNING)
+        #     return
         words = message.split(" ")
         command = words[0]
         arg = " ".join(words[1:])
@@ -628,7 +629,7 @@ class Netplay:
         IRC.channel(
             cls.game_channel).info(
                 "* {0} requested check of {1} ({2})".format(
-                nick, key, value))
+                    nick, key, value))
 
     @classmethod
     def print_check_response(cls, nick, key, value, check_value):
@@ -656,7 +657,8 @@ class Netplay:
     def set_config(cls, key, value):
         # this config was received from a game channel operator
         print("received config", key, value)
-        channel = IRC.channel(cls.game_channel)
+        # channel =
+        IRC.channel(cls.game_channel)
         if key not in Config.sync_keys_set:
             print("not processing this key")
             return
@@ -713,10 +715,10 @@ class Netplay:
         if value.startswith("http://") or value.startswith("https://"):
             path = value
         else:
-            #path = Database.get_instance().find_file(sha1=value)
+            # path = Database.get_instance().find_file(sha1=value)
             path = fsgs.file.find_by_sha1(sha1=value)
-        #if not path:
-        #    path = find_downloadable_file(value)
+        # if not path:
+        #     path = find_downloadable_file(value)
         if path:
             Config.set_multiple([(set_key, path), (key, value)])
         else:
@@ -741,6 +743,7 @@ class Netplay:
     for i in range(Amiga.MAX_HARD_DRIVES):
         file_config["x_hard_drive_{0}_sha1".format(i)] = \
             "hard_drive_{0}".format(i)
+
 
 Config.add_listener(Netplay)
 IRCBroadcaster.add_listener(Netplay)

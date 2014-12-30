@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import random
 
 
@@ -14,9 +12,9 @@ class GameDatabaseClient(object):
             "SELECT id FROM game WHERE uuid = %s"), (game_uuid,))
         row = cursor.fetchone()
         if row is None:
-#            cursor.execute("INSERT INTO game (uuid, updated) "
-#                    "VALUES (%s, utc_timestamp())",
-#                    (game_uuid,))
+            # cursor.execute("INSERT INTO game (uuid, updated) "
+            #         "VALUES (%s, utc_timestamp())",
+            #         (game_uuid,))
             cursor.execute(self.database.query(
                 "INSERT INTO game (uuid) VALUES (%s)"), (game_uuid,))
             cursor.execute(self.database.query(
@@ -62,12 +60,12 @@ class GameDatabaseClient(object):
         value = value.strip()
 
         cursor = self.database.cursor()
-        #print((game_id, key, value))
+        # print((game_id, key, value))
         cursor.execute(self.database.query(
             "SELECT value FROM value WHERE game = %s AND name = %s AND "
             "status = 1"), (game_id, key))
         row = cursor.fetchone()
-        #if row is not None and row[0].decode("UTF-8") == value:
+        # if row is not None and row[0].decode("UTF-8") == value:
         if row is not None and row[0] == value:
             # key - value already active
             if value_id:
@@ -131,7 +129,7 @@ class GameDatabaseClient(object):
                     parent_uuid = value
                 if name == "file_list" and game_id != original_game_id:
                     continue
-                if not name in values:
+                if name not in values:
                     values[name] = value
             if not recursive:
                 return values
@@ -187,16 +185,16 @@ class GameDatabaseClient(object):
 
         downloadable = values.get("auto_download", "")
         if downloadable:
-            #downloadable = "file:" + downloadable
+            # downloadable = "file:" + downloadable
             pass
         if not downloadable:
             downloadable = values.get("manual_download", "")
-            #if downloadable:
-            #    downloadable = "page:" + downloadable
+            # if downloadable:
+            #     downloadable = "page:" + downloadable
         if not downloadable:
             downloadable = values.get("__source", "")
             if downloadable.startswith("http"):
-                #downloadable = "page:" + downloadable
+                # downloadable = "page:" + downloadable
                 pass
             else:
                 downloadable = ""
@@ -268,7 +266,7 @@ class GameDatabaseClient(object):
             yield {
                 "id": row[0],
                 "key": row[1],
-                #"value": row[2].decode("UTF-8"),
+                # "value": row[2].decode("UTF-8"),
                 "value": row[2],
                 "submitter": row[3],
                 "submitted": str(row[4]),

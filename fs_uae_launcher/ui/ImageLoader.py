@@ -1,25 +1,16 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import time
 import weakref
 from uuid import uuid4
 from fsgs.ogd.client import OGDClient
-
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
-
+from urllib.request import urlopen
 import threading
 import traceback
 import fsui as fsui
 from fsgs.FSGSDirectories import FSGSDirectories
 from ..Signal import Signal
 from .Constants import Constants
+
 
 SENTINEL = "3e31297d-2ae9-4014-9247-2495d40e5382"
 
@@ -69,7 +60,7 @@ class ImageLoader(object):
 
     def _image_loader_thread(self):
         while not self.stop_flag:
-            #self.condition.wait()
+            # self.condition.wait()
 
             request = None
             with self.requests_lock:
@@ -90,22 +81,22 @@ class ImageLoader(object):
             traceback.print_exc()
 
     def get_cache_path_for_sha1(self, request, sha1):
-        #print("get_cache_path_for_sha1", sha1)
+        # print("get_cache_path_for_sha1", sha1)
         cover = request.args.get("is_cover", False)
         if cover:
-            #size_arg = "?size={0}".format(256)
-            #cache_ext = "_{0}".format(256)
-            #size_arg = "?size={0}".format(128)
-            #cache_ext = "_{0}".format(128)
+            # size_arg = "?size={0}".format(256)
+            # cache_ext = "_{0}".format(256)
+            # size_arg = "?size={0}".format(128)
+            # cache_ext = "_{0}".format(128)
             size_arg = "?w={0}&h={1}&t=lbcover".format(
                 Constants.COVER_SIZE[0], Constants.COVER_SIZE[1])
             cache_ext = "{0}x{1}_lbcover.png".format(
                 Constants.COVER_SIZE[0], Constants.COVER_SIZE[1])
         elif request.size:
-            #size_arg = "?w={0}&h={1}".format(request.size[0],
-            #        request.size[1])
-            #cache_ext = "_{0}x{1}".format(request.size[0],
-            #        request.size[1])
+            # size_arg = "?w={0}&h={1}".format(request.size[0],
+            #         request.size[1])
+            # cache_ext = "_{0}x{1}".format(request.size[0],
+            #         request.size[1])
             size_arg = "?s=1x"
             cache_ext = "_1x.png"
         else:
@@ -124,13 +115,13 @@ class ImageLoader(object):
                 return cache_file
 
         server = OGDClient.get_server()
-        url = "http://{0}/image/{1}{2}".format(server, sha1, size_arg)
+        url = "http://{}/image/{}{}".format(server, sha1, size_arg)
         print(url)
         r = urlopen(url)
         data = r.read()
 
-        cache_file_partial = cache_file + ".{0}.partial".format(
-            str(uuid4())[:8])
+        cache_file_partial = "{}.{}.partial".format(cache_file,
+                                                    str(uuid4())[:8])
         with open(cache_file_partial, "wb") as f:
             f.write(data)
         os.rename(cache_file_partial, cache_file)
@@ -182,12 +173,14 @@ class ImageLoader(object):
 class ImageLoadRequest(object):
 
     def __init__(self):
-        self.on_load = None
+        self.on_load = self._dummy_on_load_function
         self.size = None
         self.args = {}
 
     def notify(self):
-        if self.on_load:
-            def on_load_function():
-                self.on_load(self)
-            fsui.call_after(on_load_function)
+        def on_load_function():
+            self.on_load(self)
+        fsui.call_after(on_load_function)
+
+    def _dummy_on_load_function(self, obj):
+        pass

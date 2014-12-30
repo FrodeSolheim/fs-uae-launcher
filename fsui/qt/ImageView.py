@@ -1,17 +1,12 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-from fsui.qt import QLabel
+import fsui.qt
 from .Widget import Widget
 
 
 class ImageView(Widget):
 
     def __init__(self, parent, image):
-        self._widget = QLabel(parent.get_container())
-        #Widget.__init__(self, parent)
+        self._widget = fsui.qt.QLabel(parent.get_container())
+        # Widget.__init__(self, parent)
         self.init_widget(parent)
         self._widget.setPixmap(image.qpixmap)
 

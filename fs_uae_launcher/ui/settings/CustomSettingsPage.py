@@ -1,13 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import hashlib
 from fsbc.Application import app
 import fsui as fsui
 from ...Config import Config
-from ...I18N import _, ngettext
 from ...Settings import Settings
 
 
@@ -32,18 +25,18 @@ class CustomSettingsPage(fsui.Panel):
 
         # self.layout.add_spacer(20)
 
-        #hor_layout = fsui.HorizontalLayout()
-        #self.layout.add(hor_layout, fill=True)
+        # hor_layout = fsui.HorizontalLayout()
+        # self.layout.add(hor_layout, fill=True)
 
-        #hor_layout.add_spacer(20, expand=True)
-        #self.close_button = fsui.Button(self, _("Close"))
-        #self.close_button.activated.connect(self.on_close_button)
-        #hor_layout.add(self.close_button)
-        #hor_layout.add_spacer(20)
+        # hor_layout.add_spacer(20, expand=True)
+        # self.close_button = fsui.Button(self, _("Close"))
+        # self.close_button.activated.connect(self.on_close_button)
+        # hor_layout.add(self.close_button)
+        # hor_layout.add_spacer(20)
 
-        #self.layout.add_spacer(20)
-        #self.set_size(self.layout.get_min_size())
-        #self.center_on_parent()
+        # self.layout.add_spacer(20)
+        # self.set_size(self.layout.get_min_size())
+        # self.center_on_parent()
 
         # self.get_window().add_close_listener(self.on_close_window)
 
@@ -52,8 +45,8 @@ class CustomSettingsPage(fsui.Panel):
     # def on_close_window(self):
     #     self.update_settings()
 
-    #def on_close_button(self):
-    #    self.end_modal(0)
+    # def on_close_button(self):
+    #     self.end_modal(0)
 
     def update_settings(self):
         text = self.text_area.get_text()
@@ -71,8 +64,8 @@ class CustomSettingsPage(fsui.Panel):
             parts = line.split("=", 1)
             if len(parts) == 2:
                 key = parts[0].strip()
-                #if key in Settings.default_settings:
-                #    continue
+                # if key in Settings.default_settings:
+                #     continue
                 value = parts[1].strip()
                 app.settings[key] = value
 
@@ -85,11 +78,11 @@ class CustomSettingsPage(fsui.Panel):
                 continue
             #    #print("(settings) ignoring key", key)
             #    text += "# key {0} will be ignored\n".format(key)
-            #if key in Config.config_keys:
-            #    print("(settings) ignoring key", key)
-            #    continue
+            # if key in Config.config_keys:
+            #     print("(settings) ignoring key", key)
+            #     continue
             if key in Config.config_keys:
-                #print("(settings) ignoring key", key)
+                # print("(settings) ignoring key", key)
                 text += "\n# {0} is ignored here " \
                         "(use config dialog instead)\n".format(key)
             value = app.settings[key]

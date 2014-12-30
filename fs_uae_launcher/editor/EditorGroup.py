@@ -1,23 +1,17 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import os
 import fsui as fsui
 from ..Config import Config
 from ..Settings import Settings
 from .XMLControl import XMLControl
 from .PickGameDialog import PickGameDialog
-from ..I18N import _, ngettext
+
 
 class EditorGroup(fsui.Group):
 
     def __init__(self, parent):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
-        #self.layout.padding_left = 20
-        #self.layout.padding_right = 20
+        # self.layout.padding_left = 20
+        # self.layout.padding_right = 20
 
         self.layout.add_spacer(20)
 
@@ -61,7 +55,7 @@ class EditorGroup(fsui.Group):
 
     def on_setting(self, key, value):
         if key == "config_xml_path":
-            #self.load_config_xml(value)
+            # self.load_config_xml(value)
             self.config_xml_ctrl.set_path(value)
 
     def on_save_button(self):

@@ -1,13 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 from fsgs.ChecksumTool import ChecksumTool
 import fsui as fsui
 from ...Config import Config
-from ...I18N import _
+from ...I18N import gettext
 from fsgs.FSGSDirectories import FSGSDirectories
 from ..IconButton import IconButton
 from ..LauncherFilePicker import LauncherFilePicker
@@ -19,17 +14,18 @@ class KickstartGroup(fsui.Group):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
-        heading_label = fsui.HeadingLabel(self, _("Kickstart ROM"))
+        heading_label = fsui.HeadingLabel(self, gettext("Kickstart ROM"))
         self.layout.add(heading_label, margin=10)
         self.layout.add_spacer(0)
 
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
 
-        #label = fsui.Label(self, _("Kickstart ROM") + ":")
-        #hori_layout.add(label, margin_left=10, margin_right=10)
+        # label = fsui.Label(self, _("Kickstart ROM") + ":")
+        # hori_layout.add(label, margin_left=10, margin_right=10)
 
-        kickstart_types = [_("Default"), _("Custom"), _("Internal")]
+        kickstart_types = [gettext("Default"), gettext("Custom"),
+                           gettext("Internal")]
         self.kickstart_type_choice = fsui.Choice(self, kickstart_types)
         hori_layout.add(self.kickstart_type_choice, margin=10)
 
@@ -37,18 +33,18 @@ class KickstartGroup(fsui.Group):
         hori_layout.add(self.text_field, expand=True, margin=10)
 
         self.browse_button = IconButton(self, "browse_file_16.png")
-        self.browse_button.set_tooltip(_("Browse for File"))
+        self.browse_button.set_tooltip(gettext("Browse for File"))
         self.browse_button.activated.connect(self.on_browse_button)
         hori_layout.add(self.browse_button, margin=10)
 
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
 
-        label = fsui.Label(self, _("Extended ROM:"))
+        label = fsui.Label(self, gettext("Extended ROM:"))
         hori_layout.add(label, margin_left=10, margin_right=10)
-        #self.layout.add_spacer(0)
+        # self.layout.add_spacer(0)
 
-        kickstart_types = [_("Default"), _("Custom")]
+        kickstart_types = [gettext("Default"), gettext("Custom")]
         self.ext_rom_type_choice = fsui.Choice(self, kickstart_types)
         hori_layout.add(self.ext_rom_type_choice, margin_right=10)
 
@@ -56,7 +52,7 @@ class KickstartGroup(fsui.Group):
         hori_layout.add(self.ext_text_field, expand=True, margin_right=10)
 
         self.ext_browse_button = IconButton(self, "browse_file_16.png")
-        self.ext_browse_button.set_tooltip(_("Browse for File"))
+        self.ext_browse_button.set_tooltip(gettext("Browse for File"))
         self.ext_browse_button.activated.connect(self.on_ext_browse_button)
         hori_layout.add(self.ext_browse_button, margin_right=10)
 
@@ -98,19 +94,19 @@ class KickstartGroup(fsui.Group):
             Config.set("kickstart_ext_file", "")
         else:
             Config.set("kickstart_ext_file",
-                    Config.get("x_kickstart_ext_file"))
+                       Config.get("x_kickstart_ext_file"))
         Config.update_kickstart()
 
     def on_browse_button(self, extended=False):
         default_dir = FSGSDirectories.get_kickstarts_dir()
         if extended:
-            title = _("Choose Extended ROM")
+            title = gettext("Choose Extended ROM")
             key = "kickstart_ext_file"
         else:
-            title = _("Choose Kickstart ROM")
+            title = gettext("Choose Kickstart ROM")
             key = "kickstart_file"
-        dialog = LauncherFilePicker(self.get_window(), title,
-                "rom", Config.get(key))
+        dialog = LauncherFilePicker(self.get_window(), title, "rom",
+                                    Config.get(key))
         if not dialog.show_modal():
             return
         path = dialog.get_path()
@@ -129,14 +125,14 @@ class KickstartGroup(fsui.Group):
 
         if extended:
             Config.set_multiple([
-                    ("kickstart_ext_file", path),
-                    ("x_kickstart_ext_file", path),
-                    ("x_kickstart_ext_file_sha1", sha1)])
+                ("kickstart_ext_file", path),
+                ("x_kickstart_ext_file", path),
+                ("x_kickstart_ext_file_sha1", sha1)])
         else:
             Config.set_multiple([
-                    ("kickstart_file", path),
-                    ("x_kickstart_file", path),
-                    ("x_kickstart_file_sha1", sha1)])
+                ("kickstart_file", path),
+                ("x_kickstart_file", path),
+                ("x_kickstart_file_sha1", sha1)])
 
     def on_ext_browse_button(self):
         return self.on_browse_button(extended=True)

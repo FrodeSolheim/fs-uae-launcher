@@ -1,9 +1,10 @@
 import sys
 import threading
+
 from fsbc.Application import call_after
 from ..Settings import Settings
-from .oyoyo.client import IRCClient
-from .oyoyo import helpers
+from oyoyo.client import IRCClient
+from oyoyo import helpers
 from .CommandHandler import CommandHandler
 from .IRCBroadcaster import IRCBroadcaster
 from .IRCColor import IRCColor
@@ -53,7 +54,7 @@ class IRC:
             print("new channel", repr(name))
             cls.channels[name] = Channel(name)
             print("channels are now", repr(cls.channels))
-            #cls.set_active_channel(name)
+            # cls.set_active_channel(name)
             IRCBroadcaster.broadcast("channel_list", {"added": name})
             return cls.channels[name]
 
@@ -82,7 +83,7 @@ class IRC:
             return
         cls.stopping = True
         helpers.quit(cls.client, "Exited")
-        #cls.client.quit()
+        # cls.client.quit()
 
     @classmethod
     def irc_thread(cls):
@@ -145,9 +146,9 @@ class IRC:
         if cls.stopping:
             print("ignoring message", command, "because we're stopping")
             return
-        #print("post_message", command, args)
-        #cls.on_message(command, args)
-        #print(command, args)
+        # print("post_message", command, args)
+        # cls.on_message(command, args)
+        # print(command, args)
 
         args = list(args)
         # for i, arg in enumerate(args):
@@ -155,8 +156,8 @@ class IRC:
         #         args[i] = arg.decode("UTF-8", errors="replace")
 
         def func():
-            #if IRC.broadcast(command, args):
-            #    return
+            # if IRC.broadcast(command, args):
+            #     return
             if cls.irc_server_message(command, args):
                 return
             name = "irc_" + command
@@ -253,8 +254,8 @@ class IRC:
         if len(args) >= 2:
             channel = args[0]
             message = " ".join(args[1:])
-            #cls.channel(channel).privmsg(message)
-            #cls.channel(channel).message("<{0}> {1}".format(cls.my_nick,
+            # cls.channel(channel).privmsg(message)
+            # cls.channel(channel).message("<{0}> {1}".format(cls.my_nick,
             #        message), IRCColor.MY_MESSAGE)
             cls.client.send("privmsg {0} :{1}".format(channel, message))
         else:
@@ -265,7 +266,7 @@ class IRC:
         if len(args) >= 2:
             channel = args[0]
             message = " ".join(args[1:])
-            #cls.channel(channel).notice(message)
+            # cls.channel(channel).notice(message)
             cls.client.send("notice {0} :{1}".format(channel, message))
         else:
             cls.warning("usage: /notice <nick|channel> <message>")
@@ -363,7 +364,7 @@ class IRC:
         if password:
             cls.privmsg("nickserv", "identify {0}".format(password))
 
-        #cls.join("#support")
+        # cls.join("#support")
         cls.join("#lobby")
 
         # convenience for development...

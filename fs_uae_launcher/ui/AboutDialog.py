@@ -14,7 +14,6 @@ class AboutDialog(fsui.Dialog):
         self.icon_header = IconHeader(
             self, fsui.Icon("fs-uae-launcher", "pkg:fs_uae_launcher"),
             title, "Copyright © 2012-2014 Frode Solheim")
-            # title, gettext("Copyright © 2012-2014 Frode Solheim"))
         layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         self.text_area = fsui.TextArea(

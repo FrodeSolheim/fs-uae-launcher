@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from fsui.extra.iconheader import IconHeader
 from ...I18N import gettext
@@ -40,15 +35,15 @@ class VideoSettingsPage(fsui.Panel):
         add_option("scanlines")
         add_option("rtg_scanlines")
 
-        #add_option("video_format")
+        # add_option("video_format")
         #
-        ##add_option("video_sync")
-        ##add_option("low_latency_vsync")
+        # add_option("video_sync")
+        # add_option("low_latency_vsync")
         #
-        #label = fsui.HeadingLabel(self, gettext("OpenGL Settings"))
-        #self.layout.add(label, margin_top=20, margin_bottom=20)
+        # label = fsui.HeadingLabel(self, gettext("OpenGL Settings"))
+        # self.layout.add(label, margin_top=20, margin_bottom=20)
         #
-        #add_option("fsaa")
-        #add_option("texture_filter")
-        ##add_option("video_sync_method")
-        #add_option("texture_format")
+        # add_option("fsaa")
+        # add_option("texture_filter")
+        # add_option("video_sync_method")
+        # add_option("texture_format")

@@ -1,16 +1,10 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from fs_uae_workspace.shell import shell_open
-
 import fsui as fsui
-from ..I18N import _
+from ..I18N import gettext
 from ..Settings import Settings
 from .ConfigurationsBrowser import ConfigurationsBrowser
 from .GameListSelector import GameListSelector
 from .IconButton import IconButton
-from .ScanDialog import ScanDialog
 from .Skin import Skin
 from .VariantsBrowser import VariantsBrowser
 
@@ -36,16 +30,16 @@ class ConfigurationsPanel(fsui.Panel):
 
         hor_layout.add_spacer(10)
 
-        _("Filters:")
-        #self.filters_label = fsui.Label(self, _("Filters:"))
-        #hor_layout.add(
-        #    self.filters_label, margin=10, margin_top=0, margin_bottom=0)
+        gettext("Filters:")
+        # self.filters_label = fsui.Label(self, _("Filters:"))
+        # hor_layout.add(
+        #     self.filters_label, margin=10, margin_top=0, margin_bottom=0)
 
         self.text_field = fsui.TextField(self, Settings.get("config_search"))
         self.text_field.on_change = self.on_search_change
         if VariantsBrowser.use_horizontal_layout():
             # window is big enough to use fixed size
-            #self.text_field.set_min_width(210)
+            # self.text_field.set_min_width(210)
             self.text_field.set_min_width(229)
             hor_layout.add(
                 self.text_field, expand=False, margin=10, margin_top=0,
@@ -55,27 +49,27 @@ class ConfigurationsPanel(fsui.Panel):
                 self.text_field, expand=True, margin=10, margin_top=0,
                 margin_bottom=0)
 
-        #self.favorite_button = IconButton(self, "favorite_button.png")
-        #self.favorite_button.set_tooltip(
-        #        _("Show Only Favorites (On/Off)"))
-        #self.favorite_button.disable()
-        #self.favorite_button.activated.connect(self.on_favorite_button)
-        #hor_layout.add(self.favorite_button,
-        #        margin=10, margin_top=0, margin_bottom=0)
+        # self.favorite_button = IconButton(self, "favorite_button.png")
+        # self.favorite_button.set_tooltip(
+        #         _("Show Only Favorites (On/Off)"))
+        # self.favorite_button.disable()
+        # self.favorite_button.activated.connect(self.on_favorite_button)
+        # hor_layout.add(self.favorite_button,
+        #         margin=10, margin_top=0, margin_bottom=0)
 
-        #self.verified_button = IconButton(self, "ok_button.png")
-        #self.verified_button.set_tooltip(
-        #        _("Show Only Verified Configurations (On/Off)"))
-        #self.verified_button.disable()
-        #self.verified_button.activated.connect(self.on_verified_button)
-        #hor_layout.add(self.verified_button,
-        #       margin=10, margin_top=0, margin_bottom=0)
+        # self.verified_button = IconButton(self, "ok_button.png")
+        # self.verified_button.set_tooltip(
+        #         _("Show Only Verified Configurations (On/Off)"))
+        # self.verified_button.disable()
+        # self.verified_button.activated.connect(self.on_verified_button)
+        # hor_layout.add(self.verified_button,
+        #        margin=10, margin_top=0, margin_bottom=0)
 
         # if Settings.get("database_feature") == "1":
         if True:
             self.refresh_button = IconButton(self, "refresh_button.png")
             self.refresh_button.set_tooltip(
-                _("Refresh Game Configurations from Online Database"))
+                gettext("Refresh Game Configurations from Online Database"))
             self.refresh_button.activated.connect(self.on_refresh_button)
             hor_layout.add(
                 self.refresh_button, margin=10, margin_top=0, margin_bottom=0)
@@ -97,8 +91,8 @@ class ConfigurationsPanel(fsui.Panel):
             if VariantsBrowser.use_horizontal_layout():
                 hori_layout.add(
                     self.variants_browser, fill=True, expand=1, margin_left=18)
-                #self.variants_browser.set_min_width(Constants.SCREEN_SIZE[0])
-                #elf.variants_browser.set_min_width(72)
+                # self.variants_browser.set_min_width(Constants.SCREEN_SIZE[0])
+                # elf.variants_browser.set_min_width(72)
                 self.variants_browser.set_min_width(100)
             else:
                 self.layout.add(

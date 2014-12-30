@@ -1,9 +1,4 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from fs_uae_launcher.Settings import Settings
-
 import fsui as fsui
 from fsui.extra.iconheader import IconHeader
 from ...I18N import gettext
@@ -29,40 +24,40 @@ class VideoSyncSettingsPage(fsui.Panel):
                             margin_top=10, margin_bottom=10)
             return group
 
-        #label = fsui.MultilineLabel(self, gettext(
-        #    "Enabling the following option will prevent tearing from "
-        #    "occurring, but will also use more CPU. Input latency "
-        #    "may become slightly higher. If you encounter slowdowns "
-        #    "(esp. in Linux desktop environments with compositing "
-        #    "enabled), disable this option or follow the link at "
-        #    "the bottom to learn more."), 640)
-        #self.layout.add(label, fill=True, margin_top=0)
+        # label = fsui.MultiLineLabel(self, gettext(
+        #     "Enabling the following option will prevent tearing from "
+        #     "occurring, but will also use more CPU. Input latency "
+        #     "may become slightly higher. If you encounter slowdowns "
+        #     "(esp. in Linux desktop environments with compositing "
+        #     "enabled), disable this option or follow the link at "
+        #     "the bottom to learn more."), 640)
+        # self.layout.add(label, fill=True, margin_top=0)
 
-        label = fsui.MultilineLabel(self, gettext(
+        label = fsui.MultiLineLabel(self, gettext(
             "Enabling the following option will prevent tearing from "
             "occurring, but will also use more CPU. Input latency "
             "may become slightly higher."), 640)
         self.layout.add(label, fill=True, margin_top=0)
 
-        #add_option("video_sync")
+        # add_option("video_sync")
         self.vblank_checkbox = fsui.HeadingCheckBox(self, gettext(
             "Synchronize buffer swaps with display (prevents tearing)"))
         self.layout.add(self.vblank_checkbox, margin_top=20)
 
-        #label = fsui.MultilineLabel(self, gettext(
-        #    ""), 640)
-        #self.layout.add(label, fill=True, margin_top=10)
+        # label = fsui.MultiLineLabel(self, gettext(
+        #     ""), 640)
+        # self.layout.add(label, fill=True, margin_top=10)
 
-        #hori_layout = fsui.HorizontalLayout()
-        #self.layout.add(hori_layout, fill=True, margin_top=10)
-        #hori_layout.add(fsui.ImageView(self, fsui.Image(
-        #    "fs_uae_launcher:res/16/world_link.png")))
-        #label = fsui.URLLabel(self, gettext(
-        #    "Read more about synchronizing FS-UAE with the display"),
-        #    "http://fs-uae.net/video-sync")
-        #hori_layout.add(label, margin_left=6)
+        # hori_layout = fsui.HorizontalLayout()
+        # self.layout.add(hori_layout, fill=True, margin_top=10)
+        # hori_layout.add(fsui.ImageView(self, fsui.Image(
+        #     "fs_uae_launcher:res/16/world_link.png")))
+        # label = fsui.URLLabel(self, gettext(
+        #     "Read more about synchronizing FS-UAE with the display"),
+        #     "http://fs-uae.net/video-sync")
+        # hori_layout.add(label, margin_left=6)
 
-        self.sync_method_label = fsui.MultilineLabel(self, gettext(
+        self.sync_method_label = fsui.MultiLineLabel(self, gettext(
             "Depending on your OS and OpenGL drivers, synchronizing "
             "can use needlessly much CPU (esp. applies to "
             "Linux). You can experiment with different sync methods "
@@ -71,7 +66,7 @@ class VideoSyncSettingsPage(fsui.Panel):
 
         self.sync_method_group = add_option("video_sync_method")
 
-        self.smooth_label = fsui.MultilineLabel(self, gettext(
+        self.smooth_label = fsui.MultiLineLabel(self, gettext(
             "In order to get really smooth Amiga graphics, you need to "
             "enable the following option, and also make sure your display "
             "is running at 50Hz (for PAL) or 60Hz (for NTSC)."), 640)
@@ -86,12 +81,12 @@ class VideoSyncSettingsPage(fsui.Panel):
 
         self.layout.add_spacer(0, expand=True)
 
-        #label = fsui.MultilineLabel(self, gettext(
-        #    "If you encounter slowdowns or increased stuttering when "
-        #    "synchronization is enabled (esp. in Linux desktop "
-        #    "environments with compositing enabled), keep these options "
-        #    "disabled or learn more."), 640)
-        #self.layout.add(label, fill=True, margin_top=20)
+        # label = fsui.MultiLineLabel(self, gettext(
+        #     "If you encounter slowdowns or increased stuttering when "
+        #     "synchronization is enabled (esp. in Linux desktop "
+        #     "environments with compositing enabled), keep these options "
+        #     "disabled or learn more."), 640)
+        # self.layout.add(label, fill=True, margin_top=20)
 
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True, margin_top=10)
@@ -102,16 +97,16 @@ class VideoSyncSettingsPage(fsui.Panel):
             "http://fs-uae.net/perfectly-smooth-scrolling")
         hori_layout.add(label, margin_left=6)
 
-        #hori_layout = fsui.HorizontalLayout()
-        #self.layout.add(hori_layout, fill=True, margin_top=4)
-        #hori_layout.add(fsui.ImageView(self, fsui.Image(
-        #    "fs_uae_launcher:res/16/world_link.png")))
-        #label = fsui.URLLabel(self, gettext(
-        #    "Read more about synchronizing FS-UAE with the display"),
-        #    "http://fs-uae.net/video-sync")
-        #hori_layout.add(label, margin_left=6)
+        # hori_layout = fsui.HorizontalLayout()
+        # self.layout.add(hori_layout, fill=True, margin_top=4)
+        # hori_layout.add(fsui.ImageView(self, fsui.Image(
+        #     "fs_uae_launcher:res/16/world_link.png")))
+        # label = fsui.URLLabel(self, gettext(
+        #     "Read more about synchronizing FS-UAE with the display"),
+        #     "http://fs-uae.net/video-sync")
+        # hori_layout.add(label, margin_left=6)
 
-        label = fsui.MultilineLabel(self, gettext(
+        label = fsui.MultiLineLabel(self, gettext(
             "Synchronizing with the display can in some cases cause "
             "increased stuttering and low frame rates (esp. in some Linux "
             "desktop environments with compositing enabled).") +
@@ -136,8 +131,8 @@ class VideoSyncSettingsPage(fsui.Panel):
             self.vblank_checkbox.check(value in ["auto", "full", "vblank"])
             self.full_sync_checkbox.check(value in ["auto", "full"])
             self.update_widgets()
-        #elif key == "video_sync_method":
-        #    pass
+        # elif key == "video_sync_method":
+        #     pass
 
     def on_vblank_changed(self):
         self.on_either_checkbox_changed()

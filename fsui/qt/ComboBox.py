@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsui.qt import QComboBox
 from .Widget import Widget
 
@@ -11,10 +6,11 @@ class ComboBox(Widget):
 
     def __init__(self, parent, items=[], read_only=False):
         self._widget = QComboBox(parent.get_container())
-        #Widget.__init__(self, parent)
+        # Widget.__init__(self, parent)
         self.init_widget(parent)
-        #self.setEditable(not read_only)
-        print("FIXME: ComboBox not respecting read_only (because of missing lineEdit then")
+        # self.setEditable(not read_only)
+        print("FIXME: ComboBox not respecting read_only"
+              "(because of missing lineEdit then")
         self._widget.setEditable(True)
         self._widget.lineEdit().installEventFilter(self.get_window())
 
@@ -41,7 +37,7 @@ class ComboBox(Widget):
         self._widget.setItemText(item, text)
 
     def get_index(self):
-        #return self.GetSelection()
+        # return self.GetSelection()
         return self._widget.currentIndex()
 
     def set_index(self, index):

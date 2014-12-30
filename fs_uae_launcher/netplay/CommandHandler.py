@@ -1,5 +1,5 @@
-from .oyoyo.cmdhandler import DefaultCommandHandler
-from .oyoyo import helpers
+from oyoyo.cmdhandler import DefaultCommandHandler
+from oyoyo import helpers
 
 
 class CommandHandler(DefaultCommandHandler):

@@ -1,7 +1,7 @@
 from weakref import ref
 from .qt import Qt, QDesktopWidget, QSignal
-from .Widget import MixinBase
 from .. import default_window_center, default_window_parent
+
 
 _windows = set()
 
@@ -20,10 +20,10 @@ def WindowBase(BaseClass):
                 print("using default parent", parent)
 
             super().__init__(parent, *args, **kwargs)
-            #MixinBase.__init__(self)
+            # MixinBase.__init__(self)
 
         # noinspection PyUnusedLocal
-        #def init_window(self, parent, title):
+        # def init_window(self, parent, title):
             # self.init_mixin_base()
             self.setWindowTitle(title)
 
@@ -93,7 +93,7 @@ def WindowBase(BaseClass):
             self.resize(size[0], size[1])
 
         def is_maximized(self):
-            #return self.isMaximized()
+            # return self.isMaximized()
             print("FIXME: always returning False")
             return False
 

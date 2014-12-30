@@ -1,12 +1,7 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from ..CDManager import CDManager
 from ..FloppyManager import FloppyManager
-from ..I18N import _
+from ..I18N import gettext
 from .FloppySelector import FloppySelector
 
 
@@ -23,20 +18,20 @@ class FloppiesGroup(fsui.Group):
         self.layout.add(hori_layout, fill=True)
 
         if cd_mode:
-            self.label = fsui.HeadingLabel(self, _("CD-ROM Drive"))
+            self.label = fsui.HeadingLabel(self, gettext("CD-ROM Drive"))
         else:
-            self.label = fsui.HeadingLabel(self, _("Floppy Drives"))
+            self.label = fsui.HeadingLabel(self, gettext("Floppy Drives"))
         hori_layout.add(self.label, margin=10)
         hori_layout.add_spacer(0, expand=True)
 
         self.multi_select_button = fsui.Button(
-            self, _("Select Multiple Files..."))
+            self, gettext("Select Multiple Files..."))
         if self.cd_mode:
             self.multi_select_button.set_tooltip(
-                _("Add Multiple CD-ROMs at Once"))
+                gettext("Add Multiple CD-ROMs at Once"))
         else:
             self.multi_select_button.set_tooltip(
-                _("Add Multiple Floppies at Once"))
+                gettext("Add Multiple Floppies at Once"))
         self.multi_select_button.activated.connect(self.on_multi_select_button)
 
         hori_layout.add(self.multi_select_button, margin_right=10)
@@ -60,8 +55,8 @@ class FloppiesGroup(fsui.Group):
     def update_heading_label(self):
         if self.cd_mode:
             if self.num_drives > 1:
-                self.label.set_text(_("CD-ROM Drives"))
+                self.label.set_text(gettext("CD-ROM Drives"))
             else:
-                self.label.set_text(_("CD-ROM Drive"))
+                self.label.set_text(gettext("CD-ROM Drive"))
         else:
-            self.label.set_text(_("Floppy Drives"))
+            self.label.set_text(gettext("Floppy Drives"))

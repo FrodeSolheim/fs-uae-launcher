@@ -2,7 +2,7 @@ import os
 from fsgs.mednafen.mednafen import MednafenRunner
 
 
-#noinspection PyAttributeOutsideInit
+# noinspection PyAttributeOutsideInit
 class GameBoyAdvanceRunner(MednafenRunner):
 
     CONTROLLER = {
@@ -21,13 +21,13 @@ class GameBoyAdvanceRunner(MednafenRunner):
     def __init__(self, fsgs):
         super().__init__(fsgs)
 
-    #def init_input(self):
-    #    # self.inputs = [
-    #    #     self.create_input(name="Controller",
-    #    #             type="gameboyadvance",
-    #    #             description="Built-in Gamepad"),
-    #    # ]
-    #    self.set_mednafen_input_order()
+    # def init_input(self):
+    #     # self.inputs = [
+    #     #     self.create_input(name="Controller",
+    #     #             type="gameboyadvance",
+    #     #             description="Built-in Gamepad"),
+    #     # ]
+    #     self.set_mednafen_input_order()
 
     def get_game_refresh_rate(self):
         # all GBA games should use a refresh rate of approx. 60.0 Hz
@@ -53,41 +53,41 @@ class GameBoyAdvanceRunner(MednafenRunner):
         cfg_file = os.path.splitext(rom_file)[0] + ".cfg"
 
         print("FIXME: temporarily removed support for custom SRAM type")
-        #if os.path.exists(cfg_file):
-        #    config = ConfigParser.ConfigParser()
-        #    config.read(cfg_file)
-        #    if config.has_option("game", "sram type"):
-        #        type_file = os.path.join(
-        #            self.context.game.state_dir,
-        #            os.path.splitext(os.path.basename(rom_file))[0] + u".type")
-        #        with open(type_file, "wb") as f:
-        #            f.write(config.get("game", "sram type"))
-        #            f.write("\n")
+        # if os.path.exists(cfg_file):
+        #     config = ConfigParser.ConfigParser()
+        #     config.read(cfg_file)
+        #     if config.has_option("game", "sram type"):
+        #         type_file = os.path.join(
+        #             self.context.game.state_dir,
+        #             os.path.splitext(os.path.basename(rom_file))[0] + u".type")
+        #         with open(type_file, "wb") as f:
+        #             f.write(config.get("game", "sram type"))
+        #             f.write("\n")
 
         print("FIXME: temporarily removed support for custom sav file")
-        #sav_file = os.path.splitext(rom_file)[0] + u".sav"
-        #if os.path.exists(sav_file):
-        #    m = hashlib.md5()
-        #    with open(rom_file, "rb") as f:
-        #        while True:
-        #            data = f.read(16384)
-        #            if not data:
-        #                break
-        #            m.update(data)
-        #        md5sum = str(m.hexdigest())
-        #    save_name = os.path.splitext(
-        #        os.path.basename(rom_file))[0] + u"." + md5sum + u".sav"
-        #    dest_path = os.path.join(self.get_state_dir(), save_name)
-        #    if not os.path.exists(dest_path):
-        #        shutil.copy(sav_file, dest_path)
+        # sav_file = os.path.splitext(rom_file)[0] + u".sav"
+        # if os.path.exists(sav_file):
+        #     m = hashlib.md5()
+        #     with open(rom_file, "rb") as f:
+        #         while True:
+        #             data = f.read(16384)
+        #             if not data:
+        #                 break
+        #             m.update(data)
+        #         md5sum = str(m.hexdigest())
+        #     save_name = os.path.splitext(
+        #         os.path.basename(rom_file))[0] + u"." + md5sum + u".sav"
+        #     dest_path = os.path.join(self.get_state_dir(), save_name)
+        #     if not os.path.exists(dest_path):
+        #         shutil.copy(sav_file, dest_path)
 
         print("FIXME: temporarily removed supported for custom colormap")
-        #self.colormap_temp = self.create_temp_file("color.map")
-        #self.create_colormap(self.colormap_temp.path, 1.3)
+        # self.colormap_temp = self.create_temp_file("color.map")
+        # self.create_colormap(self.colormap_temp.path, 1.3)
         self.create_colormap(
             os.path.join(self.home.path, "gba.pal"), 1.3)
-        #self.args.insert(0, self.colormap_temp.path)
-        #self.args.insert(0, "-gba.colormap")
+        # self.args.insert(0, self.colormap_temp.path)
+        # self.args.insert(0, "-gba.colormap")
 
     def mednafen_rom_extensions(self):
         return [".gba"]
@@ -101,8 +101,8 @@ class GameBoyAdvanceRunner(MednafenRunner):
     def mednafen_system_prefix(self):
         return "gba"
 
-    #def mednafen_video_size(self):
-    #    return 240, 160
+    # def mednafen_video_size(self):
+    #     return 240, 160
 
     def create_colormap(self, path, gamma):
         with open(path, "wb") as f:
@@ -115,9 +115,9 @@ class GameBoyAdvanceRunner(MednafenRunner):
                 g /= 255.0
                 b /= 255.0
 
-                #h, l, s = colorsys.rgb_to_hls(r, g, b)
-                #l = l ** gamma
-                #r, g, b = colorsys.hls_to_rgb(h, l, s)
+                # h, l, s = colorsys.rgb_to_hls(r, g, b)
+                # l = l ** gamma
+                # r, g, b = colorsys.hls_to_rgb(h, l, s)
 
                 r = r ** gamma
                 g = g ** gamma

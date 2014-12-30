@@ -38,26 +38,26 @@ class GameCenterRunner(object):
     def configure(self):
         self.done = True
 
-    #    self.status = ""
-    #    self.error = ""
-    #    self.done = False
-    #    threading.Thread(target=self._configure_thread).start()
+    #     self.status = ""
+    #     self.error = ""
+    #     self.done = False
+    #     threading.Thread(target=self._configure_thread).start()
     #
-    #def _configure_thread(self):
-    #    try:
-    #        self._do_configure()
-    #    except Exception as e:
-    #        import traceback
-    #        traceback.print_exc()
-    #        # signal error by setting status on done
-    #        self.error = repr(e)
-    #        self.backtrace = traceback.format_exc()
-    #    self.done = True
-    #    self.signal()
+    # def _configure_thread(self):
+    #     try:
+    #         self._do_configure()
+    #     except Exception as e:
+    #         import traceback
+    #         traceback.print_exc()
+    #         # signal error by setting status on done
+    #         self.error = repr(e)
+    #         self.backtrace = traceback.format_exc()
+    #     self.done = True
+    #     self.signal()
     #
-    #def _do_configure(self):
-    #    # self.controller.configure_game()
-    #    pass
+    # def _do_configure(self):
+    #     # self.controller.configure_game()
+    #     pass
 
     def run(self):
         self.status = ""
@@ -105,10 +105,10 @@ class GameCenterRunner(object):
         #     screen = display.get_default_screen()
         #     display.warp_pointer(screen, screen.get_width() - 1,
         #             screen.get_height() - 1)
-        #size = get_fullscreen_size()
-        #pygame.mouse.set_cursor((8, 1), (0, 0), (0,), (0,))
-        #pygame.mouse.set_visible(True)
-        #pygame.mouse.set_pos(size[0] - 1, size[1] - 0)
+        # size = get_fullscreen_size()
+        # pygame.mouse.set_cursor((8, 1), (0, 0), (0,), (0,))
+        # pygame.mouse.set_visible(True)
+        # pygame.mouse.set_pos(size[0] - 1, size[1] - 0)
 
         process = self.controller.run()
         process.wait()
@@ -117,6 +117,7 @@ class GameCenterRunner(object):
 
     def signal(self):
         # create a dummy event to wake up the main thread
-        #event = pygame.event.Event(pygame.USEREVENT)
-        #pygame.event.post(event)
+
+        # event = pygame.event.Event(pygame.USEREVENT)
+        # pygame.event.post(event)
         pass

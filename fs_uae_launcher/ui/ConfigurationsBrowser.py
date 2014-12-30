@@ -1,11 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from fsgs.Database import Database
 from fsgs.platform import PlatformHandler
 from fsgs.util.GameNameUtil import GameNameUtil
-
 import fsui as fsui
 from ..Config import Config
 from ..Settings import Settings
@@ -38,7 +33,7 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
     def on_select_item(self, index):
         if index is None:
             return
-        #self.load_configuration(self.items[index][str("uuid")])
+        # self.load_configuration(self.items[index][str("uuid")])
         self.load_configuration(self.items[index])
 
     def on_activate_item(self, index):
@@ -103,7 +98,7 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
         #     return "{0} \u00b7 {1}{2}".format(name, extra, platform)
 
     def get_item_search_text(self, index):
-        #return self.items[index][3]
+        # return self.items[index][3]
         # FIXME: lower-case search string?
         return self.items[index][str("sort_key")]
 
@@ -133,9 +128,9 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
         else:
             return self.config_icon
 
-    #def on_get_item_tooltip(self, row, column):
-    #    return self.items[row][1]
-    #    #text = text.replace("\nAmiga \u00b7 ", "\n")
+    # def on_get_item_tooltip(self, row, column):
+    #     return self.items[row][1]
+    #     #text = text.replace("\nAmiga \u00b7 ", "\n")
 
     def update_search(self):
         search = Settings.get("config_search").strip().lower()

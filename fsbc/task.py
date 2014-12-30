@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import threading
 import traceback
 from .signal import Signal
@@ -29,7 +24,7 @@ class Task(object):
     Failure = TaskFailure
     Stopped = TaskStopped
 
-    def __init__(self, name):
+    def __init__(self, name: str) -> None:
         self.__name = name
         self.stop_flag = False
         self.started = Signal()

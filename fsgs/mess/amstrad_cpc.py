@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
 from .mess import MESSRunner
 
 
@@ -31,7 +25,7 @@ class AmstradCPCRunner(MESSRunner):
             pass
             self.inject_fake_input_string(60, "{0}\n".format(
                 self.config["command"]))
-            #self.inject_fake_input_string(60, "aaaaaaaaaaaaaaaaa")
+            # self.inject_fake_input_string(60, "aaaaaaaaaaaaaaaaa")
 
     def mess_full_keyboard(self):
         return True

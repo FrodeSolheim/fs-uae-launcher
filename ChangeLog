@@ -1,3 +1,11 @@
+Version 2.5.23dev:
+
+* Fixed joystick configurations, added --add-dummy-joystick arg for testing.
+* Require at least Python 3.2 to start, if not, abort with error.
+* Code cleanup, removed Python 2.x compatibility code.
+* setup.py: reject installation to default python library dir.
+* Makefile: Added separate install, install-program and install-data targets.
+
 Version 2.5.22dev:
 
 * Add support for WHDLoad 18.0.

@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 from fsgs import fsgs
 from fsgs.ChecksumTool import ChecksumTool
@@ -11,7 +6,7 @@ from fsgs.amiga.Amiga import Amiga
 from ..CDManager import CDManager
 from ..Config import Config
 from ..FloppyManager import FloppyManager
-from ..I18N import _ as gettext
+from ..I18N import gettext
 from fsbc.Paths import Paths
 from fsgs.FSGSDirectories import FSGSDirectories
 from .IconButton import IconButton

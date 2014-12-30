@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsbc.util import memoize
 
 
@@ -35,8 +30,8 @@ class Bezier(object):
         # floating point rounding.. (weird that the less than check
         # in animation.py does not correct this..)
         return points[-1][1]
-        #raise ValueError("Not within range... %F (%f, %f)", x, points[0][0],
-        #        points[-1][0])
+        # raise ValueError("Not within range... %F (%f, %f)", x, points[0][0],
+        #         points[-1][0])
 
     @classmethod
     def bezier(cls, p0, p1, p2, p3, steps=20):
@@ -54,8 +49,8 @@ class Bezier(object):
         dx = x0
         dy = y0
 
-        #print(ax, y3, bx, by, cx, cy, dx, dy)
-        #print("bezier", x0, y0, x1, y1, x2, y2, x3, y3)
+        # print(ax, y3, bx, by, cx, cy, dx, dy)
+        # print("bezier", x0, y0, x1, y1, x2, y2, x3, y3)
 
         step_size = 1.0 / steps
 

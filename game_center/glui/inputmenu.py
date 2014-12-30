@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import traceback
 from fsgs.input.manager import DeviceManager
 from fsgs.input.inputdevice import InputDevice
@@ -35,7 +30,7 @@ class InputMenu(Menu):
 
     def __init__(self, item, controller):
         Menu.__init__(self)
-        #self.top_menu_transition = 0.0
+        # self.top_menu_transition = 0.0
         self.items.append(item)
         if self.use_game_center_item():
             self.top.left.append(GameCenterItem())
@@ -49,8 +44,8 @@ class InputMenu(Menu):
         # controller must now initialize input ports
         # self.controller.init_input()
 
-        #for input in self.controller.inputs:
-        #    input["device_id"] = None
+        # for input in self.controller.inputs:
+        #     input["device_id"] = None
 
         # get all available input devices
         # self.devices, info = InputDevice.get_input_devices(
@@ -62,17 +57,17 @@ class InputMenu(Menu):
 
         self.device_list_version = InputDevices.device_list_version
         self.device_data = DeviceDataDict()
-        #[{"index": 0} for x in self.devices]
+        # [{"index": 0} for x in self.devices]
         for device in self.devices:
             self.device_data[device.id] = {"port": 0, "device": device}
             self.check_device(self.device_data[device.id])
         # FIXME: Make InputHandler / InputDevice set variables
         # etc and self detect when to reinit?
-        #InputHandler.reinit_joysticks()
+        # InputHandler.reinit_joysticks()
 
         # calling activate to try to set the active input device
         # to the first input port, if possible
-        #self.activate()
+        # self.activate()
         self.set_defaults()
 
     def set_defaults(self):
@@ -103,10 +98,10 @@ class InputMenu(Menu):
                     break
 
     def go_left(self, count=1):
-        #device_id = InputHandler.last_device
-        #for i, device in enumerate(self.devices):
-        #    if not device.name == device_name:
-        #        continue
+        # device_id = InputHandler.last_device
+        # for i, device in enumerate(self.devices):
+        #     if not device.name == device_name:
+        #         continue
         try:
             device_data = self.device_data[InputHandler.last_device]
         except KeyError as e:
@@ -114,7 +109,7 @@ class InputMenu(Menu):
             return
         if device_data["port"] > 0:
             device_data["port"] -= 1
-            #device_data["port"] -= 1
+            # device_data["port"] -= 1
             self.check_device(device_data)
 
     def go_right(self, count=1):
@@ -127,7 +122,7 @@ class InputMenu(Menu):
             return
         if device_data["port"] < len(self.controller.ports) - 1:
             device_data["port"] += 1
-            #device_data["port"] += 1
+            # device_data["port"] += 1
             self.check_device(device_data)
 
         # device_name = InputHandler.last_device
@@ -174,19 +169,19 @@ class InputMenu(Menu):
     def activate(self):
         if len(self.controller.ports) == 0:
             return self.run_game()
-        #print(self.device_data)
-        #print("InputHandler.last_device", InputHandler.last_device)
+        # print(self.device_data)
+        # print("InputHandler.last_device", InputHandler.last_device)
         try:
             device_data = self.device_data[InputHandler.last_device]
         except KeyError as e:
             print(repr(e))
             return
-        #device_data = self.device_data[InputHandler.last_device]
+        # device_data = self.device_data[InputHandler.last_device]
         if not device_data["ok"]:
             return
         port = device_data["port"]
         device = device_data["device"]
-        #print("activate", port, device)
+        # print("activate", port, device)
         for i in range(len(self.controller.ports)):
             if i == port:
                 if i == 0 and device.id == self.controller.ports[i].device_id:
@@ -195,7 +190,8 @@ class InputMenu(Menu):
                 self.controller.ports[i].device = device
             elif self.controller.ports[i].device_id:
                 # remove this device from other ports
-                #if self.controller.inputs[i]["device"].id == device.id:
+
+                # if self.controller.inputs[i]["device"].id == device.id:
                 if self.controller.ports[i].device_id == device.id:
                     self.controller.ports[i].device_id = None
                     self.controller.ports[i].device = None
@@ -214,16 +210,16 @@ class InputMenu(Menu):
             device_data["ok"] = False
         else:
             device_data["ok"] = True
-        #print(device, index, self.controller.inputs[index]["type"], ok)
+        # print(device, index, self.controller.inputs[index]["type"], ok)
 
     def render(self):
         if self.first_shown_at == 0:
             self.first_shown_at = State.time    
         # FIXME:
-        #from .gamemenu import render_wall, render_screen
-        #glClear(GL_DEPTH_BUFFER_BIT)
-        #render_wall()
-        #render_screen()
+        # from .gamemenu import render_wall, render_screen
+        # glClear(GL_DEPTH_BUFFER_BIT)
+        # render_wall()
+        # render_screen()
         
         Render.hd_perspective()
         if len(self.controller.ports) == 0:
@@ -238,11 +234,11 @@ class InputMenu(Menu):
         
         if self.device_list_version != InputDevices.device_list_version:
             print(" -- device list version changed")
-            #self.devices, info = InputDevice.get_input_devices("", 0, 100,
+            # self.devices, info = InputDevice.get_input_devices("", 0, 100,
             # version=2)
             self.devices = DeviceManager.instance().get_devices()
             self.device_list_version = InputDevices.device_list_version
-            #[{"index": 0} for x in self.devices]
+            # [{"index": 0} for x in self.devices]
             device_ids = set()
             for device in self.devices:
                 device_ids.add(device.id)
@@ -282,7 +278,7 @@ class InputMenu(Menu):
 
             for j, device in enumerate(self.devices):
                 device_data = self.device_data[device.id]
-                #print(1, repr(device))
+                # print(1, repr(device))
                 if device_data["port"] != port:
                     continue
                 text = device.name.upper()

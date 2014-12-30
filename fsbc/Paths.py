@@ -1,11 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import sys
-import six
 import unicodedata
 from fsbc.system import macosx
 from fsbc.user import get_home_dir
@@ -24,17 +18,17 @@ class Paths(object):
 
     @staticmethod
     def unicode(path):
-        if isinstance(path, six.text_type):
+        if isinstance(path, str):
             return path
         return path.decode(sys.getfilesystemencoding())
 
     @classmethod
     def join(cls, a, b):
-        #if not a:
-        #    return b
-        #if a[-1] == "/" or a[-1] == "\\":
-        #    return a + b
-        #return a + "/" + b
+        # if not a:
+        #     return b
+        # if a[-1] == "/" or a[-1] == "\\":
+        #     return a + b
+        # return a + "/" + b
         return os.path.join(a, b).replace("\\", "/")
 
     @classmethod
@@ -70,8 +64,8 @@ class Paths(object):
             print("before", path)
             path = cls.get_real_case(path)
             print("after", path)
-        #dir, file = os.path.split(path)
-        #norm_dir = dir + "/"
+        # dir, file = os.path.split(path)
+        # norm_dir = dir + "/"
         if default_dir is not None:
             default_dir += "/"
             if path.startswith(default_dir):
@@ -126,7 +120,7 @@ class Paths(object):
             last = p
             p = os.path.dirname(p)
         parts.reverse()
-        #print(drive, parts)
+        # print(drive, parts)
         result = [drive]
         result.extend(parts)
 
@@ -138,9 +132,9 @@ class Paths(object):
             part_compare = part_compare.lower()
             if macosx:
                 part_compare = unicodedata.normalize("NFC", part_compare)
-            #print("part is", part)
+            # print("part is", part)
             if os.path.isdir(combined):
-                #print("checking case of", combined+ "/" + part)
+                # print("checking case of", combined+ "/" + part)
                 for name in os.listdir(combined):
                     name_compare = name
                     name_compare = name_compare.lower()
@@ -148,7 +142,7 @@ class Paths(object):
                         name_compare = unicodedata.normalize(
                             "NFC", name_compare)
                     if name_compare == part_compare:
-                        print("found case =", name)
+                        # print("found case =", name)
                         combined += "/" + name
                         result[k] = name
                         break

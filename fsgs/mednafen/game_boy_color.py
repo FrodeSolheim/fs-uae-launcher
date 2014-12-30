@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsgs.mednafen.mednafen import MednafenRunner
 
 
@@ -51,5 +46,5 @@ class GameBoyColorRunner(MednafenRunner):
     def mednafen_system_prefix(self):
         return "gb"
 
-    #def mednafen_video_size(self):
-    #    return 160, 144
+    # def mednafen_video_size(self):
+    #     return 160, 144

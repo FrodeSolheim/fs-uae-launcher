@@ -1,11 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from ...Config import Config
-#from ...I18N import gettext
 from ...Settings import Settings
 from ...GamePaths import GamePaths
 from .BottomPanel import BottomPanel
@@ -25,16 +19,16 @@ class GameInfoPanel(BottomPanel):
     def __init__(self, parent):
         BottomPanel.__init__(self, parent)
         Skin.set_background_color(self)
-        #self.set_background_color((0xdd, 0xdd, 0xdd))
+        # self.set_background_color((0xdd, 0xdd, 0xdd))
 
         self.requests = None
         self.image = None
 
         self.layout = fsui.HorizontalLayout()
 
-        #def get_min_height():
-        #    return Constants.COVER_SIZE[1] + 2 * BORDER
-        #self.layout.get_min_height = get_min_height
+        # def get_min_height():
+        #     return Constants.COVER_SIZE[1] + 2 * BORDER
+        # self.layout.get_min_height = get_min_height
 
         self.layout.padding_left = BORDER // 2
         self.layout.padding_right = BORDER // 2
@@ -42,23 +36,23 @@ class GameInfoPanel(BottomPanel):
         self.layout.padding_bottom = Skin.get_bottom_margin()
 
         self.default_image = fsui.Image("fs_uae_launcher:res/cover.png")
-        #self.default_image.resize(Constants.COVER_SIZE)
+        # self.default_image.resize(Constants.COVER_SIZE)
         self.cover_overlay = fsui.Image(
             "fs_uae_launcher:res/cover_overlay.png")
         self.cover_overlay_square = fsui.Image(
             "fs_uae_launcher:res/cover_overlay_square.png")
 
-        #self.cover_view = fsui.ImageView(self, self.default_image)
-        #self.layout.add(self.cover_view, expand=False, fill=True)
+        # self.cover_view = fsui.ImageView(self, self.default_image)
+        # self.layout.add(self.cover_view, expand=False, fill=True)
         self.layout.add_spacer(Constants.COVER_SIZE[0])
 
-        #self.panel = fsui.Panel(self)
-        #self.panel.set_background_color((0xdd, 0xdd, 0xdd))
-        #self.layout.add(self.panel, expand=True, fill=True)
+        # self.panel = fsui.Panel(self)
+        # self.panel.set_background_color((0xdd, 0xdd, 0xdd))
+        # self.layout.add(self.panel, expand=True, fill=True)
 
         vert_layout = fsui.VerticalLayout()
         self.layout.add(vert_layout, expand=True, fill=True)
-        #self.panel.layout.padding_top = 10
+        # self.panel.layout.padding_top = 10
         vert_layout.padding_left = BORDER
 
         vert_layout.add_spacer(58 + 3)
@@ -73,15 +67,15 @@ class GameInfoPanel(BottomPanel):
         self.edit_button = EditButton(self)
         hori_layout.add(self.edit_button, margin_right=3)
 
-        #def label_min_width():
-        #    return 330
-        #self.title_label = fsui.HeadingLabel(self)
-        #self.title_label.get_min_width = label_min_width
-        #vert_layout.add(self.title_label)
+        # def label_min_width():
+        #     return 330
+        # self.title_label = fsui.HeadingLabel(self)
+        # self.title_label.get_min_width = label_min_width
+        # vert_layout.add(self.title_label)
 
-        #self.sub_title_label = fsui.Label(self)
-        #self.sub_title_label.get_min_width = label_min_width
-        #vert_layout.add(self.sub_title_label)
+        # self.sub_title_label = fsui.Label(self)
+        # self.sub_title_label.get_min_width = label_min_width
+        # vert_layout.add(self.sub_title_label)
 
         self.title = ""
         self.sub_title = ""
@@ -169,7 +163,7 @@ class GameInfoPanel(BottomPanel):
         companies = [x.strip() for x in self.publisher.split("/") if x.strip()]
         for developer in self.developer.split("/"):
             developer = developer.strip()
-            if developer and not developer in companies:
+            if developer and developer not in companies:
                 companies.append(developer)
         self.companies = " \u00b7 ".join(companies)
 
@@ -182,11 +176,11 @@ class GameInfoPanel(BottomPanel):
         size = self.size
 
         image = self.image
-        #dc.draw_image(image, x, y)
+        # dc.draw_image(image, x, y)
         if image.size[0] == image.size[1]:
-        #    cover_overlay = self.cover_overlay_square
+            # cover_overlay = self.cover_overlay_square
             y_offset = 14
-        #    #title_x = 10
+            # title_x = 10
         else:
             y_offset = 0
         cover_overlay = self.cover_overlay
@@ -205,9 +199,9 @@ class GameInfoPanel(BottomPanel):
 
         x = 10 + Constants.COVER_SIZE[0] + 20
         dc.draw_text(self.title, title_x, y)
-        #tw, th = \
+        # tw, th = \
         dc.measure_text(self.title)
-        #y += int(th * 1.2)
+        # y += int(th * 1.2)
         y += 24
 
         color = dc.get_text_color()

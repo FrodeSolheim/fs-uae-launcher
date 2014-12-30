@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import weakref
 from fsui.qt import Qt, QPoint
 from fsui.qt import QFontMetrics, QPalette, QWidget
@@ -36,6 +31,7 @@ class MixinBase(object):
     #     # traceback.print_stack()
     #     print(self, _)
     #     self.on_timer()
+
 
 # noinspection PyPep8Naming
 class Widget(MixinBase):

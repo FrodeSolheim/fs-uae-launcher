@@ -1,11 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
-import os
 import fsgs.util.sdl2constants as sdl2
-from .dinputkeycodes import sdlk_to_dik, dinput_key_codes
-from .sdlkeycodes import sdl_key_codes
+
 
 # with open(os.expanduser('~/Desktop/keys.txt'), 'wb') as f:
 #     for key in sorted(sdl_key_codes.keys()):
@@ -49,10 +43,10 @@ class Keyboard(object):
 
     @staticmethod
     def key(name):
-        try:
-            code = name.key.keysym.sym
-        except AttributeError:
-            pass
+        # try:
+        #     code = name.key.keysym.sym
+        # except AttributeError:
+        #     pass
         try:
             code = name["key"]
         except KeyError:

@@ -3,13 +3,14 @@ import time
 import atexit
 import subprocess
 
+
 class Server:
 
     def __init__(self, port, players, password):
         self.port = port
         self.players = players
         self.password = password
-        self.proces = None
+        self.process = None
 
     def start(self):
         args = [sys.executable] + sys.argv[:]

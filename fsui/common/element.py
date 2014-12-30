@@ -1,12 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
+# def xx_on_resize(self):
+#     if self.layout:
+#         self.layout.set_size(self.get_size())
+#         self.layout.update()
 
-#def xx_on_resize(self):
-#    if self.layout:
-#        self.layout.set_size(self.get_size())
-#        self.layout.update()
 
 class Element:
 
@@ -15,12 +11,12 @@ class Element:
         self.layout = None
         self.position = (0, 0)
         self.size = (0, 0)
-        #if not delay_create:
-        #    self.on_create()
+        # if not delay_create:
+        #     self.on_create()
 
-    #@classmethod
-    #def init(cls, obj):
-    #    obj.on_resize = xx_on_resize
+    # @classmethod
+    # def init(cls, obj):
+    #     obj.on_resize = xx_on_resize
 
     def is_visible(self):
         return True
@@ -66,6 +62,7 @@ class Element:
         if self.layout:
             self.layout.set_size(self.get_size())
             self.layout.update()
+
 
 class LightElement(Element):
 

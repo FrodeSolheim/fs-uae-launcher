@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import sys
 import time
 from fsbc.desktop import open_url_in_browser
@@ -16,7 +11,7 @@ from fsbc.Application import Application
 from ..Config import Config
 from ..Signal import Signal
 from ..Settings import Settings
-from ..I18N import _, gettext
+from ..I18N import gettext
 from .AboutDialog import AboutDialog
 from .Book import Book
 from .CDPanel import CDPanel
@@ -41,7 +36,8 @@ class MainWindow(WindowWithTabs):
 
     instance = None
 
-    def __init__(self, icon):
+    def __init__(self, fsgs, icon):
+        self.fsgs = fsgs
         title = "FS-UAE Launcher {0}".format(Application.instance().version)
         WindowWithTabs.__init__(self, None, title)
         if icon:
@@ -50,6 +46,10 @@ class MainWindow(WindowWithTabs):
         self.tab_panels = []
         self.books = []
         self.menu_button = None
+        self.main_menu_close_time = 0
+        self.user_menu_close_time = 0
+        self.user_button = None
+        self.main_panel = None
 
         self.main_layout = fsui.HorizontalLayout()
         self.set_content(self.main_layout)
@@ -184,25 +184,25 @@ class MainWindow(WindowWithTabs):
             if USE_MAIN_MENU:
                 icon = fsui.Image("fs_uae_launcher:res/main_menu.png")
                 self.menu_button = self.add_tab_button(
-                    None, icon, _("Main Menu"),
+                    None, icon, gettext("Main Menu"),
                     menu_function=self.open_main_menu, left_padding=5)
                 default_tab_index_offset = 1
                 # self.add_tab_spacer(60)
             else:
                 self.add_tab_spacer(10)
 
-            self.add_page(column, MainPanel, "tab_main", _("Config"),
-                          _("Main Configuration Options"))
-            self.add_page(column, InputPanel, "tab_input", _("Input"),
-                          _("Input Options"))
+            self.add_page(column, MainPanel, "tab_main", gettext("Config"),
+                          gettext("Main Configuration Options"))
+            self.add_page(column, InputPanel, "tab_input", gettext("Input"),
+                          gettext("Input Options"))
             self.add_page(column, FloppiesPanel, "tab_floppies",
-                          _("Floppies"), _("Floppy Drives"))
-            self.add_page(column, CDPanel, "tab_cdroms", _("CD-ROMs"),
-                          _("CD-ROM Drives"))
+                          gettext("Floppies"), gettext("Floppy Drives"))
+            self.add_page(column, CDPanel, "tab_cdroms", gettext("CD-ROMs"),
+                          gettext("CD-ROM Drives"))
             self.add_page(column, HardDrivesPanel, "tab_hard_drives",
-                          _("Hard Drives"))
+                          gettext("Hard Drives"))
             self.add_page(column, HardwarePanel, "tab_hardware",
-                          _("Hardware"), _("Hardware Options"))
+                          gettext("Hardware"), gettext("Hardware Options"))
 
             if USE_MAIN_MENU:
                 # self.add_tab_spacer(20)
@@ -239,17 +239,17 @@ class MainWindow(WindowWithTabs):
 
                 icon = fsui.Image("fs_uae_launcher:res/user_menu.png")
                 self.user_button = self.add_tab_button(
-                    None, icon, _("User Menu"),
+                    None, icon, gettext("User Menu"),
                     menu_function=self.open_user_menu,
                     left_padding=5, right_padding=5)
 
             if not USE_MAIN_MENU:
                 icon = fsui.Image("fs_uae_launcher:res/tab_scan.png")
-                self.add_tab_button(self.on_scan_button, icon, _("Scan"),
-                                    _("Open Scan Dialog"))
+                self.add_tab_button(self.on_scan_button, icon, gettext("Scan"),
+                                    gettext("Open Scan Dialog"))
                 icon = fsui.Image("fs_uae_launcher:res/tab_settings.png")
                 self.add_tab_button(self.on_settings_button, icon,
-                                    _("Settings"))
+                                    gettext("Settings"))
 
             if Skin.use_unified_toolbar():
                 self.add_tab_panel(InfoPanel, min_width=400)
@@ -262,26 +262,28 @@ class MainWindow(WindowWithTabs):
     def create_menu(self):
         menu = fsui.Menu()
         # text = _("Scan for Files")
-        menu.add_item(_("Scan Files and Configurations"), self.on_scan_button)
+        menu.add_item(gettext("Scan Files and Configurations"),
+                      self.on_scan_button)
         # if Settings.get("database_feature") == "1":
         # if True:
         #     menu.add_item(_("Refresh Game Database"),
         #                   self.on_game_database_refresh)
         menu.add_separator()
         # menu.add_item(_("Custom Options & Settings"),
-        menu.add_item(_("Custom Configuration"), self.on_custom_button)
+        menu.add_item(gettext("Custom Configuration"), self.on_custom_button)
         menu.add_separator()
-        menu.add_item(_("ADF Creator"), self.on_adf_creator)
-        menu.add_item(_("HDF Creator"), self.on_hdf_creator)
+        menu.add_item(gettext("ADF Creator"), self.on_adf_creator)
+        menu.add_item(gettext("HDF Creator"), self.on_hdf_creator)
         menu.add_separator()
-        menu.add_item(_("Import Kickstarts"), self.on_import_kickstarts)
-        menu.add_item(_("Amiga Forever Import"), self.on_import_kickstarts)
+        menu.add_item(gettext("Import Kickstarts"), self.on_import_kickstarts)
+        menu.add_item(gettext("Amiga Forever Import"),
+                      self.on_import_kickstarts)
         menu.add_separator()
         # menu.add_preferences_item(_("Preferences"), self.on_settings_button)
-        menu.add_preferences_item(_("Settings"), self.on_settings_button)
+        menu.add_preferences_item(gettext("Settings"), self.on_settings_button)
         menu.add_separator()
-        menu.add_about_item(
-            _("About {name}").format(name="FS-UAE Launcher"), self.on_about)
+        menu.add_about_item(gettext("About {name}").format(
+            name="FS-UAE Launcher"), self.on_about)
         return menu
 
     def add_page(self, column, content_class, icon_name, title, tooltip=""):
@@ -329,16 +331,16 @@ class MainWindow(WindowWithTabs):
 
         if Settings.get("database_auth"):
             # menu.add_item(_("Log In / Register"), self.on_log_in)
-            menu.add_item(_("Refresh Game Database"),
+            menu.add_item(gettext("Refresh Game Database"),
                           self.on_game_database_refresh)
-            menu.add_item(_("Upload Files to OAGD.net Locker"),
+            menu.add_item(gettext("Upload Files to OAGD.net Locker"),
                           self.on_upload_locker_files)
             menu.add_separator()
-            menu.add_item(_("Log Out"), self.on_log_out)
+            menu.add_item(gettext("Log Out"), self.on_log_out)
         else:
-            menu.add_item(_("Log In / Register"), self.on_log_in)
+            menu.add_item(gettext("Log In / Register"), self.on_log_in)
         menu.add_separator()
-        menu.add_item(_("About OAGD.net"), self.on_what_is_this)
+        menu.add_item(gettext("About OAGD.net"), self.on_what_is_this)
         return menu
 
     def on_log_in(self):

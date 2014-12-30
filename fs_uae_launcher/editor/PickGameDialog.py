@@ -1,14 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import xml.etree.ElementTree
 from xml.etree.cElementTree import ElementTree
 import fsui as fsui
-#from ..Database import Database
-from ..I18N import _, ngettext
+from ..I18N import gettext
 from .GameListView import GameListView
+
 
 class PickGameDialog(fsui.LegacyDialog):
 
@@ -31,15 +25,14 @@ class PickGameDialog(fsui.LegacyDialog):
         self.layout.add(self.link_field, fill=True)
         self.layout.add_spacer(20)
 
-
         hlayout = fsui.HorizontalLayout()
         self.layout.add(hlayout, fill=True)
         hlayout.add_spacer(0, expand=True)
-        self.cancel_button = fsui.Button(self, _("Cancel"))
+        self.cancel_button = fsui.Button(self, gettext("Cancel"))
         self.cancel_button.activated.connect(self.on_cancel_button)
         hlayout.add(self.cancel_button)
         hlayout.add_spacer(10)
-        self.ok_button = fsui.Button(self, _("OK"))
+        self.ok_button = fsui.Button(self, gettext("OK"))
         self.ok_button.activated.connect(self.on_ok_button)
         hlayout.add(self.ok_button)
 

@@ -16,8 +16,6 @@ You should have received a copy of the GNU Lesser General Public License
 along with this library; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 """
-from __future__ import print_function
-
 import sys
 import time
 from collections import deque
@@ -27,44 +25,30 @@ import threading
 import random
 from hashlib import sha1
 
+
+def int_to_bytes(number):
+    return bytes([(number & 0xff000000) >> 24, (number & 0x00ff0000) >> 16,
+                  (number & 0x0000ff00) >> 8, (number & 0x000000ff)])
+
+
+def bytes_to_int(m):
+    return m[0] << 24 | m[1] << 16 | m[2] << 8 | m[3]
+
+
+def byte_ord(v):
+    # print("byte_ord", v)
+    try:
+        return v[0]
+    except TypeError:
+        return v
+
+
+def byte(v):
+    return bytes([v])
+
+
 SERVER_PROTOCOL_VERSION = 1
 MAX_PLAYERS = 6
-
-if sys.version > '3':
-    PYTHON3 = True
-else:
-    PYTHON3 = False
-
-if PYTHON3:
-    def int_to_bytes(number):
-        return bytes([(number & 0xff000000) >> 24, (number & 0x00ff0000) >> 16,
-                (number & 0x0000ff00) >> 8, (number & 0x000000ff)])
-    def bytes_to_int(m):
-        return m[0] << 24 | m[1] << 16 | m[2] << 8 | m[3]
-    def byte_ord(v):
-        #print("byte_ord", v)
-        try:
-            return v[0]
-        except TypeError:
-            return v
-    def byte(v):
-        return bytes([v])
-    server_protocol_version = byte(SERVER_PROTOCOL_VERSION)
-
-else:
-    def int_to_bytes(number):
-        return chr((number & 0xff000000) >> 24) + \
-                chr((number & 0x00ff0000) >> 16) + \
-                chr((number & 0x0000ff00) >> 8) + \
-                chr((number & 0x000000ff))
-    def bytes_to_int(m):
-        return ord(m[0]) << 24 | ord(m[1]) << 16 | ord(m[2]) << 8 | ord(m[3])
-    def byte_ord(v):
-        return ord(v)
-    def byte(v):
-        return v
-    server_protocol_version = chr(SERVER_PROTOCOL_VERSION)
-
 max_drift = 25
 num_clients = 2
 port = 25100
@@ -72,88 +56,75 @@ host = "0.0.0.0"
 game = None
 game_password = 0
 launch_timeout = 0
+server_protocol_version = byte(SERVER_PROTOCOL_VERSION)
+
 
 def create_game_password(value):
     # for python 2 + 3 compatibility
-    #if not isinstance(value, unicode):
+    # if not isinstance(value, unicode):
     value = value.encode("UTF-8")
-    #print(repr(value))
+    # print(repr(value))
     h = sha1()
     h.update(b"FSNP")
     val = b""
     for v in value:
         if byte_ord(v) < 128:
             val += byte(v)
-    #print("update:", repr(val))
+    # print("update:", repr(val))
     h.update(val)
     return bytes_to_int(h.digest()[:4])
 
-for arg in sys.argv:
-    if arg.startswith("--"):
-        parts = arg[2:].split("=", 1)
-        if len(parts) == 2:
-            key, value = parts
-            key = key.lower()
-            if key == "port":
-                port = int(value)
-            elif key == "players":
-                num_clients = int(value)
-            elif key == "password":
-                #game_password = crc32(value) & 0xffffffff
-                game_password = create_game_password(value)
-                #print("game password (numeric) is", game_password)
-            elif key == "launch-timeout":
-                launch_timeout = int(value)
 
+MESSAGE_READY = 0
+MESSAGE_MEM_CHECK = 5
+MESSAGE_RND_CHECK = 6
+MESSAGE_PING = 7
+MESSAGE_PLAYERS = 8
+MESSAGE_PLAYER_TAG_0 = 9
+MESSAGE_PLAYER_TAG_1 = 10
+MESSAGE_PLAYER_TAG_2 = 11
+MESSAGE_PLAYER_TAG_3 = 12
+MESSAGE_PLAYER_TAG_4 = 13
+MESSAGE_PLAYER_TAG_5 = 14
 
-MESSAGE_READY             =  0
-MESSAGE_MEM_CHECK         =  5
-MESSAGE_RND_CHECK         =  6
-MESSAGE_PING              =  7
-MESSAGE_PLAYERS           =  8
-MESSAGE_PLAYER_TAG_0      =  9
-MESSAGE_PLAYER_TAG_1      = 10
-MESSAGE_PLAYER_TAG_2      = 11
-MESSAGE_PLAYER_TAG_3      = 12
-MESSAGE_PLAYER_TAG_4      = 13
-MESSAGE_PLAYER_TAG_5      = 14
-
-MESSAGE_PLAYER_PING       = 15
-MESSAGE_PLAYER_LAG        = 16
-MESSAGE_SET_PLAYER_TAG    = 17
-MESSAGE_PROTOCOL_VERSION  = 18
+MESSAGE_PLAYER_PING = 15
+MESSAGE_PLAYER_LAG = 16
+MESSAGE_SET_PLAYER_TAG = 17
+MESSAGE_PROTOCOL_VERSION = 18
 MESSAGE_EMULATION_VERSION = 19
-MESSAGE_ERROR             = 20
-MESSAGE_TEXT              = 21
-MESSAGE_SESSION_KEY       = 22
+MESSAGE_ERROR = 20
+MESSAGE_TEXT = 21
+MESSAGE_SESSION_KEY = 22
 
-#MESSAGE_MEM_CHECK = 5
-#MESSAGE_RND_CHECK = 6
-#MESSAGE_PING = 7
+# MESSAGE_MEM_CHECK = 5
+# MESSAGE_RND_CHECK = 6
+# MESSAGE_PING = 7
 
 MESSAGE_MEMCHECK_MASK = (0x80000000 | (MESSAGE_MEM_CHECK << 24))
 MESSAGE_RNDCHECK_MASK = (0x80000000 | (MESSAGE_RND_CHECK << 24))
 
-ERROR_PROTOCOL_MISMATCH    =  1
-ERROR_WRONG_PASSWORD       =  2
-ERROR_CANNOT_RESUME        =  3
-ERROR_GAME_ALREADY_STARTED =  4
-ERROR_PLAYER_NUMBER        =  5
-ERROR_EMULATOR_MISMATCH    =  6
-ERROR_CLIENT_ERROR         =  7
-ERROR_MEMORY_DESYNC        =  8
-ERROR_RANDOM_DESYNC        =  9
-ERROR_SESSION_KEY          = 10
-ERROR_GAME_STOPPED         = 99
+ERROR_PROTOCOL_MISMATCH = 1
+ERROR_WRONG_PASSWORD = 2
+ERROR_CANNOT_RESUME = 3
+ERROR_GAME_ALREADY_STARTED = 4
+ERROR_PLAYER_NUMBER = 5
+ERROR_EMULATOR_MISMATCH = 6
+ERROR_CLIENT_ERROR = 7
+ERROR_MEMORY_DESYNC = 8
+ERROR_RANDOM_DESYNC = 9
+ERROR_SESSION_KEY = 10
+ERROR_GAME_STOPPED = 99
+
 
 def create_ext_message(ext, data):
     return 0x80000000 | ext << 24 | (data & 0xffffff)
 
+
 class Client:
 
-    def __init__(self, socket, address):
-        #self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.socket = socket
+    def __init__(self, sock, address):
+        # self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket = sock
         self.messages = []
         self.lock = threading.Lock()
         self.address = address
@@ -162,18 +133,19 @@ class Client:
         self.player = 0
         self.playing = False
         self.frame = 0
-        self.frame_times = [0.0 for x in range(100)]
+        self.frame_times = [0.0 for _ in range(100)]
         self.lag = 0.0
         self.out_seq = 0
-        self.memcheck = [(0, 0) for x in range(100)]
-        self.rndcheck = [(0, 0) for x in range(100)]
+        self.memcheck = [(0, 0) for _ in range(100)]
+        self.rndcheck = [(0, 0) for _ in range(100)]
         self.ping_sent_at = 0
-        self.pings = deque([0 for x in range(10)])
+        self.pings = deque([0 for _ in range(10)])
         self.pings_sum = 0
         self.pings_avg = 0
-        #self.protocol_version = 0
+        # self.protocol_version = 0
         self.emulator_version = b""
         self.session_key = 0
+        self.resume_from_packet = 0
 
         self.temp_a = 0
         self.temp_b = 0
@@ -188,28 +160,28 @@ class Client:
 
     def send_message(self, message):
         with self.lock:
-            #if message == 0x87000000:
-            #    #print("queueing %08x" % (message,))
-            #    #traceback.print_stack()
-            #    self.temp_c += 1
+            # if message == 0x87000000:
+            #     #print("queueing %08x" % (message,))
+            #     #traceback.print_stack()
+            #     self.temp_c += 1
             self.__send_data(int_to_bytes(message))
 
     def __send_data(self, data):
-        #if data[0] == '\x87':
-        #    #print("queueing ping")
-        #    #traceback.print_stack()
-        #    self.temp_c += 1
+        # if data[0] == '\x87':
+        #     #print("queueing ping")
+        #     #traceback.print_stack()
+        #     self.temp_c += 1
         self.socket.sendall(data)
 
     def queue_message(self, message):
         with self.lock:
-            #if message == 0x87000000:
-            #    #print("queueing %08x" % (message,))
-            #    #traceback.print_stack()
-            #    self.temp_c += 1
-            #print("queueing %08x" % (message,))
-            #if message & 0x20000000:
-            #    traceback.print_stack()
+            # if message == 0x87000000:
+            #     #print("queueing %08x" % (message,))
+            #     #traceback.print_stack()
+            #     self.temp_c += 1
+            # print("queueing %08x" % (message,))
+            # if message & 0x20000000:
+            #     traceback.print_stack()
             self.messages.append(int_to_bytes(message))
             if len(self.messages) == 100:
                 self.__send_queued_messages()
@@ -227,18 +199,20 @@ class Client:
     def __send_queued_messages(self):
         data = b"".join(self.messages)
         self.messages[:] = []
-        #print("sending", repr(data))
+        # print("sending", repr(data))
         self.__send_data(data)
 
     def initialize_client(self):
         print("initialize", self)
+
         def read_bytes(num):
-            data = b""
+            read_data = b""
             for i in range(num):
-                data = data + self.socket.recv(1)
-            if not len(data) == num:
+                read_data = read_data + self.socket.recv(1)
+            if not len(read_data) == num:
                 raise Exception("did not get {0} bytes".format(num))
-            return data
+            return read_data
+
         # check header message
         data = read_bytes(4)
         if data == b"PING":
@@ -250,7 +224,7 @@ class Client:
             raise Exception("did not get expected FSNP header")
         # check protocol version
         data = self.socket.recv(1)
-        #print(repr(data), repr(server_protocol_version))
+        # print(repr(data), repr(server_protocol_version))
         if data != server_protocol_version:
             print("protocol mismatch")
             self.send_error_message(ERROR_PROTOCOL_MISMATCH)
@@ -292,7 +266,7 @@ class Client:
         try:
             try:
                 if not self.initialize_client():
-                    #print("initialize failed for", self)
+                    # print("initialize failed for", self)
                     return
                 self.receive_loop()
             except Exception:
@@ -303,7 +277,6 @@ class Client:
                 self.socket.close()
             except Exception:
                 pass
-
 
     def receive_loop(self):
         data = b""
@@ -322,7 +295,7 @@ class Client:
 
     def send_ping(self):
         with self.lock:
-            #print("ping?", self.ping_sent_at)
+            # print("ping?", self.ping_sent_at)
             if self.ping_sent_at == 0:
                 self.temp_a += 1
                 self.ping_sent_at = time.time()
@@ -339,19 +312,19 @@ class Client:
             assert self.ping_sent_at > 0
             t = time.time()
             new = (t - self.ping_sent_at) / 1.0
-            #print(t, "-", self.ping_sent_at, "=", new)
+            # print(t, "-", self.ping_sent_at, "=", new)
             old = self.pings.popleft()
             self.pings.append(new)
-            #print(self.pings)
+            # print(self.pings)
             self.pings_sum = self.pings_sum - old + new
             self.pings_avg = self.pings_sum / len(self.pings)
             self.ping_sent_at = 0
 
     def on_message(self, m):
         message = bytes_to_int(m)
-        #with game.lock:
-        #    if not self.playing:
-        #        print(self, "is no longer playing/valid, ignoring message")
+        # with game.lock:
+        #     if not self.playing:
+        #         print(self, "is no longer playing/valid, ignoring message")
 
         if message & 0x80000000:
             # ext message
@@ -362,7 +335,7 @@ class Client:
             elif command == MESSAGE_RND_CHECK:
                 self.rndcheck[self.frame % 100] = (data, self.frame)
             elif command == MESSAGE_PING:
-                #print("{0:x}".format(message))
+                # print("{0:x}".format(message))
                 self.on_ping()
             elif command == MESSAGE_TEXT:
                 print("received text command")
@@ -378,11 +351,11 @@ class Client:
                         break
 
         elif message & (1 << 30):
-            frame =  message & 0x3fffffff
-            #print("received frame", frame)
+            frame = message & 0x3fffffff
+            # print("received frame", frame)
             if frame != self.frame + 1:
                 print("error, expected frame", self.frame + 1, "got", frame)
-            #print("received frame", frame)
+            # print("received frame", frame)
             self.frame = frame
             t = time.time()
             self.frame_times[self.frame % 100] = t
@@ -397,10 +370,12 @@ class Client:
 
     def __str__(self):
         return "<Client {0}:{1} {2}>".format(self.player, self.tag,
-                self.address)
+                                             self.address)
+
 
 def create_session_key():
     return random.randint(0, 2**24 - 1)
+
 
 class Game:
 
@@ -410,16 +385,16 @@ class Game:
         self.time = 0
         self.clients = []
         self.num_clients = 0
-        self.frame_times = [0.0 for x in range(100)]
+        self.frame_times = [0.0 for _ in range(100)]
         self.lock = threading.Lock()
         self.stop = False
-        self.session_keys = [0 for x in range(MAX_PLAYERS)]
+        self.session_keys = [0 for _ in range(MAX_PLAYERS)]
         self.emulator_version = b""
         self.verified_frame = -1
 
     def __start(self):
         if len(self.clients) != num_clients:
-            printf("error - cannot start until all players have connected")
+            print("error - cannot start until all players have connected")
             return
         print("{0} clients connected, starting game".format(num_clients))
         self.started = True
@@ -450,14 +425,16 @@ class Game:
                     return ERROR_PLAYER_NUMBER
                 if self.session_keys[client.player] != client.session_key:
                     return ERROR_SESSION_KEY
-                old_client = self.clients[client.player]
+
                 # FIXME: must transfer settings for resuming to work
+                # old_client = self.clients[client.player]
+
                 self.clients[client.player] = client
                 client.playing = True
 
                 if client.resume_from_packet > 0:
                     # cannot resume yet...
-                    print("cannot resume at packet", resume_from_packet)
+                    print("cannot resume at packet", client.resume_from_packet)
                     return ERROR_CANNOT_RESUME
         return 0
         # FIXME: start the game..?
@@ -505,7 +482,7 @@ class Game:
         diff = target_time - t2
         sleep = diff - 0.001
         if sleep > 0.0:
-            #print(sleep)
+            # print(sleep)
             time.sleep(sleep)
         self.time = target_time
         while time.time() < target_time:
@@ -563,9 +540,9 @@ class Game:
 
     def __print_status(self):
         for i, client in enumerate(self.clients):
-            print("{0} f {1:6d} p avg: {2:3d} {3:3d}".format(i,
-                    client.frame, int(client.pings_avg * 1000),
-                    int(client.lag * 1000)))
+            print("{0} f {1:6d} p avg: {2:3d} {3:3d}".format(
+                i, client.frame, int(client.pings_avg * 1000),
+                int(client.lag * 1000)))
 
     def __send_status(self):
         for i, client in enumerate(self.clients):
@@ -580,7 +557,7 @@ class Game:
         if not self.started:
             # game was not started - ignoring input event
             print("game not started, ignoring input event {0:08x}".format(
-                    input_event))
+                input_event))
             return
         with self.lock:
             if not client.playing:
@@ -594,10 +571,10 @@ class Game:
         print("add text message")
         with self.lock:
             for client in self.clients:
-                #if from_client == client:
-                #    continue
-                message = 0x80000000 | MESSAGE_TEXT << 24 \
-                        | from_client.player << 16 | len(text)
+                # if from_client == client:
+                #     continue
+                message = (0x80000000 | MESSAGE_TEXT << 24 |
+                           from_client.player << 16 | len(text))
                 message = int_to_bytes(message) + text
                 print("send", repr(message), "to", client)
                 client.queue_bytes(message)
@@ -611,7 +588,7 @@ class Game:
 
     def __send_to_clients(self, message, force_send=False):
         for client in self.clients:
-            #print("send", message, "to", client)
+            # print("send", message, "to", client)
             client.queue_message(message)
             if force_send:
                 client.send_queued_messages()
@@ -619,11 +596,11 @@ class Game:
     def check_synchronization(self, check_frame):
         # FIXME: MOVE TO GAME CLASS
         # FIXME: ONLY RUN ONCE PER FRAME, not once per frame * clients
-        #if self.frame == 0:
-        #    return
+        # if self.frame == 0:
+        #     return
         with game.lock:
-            #print("received memcheck", data)
-            #check_frame = self.frame - 1
+            # print("received memcheck", data)
+            # check_frame = self.frame - 1
             if check_frame < 0:
                 return
             index = check_frame % 100
@@ -633,7 +610,7 @@ class Game:
                 if client.frame <= check_frame:
                     # cannot check yet
                     return
-                #print(client, client.frame, client.memcheck)
+                # print(client, client.frame, client.memcheck)
                 mem_check_data.append((client, client.memcheck[index]))
                 rnd_check_data.append((client, client.rndcheck[index]))
             check = mem_check_data[0][1]
@@ -661,25 +638,28 @@ address_map = {
 
 }
 
+
 def accept_client(server_socket):
     global last_keepalive_time
 
     server_socket.settimeout(1)
     client_socket, client_address = server_socket.accept()
-    #client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDLOWAT, 4)
+    # client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDLOWAT, 4)
     client_socket.setsockopt(socket.SOL_TCP, socket.TCP_NODELAY, 1)
     client_socket.settimeout(None)
     client = Client(client_socket, client_address)
-    #client.player = len(game.clients) + 1
+    # client.player = len(game.clients) + 1
     print("Client connected", client)
     last_keepalive_time = time.time()
 
-    #game.add_client(client)
-    #client.start()
-    #if game.can_start():
-    #    game.start()
+    # game.add_client(client)
+    # client.start()
+    # if game.can_start():
+    #     game.start()
 
-#stop_accepting = False
+
+# stop_accepting = False
+
 
 def accept_thread(server_socket):
     while not game.stop:
@@ -690,6 +670,7 @@ def accept_thread(server_socket):
         except Exception:
             traceback.print_exc()
             time.sleep(1.0)
+
 
 def _run_server():
     global game
@@ -718,10 +699,11 @@ def _run_server():
                 print("game not started yet, aborting (timeout)")
                 game.stop = True
                 return
-                #sys.exit()
+                # sys.exit()
     print("game started")
     while not game.stop:
         time.sleep(0.1)
+
 
 def run_server():
     try:
@@ -732,5 +714,27 @@ def run_server():
         traceback.print_exc()
     game.stop = True
 
-if __name__ == "__main__":
+
+def main():
+    global port, num_clients, game_password, launch_timeout
+    for arg in sys.argv:
+        if arg.startswith("--"):
+            parts = arg[2:].split("=", 1)
+            if len(parts) == 2:
+                key, value = parts
+                key = key.lower()
+                if key == "port":
+                    port = int(value)
+                elif key == "players":
+                    num_clients = int(value)
+                elif key == "password":
+                    # game_password = crc32(value) & 0xffffffff
+                    game_password = create_game_password(value)
+                    # print("game password (numeric) is", game_password)
+                elif key == "launch-timeout":
+                    launch_timeout = int(value)
     run_server()
+
+
+if __name__ == "__main__":
+    main()

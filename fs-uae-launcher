@@ -2,6 +2,16 @@
 
 import sys
 
+if sys.version_info[0] < 3 or sys.version_info[1] < 2:
+    print("You need at least Python 3.2 to run FS-UAE Launcher")
+    sys.exit(1)
+
+# Workaround to make import typing work without having it on the default
+# python path (would confuse mypy).
+
+import fstd.typing
+sys.modules["typing"] = fstd.typing
+
 if "--server" in sys.argv:
     app = "fs-uae-netplay-server"
 elif "--fs-uae-arcade" in sys.argv:
@@ -9,7 +19,7 @@ elif "--fs-uae-arcade" in sys.argv:
 else:
     app = "fs-uae-launcher"
 
-version = "2.5.22dev"
+version = "2.5.23dev"
 series = "devel"
 
 # if "--fs-uae-workspace=real" in sys.argv:

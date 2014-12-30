@@ -1,13 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from fsgs.Database import Database
-
 from fsui import ImageButton, Image
 from fsgs.OAGDClient import OAGDClient
 from ...Config import Config
-from ...I18N import _
+from ...I18N import gettext
 from ..IconButton import IconButton
 
 
@@ -19,15 +14,15 @@ class RatingButton(ImageButton):
         if self.rating == 5:
             self.icons[0] = Image(
                 "fs_uae_launcher:res/16/rating_fav_2.png")
-            tooltip = _("Mark This Game Variant as Personal Favorite")
+            tooltip = gettext("Mark This Game Variant as Personal Favorite")
         elif self.rating == 4:
             self.icons[0] = Image(
                 "fs_uae_launcher:res/16/thumb_up_2.png")
-            tooltip = _("Like This Game Variant")
+            tooltip = gettext("Like This Game Variant")
         elif self.rating == 1:
             self.icons[0] = Image(
                 "fs_uae_launcher:res/16/thumb_down_2.png")
-            tooltip = _("Dislike This Game Variant")
+            tooltip = gettext("Dislike This Game Variant")
         else:
             raise Exception("ImageButton: unknown rating")
         self.icons[1] = self.icons[0].grey_scale()
@@ -58,9 +53,9 @@ class RatingButton(ImageButton):
         work_rating = client.get("work", 0)
         database = Database.instance()
         cursor = database.cursor()
-        #cursor.execute("UPDATE rating SET like_rating = ?, "
-        #               "work_rating = ? WHERE game_uuid = ?",
-        #               (like_rating, work_rating, variant_uuid))
+        # cursor.execute("UPDATE rating SET like_rating = ?, "
+        #                "work_rating = ? WHERE game_uuid = ?",
+        #                (like_rating, work_rating, variant_uuid))
 
         cursor.execute(
             "DELETE FROM rating WHERE game_uuid = ?", (variant_uuid,))

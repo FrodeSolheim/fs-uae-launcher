@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six
 import fsui
 from fsui.extra.iconheader import IconHeader
 from fs_uae_launcher.res import gettext
@@ -58,7 +52,7 @@ class TaskDialog(fsui.Window):
         fsui.show_error(message, parent=self.get_window())
 
     def on_progress(self, message):
-        if not isinstance(message, six.string_types):
+        if not isinstance(message, str):
             message = message[0]
         # print("on_progress", status)
         self.icon_header.subtitle_label.set_text(message)

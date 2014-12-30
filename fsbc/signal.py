@@ -1,12 +1,9 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import threading
 import traceback
 from weakref import ref
-import six
+# noinspection PyUnresolvedReferences
+from typing import Dict, Function, List, Any, Tuple
+
 
 main_thread_id = threading.current_thread().ident
 _signal_id = 0
@@ -15,7 +12,7 @@ _signal_id = 0
 def new_signal_id():
     global _signal_id
     _signal_id += 1
-    return six.text_type(_signal_id)
+    return str(_signal_id)
 
 
 class Listener(object):
@@ -44,6 +41,7 @@ class Listener(object):
 
     def __call__(self, *args, **kwargs):
         if self.instance is not None:
+            # noinspection PyCallingNonCallable
             instance = self.instance()
             function = self.function()
             if function is None or instance is None:
@@ -63,10 +61,14 @@ class Listener(object):
 
 class Signal():
 
-    signal_listeners = {}
-    listeners = {}
-    notifications = []
+    # FIXME: should have type Dict[str, Callable]
+    # or # type_xxx: Dict[str, Function]
+    signal_listeners = {}  # type: Dict[str, Any]
+    # listeners = {}
+    notifications = []  # type: List[Tuple[str, Any]]
     lock = threading.Lock()
+
+    quit = None  # type: Signal
 
     def __init__(self, signal=None):
         if not signal:
@@ -101,16 +103,16 @@ class Signal():
             if len(Signal.signal_listeners[self.signal]) == 0:
                 del Signal.signal_listeners[self.signal]
 
-            #Signal.listeners[listener].remove(self.signal)
-            #if len(Signal.listeners[listener]) == 0:
-            #    del Signal.listeners[listener]
+            # Signal.listeners[listener].remove(self.signal)
+            # if len(Signal.listeners[listener]) == 0:
+            #     del Signal.listeners[listener]
 
-    #@classmethod
-    #def disconnect_all(cls, listener):
-    #    with Signal.lock:
-    #        for signal in Signal.listeners[listener]:
-    #            Signal.signal_listeners[signal].remove(listener)
-    #        del Signal.listeners[listener]
+    # @classmethod
+    # def disconnect_all(cls, listener):
+    #     with Signal.lock:
+    #         for signal in Signal.listeners[listener]:
+    #             Signal.signal_listeners[signal].remove(listener)
+    #         del Signal.listeners[listener]
 
     def __call__(self, *args):
         self.notify(*args)
@@ -122,13 +124,12 @@ class Signal():
         else:
             with Signal.lock:
                 Signal.notifications.append((self.signal, args))
-            # FIXME
+            # FIXME: this is just a hack, fsui.call_after should be
+            # replaced with an Application-specified callback function
             try:
-                import fsui as fsui
+                fsui = __import__("fsui")
                 fsui.call_after(Signal.process_all_signals)
             except AttributeError:
-                # FIXME: this is just a hack, fsui.call later must be
-                # replaced with an Application-level overridable function
                 pass
 
     @classmethod
@@ -138,7 +139,7 @@ class Signal():
                 return
             notifications = Signal.notifications[:]
             Signal.notifications = []
-        #print(notifications)
+        # print(notifications)
         for signal, args in notifications:
             remove_listeners = cls.process_signal(signal, *args)
             if len(remove_listeners) > 0:
@@ -151,10 +152,10 @@ class Signal():
 
     @classmethod
     def process_signal(cls, signal, *args):
-        #print(self.listeners.setdefault(signal, []))
+        # print(self.listeners.setdefault(signal, []))
         remove_listeners = []
         for listener_ref in Signal.signal_listeners.setdefault(signal, []):
-            #print(listener, signal, args)
+            # print(listener, signal, args)
             # listener = listener_ref()
             # if not listener:
             #     # FIXME: remove reference
@@ -163,30 +164,30 @@ class Signal():
             # print(signal, listener, listener.instance, listener.function)
 
             try:
-                #instance = listener.instance() if listener.instance else None
-                #function = listener.function()
-                #print(signal, instance, function)
-                #if function is None:
-                #    # FIXME: remove listener / dead listener
-                #    continue
+                # instance = listener.instance() if listener.instance else None
+                # function = listener.function()
+                # print(signal, instance, function)
+                # if function is None:
+                #     # FIXME: remove listener / dead listener
+                #     continue
                 #
-                #if instance is not None:
-                #    if signal == "config":
-                #        # FIXME: temporary hack for legacy code
-                #        instance.on_config(*args)
-                #        continue
-                #    elif signal == "setting":
-                #        # FIXME: temporary hack for legacy code
-                #        instance.on_setting(*args)
-                #        continue
-                #    try:
-                #        # FIXME: temporary hack for legacy code
-                #        func = getattr(instance, "on_" + signal + "_signal")
-                #    except AttributeError:
-                #        pass
-                #    else:
-                #        func(*args)
-                #        continue
+                # if instance is not None:
+                #     if signal == "config":
+                #         # FIXME: temporary hack for legacy code
+                #         instance.on_config(*args)
+                #         continue
+                #     elif signal == "setting":
+                #         # FIXME: temporary hack for legacy code
+                #         instance.on_setting(*args)
+                #         continue
+                #     try:
+                #         # FIXME: temporary hack for legacy code
+                #         func = getattr(instance, "on_" + signal + "_signal")
+                #     except AttributeError:
+                #         pass
+                #     else:
+                #         func(*args)
+                #         continue
 
                 result = listener(*args)
                 if not result:

@@ -1,25 +1,15 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import sys
-import six
 
 
 def unicode_path(path):
-    if isinstance(path, six.text_type):
+    if isinstance(path, str):
         return path
     return path.decode(sys.getfilesystemencoding())
 
 
 def str_path(path):
-    if six.PY3:
-        return path
-    if isinstance(path, str):
-        return path
-    return path.encode(sys.getfilesystemencoding())
+    return path
 
 
 def normalize_path(path):

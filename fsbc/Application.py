@@ -1,14 +1,10 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import sys
 import time
 import threading
 from fsbc.Paths import Paths
 from fsbc.system import windows, macosx
+import fsbc.Settings
 
 
 class Application(object):
@@ -46,15 +42,16 @@ class Application(object):
         """
         if cls._instance:
             raise RuntimeError("An application instance already exists")
-            #print("WARNING: An application instance already exists")
+            # print("WARNING: An application instance already exists")
 
-        #noinspection PyAttributeOutsideInit
+        # noinspection PyAttributeOutsideInit
         cls._instance = instance
+        fsbc.Settings.set_path(instance.get_settings_path())
 
     def __init__(self, name="", version="", series=""):
-        #if Application.instance is not None:
-        #    raise Exception("An application instance already exists")
-        #Application.instance = self
+        # if Application.instance is not None:
+        #     raise Exception("An application instance already exists")
+        # Application.instance = self
         self.stop_flag = False
         self.name = name or Application.app_name
         self.version = version or Application.app_version
@@ -107,8 +104,8 @@ class Application(object):
     def run_in_main(self, function, *args, **kwargs):
         raise NotImplementedError("Application.run_in_main")
 
-    #def timer(self, timeout, function, *args, **kwargs):
-    #    raise NotImplementedError("Application.call_later")
+    # def timer(self, timeout, function, *args, **kwargs):
+    #     raise NotImplementedError("Application.call_later")
 
     @staticmethod
     def executable_dir():
@@ -138,8 +135,8 @@ class Application(object):
             # FIXME: $XDG_DATA_DIRS, $XDG_DATA_HOME
             base_dirs.append("/usr/local/share")
             base_dirs.append("/usr/share")
-        for dir in base_dirs:
-            data_dir = os.path.join(dir, self.name)
+        for dir_name in base_dirs:
+            data_dir = os.path.join(dir_name, self.name)
             print("* checking for data dir", data_dir)
             if os.path.exists(data_dir):
                 data_dirs.append(data_dir)
@@ -165,9 +162,12 @@ class Application(object):
     @property
     def settings(self):
         if self.__settings is None:
+            fsbc.Settings.load()
             from fsbc.Settings import Settings
-            #return Settings.instance()
-            self.__settings = Settings(self)
+            # return Settings.instance()
+            # self.__settings = Settings(self)
+            # noinspection PyProtectedMember
+            self.__settings = fsbc.Settings._settings
         return self.__settings
 
 

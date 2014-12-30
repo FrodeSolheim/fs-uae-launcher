@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import weakref
 from fsui.qt import Qt, QSize, QAbstractListModel, QListView, QBrush, Signal
 from .Widget import Widget
@@ -15,17 +10,17 @@ class Model(QAbstractListModel):
         self.parent = weakref.ref(parent)
         self.count = 0
     
-    #def set_item_count(self, count):
-    #    self.count = count
+    # def set_item_count(self, count):
+    #     self.count = count
 
     def rowCount(self, parent):
-        #print("returning count", self.count, "for parent", parent)
-        #return self.count
+        # print("returning count", self.count, "for parent", parent)
+        # return self.count
         return self.parent().get_item_count()
 
     def data(self, index, role):
         row = index.row()
-        #print("data for", index, "role", role)
+        # print("data for", index, "role", role)
         if role == Qt.SizeHintRole:
             return QSize(26, 26)
         elif role == Qt.DecorationRole:
@@ -38,7 +33,7 @@ class Model(QAbstractListModel):
             color = self.parent().get_item_text_color(row)
             if color is not None:
                 return QBrush(color)
-        #return QVariant()
+        # return QVariant()
 
 
 class VerticalItemView(QListView, Widget):
@@ -48,22 +43,22 @@ class VerticalItemView(QListView, Widget):
 
     def __init__(self, parent):
         QListView.__init__(self, parent.get_container())
-        #Widget.__init__(self, parent)
+        # Widget.__init__(self, parent)
         self.init_widget(parent)
         self.viewport().installEventFilter(self.get_window())
         self.verticalScrollBar().installEventFilter(self.get_window())
 
-        #self.setSelectionModel()
-        #self.model = QStandardItemModel(self)
+        # self.setSelectionModel()
+        # self.model = QStandardItemModel(self)
         self.model = Model(self)
         self.setModel(self.model)
-        #self.itemSelectionChanged.connect(self.__selection_changed)
+        # self.itemSelectionChanged.connect(self.__selection_changed)
         selection_model = self.selectionModel()
         print("VerticalItemView selectionModel = ", selection_model)
         selection_model.selectionChanged.connect(self.__selection_changed)
         self.doubleClicked.connect(self.__double_clicked)
-        #self.returnPressed.connect(self.__double_clicked)
-        #self.activated.connect(self.__double_clicked)
+        # self.returnPressed.connect(self.__double_clicked)
+        # self.activated.connect(self.__double_clicked)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
@@ -94,18 +89,18 @@ class VerticalItemView(QListView, Widget):
     def get_item_text_color(self, index):
         return None
 
-#    def set_item_count(self, count):
-#        #self.model.rowCoun
-#        self.model.set_item_count(count)
-#        #self.update()
-#        #self.invalidate()
-#        self.dataChanged(self.model.createIndex(0, 0),
-#                self.model.createIndex(count, 0))
+    # def set_item_count(self, count):
+    #     #self.model.rowCoun
+    #     self.model.set_item_count(count)
+    #     #self.update()
+    #     #self.invalidate()
+    #     self.dataChanged(self.model.createIndex(0, 0),
+    #             self.model.createIndex(count, 0))
 
     def set_default_icon(self, image):
         pass
 
-    #def set_items(self, items):
+    # def set_items(self, items):
     #    #print("set_items", items)
     #    self.model.clear()
     #    for label in items:
@@ -134,11 +129,11 @@ class VerticalItemView(QListView, Widget):
         pass
 
     def update(self):
-        #self.model.rowCoun
+        # self.model.rowCoun
         count = self.get_item_count()
-        #self.model.set_item_count(count)
-        #self.update()
-        #self.invalidate()
+        # self.model.set_item_count(count)
+        # self.update()
+        # self.invalidate()
         self.dataChanged(
             self.model.createIndex(0, 0),
             self.model.createIndex(count, 0))

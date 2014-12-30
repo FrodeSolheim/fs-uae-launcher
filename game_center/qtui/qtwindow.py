@@ -1,7 +1,6 @@
 import sys
 from fsbc.Application import app
-from fsui.qt import Qt, QMainWindow, QGLWidget, QKeyEvent, QGLFormat
-from OpenGL import GL as gl
+from fsui.qt import Qt, QMainWindow, QGLWidget, QKeyEvent
 from game_center.glui.input import InputHandler
 from .event import Event
 
@@ -57,7 +56,7 @@ class QtWindow(QMainWindow):
         self.setCentralWidget(self.gl_widget)
         self.startTimer(interval)
         self.callback = callback
-        #self.resize(940, 540)
+        # self.resize(940, 540)
 
     def restore_window_if_necessary(self):
         pass
@@ -73,7 +72,7 @@ class QtWindow(QMainWindow):
     def timerEvent(self, event):
         self.callback.timer()
         self.gl_widget.updateGL()
-        #self.callback()
+        # self.callback()
 
     def keyPressEvent(self, event):
         assert isinstance(event, QKeyEvent)

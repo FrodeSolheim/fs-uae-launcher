@@ -1,10 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-from fsui.qt import Qt, QSize, QColor, QLabel, QHBoxLayout
-from fsui.qt import QMainWindow, QWidget, QVBoxLayout, QSizePolicy
+from fsui.qt import QSize, QColor, QLabel, QHBoxLayout
+from fsui.qt import QMainWindow, QWidget, QVBoxLayout
 from fs_uae_workspace.vfs import VFSDesktopItem
 
 _root_window = None
@@ -30,8 +25,8 @@ class DesktopWindow(QMainWindow):
         layout.setSpacing(0)
 
         # self.root.setSizePolicy(QSizePolicy(2, 2), QSizePolicy(2, 2))
-        #layout.addWidget(self.root, 1)
-        #self.setLayout(layout)
+        # layout.addWidget(self.root, 1)
+        # self.setLayout(layout)
 
         self.setMinimumSize(QSize(1600, 900))
         self.show()
@@ -55,7 +50,8 @@ class DesktopWindow(QMainWindow):
         # self.top_padding = QWidget()
         # self.top_padding.setAutoFillBackground(True)
         # p = self.top_padding.palette()
-        # p.setColor(self.top_padding.backgroundRole(), QColor(0xaa, 0xaa, 0xaa))
+        # p.setColor(self.top_padding.backgroundRole(),
+        #            QColor(0xaa, 0xaa, 0xaa))
         # self.top_padding.setPalette(p)
         # self.top_padding.setMinimumHeight(26)
         # layout.addWidget(self.top_padding)

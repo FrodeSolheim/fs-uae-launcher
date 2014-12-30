@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six
 from fsui.qt import Qt, QSize, Signal
 from fsui.qt import QListView, QStandardItemModel, QStandardItem
 from .Widget import Widget
@@ -17,23 +11,23 @@ class ListView(QListView, Widget):
     def __init__(self, parent):
         # self = QListView(parent.get_container())
         QListView.__init__(self, parent.get_container())
-        #Widget.__init__(self, parent)
+        # Widget.__init__(self, parent)
         self.init_widget(parent)
         self.viewport().installEventFilter(self.get_window())
         self.verticalScrollBar().installEventFilter(self.get_window())
 
-        #self.setSelectionModel()
+        # self.setSelectionModel()
         self._model = QStandardItemModel(self)
         # self.setModel(self._model)
         self.setModel(self._model)
-        #self.itemSelectionChanged.connect(self._on_selection_changed)
+        # self.itemSelectionChanged.connect(self._on_selection_changed)
         selection_model = self.selectionModel()
         print("QListView selectionModel", selection_model)
         selection_model.selectionChanged.connect(self.__selection_changed)
         self.setEditTriggers(QListView.NoEditTriggers)
         self.doubleClicked.connect(self.__double_clicked)
-        #self.returnPressed.connect(self.__double_clicked)
-        #self.activated.connect(self.__double_clicked)
+        # self.returnPressed.connect(self.__double_clicked)
+        # self.activated.connect(self.__double_clicked)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
@@ -59,7 +53,7 @@ class ListView(QListView, Widget):
     def set_items(self, items):
         self._model.clear()
         for item in items:
-            if isinstance(item, six.string_types):
+            if isinstance(item, str):
                 self.add_item(item)
             else:
                 label, icon = item

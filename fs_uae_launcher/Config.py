@@ -1,14 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import io
 import os
 import hashlib
 import traceback
-import six
-from fsbc.configparser import ConfigParser, NoSectionError
+from configparser import ConfigParser, NoSectionError
 from fsgs import fsgs
 from fsgs.ChecksumTool import ChecksumTool
 from fsgs.amiga.Amiga import Amiga
@@ -17,7 +11,6 @@ from fsgs.FSGSDirectories import FSGSDirectories
 from .Settings import Settings
 from fsbc.signal import Signal
 from .Util import expand_path
-from fsbc.Application import Application
 
 
 # the order of the following keys is significant (for some keys).
@@ -123,23 +116,30 @@ cfg = [
     ("title_sha1",            ""),
 ]
 
-for i in range(Amiga.MAX_FLOPPY_DRIVES):
-    cfg.append(("floppy_drive_{0}".format(i), ""))
-    cfg.append(("x_floppy_drive_{0}_sha1".format(i), "", "checksum", "sync", "nosave"))
-for i in range(Amiga.MAX_FLOPPY_IMAGES):
-    cfg.append(("floppy_image_{0}".format(i), ""))
-    cfg.append(("x_floppy_image_{0}_sha1".format(i), "", "checksum", "sync", "nosave"))
-for i in range(Amiga.MAX_CDROM_DRIVES):
-    cfg.append(("cdrom_drive_{0}".format(i), ""))
-    cfg.append(("x_cdrom_drive_{0}_sha1".format(i), "", "checksum", "sync", "nosave"))
-for i in range(Amiga.MAX_CDROM_IMAGES):
-    cfg.append(("cdrom_image_{0}".format(i), ""))
-    cfg.append(("x_cdrom_image_{0}_sha1".format(i), "", "checksum", "sync", "nosave"))
-for i in range(Amiga.MAX_HARD_DRIVES):
-    cfg.append(("hard_drive_{0}".format(i), ""))
-    cfg.append(("hard_drive_{0}_label".format(i), "", "checksum", "sync"))
-    cfg.append(("hard_drive_{0}_priority".format(i), "", "checksum", "sync"))
-    cfg.append(("x_hard_drive_{0}_sha1".format(i), "", "checksum", "sync", "nosave"))
+for _i in range(Amiga.MAX_FLOPPY_DRIVES):
+    cfg.append(("floppy_drive_{0}".format(_i), ""))
+    cfg.append(("x_floppy_drive_{0}_sha1".format(_i),
+                "", "checksum", "sync", "nosave"))
+for _i in range(Amiga.MAX_FLOPPY_IMAGES):
+    cfg.append(("floppy_image_{0}".format(_i), ""))
+    cfg.append(("x_floppy_image_{0}_sha1".format(_i),
+                "", "checksum", "sync", "nosave"))
+for _i in range(Amiga.MAX_CDROM_DRIVES):
+    cfg.append(("cdrom_drive_{0}".format(_i), ""))
+    cfg.append(("x_cdrom_drive_{0}_sha1".format(_i),
+                "", "checksum", "sync", "nosave"))
+for _i in range(Amiga.MAX_CDROM_IMAGES):
+    cfg.append(("cdrom_image_{0}".format(_i), ""))
+    cfg.append(("x_cdrom_image_{0}_sha1".format(_i),
+                "", "checksum", "sync", "nosave"))
+for _i in range(Amiga.MAX_HARD_DRIVES):
+    cfg.append(("hard_drive_{0}".format(_i), ""))
+    cfg.append(("hard_drive_{0}_label".format(_i),
+                "", "checksum", "sync"))
+    cfg.append(("hard_drive_{0}_priority".format(_i),
+                "", "checksum", "sync"))
+    cfg.append(("x_hard_drive_{0}_sha1".format(_i),
+                "", "checksum", "sync", "nosave"))
 
 
 class Config(object):
@@ -154,7 +154,7 @@ class Config(object):
     checksum_keys = [x[0] for x in cfg if "checksum" in x]
     sync_keys_list = [x[0] for x in cfg if "sync" in x]
     sync_keys_set = set(sync_keys_list)
-    no_custom_config = [x[0] for x in cfg if not "custom" in x]
+    no_custom_config = [x[0] for x in cfg if "custom" not in x]
     dont_save_keys_set = set([x[0] for x in cfg if "nosave" in x])
 
     reset_values = {}
@@ -261,7 +261,7 @@ class Config(object):
     @classmethod
     def update_from_config_dict(cls, config_dict):
         changes = []
-        for key, value in six.iteritems(config_dict):
+        for key, value in config_dict.items():
             if key in fsgs.config.values:
                 if fsgs.config.values[key] != value:
                     changes.append((key, value))
@@ -271,7 +271,7 @@ class Config(object):
 
     @classmethod
     def sync_items(cls):
-        for key, value in six.iteritems(fsgs.config.values):
+        for key, value in fsgs.config.values.items():
             if key in cls.sync_keys_set:
                 yield key, value
 
@@ -284,7 +284,7 @@ class Config(object):
         s = hashlib.sha1()
         for key in cls.checksum_keys:
             value = config[key]
-            s.update(six.text_type(value).encode("UTF-8"))
+            s.update(str(value).encode("UTF-8"))
         return s.hexdigest()
 
     @classmethod
@@ -331,11 +331,11 @@ class Config(object):
                         config_dict["x_kickstart_ext_file_sha1"] = checksum
                         break
                 else:
-                    #print("WARNING: no suitable kickstart ext file found")
+                    # print("WARNING: no suitable kickstart ext file found")
                     config_dict["x_kickstart_ext_file"] = ""
                     config_dict["x_kickstart_ext_file_sha1"] = ""
-                    #Warnings.set("hardware", "kickstart_ext",
-                    #             "No suitable extended kickstart found")
+                    # Warnings.set("hardware", "kickstart_ext",
+                    #              "No suitable extended kickstart found")
                     # FIXME: set sha1 and name x_options also
 
     @classmethod
@@ -362,14 +362,14 @@ class Config(object):
     @classmethod
     def load(cls, config):
         update_config = {}
-        for key, value in six.iteritems(cls.default_config):
+        for key, value in cls.default_config.items():
             update_config[key] = value
         for key in list(fsgs.config.values.keys()):
             if key not in cls.default_config:
                 # this is not a recognized key, so we remove it
                 del fsgs.config.values[key]
 
-        for key, value in six.iteritems(config):
+        for key, value in config.items():
             # if this is a settings key, change settings instead
             if key in Settings.initialize_from_config:
                 Settings.set(key, value)
@@ -379,7 +379,7 @@ class Config(object):
         cls.update_kickstart_in_config_dict(update_config)
         cls.fix_loaded_config(update_config)
         # print("about to set", update_config)
-        cls.set_multiple(six.iteritems(update_config))
+        cls.set_multiple(update_config.items())
         # Settings.set("config_changed", "0")
         cls.set("__changed", "0")
 
@@ -387,7 +387,7 @@ class Config(object):
 
     @classmethod
     def fix_joystick_ports(cls, config):
-        #from .Settings import Settings
+        # from .Settings import Settings
 
         print("---", config["joystick_port_0"])
         print("---", config["joystick_port_1"])
@@ -416,12 +416,12 @@ class Config(object):
             del available[index]
             del available_lower[index]
 
-        #if config in
-        #print("--------------------------------------------")
+        # if config in
+        # print("--------------------------------------------")
         if config["joystick_port_1_mode"] in ["joystick", "cd32 gamepad"]:
             if not config["joystick_port_1"]:
                 want = Settings.get("primary_joystick").lower()
-                #print("want", want)
+                # print("want", want)
                 try:
                     index = available_lower.index(want)
                 except ValueError:
@@ -449,7 +449,7 @@ class Config(object):
                     index = available_lower.index(want)
                 except ValueError:
                     index = -1
-                #print("want", want, "index", index)
+                # print("want", want, "index", index)
                 if index == -1:
                     index = len(available) - 1
                 if index >= 0:
@@ -466,7 +466,7 @@ class Config(object):
 
     @classmethod
     def fix_loaded_config(cls, config):
-        #cls.fix_joystick_ports(config)
+        # cls.fix_joystick_ports(config)
 
         # FIXME: parent
         checksum_tool = ChecksumTool(None)
@@ -474,7 +474,7 @@ class Config(object):
         def fix_file_checksum(sha1_key, key, base_dir, is_rom=False):
             path = config.get(key, "")
             # hack to synchronize URLs
-            #print(repr(path))
+            # print(repr(path))
             if path.startswith("http://") or path.startswith("https://"):
                 sha1 = path
                 config[sha1_key] = sha1
@@ -499,7 +499,7 @@ class Config(object):
             print("checksumming", repr(path))
             size = os.path.getsize(path)
             if size > 64 * 1024 * 1024:
-                # not checksumming large files righ now
+                # not checksumming large files right now
                 print("not checksumming large file")
                 return
 
@@ -586,23 +586,24 @@ class Config(object):
             if not os.path.exists(path):
                 print("config file does not exist")
         if data:
-            # config_xml_path = ""
-            #loader = XMLConfigLoader()
-            #loader.load_data(data)
-            #config = loader.get_config()
-        #elif path.endswith(".xml"):
-        #    config_xml_path = path
-        #    loader = XMLConfigLoader()
-        #    loader.load_file(path)
-        #    config = loader.get_config()
             raise Exception("_load_file (data) not implemented")
+        # if data:
+        #     config_xml_path = ""
+        #     loader = XMLConfigLoader()
+        #     loader.load_data(data)
+        #     config = loader.get_config()
+        # elif path.endswith(".xml"):
+        #     config_xml_path = path
+        #     loader = XMLConfigLoader()
+        #     loader.load_file(path)
+        #     config = loader.get_config()
         else:
             config_xml_path = ""
             cp = ConfigParser(strict=False)
             try:
                 with io.open(path, "r", encoding="UTF-8") as f:
                     cp.readfp(f)
-                #cp.read([path])
+                # cp.read([path])
             except Exception as e:
                 print(repr(e))
                 return
@@ -634,10 +635,10 @@ class Config(object):
             config_base = config_name.split("(")[0].strip()
         else:
             config_base = config_name
-        #game = name
+        # game = name
 
-        #if not Config.get("title"):
-        #    Config.set("title", config_base)
+        # if not Config.get("title"):
+        #     Config.set("title", config_base)
 
         Settings.set("config_base", config_base)
         Settings.set("config_name", config_name)
@@ -672,17 +673,17 @@ class Config(object):
 
         if config_name:
             config_name = cls.create_fs_name(config_name)
-        #else:
-        #    config_name, ext = os.path.splitext(os.path.basename(path))
+        # else:
+        #     config_name, ext = os.path.splitext(os.path.basename(path))
 
         if "(" in config_name:
             config_base = config_name.split("(")[0].strip()
         else:
             config_base = config_name
-        #game = name
+        # game = name
 
-        #if not Config.get("title"):
-        #    Config.set("title", config_base)
+        # if not Config.get("title"):
+        #     Config.set("title", config_base)
 
         Settings.set("config_base", config_base)
         Settings.set("config_name", config_name)

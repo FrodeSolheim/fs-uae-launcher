@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import time
 from fsbc.Application import app
@@ -18,8 +13,8 @@ from game_center.glui.texture import Texture
 
 
 def post_quit_event():
-    #pygame.event.post(pygame.event.Event(pygame.QUIT))
-    #app.quit()
+    # pygame.event.post(pygame.event.Event(pygame.QUIT))
+    # app.quit()
     State.quit = True
 
 
@@ -88,11 +83,11 @@ class ClockItem(MenuItem):
         self.enabled = False
 
     def update_size(self, text):
-        #w, h = BitmappedFont.title_font.measure(text)
-        #self.w = w + 40 # + 8
-        #self.w = 134
+        # w, h = BitmappedFont.title_font.measure(text)
+        # self.w = w + 40 # + 8
+        # self.w = 134
         self.w = 148
-        #print(self.w)
+        # print(self.w)
 
     def render_top_right(self, selected=False):
         self.render_top_background(selected, style=TOP_ITEM_NOBORDER)
@@ -112,9 +107,9 @@ class TopMenu(Navigatable):
         self.right = []
         if self.use_clock_item():
             self.right.append(ClockItem())
-        #if Render.allow_minimize:
-        #    if Config.get_bool("menu/minimize", True):
-        #        self.right.append(MinimizeItem())
+        # if Render.allow_minimize:
+        #     if Config.get_bool("menu/minimize", True):
+        #         self.right.append(MinimizeItem())
         command = GameCenterSettings.get_shutdown_command()
         if command:
             self.right.append(ShutdownItem())

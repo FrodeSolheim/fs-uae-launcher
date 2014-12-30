@@ -18,7 +18,8 @@ class TitleBarWidget(QWidget):
         # self.caption.setText("FS-UAE Workspace")
         self.caption.setText("Workspace")
 
-        self.caption.setStyleSheet("font-family: \"Open Sans\"; font-size: 10pt; font-weight: bold;")
+        self.caption.setStyleSheet(
+            "font-family: \"Open Sans\"; font-size: 10pt; font-weight: bold;")
 
         self.layout = QHBoxLayout(self)
         self.layout.setSpacing(0)
@@ -50,7 +51,7 @@ class TitleBarWidget(QWidget):
             self.set_caption(window.name)
 
     def set_caption(self, name):
-        #self.caption.setText("Applications    Places    System    " + name)
+        # self.caption.setText("Applications    Places    System    " + name)
         self.caption.setText(name)
 
 

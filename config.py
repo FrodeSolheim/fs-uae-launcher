@@ -10,14 +10,12 @@ package_map = {
     "fs_uae_workspace": ".",
     "fsbc": ".",
     "fsgs": ".",
+    "fstd": ".",
     "fsui": ".",
     "game_center": ".",
     "OpenGL": ".",
+    "oyoyo": ".",
     "six": ".",
-    "typing": ".",
 }
 packages = sorted(package_map.keys())
-#import sys
-#if sys.platform != "win32":
-#    packages.remove("game_center")
 scripts = ["fs-uae-launcher"]

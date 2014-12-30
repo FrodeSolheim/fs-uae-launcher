@@ -1,9 +1,4 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
+import sys
 from .device import Device
 from .enumeratehelper import EnumerateHelper
 
@@ -22,6 +17,15 @@ class DeviceManager(object):
     def __init__(self, helper):
         self.helper = helper
         self.devices = []
+        if "--add-dummy-joystick" in sys.argv:
+            self.add_joystick_device({
+                "axes": 2,
+                "hats": 0,
+                "balls": 0,
+                "buttons": 1,
+                "name": "Dummy Joystick",
+                "id": "Dummy Joystick",
+            })
 
     def get_devices(self):
         print("DeviceManager.get_devices")

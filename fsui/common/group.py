@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import weakref
 
 
@@ -11,6 +6,7 @@ class Group(object):
     def __init__(self, parent):
         self._parent = weakref.ref(parent)
         if hasattr(parent, "_window"):
+            # noinspection PyProtectedMember
             self._window = parent._window
         self.position = (0, 0)
 

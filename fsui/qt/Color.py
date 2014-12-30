@@ -1,15 +1,10 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsui.qt import QColor
 
 
 class BaseColor(object):
 
     def mix(self, color, opacity=0.5):
-        #print("mix", color)
+        # print("mix", color)
         """Mixes this color with another color and returns the result.
 
         Arguments:
@@ -20,11 +15,11 @@ class BaseColor(object):
         """
         assert 0.0 <= opacity <= 1.0, "Invalid opacity"
         iopacity = 1 - opacity
-        #return wx.Colour(
+        # return wx.Colour(
         self.set_components(
-                int(self[0] * iopacity + color[0] * opacity),
-                int(self[1] * iopacity + color[1] * opacity),
-                int(self[2] * iopacity + color[2] * opacity))
+            int(self[0] * iopacity + color[0] * opacity),
+            int(self[1] * iopacity + color[1] * opacity),
+            int(self[2] * iopacity + color[2] * opacity))
         return self
 
 
@@ -86,23 +81,23 @@ class Color(QColor, BaseColor):
         self.set_components(*c)
         return self
 
-#    def mix(self, color, opacity=0.5):
-#        """Mixes this color with another color and returns the result.
-#
-#        Arguments:
-#        color -- The overlay color to mix in (Color or wx.Colour)
-#        opacity -- The opacity of the overlay color in the range [0.0, 1.0]
-#
-#        Returns a reference to self.
-#        """
-#        assert opacity >= 0.0 and opacity <= 1.0, "Invalid opacity"
-#        iopacity = 1 - opacity
-#        #return wx.Colour(
-#        self.Set(
-#                int(self.Red() * iopacity + color.Red() * opacity),
-#                int(self.Green() * iopacity + color.Green() * opacity),
-#                int(self.Blue() * iopacity + color.Blue() * opacity))
-#        return self
+    # def mix(self, color, opacity=0.5):
+    #     """Mixes this color with another color and returns the result.
+    #
+    #     Arguments:
+    #     color -- The overlay color to mix in (Color or wx.Colour)
+    #     opacity -- The opacity of the overlay color in the range [0.0, 1.0]
+    #
+    #     Returns a reference to self.
+    #     """
+    #     assert opacity >= 0.0 and opacity <= 1.0, "Invalid opacity"
+    #     iopacity = 1 - opacity
+    #     #return wx.Colour(
+    #     self.Set(
+    #             int(self.Red() * iopacity + color.Red() * opacity),
+    #             int(self.Green() * iopacity + color.Green() * opacity),
+    #             int(self.Blue() * iopacity + color.Blue() * opacity))
+    #     return self
 
     def invert(self):
         self.Set(255 - self.Red(), 255 - self.Green(), 255 - self.Blue())

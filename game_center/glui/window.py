@@ -1,15 +1,9 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import sys
 import time
 import ctypes
 from collections import deque
 from fsgs.platform import PlatformHandler
 from game_center.resources import resources
-
 from fsbc.system import windows
 from fsgs.util.GameNameUtil import GameNameUtil
 from game_center.gamecenter import GameCenter
@@ -37,13 +31,13 @@ from game_center.glui.constants import TOP_HEIGHT
 # FIXME: rename to manager or director or somethign
 main_window = None
 
-#ENABLE_VSYNC = Config.get_bool("Menu/VSync", True)
+# ENABLE_VSYNC = Config.get_bool("Menu/VSync", True)
 ENABLE_VSYNC = "--vsync" in sys.argv
 ALWAYS_RENDER = True
-#IDLE = Config.get_bool("Menu/Idle", 1)
+# IDLE = Config.get_bool("Menu/Idle", 1)
 IDLE = 1
-#Render.display_fps = pyapp.user.ini.get_bool("Menu/ShowFPS", False)
-#LIGHTING = Config.get_bool("Menu/Lighting", False)
+# Render.display_fps = pyapp.user.ini.get_bool("Menu/ShowFPS", False)
+# LIGHTING = Config.get_bool("Menu/Lighting", False)
 LIGHTING = False
 RENDER_DEBUG_SQUARES = 0
 SEARCH_CHARS = \
@@ -83,23 +77,23 @@ def set_current_menu(menu):
     Render.dirty = True
 
 
-#WINDOWED_SIZE = [1024, 640]  # 16:10
-#WINDOWED_SIZE = (1024, 576)  # 16:9
-#WINDOWED_SIZE = [1024, 768]  # 4:3
-#WINDOWED_SIZE = [960, 540]  # 16:9
+# WINDOWED_SIZE = [1024, 640]  # 16:10
+# WINDOWED_SIZE = (1024, 576)  # 16:9
+# WINDOWED_SIZE = [1024, 768]  # 4:3
+# WINDOWED_SIZE = [960, 540]  # 16:9
 WINDOWED_SIZE = [1280, 720]  # 16:9
 
 
 RENDER_GAME = ["IMAGE", "REFLECTIONS", "SCREENSHOTS"]
 RENDER_GAME_OVERLAY = ["TITLE", "HEADER"]
 
-#USE_MENU_TRANSITIONS = pyapp.user.ini.get_bool("Menu/Transitions", True)
-#if "--disable-shaders" in sys.argv:
-#    USE_MENU_TRANSITIONS = False
+# USE_MENU_TRANSITIONS = pyapp.user.ini.get_bool("Menu/Transitions", True)
+# if "--disable-shaders" in sys.argv:
+#     USE_MENU_TRANSITIONS = False
 USE_MENU_TRANSITIONS = False
 FIELD_COLOR = 0.1
 WALL_COLOR = 0.0
-#IDLE_EVENT = pygame.NUMEVENTS - 1
+# IDLE_EVENT = pygame.NUMEVENTS - 1
 DEFAULT_ITEM_BRIGHTNESS = 0.8
 
 
@@ -344,7 +338,7 @@ def show():
 
             platform_item = PlatformItem(platform_id)
             platform_menu.items.append(platform_item)
-            #platform_menu.set_selected_index(0, immediate=True)
+            # platform_menu.set_selected_index(0, immediate=True)
 
             new_menu = platform_item.activate(platform_menu)
             print(new_menu)
@@ -435,22 +429,22 @@ def handle_search_menu_on_character_press(char_buffer):
         if isinstance(current_menu, SearchResultsMenu):
             # collapse search menu
 
-            #if hasattr(current_menu, "search_text"):
+            # if hasattr(current_menu, "search_text"):
             print("setting current_menu (something with search)")
-            #set_current_menu(current_menu.parent_menu)
+            # set_current_menu(current_menu.parent_menu)
             go_back()
         else:
             current_menu.search_text = char_buffer
 
 
-#noinspection PyUnusedLocal
+# noinspection PyUnusedLocal
 def character_press(char):
     print("character press", repr(char))
     if State.current_game:  # or isinstance(current_menu, GameMenu):
         print("ignoring key press", repr(char))
         return
 
-    #global char_buffer
+    # global char_buffer
     char_buffer = current_menu.search_text
 
     global char_buffer_last_updated
@@ -527,13 +521,13 @@ def create_search_results_menu(text):
         new_menu.append(item)
     if len(new_menu) == 0:
         new_menu.append(NoItem("No Search Results"))
-    #if hasattr(current_menu, "search_text"):
-    #    # replace current search menu, not append to path
-    #    #new_menu.parent_menu = current_menu.parent_menu
-    #    replace = True
-    #else:
-    #    #new_menu.parent_menu = current_menu
-    #    replace = False
+    # if hasattr(current_menu, "search_text"):
+    #     # replace current search menu, not append to path
+    #     #new_menu.parent_menu = current_menu.parent_menu
+    #     replace = True
+    # else:
+    #     #new_menu.parent_menu = current_menu
+    #     replace = False
     replace = isinstance(current_menu, SearchResultsMenu)
     print("create search results menu")
     # set_current_menu(new_menu)
@@ -542,10 +536,10 @@ def create_search_results_menu(text):
 
 
 def rescan_games():
-    #global current_menu
+    # global current_menu
     print("rescan games -- currently disabled")
-    #GameScanner.scan()
-    #Render.dirty = True
+    # GameScanner.scan()
+    # Render.dirty = True
     pass
 
 
@@ -589,15 +583,15 @@ def default_input_func(button):
             character_press("BACKSPACE")
         elif State.current_game:
             State.current_game = None
-            #game_fade_animation = AnimateValueBezier(
-            #    (MenuGameTransition, "value"),
-            #    1.0, State.time,
-            #    1.0, State.time + 0.133,
-            #    0.0, State.time + 0.133,
-            #    0.0, State.time + 0.400)
+            # game_fade_animation = AnimateValueBezier(
+            #     (MenuGameTransition, "value"),
+            #     1.0, State.time,
+            #     1.0, State.time + 0.133,
+            #     0.0, State.time + 0.133,
+            #     0.0, State.time + 0.400)
 
-        #elif can_navigate and current_menu.parent_menu:
-        #elif can_navigate and len(State.history) > 1:
+        # elif can_navigate and current_menu.parent_menu:
+        # elif can_navigate and len(State.history) > 1:
         elif len(State.history) > 1:
             go_back()
     elif button == "QUIT":
@@ -653,22 +647,22 @@ def render_config_menu():
 
     Render.ortho_perspective()
     config_menu = State.config_menu
-    #text = config_menu.items[config_menu.index]
-    #otw, th = Render.text(text, title_font,
-    #        -1.0, -0.93, 2.0, color=(1.0, 1.0, 1.0, 0.36 * strength))
-    #x = 0.0 + otw / 2 + CONFIG_SEPARATION
-    #for i in range(config_menu.index + 1, len(config_menu.items)):
-    #    text = config_menu.items[i]
-    #    tw, th = Render.text(text, title_font,
-    #            x, -0.93, color=(1.0, 1.0, 1.0, 0.36 * strength))
-    #    x += tw + CONFIG_SEPARATION
-    #x = 0.0 - otw / 2 - CONFIG_SEPARATION
+    # text = config_menu.items[config_menu.index]
+    # otw, th = Render.text(text, title_font,
+    #         -1.0, -0.93, 2.0, color=(1.0, 1.0, 1.0, 0.36 * strength))
+    # x = 0.0 + otw / 2 + CONFIG_SEPARATION
+    # for i in range(config_menu.index + 1, len(config_menu.items)):
+    #     text = config_menu.items[i]
+    #     tw, th = Render.text(text, title_font,
+    #             x, -0.93, color=(1.0, 1.0, 1.0, 0.36 * strength))
+    #     x += tw + CONFIG_SEPARATION
+    # x = 0.0 - otw / 2 - CONFIG_SEPARATION
     x = -0.55
     y = 0.8
     for i in range(len(config_menu.items)):
         text = config_menu.items[i].upper()
-        #tw, th = Render.measure_text(text, title_font)
-        #x -= tw + CONFIG_SEPARATION
+        # tw, th = Render.measure_text(text, title_font)
+        # x -= tw + CONFIG_SEPARATION
         y -= 0.15
         if i == config_menu.index and config_menu == State.navigatable:
             color = (1.0, 1.0, 1.0, 1.0)
@@ -678,36 +672,36 @@ def render_config_menu():
 
 
 def render_scanning_status():
-    #Render.hd_perspective()
-    #text = GameScanner.get_status()
-    #Render.dirty = True
+    # Render.hd_perspective()
+    # text = GameScanner.get_status()
+    # Render.dirty = True
     #
-    #fs_emu_texturing(False)
+    # fs_emu_texturing(False)
     #
-    #z = 0.0
+    # z = 0.0
     #
-    #glBegin(GL_QUADS)
-    #glColor3f(0.0, 0.0, 0.0)
-    #glVertex3f(   0, 500, z)
-    #glVertex3f(1920, 500, z)
-    #glVertex3f(1920, 700, z)
-    #glVertex3f(   0, 700, z)
-    #glEnd()
+    # glBegin(GL_QUADS)
+    # glColor3f(0.0, 0.0, 0.0)
+    # glVertex3f(   0, 500, z)
+    # glVertex3f(1920, 500, z)
+    # glVertex3f(1920, 700, z)
+    # glVertex3f(   0, 700, z)
+    # glEnd()
     #
-    #Render.text(text, Font.title_font, 200, 600, color=(1.0, 1.0, 1.0, 1.0))
+    # Render.text(text, Font.title_font, 200, 600, color=(1.0, 1.0, 1.0, 1.0))
     #
-    #glBegin(GL_QUADS)
-    #glColor3f(1.0, 1.0, 1.0)
-    #x = 200
-    #y = 500
-    #z = 0.9
-    #x2 = 200 + 1520 * GameScanner.progress
-    #glVertex3f(x, y, z)
-    #glVertex3f(x2, y, z)
-    #glVertex3f(x2, y + 20, z)
-    #glVertex3f(x, y + 20, z)
-    #glEnd()
-    #fs_emu_texturing(True)
+    # glBegin(GL_QUADS)
+    # glColor3f(1.0, 1.0, 1.0)
+    # x = 200
+    # y = 500
+    # z = 0.9
+    # x2 = 200 + 1520 * GameScanner.progress
+    # glVertex3f(x, y, z)
+    # glVertex3f(x2, y, z)
+    # glVertex3f(x2, y + 20, z)
+    # glVertex3f(x, y + 20, z)
+    # glEnd()
+    # fs_emu_texturing(True)
     pass
 
 
@@ -725,7 +719,7 @@ def do_render():
         # print("currently ingame")
         return
 
-    # try to exploit parallellism by uploading texture while rendering
+    # try to exploit parallelism by uploading texture while rendering
     TextureManager.get().load_textures(1)
 
     # clear mouseover rects -these will be calculated during rendering
@@ -747,15 +741,16 @@ def do_render():
             print("State.was_scanning")
             State.was_scanning = False
             # reload current menu
-            #if current_menu.parent_menu:
-            #    result = current_menu.parent_menu.selected_item.activate(
-            #            current_menu.parent_menu)
-            #    if isinstance(result, Menu):
-            #        #if len(result) == 0:
-            #        #    result.append(NoItem())
-            #        result.parent_menu = current_menu.parent_menu
-            #        print("set new menu (rescanned games)")
-            #        set_current_menu(result)
+
+            # if current_menu.parent_menu:
+            #     result = current_menu.parent_menu.selected_item.activate(
+            #             current_menu.parent_menu)
+            #     if isinstance(result, Menu):
+            #         #if len(result) == 0:
+            #         #    result.append(NoItem())
+            #         result.parent_menu = current_menu.parent_menu
+            #         print("set new menu (rescanned games)")
+            #         set_current_menu(result)
             recreate_main_menu_if_necessary()
 
     render_top()
@@ -803,9 +798,9 @@ def render_global_fade():
                 Texture.splash.h, opacity=(1.0 - a))
         
         c = [0, 0, 0, (1.0 - a)]
-        #for i in range(4):
-        #    c[i] = State.fade_from[i] + \
-        #            (State.fade_to[i] - State.fade_from[i]) * a * (a)
+        # for i in range(4):
+        #     c[i] = State.fade_from[i] + \
+        #             (State.fade_to[i] - State.fade_from[i]) * a * (a)
         render_fade(*c)
         gl.glPopMatrix()
         Render.dirty = True
@@ -927,12 +922,12 @@ def render_screen():
     # set Render.dirty to False here, so that render functions can
     # request a new render frame by setting dirty
     Render.dirty = False
-    #glEnable(GL_SCISSOR_TEST)
-    #can_idle =
+    # glEnable(GL_SCISSOR_TEST)
+    # can_idle =
     if SDL_IsMinimized():
         time.sleep(0.01)
         return
-    #Render.dirty = True
+    # Render.dirty = True
     gl.glClearColor(0.0, 0.0, 0.0, 1.0)
     gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
     do_render()
@@ -942,7 +937,7 @@ def render_screen():
         render_debug_square()
 
 
-#noinspection PyPep8Naming
+# noinspection PyPep8Naming
 def init_display():
     global display
     global real_display_height  # , display_yoffset
@@ -1158,7 +1153,7 @@ def init_display():
             (1080 - Texture.splash.h) // 2, Texture.splash.w,
             Texture.splash.h)
         gl.glFinish()
-        #pygame.display.flip()
+        # pygame.display.flip()
         gl.glFinish()
 
     gl.glEnable(gl.GL_DEPTH_TEST)
@@ -1167,18 +1162,18 @@ def init_display():
 def init_textures():
     Texture.shadow = Texture.from_resource("shadow.png")
     Texture.shadow2 = Texture.from_resource("shadow2.png")
-    #Texture.gloss = Texture.from_resource("gloss.png")
+    # Texture.gloss = Texture.from_resource("gloss.png")
     Texture.gloss = Texture("gloss.png")
     Texture.screen_gloss = Texture("screen_gloss.png")
     Texture.static = Texture("preview_static0.png")
     Texture.default_item = Texture("default_item.png")
     Texture.missing_screenshot = Texture("missing_screenshot.png")
     Texture.missing_cover = Texture("missing_cover.png")
-    #path = os.path.join(fs.get_data_dir(), "logo.png")
-    #if os.path.exists(path):
-    #    im = Image.open(path)
-    #    Texture.logo = Texture.load(im)
-    #else:
+    # path = os.path.join(fs.get_data_dir(), "logo.png")
+    # if os.path.exists(path):
+    #     im = Image.open(path)
+    #     Texture.logo = Texture.load(im)
+    # else:
     Texture.logo = Texture.from_resource("logo.png")
     Texture.top = Texture.from_resource("top.png")
     Texture.top_logo = Texture("top_logo.png")
@@ -1374,7 +1369,7 @@ def fade_quit():
             gl.glVertex2f(-10.0, 1.0)
             gl.glEnd()
             gl.glEnable(gl.GL_DEPTH_TEST)
-            #fs_emu_blending(False)
+            # fs_emu_blending(False)
             fs_emu_texturing(True)
             swap_buffers()
             Render.dirty = True
@@ -1395,11 +1390,11 @@ def default_render_func():
         Render.last_time_str = time_str
     
     if Render.dirty or ALWAYS_RENDER:
-        #print(Render.frame_number)
+        # print(Render.frame_number)
         render_screen()
         # rendered = True
         Render.twice = False
-        #Render.twice = True
+        # Render.twice = True
     else:
         if not Render.twice:
             Render.twice = True
@@ -1407,17 +1402,17 @@ def default_render_func():
             # rendered = True
     if RENDER_DEBUG_SQUARES:
         render_debug_square_2()
-    #if not rendered:
-    #    pass
-    #time.sleep(0.01)
+    # if not rendered:
+    #     pass
+    # time.sleep(0.01)
     swap_buffers()
 
 
 def main_loop_iteration(
         input_func=default_input_func, render_func=default_render_func):
-    #if State.currently_ingame:
-    #    print("currently ingame")
-    #    #return False
+    # if State.currently_ingame:
+    #     print("currently ingame")
+    #     #return False
 
     # print("main loop iteration")
     # time.sleep(0.1)
@@ -1465,83 +1460,82 @@ def main_loop_iteration(
 
     for event in InputHandler.pop_all_events():
 
-    #     if event.type != IDLE_EVENT:
-    #         idle_events_only = False
-
-    #     if event.type == pygame.MOUSEMOTION:
-    #         if State.time - State.start_time < 1.0:
-    #             # ignore initial events
-    #             pass
-    #         elif not State.mouse_visible:
-    #             Mouse.set_visible(True)
-    #         State.hide_mouse_time = State.time + 0.250
-    #         mouse_x = event.pos[0] / Render.display_width * 1920
-    #         mouse_y = 1080 - event.pos[1] / Render.display_height * 1080
-    #         last_focus = Mouse.focus
-    #         for item in Mouse.items:
-    #             if not item.enabled:
-    #                 continue
-    #             if item.x <= mouse_x <= item.x + item.w and \
-    #                     item.y <= mouse_y <= item.y + item.h:
-    #                 Mouse.focus = item
-    #                 break
-    #         else:
-    #             Mouse.focus = None
-    #         if last_focus != Mouse.focus:
-    #             Render.dirty = True
-
-    #     elif event.type == pygame.MOUSEBUTTONDOWN:
-    #         if State.mouse_visible:
-    #             if Mouse.focus:
-    #                 Mouse.focus.activate(State.current_menu)
-    #                 Render.dirty = True
-
-    #     if event.type == pygame.QUIT:
-    #         #command = pyapp.user.ini.get("Command/Shutdown", "").strip()
-    #         #if command:
-    #         #    # Do not allow ESC to quit if this causes a shutdown
-    #         #    pass
-    #         #else:
-    #         print("State.quit = True")
-    #         State.quit = True
+        # if event.type != IDLE_EVENT:
+        #     idle_events_only = False
+        #
+        # if event.type == pygame.MOUSEMOTION:
+        #     if State.time - State.start_time < 1.0:
+        #         # ignore initial events
+        #         pass
+        #     elif not State.mouse_visible:
+        #         Mouse.set_visible(True)
+        #     State.hide_mouse_time = State.time + 0.250
+        #     mouse_x = event.pos[0] / Render.display_width * 1920
+        #     mouse_y = 1080 - event.pos[1] / Render.display_height * 1080
+        #     last_focus = Mouse.focus
+        #     for item in Mouse.items:
+        #         if not item.enabled:
+        #             continue
+        #         if item.x <= mouse_x <= item.x + item.w and \
+        #                 item.y <= mouse_y <= item.y + item.h:
+        #             Mouse.focus = item
+        #             break
+        #     else:
+        #         Mouse.focus = None
+        #     if last_focus != Mouse.focus:
+        #         Render.dirty = True
+        #
+        # elif event.type == pygame.MOUSEBUTTONDOWN:
+        #     if State.mouse_visible:
+        #         if Mouse.focus:
+        #             Mouse.focus.activate(State.current_menu)
+        #             Render.dirty = True
+        #
+        # if event.type == pygame.QUIT:
+        #     #command = pyapp.user.ini.get("Command/Shutdown", "").strip()
+        #     #if command:
+        #     #    # Do not allow ESC to quit if this causes a shutdown
+        #     #    pass
+        #     #else:
+        #     print("State.quit = True")
+        #     State.quit = True
 
         InputHandler.handle_event(event)
 
-    #     if event.type == pygame.VIDEORESIZE:
-    #         handle_videoresize_event(event)
-    #     elif event.type == pygame.VIDEOEXPOSE:
-    #         Render.dirty = True
-
-    #    if event["type"] == "key-down":
-    #         # hack to make this work only when using the default
-    #         # input func
-    #         if input_func == default_input_func:
-    #             if event.key == pygame.K_F10:
-    #                 if event.mod & pygame.KMOD_LCTRL:
-    #                     open_terminal()
-    #             if event.key == pygame.K_F5:
-    #                 rescan_games()
-    #             if event.key == pygame.K_F6:
-    #                 Render.display_fps = not Render.display_fps
-    #                 Render.dirty = True
-    #                 Notification("Display FPS:\n" + (
-    #                     "Enabled" if Render.display_fps else "Disabled"))
-    #
-    #             #elif char_buffer and event.key == pygame.K_RETURN:
-    #             #    if character_press("RETURN"):
-    #             #        # was handled
-    #             #        InputHandler.get_button() # clear OK status
-    #             #elif current_game is None and char_buffer and event.key == pygame.K_SPACE:
-    #             #    InputHandler.get_button() # clear OK status
-    #             #    character_press(" ")
-    #             #elif current_game is None and char_buffer and event.key == pygame.K_BACKSPACE:
-    #             #    InputHandler.get_button() # clear OK status
-    #             #    character_press("BACKSPACE")
-    #             elif event.unicode and event.unicode in SEARCH_CHARS:
-    #             #elif event.unicode:
-    #                 #if event.key < pygame.K_KP0 or event.key > pygame.K_KP9:
-    #                 #    #InputHandler.get_button() # clear SHIFT/button status
-    #                 #    character_press(event.unicode)
+        # if event.type == pygame.VIDEORESIZE:
+        #     handle_videoresize_event(event)
+        # elif event.type == pygame.VIDEOEXPOSE:
+        #     Render.dirty = True
+        #
+        # if event["type"] == "key-down":
+        #     # hack to make this work only when using the default
+        #     # input func
+        #     if input_func == default_input_func:
+        #         if event.key == pygame.K_F10:
+        #             if event.mod & pygame.KMOD_LCTRL:
+        #                 open_terminal()
+        #         if event.key == pygame.K_F5:
+        #             rescan_games()
+        #         if event.key == pygame.K_F6:
+        #             Render.display_fps = not Render.display_fps
+        #             Render.dirty = True
+        #             Notification("Display FPS:\n" + (
+        #                 "Enabled" if Render.display_fps else "Disabled"))
+        #         #         #elif char_buffer and event.key == pygame.K_RETURN:
+        #         #    if character_press("RETURN"):
+        #         #        # was handled
+        #         #        InputHandler.get_button() # clear OK status
+        #         #elif current_game is None and char_buffer and event.key == pygame.K_SPACE:
+        #         #    InputHandler.get_button() # clear OK status
+        #         #    character_press(" ")
+        #         #elif current_game is None and char_buffer and event.key == pygame.K_BACKSPACE:
+        #         #    InputHandler.get_button() # clear OK status
+        #         #    character_press("BACKSPACE")
+        #         elif event.unicode and event.unicode in SEARCH_CHARS:
+        #         #elif event.unicode:
+        #             #if event.key < pygame.K_KP0 or event.key > pygame.K_KP9:
+        #             #    #InputHandler.get_button() # clear SHIFT/button status
+        #             #    character_press(event.unicode)
 
         if event["type"] == "text":
             # if key was handled as a virtual button, only allow this
@@ -1575,9 +1569,9 @@ def main_loop_iteration(
         Render.non_dirty_state = False
         render_func()
     else:
-        #if not Render.non_dirty_state:
-        #    print("pause rendering!")
-        #Render.non_dirty_state = True
+        # if not Render.non_dirty_state:
+        #     print("pause rendering!")
+        # Render.non_dirty_state = True
         Render.dirty = True
 
     button = InputHandler.get_button()
@@ -1590,23 +1584,23 @@ def main_loop_iteration(
     if InputHandler.repeat_info:
         Render.dirty = True
 
-    #if IDLE:
+    # if IDLE:
     if AnimationSystem.is_active():
-        #State.idle_from = None
+        # State.idle_from = None
         Render.dirty = True
-        #elif State.idle_from is None:
-        #    State.idle_from = State.time + IDLE
+        # elif State.idle_from is None:
+        #     State.idle_from = State.time + IDLE
     if not IDLE:
         Render.dirty = True
-    #except KeyboardInterrupt:
-    #    print "KeyboardInterrupt"
-    #    return
-    #return stop_loop
+    # except KeyboardInterrupt:
+    #     print "KeyboardInterrupt"
+    #     return
+    # return stop_loop
 
     if not Render.display_sync:
         t = time.time()
         diff = t - Render.display_last_iteration
-        #print(diff)
+        # print(diff)
         frame_time = 1 / 60.0
         if diff < frame_time:
             # FIXME: use real refresh rate / frame time

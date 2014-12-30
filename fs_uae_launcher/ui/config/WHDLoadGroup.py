@@ -1,13 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from ...Config import Config
-from ...I18N import _, ngettext
-from ...Settings import Settings
+from ...I18N import gettext
 from ..HelpButton import HelpButton
+
 
 class WHDLoadGroup(fsui.Group):
 
@@ -15,7 +10,7 @@ class WHDLoadGroup(fsui.Group):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
-        heading_label = fsui.HeadingLabel(self, _("WHDLoad Arguments"))
+        heading_label = fsui.HeadingLabel(self, gettext("WHDLoad Arguments"))
         self.layout.add(heading_label, margin=10)
         self.layout.add_spacer(0)
 
@@ -24,8 +19,8 @@ class WHDLoadGroup(fsui.Group):
         self.layout.add(hori_layout, fill=True, margin=10)
         hori_layout.add(self.text_field, expand=True)
 
-        self.help_button = HelpButton(self,
-                "http://fs-uae.net/whdload-support")
+        self.help_button = HelpButton(
+            self, "http://fs-uae.net/whdload-support")
         hori_layout.add(self.help_button, margin_left=10)
 
         self.initialize_from_config()

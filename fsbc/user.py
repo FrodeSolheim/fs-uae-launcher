@@ -1,27 +1,17 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
-import six
 import ctypes
 import subprocess
 from fsbc.path import unicode_path
 from fsbc.system import windows, macosx
 from fsbc.util import memoize
 
+
 if windows:
-    # noinspection PyUnresolvedReferences
-    #from win32com.shell import shell, shellcon
-    # noinspection PyUnresolvedReferences
-    #import win32api
     from ctypes import windll, wintypes
     _SHGetFolderPath = windll.shell32.SHGetFolderPathW
-    _SHGetFolderPath.argtypes = [wintypes.HWND,
-                                ctypes.c_int,
-                                wintypes.HANDLE,
-                                wintypes.DWORD, wintypes.LPCWSTR]
+    _SHGetFolderPath.argtypes = [
+        wintypes.HWND, ctypes.c_int, wintypes.HANDLE, wintypes.DWORD,
+        wintypes.LPCWSTR]
 
     def _err_unless_zero(result):
         if result == 0:
@@ -31,6 +21,14 @@ if windows:
                 "Failed to retrieve windows path: %s" % result)
 
     _SHGetFolderPath.restype = _err_unless_zero
+
+    S_OK = 0
+    CSIDL_DESKTOP = 0
+    CSIDL_PERSONAL = 5
+    CSIDL_APPDATA = 26
+    CSIDL_MYPICTURES = 39
+    CSIDL_PROFILE = 40
+    CSIDL_COMMON_DOCUMENTS = 46
 else:
     import getpass
 
@@ -38,14 +36,15 @@ else:
 @memoize
 def get_user_name():
     if windows:
+        # noinspection PyUnresolvedReferences
         user_name = win32api.GetUserName()
         encoding = "mbcs"
     else:
         user_name = getpass.getuser()
         encoding = "UTF-8"
-    if isinstance(user_name, six.text_type):
+    if isinstance(user_name, str):
         return user_name
-    return six.text_type(user_name, encoding, "replace")
+    return str(user_name, encoding, "replace")
 
 
 @memoize
@@ -71,13 +70,15 @@ class WinPathsException(Exception):
 def _get_path_buf(csidl):
     path_buf = ctypes.create_unicode_buffer(wintypes.MAX_PATH)
     result = _SHGetFolderPath(0, csidl, 0, 0, path_buf)
+    if result != S_OK:
+        raise RuntimeError(
+            "Could not find common directory for CSIDL {}".format(csidl))
     return path_buf.value
 
 
 @memoize
 def get_desktop_dir(allow_create=True):
     if windows:
-        CSIDL_DESKTOP = 0
         path = _get_path_buf(CSIDL_DESKTOP)
     else:
         path = xdg_user_dir("DESKTOP")
@@ -92,7 +93,6 @@ def get_desktop_dir(allow_create=True):
 @memoize
 def get_documents_dir(create=False):
     if windows:
-        CSIDL_PERSONAL = 5
         path = _get_path_buf(CSIDL_PERSONAL)
     elif macosx:
         path = os.path.join(get_home_dir(), 'Documents')
@@ -109,7 +109,6 @@ def get_documents_dir(create=False):
 @memoize
 def get_common_documents_dir():
     if windows:
-        CSIDL_COMMON_DOCUMENTS = 46
         path = _get_path_buf(CSIDL_COMMON_DOCUMENTS)
     else:
         raise NotImplementedError("Only for windows")
@@ -120,7 +119,6 @@ def get_common_documents_dir():
 @memoize
 def get_pictures_dir(allow_create=True):
     if windows:
-        CSIDL_MYPICTURES = 39
         path = _get_path_buf(CSIDL_MYPICTURES)
     else:
         path = xdg_user_dir("PICTURES")
@@ -135,7 +133,6 @@ def get_pictures_dir(allow_create=True):
 @memoize
 def get_home_dir():
     if windows:
-        CSIDL_PROFILE = 40
         path = _get_path_buf(CSIDL_PROFILE)
     else:
         path = os.path.expanduser("~")
@@ -146,7 +143,6 @@ def get_home_dir():
 @memoize
 def get_data_dir(allow_create=True):
     if windows:
-        CSIDL_APPDATA = 26
         path = _get_path_buf(CSIDL_APPDATA)
     elif macosx:
         path = os.path.join(get_home_dir(), "Library", "Application Support")
@@ -157,4 +153,3 @@ def get_data_dir(allow_create=True):
     if allow_create and not os.path.exists(path):
         os.makedirs(path)
     return path
-

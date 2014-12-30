@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 from fsbc.Paths import Paths
 from fsgs.Archive import Archive
@@ -28,8 +23,8 @@ class AmigaContext(BaseContext):
                   ("x_floppy_drive_{0}_sha1".format(drive), "")]
         self.set_config(values)
 
-        #self.notify("fsgs:config:floppy_drive_{0}".format(drive), "")
-        #self.notify("fsgs:config:x_floppy_drive_{0}_sha1".format(drive), "")
+        # self.notify("fsgs:config:floppy_drive_{0}".format(drive), "")
+        # self.notify("fsgs:config:x_floppy_drive_{0}_sha1".format(drive), "")
 
     def clear_floppy_list(self):
         values = []

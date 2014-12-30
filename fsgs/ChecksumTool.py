@@ -1,11 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import hashlib
-# import fsui as fsui
 from fsgs.Archive import Archive
 from fsgs.amiga.ROMManager import ROMManager
 

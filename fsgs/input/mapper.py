@@ -9,9 +9,9 @@ class InputMapper(object):
         self.mapping = mapping
 
     def items(self):
-        #input = self.input
-        #if not input.device_config:
-        #    return
+        # input = self.input
+        # if not input.device_config:
+        #     return
         if not self.device:
             return
         config = self.device.configure(self.input.mapping_name)
@@ -27,10 +27,10 @@ class InputMapper(object):
             else:
                 print("input_key", input_key)
                 input_value = self.calc_input(native_button)
-                #print("---->", input_key, input_value)
-                #f.write('{input_key} = "{input_value}"\n'.format(
-                #        input_key=input_key,
-                #        input_value=input_value))
+                # print("---->", input_key, input_value)
+                # f.write('{input_key} = "{input_value}"\n'.format(
+                #         input_key=input_key,
+                #         input_value=input_value))
                 if input_value is not None:
                     yield input_key, input_value
 
@@ -84,7 +84,7 @@ class InputMapper(object):
                 positive = parts[2] == 'pos'
             return self.mouse(button, axis, positive)
         return None
-        #raise Exception("Invalid input value: {0}".format(value))
+        # raise Exception("Invalid input value: {0}".format(value))
 
 
 class Key(object):

@@ -1,5 +1,5 @@
 from fsui.qt import Qt, QWidget, QHBoxLayout, QPushButton, QApplication
-from fsui.qt import QPainter, QRect, QPen, QColor, QBrush, QPoint, QFont
+from fsui.qt import QPainter, QRect, QPen, QColor, QPoint, QFont
 
 
 class TaskBarButton(QWidget):
@@ -71,21 +71,23 @@ class TaskBarButton(QWidget):
             painter.setPen(QPen(QColor(0x80, 0x80, 0x80)))
         else:
             painter.setPen(QPen(QColor(0xff, 0xff, 0xff)))
-        painter.drawText(
-            QRect(10, 0, self.width(), self.height()), Qt.AlignVCenter, self.window.name)
+        painter.drawText(QRect(10, 0, self.width(), self.height()),
+                         Qt.AlignVCenter, self.window.name)
 
         painter.setPen(QPen(painter.background().color()))
         # painter.setBrush(painter.background())
-        painter.drawRect(QRect(self.width() - 10, self.height(), 10, self.height()))
-
+        painter.drawRect(QRect(self.width() - 10, self.height(),
+                               10, self.height()))
 
         # painter.setPen(QPen(QColor(0xacccfb)))
         # painter.drawLine(0, 0, self.width(), 0)
         # painter.drawLine(0, 1, 0, self.height())
         #
         # painter.setPen(QPen(QColor(0x5a7cae)))
-        # painter.drawLine(self.width() - 1, 0, self.width() - 1, self.height())
-        # painter.drawLine(0, self.height() - 1, self.width(), self.height() - 1)
+        # painter.drawLine(self.width() - 1, 0,
+        #                  self.width() - 1, self.height())
+        # painter.drawLine(0, self.height() - 1,
+        #                  self.width(), self.height() - 1)
 
 
 class TaskBarWidget(QWidget):
@@ -125,10 +127,10 @@ class TaskBarWidget(QWidget):
         # self.window_handler.window_changed.connect(self.__window_changed)
 
     def __close_button_clicked(self):
-        #parent = self
-        #while parent.parentWidget():
-        #    parent = parent.parentWidget()
-        #parent.close()
+        # parent = self
+        # while parent.parentWidget():
+        #     parent = parent.parentWidget()
+        # parent.close()
         QApplication.instance().exit(0)
 
     def __button_clicked(self, button):

@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import time
 import traceback
 from fsgs import fsgs
@@ -15,7 +10,6 @@ from fsgs.ogd.client import OGDClient
 from fsui.extra.iconheader import IconHeader
 from fs_uae_workspace.shell import SimpleApplication
 from fs_uae_launcher.res import gettext
-#from cStringIO import StringIO
 from io import BytesIO as StringIO
 
 
@@ -193,18 +187,17 @@ class LockerUploaderTask(Task):
                 retry_seconds = min(retry_seconds * 2, 60 * 10)
             else:
                 return result
-        #
-        #
-        #try:
-        #    result = self.client.post("/api/locker-upload-check",
-        #                              data=string_io.getvalue())
-        #except OGDClient.ForbiddenError:
-        #    raise Task.Failure(
-        #        gettext("OAGD.net Locker is not enabled for your user. "
-        #                "It may be available only to a few select beta "
-        #                "users."))
-        #string_io.close()
-        #return result
+
+        # try:
+        #     result = self.client.post("/api/locker-upload-check",
+        #                               data=string_io.getvalue())
+        # except OGDClient.ForbiddenError:
+        #     raise Task.Failure(
+        #         gettext("OAGD.net Locker is not enabled for your user. "
+        #                 "It may be available only to a few select beta "
+        #                 "users."))
+        # string_io.close()
+        # return result
 
 
 application = SimpleApplication(LockerUploaderWindow)

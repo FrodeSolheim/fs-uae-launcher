@@ -1,15 +1,10 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-#import json
 from fsgs.platform import PlatformHandler
 from fsgs.dosbox.dos import DOSRunner
 from .loader import SimpleLoader
 
 
 class DOSPlatformHandler(PlatformHandler):
+
     PLATFORM_NAME = "DOS"
 
     def __init__(self):

@@ -1,13 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import json
 from gzip import GzipFile
 from io import StringIO
-from fsbc.http import urlencode, quote_plus
-from fsbc.http import HTTPBasicAuthHandler, build_opener, Request
+from urllib.parse import urlencode
+from urllib.request import HTTPBasicAuthHandler, build_opener, Request
 from fsgs.ogd.client import OGDClient
 
 
@@ -47,14 +42,14 @@ class OAGDClient(object):
         self._json = None
         self.data = response.read()
 
-        #print(dir(response.headers))
+        # print(dir(response.headers))
         try:
             getheader = response.headers.getheader
         except AttributeError:
             getheader = response.getheader
         content_encoding = getheader("content-encoding", "").lower()
         if content_encoding == "gzip":
-            #data = zlib.decompress(data)
+            # data = zlib.decompress(data)
             fake_stream = StringIO(self.data)
             self.data = GzipFile(fileobj=fake_stream).read()
 

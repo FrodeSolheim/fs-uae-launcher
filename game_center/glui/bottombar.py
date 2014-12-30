@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import random
 from fsgs.platform import PlatformHandler
 from game_center.glui.font import Font
@@ -16,12 +11,12 @@ COORDS = 0.0, 1.0, 1.0, 0.0
 
 
 def rectangle(x, y, w, h, z=0.0):
-    #glBegin(GL_QUADS)
+    # glBegin(GL_QUADS)
     glVertex3f(x, y, z)
     glVertex3f(x + w, y, z)
     glVertex3f(x + w, y + h, z)
     glVertex3f(x, y + h, z)
-    #glEnd()
+    # glEnd()
 
 
 def texture_rectangle(x, y, w, h, z=0.0, s1=0.0, s2=1.0, t1=1.0, t2=0.0):
@@ -42,8 +37,8 @@ def static():
     s2 = s1 + 0.35
     t1 = random.uniform(0.0, 0.65)
     t2 = t1 + 0.35
-    #w, h = Texture.static.size
-    #return Texture.static, (s1 * w, s2 * w, t1 * h, t2 * h)
+    # w, h = Texture.static.size
+    # return Texture.static, (s1 * w, s2 * w, t1 * h, t2 * h)
     return Texture.static, (s1, s2, t1, t2)
 
 
@@ -82,18 +77,18 @@ def render_bottom_bar_screens(item):
         else:
             texture = None
         if texture:
-            #coords = (0, texture.w, texture.h, 0)
+            # coords = (0, texture.w, texture.h, 0)
             coords = COORDS
         else:
             texture, coords = static()
             # while rendering static, we must continue rendering
             Render.dirty = True
 
-        #print(repr(texture))
-        #w, h = texture.size
-        #glBindTexture(GL_TEXTURE_2D, texture)
+        # print(repr(texture))
+        # w, h = texture.size
+        # glBindTexture(GL_TEXTURE_2D, texture)
         texture.bind()
-        #coords = (coords[0] * w, coords[1] * w, coords[2] * h, coords[3] * h)
+        # coords = (coords[0] * w, coords[1] * w, coords[2] * h, coords[3] * h)
         texture_rectangle(4 + 539 + 345 * i, 34, 308, 193, 0.2, *coords)
     if State.time - item_time > 0.1:
         texture = item.get_screen_texture(1)
@@ -101,15 +96,15 @@ def render_bottom_bar_screens(item):
         texture = None
     if texture:
         coords = COORDS
-        #coords = (0, texture.w, texture.h, 0)
+        # coords = (0, texture.w, texture.h, 0)
     else:
         texture, coords = static()
         # while rendering static, we must continue rendering
         Render.dirty = True
-    #w, h = texture.size
-    #glBindTexture(GL_TEXTURE_2D, texture)
+    # w, h = texture.size
+    # glBindTexture(GL_TEXTURE_2D, texture)
     texture.bind()
-    #coords = (coords[0] * w, coords[1] * w, coords[2] * h, coords[3] * h)
+    # coords = (coords[0] * w, coords[1] * w, coords[2] * h, coords[3] * h)
     
     texture_rectangle(34, 34, 472, 295, 0.2, *coords)
 
@@ -133,14 +128,14 @@ def render_bottom_bar_screens(item):
 
 
 def render_bottom_bar_text(item):
-    #x = State.gl_left + 0.05
+    # x = State.gl_left + 0.05
     strength = 0.9
     x = 544
     y = 290
 
     title = item.title.upper()
-    #subtitle = State.current_menu.selected_item.subtitle.upper()
-    #supertitle = State.current_menu.selected_item.supertitle.upper()
+    # subtitle = State.current_menu.selected_item.subtitle.upper()
+    # supertitle = State.current_menu.selected_item.supertitle.upper()
     if title:
         Render.text(title, Font.title_font, x, y, 1920 - x - 170,
                     shadow=True, color=(1.0, 1.0, 1.0, 1.0 * strength))
@@ -152,9 +147,9 @@ def render_bottom_bar_text(item):
         Render.text(year_text, Font.title_font, 1920 - 30 - tw, y, 0,
                     shadow=True, color=(1.0, 1.0, 1.0, 1.0 * strength))
 
-    #strength = 0.4
+    # strength = 0.4
     color = (0x6e / 0xff, 0x8b / 0xff, 0x96 / 0xff, 1.0)
-    #y = 253
+    # y = 253
     y = 258
     text_str = ""
     companies = set()
@@ -163,7 +158,7 @@ def render_bottom_bar_text(item):
     for text in publisher_text.split("/"):
         text = text.strip()
         if text:
-            if not text in companies:
+            if text not in companies:
                 text_str = text_str + u" \u00b7 " + text
                 companies.add(text)
     developer_text = (getattr(State.current_menu.selected_item,
@@ -171,7 +166,7 @@ def render_bottom_bar_text(item):
     for text in developer_text.split("/"):
         text = text.strip()
         if text:
-            if not text in companies:
+            if text not in companies:
                 text_str = text_str + u" \u00b7 " + text
                 companies.add(text)
     if len(text_str) > 3:

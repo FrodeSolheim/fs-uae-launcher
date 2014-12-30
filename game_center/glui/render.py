@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from game_center.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
 from game_center.glui.text import TextRenderer
 
@@ -67,8 +62,8 @@ class Render(object):
     center_item_time = 0
 
     items_brightness = 0.8
-    #items_brightness_target = 1.0
-    #items_brightness_speed = 1.0
+    # items_brightness_target = 1.0
+    # items_brightness_speed = 1.0
     navigatable = None
     current_menu = None
     current_game = None
@@ -80,7 +75,7 @@ class Render(object):
     # options
     force_portrait = False
     max_ratio = None
-    #max_ratio = 1.0
+    # max_ratio = 1.0
 
     delete_texture_list = []
     unused_texture_list = []
@@ -93,15 +88,15 @@ class Render(object):
 
     @classmethod
     def delete_textures(cls):
-        #for t in cls.delete_texture_list:
-        #    glDeleteTextures([t])
+        # for t in cls.delete_texture_list:
+        #     glDeleteTextures([t])
 
         gl.glDeleteTextures(cls.delete_texture_list)
         cls.delete_texture_list[:] = []
 
-        #cls.unused_texture_list.extend(cls.delete_texture_list)
-        #cls.delete_texture_list[:] = []
-        #pass
+        # cls.unused_texture_list.extend(cls.delete_texture_list)
+        # cls.delete_texture_list[:] = []
+        # pass
 
         if len(cls.delete_texture_list) > 0:
             texture = cls.delete_texture_list.pop()
@@ -144,14 +139,14 @@ class Render(object):
             return
         cls.display_aspect = 16 / 9.0
         cls.ortho_pscalex = 1920 / cls.display_width
-        #cls.ortho_pscalex = 1920 / cls.display_width * \
-        #        (cls.display_width / cls.display_height)
+        # cls.ortho_pscalex = 1920 / cls.display_width * \
+        #         (cls.display_width / cls.display_height)
         cls.ortho_pscaley = 1080 / cls.display_height
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glLoadIdentity()
         left = 0.0
         right = 1920.0
-        top =  1080.0
+        top = 1080.0
         bottom = 0.0
         gl.glOrtho(left, right, bottom, top, -1.0, 1.0)
         gl.glMatrixMode(gl.GL_MODELVIEW)
@@ -192,8 +187,8 @@ class Render(object):
              shadow=False, shadow_color=(0, 0, 0), halign=-1):
         if not text:
             return 0, 0
-        #if len(color) == 3:
-        #    color = (color[0], color[1], color[2], 1.0
+        # if len(color) == 3:
+        #     color = (color[0], color[1], color[2], 1.0
         try:
             alpha = color[3]
         except IndexError:
@@ -239,14 +234,13 @@ class Render(object):
                     tx += (w - tw) / 2
         if h > 0:
             ty += (h - th) / 2
-        ts = 4 / cls.display_height  # Step
+        # ts = 4 / cls.display_height  # Step
 
-
-        #glDisable(GL_TEXTURE_RECTANGLE_ARB)
+        # glDisable(GL_TEXTURE_RECTANGLE_ARB)
         
-        #glTexEnv(GL_TEXTURE_2D, GL_MODULATE)
-        #glDisable(GL_TEXTURE_RECTANGLE)
-        #fs_emu_blending(True)
+        # glTexEnv(GL_TEXTURE_2D, GL_MODULATE)
+        # glDisable(GL_TEXTURE_RECTANGLE)
+        # fs_emu_blending(True)
         gl.glBegin(gl.GL_QUADS)
         gl.glColor4f(alpha, alpha, alpha, alpha)
 
@@ -259,12 +253,11 @@ class Render(object):
         gl.glTexCoord2f(0.0, 1.0)
         gl.glVertex2f(tx, ty)
 
-
-        #glRasterPos2f(tx, ty)
-        #glDrawPixels(txtsize[0], txtsize[1], GL_RGBA, GL_UNSIGNED_BYTE, txtdata)
+        # glRasterPos2f(tx, ty)
+        # glDrawPixels(txtsize[0], txtsize[1], GL_RGBA, GL_UNSIGNED_BYTE, txtdata)
         gl.glEnd()
         
-        #fs_emu_blending(False)
+        # fs_emu_blending(False)
         gl.glEnable(gl.GL_DEPTH_TEST)
 
         text_cache_history.append(cache_key)

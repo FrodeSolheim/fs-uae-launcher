@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import io
 import os
 import time
@@ -11,8 +6,10 @@ import base64
 import platform
 from uuid import uuid4
 from functools import wraps
+from urllib.parse import urlencode
+from http.client import HTTPConnection
+from urllib.error import HTTPError
 from fsbc.Application import app
-from fsbc.http import HTTPConnection, HTTPError, urlencode
 from fsbc.task import Task
 from fsbc.util import memoize
 from fsgs.FSGSDirectories import FSGSDirectories

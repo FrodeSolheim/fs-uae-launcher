@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
 from .mess import MESSRunner
 
 
@@ -30,7 +24,7 @@ class MasterSystemRunner(MESSRunner):
 
     def mess_input_mapping(self, _):
         return {
-            #"START": "P#_START",
+            # "START": "P#_START",
             "UP": "P#_JOYSTICK_UP",
             "DOWN": "P#_JOYSTICK_DOWN",
             "LEFT": "P#_JOYSTICK_LEFT",
@@ -50,9 +44,9 @@ class MasterSystemRunner(MESSRunner):
         else:
             return "sms", SMS_ROMS
 
-    #def get_game_refresh_rate(self):
-    #    # refresh rate retrieved from MESS
-    #    return 59.922743
+    # def get_game_refresh_rate(self):
+    #     # refresh rate retrieved from MESS
+    #     return 59.922743
 
 
 SMS_ROMS = {

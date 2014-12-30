@@ -1,10 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-#from .element import LightElement
 from .spacer import Spacer
+
 
 DEBUG = 0
 
@@ -27,7 +22,7 @@ class LayoutChild(object):
 class Layout(object):
 
     def __init__(self, padding):
-        #self.min_size = (0, 0)
+        # self.min_size = (0, 0)
         self.position = (0, 0)
         self.size = (0, 0)
         self.padding_left = padding
@@ -35,7 +30,7 @@ class Layout(object):
         self.padding_top = padding
         self.padding_bottom = padding
         self._skip = 0
-        #self.origin = (0, 0)
+        # self.origin = (0, 0)
         self.children = []
         self.min_width = 0
         self.min_height = 0
@@ -118,7 +113,7 @@ class Layout(object):
 
     def set_position(self, position):
         self.position = position
-        #self.origin = position
+        # self.origin = position
         # FIXME: avoid calling update after both set_position and set_size
         self.update()
 
@@ -175,14 +170,14 @@ class LinearLayout(Layout):
 
             if self.vertical:
                 child._skip = max(last_margin, child.margin_top)
-                available-= child._skip
+                available -= child._skip
                 last_margin = child.margin_bottom
-                #available = available - child.margin_top - child.margin_bottom
-                #available = available - last_margin + max()
-                #last_margin = child.margin_bottom
+                # available = available - child.margin_top - child.margin_bottom
+                # available = available - last_margin + max()
+                # last_margin = child.margin_bottom
             else:
                 child._skip = max(last_margin, child.margin_left)
-                available-= child._skip
+                available -= child._skip
                 last_margin = child.margin_right
         available -= last_margin
 
@@ -200,7 +195,7 @@ class LinearLayout(Layout):
                 available -= extra
             # some more pixels could be available due to rounding
             if available > 0:
-                #print("distributing extra pixels:", available)
+                # print("distributing extra pixels:", available)
                 for child in self.children:
                     if abs(child.expand):
                         child.size += 1
@@ -209,7 +204,7 @@ class LinearLayout(Layout):
                             break
         x = self.padding_left
         y = self.padding_top
-        #self_height = self.size[1] - self.padding_top - self.padding_bottom
+        # self_height = self.size[1] - self.padding_top - self.padding_bottom
         fill_size = (self.size[0] - self.padding_left - self.padding_right,
                      self.size[1] - self.padding_top - self.padding_bottom)
 
@@ -242,7 +237,7 @@ class LinearLayout(Layout):
             if child.fill <= 0:
                 # center child
                 if self.vertical:
-                    #position[0] += (self.size[0] - size[0]) // 2
+                    # position[0] += (self.size[0] - size[0]) // 2
                     pass
                 else:
                     position[1] += (fill_size[1]

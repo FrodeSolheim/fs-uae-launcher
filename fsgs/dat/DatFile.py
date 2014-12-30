@@ -1,19 +1,20 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
-import xml.etree.cElementTree as ET
+import xml.etree.cElementTree as element_tree
 
 
 class DatFile(object):
     
     def __init__(self, file=None):
-        self.reset()
+        self.games = []
+        self.description = ""
+
         self.extensions = []
         if file is not None:
             self.load(file)
+
+    def reset(self):
+        self.games = []
+        self.description = ""
 
     def load(self, file):
         if hasattr(file, "read"):
@@ -35,14 +36,10 @@ class DatFile(object):
         else:
             self._load_dat(data)
 
-    def reset(self):
-        self.games = []
-        self.description = ""
-
     def _load_xml(self, data):
         self.reset()
 
-        root = ET.fromstring(data)
+        root = element_tree.fromstring(data)
         header_node = root.find("header")
         self.description = header_node.find("description").text.strip()
         for game_node in root.findall("game"):

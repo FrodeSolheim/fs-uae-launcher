@@ -203,12 +203,12 @@ class Amiga(object):
     ]
 
     @classmethod
-    def is_cd_based(cls, Config):
-        return cls.get_current_config(Config)["cd_based"]
+    def is_cd_based(cls, config):
+        return cls.get_current_config(config)["cd_based"]
 
     @classmethod
-    def get_current_config(cls, Config):
-        return cls.get_model_config(Config.get("amiga_model"))
+    def get_current_config(cls, config):
+        return cls.get_model_config(config.get("amiga_model"))
 
     @classmethod
     def get_default_option_value(cls, model, key):

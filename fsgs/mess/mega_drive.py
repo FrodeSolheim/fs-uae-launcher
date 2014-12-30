@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
 from .mess import MESSRunner
 
 
@@ -25,10 +19,10 @@ class MegaDriveRunner(MESSRunner):
         },
     ]
 
-    #self.inputs.append(self.create_input(
-    #        name='Controller {0}'.format(i + 1),
-    #        type='megadrive',
-    #        description='Gamepad'))
+    # self.inputs.append(self.create_input(
+    #         name='Controller {0}'.format(i + 1),
+    #         type='megadrive',
+    #         description='Gamepad'))
 
     def mess_configure(self):
         self.mess_configure_cartridge()
@@ -55,5 +49,5 @@ class MegaDriveRunner(MESSRunner):
         else:
             return "genesis", {}
 
-    #def mess_get_firmware_name(self):
-    #    return None
+    # def mess_get_firmware_name(self):
+    #     return None

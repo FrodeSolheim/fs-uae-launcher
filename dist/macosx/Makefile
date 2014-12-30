@@ -23,7 +23,7 @@ launcher:
 	mv ../../build/*/* $(macos)
 	find fs-uae-launcher_$(version)_macosx/ -name *_debug.dylib -delete
 	mv fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app" fs-uae-launcher_$(version)_macosx/temp.app
-	python fs-make-standalone-app.py fs-uae-launcher_$(version)_macosx/temp.app
+	python3 fs-make-standalone-app.py fs-uae-launcher_$(version)_macosx/temp.app
 	mv fs-uae-launcher_$(version)_macosx/temp.app fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app"
 	cp Info.plist fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app"/Contents/
 	cp ../../icon/fs-uae-launcher.icns $(resources)/fs-uae-launcher.icns

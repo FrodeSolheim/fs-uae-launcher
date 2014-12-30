@@ -1,13 +1,7 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import weakref
-from fsui.qt import QSignal, Qt, QPoint, QRect, QEvent
+from fsui.qt import QSignal, Qt, QRect, QEvent
 from fsui.qt import QWidget, QVBoxLayout, QColor, QPainter, QPen, QBrush
 from fs_uae_workspace.desktop import get_root_window
-from fsbc.signal import Signal
 
 
 class WindowContent(QWidget):
@@ -122,6 +116,7 @@ class QWindow(QWidget):
 
         self.w.installEventFilter(self)
         # self.installEventFilter(self)
+        self.mouse_press_window_pos = None
 
     def eventFilter(self, obj, event):
         assert isinstance(event, QEvent)
@@ -153,6 +148,7 @@ class QWindow(QWidget):
     def setLayout(self, layout):
         self.w.setLayout(layout)
 
+    # noinspection PyPep8Naming
     def setCentralWidget(self, widget):
 
         layout = QVBoxLayout()
@@ -165,8 +161,8 @@ class QWindow(QWidget):
             self.raise_()
         # mouse is automatically grabbed by QT, as long as the mouse button
         # is pressed, so no need to grab it here.
-        self.mouse_press_event = event.x(), event.y(), event.globalX(), \
-                                 event.globalY()
+        self.mouse_press_event = (event.x(), event.y(), event.globalX(),
+                                  event.globalY())
         self.mouse_press_window_pos = self.pos()
 
     def mouseReleaseEvent(self, event):
@@ -215,8 +211,8 @@ class QWindow(QWidget):
         self.closed.emit()
         self.on_close()
         event.accept()
-        #self.destroy()
-         #event.ignore()
+        # self.destroy()
+        # event.ignore()
 
     def on_close(self):
         pass
@@ -227,6 +223,7 @@ class Window(QWindow):
     def __init__(self, parent=None, title=""):
         QWindow.__init__(self, parent)
         self.setWindowTitle(title)
+        self.layout = None
 
         self._container = WindowContent(self)
         self.setCentralWidget(self._container)
@@ -279,7 +276,7 @@ class Window(QWindow):
         self.resize(w, h)
 
     def is_maximized(self):
-        #return self.isMaximized()
+        # return self.isMaximized()
         print("FIXME: always returning False")
         return False
 
@@ -287,11 +284,11 @@ class Window(QWindow):
         self.showMaximized()
 
     def center_on_parent(self):
-        #self.CenterOnParent()
+        # self.CenterOnParent()
         print("FIXME:\n\nWindow.center_on_parent")
 
     def center_on_screen(self):
-        #self.CenterOnParent()
+        # self.CenterOnParent()
         print("FIXME:\n\nWindow.center_on_screen")
 
     def resizeEvent(self, event):

@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import threading
 from fsbc.signal import Signal as BaseSignal
 
@@ -15,12 +10,12 @@ class Signal(object):
 
     @classmethod
     def add_listener(cls, signal, listener):
-        #cls.listeners.setdefault(signal, []).append(listener)
+        # cls.listeners.setdefault(signal, []).append(listener)
         BaseSignal(signal).connect(listener)
 
     @classmethod
     def remove_listener(cls, signal, listener):
-        #cls.listeners[signal].remove(listener)
+        # cls.listeners[signal].remove(listener)
         BaseSignal(signal).disconnect(listener)
 
     @classmethod

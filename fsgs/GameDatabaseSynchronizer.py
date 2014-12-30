@@ -1,36 +1,15 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import sys
 import json
 import time
 from gzip import GzipFile
 from io import StringIO
 from fsgs.ogd.client import OGDClient
-
-try:
-    from urllib.request import HTTPBasicAuthHandler, build_opener, Request
-except ImportError:
-    from urllib2 import HTTPBasicAuthHandler, build_opener, Request
-try:
-    from urllib.parse import quote_plus
-except ImportError:
-    from urllib import quote_plus
+from urllib.request import HTTPBasicAuthHandler, build_opener, Request
+from urllib.parse import quote_plus
 from fsgs.res import gettext
 
-if sys.version > '3':
-    PYTHON3 = True
-else:
-    PYTHON3 = False
 
-if PYTHON3:
-    def bytes_to_int(m):
-        return m[0] << 24 | m[1] << 16 | m[2] << 8 | m[3]
-else:
-    def bytes_to_int(m):
-        return ord(m[0]) << 24 | ord(m[1]) << 16 | ord(m[2]) << 8 | ord(m[3])
+def bytes_to_int(m):
+    return m[0] << 24 | m[1] << 16 | m[2] << 8 | m[3]
 
 
 class GameDatabaseSynchronizer(object):
@@ -56,7 +35,7 @@ class GameDatabaseSynchronizer(object):
             self.on_status((title, status))
 
     def synchronize(self):
-        if not "game-database-version" in self.context.meta:
+        if "game-database-version" not in self.context.meta:
             # we haven't looked up synchronization information from the server,
             # that probably means we didn't want to synchronize with the
             # server now, therefore we just return
@@ -100,7 +79,7 @@ class GameDatabaseSynchronizer(object):
                 k += 4
                 game_data = data[k:k + game_data_size]
                 k += game_data_size
-                #print("game data len:", len(game_data))
+                # print("game data len:", len(game_data))
                 if len(game_data) > 0:
                     self.database.add_game(game_sync_id, game_uuid, game_data)
                 else:
@@ -136,7 +115,7 @@ class GameDatabaseSynchronizer(object):
                     "INSERT INTO rating (game_uuid, work_rating, "
                     "like_rating, updated) VALUES (?, ?, ?, ?)",
                     (update["game"], update["work"], update["like"],
-                    update["updated"]))
+                     update["updated"]))
             t2 = time.time()
             print("  {0:0.2f} seconds".format(t2 - t1))
 
@@ -174,7 +153,7 @@ class GameDatabaseSynchronizer(object):
         data, json_data = self.fetch_json(url)
         self.downloaded_size += len(data)
 
-        #print(json_data)
+        # print(json_data)
         return json_data
 
     def fetch_rating_entries(self):
@@ -192,7 +171,7 @@ class GameDatabaseSynchronizer(object):
         data, json_data = self.fetch_json(url)
         self.downloaded_size += len(data)
 
-        #print(json_data)
+        # print(json_data)
         return json_data
 
     def fetch_json_attempt(self, url):
@@ -209,14 +188,14 @@ class GameDatabaseSynchronizer(object):
             getheader = response.getheader
         content_encoding = getheader("content-encoding", "").lower()
         if content_encoding == "gzip":
-            #data = zlib.decompress(data)
+            # data = zlib.decompress(data)
             fake_stream = StringIO(data)
             data = GzipFile(fileobj=fake_stream).read()
 
-        #else:
-        #    data = response.read()
-        #if int(time.time()) % 2 == 0:
-        #    raise Exception("fail horribly")
+        # else:
+        #     data = response.read()
+        # if int(time.time()) % 2 == 0:
+        #     raise Exception("fail horribly")
         return data, json.loads(data.decode("UTF-8"))
 
     def fetch_json(self, url):
@@ -251,14 +230,14 @@ class GameDatabaseSynchronizer(object):
 
         content_encoding = getheader("content-encoding", "").lower()
         if content_encoding == "gzip":
-            #data = zlib.decompress(data)
+            # data = zlib.decompress(data)
             fake_stream = StringIO(data)
             data = GzipFile(fileobj=fake_stream).read()
 
-        #else:
-        #    data = response.read()
-        #if int(time.time()) % 2 == 0:
-        #    raise Exception("fail horribly")
+        # else:
+        #     data = response.read()
+        # if int(time.time()) % 2 == 0:
+        #     raise Exception("fail horribly")
         return data
 
     def fetch_data(self, url):

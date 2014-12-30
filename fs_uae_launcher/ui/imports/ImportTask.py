@@ -1,15 +1,10 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import shutil
 import threading
 import traceback
 from fsbc.path import is_same_file
 import fsui as fsui
-from ...I18N import _
+from ...I18N import gettext
 from fsgs.amiga.ROMManager import ROMManager
 from fsgs.FSGSDirectories import FSGSDirectories
 from ...Signal import Signal
@@ -30,9 +25,9 @@ class ImportTask(threading.Thread):
 
     def run(self):
         if self.type:
-            self.log(_("Amiga Forever import task started"))
+            self.log(gettext("Amiga Forever import task started"))
         else:
-            self.log(_("Kickstart import task started"))
+            self.log(gettext("Kickstart import task started"))
         self.log("")
         print("ImportTask.run")
         try:
@@ -44,7 +39,7 @@ class ImportTask(threading.Thread):
         self.done = True
         print("ImportTask.run is done")
         self.log("")
-        self.log(_("Import task is done"))
+        self.log(gettext("Import task is done"))
 
         def run_in_main():
             Signal.broadcast("scan_done")
@@ -77,7 +72,7 @@ class ImportTask(threading.Thread):
 
     def copy_file(self, src, dst):
         with self.log_lock:
-            self.log_lines.append(_("Copy {0}\nto {1}").format(src, dst))
+            self.log_lines.append(gettext("Copy {0}\nto {1}").format(src, dst))
         if is_same_file(src, dst):
             self.log_lines.append(
                 "- source and destination are the same, skipping...")

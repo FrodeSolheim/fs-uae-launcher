@@ -1,11 +1,7 @@
 import os
-import sys
 import platform
 import traceback
-try:
-    from configparser import ConfigParser, NoSectionError
-except ImportError:
-    from ConfigParser import ConfigParser, NoSectionError
+from configparser import ConfigParser, NoSectionError
 from fsbc.system import windows, linux, macosx
 from fsgs.FSGSDirectories import FSGSDirectories
 

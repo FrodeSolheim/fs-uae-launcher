@@ -1,11 +1,7 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+from fsbc.util import unused
 import fsui as fsui
 from fsgs.FSGSDirectories import FSGSDirectories
-from ...I18N import _
+from ...I18N import gettext
 from ...Settings import Settings
 from ..IconButton import IconButton
 
@@ -20,36 +16,37 @@ class ScanPathsGroup(fsui.Group):
         # self.layout.padding_right = 10
         # self.layout.padding_bottom = 10
 
-        #image = fsui.Image("fs_uae_launcher:res/search_group.png")
-        #self.image_view = fsui.ImageView(self, image)
-        #self.layout.add_spacer(20)
-        #self.layout.add(self.image_view, valign=0.0)
-        #self.layout.add_spacer(20)
+        # image = fsui.Image("fs_uae_launcher:res/search_group.png")
+        # self.image_view = fsui.ImageView(self, image)
+        # self.layout.add_spacer(20)
+        # self.layout.add(self.image_view, valign=0.0)
+        # self.layout.add_spacer(20)
 
         self.layout2 = fsui.VerticalLayout()
         self.layout.add(self.layout2, fill=True, expand=True)
 
-        hlayout = fsui.HorizontalLayout()
-        self.layout2.add(hlayout, fill=True, expand=True)
+        layout3 = fsui.HorizontalLayout()
+        self.layout2.add(layout3, fill=True, expand=True)
 
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_height(130)
         self.default_icon = fsui.Image("fs_uae_launcher:res/folder_16.png")
-        hlayout.add(self.list_view, expand=True, fill=True)
-        hlayout.add_spacer(10)
+        layout3.add(self.list_view, expand=True, fill=True)
+        layout3.add_spacer(10)
 
         vlayout = fsui.VerticalLayout()
-        hlayout.add(vlayout, fill=True)
+        layout3.add(vlayout, fill=True)
 
         add_button = IconButton(self, "add_button.png")
-        add_button.set_tooltip(_("Add Directory to Search Path"))
-        #add_button.disable()
+        add_button.set_tooltip(gettext("Add Directory to Search Path"))
+        # add_button.disable()
         add_button.activated.connect(self.on_add_button)
         vlayout.add(add_button)
         vlayout.add_spacer(10)
 
         self.remove_button = IconButton(self, "remove_button.png")
-        self.remove_button.set_tooltip(_("Remove Directory from Search Path"))
+        self.remove_button.set_tooltip(
+            gettext("Remove Directory from Search Path"))
         self.remove_button.disable()
         self.remove_button.activated.connect(self.on_remove_button)
         vlayout.add(self.remove_button)
@@ -63,10 +60,12 @@ class ScanPathsGroup(fsui.Group):
         Settings.remove_listener(self)
 
     def on_setting(self, key, value):
+        unused(value)
         if key == "search_path":
             self.repopulate_list()
 
     def on_select_item(self, index):
+        unused(index)
         self.remove_button.enable()
 
     def repopulate_list(self):
@@ -87,7 +86,7 @@ class ScanPathsGroup(fsui.Group):
                 if p in paths:
                     paths.remove(p)
             else:
-                if not p in paths:
+                if p not in paths:
                     paths.append(p)
         # the Configurations dir is always scanned on startup (whenever
         # modification time has changed). If we don't include it here too
@@ -98,8 +97,8 @@ class ScanPathsGroup(fsui.Group):
         return paths
 
     def on_add_button(self):
-        paths = self.get_search_path()
-        #search_path = Settings.get("search_path")
+        # paths = self.get_search_path()
+        # search_path = Settings.get("search_path")
 
         search_path = Settings.get("search_path")
         search_path = [x.strip() for x in search_path.split(";") if x.strip()]
@@ -123,7 +122,7 @@ class ScanPathsGroup(fsui.Group):
 
     def on_remove_button(self):
         path = self.list_view.get_item(self.list_view.get_index())
-        #search_path = self.get_search_path()
+        # search_path = self.get_search_path()
 
         search_path = Settings.get("search_path")
         search_path = [x.strip() for x in search_path.split(";") if x.strip()]

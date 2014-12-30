@@ -1,54 +1,13 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
-import re
 import sys
 import functools
-import subprocess
-import six
-from fsbc.configparser import ConfigParser, NoOptionError, NoSectionError
-from fsbc.system import windows, macosx, linux
+
+# noinspection PyUnresolvedReferences
+from fsbc.system import windows, macosx
+# noinspection PyUnresolvedReferences
 from fsbc.user import get_data_dir
-
-
-if windows:
-    #noinspection PyUnresolvedReferences
-    #from win32com.shell import shell, shellcon
-    #noinspection PyUnresolvedReferences
-    #import win32api
-    pass
-else:
-    import getpass
-
-
-def memoize(func):
-    memoize_dict = {}
-
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            key = (args, frozenset(kwargs.items()))
-        except TypeError:
-            # cannot create key -- for instance, passing a list as an argument.
-            # FIXME: Log warning here
-            return func(*args, **kwargs)
-        try:
-            return memoize_dict[key]
-        except KeyError:
-            value = func(*args, **kwargs)
-            try:
-                memoize_dict[key] = value
-            except TypeError:
-                # uncacheable -- for instance, passing a list as an argument.
-                # FIXME: Log warning here
-                # FIXME: will not happen here.. se above type error?
-                pass
-            return value
-
-    return wrapper
+# noinspection PyUnresolvedReferences
+from .util import memoize
 
 
 def cache(func):
@@ -72,7 +31,7 @@ def get_lib_dir():
     lib_dir = os.path.join(os.getcwdu(), "lib")
     if os.path.exists(lib_dir):
         return lib_dir
-    #raise RuntimeError("could not detect lib dir")
+    # raise RuntimeError("could not detect lib dir")
     return ""
 
 
@@ -83,10 +42,10 @@ EXCEPTION = "EXCEPTION"
 def get_app_id():
     # FIXME
     return "fs-uae"
-    #if windows or macosx:
-    #    return "fs-uae"
-    #else:
-    #    return "fs-game-center"
+    # if windows or macosx:
+    #     return "fs-uae"
+    # else:
+    #     return "fs-game-center"
 
 
 @memoize
@@ -117,22 +76,6 @@ def get_app_config_dir(app=None):
     return path
 
 
-@cache
-def get_app_cache_dir():
-    if windows:
-        path = os.path.join(get_data_dir(), 'cache')
-    elif macosx:
-        path = os.path.join(get_home_dir(), "Library", "Caches", get_app_id())
-    else:
-        path = os.path.join(get_home_dir(), '.cache')
-        path = os.environ.get('XDG_CACHE_HOME', path)
-        path = os.path.join(path, get_app_id())
-        path = unicode_path(path)
-    if not os.path.isdir(path):
-        os.makedirs(path)
-    return path
-
-
 def cause(exc, _cause):
     exc.__cause__ = _cause
     _cause.__traceback__ = sys.exc_info()[2]
@@ -140,58 +83,44 @@ def cause(exc, _cause):
 
 
 def encode_path(path):
-    if six.PY3:
-        return path
-    return path.encode(sys.getfilesystemencoding())
+    return path
 
 
 def unicode_path(path):
-    if six.PY3:
-        return path
-    if isinstance(path, six.text_type):
-        return path
-    return path.decode(sys.getfilesystemencoding())
+    return path
 
 
-def from_utf8_str(object):
-    if six.PY3:
-        if isinstance(object, bytes):
-            return object.decode("UTF-8")
-        return str(object)
-    else:
-        if isinstance(object, six.text_type):
-            return object
-        return object.decode("UTF-8")
+def from_utf8_str(obj):
+    if isinstance(obj, bytes):
+        return obj.decode("UTF-8")
+    return str(obj)
 
 
-def to_utf8_str(object):
-    if six.PY3:
-        return object
-    else:
-        return object.encode("UTF-8")
+def to_utf8_str(obj):
+    return obj
 
 
-def utf8(object):
-    return unicode_safe(object, 'utf-8').encode('utf-8')
+def utf8(obj):
+    return unicode_safe(obj, 'utf-8').encode('utf-8')
 
 
-def utf8_safe(object):
-    return unicode_safe(object, 'utf-8').encode('utf-8')
+def utf8_safe(obj):
+    return unicode_safe(obj, 'utf-8').encode('utf-8')
 
 
-def unicode_safe(object, encoding="ASCII"):
+def unicode_safe(obj, encoding="ASCII"):
     try:
-        return six.text_type(object)
+        return str(obj)
     except Exception:
         pass
     try:
-        return six.text_type(object, encoding, 'replace')
+        return str(obj, encoding, 'replace')
     except Exception:
         pass
     try:
-        return six.text_type(str(object), encoding, 'replace')
+        return str(str(obj), encoding, 'replace')
     except Exception:
-        #logger.exception("Error in pyapp.unicode_safe")
+        # logger.exception("Error in unicode_safe")
         return "String returned from unicode_safe (problem logged)"
 
 
@@ -200,123 +129,11 @@ def normalize_path(path):
     return unicode_path(path)
 
 
-@memoize
-def xdg_user_dir(name):
-    if windows or macosx:
-        return
-    try:
-        p = subprocess.Popen(["xdg-user-dir", name], stdout=subprocess.PIPE)
-        path = p.stdout.read().strip()
-        path = path.decode("UTF-8")
-        print("XDG user dir {0} => {1}".format(name, repr(path)))
-    except Exception:
-        path = None
-    return path
-
-
-@memoize
-def get_desktop_dir(allow_create=True):
-    if windows:
-        path = shell.SHGetFolderPath(0, shellcon.CSIDL_DESKTOP, 0, 0)
-    else:
-        path = xdg_user_dir("DESKTOP")
-        if not path:
-            path = os.path.join(get_home_dir(), 'Desktop')
-    path = unicode_path(path)
-    if allow_create and not os.path.isdir(path):
-        os.makedirs(path)
-    return path
-
-
-@memoize
-def get_documents_dir(create=False):
-    if windows:
-        path = shell.SHGetFolderPath(0, shellcon.CSIDL_PERSONAL, 0, 0)
-    elif macosx:
-        path = os.path.join(get_home_dir(), 'Documents')
-    else:
-        path = xdg_user_dir("DOCUMENTS")
-        if not path:
-            path = get_home_dir()
-    path = unicode_path(path)
-    if create and not os.path.isdir(path):
-        os.makedirs(path)
-    return path
-
-
-@memoize
-def get_pictures_dir(allow_create=True):
-    if windows:
-        path = shell.SHGetFolderPath(0, shellcon.CSIDL_MYPICTURES, 0, 0)
-    else:
-        path = xdg_user_dir("PICTURES")
-        if not path:
-            path = os.path.join(get_home_dir(), 'Pictures')
-    path = unicode_path(path)
-    if allow_create and not os.path.isdir(path):
-        os.makedirs(path)
-    return path
-
-
-@memoize
-def get_home_dir():
-    if windows:
-        path = shell.SHGetFolderPath(0, shellcon.CSIDL_PROFILE, 0, 0)
-        return path
-    return unicode_path(os.path.expanduser("~"))
-
-
-class Version (object):
-
-    def __init__(self, version_string):
-        self.string = str(version_string)
-        v = split_version(version_string)
-        self.major = int(v[0])
-        self.minor = int(v[1] or 0)
-        self.revision = int(v[2] or 0)
-        self.build = int(v[3] or 0)
-        self.val = self.major * 10000 ** 3
-        self.val += self.minor * 10000 ** 2
-        self.val += self.revision * 10000 ** 1
-        self.val += self.build * 10000 ** 0
-        self.mod = v[4]
-        self.release = None if v[5] is None else int(v[5])
-
-    def cmp_value(self):
-        return self.val, self.mod or 'o', int(self.release or 0)
-
-    def __lt__(self, other):
-        return self.cmp_value() < other.cmp_value()
-
-    def __str__(self):
-        return self.string
-
-
-def split_version(version_string):
-    pattern = re.compile(
-        "^([0-9]{1,4})(?:\.([0-9]{1,4}))?"
-        "(?:\.([0-9]{1,4}))?(?:\.([0-9]{1,4}))?"
-        "([a-z][a-z0-9]*)?(?:_([0-9]+))?$")
-    m = pattern.match(version_string)
-    if m is None:
-        raise ValueError(version_string + " is not a valid version number")
-    return m.groups()
-
-
-def compare_versions(a, b):
-    print(type(a))
-    print(type(b))
-    if isinstance(a, Version):
-        pass
-    elif isinstance(a, six.string_types):
-        a = Version(a)
-    else:
-        raise TypeError("Not a valid version string or object")
-    if isinstance(b, Version):
-        pass
-    elif isinstance(b, six.string_types):
-        b = Version(b)
-    else:
-        raise TypeError("Not a valid version string or object")
-    # cmp is gone in Python 3
-    return (a > b) - (a < b)
+# noinspection PyUnresolvedReferences
+from .user import get_home_dir
+# noinspection PyUnresolvedReferences
+from .util import Version
+# noinspection PyUnresolvedReferences
+from .util import split_version
+# noinspection PyUnresolvedReferences
+from .util import compare_versions

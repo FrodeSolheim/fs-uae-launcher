@@ -1,13 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-##import pyapp
-#from fengestad.game_center.database import Database
+# #import pyapp
+# from fengestad.game_center.database import Database
 #
 #
-#class GameHistory:
+# class GameHistory:
 #
 #    @classmethod
 #    def get_recent_ids(cls):

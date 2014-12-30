@@ -1,21 +1,13 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
-import xml.etree.ElementTree
-from xml.etree.cElementTree import ElementTree, Element, SubElement
+from xml.etree.cElementTree import ElementTree, SubElement
 from xml.etree.cElementTree import fromstring, tostring
 import fsui as fsui
-from ..Config import Config
-from ..Settings import Settings
-from ..I18N import _, ngettext
+
 
 class XMLControl(fsui.TextArea):
 
     def __init__(self, parent):
-        fsui.TextArea.__init__(self, parent, horizontal_scroll=True)
+        fsui.TextArea.__init__(self, parent)  # , horizontal_scroll=True)
         self.path = ""
 
     def connect_game(self, info):
@@ -78,8 +70,9 @@ class XMLControl(fsui.TextArea):
     def save_xml(self, path):
         self.get_tree().write(self.path)
 
+
 def indent_tree(elem, level=0):
-    i = "\n" + level*"  "
+    i = "\n" + level * "  "
     if len(elem):
         if not elem.text or not elem.text.strip():
             elem.text = i + "  "
@@ -92,4 +85,3 @@ def indent_tree(elem, level=0):
     else:
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
-

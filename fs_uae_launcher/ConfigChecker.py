@@ -1,10 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import traceback
 from .Config import Config
+
 
 class ConfigChecker:
 
@@ -51,12 +47,14 @@ class ConfigChecker:
             if not Config.get("x_kickstart_ext_file_sha1"):
                 print("")
                 traceback.print_stack()
-                print("(kickstart_ext_file set without x_kickstart_ext_file_sha1)")
+                print("(kickstart_ext_file set without"
+                      " x_kickstart_ext_file_sha1)")
                 print("")
 
         elif key == "x_kickstart_ext_file" and value:
             if not Config.get("x_kickstart_ext_file_sha1"):
                 print("")
                 traceback.print_stack()
-                print("(x_kickstart_ext_file set without x_kickstart_ext_file_sha1)")
+                print("(x_kickstart_ext_file set without"
+                      " x_kickstart_ext_file_sha1)")
                 print("")

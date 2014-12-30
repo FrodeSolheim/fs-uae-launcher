@@ -1,12 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsgs.ogd.client import OGDClient
-from fsui import ImageButton, Image, Panel
+from fsui import Image
 from ...Config import Config
-from ...I18N import _, ngettext
 from .WebButton import WebButton
 
 

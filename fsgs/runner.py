@@ -1,19 +1,11 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from collections import defaultdict
-
 import os
 import sys
 import io
-import six
 import subprocess
+from collections import defaultdict
 from fsbc.Application import app
 from fsbc.system import windows, macosx
 from fsbc.task import current_task
-from fsbc.unicode import unicode_path
-from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.util.GameNameUtil import GameNameUtil
@@ -53,7 +45,7 @@ class GameRunner(object):
         self.__env = {}
         self.__args = []
 
-        self.config = defaultdict(six.text_type)
+        self.config = defaultdict(str)
         for key, value in app.settings.values.items():
             # FIXME: re-enable this check?
             # if key in Config.config_keys:
@@ -77,10 +69,10 @@ class GameRunner(object):
         self.cwd = self.create_temp_dir("cwd")
         self.home = self.cwd
 
-    #self.inputs.append(self.create_input(
-    #        name='Controller {0}'.format(i + 1),
-    #        type='megadrive',
-    #        description='Gamepad'))
+    # self.inputs.append(self.create_input(
+    #         name='Controller {0}'.format(i + 1),
+    #         type='megadrive',
+    #         description='Gamepad'))
 
     def use_fullscreen(self):
         # FIXME: not a very nice hack to hard-code application name here...
@@ -122,11 +114,11 @@ class GameRunner(object):
     def screenshots_name(self):
         return GameNameUtil.create_fs_name(self.get_name())
 
-    #def get_game_name(self):
-    #    return self.config["game_name"]
+    # def get_game_name(self):
+    #     return self.config["game_name"]
     #
-    #def get_variant_name(self):
-    #    return self.config["variant_name"]
+    # def get_variant_name(self):
+    #     return self.config["variant_name"]
 
     def get_platform_name(self):
         p = self.config["platform"].lower()
@@ -139,7 +131,7 @@ class GameRunner(object):
             return "CDTV"
         if p == "cd32":
             return "CD32"
-        raise Exception("Unrecgonized platform")
+        raise Exception("Unrecognized platform")
 
     def screen_size(self):
         refresh_rate_tool = RefreshRateTool()
@@ -159,9 +151,9 @@ class GameRunner(object):
         return self.screen_size()[1]
 
     def get_name(self):
-        #return "{0} ({1}, {2})".format(
-        #    self.get_game_name(), self.get_platform_name(),
-        #    self.get_variant_name())
+        # return "{0} ({1}, {2})".format(
+        #     self.get_game_name(), self.get_platform_name(),
+        #     self.get_variant_name())
         return "{0} ({1}, {2})".format(
             self.fsgs.game.name, self.fsgs.game.platform.name,
             self.fsgs.game.variant.name)
@@ -283,15 +275,15 @@ class GameRunner(object):
         return process
 
     def find_emulator_executable(self, name):
-        #if os.path.isdir("../fs-uae/src"):
-        #    # running from source directory, we then want to find locally
-        #    # compiled binaries if available
-        #    path = "../fs-uae/fs-uae"
-        #    if windows:
-        #        path += ".exe"
-        #    if os.path.isfile(path):
-        #        return path
-        #    raise Exception("Could not find development FS-UAE executable")
+        # if os.path.isdir("../fs-uae/src"):
+        #     # running from source directory, we then want to find locally
+        #     # compiled binaries if available
+        #     path = "../fs-uae/fs-uae"
+        #     if windows:
+        #         path += ".exe"
+        #     if os.path.isfile(path):
+        #         return path
+        #     raise Exception("Could not find development FS-UAE executable")
 
         if "/" in name:
             package, name = name.split("/")
@@ -337,7 +329,7 @@ class GameRunner(object):
 
         if package == name:
             for dir in os.environ["PATH"].split(":"):
-                dir = unicode_path(dir)
+                # dir = unicode_path(dir)
                 path = os.path.join(dir, name)
                 if os.path.exists(path):
                     return path
@@ -362,18 +354,18 @@ class GameRunner(object):
 
     def configure_vsync(self):
         print("\n" + "-" * 79 + "\n" + "CONFIGURE VSYNC")
-        #print("^" * 80)
+        # print("^" * 80)
         allow_vsync = self.use_vsync()
-        #if self.get_option('vsync'):
+        # if self.get_option('vsync'):
         if allow_vsync:
-            #try:
-            #    game_refresh = float(self.config["refresh_rate"])
-            #except Exception:
+            # try:
+            #     game_refresh = float(self.config["refresh_rate"])
+            # except Exception:
             game_refresh = self.get_game_refresh_rate() or 0.0
-                #if self.context.game.config.get('system', '') == 'NTSC':
-                #    game_refresh = 60.0
-                #else:
-                #    game_refresh = 50.0
+            # if self.context.game.config.get('system', '') == 'NTSC':
+            #     game_refresh = 60.0
+            # else:
+            #     game_refresh = 50.0
             refresh_rate_tool = RefreshRateTool(
                 game_platform=self.fsgs.game.platform.id,
                 game_refresh=round(game_refresh))

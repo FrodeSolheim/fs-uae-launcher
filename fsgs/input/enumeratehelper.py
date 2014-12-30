@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import re
 import traceback
 import subprocess
@@ -93,7 +88,7 @@ class EnumerateHelper(object):
                 # device_type = "joystick"
                 device.type = "keyboard"
                 self.keyboard_devices.append(device)
-            #self.device_types.append(device_type)
+            # self.device_types.append(device_type)
             self.devices.append(device)
         for i, device in enumerate(self.joystick_devices):
             device.index = i

@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from ...Config import Config
 from ...DeviceManager import DeviceManager
@@ -33,24 +28,24 @@ class InputSelector(fsui.Group):
         self.mode_choice = fsui.Choice(self, self.joystick_mode_titles)
         self.layout.add(self.mode_choice)
         self.layout.add_spacer(10)
-        #else:
-        #    self.mode_choice = None
+        # else:
+        #     self.mode_choice = None
         if port >= 4:
             self.mode_choice.disable()
 
-        #devices = ["", _("No Host Device"), _("Mouse"),
-        #        _("Cursor Keys and Right Ctrl/Alt")]
-        #for i, name in enumerate(DeviceManager.get_joystick_names()):
-        #    devices.append(name)
-        #    if not self.joystick_values_initialized:
-        #        self.joystick_values.append(DeviceManager.device_ids[i])
-        #self.joystick_values_initialized = True
+        # devices = ["", _("No Host Device"), _("Mouse"),
+        #         _("Cursor Keys and Right Ctrl/Alt")]
+        # for i, name in enumerate(DeviceManager.get_joystick_names()):
+        #     devices.append(name)
+        #     if not self.joystick_values_initialized:
+        #         self.joystick_values.append(DeviceManager.device_ids[i])
+        # self.joystick_values_initialized = True
 
         self.device_choice = fsui.ComboBox(self, [""], read_only=True)
         self.joystick_values = []
         self.rebuild_device_list()
         self.device_choice.set_index(0)
-        #print(self.device_choice.get_index())
+        # print(self.device_choice.get_index())
         self.layout.add(self.device_choice, expand=True)
 
         if port < 4:
@@ -163,7 +158,7 @@ class InputSelector(fsui.Group):
             else:
                 print("FIXME: could not set mode")
         elif key == self.device_option_key or key == "amiga_model":
-            #print(self.joystick_values)
+            # print(self.joystick_values)
             value_lower = value.lower()
             for i, name in enumerate(self.joystick_values):
                 if value_lower == name.lower():
@@ -186,7 +181,7 @@ class InputSelector(fsui.Group):
             self.update_default_device()
 
     def on_device_list_updated_signal(self):
-        #print(self.device_choice.get_index())
+        # print(self.device_choice.get_index())
         had_default = (self.device_choice.get_index() == 0)
         self.rebuild_device_list()
         self.update_default_device(had_default=had_default)
@@ -207,16 +202,16 @@ class InputSelector(fsui.Group):
         device = DeviceManager.get_device_for_port(config, self.port)
         default_description = gettext("Default ({0})").format(
             gettext(device.name))
-        #print("default_description = ", default_description)
+        # print("default_description = ", default_description)
 
         if had_default is None:
             had_default = (self.device_choice.get_index() == 0)
-        #print("had default", had_default, self.device_choice.get_index())
+        # print("had default", had_default, self.device_choice.get_index())
         self.device_choice.set_item_text(0, default_description)
-        #print("had_default", had_default)
+        # print("had_default", had_default)
         if had_default:
-            #print("set text for", self.port, default_description)
-            #self.device_choice.set_index(1)
+            # print("set text for", self.port, default_description)
+            # self.device_choice.set_index(1)
             self.device_choice.set_text(default_description)
             self.device_choice.set_index(0)
-        #print(self.device_choice.get_index())
+        # print(self.device_choice.get_index())

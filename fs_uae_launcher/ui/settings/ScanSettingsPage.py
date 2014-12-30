@@ -1,14 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
-from ...Config import Config
 from ...I18N import gettext
-from ...Settings import Settings
 from .ScanPathsGroup import ScanPathsGroup
-from .OptionUI import OptionUI
 from fsui.extra.iconheader import IconHeader
 
 
@@ -32,12 +24,12 @@ class ScanSettingsPage(fsui.Panel):
         self.scan_paths_group = ScanPathsGroup(self)
         self.layout.add(self.scan_paths_group, fill=True, expand=True)
 
-        #label = fsui.HeadingLabel(self, gettext("Additional Options"))
-        #self.layout.add(label, margin=10, margin_bottom=20)
+        # label = fsui.HeadingLabel(self, gettext("Additional Options"))
+        # self.layout.add(label, margin=10, margin_bottom=20)
         #
-        #def add_option(name):
-        #    self.layout.add(
-        #        OptionUI.create_group(self, name), fill=True, margin=10)
+        # def add_option(name):
+        #     self.layout.add(
+        #         OptionUI.create_group(self, name), fill=True, margin=10)
         #
-        #add_option("builtin_configs")
-        ##add_option("kickstart_setup")
+        # add_option("builtin_configs")
+        # add_option("kickstart_setup")

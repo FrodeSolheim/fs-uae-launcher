@@ -1,22 +1,10 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
-
 import os
 import io
-import re
-#import wx
-import time
-import traceback
-import subprocess
-from fsbc.Application import Application
-from fsbc.configparser import ConfigParser
+from configparser import ConfigParser
 from fsbc.system import windows, linux, macosx
 from fsbc.util import memoize
 from fsgs import fsgs
 from fsbc.Resources import Resources
-# from fengestad.game_center.resources import resources, logger, ngettext, _
 
 
 class InputDeviceNotFoundException(Exception):
@@ -58,7 +46,7 @@ class InputDevice(object):
         self.config = None
         self.config_inv = None
         self.id = name
-        #self._name = name
+        # self._name = name
         if "#" in self.id:
             self.name, dummy = self.id.rsplit('#', 1)
         else:
@@ -68,8 +56,8 @@ class InputDevice(object):
 
         # print("--------->", self.id)
         # print("------------>", self.name)
-        #print("********** InputDevice Constructor", self.name, "ID is",
-        #        self.id)
+        # print("********** InputDevice Constructor", self.name, "ID is",
+        #         self.id)
 
         self.platform = platform
         self.sdl_name = sdl_name
@@ -83,7 +71,7 @@ class InputDevice(object):
         self.hats = hats
         self.balls = balls
         for sc in sclist:
-            #print("---", name, "---", sc.id, sc.index)
+            # print("---", name, "---", sc.id, sc.index)
             if name == sc.id:
                 self.index = sc.index
                 break
@@ -102,11 +90,11 @@ class InputDevice(object):
             old_name = self.name
             self.configure_version_2()
             if self.name != old_name:
-                #print("****** name is now", self.name)
+                # print("****** name is now", self.name)
                 print(self.id, "=>", repr(self.name))
 
     def decorate_name_with_number(self):
-        #print("decorate_name_with_number, ID is", self.id)
+        # print("decorate_name_with_number, ID is", self.id)
         if "#" in self.id:
             dummy, number_str = self.id.rsplit('#', 1)
         else:
@@ -170,11 +158,11 @@ class InputDevice(object):
         try:
             path = configs[config_name]
         except KeyError:
-            #traceback.print_stack()
+            # traceback.print_stack()
             print("no config file found for", repr(self.sdl_name),
                   "=", config_name)
-            #raise InputDeviceNotFoundException(
-            #        "no config found for " + repr(self.sdl_name))
+            # raise InputDeviceNotFoundException(
+            #         "no config found for " + repr(self.sdl_name))
             if platform:
                 raise MissingPlatformSupportException(
                     "no config found for " + repr(self.sdl_name))
@@ -192,20 +180,20 @@ class InputDevice(object):
         if cp.has_option('device', 'type'):
             self.type = cp.get('device', 'type')
         if cp.has_option('device', 'name'):
-            #print("HAD NAME", self.name, self.sdl_name)
+            # print("HAD NAME", self.name, self.sdl_name)
             self.name = cp.get('device', 'name')
             self.decorate_name_with_number()
-            #print("HAS NAME", self.name, self.sdl_name)
-            #try:
-            #    dummy, num = self.name.rsplit('#', 1)
-            #except ValueError:
-            #    self.name = name
-            #else:
-            #    self.name = "{0} #{1}".format(name, num)
+            # print("HAS NAME", self.name, self.sdl_name)
+            # try:
+            #     dummy, num = self.name.rsplit('#', 1)
+            # except ValueError:
+            #     self.name = name
+            # else:
+            #     self.name = "{0} #{1}".format(name, num)
         if cp.has_section(platform):
             section = platform
         elif cp.has_section('default'):
-            #print("has default section")
+            # print("has default section")
             section = 'default'
         else:
             if platform:
@@ -213,24 +201,24 @@ class InputDevice(object):
                     "no config found for platform " + repr(platform))
             else:
                 return
-        #config = {}
-        #if section == 'gamepad':
-        #    
-            #for option in cp.options('gamepad'):
-            #    value = cp.get('gamepad', option)
-            #    print("gamepad", option, value)
+        # config = {}
+        # if section == 'gamepad':
+        #
+            # for option in cp.options('gamepad'):
+            #     value = cp.get('gamepad', option)
+            #     print("gamepad", option, value)
 
         if cp.has_option(section, 'include'):
             include_config = cp.get(section, 'include')
             include_config = include_config.replace('/', '_')
             self.read_config(include_config, config, platform, multiple)
 
-        #iconfig = {}
-        #for key, value in config.items():
-        #    iconfig[value] = key
+        # iconfig = {}
+        # for key, value in config.items():
+        #     iconfig[value] = key
 
-        #for key in cp.options(section):
-        #    value = cp.get(section, key)
+        # for key in cp.options(section):
+        #     value = cp.get(section, key)
         for key, value in cp.items(section):
             value = value.strip()
             if value.startswith('('):
@@ -238,41 +226,41 @@ class InputDevice(object):
                     continue
                 assert value.endswith(')')
                 value = value[1:-1]
-            #print(key, "===>", value)
-            #print("key, value is", key, value)
-            #if value in iconfig:
+            # print(key, "===>", value)
+            # print("key, value is", key, value)
+            # if value in iconfig:
             try:
-                #config[key] = iconfig[value]
-                #config[key] = config[value]
-                #del config[value]
-                #config[config[value]] = value
+                # config[key] = iconfig[value]
+                # config[key] = config[value]
+                # del config[value]
+                # config[config[value]] = value
                 
-                #if key in iconfig:
+                # if key in iconfig:
                 config[key] = config[value]
-                #del iconfig[key]
-                #iconfig[config[value]] = key
-                #if not config[value] in iconfig:
-                #    iconfig[config[value]] = key
+                # del iconfig[key]
+                # iconfig[config[value]] = key
+                # if not config[value] in iconfig:
+                #     iconfig[config[value]] = key
                 del config[value]
             except KeyError:
                 config[key] = value
-                #if not value in iconfig:
-                #    iconfig[value] = key
-                #config_order.append(key)
+                # if not value in iconfig:
+                #     iconfig[value] = key
+                # config_order.append(key)
 
-            #config[option] = cp.get(section, option)
+            # config[option] = cp.get(section, option)
 
-        #if cp.has_section('gamepad'):
-        #    for key, value in list(config.items()):
-        #        if cp.has_option('gamepad', value):
-        #            config[key] = cp.get('gamepad', value)
+        # if cp.has_section('gamepad'):
+        #     for key, value in list(config.items()):
+        #         if cp.has_option('gamepad', value):
+        #             config[key] = cp.get('gamepad', value)
 
     def configure_version_2(self):
         self.config = self.configure(self.platform)
 
     def configure(self, platform, multiple=True):
         print("CONFIGURE", platform, self.name, self.sdl_name)
-        #print("InputDevice.configure")
+        # print("InputDevice.configure")
         
         name_lower = self.sdl_name.lower()
         name = ""
@@ -313,7 +301,7 @@ class InputDevice(object):
             config_name = config_name[:-4]
         while config_name.endswith('_'):
             config_name = config_name[:-1]
-        #print("config_name =", config_name, "sdl_name", repr(self.sdl_name))
+        # print("config_name =", config_name, "sdl_name", repr(self.sdl_name))
         self.read_config(config_name, config, platform, multiple)
         return config
 

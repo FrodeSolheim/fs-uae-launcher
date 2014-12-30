@@ -15,26 +15,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import six
-import logging
 import socket
-import sys
-import re
-import string
 import time
-import threading
-import os
 import traceback
 
-from fs_uae_launcher.netplay.oyoyo.parse import *
-from fs_uae_launcher.netplay.oyoyo import helpers
-from fs_uae_launcher.netplay.oyoyo.cmdhandler import CommandError
-
-# Python < 3 compatibility
-if sys.version_info < (3,):
-    class bytes(object):
-        def __new__(cls, b='', encoding='utf8'):
-            return str(b)
+from oyoyo.parse import *
+from oyoyo import helpers
+from oyoyo.cmdhandler import CommandError
 
 
 class IRCClientError(Exception):
@@ -64,7 +51,7 @@ class IRCClient:
         means if you use a plain while loop your app will consume 100% cpu.
         To enable blocking pass blocking=True.
 
-        >>> class My_Handler(DefaultCommandHandler):
+        >>> from oyoyo import helpers        >>> class My_Handler(DefaultCommandHandler):
         ...     def privmsg(self, prefix, command, args):
         ...         print "%s said %s" % (prefix, args[1])
         ...
@@ -72,10 +59,10 @@ class IRCClient:
         ...     helpers.join(c, '#myroom')
         ...
         >>> cli = IRCClient(My_Handler,
-        ...     host="irc.freenode.net",
-        ...     port=6667,
-        ...     nick="myname",
-        ...     connect_cb=connect_callback)
+        ...                 host="irc.freenode.net",
+        ...                 port=6667,
+        ...                 nick="myname",
+        ...                 connect_cb=connect_callback)
         ...
         >>> cli_con = cli.connect()
         >>> while 1:
@@ -184,6 +171,7 @@ class IRCClient:
                 self.socket.close()
 
 
+# noinspection PyPep8Naming
 class IRCApp:
     """ This class manages several IRCClient instances without the use of threads.
     (Non-threaded) Timer functionality is also included.
@@ -228,7 +216,7 @@ class IRCApp:
         while self.running:
             found_one_alive = False
 
-            for client, clientdesc in six.iteritems(self._clients):
+            for client, clientdesc in self._clients.items():
                 if clientdesc.con is None:
                     clientdesc.con = client.connect()
 

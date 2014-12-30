@@ -1,9 +1,4 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-from fsui.qt import QSize, QComboBox, QStandardItem, Signal
+from fsui.qt import QComboBox, Signal
 from .Widget import Widget
 
 
@@ -13,7 +8,7 @@ class Choice(QComboBox, Widget):
 
     def __init__(self, parent, items=[]):
         QComboBox.__init__(self, parent.get_container())
-        #Widget.__init__(self, parent)
+        # Widget.__init__(self, parent)
         self.init_widget(parent)
         self.inhibit_change_event = False
 

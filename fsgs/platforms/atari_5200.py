@@ -1,14 +1,10 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsgs.platform import PlatformHandler
 from fsgs.mess.atari_5200 import Atari5200Runner
 from .loader import SimpleLoader
 
 
 class Atari5200PlatformHandler(PlatformHandler):
+
     PLATFORM_NAME = "Atari 5200"
 
     def __init__(self):

@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
 def sort_configurations(items):
     # Cracked games score better, since these need no
     # manual lookup, etc.
@@ -18,11 +12,11 @@ def sort_configurations(items):
         score = 0
         for p, s in score_table:
             if p in check:
-                #scored.append((0, item))
+                # scored.append((0, item))
                 score += s
         # prefer shortest configs, all else being equal
         score += len(item)
         scored.append((score, item))
-        #scored.append(1, item)
+        # scored.append(1, item)
     scored.sort()
     return [x[1] for x in scored]

@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 from binascii import unhexlify
 import sqlite3
@@ -41,7 +36,7 @@ class LockerDatabase(BaseDatabase):
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT count(*) FROM file WHERE sha1 = ?", (
-            sqlite3.Binary(unhexlify(sha1.encode("ASCII"))),))
+                sqlite3.Binary(unhexlify(sha1.encode("ASCII"))),))
         return cursor.fetchone()[0]
 
     def get_sync_version(self):

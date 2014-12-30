@@ -1,8 +1,4 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+from fsbc.util import unused
 from fsui import Panel, Color, VerticalLayout, HorizontalLayout, Image
 from ...Config import Config
 from ..Skin import Skin
@@ -18,7 +14,7 @@ class StatusBar(Panel):
     def __init__(self, parent):
         Panel.__init__(self, parent, paintable=True)
         self.set_min_height(29)
-        #self.set_background_color(Color(0xd8, 0xd8, 0xd8))
+        # self.set_background_color(Color(0xd8, 0xd8, 0xd8))
         self.layout = VerticalLayout()
         self.hori_layout = HorizontalLayout()
         self.layout.add(self.hori_layout, fill=True, expand=True,
@@ -62,7 +58,7 @@ class StatusBar(Panel):
         element = WebLinkElement(self)
         self.hori_layout.add(element, fill=True)
 
-        # this listener is added after all statusbar children have
+        # this listener is added after all status bar children have
         # added their listeners, this is important for re-layout...
         Config.add_listener(self)
 
@@ -70,6 +66,7 @@ class StatusBar(Panel):
         Config.remove_listener(self)
 
     def on_config(self, key, value):
+        unused(value)
         layout = False
         if key in ["languages", "protection"]:
             layout = True
@@ -92,7 +89,6 @@ class StatusBar(Panel):
 
     @classmethod
     def draw_background(cls, widget, dc, offset=None, height=None):
-        size = widget.size
         x = 0
         y = 0
         w = widget.size[0]
@@ -104,9 +100,9 @@ class StatusBar(Panel):
 
         color_1 = Skin.get_background_color()
         color_2 = color_1
-        #if fsui.System.macosx:
-        #    color_1 = Color(0xa7, 0xa7, 0xa7)
-        #    color_2 = Color(0xc0, 0xc0, 0xc0)
+        # if fsui.System.macosx:
+        #     color_1 = Color(0xa7, 0xa7, 0xa7)
+        #     color_2 = Color(0xc0, 0xc0, 0xc0)
         if color_1 is not None:
             color_1 = color_1.copy().darken(0.08)
         else:

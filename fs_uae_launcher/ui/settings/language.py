@@ -1,9 +1,3 @@
-# coding=utf-8
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui
 from fsui.extra.iconheader import IconHeader
 from fs_uae_launcher.res import gettext
@@ -75,7 +69,7 @@ class LanguageSettingsPage(fsui.Panel):
             "based on information from the operating system (or English, "
             "if a supported language is not detected).")
         self.layout.add(
-            fsui.MultilineLabel(self, information, 640))
+            fsui.MultiLineLabel(self, information, 640))
 
         # self.set_size(self.layout.get_min_size())
         # self.set_size((400, 400))

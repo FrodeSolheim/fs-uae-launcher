@@ -18,8 +18,15 @@ progdir:
 	cd ../.. && python3 setup.py build_exe
 	mv ../../build/exe.mingw-3.4 $(launcher_dir)
 
-	rm $(launcher_dir)/imageformats/*d.dll
-	rm $(launcher_dir)/platforms/*d.dll
+	rm -f $(launcher_dir)/imageformats/qgif*.dll
+	rm -f $(launcher_dir)/imageformats/qmng*.dll
+	rm -f $(launcher_dir)/imageformats/qsvg*.dll
+	rm -f $(launcher_dir)/imageformats/qtga*.dll
+	rm -f $(launcher_dir)/imageformats/qtiff*.dll
+	rm -f $(launcher_dir)/imageformats/*d.dll
+	rm -f $(launcher_dir)/imageformats/*d4.dll
+	rm -f $(launcher_dir)/platforms/qminimal*.dll
+	rm -f $(launcher_dir)/platforms/*d.dll
 
 	cp -a ../../share $(launcher_dir)
 

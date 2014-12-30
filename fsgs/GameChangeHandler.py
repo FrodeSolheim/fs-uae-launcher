@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six
 import os
 import shutil
 import hashlib
@@ -69,7 +63,7 @@ class GameChangeHandler(object):
         oldfiles = self._preserve_changes_files
         newfiles = self.create_file_version_list(self._preserve_changes_dir)
         print("checking files")
-        for filename, newcs in six.iteritems(newfiles):
+        for filename, newcs in newfiles.items():
             try:
                 oldcs = oldfiles[filename]
             except KeyError:

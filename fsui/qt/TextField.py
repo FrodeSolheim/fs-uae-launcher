@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsui.qt import QLineEdit, Signal
 from .Widget import Widget
 
@@ -14,7 +9,7 @@ class TextField(QLineEdit, Widget):
 
     def __init__(self, parent, text="", read_only=False):
         QLineEdit.__init__(self, text, parent.get_container())
-        #Widget.__init__(self, parent)
+        # Widget.__init__(self, parent)
         self.init_widget(parent)
         self.setReadOnly(read_only)
         self.textChanged.connect(self.__text_changed)

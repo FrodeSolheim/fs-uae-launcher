@@ -1,11 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-from fsui import ImageView, Image, Label, HorizontalLayout
+from fsui import Image
 from ...Config import Config
-from ...I18N import _
+from ...I18N import gettext
 from .StatusElement import StatusElement
 
 
@@ -14,7 +9,7 @@ class PlayersElement(StatusElement):
     def __init__(self, parent):
         StatusElement.__init__(self, parent)
         self.icon = Image("fs_uae_launcher:res/16/user.png")
-        self.text = _("N/A")
+        self.text = gettext("N/A")
         self.active = False
 
         self.players = ""
@@ -32,7 +27,7 @@ class PlayersElement(StatusElement):
                 if value:
                     self.text = value
                 else:
-                    self.text =  _("N/A")
+                    self.text = gettext("N/A")
                 self.active = bool(value)
                 self.refresh()
 

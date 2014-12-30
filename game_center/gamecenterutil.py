@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import shutil
 import subprocess
@@ -48,21 +43,23 @@ class GameCenterUtil(object):
             return path
 
         # try to find packaged emulator in a platform workspace dir
-        #if fs.windows:
-        #    path = search("../fs-game-center-windows/lib")
-        #    if path and os.path.exists(path):
-        #        return path
-        #if fs.macosx:
-        #    path = search("../fs-game-center-macosx/lib")
-        #    if not path or not os.path.exists(path):
-        #        path = search(os.path.expanduser("~/git/fs-game-center-macosx/lib"))
-        #    if path and os.path.exists(path):
-        #        return os.path.join(os.getcwd(), path)
+
+        # if fs.windows:
+        #     path = search("../fs-game-center-windows/lib")
+        #     if path and os.path.exists(path):
+        #         return path
+        # if fs.macosx:
+        #     path = search("../fs-game-center-macosx/lib")
+        #     if not path or not os.path.exists(path):
+        #         path = search(os.path.expanduser("~/git/fs-game-center-macosx/lib"))
+        #     if path and os.path.exists(path):
+        #         return os.path.join(os.getcwd(), path)
 
         # try to find the emulator in game center's lib dir
-        #path = search(fs.get_lib_dir())
-        #if path and os.path.exists(path):
-        #    return path
+
+        # path = search(fs.get_lib_dir())
+        # if path and os.path.exists(path):
+        #     return path
 
         # if not on Windows, try to find a system-installed emulator
         if not windows:
@@ -96,16 +93,16 @@ class GameCenterUtil(object):
         print("run:", kwargs["args"])
         print("cwd:", kwargs.get("cwd", ""))
         return subprocess.Popen(**kwargs)
-        #for entry_point in pkg_resources.iter_entry_points(
-        #        "fengestad.program", name):
-        #    # return first available, load should return a callable
-        #    run_func = entry_point.load()
-        #    break
-        #else:
-        #    raise Exception("Could not find program {0}".format(name))
-        #print("run program ", name, "with args", kwargs["args"])
-        ##print("run program ", name, "with args", kwargs)
-        #return run_func(**kwargs)
+        # for entry_point in pkg_resources.iter_entry_points(
+        #         "fengestad.program", name):
+        #     # return first available, load should return a callable
+        #     run_func = entry_point.load()
+        #     break
+        # else:
+        #     raise Exception("Could not find program {0}".format(name))
+        # print("run program ", name, "with args", kwargs["args"])
+        # #print("run program ", name, "with args", kwargs)
+        # return run_func(**kwargs)
 
     @classmethod
     def copy_folder_tree(cls, source_path, dest_path, overwrite=False):
@@ -158,21 +155,21 @@ class GameCenterUtil(object):
             print("unpack", archive, "to", destination)
             if not os.path.exists(destination):
                 os.makedirs(destination)
-            #plugin = pyapp.plug.get_plugin("no.fengestad.7zip")
+            # plugin = pyapp.plug.get_plugin("no.fengestad.7zip")
             args = ["x", "-o" + destination, archive]
             process = cls.run_program("7za", args=args,
                                       stdout=subprocess.PIPE)
-            #process = plugin.sevenz(args, stdout=subprocess.PIPE)
+            # process = plugin.sevenz(args, stdout=subprocess.PIPE)
             line = process.stdout.readline()
             while line:
                 print(line[:-1])
-                #if fs.windows:
+                # if fs.windows:
                 line = unicode_path(line[:-len(os.linesep)])
                 if line.startswith("Extracting  "):
                     parts = line.rsplit(os.sep, 1)
                     if len(parts) == 2:
-                        #text = "Extracting " + parts[1]
-                        #self.on_status(status="Extracting", sub_status=parts[1])
+                        # text = "Extracting " + parts[1]
+                        # self.on_status(status="Extracting", sub_status=parts[1])
                         pass
                 line = process.stdout.readline()
             return_code = process.wait()

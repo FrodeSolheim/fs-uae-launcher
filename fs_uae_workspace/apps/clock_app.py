@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import math
 import datetime
 from fsui.qt import Qt, QRect, QLabel, QVBoxLayout, QWidget
@@ -39,6 +34,7 @@ class ClockWidget(QWidget):
         self.updateClock()
         self.startTimer(100)
 
+    # noinspection PyPep8Naming
     def updateClock(self):
         now = datetime.datetime.now()
         new_time = (now.hour, now.minute, now.second)
@@ -89,7 +85,6 @@ class ClockWidget(QWidget):
         painter.drawLine(cx, cy,
                          cx + r * math.cos(f * hours / 12 + f2),
                          cy + r * math.sin(f * hours / 12 + f2))
-
 
         r = w / 2 * 0.8
         # pen = QPen(QColor(0xff, 0x00, 0x00))

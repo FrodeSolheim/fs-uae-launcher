@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from .base import SynchronizerBase
 from ..Database import Database
 from fsgs.res import gettext
@@ -43,7 +38,7 @@ class ListsSynchronizer(SynchronizerBase):
         if self.stop_check():
             return
 
-        if not "game-lists" in self.context.meta:
+        if "game-lists" not in self.context.meta:
             # haven't looked up synchronization information from the server
             return
 

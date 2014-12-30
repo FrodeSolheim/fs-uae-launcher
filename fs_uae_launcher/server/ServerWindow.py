@@ -1,12 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
 import traceback
 import fsui as fsui
-from ..Config import Config
-from ..Settings import Settings
-from ..I18N import _, ngettext
+
 
 class ServerWindow(fsui.Window):
 

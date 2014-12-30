@@ -1,10 +1,10 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six
 from fsui.qt import QFileDialog
+
+
+FILE = 0
+FILES = 1
+DIRECTORY = 2
+NATIVE_DIALOGS = True
 
 
 class FileDialog(QFileDialog):
@@ -37,12 +37,6 @@ class FileDialog(QFileDialog):
 
     # def show(self):
     #     return self.show_modal()
-
-
-FILE = 0
-FILES = 1
-DIRECTORY = 2
-NATIVE_DIALOGS = True
 
 
 def pick_directory(parent=None, message="", directory=""):

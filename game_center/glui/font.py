@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import json
 from fsui.qt import QFontDatabase, QPainter, QImage, QFontMetrics, QPoint
 from fsui.qt import QPen, QColor
@@ -11,8 +6,8 @@ from game_center.resources import resources
 from game_center.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
 from game_center.glui.texture import Texture
 
-CACHE_SIZE = 100
 
+CACHE_SIZE = 100
 text_cache = []
 for _ in range(CACHE_SIZE):
     text_cache.append({

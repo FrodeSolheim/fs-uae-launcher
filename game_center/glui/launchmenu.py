@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from game_center.glui.gamecenterrunner import GameCenterRunner
 from game_center.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
 from game_center.glui.menu import Menu
@@ -26,7 +21,7 @@ class LaunchMenu(Menu):
 
     def __init__(self, item, controller):
         Menu.__init__(self)
-        #self.top_menu_transition = 0.0
+        # self.top_menu_transition = 0.0
         self.items.append(item)
         if self.use_game_center_item():
             self.top.left.append(GameCenterItem())
@@ -95,11 +90,11 @@ class LaunchMenu(Menu):
     def render(self):
         if self.state in [STATE_PREPARING]:
             self.throbber.render()
-        #elif self.state in [STATE_RUNNING, STATE_STOPPING]:
-        #    pass
-        #gl.glDisable(gl.GL_DEPTH_TEST)
-        #render_fade(0.0, 0.0, 0.0, 1.0)
-        #gl.glEnable(gl.GL_DEPTH_TEST)
+        # elif self.state in [STATE_RUNNING, STATE_STOPPING]:
+        #     pass
+        # gl.glDisable(gl.GL_DEPTH_TEST)
+        # render_fade(0.0, 0.0, 0.0, 1.0)
+        # gl.glEnable(gl.GL_DEPTH_TEST)
 
 
 class FadeDialog(Dialog):
@@ -152,17 +147,17 @@ class Throbber:
         gl.glVertex2f(0, 1080)
         gl.glEnd()
 
-        #y = 0.0
-        #tw, th = Render.text("LAUNCHING GAME", self.title_font,
-        #        0.0, y, w=32 / 9, h=self.height,
-        #        color=(1.0, 1.0, 1.0, 1.0), halign=0.0)
-        #
+        # y = 0.0
+        # tw, th = Render.text("LAUNCHING GAME", self.title_font,
+        #         0.0, y, w=32 / 9, h=self.height,
+        #         color=(1.0, 1.0, 1.0, 1.0), halign=0.0)
+         #
         fs_emu_blending(True)
-        #if bg_fade > 0.5:
-        #    self.throbber_opacity = (bg_fade - 0.5) / 0.5
-        #    #self.throbber_opacity = bg_fade
-        #    self.render_throbber()
-        #if bg_fade == 1.0:
+        # if bg_fade > 0.5:
+        #     self.throbber_opacity = (bg_fade - 0.5) / 0.5
+        #     #self.throbber_opacity = bg_fade
+        #     self.render_throbber()
+        # if bg_fade == 1.0:
         if State.time - State.dialog_time > 1.0:
             # gradually show over 1/4 second
             self.throbber_opacity = (State.time - State.dialog_time - 1.0) * 4
@@ -172,16 +167,16 @@ class Throbber:
 
         gl.glEnable(gl.GL_DEPTH_TEST)
         gl.glDepthMask(True)
-        #fs_emu_texturing(1)
-        #fs_emu_blending(0)
-        #print("Setting dirty..")
+        # fs_emu_texturing(1)
+        # fs_emu_blending(0)
+        # print("Setting dirty..")
         Render.dirty = True
 
     def render_throbber(self):
         cell_width = 32
         cell_spacing = 16
         throbber_width = 3 * cell_width + 2 * cell_spacing
-        #throbber_height = throbber_width
+        # throbber_height = throbber_width
         left = (1920 - throbber_width) / 2
         bottom = (1080 - throbber_width) / 2
 

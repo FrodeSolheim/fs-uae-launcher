@@ -1,15 +1,9 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import fsui as fsui
 from fsgs.FSGSDirectories import FSGSDirectories
 from ..Settings import Settings
 
 
-#class LauncherFileDialog(fsui.FileDialog):
 class LauncherFilePicker(object):
 
     def __init__(self, parent, title, type, last_path="",
@@ -24,9 +18,9 @@ class LauncherFilePicker(object):
         self.directory = ""
         if last_path and last_path not in ["internal"]:
             print("last_path", repr(last_path))
-            #if os.path.isdir(last_path):
-            #    last_path_dir = last_path
-            #else:
+            # if os.path.isdir(last_path):
+            #     last_path_dir = last_path
+            # else:
             last_path_dir = os.path.dirname(last_path)
             print("last_path_dir", last_path_dir)
             if last_path_dir:
@@ -42,9 +36,9 @@ class LauncherFilePicker(object):
                 self.directory = value
         if not self.directory:
             self.directory = self.get_default_directory(type)
-        #fsui.FileDialog.__init__(
-        #    self, parent, title, directory, dir_mode=dir_mode,
-        #    multiple=multiple)
+        # fsui.FileDialog.__init__(
+        #     self, parent, title, directory, dir_mode=dir_mode,
+        #     multiple=multiple)
 
     def get_default_directory(self, type):
         if type == "floppy":

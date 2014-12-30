@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import io
 import os
 import time
@@ -15,7 +10,7 @@ import fsui as fsui
 from ..Config import Config
 from ..ConfigurationScanner import ConfigurationScanner
 from fsgs.FSGSDirectories import FSGSDirectories
-from ..I18N import _
+from ..I18N import gettext
 from ..Settings import Settings
 from .IconButton import IconButton
 
@@ -34,34 +29,34 @@ class ConfigGroup(fsui.Group):
         self.layout.add(hori_layout, fill=True)
 
         # dummy label for sizing purposes
-        #label = fsui.HeadingLabel(self, "")
-        #hori_layout.add(label, margin_top=10, margin_bottom=10)
+        # label = fsui.HeadingLabel(self, "")
+        # hori_layout.add(label, margin_top=10, margin_bottom=10)
 
         label_stand_in = fsui.Panel(self)
-        tw, th = label_stand_in.measure_text(_("Configuration"))
+        tw, th = label_stand_in.measure_text(gettext("Configuration"))
         label_stand_in.set_min_height(th)
         hori_layout.add(label_stand_in, margin_top=10, margin_bottom=10)
         # self.layout.add_spacer(0)
 
         self.new_button = IconButton(self, "new_button.png")
-        self.new_button.set_tooltip(_("New Configuration"))
+        self.new_button.set_tooltip(gettext("New Configuration"))
         self.new_button.activated.connect(self.on_new_button)
         hori_layout.add(self.new_button, margin=10,
                         margin_top=0, margin_bottom=0)
 
-        #self.open_button = IconButton(self, "open_button.png")
-        #self.open_button.set_tooltip(_("Open Configuration"))
-        #self.open_button.disable()
-        #self.open_button.activated.connect(self.on_open_button)
-        #hori_layout.add(self.open_button, margin=10)
+        # self.open_button = IconButton(self, "open_button.png")
+        # self.open_button.set_tooltip(_("Open Configuration"))
+        # self.open_button.disable()
+        # self.open_button.activated.connect(self.on_open_button)
+        # hori_layout.add(self.open_button, margin=10)
 
         self.config_name_field = fsui.TextField(self)
         hori_layout.add(self.config_name_field, expand=True, margin=10,
                         margin_top=0, margin_bottom=0)
 
         self.save_button = IconButton(self, "save_button.png")
-        #self.save_button.disable()
-        self.save_button.set_tooltip(_("Save Configuration"))
+        # self.save_button.disable()
+        self.save_button.set_tooltip(gettext("Save Configuration"))
         self.save_button.activated.connect(self.on_save_button)
         hori_layout.add(self.save_button, margin=10,
                         margin_top=0, margin_bottom=0)
@@ -96,7 +91,7 @@ class ConfigGroup(fsui.Group):
         # Settings.set("config_changed", "1")
         Config.set("__changed", "1")
         # FIXME: remove
-        #Config.set("title", text)
+        # Config.set("title", text)
 
     def on_new_button(self):
         self.new_config()
@@ -109,11 +104,11 @@ class ConfigGroup(fsui.Group):
 
     def on_save_button(self):
         print("ConfigGroup.on_save_button")
-        #try:
+        # try:
         self.save_config()
-        #except Exception:
-        #    # FIXME: notify user
-        #    pass
+        # except Exception:
+        #     # FIXME: notify user
+        #     pass
 
     def save_config(self):
         print("ConfigGroup.save_config")
@@ -140,25 +135,25 @@ class ConfigGroup(fsui.Group):
                     continue
                 if key in Config.dont_save_keys_set:
                     continue
-                #elif key == "joystick_port_2_mode" and value == "nothing":
-                #    continue
-                #elif key == "joystick_port_3_mode" and value == "nothing":
-                #    continue
+                # elif key == "joystick_port_2_mode" and value == "nothing":
+                #     continue
+                # elif key == "joystick_port_3_mode" and value == "nothing":
+                #     continue
                 if value == Config.default_config.get(key, ""):
                     continue
                 if value:
                     f.write("{0} = {1}\n".format(key, value))
 
-        scanner = ConfigurationScanner()
-        #search = ConfigurationScanner.create_configuration_search(name)
-        #name = scanner.create_configuration_name(name)
-        #print("adding", path)
-        ## deleting the path from the database first in case it already exists
-        #database.delete_configuration(path=path)
-        #database.delete_file(path=path)
-        #database.add_file(path=path)
-        #database.add_configuration(
-        #    path=path, uuid="", name=name, scan=0, search=search)
+        # scanner = ConfigurationScanner()
+        # search = ConfigurationScanner.create_configuration_search(name)
+        # name = scanner.create_configuration_name(name)
+        # print("adding", path)
+        # # deleting the path from the database first in case it already exists
+        # database.delete_configuration(path=path)
+        # database.delete_file(path=path)
+        # database.add_file(path=path)
+        # database.add_configuration(
+        #     path=path, uuid="", name=name, scan=0, search=search)
 
         file_database = FileDatabase.get_instance()
         scanner = ConfigurationScanner()

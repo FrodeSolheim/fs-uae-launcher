@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-from fsui import ImageView
 from ...Config import Config
 from .StatusElement import StatusElement
 
@@ -13,8 +7,6 @@ class LanguageElement(StatusElement):
     def __init__(self, parent, language, icon, tool_tip=""):
         StatusElement.__init__(self, parent)
         self.set_min_width(32)
-        #self.image_view = ImageView(self, icon)
-        #self.image_view.set_position((8, 6 + 1))
         self.icon = icon
         self.language = language
         self.languages = ""

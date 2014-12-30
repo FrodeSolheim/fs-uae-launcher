@@ -1,4 +1,4 @@
-from fsui.qt import QWidget, QVBoxLayout, QPushButton
+from fsui.qt import QWidget, QVBoxLayout
 from .desktopwidget import DesktopWidget
 from .taskbarwidget import TaskBarWidget
 from .titlebarwidget import TitleBarWidget

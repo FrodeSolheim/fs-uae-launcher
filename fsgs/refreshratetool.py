@@ -1,26 +1,21 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
-
 import re
 import subprocess
 from fsbc.system import windows, macosx
 
 if windows:
-    #noinspection PyUnresolvedReferences
+    # noinspection PyUnresolvedReferences
     try:
         import win32api
     except ImportError:
         win32api = None
-    #noinspection PyUnresolvedReferences
+    # noinspection PyUnresolvedReferences
     try:
         import win32con
     except ImportError:
         win32con = None
     EDS_RAWMODE = 2
 elif macosx:
-    #noinspection PyUnresolvedReferences
+    # noinspection PyUnresolvedReferences
     import Quartz
 
 
@@ -37,7 +32,7 @@ class RefreshRateTool(object):
         modes = self.get_all_modes()
         mode_score_list = []
         for mode in modes:
-            #print(mode)
+            # print(mode)
             # for now, only consider same resolution
             if mode['width'] != current['width']:
                 continue
@@ -137,17 +132,17 @@ class RefreshRateTool(object):
         return self.calculate_mode_score(current, debug=True) is not None
         
     def get_display_refresh(self):
-        ## FIXME:
-        #if macosx:
-        #    return 60.0
-        #elif windows:
-        #    import win32api
-        #    device = win32api.EnumDisplayDevices()
-        #    settings = win32api.EnumDisplaySettings(device.DeviceName, 0)
-        #    return settings.DisplayFrequency()
-        ## FIXME: 
-        #return 50.0
-        #return None
+        # # FIXME:
+        # if macosx:
+        #     return 60.0
+        # elif windows:
+        #     import win32api
+        #     device = win32api.EnumDisplayDevices()
+        #     settings = win32api.EnumDisplaySettings(device.DeviceName, 0)
+        #     return settings.DisplayFrequency()
+        # # FIXME:
+        # return 50.0
+        # return None
         return self.get_current_mode()['refresh']
 
     def get_current_mode(self):
@@ -178,7 +173,7 @@ class RefreshRateTool(object):
             # copy of the mode...?
             print("FIXME: Not calling Quartz.CGDisplayModeRelease("
                   "current_mode), seems to crash pygame on exit...")
-            #Quartz.CGDisplayModeRelease(current_mode)
+            # Quartz.CGDisplayModeRelease(current_mode)
 
             flags = 0
             bpp = None
@@ -202,7 +197,7 @@ class RefreshRateTool(object):
                 height = int(settings.PelsHeight)
                 bpp = int(settings.BitsPerPel)
                 flags = int(settings.DisplayFlags)
-                #print(width, height, refresh, bpp, flags)
+                # print(width, height, refresh, bpp, flags)
                 modes.append({'width': width, 'height': height,
                               'refresh': refresh, 'bpp': bpp, 'flags': flags})
                 k += 1
@@ -211,7 +206,7 @@ class RefreshRateTool(object):
             pass
         else:
             modes = self._get_all_modes_x()
-        #modes.extend(self.get_override_modes())
+        # modes.extend(self.get_override_modes())
         return modes
 
     # def get_override_modes(self):
@@ -237,14 +232,14 @@ class RefreshRateTool(object):
     #     return modes
 
     def set_mode(self, mode):
-        #if windows:
-        #    self._set_mode_windows(mode)
-        #elif macosx:
-        #    # FIXME:
-        #    print("WARNING: mode settings is not supported on this "
-        #            "platform yet")
-        #else:
-        #    self._set_mode_x(mode)
+        # if windows:
+        #     self._set_mode_windows(mode)
+        # elif macosx:
+        #     # FIXME:
+        #     print("WARNING: mode settings is not supported on this "
+        #             "platform yet")
+        # else:
+        #     self._set_mode_x(mode)
 
         print("FIXME: Currently disabled set_mode")
         return
@@ -262,8 +257,8 @@ class RefreshRateTool(object):
             height = int(settings.PelsHeight)
             bpp = int(settings.BitsPerPel)
             flags = int(settings.DisplayFlags)
-            #print(width, height, refresh, bpp, flags)
-            #modes.append({'width': width, 'height': height,
+            # print(width, height, refresh, bpp, flags)
+            # modes.append({'width': width, 'height': height,
             #        'refresh': refresh, 'bpp': bpp, 'flags': flags})
             if width == mode['width'] and \
                     height == mode['height'] and \
@@ -271,21 +266,21 @@ class RefreshRateTool(object):
                     bpp == mode['bpp'] and \
                     flags == mode['flags']:
 
-                #print("trying to override with refresh", int(round(self.game_refresh)))
-                ##refresh == mode['refresh'] and \
-                #settings.DisplayFrequency = int(round(self.game_refresh))
-                #result = win32api.ChangeDisplaySettings(settings,
-                #        win32con.CDS_UPDATEREGISTRY) #win32con.CDS_FULLSCREEN)
-                #        #0) #win32con.CDS_FULLSCREEN)
-                #if result == win32con.DISP_CHANGE_SUCCESSFUL:
-                #    print("display change was successful")
-                #    return True
-                #print("failed, falling back to ", mode['refresh'])
-                #settings.DisplayFrequency = mode['refresh']
+                # print("trying to override with refresh", int(round(self.game_refresh)))
+                # #refresh == mode['refresh'] and \
+                # settings.DisplayFrequency = int(round(self.game_refresh))
+                # result = win32api.ChangeDisplaySettings(settings,
+                #         win32con.CDS_UPDATEREGISTRY) #win32con.CDS_FULLSCREEN)
+                #         #0) #win32con.CDS_FULLSCREEN)
+                # if result == win32con.DISP_CHANGE_SUCCESSFUL:
+                #     print("display change was successful")
+                #     return True
+                # print("failed, falling back to ", mode['refresh'])
+                # settings.DisplayFrequency = mode['refresh']
                 print("found windows mode, changing display settings")
                 result = win32api.ChangeDisplaySettings(
                     settings, win32con.CDS_UPDATEREGISTRY)
-                    #win32con.CDS_FULLSCREEN)
+                # win32con.CDS_FULLSCREEN)
 
                 if result == win32con.DISP_CHANGE_SUCCESSFUL:
                     print("display change was successful")

@@ -1,10 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
-#import pygame
+# import pygame
 from fsbc.user import get_home_dir, get_documents_dir
 from fsbc.system import windows
 from fsbc.util import memoize
@@ -12,11 +7,11 @@ from fsbc.util import memoize
 
 @memoize
 def get_fullscreen_size():
-    #pygame.display.init()
-    #display_info = pygame.display.Info()
-    #size = (display_info.current_w, display_info.current_h)
-    #print("fullscreen size:", size)
-    #return size
+    # pygame.display.init()
+    # display_info = pygame.display.Info()
+    # size = (display_info.current_w, display_info.current_h)
+    # print("fullscreen size:", size)
+    # return size
     pass
 
 
@@ -27,10 +22,10 @@ class Settings(object):
     # use_fullscreen = False
 
     if windows:
-        #fullscreen_menu = False
+        # fullscreen_menu = False
         window_decorations = False
     else:
-        #fullscreen_menu = True
+        # fullscreen_menu = True
         window_decorations = True
 
     fullscreen_menu = True

@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsui.qt import QPixmap, QImage, QIcon
 from fsbc.Resources import Resources
 from .Image import Image

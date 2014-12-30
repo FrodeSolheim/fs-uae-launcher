@@ -1,23 +1,15 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from fs_uae_launcher.FileScanner import FileScanner
 from fsgs.Downloader import Downloader
 from fsgs.FSGSDirectories import FSGSDirectories
-
-import six
 import fsui
 from fsui.extra.iconheader import IconHeader
 import time
 from fsbc.Application import app
-from fsbc.http import urlopen
+from urllib.request import urlopen
 from fsbc.signal import Signal
 from fsbc.task import Task
 from fsgs.Database import Database
 from fsgs.ogd.context import SynchronizerContext
-from fsgs.ogd.lists import ListsSynchronizer
-from fsgs.ogd.meta import MetaSynchronizer
 from fs_uae_launcher.GameScanner import GameScanner
 from ..I18N import gettext
 
@@ -40,11 +32,11 @@ class DownloadGameWindow(fsui.Window):
             gettext("This game must be downloaded before you can play it"))
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
-        #label = fsui.MultilineLabel(self, gettext(
-        #    "This game needs to be download before you can play it. Please "
-        #    "open the following link to manually download the game."))
-        #label.set_min_width(600)
-        #self.layout.add(label)
+        # label = fsui.MultiLineLabel(self, gettext(
+        #     "This game needs to be download before you can play it. Please "
+        #     "open the following link to manually download the game."))
+        # label.set_min_width(600)
+        # self.layout.add(label)
 
         label = fsui.HeadingLabel(self, gettext(
             "Please open the following web page and download the "
@@ -62,7 +54,7 @@ class DownloadGameWindow(fsui.Window):
         hori_layout.add(label, margin_left=6)
 
         if self.download_notice:
-            label = fsui.MultilineLabel(self, self.download_notice)
+            label = fsui.MultiLineLabel(self, self.download_notice)
             label.set_min_width(500)
             self.layout.add(label, margin_top=20)
 
@@ -101,13 +93,13 @@ class DownloadGameWindow(fsui.Window):
         self.task.progressed.connect(self.on_progress)
         self.task.failed.connect(self.on_failure)
         self.task.succeeded.connect(self.on_success)
-        #self.task.stopped.connect(self.close)
+        # self.task.stopped.connect(self.close)
         self.task.start()
 
     def on_progress(self, message):
-        if not isinstance(message, six.string_types):
+        if not isinstance(message, str):
             message = message[0]
-        #self.icon_header.subtitle_label.set_text(message)
+        # self.icon_header.subtitle_label.set_text(message)
         self.status_label.set_text(message)
 
     def on_failure(self, message):
@@ -186,7 +178,7 @@ class DownloadTermsDialog(fsui.LegacyDialog):
                     "accept the terms"))
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
-        self.label = fsui.MultilineLabel(self, gettext("Loading..."))
+        self.label = fsui.MultiLineLabel(self, gettext("Loading..."))
         self.label.set_min_width(600)
         self.label.set_min_height(100)
         self.layout.add(self.label)
@@ -208,7 +200,7 @@ class DownloadTermsDialog(fsui.LegacyDialog):
         self.reject_button.disable()
 
         self.task = DownloadTermsTask(self.download_terms)
-        #self.task.progressed.connect(self.on_progress)
+        # self.task.progressed.connect(self.on_progress)
         self.task.failed.connect(self.on_failure)
         self.task.succeeded.connect(self.on_success)
         self.task.start()

@@ -1,16 +1,12 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
-from ...I18N import _, ngettext
 from ...Settings import Settings
+from ...I18N import gettext
+
 
 class FullscreenCheckBox(fsui.CheckBox):
 
     def __init__(self, parent):
-        fsui.CheckBox.__init__(self, parent, _("Fullscreen"))
+        fsui.CheckBox.__init__(self, parent, gettext("Fullscreen"))
         self.on_setting("fullscreen", Settings.get("fullscreen"))
         Settings.add_listener(self)
 

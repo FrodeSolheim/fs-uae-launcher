@@ -1,10 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import traceback
-import fsbc.queue
+import queue
 from fsui.res import gettext
 from .qt import *
 
@@ -27,19 +22,19 @@ class EventHandler(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        self.queue = fsbc.queue.Queue()
+        self.queue = queue.Queue()
 
     def customEvent(self, event):
         while True:
             try:
                 function, args, kwargs = self.queue.get_nowait()
-            except fsbc.queue.Empty:
+            except queue.Empty:
                 break
             try:
                 function(*args, **kwargs)
             except Exception:
-                #log.warn("callback event failed: %r %r",
-                #        self.callback, self.args, exc_info=True)
+                # log.warn("callback event failed: %r %r",
+                #         self.callback, self.args, exc_info=True)
                 print("-- callback exception --")
                 traceback.print_exc()
 
@@ -66,7 +61,7 @@ def call_later(duration, function, *args, **kwargs):
 def show_error(message, title=None, parent=None):
     if not title:
         title = gettext("An Error Occurred")
-    #QErrorMessage().showMessage(message)
+    # QErrorMessage().showMessage(message)
     # message_box = QMessageBox()
     # message_box.setIcon(QMessageBox.Critical)
     # message_box.setText(message)

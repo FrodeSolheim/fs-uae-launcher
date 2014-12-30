@@ -1,19 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six
 import os
 import hashlib
 from fsgs.Archive import Archive
-
-#if b"\0"[0] == 0: # Python 3
-#    def byte_value(x):
-#        return x
-#else:
-#    def byte_value(x):
-#        return ord(x) 
 
 
 class ROMManager(object):
@@ -37,7 +24,7 @@ class ROMManager(object):
         size = st.st_size
         mtime = int(st.st_mtime)
         log_function("Adding ROM \"{0}\" to database (SHA-1: {1})".format(
-                path, rom["sha1"]))
+                     path, rom["sha1"]))
         database.delete_file(path=path)
         database.add_file(path=path, sha1=rom["sha1"], mtime=mtime, size=size)
 
@@ -70,8 +57,8 @@ class ROMManager(object):
         except Exception:
             raise Exception("did not find rom.key to decrypt ROM with")
         print("using key file", key_path)
-        #if not os.path.exists(key_file):
-        #    raise Exception("did not find rom.key to decrypt ROM with")
+        # if not os.path.exists(key_file):
+        #     raise Exception("did not find rom.key to decrypt ROM with")
         key_data = f2.read()
         f2.close()
 
@@ -80,16 +67,11 @@ class ROMManager(object):
             if not data:
                 break
             dec = []
-            if six.PY3:
-                for i in range(len(data)):
-                    dec.append(data[i] ^ key_data[i])
-                dec_data = bytes(dec)
-            else:
-                for i in range(len(data)):
-                    dec.append(chr(ord(data[i]) ^ ord(key_data[i])))
-                dec_data = b"".join(dec)
-            #if file is not None:
-            #    file.write(dec_data)
+            for i in range(len(data)):
+                dec.append(data[i] ^ key_data[i])
+            dec_data = bytes(dec)
+            # if file is not None:
+            #     file.write(dec_data)
             out_data += dec_data
             if sha1 is not None:
                 sha1.update(dec_data)

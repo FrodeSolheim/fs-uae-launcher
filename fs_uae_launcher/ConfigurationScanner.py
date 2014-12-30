@@ -1,27 +1,14 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
-import sys
-import time
-import json
-import traceback
-import xml.etree.ElementTree
-from xml.etree.cElementTree import ElementTree
-from fsgs import fsgs
 from fsgs.FileDatabase import FileDatabase
-from .Settings import Settings
-from .I18N import _
-from .Util import get_real_case
-from fsgs.GameDatabaseClient import GameDatabaseClient
+from .I18N import gettext
 from fsgs.util.GameNameUtil import GameNameUtil
 
 
 class ConfigurationScanner:
 
-    def __init__(self, paths=[], on_status=None, stop_check=None):
+    def __init__(self, paths=None, on_status=None, stop_check=None):
+        if paths is None:
+            paths = []
         self.paths = paths
         self.on_status = on_status
         self._stop_check = stop_check
@@ -47,15 +34,15 @@ class ConfigurationScanner:
         for c in configurations:
             if self.stop_check():
                 break
-            #name = os.path.basename(c["path"])
-            #name = c["name"]
-            #name = name[:-7]
-            #search = name.lower()
+            # name = os.path.basename(c["path"])
+            # name = c["name"]
+            # name = name[:-7]
+            # search = name.lower()
             path = c["path"]
             name = os.path.basename(path)
             name, ext = os.path.splitext(name)
             sort_key = name.lower()
-            #search = self.create_configuration_search(name)
+            # search = self.create_configuration_search(name)
             name = self.create_configuration_name(name)
 
             game_id = database.add_game(path=path, name=name,
@@ -77,27 +64,28 @@ class ConfigurationScanner:
             database.delete_game(id=id)
 
     def scan(self, database):
-        self.set_status(
-            _("Scanning configurations"), _("Please wait..."))
+        self.set_status(gettext("Scanning configurations"),
+                        gettext("Please wait..."))
 
-        self.set_status(
-            _("Scanning configurations"), _("Scanning .fs-uae files..."))
+        self.set_status(gettext("Scanning configurations"),
+                        gettext("Scanning .fs-uae files..."))
         self.scan_fs_uae_files(database)
 
         if self.stop_check():
             # aborted
-            #database.rollback()
+            # database.rollback()
             return
 
-        #database.remove_unscanned_configurations(self.scan_version)
-        #print("remove unscanned games")
-        #self.set_status(_("Scanning configurations"), _("Purging old entries..."))
-        #database.remove_unscanned_games_new(self.scan_version)
-        #print("remove unscanned configurations")
-        #database.remove_unscanned_configurations(self.scan_version)
+        # database.remove_unscanned_configurations(self.scan_version)
+        # print("remove unscanned games")
+        # self.set_status(_("Scanning configurations"),
+        #                 _("Purging old entries..."))
+        # database.remove_unscanned_games_new(self.scan_version)
+        # print("remove unscanned configurations")
+        # database.remove_unscanned_configurations(self.scan_version)
 
-        #self.set_status(_("Scanning configurations"), _("Committing data..."))
-        #database.commit()
+        # self.set_status(_("Scanning configurations"), _("Committing data..."))
+        # database.commit()
 
     # @classmethod
     # def create_configuration_search(cls, name):
@@ -115,7 +103,7 @@ class ConfigurationScanner:
         if "(" in name:
             primary, secondary = name.split("(", 1)
             secondary = secondary.replace(", ", " \u00b7 ")
-            #name = primary.rstrip() + " \u2013 " + secondary.lstrip()
+            # name = primary.rstrip() + " \u2013 " + secondary.lstrip()
             name = primary.rstrip() + "\n" + secondary.lstrip()
             if name[-1] == ")":
                 name = name[:-1]

@@ -27,8 +27,8 @@ class SuperNintendoRunner(MednafenRunner):
     def __init__(self, fsgs):
         super().__init__(fsgs)
 
-    #def mednafen_aspect_ratio(self):
-    #    return 4.0 / 3.0
+    # def mednafen_aspect_ratio(self):
+    #     return 4.0 / 3.0
 
     def mednafen_input_mapping(self, port):
         if port == 0:
@@ -65,9 +65,9 @@ class SuperNintendoRunner(MednafenRunner):
     def mednafen_system_prefix(self):
         return "snes"
 
-    #def mednafen_video_size(self):
-    #    if self.is_pal():
-    #        size = (256, 239)
-    #    else:
-    #        size = (256, 224)
-    #    return size
+    # def mednafen_video_size(self):
+    #     if self.is_pal():
+    #         size = (256, 239)
+    #     else:
+    #         size = (256, 224)
+    #     return size

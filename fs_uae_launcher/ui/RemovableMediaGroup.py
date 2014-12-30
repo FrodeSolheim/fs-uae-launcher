@@ -1,18 +1,9 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import os
+from fsbc.util import unused
 import fsui as fsui
 from fsgs.amiga.Amiga import Amiga
 from ..Config import Config
-from ..CDManager import CDManager
-from ..FloppyManager import FloppyManager
-from ..I18N import _, ngettext
-from ..Settings import Settings
-from .IconButton import IconButton
 from .FloppiesGroup import FloppiesGroup
+
 
 class RemovableMediaGroup(FloppiesGroup):
 
@@ -32,6 +23,7 @@ class RemovableMediaGroup(FloppiesGroup):
         Config.remove_listener(self)
 
     def on_config(self, key, value):
+        unused(value)
         if key == "amiga_model":
             self.update_media_type()
 

@@ -1,12 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+import sys
 import re
 import traceback
 import subprocess
-from .I18N import _
+from .I18N import gettext
 from .Settings import Settings
 from .Signal import Signal
 from fsgs.amiga.FSUAEDeviceHelper import FSUAEDeviceHelper
@@ -65,7 +61,7 @@ class DeviceManager:
         cls.device_types = []
         cls.device_name_count = {}
 
-        cls.devices.append(Device("none", _("No Device"), "none"))
+        cls.devices.append(Device("none", gettext("No Device"), "none"))
         # cls.devices.append(Device("mouse", _("Mouse"), "mouse"))
         cls.init_fsuae()
         for id, name, type in zip(cls.device_ids, cls.device_names,
@@ -95,7 +91,7 @@ class DeviceManager:
             traceback.print_exc()
             return
         print(repr(joysticks))
-        # If the character conversion failes, replace will ensure that
+        # If the character conversion fails, replace will ensure that
         # as much as possible succeeds. The joystick in question will
         # not be pre-selectable in the launcher, but the other ones will
         # work at least.
@@ -135,6 +131,12 @@ class DeviceManager:
                 # device_type = "joystick"
                 device_type = "keyboard"
             cls.device_types.append(device_type)
+
+        if "--add-dummy-joystick" in sys.argv:
+            cls.device_ids.append("Dummy Joystick")
+            cls.device_names.append("Dummy Joystick")
+            cls.device_types.append("joystick")
+            cls.joystick_data["Dummy Joystick"] = 1, 0, 2, 0
 
     @classmethod
     def get_joystick_names(cls):
@@ -188,7 +190,7 @@ class DeviceManager:
     @classmethod
     def get_devices_for_ports(cls, config):
         cls.init()
-        ports = [cls.devices[0] for x in range(5)]
+        ports = [cls.devices[0] for _ in range(5)]
         for device in cls.devices:
             device.port = None
         for p in range(4):
@@ -198,10 +200,10 @@ class DeviceManager:
                 if device.id == value:
                     device.port = p
                     break
-        #print("-")
-        #for device in cls.devices:
-        #    print(device.port, device.id)
-        #print("-")
+        # print("-")
+        # for device in cls.devices:
+        #     print(device.port, device.id)
+        # print("-")
 
         def autofill(port, type):
             mode = config.get("joystick_port_{0}_mode".format(port))
@@ -216,14 +218,14 @@ class DeviceManager:
                         break
                 return
             if type == "mouse":
-                #print("a", mode)
+                # print("a", mode)
                 if mode != "mouse":
                     return
-                #print("b")
+                # print("b")
                 for device in cls.devices:
-                    #print("c")
+                    # print("c")
                     if device.type == "mouse" and device.port is None:
-                        #print("d")
+                        # print("d")
                         ports[port] = device
                         device.port = port
                         return

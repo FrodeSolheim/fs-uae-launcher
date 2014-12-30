@@ -1,17 +1,13 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 from fsbc.desktop import set_open_url_in_browser_function
 from fsbc.system import macosx
-from fsui.qt import QApplication, QFont, QDesktopServices, QUrl
+from fsui.qt import QApplication, QDesktopServices, QUrl
 from fsbc.Application import Application as BaseApplication
 
 
 def open_url_in_browser(url):
     print("[QT] open_url_in_browser", url)
+    # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
     QDesktopServices.openUrl(QUrl(url))
 
 
@@ -39,14 +35,15 @@ class Application(BaseApplication):
         BaseApplication.__init__(self, name)
 
         if macosx:
-            #qt_plugins_dir = os.path.join(
-            #    BaseApplication.executable_dir(), "..", "Resources",
-            #    "qt_plugins")
-            #print(qt_plugins_dir)
-            #if os.path.exists(qt_plugins_dir):
-            #    QApplication.setLibraryPaths([qt_plugins_dir])
+            # qt_plugins_dir = os.path.join(
+            #     BaseApplication.executable_dir(), "..", "Resources",
+            #     "qt_plugins")
+            # print(qt_plugins_dir)
+            # if os.path.exists(qt_plugins_dir):
+            #     QApplication.setLibraryPaths([qt_plugins_dir])
             if os.path.exists(os.path.join(BaseApplication.executable_dir(),
                                            "platforms", "libqcocoa.dylib")):
+                # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
                 QApplication.setLibraryPaths(
                     [BaseApplication.executable_dir()])
 

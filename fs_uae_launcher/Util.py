@@ -1,9 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+# noinspection PyUnresolvedReferences
 from fsbc.user import get_home_dir
+# noinspection PyUnresolvedReferences
 from fsbc.util import memoize
 from fsbc.Paths import Paths
 

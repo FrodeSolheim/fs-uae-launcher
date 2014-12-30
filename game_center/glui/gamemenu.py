@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsgs import fsgs
 from game_center.option import Option
 from fsgs.platform import PlatformHandler
@@ -11,7 +6,6 @@ from game_center.glui.opengl import *
 from game_center.glui.font import BitmapFont
 from game_center.glui.menu import Menu
 from game_center.glui.items import GameCenterItem, HomeItem, MenuItem
-#from .util import sort_configurations
 from game_center.glui.state import State
 from game_center.glui.render import Render
 from game_center.glui.texture import Texture
@@ -27,16 +21,16 @@ class Transition(object):
 
 
 def render_wall():  # brightness=1.0):
-    #glClearColor(0.1, 0.1, 0.1, 1.0)
-    #glClear(GL_DEPTH_BUFFER_BIT);
+    # glClearColor(0.1, 0.1, 0.1, 1.0)
+    # glClear(GL_DEPTH_BUFFER_BIT);
     Render.hd_perspective()
-    #fs_emu_ortho();
-    #fs_emu_blending(FALSE);
-    #fs_emu_texturing(FALSE);
+    # fs_emu_ortho();
+    # fs_emu_blending(FALSE);
+    # fs_emu_texturing(FALSE);
     z = -0.999
     
-    #glPushMatrix()
-    #glTranslate(0.0, 0.0, 1.0)
+    # glPushMatrix()
+    # glTranslate(0.0, 0.0, 1.0)
     
     # transition y-coordinate between floor and wall
     splt = 361
@@ -66,17 +60,17 @@ def render_wall():  # brightness=1.0):
     glVertex3f(0, splt, z)
     
     glEnd()
-    #fs_emu_texturing(True)
+    # fs_emu_texturing(True)
 
-    #fs_emu_perspective();
-    #double t_x = t0_x + (t1_x - t0_x) * g_menu_transition;
-    #double t_y = t0_y + (t1_y - t0_y) * g_menu_transition;
-    #double t_z = t0_z + (t1_z - t0_z) * g_menu_transition;
-    #double r_a = r0_a + (r1_a - r0_a) * g_menu_transition;
+    # fs_emu_perspective();
+    # double t_x = t0_x + (t1_x - t0_x) * g_menu_transition;
+    # double t_y = t0_y + (t1_y - t0_y) * g_menu_transition;
+    # double t_z = t0_z + (t1_z - t0_z) * g_menu_transition;
+    # double r_a = r0_a + (r1_a - r0_a) * g_menu_transition;
     #
-    #glScaled(16.0 / 9.0, 1.0, 1.0);
-    #glTranslated(t_x, t_y, t_z);
-    #glRotated(r_a, 0.0, 1.0, 0.0);
+    # glScaled(16.0 / 9.0, 1.0, 1.0);
+    # glTranslated(t_x, t_y, t_z);
+    # glRotated(r_a, 0.0, 1.0, 0.0);
 
 
 class GameMenu(Menu):
@@ -107,7 +101,7 @@ class GameMenu(Menu):
         self.info_panel = GameInfoPanel()
 
         self.config_list.info_panel = self.info_panel
-        #self.config_list.controller = self.controller
+        # self.config_list.controller = self.controller
         self.info_panel.config_list = self.config_list
 
         self.navigatable = self.config_list
@@ -132,10 +126,10 @@ class GameMenu(Menu):
             variant["personal_rating"], ignored = \
                 local_game_database.get_ratings_for_game(variant["uuid"])
 
-            #user_rating = variant[5] or 0
-            #global_rating = variant[3] or 0
-            #user_rating = 0
-            #global_rating = 0
+            # user_rating = variant[5] or 0
+            # global_rating = variant[3] or 0
+            # user_rating = 0
+            # global_rating = 0
 
             variant_uuid = variant["uuid"]  # variant[2]
             variant_name = variant["name"]  # variant[1]
@@ -158,40 +152,40 @@ class GameMenu(Menu):
         variant_uuid = item.configurations[0][0]
         print("\n\nvariant_uuid =", variant_uuid, "\n\n")
 
-        #print("\n\ncreate_context")
-        #print("configurations: ", item.configurations)
-        #configs = sort_configurations(item.configurations)
+        # print("\n\ncreate_context")
+        # print("configurations: ", item.configurations)
+        # configs = sort_configurations(item.configurations)
 
-        #configs = item.configurations
-        #config = configs[0]
-        #self.context = GameContext.create_for_game(
-        #    item.platform, item.name, config)
+        # configs = item.configurations
+        # config = configs[0]
+        # self.context = GameContext.create_for_game(
+        #     item.platform, item.name, config)
 
         values = fsgs.game.set_from_variant_uuid(variant_uuid)
 
-        #print("")
-        #for key in sorted(values.keys()):
-        #    print(" * {0} = {1}".format(key, values[key]))
-        #print("")
+        # print("")
+        # for key in sorted(values.keys()):
+        #     print(" * {0} = {1}".format(key, values[key]))
+        # print("")
 
         self.platform_handler = PlatformHandler.create(fsgs.game.platform.id)
         loader = self.platform_handler.get_loader(fsgs)
         fsgs.config.load(loader.load_values(values))
 
     def create_controller(self):
-        #old_controller = self.controller
-        #self.controller = GameHandler.create_for_game_context(
-        #    self.context)
+        # old_controller = self.controller
+        # self.controller = GameHandler.create_for_game_context(
+        #     self.context)
 
         self.runner = self.platform_handler.get_runner(fsgs)
 
         # self.controller = GameRunner()
 
     def recreate_controller(self):
-        #self.create_controller()
-        #print("***** recreate_controller, new controller is",
-        #        id(self.controlleGame Controlr))
-        #self.config_list.set_controller(self.controller)
+        # self.create_controller()
+        # print("***** recreate_controller, new controller is",
+        #         id(self.controlleGame Controlr))
+        # self.config_list.set_controller(self.controller)
         print("recreate_controller, actually, just recreating game context")
         self.create_context()
         self.controller.context = self.context
@@ -205,10 +199,10 @@ class GameMenu(Menu):
             Render.dirty = True
         # transition goes from 1.0 ... 0.0
         Transition.value = 1.0 - Transition.value
-        #finished = 0
+        # finished = 0
         if Transition.value <= 0.0:
             Transition.value = 0.0
-            #finished = 1.0
+            # finished = 1.0
             Transition.start = 0
             Transition.on_finish()
             return
@@ -216,17 +210,17 @@ class GameMenu(Menu):
         last_menu = State.history[-2]
         self.last_menu_data = last_menu.render()
         
-        #self.top_menu_transition = transition
+        # self.top_menu_transition = transition
         
-        #glClear(GL_DEPTH_BUFFER_BIT)
-        #print(transition)
-        #glEnable(GL_DEPTH_TEST)
-        #glDepthMask(True)
+        # glClear(GL_DEPTH_BUFFER_BIT)
+        # print(transition)
+        # glEnable(GL_DEPTH_TEST)
+        # glDepthMask(True)
         
-        #render_wall(transition)
-        #render_screen(transition)
-        #if finished:
-        #    # FIXME: defer to later via an event or similar?
+        # render_wall(transition)
+        # render_screen(transition)
+        # if finished:
+        #     # FIXME: defer to later via an event or similar?
         return None
 
     def render_transparent(self, data):
@@ -285,7 +279,7 @@ class GameConfigList(Navigatable):
         play_option = Option.create_play_option()
         self.items.append(play_option)
 
-        #self.items = controller.options
+        # self.items = controller.options
         self.index = 0
         # set index to first non-group item
         for i, item in enumerate(self.items):
@@ -293,8 +287,8 @@ class GameConfigList(Navigatable):
                 self.index = i
                 break
         self.runner = controller
-        #self.controller = controller
-        #print("GameConfigList.set_controller", id(self.controller))
+        # self.controller = controller
+        # print("GameConfigList.set_controller", id(self.controller))
 
     def go_up(self):
         old_index = self.index
@@ -332,15 +326,15 @@ class GameConfigList(Navigatable):
         result = self.items[self.index].activate()
         if result == "PLAY":
 
-            #noinspection PyDecorator
+            # noinspection PyDecorator
             @staticmethod
             def show_input():
-                #print("Create input menu, controller = ", id(self.controller))
-                #new_menu = InputMenu(self.game_item, self.controller)
-                #State.history.append(new_menu)
-                ## FIXME
-                #from .window import set_current_menu
-                #set_current_menu(new_menu)
+                # print("Create input menu, controller = ", id(self.controller))
+                # new_menu = InputMenu(self.game_item, self.controller)
+                # State.history.append(new_menu)
+                # # FIXME
+                # from .window import set_current_menu
+                # set_current_menu(new_menu)
 
                 print("Create input menu, runner = ", id(self.runner))
                 new_menu = InputMenu(self.game_item, self.runner)
@@ -356,12 +350,12 @@ class GameConfigList(Navigatable):
     def render(self, transition=1.0):
         Render.hd_perspective()
         
-        #w = 560
-        #h = 92
-        #x = 1920 - w * transition
-        #y = 1080 - 60 - h
-        #y = 1080 - 60 - h - 44
-        #z = -0.9
+        # w = 560
+        # h = 92
+        # x = 1920 - w * transition
+        # y = 1080 - 60 - h
+        # y = 1080 - 60 - h - 44
+        # z = -0.9
         
         item_top = 1080 - 90
         item_left = 1920 - 560 + 40
@@ -371,13 +365,13 @@ class GameConfigList(Navigatable):
         
         glPushMatrix()
         glTranslate(0.0, 0.0, 0.7)
-        #glTranslated((1.0 - transition) * g_tex_sidebar_background->width, 0, 0)
-        #fs_emu_set_texture(g_tex_sidebar_background)
-        #fs_emu_render_texture_with_size(g_tex_sidebar_background,
-        #        1920 - g_tex_sidebar_background->width,
-        #        0, g_tex_sidebar_background->width,
-        #        g_tex_sidebar_background->height)
-        #fs_emu_render_sidebar()
+        # glTranslated((1.0 - transition) * g_tex_sidebar_background->width, 0, 0)
+        # fs_emu_set_texture(g_tex_sidebar_background)
+        # fs_emu_render_texture_with_size(g_tex_sidebar_background,
+        #         1920 - g_tex_sidebar_background->width,
+        #         0, g_tex_sidebar_background->width,
+        #         g_tex_sidebar_background->height)
+        # fs_emu_render_sidebar()
         fs_emu_blending(True)
         fs_emu_texturing(True)
         glDepthMask(False)
@@ -388,8 +382,8 @@ class GameConfigList(Navigatable):
         glDepthMask(True)
         glPopMatrix()
         
-        #x = x + 70
-        #w = w - 70
+        # x = x + 70
+        # w = w - 70
         x = item_left
         y = item_top - 60
         w = 560 - 40 - 40
@@ -413,23 +407,23 @@ class GameConfigList(Navigatable):
                 glVertex3f(x + w, y + 4, z)
                 glVertex3f(x + w, y + h - 4, z)
                 glVertex3f(x, y + h - 4, z)
-                #glColor3f(0.6, 0.6, 0.6)
-                #glVertex3f(x, y + 4, z)
-                #glVertex3f(x + w, y + 4, z)
-                #glVertex3f(x + w, y + h, z)
-                #glVertex3f(x, y + h, z)
+                # glColor3f(0.6, 0.6, 0.6)
+                # glVertex3f(x, y + 4, z)
+                # glVertex3f(x + w, y + 4, z)
+                # glVertex3f(x + w, y + h, z)
+                # glVertex3f(x, y + h, z)
                 glEnd()
             else:
                 fg_color = [1.0, 1.0, 1.0, 1.0]
 
-            #glBegin(GL_QUADS)
-            #glColor3f(0.4, 0.4, 0.4)
-            #glVertex3f(x, y, z)
-            #glVertex3f(x + w, y, z)
-            #glVertex3f(x + w, y + 4, z)
-            #glVertex3f(x, y + 4, z)
-            #glEnd()
-            #fs_emu_texturing(True)
+            # glBegin(GL_QUADS)
+            # glColor3f(0.4, 0.4, 0.4)
+            # glVertex3f(x, y, z)
+            # glVertex3f(x + w, y, z)
+            # glVertex3f(x + w, y + 4, z)
+            # glVertex3f(x, y + 4, z)
+            # glEnd()
+            # fs_emu_texturing(True)
 
             if i > 0:
                 fg_color[3] *= 0.35
@@ -437,8 +431,8 @@ class GameConfigList(Navigatable):
             text = item.title
             
             # FIXME: REMOVE
-            #fs_emu_blending(False)
-            #fs_emu_blending(True)
+            # fs_emu_blending(False)
+            # fs_emu_blending(True)
             
             glDisable(GL_DEPTH_TEST)            
             if item.group:
@@ -447,14 +441,14 @@ class GameConfigList(Navigatable):
             else:
                 BitmapFont.menu_font.render(text, x + 20, y + 14)
             glEnable(GL_DEPTH_TEST)
-            #text = item.title.upper()
-            #tw, th = Render.text(text, Font.main_path_font,
-            #        x + 40, y + 43, color=fg_color)
-            #text = item.subtitle.upper()
-            #fg_color[3] = fg_color[3] * 0.4
-            #text = item.title.upper()
-            #tw, th = Render.text(text, Font.list_subtitle_font,
-            #        x + 40, y + 18, color=fg_color)
+            # text = item.title.upper()
+            # tw, th = Render.text(text, Font.main_path_font,
+            #         x + 40, y + 43, color=fg_color)
+            # text = item.subtitle.upper()
+            # fg_color[3] = fg_color[3] * 0.4
+            # text = item.title.upper()
+            # tw, th = Render.text(text, Font.list_subtitle_font,
+            #         x + 40, y + 18, color=fg_color)
             y -= h
 
 
@@ -484,12 +478,12 @@ class GameInfoPanel(Navigatable):
         fs_emu_blending(False)
         glBegin(GL_QUADS)
         glColor3f(0.0, 0.0, 0.0)
-        #glVertex3f(0, 365, z)
-        #glVertex3f(1270, 365, z)
+        # glVertex3f(0, 365, z)
+        # glVertex3f(1270, 365, z)
         glVertex3f(0, 400, z)
         glVertex3f(1270, 400, z)
         glColor3f(0.25, 0.25, 0.25)
         glVertex3f(1270, 1080 - 60, z)
         glVertex3f(0, 1080 - 60, z)
         glEnd()
-        #fs_emu_texturing(True)
+        # fs_emu_texturing(True)

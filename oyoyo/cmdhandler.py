@@ -17,17 +17,10 @@
 
 import inspect
 import logging
-import sys
 import traceback
 
-from fs_uae_launcher.netplay.oyoyo import helpers
-from fs_uae_launcher.netplay.oyoyo.parse import parse_nick
-
-# Python < 3 compatibility
-if sys.version_info < (3,):
-    class bytes(object):
-        def __new__(cls, b='', encoding='utf8'):
-            return str(b)
+from oyoyo import helpers
+from oyoyo.parse import parse_nick
 
 
 def protected(func):
@@ -40,9 +33,11 @@ class CommandError(Exception):
     def __init__(self, cmd):
         self.cmd = cmd
 
+
 class NoSuchCommandError(CommandError):
     def __str__(self):
         return 'No such command "%s"' % ".".join(self.cmd)
+
 
 class ProtectedCommandError(CommandError):
     def __str__(self):
@@ -93,7 +88,7 @@ class CommandHandler(object):
     def run(self, command, *args):
         """ finds and runs a command """
         logging.debug("processCommand %s(%s)" % (command, args))
-        #print(command, args)
+        # print(command, args)
 
         try:
             f = self.get(command)
@@ -127,6 +122,7 @@ class DefaultCommandHandler(CommandHandler):
         self.client.send('PONG', server)
 
 
+# noinspection PyPep8Naming
 class DefaultBotCommandHandler(CommandHandler):
     """ default command handler for bots. methods/attributes are made
     available as commands """
@@ -147,7 +143,7 @@ class DefaultBotCommandHandler(CommandHandler):
             commands = self.getVisibleCommands()
             commands.sort()
             helpers.msg(self.client, dest,
-                "available commands: %s" % " ".join(commands))
+                        "available commands: %s" % " ".join(commands))
         else:
             try:
                 f = self.get(arg)
@@ -158,13 +154,14 @@ class DefaultBotCommandHandler(CommandHandler):
             doc = f.__doc__.strip() if f.__doc__ else "No help available"
 
             if not inspect.ismethod(f):
-                subcommands = self.getVisibleCommands(f)
-                if subcommands:
-                    doc += " [sub commands: %s]" % " ".join(subcommands)
+                sub_commands = self.getVisibleCommands(f)
+                if sub_commands:
+                    doc += " [sub commands: %s]" % " ".join(sub_commands)
 
             helpers.msg(self.client, dest, "%s: %s" % (arg, doc))
 
 
+# noinspection PyPep8Naming
 class BotCommandHandler(DefaultCommandHandler):
     """ complete command handler for bots """
 
@@ -201,13 +198,3 @@ class BotCommandHandler(DefaultCommandHandler):
         except CommandError as e:
             helpers.msg(self.client, dest, str(e))
         return True
-
-
-
-
-
-
-
-
-
-

@@ -1,27 +1,23 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import sys
 import subprocess
 from distutils.spawn import find_executable
+
 try:
-    sevenzip_exe = find_executable(str("7z"))
+    seven_zip_exe = find_executable(str("7z"))
 except Exception:
-    sevenzip_exe = None
+    seven_zip_exe = None
 
 
 class SevenZipFile:
 
     def __init__(self, path, mode="r"):
-        if sevenzip_exe is None:
+        if seven_zip_exe is None:
             raise Exception("no 7z executable found")
 
         assert mode == "r"
         self.path = path
 
-        args = [sevenzip_exe, "l", "-slt", self.path]
+        args = [seven_zip_exe, "l", "-slt", self.path]
         for i, arg in enumerate(args):
             args[i] = arg.encode(sys.getfilesystemencoding())
         print(args)
@@ -34,7 +30,7 @@ class SevenZipFile:
             print(name)
             if name.startswith("Path = "):
                 last_name = name[7:]
-                #names.append(name)
+                # names.append(name)
             elif name.startswith("Attributes = "):
                 assert last_name
                 if name.startswith("Attributes = D"):
@@ -55,7 +51,7 @@ class SevenZipFile:
         return self.names
 
     def read(self, name):
-        args = [sevenzip_exe, "x", "-so", self.path, name]
+        args = [seven_zip_exe, "x", "-so", self.path, name]
         for i, arg in enumerate(args):
             args[i] = arg.encode(sys.getfilesystemencoding())
         print(args)

@@ -1,13 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsgs import fsgs
 import fsui as fsui
 from fsgs.amiga.Amiga import Amiga
 from ..Signal import Signal
-from ..I18N import _
+from ..I18N import gettext
 
 
 class KickstartStatusGroup(fsui.Group):
@@ -50,7 +45,8 @@ class ScanKickstartGroup(fsui.Group):
         fsui.Group.__init__(self, parent)
 
         self.layout = fsui.VerticalLayout()
-        label = fsui.HeadingLabel(self, _("Available Kickstart Versions"))
+        label = fsui.HeadingLabel(
+            self, gettext("Available Kickstart Versions"))
         self.layout.add(label, margin_bottom=10)
 
         icon_layout = fsui.HorizontalLayout()
@@ -67,8 +63,8 @@ class ScanKickstartGroup(fsui.Group):
         vert_layout.add_spacer(0)
 
         label = fsui.Label(
-            self, _("You should have kickstart files for "
-                    "each Amiga model you want to use:"))
+            self, gettext("You should have kickstart files for "
+                          "each Amiga model you want to use:"))
         vert_layout.add(label, margin_bottom=0)
 
         hori_layout = fsui.HorizontalLayout()
@@ -76,32 +72,32 @@ class ScanKickstartGroup(fsui.Group):
 
         self.kickstart_groups = []
 
-        colu_layout = fsui.VerticalLayout()
-        hori_layout.add(colu_layout, expand=True, fill=True, margin=10)
+        column_layout = fsui.VerticalLayout()
+        hori_layout.add(column_layout, expand=True, fill=True, margin=10)
 
-        self.add_kickstart_group(colu_layout, "Amiga 1000", "A1000")
-        colu_layout.add_spacer(10)
-        self.add_kickstart_group(colu_layout, "Amiga 500", "A500")
-        colu_layout.add_spacer(10)
-        self.add_kickstart_group(colu_layout, "Amiga 500+", "A500+")
+        self.add_kickstart_group(column_layout, "Amiga 1000", "A1000")
+        column_layout.add_spacer(10)
+        self.add_kickstart_group(column_layout, "Amiga 500", "A500")
+        column_layout.add_spacer(10)
+        self.add_kickstart_group(column_layout, "Amiga 500+", "A500+")
 
-        colu_layout = fsui.VerticalLayout()
-        hori_layout.add(colu_layout, expand=True, fill=True, margin=10)
+        column_layout = fsui.VerticalLayout()
+        hori_layout.add(column_layout, expand=True, fill=True, margin=10)
 
-        self.add_kickstart_group(colu_layout, "Amiga 600", "A600")
-        colu_layout.add_spacer(10)
-        self.add_kickstart_group(colu_layout, "Amiga 1200", "A1200")
-        colu_layout.add_spacer(10)
-        self.add_kickstart_group(colu_layout, "Amiga 3000", "A3000")
+        self.add_kickstart_group(column_layout, "Amiga 600", "A600")
+        column_layout.add_spacer(10)
+        self.add_kickstart_group(column_layout, "Amiga 1200", "A1200")
+        column_layout.add_spacer(10)
+        self.add_kickstart_group(column_layout, "Amiga 3000", "A3000")
 
-        colu_layout = fsui.VerticalLayout()
-        hori_layout.add(colu_layout, expand=True, fill=True, margin=10)
+        column_layout = fsui.VerticalLayout()
+        hori_layout.add(column_layout, expand=True, fill=True, margin=10)
 
-        self.add_kickstart_group(colu_layout, "Amiga 4000", "A4000/040")
-        colu_layout.add_spacer(10)
-        self.add_kickstart_group(colu_layout, "Amiga CD32", "CD32")
-        colu_layout.add_spacer(10)
-        self.add_kickstart_group(colu_layout, "Commodore CDTV", "CDTV")
+        self.add_kickstart_group(column_layout, "Amiga 4000", "A4000/040")
+        column_layout.add_spacer(10)
+        self.add_kickstart_group(column_layout, "Amiga CD32", "CD32")
+        column_layout.add_spacer(10)
+        self.add_kickstart_group(column_layout, "Commodore CDTV", "CDTV")
 
     def add_kickstart_group(self, layout, title, model):
         group = KickstartStatusGroup(self, title, model)

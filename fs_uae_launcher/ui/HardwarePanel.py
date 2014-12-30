@@ -1,15 +1,9 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
-from ..Config import Config
-from ..I18N import _, ngettext
 from .config.KickstartGroup import KickstartGroup
 from .config.MemoryGroup import MemoryGroup
 from .config.ExpansionsGroup import ExpansionsGroup
 from .Skin import Skin
+
 
 class HardwarePanel(fsui.Panel):
 

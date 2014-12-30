@@ -1,12 +1,8 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from fs_uae_launcher.DeviceManager import DeviceManager
-
 from fsui import Image
 from ...Config import Config
 from .StatusElement import StatusElement
+
 
 ERROR_LEVEL = 0
 WARNING_LEVEL = 1

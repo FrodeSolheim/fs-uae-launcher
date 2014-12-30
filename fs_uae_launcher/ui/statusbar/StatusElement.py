@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsui import Panel, Color
 
 
@@ -14,7 +9,7 @@ class StatusElement(Panel):
         :type parent: fsui.Widget
         """
         Panel.__init__(self, parent, paintable=True)
-        #self.set_background_color(Color(0xd0, 0xd0, 0xd0))
+        # self.set_background_color(Color(0xd0, 0xd0, 0xd0))
         self.set_background_color(parent.get_background_color())
         self.icon = None
         self.right_icon = None
@@ -43,8 +38,8 @@ class StatusElement(Panel):
         if self.text:
             x += 6
             tw, th = self.measure_text(self.text)
-            #tw = 200
-            #th = 20
+            # tw = 200
+            # th = 20
             operations.append(("text", self.text, x, (h - th) // 2))
             x += tw
         if self.right_icon:

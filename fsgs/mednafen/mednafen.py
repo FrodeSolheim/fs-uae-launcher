@@ -1,12 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
 import os
 import struct
-import shutil
 import hashlib
 
 from fsbc.system import windows
@@ -16,7 +9,7 @@ from fsgs.input.mapper import InputMapper
 from fsgs.runner import GameRunner
 
 
-#noinspection PyAttributeOutsideInit
+# noinspection PyAttributeOutsideInit
 class MednafenRunner(GameRunner):
 
     def __init__(self, fsgs):
@@ -150,43 +143,43 @@ class MednafenRunner(GameRunner):
 
         if self.use_fullscreen():
             self.args.extend(["-fs", "1"])
-            #self.args.extend(["-%s.scanlines" % pfx,
-            #        str(self.get_scanlines_setting())])
+            # self.args.extend(["-%s.scanlines" % pfx,
+            #         str(self.get_scanlines_setting())])
         else:
             self.args.extend(["-fs", "0"])
             self.args.extend(["-%s.xscale" % pfx, "2"])
             self.args.extend(["-%s.yscale" % pfx, "2"])
 
-            #self.args.extend(["-%s.scanlines" % pfx, "0"])
-            #if gamew < 200:
-            #    self.args.extend(["-%s.xscale" % pfx, "4"])
-            #    self.args.extend(["-%s.yscale" % pfx, "4"])
-            #else:
-            #    self.args.extend(["-%s.xscale" % pfx, "3"])
-            #    self.args.extend(["-%s.yscale" % pfx, "3"])
-            #self.args.extend(["-%s.videoip" % pfx, "0"])
-            # FIXME:
-            #self.options.smooth = False
-            #self.options.filter = '2x'
+            # self.args.extend(["-%s.scanlines" % pfx, "0"])
+            # if gamew < 200:
+            #     self.args.extend(["-%s.xscale" % pfx, "4"])
+            #     self.args.extend(["-%s.yscale" % pfx, "4"])
+            # else:
+            #     self.args.extend(["-%s.xscale" % pfx, "3"])
+            #     self.args.extend(["-%s.yscale" % pfx, "3"])
+            # self.args.extend(["-%s.videoip" % pfx, "0"])
+            #  FIXME:
+            # self.options.smooth = False
+            # self.options.filter = '2x'
 
         if self.use_doubling():
             self.args.extend(["-%s.special" % pfx, "nn2x"])
 
         self.args.extend(self.mednafen_extra_graphics_options())
 
-        #filter_data = self.configure_filter()
-        #if filter_data["name"] == "ntsc":
-        #    self.args.extend(["-{0}.ntscblitter".format(pfx), "1"])
-        #    self.args.extend(["-{0}.ntsc.preset".format(pfx), "composite"])
-        #    self.args.extend(["-{0}.ntsc.saturation".format(pfx), "0.5"])
-        #else:
-        #    self.args.extend(
-        #        ["-{0}.special".format(pfx), filter_data["special"]])
+        # filter_data = self.configure_filter()
+        # if filter_data["name"] == "ntsc":
+        #     self.args.extend(["-{0}.ntscblitter".format(pfx), "1"])
+        #     self.args.extend(["-{0}.ntsc.preset".format(pfx), "composite"])
+        #     self.args.extend(["-{0}.ntsc.saturation".format(pfx), "0.5"])
+        # else:
+        #     self.args.extend(
+        #         ["-{0}.special".format(pfx), filter_data["special"]])
 
         if self.use_smoothing():
             self.args.extend(["-%s.videoip" % pfx, "1"])
 
-        #self.args.extend(["-%s.special" % pfx,
+        # self.args.extend(["-%s.special" % pfx,
         # self.mednafen_special_filter()])
 
         if self.configure_vsync():
@@ -241,60 +234,62 @@ class MednafenRunner(GameRunner):
         # can be overriden by subclasses
         pass
 
-    #def mednafen_refresh_rate(self):
-    #    return 0.0
+    # def mednafen_refresh_rate(self):
+    #     return 0.0
     #
-    #def get_game_refresh_rate(self):
-    #    # can be overriden by subclasses
-    #    return self.mednafen_refresh_rate()
+    # def get_game_refresh_rate(self):
+    #     # can be overriden by subclasses
+    #     return self.mednafen_refresh_rate()
 
     def mednafen_cfg_path(self):
         if not os.path.exists(os.path.join(self.home.path, ".mednafen")):
             os.makedirs(os.path.join(self.home.path, ".mednafen"))
         return os.path.join(self.home.path, ".mednafen", "mednafen-09x.cfg")
 
-        #config_path = os.path.join(os.environ['HOME'], '.mednafen')
+        # config_path = os.path.join(os.environ['HOME'], '.mednafen')
+
         # the SDL version (even on Windows) seems to read HOME, so
         # use environment instead of pyapp.user.home_dir
-        #try:
-        #    config_path = os.path.join(os.environ['HOME'], '.mednafen')
-        #except KeyError:
-        #    config_path = os.path.join(pyapp.user.home_dir(), '.mednafen')
-        #self.config_temp = self.create_temp_file(".mednafen")
+
+        # try:
+        #     config_path = os.path.join(os.environ['HOME'], '.mednafen')
+        # except KeyError:
+        #     config_path = os.path.join(pyapp.user.home_dir(), '.mednafen')
         # self.config_temp = self.create_temp_file(".mednafen")
-        # config_path = os.path.join(self.context.temp.dir('mednafen'),
-        # '.mednafen')
+        #  self.config_temp = self.create_temp_file(".mednafen")
+        #  config_path = os.path.join(self.context.temp.dir('mednafen'),
+        #  '.mednafen')
         # if not os.path.isdir(config_path):
-        #    os.makedirs(config_path)
-        #return os.path.join(config_path, "mednafen.cfg")
+        #     os.makedirs(config_path)
+        # return os.path.join(config_path, "mednafen.cfg")
         # return self.config_temp.path
 
-        #elif fs.windows:
-        #    config_path = os.path.join(pyapp.fs.data_dir_user_app(),
-        #            "mednafen")
-        #    os.putenv("HOME", str_path_path(config_path))
-        #    if not os.path.exists(config_path):
-        #        os.makedirs(config_path)
-        #    config_path = os.path.join(config_path, ".mednafen")
-        #    if not os.path.exists(config_path):
-        #        os.makedirs(config_path)
-        #    return os.path.join(config_path, "mednafen.cfg")
-        #elif fs.macosx:
-        #    config_path = os.path.join(pyapp.user.home_dir(), "Library",
-        #            "Application Support", "ZSNES")
-        #    if not os.path.isdir(config_path):
-        #        os.makedirs(config_path)
-        #    return os.path.join(config_path, "zsnesl.cfg")
+        # elif fs.windows:
+        #     config_path = os.path.join(pyapp.fs.data_dir_user_app(),
+        #             "mednafen")
+        #     os.putenv("HOME", str_path_path(config_path))
+        #     if not os.path.exists(config_path):
+        #         os.makedirs(config_path)
+        #     config_path = os.path.join(config_path, ".mednafen")
+        #     if not os.path.exists(config_path):
+        #         os.makedirs(config_path)
+        #     return os.path.join(config_path, "mednafen.cfg")
+        # elif fs.macosx:
+        #     config_path = os.path.join(pyapp.user.home_dir(), "Library",
+        #             "Application Support", "ZSNES")
+        #     if not os.path.isdir(config_path):
+        #         os.makedirs(config_path)
+        #     return os.path.join(config_path, "zsnesl.cfg")
 
-    #def get_joystick_unique_ids(self, controllers):
-    #    unique_ids = {}
-    #    for i in range(len(controllers)):
-    #        controller = controllers[i]
-    #        unique_id = self.get_joystick_unique_id(controller)
-    #        plusplus = unique_ids.values().count(unique_id)
-    #        unique_id += plusplus
-    #        unique_ids[controller.id] = unique_id
-    #    return unique_ids
+    # def get_joystick_unique_ids(self, controllers):
+    #     unique_ids = {}
+    #     for i in range(len(controllers)):
+    #         controller = controllers[i]
+    #         unique_id = self.get_joystick_unique_id(controller)
+    #         plusplus = unique_ids.values().count(unique_id)
+    #         unique_id += plusplus
+    #         unique_ids[controller.id] = unique_id
+    #     return unique_ids
 
     def is_pal(self):
         # return self.config.get("ntsc_mode") != "1"
@@ -353,9 +348,9 @@ class MednafenInputMapper(InputMapper):
 
     @memoize
     def get_unique_id(self, device, device_id):
-        #unique_id = self._get_unique_id(device)
-        #print("joystick unique id:", unique_id)
-        #return unique_id
+        # unique_id = self._get_unique_id(device)
+        # print("joystick unique id:", unique_id)
+        # return unique_id
         return self.id_map[device.id]
 
     @memoize
@@ -375,6 +370,6 @@ class MednafenInputMapper(InputMapper):
         digest = m.digest()
         ret = 0
         for x in range(16):
-            #ret ^= ord(digest[x]) << ((x & 7) * 8)
+            # ret ^= ord(digest[x]) << ((x & 7) * 8)
             ret ^= digest[x] << ((x & 7) * 8)
         return ret

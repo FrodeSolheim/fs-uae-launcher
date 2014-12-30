@@ -1,11 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import sys
-import six
 import threading
 import traceback
 from .signal import Signal
@@ -61,12 +55,12 @@ def _enable_thread_exception_handler():
             _handle_exception(*sys.exc_info())
 
     def set_ident(self):
-        #self = threading.current_thread()
+        # self = threading.current_thread()
         self._run_ = self.run
         self.run = run
         self._set_ident_()
 
-    #noinspection PyProtectedMember
+    # noinspection PyProtectedMember
     threading.Thread._set_ident_ = threading.Thread._set_ident
     threading.Thread._set_ident = set_ident
 
@@ -85,7 +79,7 @@ def _handle_exception(exc_type, exc_value, exc_traceback):
     except:
         pass
     try:
-        filename = six.text_type(filename)
+        filename = str(filename)
     except:
         pass
     filename = os.path.basename(filename)
@@ -93,13 +87,13 @@ def _handle_exception(exc_type, exc_value, exc_traceback):
     error_id = "{0}:{1}:{2}:{3}".format(
         exc_type.__name__, filename, function, line)
 
-    #QtGui.QMessageBox.critical(None, "Error",
-    #description = "<html>A critical error has occured.<br/> "
-    #                           + "<b>%s</b><br/><br/>" % error
-    #                           + "It occurred at <b>line %d</b> of file "
-    #                             "<b>%s</b>.<br/>" % (
-    #                           line, filename)
-    #                           + "</html>")
+    # QtGui.QMessageBox.critical(None, "Error",
+    # description = "<html>A critical error has occurred.<br/> "
+    #                            + "<b>%s</b><br/><br/>" % error
+    #                            + "It occurred at <b>line %d</b> of file "
+    #                              "<b>%s</b>.<br/>" % (
+    #                            line, filename)
+    #                            + "</html>")
     #
 
     backtrace_string = "".join(traceback.format_exception(
@@ -117,21 +111,21 @@ def _handle_exception(exc_type, exc_value, exc_traceback):
     if thread.ident == main_thread_id:
         try:
             # FIXME
-            #import wx
-            #app = wx.GetApp()
-            #if app is not None:
-            #    wx.MessageBox(message + "\n" + backtrace_string)
-            #    if app.IsMainLoopRunning():
-            #        return
-            #    print("The application will now close due to the above error")
-            #    print("calling app.Exit")
-            #    app.Exit()
+            # import wx
+            # app = wx.GetApp()
+            # if app is not None:
+            #     wx.MessageBox(message + "\n" + backtrace_string)
+            #     if app.IsMainLoopRunning():
+            #         return
+            #     print("The application will now close due to the above error")
+            #     print("calling app.Exit")
+            #     app.Exit()
 
                 Signal("quit").notify()
         except Exception as e:
             print(repr(e))
 
-        #sys.exit(1)
+        # sys.exit(1)
 
 
 class AdditionalInfo(object):
@@ -142,7 +136,11 @@ def _thread_bootstrap_2_7(self):
     """This is a replacement "method" for the Thread class in Python 2.7,
     designed to let an exception fall through to the debugger."""
 
+    # noinspection PyProtectedMember
+    # noinspection PyUnresolvedReferences
     from threading import _active_limbo_lock, _active, _limbo, _trace_hook
+    # noinspection PyProtectedMember
+    # noinspection PyUnresolvedReferences
     from threading import _profile_hook, _sys, _get_ident
 
     try:
@@ -154,9 +152,9 @@ def _thread_bootstrap_2_7(self):
         if __debug__:
             self._note("%s.__bootstrap(): thread started", self)
 
-        #if _trace_hook:
-        #    self._note("%s.__bootstrap(): registering trace hook", self)
-        #    _sys.settrace(_trace_hook)
+        # if _trace_hook:
+        #     self._note("%s.__bootstrap(): registering trace hook", self)
+        #     _sys.settrace(_trace_hook)
         if _profile_hook:
             self._note("%s.__bootstrap(): registering profile hook", self)
             _sys.setprofile(_profile_hook)

@@ -1,12 +1,7 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsbc.desktop import open_url_in_browser
 from fs_uae_launcher.Config import Config
-from fsui import ImageView, Image, Label, HorizontalLayout, Menu
-from ...I18N import _
+from fsui import Image, HorizontalLayout, Menu
+from ...I18N import gettext
 from .StatusElement import StatusElement
 
 
@@ -36,9 +31,9 @@ class WebLinkElement(StatusElement):
         self.right_icon = Image("fs_uae_launcher:res/16/drop_down_arrow.png")
         self.right_icon_disabled = Image(
             "fs_uae_launcher:res/16/drop_down_arrow_disabled.png")
-        #self.inactive_icon = self.active_icon.grey_scale()
+        # self.inactive_icon = self.active_icon.grey_scale()
 
-        self.text = _("Web Links")
+        self.text = gettext("Web Links")
 
         Config.add_listener(self)
         self.on_config("protection", Config.get("protection"))

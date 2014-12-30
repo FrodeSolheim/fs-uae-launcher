@@ -1,9 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import fsui as fsui
+from fsbc.util import unused
+import fsui
+import fsbc.system
 from .Constants import Constants
 from .Skin import Skin
 
@@ -11,14 +8,15 @@ from .Skin import Skin
 class TabPanel(fsui.Panel):
 
     def __init__(self, parent, spacing=10):
+        unused(spacing)
         fsui.Panel.__init__(self, parent, paintable=True)
         Skin.set_background_color(self)
         self.layout = fsui.HorizontalLayout()
-        #self.layout.add_spacer(spacing)
-        #self.layout.padding_left = 10
-        #self.layout.padding_right = 10
+        # self.layout.add_spacer(spacing)
+        # self.layout.padding_left = 10
+        # self.layout.padding_right = 10
 
-        #self.set_background_color((0xdd, 0xdd, 0xdd))
+        # self.set_background_color((0xdd, 0xdd, 0xdd))
         self.set_min_height(Constants.TAB_HEIGHT)
 
     def select_tab(self, index):
@@ -53,7 +51,7 @@ class TabPanel(fsui.Panel):
     def on_paint(self):
         dc = self.create_dc()
         self.draw_background(self, dc)
-        #self.draw_border(self, dc)
+        # self.draw_border(self, dc)
 
     @classmethod
     def draw_border(cls, widget, dc):
@@ -67,8 +65,8 @@ class TabPanel(fsui.Panel):
             line_color_1 = fsui.Color(0xff, 0xff, 0xff, 0xa0)
             line_color_2 = line_color_1
 
-        #line_color_1 = fsui.Color(0xff, 0x00, 0x00, 0xff)
-        #line_color_2 = fsui.Color(0x00, 0xff, 0x00, 0xff)
+        # line_color_1 = fsui.Color(0xff, 0x00, 0x00, 0xff)
+        # line_color_2 = fsui.Color(0x00, 0xff, 0x00, 0xff)
 
         dc.draw_line(0, size[1] - 2, size[0], size[1] - 2, line_color_1)
         dc.draw_line(0, size[1] - 1, size[0], size[1] - 1, line_color_2)
@@ -76,6 +74,7 @@ class TabPanel(fsui.Panel):
     @classmethod
     def draw_background(
             cls, widget, dc, selected=False, hover=False, button_style=True):
+        unused(button_style)
         if selected:
             cls.draw_selected_tab(widget, dc)
         else:
@@ -85,8 +84,8 @@ class TabPanel(fsui.Panel):
         y = 0
         w = widget.size[0]
         h = widget.size[1] - 2
-        if fsui.System.macosx:
-            #dc.draw_line(0, 0, w, 0, fsui.Color(198, 198, 198))
+        if fsbc.system.macosx:
+            # dc.draw_line(0, 0, w, 0, fsui.Color(198, 198, 198))
             dc.draw_line(0, 0, w, 0, fsui.Color(188, 188, 188))
             y += 1
             h -= 1
@@ -96,14 +95,14 @@ class TabPanel(fsui.Panel):
             w -= 4
             h += 2
 
-        #if button_style and hover:
-        #    x += 6
-        #    y += 6
-        #    w -= 12
-        #    h -= 12
+        # if button_style and hover:
+        #     x += 6
+        #     y += 6
+        #     w -= 12
+        #     h -= 12
 
         color_1 = Skin.get_background_color()
-        if fsui.System.macosx:
+        if fsbc.system.macosx:
             if selected:
                 color_2 = color_1
                 color_1 = fsui.Color(0xa7, 0xa7, 0xa7)
@@ -123,8 +122,8 @@ class TabPanel(fsui.Panel):
         else:
             if selected:
                 return
-                #color_1 = fsui.Color(0x00, 0x00, 0x00, 0x00)
-                #color_2 = color_1
+                # color_1 = fsui.Color(0x00, 0x00, 0x00, 0x00)
+                # color_2 = color_1
             elif hover:
                 color_1 = fsui.Color(0xff, 0xff, 0xff, 0x00)
                 color_2 = fsui.Color(0xff, 0xff, 0xff, 0x40)
@@ -133,14 +132,14 @@ class TabPanel(fsui.Panel):
                 color_2 = fsui.Color(0x00, 0x00, 0x00, 0x20)
         dc.draw_vertical_gradient(x, y, w, h, color_1, color_2)
 
-        if fsui.System.macosx and not selected and not hover:
+        if fsbc.system.macosx and not selected and not hover:
             dc.draw_line(x, y + h - 1, x + w, y + h - 1,
                          fsui.Color(0xa8, 0xa8, 0xa8))
 
     @classmethod
     def draw_selected_tab(cls, widget, dc):
         line_color_1 = Skin.get_background_color()
-        if fsui.System.macosx:
+        if fsbc.system.macosx:
             line_color_1 = fsui.Color(0xa7, 0xa7, 0xa7)
             line_color_2 = Skin.get_background_color().mix(
                 fsui.Color(0xff, 0xff, 0xff))

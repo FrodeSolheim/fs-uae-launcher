@@ -11,8 +11,18 @@ if sys.argv[1] == "build_exe":
 else:
     from distutils.core import setup
 
+if "install" in sys.argv:
+    for arg in sys.argv:
+        if arg.startswith("--install-lib="):
+            break
+    else:
+        print("ERROR: You should not install {title} to the default ")
+        print("python library location. Instead, use --install-lib to ")
+        print("install to a custom location, e.g.:")
+        print("python3 setup.py --install-lib=/usr/share/{name} install")
+        sys.exit(1)
 
-""")
+""".format(title=project.title, name=project.name))
 
 with open("config.py", "r") as pf:
     f.write(pf.read())
@@ -347,9 +357,14 @@ clean-dist:
     rm -Rf debian/{project}*
 
 clean:
-    #rm -Rf build
+    rm -Rf build
     find share -name "*.mo" -delete
     find . -name "*.pyc" -delete
+    find . -name "*.pyo" -delete
+    find . -name __pycache__ -delete
 
 distclean: clean clean-dist
+    rm -f Makefile
+    rm -f setup.py
+
 """.format(project=project.tar_name))

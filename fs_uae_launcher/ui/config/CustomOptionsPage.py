@@ -1,12 +1,6 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui
 from fsgs import fsgs
 from ...Config import Config
-from ...I18N import _, ngettext
 
 
 class CustomOptionsPage(fsui.Panel):
@@ -51,8 +45,8 @@ class CustomOptionsPage(fsui.Panel):
             parts = line.split("=", 1)
             if len(parts) == 2:
                 key = parts[0].strip()
-                #if key in Config.no_custom_config:
-                #    continue
+                # if key in Config.no_custom_config:
+                #     continue
                 value = parts[1].strip()
                 Config.set(key, value)
 

@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import time
 from urllib.request import urlopen
@@ -56,7 +51,7 @@ error_set = set()
 
 
 def get_file_for_sha1(sha1):
-    #print("get_cache_path_for_sha1", sha1)
+    # print("get_cache_path_for_sha1", sha1)
     """
     if request.args.get("is_cover", False):
         size_arg = "?size={0}".format(256)
@@ -71,7 +66,7 @@ def get_file_for_sha1(sha1):
         cache_ext = ""
     """
 
-    #size_arg = "?size={0}".format(512)
+    # size_arg = "?size={0}".format(512)
     sha1, size_arg = sha1.split("?")
     if size_arg == "s=1x":
         cache_ext = "_1x.png"
@@ -82,14 +77,14 @@ def get_file_for_sha1(sha1):
     else:
         raise Exception("unrecognized size")
     
-    #cache_ext = "_{0}".format(512)
+    # cache_ext = "_{0}".format(512)
 
     cache_dir = os.path.join(fsgs.cache_dir, "Images", sha1[:3])
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
 
     cache_file = os.path.join(cache_dir, sha1 + cache_ext)
-    #print(cache_file)
+    # print(cache_file)
     if os.path.exists(cache_file):
         return cache_file
 
@@ -99,11 +94,11 @@ def get_file_for_sha1(sha1):
         url = "http://{0}/image/{1}?{2}".format(server, sha1, size_arg)
         print(url)
         r = urlopen(url)
-        #print(r)
+        # print(r)
         data = r.read()
-        #h = hashlib.sha1()
-        #h.update(data)
-        #if h.hexdigest() == sha1:
+        # h = hashlib.sha1()
+        # h.update(data)
+        # if h.hexdigest() == sha1:
         f.write(data)
     os.rename(cache_file_partial, cache_file)
     return cache_file
@@ -112,18 +107,18 @@ def get_file_for_sha1(sha1):
 def load_image(relative_path):
     path = ""
     try:
-        #print("load_image", relative_path)
+        # print("load_image", relative_path)
         if relative_path.startswith("sha1:"):
             sha1 = relative_path[5:]
             path = get_file_for_sha1(sha1)
-            #print(path)
+            # print(path)
         else:
-            #base_path = os.path.join(GameCenter.get_local_data_dir())
-            #path = os.path.join(base_path, relative_path)
+            # base_path = os.path.join(GameCenter.get_local_data_dir())
+            # path = os.path.join(base_path, relative_path)
             path = relative_path
-            #if not os.path.exists(path):
-            #    base_path = os.path.join(GameCenter.data_dir, "info")
-            #    path = os.path.join(base_path, relative_path)
+            # if not os.path.exists(path):
+            #     base_path = os.path.join(GameCenter.data_dir, "info")
+            #     path = os.path.join(base_path, relative_path)
 
         if path in error_set:
             return None, (0, 0)
@@ -189,7 +184,7 @@ class ImageLoader(object):
     def start(self):
         threading.Thread(target=self.image_loader_thread,
                          name="GameCenterImageLoaderThread").start()
-        #print("FIXME: not starting ImageLoader thread")
+        # print("FIXME: not starting ImageLoader thread")
         pass
 
     def image_loader_thread(self):

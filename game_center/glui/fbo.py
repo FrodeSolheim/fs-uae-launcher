@@ -76,10 +76,11 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
             depth_rb)
 
         # initialize stencil renderbuffer
-        #glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, stencil_rb)
-        #glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_STENCIL_INDEX,
-        #        512, 512)
-        #glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,
+
+        # glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, stencil_rb)
+        # glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_STENCIL_INDEX,
+        #         512, 512)
+        # glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,
         #        GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, stencil_rb)
         glBindTexture(texture_target, 0)
 
@@ -95,15 +96,14 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
         if self._fb is None:
             self._create()
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, self._fb)
-        #glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, self._depth_rb)
+        # glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, self._depth_rb)
 
     def unbind(self):
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0)
-        #glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0)
+        # glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0)
 
     def set_viewport(self):
         glViewport(0, 0, self._width, self._height)
-        #pass
 
     def render(self, opacity=1.0):
         render_texture(

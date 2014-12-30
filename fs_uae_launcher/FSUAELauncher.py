@@ -1,15 +1,13 @@
 import os
 import sys
-import shutil
 import hashlib
 import traceback
 from collections import defaultdict
 from fs_uae_launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
 from fsgs.Downloader import Downloader
-import six
 from fs_uae_launcher.PluginHelper import PluginHelper
 from fsbc.Application import app
-from fsbc.configparser import ConfigParser, NoSectionError
+from configparser import ConfigParser, NoSectionError
 from fsbc.system import windows, macosx
 from fsbc.task import Task
 import fsbc.user
@@ -45,6 +43,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         if fsui.use_qt:
             from fsui.qt import QStyleFactory, QPalette, QColor, Qt
             if macosx:
+                # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
                 self.qapplication.setStyle(QStyleFactory.create("Fusion"))
             if "--dark-theme" in sys.argv:
                 dark_p = QPalette()
@@ -189,7 +188,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             self.start_game()
             return False
         else:
-            window = MainWindow(icon=icon)
+            window = MainWindow(fsgs, icon=icon)
             MainWindow.instance = window
             window.show()
 
@@ -234,11 +233,8 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         print("loading last config from " + repr(path))
         if not os.path.exists(path):
             print("settings file does not exist")
-        if six.PY3:
-            # noinspection PyArgumentList
-            cp = ConfigParser(interpolation=None)
-        else:
-            cp = ConfigParser()
+        # noinspection PyArgumentList
+        cp = ConfigParser(interpolation=None)
         try:
             cp.read([path])
         except Exception as e:
@@ -252,7 +248,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             keys = []
         for key in keys:
             config[key] = fs.from_utf8_str(cp.get("config", key))
-        for key, value in six.iteritems(config):
+        for key, value in config.items():
             print("loaded", key, value)
             fsgs.config.values[key] = value
 
@@ -288,39 +284,13 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         #                 Settings.set("base_dir", value)
 
     def save_settings(self):
-        path = app.get_settings_path()
-        path += ".part"
-        print("writing " + repr(path))
-
-        if six.PY3:
-            # noinspection PyArgumentList
-            cp = ConfigParser(interpolation=None)
-        else:
-            cp = ConfigParser()
-        cp.add_section("settings")
-
-        for key, value in six.iteritems(app.settings.values):
-            # lines.append("{0} = {1}".format(key, value))
-            cp.set("settings", str(key), fs.to_utf8_str(value))
-
-        cp.add_section("config")
-        # lines.append("[config]")
-
-        for key, value in six.iteritems(fsgs.config.values):
+        extra = {}
+        for key, value in fsgs.config.values.items():
             if key.startswith("__"):
                 # keys starting with __ are never saved
                 continue
-            cp.set("config", str(key), fs.to_utf8_str(value))
-
-        if six.PY3:
-            # noinspection PyArgumentList
-            with open(path, "w", encoding="UTF-8", newline="\n") as f:
-                cp.write(f)
-        else:
-            with open(path, "w") as f:
-                cp.write(f)
-        print("moving to " + repr(app.get_settings_path()))
-        shutil.move(path, app.get_settings_path())
+            extra["config/" + str(key)] = str(value)
+        app.settings.save(extra=extra)
 
     @staticmethod
     def get_dir_mtime_str(path):
@@ -368,7 +338,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 database.update_game_search_terms(
                     game_id, scanner.create_search_terms(name))
 
-        for path, id in six.iteritems(local_configs):
+        for path, id in local_configs.items():
             if id is not None:
                 print("[startup] removing configuration", path)
                 database.delete_game(id=id)
@@ -402,7 +372,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                     print("[startup] adding kickstart", path)
                     ROMManager.add_rom_to_database(path, file_database)
             print(local_roms)
-            for path, id in six.iteritems(local_roms):
+            for path, id in local_roms.items():
                 if id is not None:
                     print("[startup] removing kickstart", path)
                     file_database.delete_file(id=id)
@@ -569,8 +539,8 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
     @classmethod
     def prepare_config(cls, original_config):
-        config = defaultdict(six.text_type)
-        for key, value in six.iteritems(app.settings.values):
+        config = defaultdict(str)
+        for key, value in app.settings.values.items():
             if key in Config.config_keys:
                 print("... ignoring config key from settings:", key)
                 continue
@@ -578,7 +548,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
         config["base_dir"] = FSGSDirectories.get_base_dir()
 
-        for key, value in six.iteritems(original_config):
+        for key, value in original_config.items():
             config[key] = value
 
         if not config["joystick_port_0_mode"]:

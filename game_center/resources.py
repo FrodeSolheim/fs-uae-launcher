@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six
 import logging
 from pkg_resources import resource_stream
 from fsbc.Resources import Resources as BaseResources
@@ -13,11 +7,11 @@ logger = logging.getLogger("game_center")
 
 
 def _(msg):
-    return six.text_type(msg)
+    return str(msg)
 
 
 def ngettext(n, msg1, msg2):
-    return six.text_type(msg1) if n == 1 else six.text_type(msg2)
+    return str(msg1) if n == 1 else str(msg2)
 
 
 class Resources(BaseResources):
@@ -26,9 +20,10 @@ class Resources(BaseResources):
         self.req = package
 
     def resource_pil_image(self, resource):
-        #resource_name = encode_path(u'res/' + resource_name)
-        #return resource_pil_image(self.req, resource_name)
+        # resource_name = encode_path(u'res/' + resource_name)
+        # return resource_pil_image(self.req, resource_name)
         stream = self.stream(resource)
+        # noinspection PyUnresolvedReferences
         from PIL import Image
         return Image.open(stream)
 
@@ -46,8 +41,9 @@ class Resources(BaseResources):
 
 
 def resource_pil_image(package_or_requirement, resource_name):
-    #print("resource_pil_image", package_or_requirement, resource_name)
+    # print("resource_pil_image", package_or_requirement, resource_name)
     stream = resource_stream(package_or_requirement, resource_name)
+    # noinspection PyUnresolvedReferences
     from PIL import Image
     return Image.open(stream)
 

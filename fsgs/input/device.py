@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
 from fsbc.system import windows, linux, macosx
 
 
@@ -84,7 +78,7 @@ class Device(object):
             print(repr(e))
             # return {}
             raise e
-        #config_inv = []
+        # config_inv = []
         for key, val in list(config.items()):
             val = val.upper()
             config[key] = val

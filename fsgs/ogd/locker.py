@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import time
 from .base import SynchronizerBase
 from ..LockerDatabase import LockerDatabase
@@ -16,7 +11,7 @@ class LockerSynchronizer(SynchronizerBase):
         SynchronizerBase.__init__(self, *args, **kwargs)
 
     def synchronize(self):
-        if not "locker-sync" in self.context.meta:
+        if "locker-sync" not in self.context.meta:
             # we haven't looked up synchronization information from the server,
             # that probably means we didn't want to synchronize with the
             # server now, therefore we just return

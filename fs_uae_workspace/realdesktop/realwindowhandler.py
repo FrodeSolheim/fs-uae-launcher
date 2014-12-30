@@ -7,9 +7,10 @@ from fsui.qt import QSignal, QObject, QX11Info
 #     Gdk = None
 # print("b")
 try:
-    # noinspection PyUnresolvedReferences
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
     from gi import require_version
     require_version("Wnck", "1.0")
+    # noinspection PyPackageRequirements
     from gi.repository import Wnck
 
     # require_version("Gtk", "2.0")
@@ -40,7 +41,7 @@ class WindowProxy:
         if self.window.is_active():
             self.window.minimize()
             return
-        #self.window.activate(time.time())
+        # self.window.activate(time.time())
         # noinspection PyArgumentList
         self.window.activate(QX11Info.appTime())
 
@@ -133,10 +134,10 @@ class RealWindowHandler(QObject):
             return False
         #    # pinned to all workspaces
         #    return True
-        #if workspace.get_number() != self.workspace_index:
-        #    return False
-        #if workspace != self.workspace:
-        #    return False
+        # if workspace.get_number() != self.workspace_index:
+        #     return False
+        # if workspace != self.workspace:
+        #     return False
         return True
 
     def add_workspace_window(self, window):

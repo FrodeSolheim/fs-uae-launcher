@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -11,14 +6,14 @@ import shutil
 import subprocess
 
 
-#def fix_binary(path, frameworks_dir):
+# def fix_binary(path, frameworks_dir):
 def fix_binary(path, macos_dir):
     args = ["file", path] 
     p = subprocess.Popen(args, stdout=subprocess.PIPE)
-    data = p.stdout.read()
+    data = p.stdout.read().decode("UTF-8")
     p.wait()
     if "Mach-O" not in data:
-       return 0
+        return 0
 
     print("fixing", path)
     changes = 0
@@ -26,14 +21,14 @@ def fix_binary(path, macos_dir):
         raise Exception("could not find " + repr(path))
     args = ["otool", "-L", path] 
     p = subprocess.Popen(args, stdout=subprocess.PIPE)
-    data = p.stdout.read()
+    data = p.stdout.read().decode("UTF-8")
     p.wait()
     for line in data.split('\n'):
         line = line.strip()
         if not line:
             continue
-	if line.startswith("/usr/lib") or line.startswith("/System"):
-            old = line.split(' ')[0]
+        if line.startswith("/usr/lib") or line.startswith("/System"):
+            # old = line.split(' ')[0]
             # print("ignoring", old)
             continue
         if line.startswith("@executable_path"):
@@ -45,9 +40,9 @@ def fix_binary(path, macos_dir):
         print(old)
 
         if os.path.basename(path) == os.path.basename(old):
-            if not "/" in old:
+            if "/" not in old:
                 continue
-            os.chmod(path, 0755)
+            os.chmod(path, 0o755)
             args = ["install_name_tool", "-id", os.path.basename(path), path]
             print(args)
             p = subprocess.Popen(args)
@@ -67,19 +62,20 @@ def fix_binary(path, macos_dir):
         if not os.path.exists(dst):
             print("copying", old)
             shutil.copy(old, dst)
-            os.chmod(dst, 0755)
+            os.chmod(dst, 0o755)
             changes += 1
         # print(os.path.basename(path), "vs", os.path.basename(old))
         # if os.path.basename(path) == os.path.basename(old):
         #     args = ["install_name_tool", "-id", new, path]
         # else:
-        os.chmod(path, 0755)
+        os.chmod(path, 0o755)
         args = ["install_name_tool", "-change", old, new, path]
         print(args)
         p = subprocess.Popen(args)
         assert p.wait() == 0
 
     return changes
+
 
 def fix_iteration(app):
     binaries = []
@@ -100,11 +96,17 @@ def fix_iteration(app):
             binaries.append(os.path.join(frameworks_dir, name))
     changes = 0
     for binary in binaries:
-       changes += fix_binary(binary, macos_dir)
+        changes += fix_binary(binary, macos_dir)
     return changes
 
-app = sys.argv[1]
-while True:
-    changes = fix_iteration(app)
-    if changes == 0:
-        break
+
+def main():
+    app = sys.argv[1]
+    while True:
+        changes = fix_iteration(app)
+        if changes == 0:
+            break
+
+
+if __name__ == "__main__":
+    main()

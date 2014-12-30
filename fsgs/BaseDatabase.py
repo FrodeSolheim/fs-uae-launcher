@@ -1,11 +1,7 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import sqlite3
 import threading
+
 
 DEBUG = 0
 global_database_lock = threading.Lock()

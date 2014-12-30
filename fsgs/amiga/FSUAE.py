@@ -1,10 +1,4 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
-import sys
 import tempfile
 import traceback
 import subprocess
@@ -50,7 +44,7 @@ class FSUAE(object):
                 del os.environ[name]
         env = os.environ.copy()
         print(repr(env))
-        #env = None
+        # env = None
         try:
             cls.center_window(args, env)
         except Exception:
@@ -97,8 +91,8 @@ class FSUAE(object):
         env[str("SDL_VIDEO_WINDOW_POS")] = str("{0},{1}".format(x, y))
         args.append("--window-x={0}".format(x))
         args.append("--window-y={0}".format(y))
-        #print("window position", env["SDL_VIDEO_WINDOW_POS"])
-        #os.environ["SDL_VIDEO_WINDOW_POS"] = "{0},{1}".format(x, y)
+        # print("window position", env["SDL_VIDEO_WINDOW_POS"])
+        # os.environ["SDL_VIDEO_WINDOW_POS"] = "{0},{1}".format(x, y)
 
     @classmethod
     def find_executable(cls, executable="fs-uae"):

@@ -1,7 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
 import os
 import math
 import random
@@ -42,7 +38,7 @@ def create_mesh(width, height, upsidedown):
     else:
         res = 2
         radius = 0.0
-    #radius = 0.1
+    # radius = 0.1
     mesh = []
     for y in range(0, res + 1):
         y = -hh + y * height / res
@@ -50,45 +46,45 @@ def create_mesh(width, height, upsidedown):
         mesh.append(line)
         for x in range(0, res + 1):
             x = -hw + x * width / res
-            #d = min(x, y, res- x, res -y) / (res / 2.0)
-            #rx = x * 2.0 / res
+            # d = min(x, y, res- x, res -y) / (res / 2.0)
+            # rx = x * 2.0 / res
             z = radius
             nx = 0.0
             ny = 0.0
             nz = 1.0
-            #edge = False
+            # edge = False
             # using max to account for rounding errors - d cannot be negative
             d = max(0, hw - abs(x))
-            #print(hw, x, d)
+            # print(hw, x, d)
             if d < radius:
                 d = radius - d
-                #d = radius - 1.0 - x
-                #print(d, d / radius)
+                # d = radius - 1.0 - x
+                # print(d, d / radius)
                 a = math.acos(d / radius)
-                #print(a)
+                # print(a)
                 z = math.sin(a) * radius
                 nx = -d if x < 0 else d
                 nz = z
-                #edge = True
+                # edge = True
             # using max to account for rounding errors - d cannot be negative
             d = max(0, hh - abs(y))
             if d < radius:
                 d = radius - d
-                #d = radius - 1.0 - x
-                #print(d, d / radius)
+                # d = radius - 1.0 - x
+                # print(d, d / radius)
                 a = math.acos(d / radius)
-                #print(a)
+                # print(a)
                 z = min(z, math.sin(a) * radius)
                 ny = -d if y < 0 else d
                 nz = z
-                #edge = True
+                # edge = True
             nl = math.sqrt(nx ** 2 + ny ** 2 + nz ** 2)
             nx /= nl
             ny /= nl
             nz /= nl
             line.append((x, y, z, nx, ny, nz))
-            #if edge:
-            #    line.append((x, y, -z, nx, ny, -nz))
+            # if edge:
+            #     line.append((x, y, -z, nx, ny, -nz))
     return mesh
 
 
@@ -126,9 +122,9 @@ def render_cover(texture, width, height):
         texture = Texture.missing_cover
     texture.bind()
     x = -width / 2.0
-    #y = height / 2.0 - 0.5 - height / 2.0
+    # y = height / 2.0 - 0.5 - height / 2.0
     y = -0.5
-    #if reflection:
+    # if reflection:
     
     glBegin(GL_QUADS)
     glColor3f(0.33, 0.33, 0.33)
@@ -142,7 +138,7 @@ def render_cover(texture, width, height):
     glVertex2f(x, y - height)
     glEnd()
     
-    #else:
+    # else:
     glBegin(GL_QUADS)
     glColor3f(1.0, 1.0, 1.0)
     glTexCoord2f(0.0, 1.0)
@@ -155,23 +151,23 @@ def render_cover(texture, width, height):
     glVertex2f(x, y + height)
     glEnd()
 
-    #glPushMatrix()
-    #glTranslatef(0.0, height / 2.0 - 0.5, 0.0)
-    #vbo, count = get_vbo_for_cover(width, height)
-    #vbo.bind()
-    #glInterleavedArrays(GL_T2F_N3F_V3F, 0, None)
-    #if reflection:
-    #    glScalef(1.0, -1.0, 1.0)
-    #    glTranslatef(0.0, height, 0.0)
-    #    if LIGHTING:
-    #        # No point in drawing everything
-    #        glDrawArrays(GL_QUADS, 0, count // 4)
-    #    else:
-    #        glDrawArrays(GL_QUADS, 0, count)
-    #else:
-    #    glDrawArrays(GL_QUADS, 0, count)
-    #vbo.unbind()
-    #glPopMatrix()
+    # glPushMatrix()
+    # glTranslatef(0.0, height / 2.0 - 0.5, 0.0)
+    # vbo, count = get_vbo_for_cover(width, height)
+    # vbo.bind()
+    # glInterleavedArrays(GL_T2F_N3F_V3F, 0, None)
+    # if reflection:
+    #     glScalef(1.0, -1.0, 1.0)
+    #     glTranslatef(0.0, height, 0.0)
+    #     if LIGHTING:
+    #         # No point in drawing everything
+    #         glDrawArrays(GL_QUADS, 0, count // 4)
+    #     else:
+    #         glDrawArrays(GL_QUADS, 0, count)
+    # else:
+    #     glDrawArrays(GL_QUADS, 0, count)
+    # vbo.unbind()
+    # glPopMatrix()
 
 
 class MenuItem(object):
@@ -217,7 +213,7 @@ class MenuItem(object):
             else:
                 Render.dirty = DIRTY_WHILE_NOT_LOADED
         return Texture.missing_cover
-        #return self.get_default_texture()
+        # return self.get_default_texture()
 
     @memoize
     def get_image_path(self):
@@ -241,14 +237,14 @@ class MenuItem(object):
 
     def create_menu_path(self, menu):
         path = []
-        #while menu:
+        # while menu:
         if not menu:
             return path
         path.append(menu.selected_item)
         for p in reversed(menu.parents):
-            #path.insert(0, menu.selected_item)
+            # path.insert(0, menu.selected_item)
             path.insert(0, p.selected_item)
-            #menu = menu.parent_menu
+            # menu = menu.parent_menu
         print("create_menu_path", path)
         for p in path:
             print(p.path_title)
@@ -285,9 +281,9 @@ class MenuItem(object):
             PlatformMenuItem(),
             LetterMenuItem(),
             ShuffleMenuItem(),
-            #ListMenuItem(),
-            #YearMenuItem(),
-            #KeywordMenuItem(),
+            # ListMenuItem(),
+            # YearMenuItem(),
+            # KeywordMenuItem(),
         ]
         if len(menu_path) == 0:
             categories.insert(0, AllMenuItem())
@@ -301,7 +297,7 @@ class MenuItem(object):
             if c:
                 clause.append(c)
                 args.extend(a)
-        #clause = " ".join(clause)
+        # clause = " ".join(clause)
         
         filters = list(self.generate_game_filters(menu_path))
         print("filters for", menu_path, "-", filters)
@@ -312,29 +308,29 @@ class MenuItem(object):
         if filters is None:
             filters = []
         search = " ".join(words)
-        #query = "SELECT id, name, config, platform, " \
-        #        "imageratio, screenratio, year, publisher, developer, subtitle " \
-        #       "FROM Game WHERE 1 = 1 {0} ORDER BY sort_key".format(clause)
-        #print(query, args)
-        #Database.cursor.execute(query, args)
-        #item_list = []
-        #last_item = None
-        #for row in Database.cursor:
-        #    if last_item:
-        #        if last_item.name == row[1] and last_item.platform == row[3]:
-        #            last_item.configurations.append(row[2])
-        #            continue
-        #    for filter in filters:
-        #        if not filter(row):
-        #            break
-        #    else:
-        #        item = GameItem(id=row[0], name=row[1], configurations=[row[2]],
-        #                platform=row[3], ratio=row[4], screenratio=row[5],
-        #                year=row[6], publisher=row[7], developer=row[8],
-        #                subtitlepos=row[9])
-        #        item_list.append(item)
-        #        last_item = item
-        #return item_list
+        # query = "SELECT id, name, config, platform, " \
+        #         "imageratio, screenratio, year, publisher, developer, subtitle " \
+        #        "FROM Game WHERE 1 = 1 {0} ORDER BY sort_key".format(clause)
+        # print(query, args)
+        # Database.cursor.execute(query, args)
+        # item_list = []
+        # last_item = None
+        # for row in Database.cursor:
+        #     if last_item:
+        #         if last_item.name == row[1] and last_item.platform == row[3]:
+        #             last_item.configurations.append(row[2])
+        #             continue
+        #     for filter in filters:
+        #         if not filter(row):
+        #             break
+        #     else:
+        #         item = GameItem(id=row[0], name=row[1], configurations=[row[2]],
+        #                 platform=row[3], ratio=row[4], screenratio=row[5],
+        #                 year=row[6], publisher=row[7], developer=row[8],
+        #                 subtitlepos=row[9])
+        #         item_list.append(item)
+        #         last_item = item
+        # return item_list
 
         item_list = []
         local_game_database = Database.instance()
@@ -354,7 +350,7 @@ class MenuItem(object):
         self.update_size(self.get_top_right_text())
 
     def update_size(self, text):
-        #w, h = Render.measure_text(text, Font.main_path_font)
+        # w, h = Render.measure_text(text, Font.main_path_font)
         w, h = BitmapFont.title_font.measure(text)
         self.w = w + 20 + 20
 
@@ -467,18 +463,18 @@ class MenuItem(object):
             x = self.x + self.w - 20 - tw
         else:
             x = self.x + 20
-            #if selected:
-            #    color = (0.0, 0.0, 0.0)
-            #else:
-            #    color = (0.85, 0.85, 0.85)
-            #tw, th = Render.text(text, Font.main_path_font,
-            #        x, self.y + 30, h=TOP_HEIGHT_VISIBLE, color=color)
+            # if selected:
+            #     color = (0.0, 0.0, 0.0)
+            # else:
+            #     color = (0.85, 0.85, 0.85)
+            # tw, th = Render.text(text, Font.main_path_font,
+            #         x, self.y + 30, h=TOP_HEIGHT_VISIBLE, color=color)
         BitmapFont.title_font.render(text, x, self.y + 14)
-        #print(BitmappedFont.title_font.h)
+        # print(BitmappedFont.title_font.h)
 
     def get_screen_texture(self, n):
         return Texture.missing_screenshot
-        #return None
+        # return None
 
 
 class AutoExpandItem(MenuItem):
@@ -536,12 +532,12 @@ class GameCenterItem(MenuItem):
     def activate(self, menu):
         pass
 
-    #def update_size(self, text):
-    #    MenuItem.update_size(text)
-    #    #self.w = Texture.top_logo.w + 83
+    # def update_size(self, text):
+    #     MenuItem.update_size(text)
+    #     #self.w = Texture.top_logo.w + 83
 
     def render_top_left(self, selected=False):
-        #self.render_top_background(selected, style=TOP_ITEM_ARROW)
+        # self.render_top_background(selected, style=TOP_ITEM_ARROW)
         MenuItem.render_top_left(self, selected=selected)
         glDisable(GL_DEPTH_TEST)
         fs_emu_blending(True)
@@ -550,12 +546,12 @@ class GameCenterItem(MenuItem):
         else:
             x = 138
         y = 14
-        #if selected:
-        #texture = Texture.top_logo_selected
-        #else:
+        # if selected:
+        # texture = Texture.top_logo_selected
+        # else:
         texture = Texture.top_logo
         texture.render(x, 1080 - y - texture.h, texture.w, texture.h)
-        #fs_emu_blending(False)
+        # fs_emu_blending(False)
         glEnable(GL_DEPTH_TEST)
 
         
@@ -569,7 +565,7 @@ class HomeItem(MenuItem):
     def activate(self, menu):
         from game_center.glui.window import create_main_menu
         new_menu = create_main_menu()
-        #State.history = [new_menu]
+        # State.history = [new_menu]
         State.history.append(new_menu)
         from game_center.glui.window import set_current_menu
         set_current_menu(new_menu)
@@ -579,7 +575,7 @@ class HomeItem(MenuItem):
 
     def render_top_left(self, selected=False):
         self.render_top_background(selected)
-        #fs_emu_blending(True)
+        # fs_emu_blending(True)
         if selected:
             texture = Texture.home_selected
         else:
@@ -619,14 +615,14 @@ class ListMenuItem(MenuItem):
         new_menu = create_item_menu(gettext("Select List"))
         menu_path = self.create_menu_path(menu)
         new_menu.update_path(menu_path)
-        #Database.cursor.execute("SELECT DISTINCT platform FROM Game "
-        #        "ORDER BY platform")
-        #items = []
-        #for row in Database.cursor:
-        #    item = PlatformItem(row[0])
-        #    items.append((item.sort_title, item))
-        #for sort_title, item in sorted(items):
-        #   new_menu.append(item)
+        # Database.cursor.execute("SELECT DISTINCT platform FROM Game "
+        #         "ORDER BY platform")
+        # items = []
+        # for row in Database.cursor:
+        #     item = PlatformItem(row[0])
+        #     items.append((item.sort_title, item))
+        # for sort_title, item in sorted(items):
+        #    new_menu.append(item)
         
         for title, path in get_game_lists():
             item = ListItem(title, path)
@@ -640,11 +636,11 @@ class ListItem(AutoExpandItem):
         AutoExpandItem.__init__(self)
         self.list_path = path
         self.title = title
-        #self.platform = platform
+        # self.platform = platform
         self.path_title = title
         self.subtitle = ""
         self.sort_title = self.title
-        #self.game_filter_set = set()
+        # self.game_filter_set = set()
 
     def get_category_filter(self):
         def category_filter(category):
@@ -683,32 +679,32 @@ class ListItem(AutoExpandItem):
 
     def get_game_filter(self):
         def game_filter(row):
-            #print(game_info)
+            # print(game_info)
             game_filter_set = self.get_list_contents()
-            #print(self.game_filter_set)
+            # print(self.game_filter_set)
             cmp_game = GameNameUtil.create_cmpname(row[ROW_NAME])
-            #print("check -- ", cmp_game)
+            # print("check -- ", cmp_game)
             if cmp_game in game_filter_set:
                 return True
             cmp_platform = GameNameUtil.create_cmpname(row[ROW_PLATFORM])
-            #print("check -- ", (cmp_game, cmp_platform))
+            # print("check -- ", (cmp_game, cmp_platform))
             if (cmp_game, cmp_platform) in game_filter_set:
                 return True
             return False
         return game_filter
 
-    #@memoize
-    #def get_resource_name(self):
-    #    name = ""
-    #    for c in self._platform.lower():
-    #        if c in "abcdefghijklmnopqrstuvwxyz0123456789":
-    #            name = name + c
-    #    return name
+    # @memoize
+    # def get_resource_name(self):
+    #     name = ""
+    #     for c in self._platform.lower():
+    #         if c in "abcdefghijklmnopqrstuvwxyz0123456789":
+    #             name = name + c
+    #     return name
 
-    #def get_filter_clause(self):
-    #    # FIXME: NUMBERS
-    #    return "AND platform = ?", [self._platform]
-    #    print(name)
+    # def get_filter_clause(self):
+    #     # FIXME: NUMBERS
+    #     return "AND platform = ?", [self._platform]
+    #     print(name)
 
 
 class PlatformMenuItem(MenuItem):
@@ -748,8 +744,9 @@ class PlatformItem(AutoExpandItem):
         AutoExpandItem.__init__(self)
         self._platform = platform
         # using self.platform for "description"
-        #self.sort_title = ""
-        #try:
+
+        # self.sort_title = ""
+        # try:
         #    self.title, self.subtitle, self.sort_title = {
         #        "Amiga": (
         #            "Amiga",
@@ -868,7 +865,7 @@ class PlatformItem(AutoExpandItem):
         #            "Sinclair ZX Spectrum",
         #            ""),
         #    }[platform]
-        #except KeyError:
+        # except KeyError:
         #    self.title = platform
         self.platform = platform
         self.path_title = platform
@@ -876,13 +873,13 @@ class PlatformItem(AutoExpandItem):
         self.title = PlatformHandler.get_platform_name(platform)
         self.path_title = self.title
 
-        #self.title = ""
-        #self.title = "CHOOSE PLATFORM: " + self.title
-        #self.subtitle = ""
+        # self.title = ""
+        # self.title = "CHOOSE PLATFORM: " + self.title
+        # self.subtitle = ""
         self.subtitle = "CHOOSE PLATFORM"
 
-        #if not self.sort_title:
-        #    self.sort_title = self.title
+        # if not self.sort_title:
+        #     self.sort_title = self.title
 
         # FIXME: for now, test using just title as sort title
         self.sort_title = self.title
@@ -894,12 +891,12 @@ class PlatformItem(AutoExpandItem):
             return True
         return category_filter
 
-    #def get_game_filter(self):
-    #    def game_filter(game_info):
-    #        if game_info.platform == self._platform:
-    #            return True
-    #        return False
-    #    return game_filter
+    # def get_game_filter(self):
+    #     def game_filter(game_info):
+    #         if game_info.platform == self._platform:
+    #             return True
+    #         return False
+    #     return game_filter
 
     @memoize
     def get_resource_name(self):
@@ -910,11 +907,6 @@ class PlatformItem(AutoExpandItem):
         return name
 
     def get_filter_clause(self):
-    #    # FIXME: NUMBERS
-    #    return "AND platform = ?", [self._platform]
-    #    print(name)
-    #
-    #def get_extra_terms(self):
         return "s:{0}".format(self._platform), []
 
 
@@ -933,10 +925,10 @@ class AllMenuItem(AutoExpandItem):
             return False
         return category_filter
 
-    #def get_game_filter(self):
-    #    def game_filter(game_info):
-    #        return True
-    #    return game_filter
+    # def get_game_filter(self):
+    #     def game_filter(game_info):
+    #         return True
+    #     return game_filter
 
 
 class AddItem(MenuItem):
@@ -951,7 +943,7 @@ class AddItem(MenuItem):
 
     def render_top_left(self, selected=False):
         self.render_top_background(selected)
-        #fs_emu_blending(True)
+        # fs_emu_blending(True)
         if selected:
             texture = Texture.add_selected
         else:
@@ -1030,27 +1022,27 @@ class LetterItem(AutoExpandItem):
             return True
         return category_filter
 
-    #def get_game_filter(self):
-    #    def game_filter(game_info):
-    #        if game_info.sort_title[0] == self.letter:
-    #            return True
-    #        if self.letter == "#":
-    #            if game_info.sort_title[0] in "0123456789":
-    #                return True
-    #        return False
-    #    return game_filter
+    # def get_game_filter(self):
+    #     def game_filter(game_info):
+    #         if game_info.sort_title[0] == self.letter:
+    #             return True
+    #         if self.letter == "#":
+    #             if game_info.sort_title[0] in "0123456789":
+    #                 return True
+    #         return False
+    #     return game_filter
 
     def get_filter_clause(self):
         # FIXME: NUMBERS
-        #if self.letter == "#":
-        #    clause = ["AND (0 = 1"]
-        #    params = []
-        #    for c in "0123456789":
-        #        clause.append(" OR name LIKE ?")
-        #        params.append("{0}%".format(c))
-        #    clause.append(")")
-        #    return "".join(clause), params
-        #return "AND name LIKE ?", ["{0}%".format(self.letter)]
+        # if self.letter == "#":
+        #     clause = ["AND (0 = 1"]
+        #     params = []
+        #     for c in "0123456789":
+        #         clause.append(" OR name LIKE ?")
+        #         params.append("{0}%".format(c))
+        #     clause.append(")")
+        #     return "".join(clause), params
+        # return "AND name LIKE ?", ["{0}%".format(self.letter)]
         return "l:{0}".format(self.letter.lower()), []
 
 
@@ -1064,9 +1056,9 @@ class YearMenuItem(MenuItem):
     def activate(self, menu):
         print("YearMenuItem.activate")
         menu = create_item_menu(gettext("Select Year"))
-        #for year in GameList().get().get_years(): # FIXME: GET YEARS FROM FILTERED GAME LIST
-        #    item = YearItem(year)
-        #    menu.append(item)
+        # for year in GameList().get().get_years(): # FIXME: GET YEARS FROM FILTERED GAME LIST
+        #     item = YearItem(year)
+        #     menu.append(item)
         return menu
 
 
@@ -1085,12 +1077,12 @@ class YearItem(AutoExpandItem):
             return True
         return category_filter
 
-    #def get_game_filter(self):
-    #    def game_filter(game_info):
-    #        if game_info.year == self.year:
-    #            return True
-    #        return False
-    #    return game_filter
+    # def get_game_filter(self):
+    #     def game_filter(game_info):
+    #         if game_info.year == self.year:
+    #             return True
+    #         return False
+    #     return game_filter
 
 
 class KeywordMenuItem(MenuItem):
@@ -1113,10 +1105,10 @@ class KeywordMenuItem(MenuItem):
                     return False
             return True
 
-        #for keyword in GameList().get().get_keywords():
-        #    item = KeywordItem(keyword)
-        #    if check(item):
-        #        new_menu.append(item)
+        # for keyword in GameList().get().get_keywords():
+        #     item = KeywordItem(keyword)
+        #     if check(item):
+        #         new_menu.append(item)
         return new_menu
 
 
@@ -1136,12 +1128,12 @@ class KeywordItem(AutoExpandItem):
             return True
         return category_filter
 
-    #def get_game_filter(self):
-    #    def game_filter(game_info):
-    #        if self.keyword in game_info.keywords:
-    #            return True
-    #        return False
-    #    return game_filter
+    # def get_game_filter(self):
+    #     def game_filter(game_info):
+    #         if self.keyword in game_info.keywords:
+    #             return True
+    #         return False
+    #     return game_filter
 
 
 class GameItem(MenuItem):
@@ -1149,27 +1141,27 @@ class GameItem(MenuItem):
     def __init__(self, game_info):
         MenuItem.__init__(self)
         self.game_info = game_info
-        #self.id = id
+        # self.id = id
         self.uuid = game_info[0]
         self.title = game_info[1]
 
-        #id, name, configurations, platform, ratio=0.75,
-        #    screenratio=1.33, year="", publisher="", developer="",
-        #    subtitlepos=-1
+        # id, name, configurations, platform, ratio=0.75,
+        #     screenratio=1.33, year="", publisher="", developer="",
+        #     subtitlepos=-1
 
         # when a game item is the selected item in the parent menu,
         # we are displaying category items
         self.path_title_active = "Add Filter"
 
-        #self.name = name
+        # self.name = name
         self.configurations = []
-        #self.platform = platform
-        #print("self.platform = ", self.platform)
-        #self.title = name
+        # self.platform = platform
+        # print("self.platform = ", self.platform)
+        # self.title = name
         # FIXME: Get correct year
-        #self.year = year
-        #self.publisher = publisher
-        #self.developer = developer
+        # self.year = year
+        # self.publisher = publisher
+        # self.developer = developer
         self.subtitle = ""
 
         ratio = 0.75
@@ -1196,22 +1188,22 @@ class GameItem(MenuItem):
         # FIXME: REMOVE
         self.ratio = 0.75
 
-        #if subtitlepos > 0:
-        #    self.title = name[:subtitlepos].strip()
-        #    self.subtitle = name[subtitlepos:].strip()
-        #elif subtitlepos < 0:
-        #    self.supertitle = name[:-subtitlepos].strip()
-        #    self.title = name[-subtitlepos:].strip()
-        #else:
-        #    self.fix_titles()
+        # if subtitlepos > 0:
+        #     self.title = name[:subtitlepos].strip()
+        #     self.subtitle = name[subtitlepos:].strip()
+        # elif subtitlepos < 0:
+        #     self.supertitle = name[:-subtitlepos].strip()
+        #     self.title = name[-subtitlepos:].strip()
+        # else:
+        #     self.fix_titles()
 
     @property
     def name(self):
         return self.game_info[1]
 
-    #@property
-    #def title(self):
-    #    return self.game_info[1]
+    # @property
+    # def title(self):
+    #     return self.game_info[1]
 
     @property
     def platform(self):
@@ -1231,7 +1223,7 @@ class GameItem(MenuItem):
         except ValueError:
             pass
         else:
-            #if len(title) >= 8:
+            # if len(title) >= 8:
             self.title = title
             self.subtitle = subtitle
         if not self.subtitle:
@@ -1240,13 +1232,13 @@ class GameItem(MenuItem):
                     pos = self.title.index("(")
                     self.subtitle = self.title[pos + 1:-1].strip()
                     self.title = self.title[:pos].strip()
-        #if not self.subtitle:
-        #    if len(self.title) > 30 and " in " in self.title:
-        #        pos = self.title.find(" in ")
-        #        if pos > 8:
-        #            self.subtitle = self.title[pos+4:].strip()
-        #            self.title = self.title[:pos+4].strip()
-        #            self.subtitle = self.subtitle[0].upper() + self.subtitle[1:]
+        # if not self.subtitle:
+        #     if len(self.title) > 30 and " in " in self.title:
+        #         pos = self.title.find(" in ")
+        #         if pos > 8:
+        #             self.subtitle = self.title[pos+4:].strip()
+        #             self.title = self.title[:pos+4].strip()
+        #             self.subtitle = self.subtitle[0].upper() + self.subtitle[1:]
         if not self.subtitle:
             try:
                 title, subtitle = self.title.split(" - ", 1)
@@ -1261,7 +1253,7 @@ class GameItem(MenuItem):
             if pos > 7:
                 self.subtitle = self.title[pos:].strip()
                 self.title = self.title[:pos].strip()
-                #self.subtitle = self.subtitle[0].upper() + self.subtitle[1:]
+                # self.subtitle = self.subtitle[0].upper() + self.subtitle[1:]
 
     def activate(self, menu):
         try:
@@ -1283,91 +1275,91 @@ class GameItem(MenuItem):
         # FIXME: FIXME: DISABLED TEMPORARILY
         # FIXME: USING 512-size only for now
 
-        #if False and os.path.exists("../fs-game-database/game/texture"):
-        #if os.path.exists("../fs-game-database/game/texture"):
-        #    base_path = "../fs-game-database/game/texture"
-        #    path = os.path.join(base_path, NameUtil.create_cmpname(
-        #            self.platform), cmp_name, "front-512.jpg")
-        #            #self.platform), cmp_name, "front-1024.jpg")
-        #    if os.path.exists(path):
-        #        return path
-        ##else:
-        #base_path = os.path.join(pyapp.app.get_data_dir(), "texture")
-        #if os.path.exists("c:\\data\\game\\info"):
-        #    base_path = "c:\\data\\game\\info"
-        #else:
-        #    base_path = os.path.join(pyapp.app.get_data_dir(), "info")
-        #base_path = os.path.join(GameCenter.data_dir, "info")
-        #path = os.path.join(base_path, NameUtil.create_cmpname(self.platform),
-        #        cmp_name, "front.jpg")
-        #if not os.path.exists(path):
-        #    base_path = "c:\\data\\game\\info"
-        #    path = os.path.join(base_path, NameUtil.create_cmpname(
-        #            self.platform), cmp_name, "front.jpg")
-        #        #cmp_name, "front-1024.jpg")
-        #if not os.path.exists(path):
-        #    path = os.path.join(base_path,
-        #            NameUtil.create_cmpname(self.platform),
-        #            cmp_name, "front-512.jpg")
-        #path = os.path.join(NameUtil.create_cmpname(self.platform),
-        #        cmp_name, "front.jpg")
-        #return path
-        #return self.game_info[5] + "?s=512&t=jpg"
+        # if False and os.path.exists("../fs-game-database/game/texture"):
+        # if os.path.exists("../fs-game-database/game/texture"):
+        #     base_path = "../fs-game-database/game/texture"
+        #     path = os.path.join(base_path, NameUtil.create_cmpname(
+        #             self.platform), cmp_name, "front-512.jpg")
+        #             #self.platform), cmp_name, "front-1024.jpg")
+        #     if os.path.exists(path):
+        #         return path
+        # #else:
+        # base_path = os.path.join(pyapp.app.get_data_dir(), "texture")
+        # if os.path.exists("c:\\data\\game\\info"):
+        #     base_path = "c:\\data\\game\\info"
+        # else:
+        #     base_path = os.path.join(pyapp.app.get_data_dir(), "info")
+        # base_path = os.path.join(GameCenter.data_dir, "info")
+        # path = os.path.join(base_path, NameUtil.create_cmpname(self.platform),
+        #         cmp_name, "front.jpg")
+        # if not os.path.exists(path):
+        #     base_path = "c:\\data\\game\\info"
+        #     path = os.path.join(base_path, NameUtil.create_cmpname(
+        #             self.platform), cmp_name, "front.jpg")
+        #         #cmp_name, "front-1024.jpg")
+        # if not os.path.exists(path):
+        #     path = os.path.join(base_path,
+        #             NameUtil.create_cmpname(self.platform),
+        #             cmp_name, "front-512.jpg")
+        # path = os.path.join(NameUtil.create_cmpname(self.platform),
+        #         cmp_name, "front.jpg")
+        # return path
+        # return self.game_info[5] + "?s=512&t=jpg"
         if not self.game_info[5]:
             return None
         return self.game_info[5] + "?w=480&h=640&t=lbcover&f=jpg"
 
-    #@memoize
-    #def get_image_files(self):
-    #    path = self.get_image_path()
-    #    if os.path.exists(path):
-    #        return [path]
-    #    return []
+    # @memoize
+    # def get_image_files(self):
+    #     path = self.get_image_path()
+    #     if os.path.exists(path):
+    #         return [path]
+    #     return []
 
     @memoize
     def get_image_files(self):
         path = self.get_image_path()
-        #if path and os.path.exists(path):
+        # if path and os.path.exists(path):
         if path:
             return [path]
         return []
 
     @memoize
     def get_screen_path(self, n):
-        #cmp_name = NameUtil.create_cmpname(self.name)
-        #base_path = os.path.join(GameCenter.data_dir, "info")
-        #path = os.path.join(base_path, NameUtil.create_cmpname(self.platform),
-        #        cmp_name, "screen{0}.png".format(n))
-        #if not os.path.exists(path):
-        #    base_path = "c:\\data\\game\\info"
-        #    path = os.path.join(base_path, NameUtil.create_cmpname(
-        #            self.platform), cmp_name, "screen{0}.png".format(n))
-        #if not os.path.exists(path):
-        #    return None
+        # cmp_name = NameUtil.create_cmpname(self.name)
+        # base_path = os.path.join(GameCenter.data_dir, "info")
+        # path = os.path.join(base_path, NameUtil.create_cmpname(self.platform),
+        #         cmp_name, "screen{0}.png".format(n))
+        # if not os.path.exists(path):
+        #     base_path = "c:\\data\\game\\info"
+        #     path = os.path.join(base_path, NameUtil.create_cmpname(
+        #             self.platform), cmp_name, "screen{0}.png".format(n))
+        # if not os.path.exists(path):
+        #     return None
 
         assert 1 <= n <= 5
         value = self.game_info[7 + n - 1]
-        #if value:
-        #    value = "sha1:" + value
+        # if value:
+        #     value = "sha1:" + value
 
-        #"""
-        #if n == 1:
-        #    name = "screen1.png"
-        #elif n == 2:
-        #    name = "title.png"
-        #else:
-        #    name = "screen{0}.png".format(n - 1)
-        #"""
-        #name = "screen{0}.png".format(n)
-        #path = os.path.join(NameUtil.create_cmpname(
-        #        self.platform), cmp_name, name)
+        # """
+        # if n == 1:
+        #     name = "screen1.png"
+        # elif n == 2:
+        #     name = "title.png"
+        # else:
+        #     name = "screen{0}.png".format(n - 1)
+        # """
+        # name = "screen{0}.png".format(n)
+        # path = os.path.join(NameUtil.create_cmpname(
+        #         self.platform), cmp_name, name)
         if not value:
             return None
         return value + "?s=1x"
 
     def get_screen_texture(self, n):
         path = self.get_screen_path(n)
-        #print("get_screen_texture", repr(path))
+        # print("get_screen_texture", repr(path))
 
         if path:
             # FIXME: LOAD WITH THE REST OF THE COVERS!

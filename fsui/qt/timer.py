@@ -1,14 +1,9 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-from fsui.qt import QObject, QSignal
+import fsui.qt
 
 
-class IntervalTimer(QObject):
+class IntervalTimer(fsui.qt.QObject):
 
-    activated = QSignal()
+    activated = fsui.qt.QSignal()
 
     def __init__(self, interval):
         super().__init__()

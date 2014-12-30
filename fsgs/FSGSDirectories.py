@@ -4,7 +4,6 @@ import traceback
 from fsbc.Application import app
 import fsbc.fs as fs
 from fsbc.Paths import Paths
-from fsbc.path import unicode_path
 from fsbc.user import get_home_dir, get_documents_dir
 from fsbc.user import get_common_documents_dir
 from fsbc.util import memoize
@@ -111,8 +110,8 @@ class FSGSDirectories(object):
     def get_default_search_path(cls):
         paths = []
         path = cls.get_base_dir()
-        #if windows:
-        #    path = path.replace("/", "\\")
+        # if windows:
+        #     path = path.replace("/", "\\")
         paths.append(path)
 
         if windows:

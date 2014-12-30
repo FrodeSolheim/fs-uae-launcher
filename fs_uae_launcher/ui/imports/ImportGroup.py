@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from ...I18N import gettext
 from ...Signal import Signal
@@ -16,6 +11,7 @@ class ImportGroup(fsui.Group):
     def __init__(self, parent, type=0):
         fsui.Group.__init__(self, parent)
         self.type = type
+        self.path = ""
 
         self.layout = fsui.VerticalLayout()
         if self.type == self.AMIGA_FOREVER:

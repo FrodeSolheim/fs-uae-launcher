@@ -1,13 +1,7 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
 import weakref
-from fsui.qt import Qt, QSize, QAbstractListModel, QModelIndex
-from fsui.qt import QListView, QStandardItemModel, QStandardItem
-from fsui.qt import QColor, QPixmap, QFrame
+from fsui.qt import Qt, QSize, QAbstractListModel
+from fsui.qt import QListView
+from fsui.qt import QFrame
 import fsui
 
 from fsui.qt.Widget import Widget
@@ -20,19 +14,19 @@ class Model(QAbstractListModel):
         self.parent = weakref.ref(parent)
         self.count = 0
 
-    #def set_item_count(self, count):
-    #    self.count = count
+    # def set_item_count(self, count):
+    #     self.count = count
 
     def rowCount(self, parent):
-        #print("returning count", self.count, "for parent", parent)
-        #return self.count
+        # print("returning count", self.count, "for parent", parent)
+        # return self.count
         return self.parent().get_item_count()
 
     def data(self, index, role):
         row = index.row()
-        #print("data for", index, "role", role)
-        #if role == Qt.SizeHintRole:
-        #    return QSize(26, 26)
+        # print("data for", index, "role", role)
+        # if role == Qt.SizeHintRole:
+        #     return QSize(26, 26)
         if role == Qt.DecorationRole:
             icon = self.parent().get_item_icon(row)
             if icon:
@@ -40,7 +34,7 @@ class Model(QAbstractListModel):
             # return icon
         elif role == Qt.DisplayRole:
             return self.parent().get_item_text(row)
-        #return QVariant()
+        # return QVariant()
 
 
 class IconView(QListView, Widget):
@@ -67,11 +61,11 @@ class IconView(QListView, Widget):
         # p.setColor(self.backgroundRole(), QColor(0xaa, 0xaa, 0xff))
         # self.setPalette(p)
 
-        #self.setSelectionModel()
-        #self.model = QStandardItemModel(self)
+        # self.setSelectionModel()
+        # self.model = QStandardItemModel(self)
         self.model = Model(self)
         self.setModel(self.model)
-        #self.itemSelectionChanged.connect(self.__selection_changed)
+        # self.itemSelectionChanged.connect(self.__selection_changed)
         selection_model = self.selectionModel()
 
         selection_model.selectionChanged.connect(self.__selection_changed)

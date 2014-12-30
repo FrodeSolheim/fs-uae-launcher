@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import fsui as fsui
 from ..Skin import Skin
 
@@ -26,8 +21,8 @@ class BottomPanel(fsui.Panel):
                     fsui.Color(0xff, 0xff, 0xff))
                 self.line_color_2 = self.line_color_1
         else:
-            #self.color_1 = fsui.Color(0x00, 0x00, 0x00, 0x20)
-            #self.color_2 = fsui.Color(0x00, 0x00, 0x00, 0x00)
+            # self.color_1 = fsui.Color(0x00, 0x00, 0x00, 0x20)
+            # self.color_2 = fsui.Color(0x00, 0x00, 0x00, 0x00)
             self.color_1 = fsui.Color(0xff, 0xff, 0xff, 0x60)
             self.color_2 = fsui.Color(0xff, 0xff, 0xff, 0x00)
             self.line_color_1 = fsui.Color(0xff, 0xff, 0xff, 0xa0)

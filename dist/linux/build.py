@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import os
 import sys
 import subprocess
@@ -13,7 +14,7 @@ elif "x86-64" in exe_info:
 else:
     raise Exception("unrecognized arch")
 
-#if os.environ.get("STEAM_RUNTIME", ""):
+# if os.environ.get("STEAM_RUNTIME", ""):
 if os.environ.get("STEAMOS", ""):
     os_name = "steamos"
     if arch == "i386":
@@ -72,7 +73,7 @@ def wrap(name, target, args=None):
 
 s("rm -Rf {package_dir}")
 # s("make -C ..")
-#s("rm -Rf ../build ../dist")
+# s("rm -Rf ../build ../dist")
 s("cd ../.. && python3 setup.py build_exe")
 s("mv ../../build/exe.linux-*-3.4 {package_dir}")
 
@@ -98,8 +99,8 @@ wrap("fs-uae-arcade", "fs-uae-launcher.bin", ["--fs-uae-arcade", "$@"])
 
 s("cd {package_dir} && tar Jcfv ../../../{full_package_name}.tar.xz *")
 
-#s("rm -Rf {dbg_package_dir}")
-#s("mkdir {dbg_package_dir}")
-#s("cp -a ../fs-uae.dbg {dbg_package_dir}/")
-#s("cp -a ../fs-uae-device-helper.dbg {dbg_package_dir}/")
-#s("cd {dbg_package_dir} && tar Jcfv ../../{dbg_package_dir}.tar.xz *")
+# s("rm -Rf {dbg_package_dir}")
+# s("mkdir {dbg_package_dir}")
+# s("cp -a ../fs-uae.dbg {dbg_package_dir}/")
+# s("cp -a ../fs-uae-device-helper.dbg {dbg_package_dir}/")
+# s("cd {dbg_package_dir} && tar Jcfv ../../{dbg_package_dir}.tar.xz *")

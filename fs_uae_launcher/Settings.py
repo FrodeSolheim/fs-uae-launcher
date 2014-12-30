@@ -1,8 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from fsbc.Application import app
 from fsbc.user import get_user_name
 from .Signal import Signal
@@ -77,12 +72,12 @@ class Settings(object):
         "video_sync": "",
         "video_sync_method": "",
         "zoom": "",
-        #"window_width": "",
-        #"window_height": "",
+        # "window_width": "",
+        # "window_height": "",
     }
 
     settings = default_settings.copy()
-    #settings_listeners = []
+    # settings_listeners = []
 
     initialize_from_config = set([
         "fullscreen",
@@ -98,12 +93,12 @@ class Settings(object):
 
     @classmethod
     def add_listener(cls, listener):
-        #cls.settings_listeners.append(listener)
+        # cls.settings_listeners.append(listener)
         Signal.add_listener("setting", listener)
 
     @classmethod
     def remove_listener(cls, listener):
-        #cls.settings_listeners.remove(listener)
+        # cls.settings_listeners.remove(listener)
         Signal.remove_listener("setting", listener)
 
     @classmethod
@@ -140,4 +135,3 @@ class Settings(object):
         if value:
             return value
         return "irc.fengestad.no"
-#

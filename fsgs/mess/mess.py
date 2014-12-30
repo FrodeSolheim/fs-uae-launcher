@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
 from fsgs.mame.mame import MAMERunner
 
 
@@ -31,29 +25,29 @@ class MESSRunner(MAMERunner):
     def mess_romset(self):
         pass
 
-    #def mess_get_firmware_name(self):
-    #    return self.context.game.platform + ' Firmware'
+    # def mess_get_firmware_name(self):
+    #     return self.context.game.platform + ' Firmware'
 
     def mame_prepare(self):
         pass
-        #firmware_name = self.mess_get_firmware_name()
-        #if firmware_name:
-        #    self.mess_firmware_dir = self.prepare_firmware(firmware_name)
-        #else:
-        #    self.mess_firmware_dir = None
+        # firmware_name = self.mess_get_firmware_name()
+        # if firmware_name:
+        #     self.mess_firmware_dir = self.prepare_firmware(firmware_name)
+        # else:
+        #     self.mess_firmware_dir = None
 
     def mame_configure(self):
         self.add_arg(self.mess_romset()[0])
-        #self.configure_mame()
-        #with open(self.mednafen_cfg_path(), 'wb') as f:
-        #    self._configure_emulator(f)
-        #bios_dir = self.get_bios_dir()
-        #if bios_dir:
-        #    self.args.extend(['-rompath', bios_dir])
-        #self.args.extend(['-joystick_deadzone', '0.15'])
+        # self.configure_mame()
+        # with open(self.mednafen_cfg_path(), 'wb') as f:
+        #     self._configure_emulator(f)
+        # bios_dir = self.get_bios_dir()
+        # if bios_dir:
+        #     self.args.extend(['-rompath', bios_dir])
+        # self.args.extend(['-joystick_deadzone', '0.15'])
 
         self.mess_configure()
-        #self.mess_configure_media()
+        # self.mess_configure_media()
 
         if not self.mess_full_keyboard():
             # start mess with UI keyboard keys enabled by default,
@@ -110,7 +104,8 @@ class MESSRunner(MAMERunner):
             s.append("1{0:03d}".format(inject_key_code))
             s.append("0{0:03d}".format(inject_key_code))
             # we add some dummy events to slow down the keyboard entry
-            #s.append("1000")
+
+            # s.append("1000")
             s.append("0000")
 
         s = []

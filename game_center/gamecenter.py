@@ -15,74 +15,74 @@ class GameCenter(object):
     @classmethod
     def init(cls):
         print("GameCenter.init")
-        #for arg in sys.argv:
-        #    if arg.startswith("--game-dir="):
-        #        cls.game_dirs.append(arg[11:])
-        #k = 0
-        #path = fs.get_lib_dir()
-        #p = os.path.dirname(path)
-        #while p != path:
-        #    if fs.normalize_path(p) == \
-        #            fs.normalize_path(get_home_dir()):
-        #        break
-        #    if os.path.exists(os.path.join(p, "Games")):
-        #        cls.game_dirs.append(os.path.join(p, "Games"))
-        #        print("found 'local' game dir ", repr(cls.game_dirs[-1]))
-        #        break
-        #    path = p
-        #    p = os.path.dirname(path)
-        #while p != path:
-        #    if os.path.exists(os.path.join(p, "Data", "FSGameCenter")):
-        #        cls.data_dir = os.path.join(p, "Data", "FSGameCenter")
-        #        print("found 'local' data dir ", repr(cls.data_dir))
-        #        break
-        #    path = p
-        #    p = os.path.dirname(path)
-        #while p != path:
-        #    if os.path.exists(os.path.join(p, "Save")):
-        #        cls.save_dir = os.path.join(p, "Save")
-        #        print("found 'local' save dir ", repr(cls.save_dir))
-        #        break
-        #    path = p
-        #    p = os.path.dirname(path)
-        #if len(cls.game_dirs) == 0:
-        #    while True:
-        #        path = Config.get("GameDirectory/%d" % k)
-        #        if not path:
-        #            break
-        #        cls.game_dirs.append(path.strip())
-        #        k += 1
-        #if len(cls.game_dirs) == 0:
-        #    path = os.path.join(get_home_dir(), "Games")
-        #    if os.path.exists(path):
-        #        print("auto add", path)
-        #        cls.game_dirs.append(path)
-        #    path = os.path.join(get_documents_dir(), "Games")
-        #    if os.path.exists(path):
-        #        print("auto add", path)
-        #        cls.game_dirs.append(path)
-        #    if windows:
-        #        path = "C:\\Games"
-        #        if os.path.exists(path):
-        #            print("auto add", path)
-        #            cls.game_dirs.append(path)
-        #print("game dirs:", cls.game_dirs)
+        # for arg in sys.argv:
+        #     if arg.startswith("--game-dir="):
+        #         cls.game_dirs.append(arg[11:])
+        # k = 0
+        # path = fs.get_lib_dir()
+        # p = os.path.dirname(path)
+        # while p != path:
+        #     if fs.normalize_path(p) == \
+        #             fs.normalize_path(get_home_dir()):
+        #         break
+        #     if os.path.exists(os.path.join(p, "Games")):
+        #         cls.game_dirs.append(os.path.join(p, "Games"))
+        #         print("found 'local' game dir ", repr(cls.game_dirs[-1]))
+        #         break
+        #     path = p
+        #     p = os.path.dirname(path)
+        # while p != path:
+        #     if os.path.exists(os.path.join(p, "Data", "FSGameCenter")):
+        #         cls.data_dir = os.path.join(p, "Data", "FSGameCenter")
+        #         print("found 'local' data dir ", repr(cls.data_dir))
+        #         break
+        #     path = p
+        #     p = os.path.dirname(path)
+        # while p != path:
+        #     if os.path.exists(os.path.join(p, "Save")):
+        #         cls.save_dir = os.path.join(p, "Save")
+        #         print("found 'local' save dir ", repr(cls.save_dir))
+        #         break
+        #     path = p
+        #     p = os.path.dirname(path)
+        # if len(cls.game_dirs) == 0:
+        #     while True:
+        #         path = Config.get("GameDirectory/%d" % k)
+        #         if not path:
+        #             break
+        #         cls.game_dirs.append(path.strip())
+        #         k += 1
+        # if len(cls.game_dirs) == 0:
+        #     path = os.path.join(get_home_dir(), "Games")
+        #     if os.path.exists(path):
+        #         print("auto add", path)
+        #         cls.game_dirs.append(path)
+        #     path = os.path.join(get_documents_dir(), "Games")
+        #     if os.path.exists(path):
+        #         print("auto add", path)
+        #         cls.game_dirs.append(path)
+        #     if windows:
+        #         path = "C:\\Games"
+        #         if os.path.exists(path):
+        #             print("auto add", path)
+        #             cls.game_dirs.append(path)
+        # print("game dirs:", cls.game_dirs)
         #
-        #if not cls.save_dir:
-        #    # FIXME: Use known folder SAVED_GAMES (or something) on Vista+
-        #    cls.save_dir = os.path.join(get_home_dir(), "Games", "Saves")
+        # if not cls.save_dir:
+        #     # FIXME: Use known folder SAVED_GAMES (or something) on Vista+
+        #     cls.save_dir = os.path.join(get_home_dir(), "Games", "Saves")
         #
-        #if not cls.data_dir:
-        #    cls.data_dir = fs.get_app_data_dir()
+        # if not cls.data_dir:
+        #     cls.data_dir = fs.get_app_data_dir()
 
     @classmethod
     def get_local_data_dir(cls):
-        #"""local data dir with resources overriding those downloaded from
-        #the game metadata server."""
-        #data_dir = fs.get_app_data_dir()
-        #data_dir = data_dir.replace(fs.get_app_id(), "fs-game-database")
-        #data_dir = os.path.join(data_dir, "data")
-        #return data_dir
+        # """local data dir with resources overriding those downloaded from
+        # the game metadata server."""
+        # data_dir = fs.get_app_data_dir()
+        # data_dir = data_dir.replace(fs.get_app_id(), "fs-game-database")
+        # data_dir = os.path.join(data_dir, "data")
+        # return data_dir
         raise NotImplementedError()
 
     @classmethod
