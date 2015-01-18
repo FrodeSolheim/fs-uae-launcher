@@ -134,7 +134,14 @@ class Widget(MixinBase):
         if hasattr(self, "layout") and isinstance(self.layout, Layout):
             width = max(self.layout.get_min_width(), width)
             return width
-        return max(width, widget.minimumSizeHint().width())
+        # result = max(width, widget.minimumSizeHint().width())
+        # if widget.maximumWidth():
+        #     print(widget.maximumWidth())
+        #     return min(result, widget.maximumWidth())
+        # return min(result, widget.maximumWidth())
+        # return result
+        result = max(width, widget.minimumSizeHint().width())
+        return min(result, widget.maximumWidth())
         # return max(width, widget.minimumWidth())
     
     def get_min_height(self):

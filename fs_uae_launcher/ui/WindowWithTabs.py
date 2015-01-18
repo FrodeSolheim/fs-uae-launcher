@@ -75,7 +75,7 @@ class WindowWithTabs(fsui.Window):
         self.tab_groups[self.current_tab_group_id].append(button)
         return button
 
-    def add_tab_panel(self, class_, min_width=0):
+    def add_tab_panel(self, class_, min_width=0, expand=1000000):
         # panel = class_(self.tab_panel, padding_bottom=2)
         panel = class_(self.tab_panel)
         panel.expandable = True
@@ -84,7 +84,8 @@ class WindowWithTabs(fsui.Window):
             panel.SetSize((min_width, 46))
             self.toolbar.AddControl(panel)
         else:
-            self.tab_panel.add(panel, expand=1000000)
+            self.tab_panel.add(panel, expand=expand)
+        return panel
 
     def add_tab_separator(self):
         if self.toolbar:

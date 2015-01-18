@@ -42,9 +42,10 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
         if fsui.use_qt:
             from fsui.qt import QStyleFactory, QPalette, QColor, Qt
-            if macosx:
+            if macosx or "--launcher-theme=fusion" in sys.argv:
                 # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
                 self.qapplication.setStyle(QStyleFactory.create("Fusion"))
+            # FIXME: document
             if "--dark-theme" in sys.argv:
                 dark_p = QPalette()
                 dark_p.setColor(QPalette.Window, QColor(53, 53, 53))

@@ -176,10 +176,12 @@ def write(data):
 write("""\
 version := $(strip $(shell cat VERSION))
 series := $(strip $(shell cat SERIES))
-prefix := /usr/local
 build_dir := "."
 dist_name = {tar_name}-$(version)
 dist_dir := $(build_dir)/$(dist_name)
+
+DESTDIR :=
+prefix := /usr/local
 
 """.format(tar_name=project.tar_name))
 
@@ -223,13 +225,24 @@ mo: $(catalogs)
 write("""\
 
 install-program:
-        python3 setup.py install --root=$(DESTDIR) \
-        --install-lib=$(prefix)/share/{project} \
-        --install-scripts=$(prefix)/share/{project}
-	install -d $(DESTDIR)$(prefix)/bin
-	rm -f $(DESTDIR)$(prefix)/bin/{project}
-	ln -s ../share/{project}/{project} \
-	$(DESTDIR)$(prefix)/bin/{project}
+ifeq ($(DESTDIR),)
+    python3 setup.py install \
+    --install-lib=$(prefix)/share/{project} \
+    --install-scripts=$(prefix)/share/{project}
+    install -d $(DESTDIR)$(prefix)/bin
+    rm -f $(DESTDIR)$(prefix)/bin/{project}
+    ln -s ../share/{project}/{project} \
+    $(DESTDIR)$(prefix)/bin/{project}
+else
+    python3 setup.py install \
+    --root=$(DESTDIR) \
+    --install-lib=$(prefix)/share/{project} \
+    --install-scripts=$(prefix)/share/{project}
+    install -d $(DESTDIR)$(prefix)/bin
+    rm -f $(DESTDIR)$(prefix)/bin/{project}
+    ln -s ../share/{project}/{project} \
+    $(DESTDIR)$(prefix)/bin/{project}
+endif
 
 install-data: mo
     mkdir -p $(DESTDIR)$(prefix)/share

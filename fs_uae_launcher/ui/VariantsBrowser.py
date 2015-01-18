@@ -2,7 +2,7 @@ import traceback
 from fs_uae_launcher.ui.ConfigGroup import ConfigGroup
 from fsgs import fsgs
 from fsgs.Database import Database
-import fsui as fsui
+import fsui
 from ..Config import Config
 from ..Signal import Signal
 from ..Settings import Settings
@@ -21,14 +21,18 @@ class LastVariants(object):
         database.commit()
 
 
-class VariantsBrowser(fsui.VerticalItemView):
+# class VariantsBrowser(fsui.VerticalItemView):
+class VariantsBrowser(fsui.ItemChoice):
 
     @staticmethod
     def use_horizontal_layout():
-        return fsui.get_screen_size()[0] > 1024
+        # return fsui.get_screen_size()[0] > 1024
+        return False
 
     def __init__(self, parent):
-        fsui.VerticalItemView.__init__(self, parent)
+        # fsui.VerticalItemView.__init__(self, parent)
+        fsui.ItemChoice.__init__(self, parent)
+
         self.parent_uuid = ""
         self.items = []
         # self.last_variants = LastVariants()
@@ -98,6 +102,7 @@ class VariantsBrowser(fsui.VerticalItemView):
     def set_items(self, items):
         self.items = items
         self.update()
+        self.enable(len(items) > 0)
 
     def get_item_count(self):
         return len(self.items)
@@ -163,7 +168,7 @@ class VariantsBrowser(fsui.VerticalItemView):
         items = database.find_game_variants_new(game_uuid, have=0)
         # items = database.search_configurations(self.search)
         sortable_items = []
-        for item in items:
+        for i, item in enumerate(items):
             name = item["name"]
 
             name = name.replace("\nAmiga \u00b7 ", "\n")
@@ -182,8 +187,9 @@ class VariantsBrowser(fsui.VerticalItemView):
             sort_key = (1 - bool(item["have"]), 1000000 - item["like_rating"],
                         1000000 - item["work_rating"], name)
             sortable_items.append(
-                (sort_key, item))
-        self.items = [x[1] for x in sorted(sortable_items)]
+                (sort_key, i, item))
+        # print(sortable_items)
+        self.items = [x[2] for x in sorted(sortable_items)]
         self.update()
         # self.set_items(self.items)
         # self.set_item_count(len(self.items))
@@ -217,6 +223,11 @@ class VariantsBrowser(fsui.VerticalItemView):
                 if len(self.items) > 0:
                     select_index = 0
 
+        # self.clear()
+        # for i, item in enumerate(self.items):
+        #     self.add_item(item["name"], icon=self.get_item_icon(i))
+
+        self.enable(len(self.items) > 0)
         if select_index is not None:
             print("selecting variant index", select_index)
             self.select_item(select_index)
@@ -284,3 +295,6 @@ class VariantsBrowser(fsui.VerticalItemView):
         Config.set("variant_uuid", variant_uuid)
         Config.set("variant_rating", str(item["personal_rating"]))
         Config.set("__changed", "0")
+
+    def get_min_width(self):
+        return 0

@@ -100,7 +100,7 @@ class ScreenshotsPanel(BottomPanel):
 
     def on_left_down(self):
         # print("on_left_down")
-        width = 10 + Constants.SCREEN_SIZE[0] * 6 + 20 * 5 + 22
+        width = 22 + Constants.SCREEN_SIZE[0] * 6 + 22 * 5
         if self.x_offset == 0:
             self.x_offset = self.size[0] - width
         else:
@@ -122,4 +122,4 @@ class ScreenshotsPanel(BottomPanel):
             #         Constants.SCREEN_SIZE[1])
             dc.draw_image(image, x + 1, y + 1)
             dc.draw_image(self.screenshot_overlay, x - 10, y - 10)
-            x = x + Constants.SCREEN_SIZE[0] + 20
+            x = x + Constants.SCREEN_SIZE[0] + 22

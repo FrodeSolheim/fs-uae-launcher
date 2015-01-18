@@ -80,16 +80,23 @@ class GameDatabase(BaseDatabase):
         print("get_game_values_for_uuid", game_uuid)
         assert game_uuid
         assert isinstance(game_uuid, str)
-        cursor = self.internal_cursor()
-        cursor.execute(
-            "SELECT id FROM game WHERE uuid = ?",
-            (sqlite3.Binary(unhexlify(game_uuid.replace("-", ""))),))
-        game_id = cursor.fetchone()[0]
-        return self.get_game_values(game_id, recursive)
+        # cursor = self.internal_cursor()
+        # query = "SELECT id FROM game WHERE uuid = ?"
+        # args = (sqlite3.Binary(unhexlify(game_uuid.replace("-", ""))),)
+        # cursor.execute(query, args)
+        # game_id = cursor.fetchone()[0]
+        # return self.get_game_values(game_id, recursive)
+        return self.get_game_values(game_uuid=game_uuid, recursive=recursive)
 
-    def get_game_values(self, game_id, recursive=True):
+    def get_game_values(self, game_id=None, *, game_uuid=None, recursive=True):
         cursor = self.internal_cursor()
-        cursor.execute("SELECT data FROM game WHERE id = ?", (game_id,))
+        if game_uuid is not None:
+            cursor.execute(
+                "SELECT data FROM game WHERE uuid = ?",
+                (sqlite3.Binary(unhexlify(game_uuid.replace("-", ""))),))
+        else:
+            cursor.execute(
+                "SELECT data FROM game WHERE id = ?", (game_id,))
         data = zlib.decompress(cursor.fetchone()[0])
         data = data.decode("UTF-8")
         doc = json.loads(data)

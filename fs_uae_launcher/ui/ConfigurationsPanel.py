@@ -1,3 +1,5 @@
+from fs_uae_launcher.Options import Option
+from fs_uae_launcher.ui.bottombar.RatingButton import RatingButton
 from fs_uae_workspace.shell import shell_open
 import fsui as fsui
 from ..I18N import gettext
@@ -14,10 +16,19 @@ class ConfigurationsPanel(fsui.Panel):
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         Skin.set_background_color(self)
-        self.layout = fsui.VerticalLayout()
+        self.layout = fsui.HorizontalLayout()
+
+        # if Settings.get(Option.CONFIG_FEATURE) == "1":
+        #     from fs_uae_launcher.ui.config.browser import ConfigBrowser
+        #     config_browser = ConfigBrowser(self)
+        #     config_browser.set_min_width(286)
+        #     self.layout.add(config_browser, fill=True, margin=10)
+
+        vert_layout = fsui.VerticalLayout()
+        self.layout.add(vert_layout, fill=True, expand=True)
 
         hor_layout = fsui.HorizontalLayout()
-        self.layout.add(hor_layout, fill=True)
+        vert_layout.add(hor_layout, fill=True)
 
         label_stand_in = fsui.Panel(self)
         tw, th = label_stand_in.measure_text("Games")
@@ -26,9 +37,11 @@ class ConfigurationsPanel(fsui.Panel):
 
         # label = fsui.HeadingLabel(self, _("Games and Configurations"))
         game_list_selector = GameListSelector(self)
-        hor_layout.add(game_list_selector, expand=True, margin_left=10)
+        game_list_selector.set_min_width(250)
+        game_list_selector.setMaximumWidth(250)
+        hor_layout.add(game_list_selector, expand=False, margin_left=10)
 
-        hor_layout.add_spacer(10)
+        # hor_layout.add_spacer(10)
 
         gettext("Filters:")
         # self.filters_label = fsui.Label(self, _("Filters:"))
@@ -78,11 +91,11 @@ class ConfigurationsPanel(fsui.Panel):
 
         if VariantsBrowser.use_horizontal_layout():
             hori_layout = fsui.HorizontalLayout()
-            self.layout.add(hori_layout, fill=True, expand=True, margin=10)
+            vert_layout.add(hori_layout, fill=True, expand=True, margin=10)
             hori_layout.add(self.configurations_browser, fill=True, expand=2)
         else:
             hori_layout = None
-            self.layout.add(
+            vert_layout.add(
                 self.configurations_browser, fill=True, expand=3, margin=10)
 
         # if Settings.get("database_feature") == "1":
@@ -95,9 +108,17 @@ class ConfigurationsPanel(fsui.Panel):
                 # elf.variants_browser.set_min_width(72)
                 self.variants_browser.set_min_width(100)
             else:
-                self.layout.add(
-                    self.variants_browser, fill=True, expand=1, margin=10,
+                hori_layout = fsui.HorizontalLayout()
+                vert_layout.add(
+                    hori_layout, fill=True, expand=False, margin=10,
                     margin_top=20)
+                hori_layout.add(
+                    self.variants_browser, fill=True, expand=True)
+
+                for rating in [1, 4, 5]:
+                    button = RatingButton(self, rating)
+                    hori_layout.add(button, margin_left=5, fill=True)
+
         else:
             self.variants_browser = None
 

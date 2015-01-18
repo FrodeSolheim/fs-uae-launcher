@@ -16,7 +16,7 @@ from .qt.Application import Application
 from .qt.Button import Button
 from .qt.CheckBox import CheckBox, HeadingCheckBox
 from .qt.Color import Color
-from .qt.Choice import Choice
+from .qt.Choice import Choice, ItemChoice
 from .qt.ComboBox import ComboBox
 from .qt.dialog import Dialog
 from .qt.dialogbuttons import DialogButtons

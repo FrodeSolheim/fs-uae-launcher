@@ -1,7 +1,10 @@
+import fsbc.Application
 import sys
 
-# import_order = ["PyQT5", "PyQT4", "PySide"]
-import_order = ["PyQT4", "PySide", "PyQT5"]
+if "arcade" in sys.argv[0] or len(sys.argv) > 1 and "arcade" in sys.argv[1]:
+    import_order = ["PyQT4", "PySide", "PyQT5"]
+else:
+    import_order = ["PyQT5", "PyQT4", "PySide"]
 
 if "--pyqt5" in sys.argv:
     import_order = ["PyQT5"]

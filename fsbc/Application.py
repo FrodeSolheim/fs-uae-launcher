@@ -4,6 +4,7 @@ import time
 import threading
 from fsbc.Paths import Paths
 from fsbc.system import windows, macosx
+from fsbc.util import memoize
 import fsbc.Settings
 
 
@@ -108,13 +109,28 @@ class Application(object):
     #     raise NotImplementedError("Application.call_later")
 
     @staticmethod
+    @memoize
     def executable_dir():
-        dir_path = os.path.dirname(sys.executable)
-        return Paths.unicode(dir_path)
+        print("executable_dir")
+        print("sys.executable =", sys.executable)
+        if "python" in os.path.basename(sys.executable):
+            print("using sys.argv[0] instead of python interpreter path")
+            # We do not want the directory of the (installed) python
+            # interpreter, but rather the main application script
+            dir_path = os.path.dirname(sys.argv[0])
+            print(dir_path)
+            dir_path = os.path.join(os.getcwd(), dir_path)
+            print(dir_path)
+            dir_path = os.path.normpath(dir_path)
+        else:
+            dir_path = os.path.dirname(sys.executable)
+        print("executable_dir =", dir_path)
+        return dir_path
 
     def cache_dir(self):
         return os.path.join(Paths.get_base_dir(), "Cache")
 
+    @memoize
     def data_dirs(self):
         if self._data_dirs is not None:
             return self._data_dirs
@@ -133,16 +149,19 @@ class Application(object):
                                           "Resources", "share"))
         else:
             # FIXME: $XDG_DATA_DIRS, $XDG_DATA_HOME
-            base_dirs.append("/usr/local/share")
-            base_dirs.append("/usr/share")
+            base_dirs.append(
+                os.path.normpath(os.path.join(
+                    self.executable_dir(), "..", "share")))
         for dir_name in base_dirs:
             data_dir = os.path.join(dir_name, self.name)
             print("* checking for data dir", data_dir)
             if os.path.exists(data_dir):
                 data_dirs.append(data_dir)
         self._data_dirs = data_dirs
+        print("data dirs:", data_dirs)
         return data_dirs
 
+    @memoize
     def data_file(self, name):
         """Looks up an application data file in several places depending on
         platform.

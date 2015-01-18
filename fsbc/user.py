@@ -1,5 +1,6 @@
 import os
 import ctypes
+import getpass
 import subprocess
 from fsbc.path import unicode_path
 from fsbc.system import windows, macosx
@@ -29,22 +30,12 @@ if windows:
     CSIDL_MYPICTURES = 39
     CSIDL_PROFILE = 40
     CSIDL_COMMON_DOCUMENTS = 46
-else:
-    import getpass
 
 
 @memoize
 def get_user_name():
-    if windows:
-        # noinspection PyUnresolvedReferences
-        user_name = win32api.GetUserName()
-        encoding = "mbcs"
-    else:
-        user_name = getpass.getuser()
-        encoding = "UTF-8"
-    if isinstance(user_name, str):
-        return user_name
-    return str(user_name, encoding, "replace")
+    user_name = getpass.getuser()
+    return user_name
 
 
 @memoize

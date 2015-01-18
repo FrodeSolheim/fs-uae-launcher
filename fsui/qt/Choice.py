@@ -6,7 +6,9 @@ class Choice(QComboBox, Widget):
 
     item_selected = Signal(int)
 
-    def __init__(self, parent, items=[]):
+    def __init__(self, parent, items=None):
+        if items is None:
+            items = []
         QComboBox.__init__(self, parent.get_container())
         # Widget.__init__(self, parent)
         self.init_widget(parent)
@@ -49,4 +51,38 @@ class Choice(QComboBox, Widget):
                 self.inhibit_change_event = False
 
     def on_change(self):
+        pass
+
+
+class ItemChoice(Choice):
+
+    def __init__(self, parent):
+        Choice.__init__(self, parent.get_container())
+
+    def update(self):
+        # for i, item in enumerate(self.items):
+        #     self.add_item(item["name"], icon=self.get_item_icon(i))
+        old = self.inhibit_change_event
+        old_index = self.get_index()
+        self.inhibit_change_event = True
+        self.clear()
+        for i in range(self.get_item_count()):
+            text = self.get_item_text(i)
+            icon = self.get_item_icon(i)
+            self.add_item(text, icon)
+        if old_index < self.get_item_count():
+            self.set_index(old_index)
+        self.inhibit_change_event = old
+
+    def select_item(self, index):
+        print("select_item", index)
+        if index is None:
+            self.set_index(-1, signal=True)
+        else:
+            self.set_index(index, signal=True)
+
+    def on_change(self):
+        self.on_select_item(self.get_index())
+
+    def on_select_item(self, index):
         pass

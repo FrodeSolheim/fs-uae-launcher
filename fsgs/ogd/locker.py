@@ -3,6 +3,11 @@ from .base import SynchronizerBase
 from ..LockerDatabase import LockerDatabase
 from fsgs.FileDatabase import FileDatabase
 from fsgs.res import gettext
+import fsbc.Settings
+
+
+def is_locker_enabled():
+    return fsbc.Settings.get("database_locker") != "0"
 
 
 class LockerSynchronizer(SynchronizerBase):
@@ -11,6 +16,9 @@ class LockerSynchronizer(SynchronizerBase):
         SynchronizerBase.__init__(self, *args, **kwargs)
 
     def synchronize(self):
+        if not is_locker_enabled():
+            return
+
         if "locker-sync" not in self.context.meta:
             # we haven't looked up synchronization information from the server,
             # that probably means we didn't want to synchronize with the

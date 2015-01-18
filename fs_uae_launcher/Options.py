@@ -1,4 +1,77 @@
-class Options:
+# Automatically generated - do not edit by hand
+
+
+class Option(object):
+    """Constants for option names."""    
+    AUDIO_BUFFER_TARGET_BYTES = "audio_buffer_target_bytes"
+    AUDIO_BUFFER_TARGET_SIZE = "audio_buffer_target_size"
+    AUDIO_FREQUENCY = "audio_frequency"
+    AUTOMATIC_INPUT_GRAB = "automatic_input_grab"
+    BUILTIN_CONFIGS = "builtin_configs"
+    CONFIG_FEATURE = "config_feature"
+    CPU_IDLE = "cpu_idle"
+    DATABASE_AUTH = "database_auth"
+    DATABASE_EMAIL = "database_email"
+    DATABASE_FEATURE = "database_feature"
+    DATABASE_LOCKER = "database_locker"
+    DATABASE_PASSWORD = "database_password"
+    DATABASE_SERVER = "database_server"
+    DATABASE_SHOW_ADULT = "database_show_adult"
+    DATABASE_SHOW_GAMES = "database_show_games"
+    DATABASE_USERNAME = "database_username"
+    DEVICE_ID = "device_id"
+    FLOPPY_DRIVE_VOLUME = "floppy_drive_volume"
+    FSAA = "fsaa"
+    FULLSCREEN = "fullscreen"
+    GRAPHICS_CARD = "graphics_card"
+    GRAPHICS_MEMORY = "graphics_memory"
+    INITIAL_INPUT_GRAB = "initial_input_grab"
+    IRC_NICK = "irc_nick"
+    IRC_SERVER = "irc_server"
+    KEEP_ASPECT = "keep_aspect"
+    KEYBOARD_INPUT_GRAB = "keyboard_input_grab"
+    KICKSTART_SETUP = "kickstart_setup"
+    LOAD_STATE = "load_state"
+    LOG_QUERY_PLANS = "log_query_plans"
+    LOW_LATENCY_VSYNC = "low_latency_vsync"
+    MIDDLE_CLICK_UNGRAB = "middle_click_ungrab"
+    MIN_FIRST_LINE_NTSC = "min_first_line_ntsc"
+    MIN_FIRST_LINE_PAL = "min_first_line_pal"
+    MOUSE_SPEED = "mouse_speed"
+    NETPLAY_FEATURE = "netplay_feature"
+    NETPLAY_TAG = "netplay_tag"
+    RTG_SCANLINES = "rtg_scanlines"
+    SCANLINES = "scanlines"
+    STEREO_SEPARATION = "stereo_separation"
+    SWAP_CTRL_KEYS = "swap_ctrl_keys"
+    TEXTURE_FILTER = "texture_filter"
+    TEXTURE_FORMAT = "texture_format"
+    UAE_A3000MEM_SIZE = "uae_a3000mem_size"
+    UAE_CHIPSET_COMPATIBLE = "uae_chipset_compatible"
+    UAE_CPU_FREQUENCY = "uae_cpu_frequency"
+    UAE_CPU_MULTIPLIER = "uae_cpu_multiplier"
+    UAE_CPU_SPEED = "uae_cpu_speed"
+    UAE_CPU_THROTTLE = "uae_cpu_throttle"
+    UAE_FASTMEM2_SIZE = "uae_fastmem2_size"
+    UAE_FASTMEM_AUTOCONFIG = "uae_fastmem_autoconfig"
+    UAE_FASTMEM_SIZE = "uae_fastmem_size"
+    UAE_FORCE_0X10000000_Z3 = "uae_force_0x10000000_z3"
+    UAE_GFX_LINEMODE = "uae_gfx_linemode"
+    UAE_MBRESMEM_SIZE = "uae_mbresmem_size"
+    UAE_SOUND_OUTPUT = "uae_sound_output"
+    UAE_Z3CHIPMEM_SIZE = "uae_z3chipmem_size"
+    UAE_Z3MAPPING = "uae_z3mapping"
+    UAE_Z3MEM2_SIZE = "uae_z3mem2_size"
+    UAE_Z3MEM_SIZE = "uae_z3mem_size"
+    UAEM_WRITE_FLAGS = "uaem_write_flags"
+    VIDEO_FORMAT = "video_format"
+    VIDEO_SYNC = "video_sync"
+    VIDEO_SYNC_METHOD = "video_sync_method"
+    VOLUME = "volume"
+    ZOOM = "zoom"
+
+
+class Options(object):
 
     @staticmethod
     def get(name):
@@ -51,6 +124,12 @@ options = {
         "type": "boolean",
     },
 
+    "config_feature": {
+        "default": "0",
+        "description": N_("Enable new config feature (requires restart)"),
+        "type": "boolean",
+    },
+
     "cpu_idle": {
         "default": "",
         "description": N_(
@@ -75,6 +154,12 @@ options = {
     "database_feature": {
         "default": "0",
         "description": N_("Enable online database support (requires restart)"),
+        "type": "boolean",
+    },
+
+    "database_locker": {
+        "default": "",
+        "description": N_("Enable/disable use of OAGD.net locker"),
         "type": "boolean",
     },
 
@@ -213,6 +298,12 @@ options = {
         "type": "integer",
         "min": 1,
         "max": 9,
+    },
+
+    "log_query_plans": {
+        "default": "",
+        "description": N_("Log database query plans"),
+        "type": "",
     },
 
     "low_latency_vsync": {
@@ -464,6 +555,12 @@ options = {
             ("interrupts", "Emulated, No Output"),
             ("exact", "Enabled"),
         ]
+    },
+
+    "uae_z3chipmem_size": {
+        "default": "",
+        "description": N_(""),
+        "type": "integer",
     },
 
     "uae_z3mapping": {

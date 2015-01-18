@@ -224,10 +224,11 @@ class InfoPanel(fsui.Panel):
         else:
             y = 0
 
-        if Skin.use_unified_toolbar():
-            rtl = False
-        else:
-            rtl = True
+        # if Skin.use_unified_toolbar():
+        #     rtl = False
+        # else:
+        #     rtl = True
+        rtl = False
 
         if rtl:
             right_x = self.size[0]

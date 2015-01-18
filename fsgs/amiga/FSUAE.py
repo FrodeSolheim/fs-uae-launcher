@@ -138,7 +138,13 @@ class FSUAE(object):
                     "../../../FS-UAE Launcher.app/Contents/Resources/"
                     "FS-UAE.app/Contents/MacOS/" + executable)
         else:
+            print("application executable dir", application.executable_dir())
             exe = os.path.join(application.executable_dir(), executable)
+            print("checking", exe)
+            if not os.path.exists(exe):
+                exe = os.path.join(
+                    application.executable_dir(), "..", "bin", executable)
+                print("checking", exe)
             if not os.path.exists(exe):
                 return executable
 

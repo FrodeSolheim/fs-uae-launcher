@@ -1,3 +1,12 @@
+Version 2.5.24dev:
+
+* New user interface layout (config list on the left).
+* Improved support for lower-resolution displays.
+* Preliminary support for new config visualization (config_feature=1).
+* Prefer QT5 when running the launcher, QT4 when running the arcade interface.
+* Fixed bug preventing Windows version from joining the net play lobby.
+* Also look for ../bin/fs-uae on Linux/Unix.
+
 Version 2.5.23dev:
 
 * Fixed joystick configurations, added --add-dummy-joystick arg for testing.

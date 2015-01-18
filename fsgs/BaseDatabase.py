@@ -1,10 +1,18 @@
 import os
 import sqlite3
 import threading
+import fsbc.Settings
 
 
-DEBUG = 0
 global_database_lock = threading.Lock()
+
+
+def log_query_plans():
+    return fsbc.Settings.get("log_query_plans") == "1"
+
+
+def use_debug_cursor():
+    return log_query_plans()
 
 
 class ResetException(Exception):
@@ -74,7 +82,7 @@ class BaseDatabase(object):
     def cursor(self):
         if not self.connection:
             self.init()
-        if DEBUG:
+        if use_debug_cursor():
             return DebuggingCursor(self.connection.cursor())
         return self.connection.cursor()
 
@@ -144,5 +152,10 @@ class DebuggingCursor(object):
         return self._cursor.__iter__()
 
     def execute(self, query, *args, **kwargs):
-        print(" --", query, "--", args)
+        print(query, args)
+        if log_query_plans():
+            self._cursor.execute("EXPLAIN QUERY PLAN " + query,
+                                 *args, **kwargs)
+            for row in self._cursor:
+                print(row[0], row[1], row[2], row[3])
         return self._cursor.execute(query, *args, **kwargs)

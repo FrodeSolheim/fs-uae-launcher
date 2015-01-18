@@ -29,7 +29,8 @@ class SynchronizerBase(object):
     else:
         @staticmethod
         def bytes_to_int(m):
-            return ord(m[0]) << 24 | ord(m[1]) << 16 | ord(m[2]) << 8 | ord(m[3])
+            return (ord(m[0]) << 24 | ord(m[1]) << 16 |
+                    ord(m[2]) << 8 | ord(m[3]))
 
     def stop_check(self):
         if self._stop_check:
@@ -71,7 +72,8 @@ class SynchronizerBase(object):
                             "seconds").format(i + 1, int(sleep_time)))
                 time.sleep(sleep_time)
                 self.set_status(
-                    gettext("Retrying last operation (attempt {0})").format(i + 1))
+                    gettext("Retrying last operation (attempt {0})").format(
+                        i + 1))
         return self.fetch_json_attempt(url)
 
     def fetch_data_attempt(self, url, accept_gzip_encoding=False):
@@ -109,5 +111,6 @@ class SynchronizerBase(object):
                             "seconds").format(i + 1, int(sleep_time)))
                 time.sleep(sleep_time)
                 self.set_status(
-                    gettext("Retrying last operation (attempt {0})").format(i + 1))
+                    gettext("Retrying last operation (attempt {0})").format(
+                        i + 1))
         return self.fetch_data_attempt(url)

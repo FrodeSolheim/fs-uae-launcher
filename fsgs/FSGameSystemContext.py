@@ -14,6 +14,7 @@ from .Downloader import Downloader
 from .FileDatabase import FileDatabase
 from .GameDatabase import GameDatabase
 from .LockerDatabase import LockerDatabase
+from fsgs.ogd.locker import is_locker_enabled
 from .ogd.client import OGDClient
 from .plugins.pluginmanager import PluginManager
 
@@ -42,7 +43,7 @@ class FileContext(BaseContext):
                 result = path
         #    result = self.context.get_game_database().find_file_by_sha1(sha1)
         # print("find by sha1", sha1, "in file database - result", result)
-        if not result:
+        if not result and is_locker_enabled():
             database = LockerDatabase.instance()
             if database.check_sha1(sha1):
                 result = "locker://" + sha1
@@ -53,7 +54,7 @@ class FileContext(BaseContext):
     def check_sha1(self, sha1):
         database = FileDatabase.instance()
         result = database.check_sha1(sha1)
-        if not result:
+        if not result and is_locker_enabled():
             database = LockerDatabase.instance()
             result = database.check_sha1(sha1)
             # print("check sha1", sha1, "in locker database - result", result)

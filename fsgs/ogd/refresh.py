@@ -27,7 +27,8 @@ class DatabaseRefreshTask(Task):
         # FIXME, dependency on fs_uae_launcher
         # from fs_uae_launcher.Scanner import Scanner
         # Scanner.start([], scan_for_files=False, update_game_database=True)
-        from fs_uae_launcher.GameRatingSynchronizer import GameRatingSynchronizer
+        from fs_uae_launcher.GameRatingSynchronizer \
+            import GameRatingSynchronizer
         from fs_uae_launcher.GameScanner import GameScanner
 
         context = SynchronizerContext()
