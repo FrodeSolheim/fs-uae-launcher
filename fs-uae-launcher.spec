@@ -40,18 +40,10 @@ launcher for FS-UAE.
 make
 
 %install
-%{__python} setup.py install \
---prefix=%{_prefix} \
---root=%{buildroot} \
---install-lib=%{_prefix}/share/fs-uae-launcher \
---install-scripts=%{_prefix}/share/fs-uae-launcher
-make install DESTDIR=$RPM_BUILD_ROOT
-mkdir %{buildroot}/%{_prefix}/bin
-ln -s %{_prefix}/share/fs-uae-launcher/fs-uae-launcher \
-%{buildroot}/%{_prefix}/bin/fs-uae-launcher
+make install DESTDIR=%{buildroot} prefix=%{_prefix}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
