@@ -74,8 +74,10 @@ p880_12_4_1_0_windows.conf
 playstation_r_3_controller_19_4_0_0_macosx.conf
 ps3_usb_cordless_gamepad_13_4_1_0_macosx.conf
 ps3_usb_cordless_gamepad_13_4_1_0_windows.conf
+retrolink/usb_gamepad_10_2_0_0_linux.ini
 saitek/dual_analog_gamepad.ini
 saitek/p880.ini
+saitek/x52_flight_control_system.ini
 sony/computer_entertainment_wireless_inputdevice.ini
 sony/playstation_r_3_controller.ini
 sony/playstation_r_3_inputdevice.ini
@@ -84,6 +86,7 @@ speed_link_competition_pro_4_2_0_0_windows.conf
 speedlink_strike_2_gamepad_12_5_1_0_windows.conf
 thrustmaster/2_in_1_dt.ini
 thrustmaster/t_mini_wireless.ini
+thrustmaster/top_gun_fox_2_pro.ini
 universal_gamepad.ini
 unknown.ini
 wireless_controller_14_6_1_0_macosx.conf
@@ -92,3 +95,4 @@ wisegroup_ltd/tigergame_ps_ps2_game_controller_adapter.ini
 xgaming/x_arcade.ini
 xgaming/x_arcade_right.ini
 xinput_controller_15_6_0_0_windows.conf
+zeemote/steelseries_free.ini
