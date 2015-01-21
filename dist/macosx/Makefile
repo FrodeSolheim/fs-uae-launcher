@@ -15,11 +15,11 @@ launcher:
 	cd ../.. && python3 setup.py build_exe
 
 	#mv ../dist/"FS-UAE Launcher.app" fs-uae-launcher_$(version)_macosx/
-	#cp -pPR ../share $(resources)/
 	# cp -pPR fs-uae_$(version)_macosx/FS-UAE.app fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app"/Contents/Resources/
 
 	mkdir -p $(macos)
 	mkdir -p $(resources)
+	cp -pPR ../../share/* $(resources)/
 	mv ../../build/*/* $(macos)
 	find fs-uae-launcher_$(version)_macosx/ -name *_debug.dylib -delete
 	mv fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app" fs-uae-launcher_$(version)_macosx/temp.app

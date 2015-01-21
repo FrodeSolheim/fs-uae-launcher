@@ -491,6 +491,15 @@ def create_model(c, show_all=False):
         else:
             model.add(graphics_card_item)
 
+    if c.uae_toccata == "true":
+        sound_card_item = Item("Toccata")
+        sound_card_item.represents = ["sound_card", "uae_toccata"]
+        if flatten:
+            sound_card_item.extra = "Zorro II"
+            model.add(sound_card_item)
+        else:
+            zorro_ii_item.add(sound_card_item)
+
     joystick_port_0_item = create_joystick_port_item(c, 0)
     joystick_port_1_item = create_joystick_port_item(c, 1)
     joystick_port_2_item = create_joystick_port_item(c, 2)

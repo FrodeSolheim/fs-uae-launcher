@@ -91,6 +91,7 @@ s("strip {package_dir}/*.so.*")
 s("strip {package_dir}/*.so")
 s("strip {package_dir}/imageformats/*.so")
 s("chmod a-x {package_dir}/*.so")
+s("cd ../.. && make")
 s("cp -a ../../share {package_dir}")
 
 s("mv {package_dir}/fs-uae-launcher {package_dir}/fs-uae-launcher.bin")

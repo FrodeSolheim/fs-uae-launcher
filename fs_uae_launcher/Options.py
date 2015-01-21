@@ -42,6 +42,7 @@ class Option(object):
     NETPLAY_TAG = "netplay_tag"
     RTG_SCANLINES = "rtg_scanlines"
     SCANLINES = "scanlines"
+    SOUND_CARD = "sound_card"
     STEREO_SEPARATION = "stereo_separation"
     SWAP_CTRL_KEYS = "swap_ctrl_keys"
     TEXTURE_FILTER = "texture_filter"
@@ -361,6 +362,16 @@ options = {
         "default": "0",
         "description": N_("Render scan lines"),
         "type": "boolean",
+    },
+
+    "sound_card": {
+        "default": "0",
+        "description": N_(""),
+        "type": "choice",
+        "values": [
+            ("0", N_("None")),
+            ("toccata", N_("Toccata Z2")),
+        ]
     },
 
     "stereo_separation": {

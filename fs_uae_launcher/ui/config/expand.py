@@ -33,10 +33,14 @@ def _accelerator(c, f):
         value = "cyberstorm-mk-iii"
     elif f.matches(value, "cyberstorm-ppc"):
         value = "cyberstorm-ppc"
+    elif f.matches(value, "dkb-1230"):
+        value = "dkb-1230"
+    elif f.matches(value, "dkb-1240"):
+        value = "dkb-1240"
+    elif f.matches(value, "fusion-forty"):
+        value = "fusion-forty"
     elif f.matches(value, "warp-engine-a4000"):
         value = "warp-engine-a4000"
-    elif f.matches(value, "tek-magic"):
-        value = "tek-magic"
     c.accelerator = value
 
 
@@ -886,6 +890,21 @@ def _slow_memory(c, f):
 
 
 # noinspection PyUnusedLocal
+def _sound_card(c, f):
+    if c.sound_card.explicit:
+        # FIXME: check supported
+        value = c.sound_card.explicit
+        if f.matches(value, "toccata"):
+            value = "toccata"
+        else:
+            f.warning(value + ": invalid value")
+            value = "0"
+    else:
+        value = "0"
+    c.sound_card = value
+
+
+# noinspection PyUnusedLocal
 def _uae_a2065(c, f):
     if c.uae_a2065.explicit:
         # FIXME: ok? keep already specified value
@@ -1137,6 +1156,12 @@ def _uae_cpuboard_type(c, f):
         value = "WarpEngineA4000"
     elif f.matches(c.accelerator, "tek-magic"):
         value = "TekMagic"
+    elif f.matches(c.accelerator, "dkb-1230"):
+        value = "DKB12x0"
+    elif f.matches(c.accelerator, "dkb-1240"):
+        value = "DKB12x0"
+    elif f.matches(c.accelerator, "fusion-forty"):
+        value = "FusionForty"
     else:
         f.fail("Unknown accelerator")
         raise Exception("Failed")
@@ -1463,6 +1488,24 @@ def _uae_slirp_implementation(c, f):
 
 
 # noinspection PyUnusedLocal
+def _uae_toccata(c, f):
+    if c.uae_toccata.explicit:
+        value = c.uae_toccata.explicit
+        if f.matches(value, ["true", "yes", "1"]):
+            value = "true"
+        elif f.matches(value, ["false", "no", "0"]):
+            value = "false"
+        else:
+            f.warning(value + ": invalid value")
+            value = "false"
+    elif c.sound_card == "toccata":
+        value = "true"
+    else:
+        value = "false"
+    c.uae_toccata = value
+
+
+# noinspection PyUnusedLocal
 def _uae_z3chipmem_size(c, f):
     if c.uae_z3chipmem_size.explicit:
         value = c.uae_z3chipmem_size.explicit
@@ -1586,6 +1629,7 @@ def expand_config(c, f):
     _joystick_port_3_mode(c, f)
     _kickstart_file(c, f)
     _kickstart_ext_file(c, f)
+    _sound_card(c, f)
     _uae_a2065(c, f)
     _uae_bogomem_size(c, f)
     _uae_cd32cd(c, f)
@@ -1608,3 +1652,4 @@ def expand_config(c, f):
     _uae_native_code(c, f)
     _uae_ppc_model(c, f)
     _uae_slirp_implementation(c, f)
+    _uae_toccata(c, f)

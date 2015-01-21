@@ -1,5 +1,7 @@
 Version 2.5.25dev:
 
+* Fixed problem locating translation files in some cases.
+* Reverted to preferring QT4 for now.
 * Added several joystick configs [johanpalmqvist].
 
 Version 2.5.24dev:

@@ -163,8 +163,12 @@ class ExpandFunctions(AbstractExpandFunctions):
     @staticmethod
     def matches(a, b):
         a = normalize(a)
-        b = normalize(b)
-        return a == b
+        if isinstance(b, list):
+            for b_item in b:
+                if a == normalize(b_item):
+                    return True
+            return False
+        return a == normalize(b)
 
     @staticmethod
     def fail(message):
