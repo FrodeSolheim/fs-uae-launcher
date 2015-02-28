@@ -1,0 +1,6 @@
+Description: Custom game database server address
+Default: oagd.net
+Example: acme-game-database.com
+Type: string
+
+You normally want to leave this value blank.

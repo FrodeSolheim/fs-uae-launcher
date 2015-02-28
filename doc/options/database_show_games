@@ -1,0 +1,9 @@
+Description: Show games from database
+Default: 1
+Example: 3
+Type: choice
+
+Value: 0 ("All games in the database")
+Value: 1 ("Games you have and all downloadable games")
+Value: 2 ("Games you have and automatically downloadable")
+Value: 3 ("Only games you have")
