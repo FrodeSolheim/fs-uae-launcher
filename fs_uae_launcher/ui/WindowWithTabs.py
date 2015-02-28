@@ -7,8 +7,8 @@ from .Skin import Skin
 
 class WindowWithTabs(fsui.Window):
 
-    def __init__(self, parent, title):
-        fsui.Window.__init__(self, parent, title)
+    def __init__(self, parent, title, border=True):
+        fsui.Window.__init__(self, parent, title, border=border)
         Skin.set_background_color(self)
         self.toolbar = None
         self.tab_panel = TabPanel(self)

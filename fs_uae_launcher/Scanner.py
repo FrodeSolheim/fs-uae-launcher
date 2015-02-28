@@ -96,7 +96,7 @@ class Scanner:
             scanner = GameScanner(
                 context, cls.paths, on_status=cls.on_status,
                 stop_check=cls.stop_check)
-            scanner.update_game_database(database)
+            scanner.update_game_database()
 
         scanner = GameScanner(
             None, cls.paths, on_status=cls.on_status,

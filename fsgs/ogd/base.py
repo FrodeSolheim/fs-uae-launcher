@@ -1,18 +1,10 @@
-import sys
 import json
 import time
 from gzip import GzipFile
 from io import StringIO
-
 from urllib.request import HTTPBasicAuthHandler, build_opener, Request
 from fsgs.res import gettext
 from .client import OGDClient
-
-
-if sys.version > '3':
-    PYTHON3 = True
-else:
-    PYTHON3 = False
 
 
 class SynchronizerBase(object):
@@ -22,15 +14,9 @@ class SynchronizerBase(object):
         self.on_status = on_status
         self._stop_check = stop_check
 
-    if PYTHON3:
-        @staticmethod
-        def bytes_to_int(m):
-            return m[0] << 24 | m[1] << 16 | m[2] << 8 | m[3]
-    else:
-        @staticmethod
-        def bytes_to_int(m):
-            return (ord(m[0]) << 24 | ord(m[1]) << 16 |
-                    ord(m[2]) << 8 | ord(m[3]))
+    @staticmethod
+    def bytes_to_int(m):
+        return m[0] << 24 | m[1] << 16 | m[2] << 8 | m[3]
 
     def stop_check(self):
         if self._stop_check:

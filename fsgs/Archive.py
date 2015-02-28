@@ -118,12 +118,18 @@ class LhaHandler(object):
 
     def exists(self, name):
         name = self.encode_name(name)
-        try:
-            self.zip.getinfo(name)
-        except KeyError:
-            return False
-        else:
-            return True
+        items = self.zip.infolist()
+        for item in items:
+            if item.filename == name:
+                return True
+        return False
+
+        # try:
+        #     self.zip.getinfo(name)
+        # except KeyError:
+        #     return False
+        # else:
+        #     return True
 
     def encode_name(self, name):
         name = name.replace("\\", "/")
@@ -169,6 +175,7 @@ class Archive(object):
 
     def __init__(self, path):
         self.path, self.sub_path = self.split_path(path)
+        self._handler = None
 
     def join(self, base, *args):
         return os.path.join(base, *args)
@@ -198,7 +205,7 @@ class Archive(object):
         return path, ""
 
     def get_handler(self):
-        if hasattr(self, "_handler"):
+        if self._handler is not None:
             return self._handler
         print("get_handler", self.path)
         name, ext = os.path.splitext(self.path)

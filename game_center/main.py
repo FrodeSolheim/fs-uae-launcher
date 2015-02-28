@@ -141,7 +141,7 @@ def main():
             cursor_position = fs_width - 1, fs_height - 1
         # use_top_clock = False
         # use_top_logo = False
-        app.settings["fs-uae:fullscreen-mode::default"] = "window"
+        # app.settings["fs-uae:fullscreen-mode::default"] = "window"
 
     if windows:
         pass

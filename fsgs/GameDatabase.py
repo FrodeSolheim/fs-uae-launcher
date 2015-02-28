@@ -5,8 +5,8 @@ import zlib
 from .BaseDatabase import BaseDatabase
 
 
-VERSION = 17
-RESET_VERSION = 17
+VERSION = 18
+RESET_VERSION = 18
 DUMMY_UUID = b"'\\x8b\\xbb\\x00Y\\x8bqM\\x15\\x972\\xa8-t_\\xb2\\xfd'"
 
 
@@ -61,20 +61,24 @@ class GameDatabase(BaseDatabase):
     def add_game(self, game_id, game_uuid, game_data):
         # print("add game", repr(game_id), repr(game_uuid), repr(game_data))
         cursor = self.internal_cursor()
-        cursor.execute("DELETE FROM game WHERE uuid = ?",
-                       (sqlite3.Binary(game_uuid),))
-        cursor.execute("INSERT INTO game (id, uuid, data) VALUES (?, ?, ?)",
-                       (game_id, sqlite3.Binary(game_uuid),
-                        sqlite3.Binary(game_data)))
+        cursor.execute(
+            "DELETE FROM game WHERE uuid = ?",
+            (sqlite3.Binary(game_uuid),))
+        cursor.execute(
+            "INSERT INTO game (id, uuid, data) VALUES (?, ?, ?)",
+            (game_id, sqlite3.Binary(game_uuid), sqlite3.Binary(game_data)))
 
     def delete_game(self, game_id, game_uuid):
         cursor = self.internal_cursor()
-        cursor.execute("DELETE FROM game WHERE uuid = ?",
-                       (sqlite3.Binary(game_uuid),))
-        cursor.execute("DELETE FROM game WHERE uuid = ?",
-                       (sqlite3.Binary(DUMMY_UUID),))
-        cursor.execute("INSERT INTO game (id, uuid, data) VALUES (?, ?, ?)",
-                       (game_id, sqlite3.Binary(DUMMY_UUID), ""))
+        cursor.execute(
+            "DELETE FROM game WHERE uuid = ?",
+            (sqlite3.Binary(game_uuid),))
+        cursor.execute(
+            "DELETE FROM game WHERE uuid = ?",
+            (sqlite3.Binary(DUMMY_UUID),))
+        cursor.execute(
+            "INSERT INTO game (id, uuid, data) VALUES (?, ?, ?)",
+            (game_id, sqlite3.Binary(DUMMY_UUID), ""))
 
     def get_game_values_for_uuid(self, game_uuid, recursive=True):
         print("get_game_values_for_uuid", game_uuid)
@@ -136,7 +140,7 @@ class GameDatabase(BaseDatabase):
         cursor.execute("DELETE FROM rating")
         cursor.execute("DELETE FROM game")
 
-    def update_database_to_version_17(self):
+    def update_database_to_version_18(self):
         cursor = self.internal_cursor()
         cursor.execute("""
             ALTER TABLE metadata ADD COLUMN games_version

@@ -1,18 +1,2 @@
-import webbrowser
-
-
-def default_url_open_function(url: str):
-    webbrowser.open(url)
-
-
-_url_open_function = default_url_open_function
-
-
-def open_url_in_browser(url: str) -> None:
-    if _url_open_function:
-        _url_open_function(url)
-
-
-def set_open_url_in_browser_function(func):
-    global _url_open_function
-    _url_open_function = func
+# noinspection PyUnresolvedReferences
+from fstd.desktop import *

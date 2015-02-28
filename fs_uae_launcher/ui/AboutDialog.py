@@ -1,5 +1,6 @@
 import fsui
 from fsui.extra.iconheader import IconHeader
+from fsbc.Application import app
 from ..I18N import gettext
 
 
@@ -13,7 +14,9 @@ class AboutDialog(fsui.Dialog):
 
         self.icon_header = IconHeader(
             self, fsui.Icon("fs-uae-launcher", "pkg:fs_uae_launcher"),
-            title, "Copyright © 2012-2014 Frode Solheim")
+            "{name} {version}".format(name="FS-UAE Launcher",
+                                      version=app.version),
+            "Copyright © 2012-2015 Frode Solheim")
         layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         self.text_area = fsui.TextArea(

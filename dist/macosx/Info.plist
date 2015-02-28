@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.5.27</string>
+	<string>2.5.28</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2.5.27</string>
+	<string>2.5.28</string>
 	<key>LSHasLocalizedDisplayName</key>
 	<true/>
 	<key>LSMinimumSystemVersion</key>

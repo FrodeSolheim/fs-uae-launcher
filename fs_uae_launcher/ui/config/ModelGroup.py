@@ -1,5 +1,6 @@
 from fsbc.util import unused
 import fsui as fsui
+import fs_uae_launcher.ui
 from ...Config import Config
 from fsgs.amiga.Amiga import Amiga
 from ...FloppyManager import FloppyManager
@@ -16,8 +17,6 @@ class ModelGroup(fsui.Group):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
-        heading_label = fsui.HeadingLabel(self, gettext("Amiga Model"))
-
         model_titles = [x["title"] for x in Amiga.models]
         self.model_choice = fsui.Choice(self, model_titles)
 
@@ -28,8 +27,11 @@ class ModelGroup(fsui.Group):
         # self.ntsc_checkbox = fsui.CheckBox(self, "NTSC")
         self.ntsc_checkbox = ConfigCheckBox(self, "NTSC", "ntsc_mode")
 
-        self.layout.add(heading_label, margin=10)
-        self.layout.add_spacer(0)
+        if fs_uae_launcher.ui.get_screen_size()[1] > 768:
+            heading_label = fsui.HeadingLabel(self, gettext("Amiga Model"))
+            self.layout.add(heading_label, margin=10)
+            self.layout.add_spacer(0)
+
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
         hori_layout.add(self.model_choice, expand=True, margin=10)

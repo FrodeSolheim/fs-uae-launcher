@@ -11,6 +11,8 @@ class OAGDClient(object):
     def __init__(self):
         self._server = None
         self._opener = None
+        self._json = None
+        self.data = b""
 
         # FIXME: we don't want dependency on Settings here
         from fs_uae_launcher.Settings import Settings

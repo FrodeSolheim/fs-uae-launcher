@@ -1,5 +1,5 @@
 import os
-import xml.etree.cElementTree as element_tree
+import xml.etree.cElementTree as ElementTree
 
 
 class DatFile(object):
@@ -23,7 +23,7 @@ class DatFile(object):
             self._load_path(file)
 
     def _load_path(self, path):
-        with open(path, "rb") as f:
+        with open(path, "r", encoding="UTF-8") as f:
             self._load_file(f)
 
     def _load_file(self, f):
@@ -39,7 +39,7 @@ class DatFile(object):
     def _load_xml(self, data):
         self.reset()
 
-        root = element_tree.fromstring(data)
+        root = ElementTree.fromstring(data)
         header_node = root.find("header")
         self.description = header_node.find("description").text.strip()
         for game_node in root.findall("game"):

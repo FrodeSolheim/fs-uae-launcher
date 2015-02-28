@@ -51,7 +51,7 @@ class DatabaseRefreshTask(Task):
         scanner = GameScanner(
             context, None, on_status=self.on_status,
             stop_check=self.stop_check)
-        scanner.update_game_database(database)
+        scanner.update_game_database()
         scanner.scan(database)
 
         # FIXME: review what signals should be sent when a scan is performed

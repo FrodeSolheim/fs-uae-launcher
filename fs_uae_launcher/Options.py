@@ -18,6 +18,7 @@ class Option(object):
     DATABASE_SERVER = "database_server"
     DATABASE_SHOW_ADULT = "database_show_adult"
     DATABASE_SHOW_GAMES = "database_show_games"
+    DATABASE_SNES = "database_snes"
     DATABASE_USERNAME = "database_username"
     DEVICE_ID = "device_id"
     FLOPPY_DRIVE_VOLUME = "floppy_drive_volume"
@@ -192,6 +193,12 @@ options = {
             ("2", N_("Games you have and automatically downloadable")),
             ("3", N_("Only games you have")),
         ]
+    },
+
+    "database_snes": {
+        "default": "",
+        "description": N_("Enable/disable use of SNES database"),
+        "type": "boolean",
     },
 
     "database_username": {
@@ -370,7 +377,7 @@ options = {
         "type": "choice",
         "values": [
             ("0", N_("None")),
-            ("toccata", N_("Toccata Z2")),
+            ("toccata", "Toccata"),
         ]
     },
 

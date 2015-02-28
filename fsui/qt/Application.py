@@ -51,6 +51,7 @@ class Application(BaseApplication):
         # fix_qt_for_maverick()
         set_open_url_in_browser_function(open_url_in_browser)
         self.qapplication = QtBaseApplication([])
+        # self.qapplication.setApplicationName("FS-UAE Launcher")
 
         self.on_create()
 

@@ -7,12 +7,15 @@ import threading
 
 
 thread_local = threading.local()
-VERSION = 23
-RESET_VERSION = 22
+VERSION = 27
+RESET_VERSION = 27
 QUOTED_TERMS_RE = re.compile("[\"].*?[\"]")
 
 
 class Database(BaseDatabase):
+
+    VERSION = VERSION
+    RESET_VERSION = RESET_VERSION
 
     @classmethod
     def get_path(cls):
@@ -214,7 +217,7 @@ class Database(BaseDatabase):
         print("FIXME: not looking up ratings yet!")
         cursor.execute(
             "SELECT uuid, name, game_uuid, 0 as like_rating, "
-            "0 as work_rating, have FROM game_variant WHERE "
+            "0 as work_rating, have, database FROM game_variant WHERE "
             "game_uuid = ? AND have >= ? ORDER BY like_rating DESC, "
             "work_rating DESC, name", (game_uuid, have))
 
@@ -602,7 +605,7 @@ class Database(BaseDatabase):
         cursor.execute("SELECT uuid, name FROM game_list")
         return cursor.fetchall()
 
-    def update_database_to_version_22(self):
+    def update_database_to_version_27(self):
         cursor = self.internal_cursor()
         cursor.execute("""CREATE TABLE game (
                 id INTEGER PRIMARY KEY,
@@ -621,12 +624,14 @@ class Database(BaseDatabase):
                 sort_key TEXT,
                 have INTEGER,
                 path TEXT,
+                adult INT,
                 update_stamp INTEGER
         )""")
         cursor.execute("CREATE INDEX game_uuid ON game(uuid)")
         cursor.execute("CREATE INDEX game_sort_key ON game(sort_key)")
         cursor.execute("""CREATE TABLE game_variant (
                 id INTEGER PRIMARY KEY,
+                database TEXT,
                 uuid TEXT,
                 name TEXT,
                 game_uuid TEXT,
@@ -673,10 +678,3 @@ class Database(BaseDatabase):
             )""")
         cursor.execute("""CREATE INDEX game_list_game_list_uuid
             ON  game_list_game(list_uuid)""")
-
-    def update_database_to_version_23(self):
-        cursor = self.internal_cursor()
-        cursor.execute("ALTER TABLE game ADD COLUMN adult INT")
-        cursor.execute("UPDATE game SET adult = 1 WHERE id in "
-                       "(SELECT game FROM search_term "
-                       "WHERE term = 't:adult')")

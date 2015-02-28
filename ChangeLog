@@ -1,3 +1,10 @@
+Version 2.5.28dev:
+
+* Fixed Windows console appearing when using portable launchers.
+* Automatically maximize when desktop height <= 768.
+* Support for multiple game databases.
+* Remove window border when running under GNOME 3 with desktop height <= 768.
+
 Version 2.5.25dev:
 
 * Fixed problem locating translation files in some cases.

@@ -12,12 +12,7 @@ from fsgs.util.GameNameUtil import GameNameUtil
 # from fsgs.ogd.meta import MetaSynchronizer
 from fsgs.ogd.locker import LockerSynchronizer
 
-
-def binary_to_uuid(v):
-    v = hexlify(v).decode("ASCII")
-    return "{0}-{1}-{2}-{3}-{4}".format(
-        v[0:8], v[8:12], v[12:16], v[16:20], v[20:32])
-
+from fs_uae_launcher.Options import Option
 
 GAME_ENTRY_TYPE_GAME = 1 << 0
 GAME_ENTRY_TYPE_VARIANT = 1 << 1
@@ -26,6 +21,7 @@ GAME_ENTRY_TYPE_VARIANT = 1 << 1
 class GameScanner(object):
 
     def __init__(self, context, _, on_status=None, stop_check=None):
+        self.fsgs = fsgs
         self.context = context
         # self.paths = paths
         self.on_status = on_status
@@ -41,6 +37,37 @@ class GameScanner(object):
         if self.on_status:
             self.on_status((title, status))
 
+    def game_databases(self):
+        if True:
+            # yield "openretro.org/amiga", self.fsgs.get_game_database()
+            yield "openretro.org/amiga", self.fsgs.get_game_database()
+        if Settings.get(Option.DATABASE_SNES) == "1":
+            yield "openretro.org/snes", self.fsgs.game_database("snes")
+
+    def update_game_database(self):
+        for database_name, game_database in self.game_databases():
+            with game_database:
+                self._update_game_database(database_name, game_database)
+            if self.stop_check():
+                return
+        # with self.fsgs.get_game_database() as game_database:
+        #     self._update_game_database(game_database)
+        #     if self.stop_check():
+        #         return
+
+        synchronizer = LockerSynchronizer(
+            self.context, on_status=self.on_status, stop_check=self.stop_check)
+        synchronizer.synchronize()
+
+    def _update_game_database(self, database_name, game_database):
+        game_database_client = GameDatabaseClient(game_database)
+        synchronizer = GameDatabaseSynchronizer(
+            self.context, game_database_client, on_status=self.on_status,
+            stop_check=self.stop_check, platform_id=database_name)
+        synchronizer.username = "auth_token"
+        synchronizer.password = Settings.get("database_auth")
+        synchronizer.synchronize()
+
     def scan(self, database):
         self.set_status(
             gettext("Scanning games"), gettext("Please wait..."))
@@ -48,131 +75,69 @@ class GameScanner(object):
         self.set_status(gettext("Scanning configurations"),
                         gettext("Scanning game database entries..."))
 
-        with fsgs.get_game_database() as game_database:
-            # self.update_game_database(game_database)
-            # if self.stop_check():
-            #     return
-
-            self.scan_game_database(database, game_database)
+        helper = ScanHelper(database)
+        for database_name, game_database in self.game_databases():
+            with game_database:
+                self.scan_game_database(helper, database_name, game_database)
             if self.stop_check():
                 return
 
-    def update_game_database(self, database):
-        with fsgs.get_game_database() as game_database:
-            self._update_game_database(game_database)
-            if self.stop_check():
-                return
+        # if False:
+        #     with self.fsgs.get_game_database() as game_database:
+        #         self.scan_game_database(helper, game_database)
+        #         if self.stop_check():
+        #             return
+        # if Settings.get(Option.DATABASE_SNES) == "1":
+        #     with self.fsgs.game_database("snes") as game_database:
+        #         self.scan_game_database(helper, game_database)
+        #         if self.stop_check():
+        #             return
+        helper.finish()
 
-    def _update_game_database(self, game_database):
-        game_database_client = GameDatabaseClient(game_database)
-        synchronizer = GameDatabaseSynchronizer(
-            self.context, game_database_client, on_status=self.on_status,
-            stop_check=self.stop_check)
-        synchronizer.username = "auth_token"
-        synchronizer.password = Settings.get("database_auth")
-        synchronizer.synchronize()
-
-        synchronizer = LockerSynchronizer(
-            self.context, on_status=self.on_status, stop_check=self.stop_check)
-        synchronizer.synchronize()
-
-    def scan_game_database(self, database, game_database):
+    def scan_game_database(self, helper, database_name, game_database):
         """
-
+        :type helper: ScanHelper
         :type game_database: fsgs.GameDatabase.GameDatabase
-        :type database: fsgs.Database.Database
         """
-        cursor = database.cursor()
-
-        existing_games = {}
-        cursor.execute("SELECT uuid, update_stamp, have, id FROM game "
-                       "WHERE uuid IS NOT NULL")
-        for row in cursor:
-            existing_games[row[0]] = row[1], row[2], row[3]
-
-        existing_variants = {}
-        cursor.execute("SELECT uuid, update_stamp, have, id FROM game_variant")
-        for row in cursor:
-            existing_variants[row[0]] = row[1], row[2], row[3]
+        database_cursor = helper.database.cursor()
 
         # this holds a list of game entry UUIDs which must exist / be checked
         # after variants have been processed
-        ensure_updated_games = set()
+        # ensure_updated_games = set()
 
-        file_stamps = FileDatabase.get_instance().get_last_event_stamps()
-        cached_file_stamps = database.get_last_file_event_stamps()
-        added_files = file_stamps["last_file_insert"] != \
-            cached_file_stamps["last_file_insert"]
-        deleted_files = file_stamps["last_file_delete"] != \
-            cached_file_stamps["last_file_delete"]
-
-        game_cursor = game_database.cursor()
-        # game_cursor.execute(
-        #     "SELECT a.uuid, a.game, a.variant, a.name, a.platform, "
-        #     "a.downloadable, a.update_stamp, value, b.uuid, b.game, "
-        #     "b.sort_key, "
-        #     "b.year, b.publisher, b.front_sha1, b.title_sha1, "
-        #     "b.screen1_sha1, b.screen2_sha1, b.screen3_sha1, "
-        #     "b.screen4_sha1, b.screen5_sha1 "
-        #     "FROM game a LEFT JOIN game b ON a.parent = b.id, value "
-        #     "WHERE a.id = value.game AND value.status = 1 AND "
-        #     "value.name = 'file_list' AND a.status > -30")
+        game_database_cursor = game_database.cursor()
 
         # this list will contain game entries which are not variants
         game_rows = []
 
-        game_cursor.execute("SELECT id, uuid FROM game WHERE data != ''")
-        for row in game_cursor:
+        game_database_cursor.execute(
+            "SELECT id, uuid FROM game WHERE data != ''")
+        for row in game_database_cursor:
             if self.stop_check():
                 return
 
             variant_id, variant_uuid_bin = row
             variant_uuid = binary_to_uuid(variant_uuid_bin)
             update_stamp = variant_id
-            # (uuid, game_name, variant, alt_name, platform, downloadable,
-            #  update_stamp,
-            # file_list_json, parent_uuid, parent_game, parent_sort_key, year,
-            # publisher, front_sha1, title_sha1, screen1_sha1, screen2_sha1,
-            # screen3_sha1, screen4_sha1, screen5_sha1) = row
 
-            # if not file_list_json:
-            #     # not a game variant (with files)
-            #     continue
-
-            existing_variant = existing_variants.get(
+            existing_variant = helper.existing_variants.get(
                 variant_uuid, (None, None, None))
-
-            def variant_seen(seen_variant_uuid):
-                # after the loop has run its course, variants to be removed
-                # are left in existing_variants
-                try:
-                    del existing_variants[seen_variant_uuid]
-                except KeyError:
-                    pass
-
-            def game_seen(seem_game_uuid):
-                # after the loop has run its course, games to be removed
-                # are left in existing_games
-                try:
-                    del existing_games[seem_game_uuid]
-                except KeyError:
-                    pass
 
             if update_stamp == existing_variant[0]:
                 # entry was already updated and has not changed
-                if existing_variant[1] and not deleted_files:
+                if existing_variant[1] and not helper.deleted_files:
                     # have this entry already and no files have been deleted
                     # since the last time
 
                     # print("skipping variant (no deleted files)")
-                    variant_seen(variant_uuid)
+                    helper.variant_seen(variant_uuid)
                     continue
-                if not existing_variant[1] and not added_files:
+                if not existing_variant[1] and not helper.added_files:
                     # do not have this entry, but no files have been added
                     # since the last time
 
                     # print("skipping variant (no added files)")
-                    variant_seen(variant_uuid)
+                    helper.variant_seen(variant_uuid)
                     continue
             else:
                 # when the game entry has changed, we always check it
@@ -181,28 +146,10 @@ class GameScanner(object):
                 # needs to be corrected)
                 pass
 
-            # print("\nscanning", alt_name, update_stamp, existing_variant)
-
             self.scan_count += 1
             self.set_status(
                 gettext("Scanning game variants ({count} scanned)").format(
                     count=self.scan_count), variant_uuid)
-
-            # cursor.execute("SELECT data FROM game WHERE id = ?",
-            #                (variant_id,))
-            # doc = json.loads(cursor.fetchone()[0])
-            # next_parent_uuid = doc.get("parent_uuid", "")
-            # while next_parent_uuid:
-            #     cursor.execute(
-            #         "SELECT data FROM game WHERE uuid = ?",
-            #         (sqlite3.Binary(unhexlify(next_parent_uuid)),))
-            #     next_doc = json.loads(cursor.fetchone()[0])
-            #     next_parent_uuid = next_doc.get("parent_uuid", "")
-            #     # let child doc overwrite and append values to parent doc
-            #     next_doc.update(doc)
-            #     doc = next_doc
-            # del next_parent_uuid
-            # del next_doc
 
             doc = game_database.get_game_values(variant_id)
 
@@ -212,16 +159,14 @@ class GameScanner(object):
                 game_rows.append(row)
                 continue
 
-            # print(sorted(doc.items()))
             entry_type = int(doc.get("_type", "0"))
-            # print("\n\n\nentry type:", entry_type, "\n\n\n")
             if (entry_type & GAME_ENTRY_TYPE_VARIANT) == 0:
                 # game entry is not tagged with variant -- add to game list
                 # instead
                 game_rows.append(row)
                 continue
 
-            variant_seen(variant_uuid)
+            helper.variant_seen(variant_uuid)
 
             all_files_found = True
             try:
@@ -236,9 +181,7 @@ class GameScanner(object):
                 if file_item["name"].endswith("/"):
                     # skip directory entries:
                     continue
-                # location = fsgs.file.find_by_sha1(file_item["sha1"])
-                # location = fsgs.file.check_sha1(file_item["sha1"])
-                result = fsgs.file.check_sha1(file_item["sha1"])
+                result = self.fsgs.file.check_sha1(file_item["sha1"])
                 if not result:
                     all_files_found = False
                     break
@@ -253,102 +196,26 @@ class GameScanner(object):
                 have_variant = 0
 
             parent_uuid = doc.get("parent_uuid", "")
-            game_name = doc.get("game_name", "")
-            platform_name = doc.get("platform", "")
             variant_name = doc.get("variant_name", "")
-            if not game_name:
-                alt_name = doc.get("alt_name", "")
-                game_name = alt_name.split("(", 1)[0]
-
-            name = "{0} ({1}, {2})".format(
-                game_name, platform_name, variant_name)
-
-            # # search = self.create_configuration_search(name)
-            # # config_name = self.create_configuration_name(name)
-            #
-            # if not parent_uuid:
-            #    have_variant = 0
-            #
-            # #    reference = parent_uuid
-            # #    type = game_entry_type + 4
-            # # else:
-            # #    reference = uuid
-            # #    type = game_entry_type
-            #
-            # # cursor = game_database.cursor()
-            # # cursor.execute("SELECT like_rating, work_rating FROM "
-            # #               "game_rating WHERE game = ?", (uuid,))
-            # # row = cursor.fetchone()
-            # # if row is None:
-            # #    like_rating, work_rating = 0, 0
-            # # else:
-            # #    like_rating, work_rating = row
-            #
-            # # the following is used by FS-UAE Launcher for the combined
-            # # game / configurations list
-            #
-            # # database.add_configuration(
-            # #    path="", uuid=uuid, name=config_name, scan=self.scan_version,
-            # #    search=search, type=type, reference=reference,
-            # #    like_rating=like_rating, work_rating=work_rating)
-            # #
-            # # if parent_uuid:
-            # #    parent_name = "{0}\n{1}".format(parent_game, platform)
-            # #    database.ensure_game_configuration(
-            # #        parent_uuid, parent_name, parent_sort_key,
-            # #        scan=self.scan_version, type=game_entry_type)
 
             # the following is used by the FS Game Center frontend
 
             game_variant_id = existing_variant[2]
             if not game_variant_id:
                 # variant is not in database
-                cursor.execute("INSERT INTO game_variant (uuid) "
-                               "VALUES (?)", (variant_uuid,))
-                game_variant_id = cursor.lastrowid
+                database_cursor.execute(
+                    "INSERT INTO game_variant (uuid) VALUES (?)",
+                    (variant_uuid,))
+                game_variant_id = database_cursor.lastrowid
 
-            cursor.execute(
+            database_cursor.execute(
                 "UPDATE game_variant SET name = ?, game_uuid = ?, have = ?, "
-                "update_stamp = ? WHERE id = ?",
+                "update_stamp = ?, database = ? WHERE id = ?",
                 (variant_name, parent_uuid, have_variant, update_stamp,
-                 game_variant_id))
+                 database_name, game_variant_id))
 
-            ensure_updated_games.add(parent_uuid)
+            # ensure_updated_games.add(parent_uuid)
 
-            # database.add_game_variant_new(
-            #    uuid=uuid, name=name, game_uuid=parent_uuid,
-            #    like_rating=like_rating, work_rating=work_rating,
-            #    scanned=self.scan_version)
-
-            # if parent_uuid:
-            #     # parent_name = "{0}\n{1}".format(parent_game, platform)
-            #     # database.ensure_game_configuration(parent_uuid, parent_name,
-            #     #        parent_sort_key, scan=self.scan_version)
-            #     year = year or 0
-            #     publisher = publisher or ""
-            #     front_sha1 = "sha1:" + front_sha1 if front_sha1 else ""
-            #     title_sha1 = "sha1:" + title_sha1 if title_sha1 else ""
-            #     screen1_sha1 = "sha1:" + screen1_sha1 if screen1_sha1 else ""
-            #     screen2_sha1 = "sha1:" + screen2_sha1 if screen2_sha1 else ""
-            #     screen3_sha1 = "sha1:" + screen3_sha1 if screen3_sha1 else ""
-            #     screen4_sha1 = "sha1:" + screen4_sha1 if screen4_sha1 else ""
-            #     screen5_sha1 = "sha1:" + screen5_sha1 if screen5_sha1 else ""
-            #
-            #     database.add_game_new(
-            #         parent_uuid, parent_game, platform, year, publisher,
-            #         front_sha1, title_sha1, screen1_sha1, screen2_sha1,
-            #         screen3_sha1, screen4_sha1, screen5_sha1,
-            #         parent_sort_key, scanned=self.scan_version)
-
-        # game_cursor = game_database.cursor()
-        # game_cursor.execute(
-        #     "SELECT b.uuid, b.game, b.update_stamp, "
-        #     "b.sort_key, b.platform, "
-        #     "b.year, b.publisher, b.front_sha1, b.title_sha1, "
-        #     "b.screen1_sha1, b.screen2_sha1, b.screen3_sha1, "
-        #     "b.screen4_sha1, b.screen5_sha1, b.id "
-        #     "FROM game b WHERE files = 0")
-        # for row in game_cursor:
         for row in game_rows:
             if self.stop_check():
                 return
@@ -357,52 +224,33 @@ class GameScanner(object):
             game_uuid = binary_to_uuid(game_uuid_bin)
             update_stamp = game_id
 
-            # (game_uuid, game_name, update_stamp, sort_key, platform, year,
-            #  publisher, front_sha1, title_sha1, screen1_sha1, screen2_sha1,
-            #  screen3_sha1, screen4_sha1, screen5_sha1, game_id) = row
-
-            existing_game = existing_games.get(
+            existing_game = helper.existing_games.get(
                 game_uuid, (None, None, None))
 
             if update_stamp == existing_game[0]:
                 # after the loop has run its course, games to be removed
                 # are left in existing_games
-                try:
-                    del existing_games[game_uuid]
-                except KeyError:
-                    pass
-
+                helper.game_seen(game_uuid)
                 continue
-
-            # print("\nscanning game", game_name, update_stamp, existing_game)
 
             self.scan_count += 1
             self.set_status(gettext("Scanning games ({count} scanned)").format(
                 count=self.scan_count), game_uuid)
 
-            # values = game_database_client.get_final_game_values(game_id)
-
             doc = game_database.get_game_values(game_id)
 
-            # print(sorted(doc.items()))
             entry_type = int(doc.get("_type", "0"))
-            # print("\n\n\nentry type:", entry_type, "\n\n\n")
             if (entry_type & GAME_ENTRY_TYPE_GAME) == 0:
                 continue
 
             # after the loop has run its course, games to be removed
             # are left in existing_games
             try:
-                del existing_games[game_uuid]
+                del helper.existing_games[game_uuid]
             except KeyError:
                 pass
 
-            # if not game_name:
-            #     game_name = alt_name.split("(", 1)[0]
-            # name = "{0} ({1}, {2})".format(game_name, platform, variant)
             game_name = doc.get("game_name", "")
-            search = self.create_configuration_search(game_name)
-            config_name = self.create_configuration_name(game_name)
 
             platform = doc.get("platform", "")
             tags = doc.get("tags", "")
@@ -424,9 +272,9 @@ class GameScanner(object):
             game_id = existing_game[2]
             if not game_id:
                 # game is not in database
-                cursor.execute(
+                database_cursor.execute(
                     "INSERT INTO game (uuid) VALUES (?)", (game_uuid,))
-                game_id = cursor.lastrowid
+                game_id = database_cursor.lastrowid
 
             search_terms = set()
             for key in ["game_name", "full_name", "game_name_alt",
@@ -482,7 +330,7 @@ class GameScanner(object):
                     for i in range(min_players + 1, sim_players + 1):
                         search_terms.add("p:{0}s".format(i))
 
-            cursor.execute(
+            database_cursor.execute(
                 "UPDATE game SET name = ?, update_stamp = ?, sort_key = ?, "
                 "platform = ?, "
                 "publisher = ?, year = ?, front_image = ?, title_image = ?, "
@@ -501,58 +349,82 @@ class GameScanner(object):
                  1 if "t:adult" in search_terms else None,
                  game_id))
 
-            database.update_game_search_terms(game_id, search_terms)
+            helper.database.update_game_search_terms(game_id, search_terms)
 
-        # print("a")
-        # cursor.execute("SELECT game.id FROM game LEFT JOIN game_variant ON "
-        #                "game.uuid = game_variant.game_uuid WHERE "
-        #                "game_variant.id IS NULL")
-        # print("b")
-        # for row in cursor.fetchall():
-        #     cursor.execute("DELETE FROM game WHERE id = ?", (row[0],))
+
+class ScanHelper(object):
+
+    def __init__(self, database):
+        self.database = database
+        database_cursor = self.database.cursor()
+
+        database_cursor.execute(
+            "SELECT uuid, update_stamp, have, id FROM game "
+            "WHERE uuid IS NOT NULL")
+        self.existing_games = {}
+        for row in database_cursor:
+            self.existing_games[row[0]] = row[1], row[2], row[3]
+        database_cursor.execute(
+            "SELECT uuid, update_stamp, have, id FROM game_variant")
+        self.existing_variants = {}
+        for row in database_cursor:
+            self.existing_variants[row[0]] = row[1], row[2], row[3]
+
+        self.file_stamps = FileDatabase.get_instance().get_last_event_stamps()
+        cached_file_stamps = self.database.get_last_file_event_stamps()
+        self.added_files = self.file_stamps["last_file_insert"] != \
+            cached_file_stamps["last_file_insert"]
+        self.deleted_files = self.file_stamps["last_file_delete"] != \
+            cached_file_stamps["last_file_delete"]
+
+    def game_seen(self, seen_game_uuid):
+        # after the loop has run its course, games to be removed
+        # are left in existing_games
+        try:
+            del self.existing_games[seen_game_uuid]
+        except KeyError:
+            pass
+
+    def variant_seen(self, seen_variant_uuid):
+        # after the loop has run its course, variants to be removed
+        # are left in existing_variants
+        try:
+            del self.existing_variants[seen_variant_uuid]
+        except KeyError:
+            pass
+
+    def finish(self):
+        database_cursor = self.database.cursor()
 
         # variants left in this list must now be deleted
-        for row in existing_variants.values():
+        for row in self.existing_variants.values():
             variant_id = row[2]
-            cursor.execute("DELETE FROM game_variant WHERE id = ?",
-                           (variant_id,))
+            database_cursor.execute(
+                "DELETE FROM game_variant WHERE id = ?", (variant_id,))
 
         # games left in this list must now be deleted
-        for row in existing_games.values():
+        for row in self.existing_games.values():
             game_id = row[2]
-            cursor.execute("DELETE FROM game WHERE id = ?", (game_id,))
+            database_cursor.execute(
+                "DELETE FROM game WHERE id = ?", (game_id,))
 
-        cursor.execute("SELECT count(*) FROM game WHERE uuid IS NOT NULL "
-                       "AND (have IS NULL OR have "
-                       "!= (SELECT coalesce(max(have), 0) FROM game_variant "
-                       "WHERE game_uuid = game.uuid))")
-        # if cursor.rowcount > 0:
-        update_rows = cursor.fetchone()[0]
+        database_cursor.execute(
+            "SELECT count(*) FROM game WHERE uuid IS NOT NULL "
+            "AND (have IS NULL OR have != (SELECT coalesce(max(have), 0) "
+            "FROM game_variant WHERE game_uuid = game.uuid))")
+        update_rows = database_cursor.fetchone()[0]
         print(update_rows, "game entries need update for have field")
         if update_rows > 0:
-            # print("c1")
-            cursor.execute(
+            database_cursor.execute(
                 "UPDATE game SET have = (SELECT coalesce(max(have), 0) FROM "
                 "game_variant WHERE game_uuid = game.uuid) WHERE uuid IS NOT "
                 "NULL AND (have IS NULL OR have != (SELECT coalesce(max("
                 "have), 0) FROM game_variant WHERE game_uuid = game.uuid))")
-        # print("d")
         FileDatabase.get_instance().get_last_event_stamps()
-        database.update_last_file_event_stamps(file_stamps)
+        self.database.update_last_file_event_stamps(self.file_stamps)
 
-    @classmethod
-    def create_configuration_search(cls, name):
-        return name.lower()
 
-    @classmethod
-    def create_configuration_name(cls, name):
-        if "(" in name:
-            primary, secondary = name.split("(", 1)
-            secondary = secondary.replace(", ", " \u00b7 ")
-            # name = primary.rstrip() + " \u2013 " + secondary.lstrip()
-            name = primary.rstrip() + "\n" + secondary.lstrip()
-            if name[-1] == ")":
-                name = name[:-1]
-            name = name.replace(") (", " \u00b7 ")
-            name = name.replace(")(", " \u00b7 ")
-        return name
+def binary_to_uuid(v):
+    v = hexlify(v).decode("ASCII")
+    return "{0}-{1}-{2}-{3}-{4}".format(
+        v[0:8], v[8:12], v[12:16], v[16:20], v[20:32])

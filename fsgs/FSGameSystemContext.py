@@ -302,14 +302,27 @@ class FSGameSystemContext(object):
         return self._netplay
 
     def get_game_database(self):
-        if not hasattr(self.thread_local, "game_database"):
+        return self.game_database("openretro.org/amiga")
+
+    def game_database(self, database_name):
+        if database_name == "openretro.org/amiga":
+            # use legacy name for now
+            database_name = "oagd.net"
+        attr_name = "game_database_" + database_name.replace("/", "_")
+        if not hasattr(self.thread_local, attr_name):
             # FIXME
             from fsgs.FSGSDirectories import FSGSDirectories
-            path = os.path.join(
-                FSGSDirectories.get_cache_dir(),
-                OGDClient.get_server() + ".sqlite")
-            self.thread_local.game_database = GameDatabase(path)
-        return self.thread_local.game_database
+            # FIXME
+            # path = os.path.join(
+            #     FSGSDirectories.get_cache_dir(), "openretro.org")
+            path = os.path.join(FSGSDirectories.get_cache_dir(),
+                                database_name + ".sqlite")
+            if not os.path.exists(os.path.dirname(path)):
+                os.makedirs(os.path.dirname(path))
+            # path = os.path.join(path, short_platform_id + ".sqlite")
+            database = GameDatabase(path)
+            setattr(self.thread_local, attr_name, database)
+        return getattr(self.thread_local, attr_name)
 
     @property
     def cache_dir(self):
@@ -422,8 +435,9 @@ class GameContext(object):
     def fsgs(self):
         return self._context()
 
-    def set_from_variant_uuid(self, variant_uuid):
-        game_database = self.fsgs.get_game_database()
+    def set_from_variant_uuid(self, database_name, variant_uuid):
+        print("set_from_variant_uuid", database_name, variant_uuid)
+        game_database = self.fsgs.game_database(database_name)
         values = game_database.get_game_values_for_uuid(variant_uuid)
         if not values.get("_type", "") == "2":
             return {}

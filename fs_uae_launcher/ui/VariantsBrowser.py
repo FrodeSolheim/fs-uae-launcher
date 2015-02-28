@@ -164,8 +164,8 @@ class VariantsBrowser(fsui.ItemChoice):
 
     def update_list(self, game_uuid):
         database = Database.get_instance()
-        game_database = fsgs.get_game_database()
         items = database.find_game_variants_new(game_uuid, have=0)
+
         # items = database.search_configurations(self.search)
         sortable_items = []
         for i, item in enumerate(items):
@@ -179,6 +179,7 @@ class VariantsBrowser(fsui.ItemChoice):
             # only show variant name (without game name)
             name = name.split("\n", 1)[-1]
 
+            game_database = fsgs.game_database(item["database"])
             item["like_rating"], item["work_rating"] = game_database\
                 .get_ratings_for_game(item["uuid"])
             item["personal_rating"], ignored = database.get_ratings_for_game(
@@ -260,7 +261,9 @@ class VariantsBrowser(fsui.ItemChoice):
 
     def _load_variant(self, item):
         variant_uuid = item["uuid"]
-        game_database = fsgs.get_game_database()
+        print(item)
+        game_database = fsgs.game_database(item["database"])
+
         # game_database_client = GameDatabaseClient(game_database)
         # try:
         #     variant_id = game_database_client.get_game_id(variant_uuid)
@@ -295,6 +298,7 @@ class VariantsBrowser(fsui.ItemChoice):
         Config.set("variant_uuid", variant_uuid)
         Config.set("variant_rating", str(item["personal_rating"]))
         Config.set("__changed", "0")
+        Config.set("__database", item["database"])
 
     def get_min_width(self):
         return 0

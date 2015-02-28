@@ -17,7 +17,8 @@ class GameDatabaseSynchronizer(object):
     username = ""
     password = ""
 
-    def __init__(self, context, client, on_status=None, stop_check=None):
+    def __init__(self, context, client, on_status=None, stop_check=None,
+                 platform_id="amiga"):
         self.context = context
         if client:
             self.client = client
@@ -25,6 +26,14 @@ class GameDatabaseSynchronizer(object):
         self.downloaded_size = 0
         self.on_status = on_status
         self._stop_check = stop_check
+        if "/" in platform_id:
+            self.host, self.platform_id = platform_id.split("/")
+            if self.platform_id == "amiga":
+                # use legacy name for now
+                self.host = "oagd.net"
+        else:
+            self.host = ""
+            self.platform_id = platform_id
 
     def stop_check(self):
         if self._stop_check:
@@ -45,8 +54,9 @@ class GameDatabaseSynchronizer(object):
         if self.stop_check():
             self.client.database.rollback()
         else:
-            print("commiting data")
-            self.set_status(gettext("Updating database"), gettext("Committing data..."))
+            print("committing data")
+            self.set_status(gettext("Updating database"),
+                            gettext("Committing data..."))
             self.database.commit()
             print("done")
 
@@ -123,7 +133,10 @@ class GameDatabaseSynchronizer(object):
             self.downloaded_size / (1024 * 1024)))
 
     def get_server(self):
-        server = OGDClient.get_server()
+        if self.host:
+            server = self.host
+        else:
+            server = OGDClient.get_server()
         auth_handler = HTTPBasicAuthHandler()
         auth_handler.add_password(
             realm="Open Amiga Game Database",
@@ -137,24 +150,12 @@ class GameDatabaseSynchronizer(object):
         self.set_status(
             gettext("Fetching database entries ({0})").format(last_id + 1))
         server = self.get_server()[0]
-        url = "http://{0}/api/game-sync/1?last={1}".format(server, last_id)
+        url = "http://{0}/api/sync/{1}/games?last={2}".format(
+            server, self.platform_id, last_id)
         print(url)
         data = self.fetch_data(url)
         self.downloaded_size += len(data)
         return data
-
-    def fetch_change_entries(self):
-        last_id = self.client.get_last_change_id()
-        self.set_status(
-            gettext("Fetching database entries ({0})").format(last_id + 1))
-        server = self.get_server()[0]
-        url = "http://{0}/api/1/changes?from={1}".format(server, last_id + 1)
-        print(url)
-        data, json_data = self.fetch_json(url)
-        self.downloaded_size += len(data)
-
-        # print(json_data)
-        return json_data
 
     def fetch_rating_entries(self):
         cursor = self.client.database.cursor()
@@ -163,15 +164,14 @@ class GameDatabaseSynchronizer(object):
         last_time = row[0]
         if not last_time:
             last_time = "2012-01-01 00:00:00"            
-        self.set_status(gettext("Fetching game ratings ({0})").format(last_time))
+        self.set_status(
+            gettext("Fetching game ratings ({0})").format(last_time))
         server = self.get_server()[0]
-        url = "http://{0}/api/1/ratings?from={1}".format(
-            server, quote_plus(last_time))
+        url = "http://{0}/api/sync/{1}/ratings?from={2}".format(
+            server, self.platform_id, quote_plus(last_time))
         print(url)
         data, json_data = self.fetch_json(url)
         self.downloaded_size += len(data)
-
-        # print(json_data)
         return json_data
 
     def fetch_json_attempt(self, url):
@@ -211,7 +211,8 @@ class GameDatabaseSynchronizer(object):
                                 i + 1, int(sleep_time)))
                 time.sleep(sleep_time)
                 self.set_status(
-                    gettext("Retrying last operation (attempt {0})").format(i + 1))
+                    gettext("Retrying last operation (attempt {0})").format(
+                        i + 1))
 
         return self.fetch_json_attempt(url)
 
@@ -253,6 +254,7 @@ class GameDatabaseSynchronizer(object):
                                 i + 1, int(sleep_time)))
                 time.sleep(sleep_time)
                 self.set_status(
-                    gettext("Retrying last operation (attempt {0})").format(i + 1))
+                    gettext("Retrying last operation (attempt {0})").format(
+                        i + 1))
 
         return self.fetch_data_attempt(url)

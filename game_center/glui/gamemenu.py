@@ -140,7 +140,7 @@ class GameMenu(Menu):
                 ((1 - bool(variant["have"]),
                   1000 - variant["personal_rating"],
                   1000 - variant["like_rating"]),
-                (variant_uuid, variant_name)))
+                 (variant_uuid, variant_name, variant["database"])))
         ordered_list.sort()
         print("ordered variant list:")
         for variant in ordered_list:
@@ -150,6 +150,9 @@ class GameMenu(Menu):
     def create_context(self):
         item = self.items[0]
         variant_uuid = item.configurations[0][0]
+        database_name = item.configurations[0][2]
+        print("\nitem:\n", item.configurations)
+        print("\nitem[0]:\n", item.configurations[0])
         print("\n\nvariant_uuid =", variant_uuid, "\n\n")
 
         # print("\n\ncreate_context")
@@ -161,7 +164,7 @@ class GameMenu(Menu):
         # self.context = GameContext.create_for_game(
         #     item.platform, item.name, config)
 
-        values = fsgs.game.set_from_variant_uuid(variant_uuid)
+        values = fsgs.game.set_from_variant_uuid(database_name, variant_uuid)
 
         # print("")
         # for key in sorted(values.keys()):

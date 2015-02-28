@@ -1,7 +1,7 @@
 import os
 import sys
 import traceback
-from fsbc.Application import app
+from fsbc.Application import app, Application
 import fsbc.fs as fs
 from fsbc.Paths import Paths
 from fsbc.user import get_home_dir, get_documents_dir
@@ -54,7 +54,8 @@ class FSGSDirectories(object):
 
     @classmethod
     def setup_portable(cls):
-        path = os.path.dirname(os.path.abspath(sys.executable))
+        path = Application.executable_dir()
+        # path = os.path.dirname(os.path.abspath(sys.executable))
         last = ""
         while not last == path:
             portable_ini_path = os.path.join(path, "Portable.ini")
@@ -81,8 +82,8 @@ class FSGSDirectories(object):
                     print("error reading custom path", repr(e))
         else:
             return None
-        lpath = path.lower()
-        if lpath.startswith("$home/") or lpath.startswith("$home\\"):
+        path_lower = path.lower()
+        if path_lower.startswith("$home/") or path_lower.startswith("$home\\"):
             path = os.path.join(get_home_dir(), path[6:])
         return path
 

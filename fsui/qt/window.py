@@ -4,8 +4,8 @@ from .windowbase import WindowBase
 
 class Window(WindowBase(QMainWindow)):
 
-    def __init__(self, parent=None, title=""):
-        super().__init__(parent, title=title)
+    def __init__(self, parent=None, title="", border=True):
+        super().__init__(parent, title=title, border=border)
 
 
 import sys

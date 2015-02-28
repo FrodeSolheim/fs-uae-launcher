@@ -28,6 +28,8 @@ progdir:
 	rm -f $(launcher_dir)/platforms/qminimal*.dll
 	rm -f $(launcher_dir)/platforms/*d.dll
 
+	python3 clib.py libjpeg-8.dll $(launcher_dir)
+
 	cp -a ../../share $(launcher_dir)
 
 	# mkdir -p $(launcher_dir)/share/fs-uae-launcher/fs_uae_launcher

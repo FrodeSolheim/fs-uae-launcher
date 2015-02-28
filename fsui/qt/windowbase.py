@@ -14,7 +14,7 @@ def WindowBase(BaseClass):
 
         closed = QSignal()
 
-        def __init__(self, parent, *args, title="", **kwargs):
+        def __init__(self, parent, *args, title="", border=True, **kwargs):
             if parent is None and len(default_window_parent) > 0:
                 parent = default_window_parent[-1]
                 print("using default parent", parent)
@@ -36,6 +36,8 @@ def WindowBase(BaseClass):
             self.closed.connect(self.__closed)
             self._window = ref(self)
             self.setAttribute(Qt.WA_DeleteOnClose, True)
+            if not border:
+                self.setWindowFlags(Qt.FramelessWindowHint)
             self._centered_on_initial_show = False
             if hasattr(self, "accepted"):
                 self.accepted.connect(self.__accepted)

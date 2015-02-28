@@ -1,6 +1,6 @@
 %define name fs-uae-launcher
-%define version 2.5.27dev
-%define unmangled_version 2.5.27dev
+%define version 2.5.28dev
+%define unmangled_version 2.5.28dev
 %define release 1%{?dist}
 
 Summary: Graphical configuration frontend and launcher for FS-UAE
@@ -29,8 +29,7 @@ BuildRequires: python3-devel python3-setuptools
 %endif
 
 %description
-FS-UAE Launcher is a graphical configuration program and
-launcher for FS-UAE.
+FS-UAE Launcher is a graphical configuration program and launcher for FS-UAE.
 
 %prep
 %setup -n %{name}-%{unmangled_version}

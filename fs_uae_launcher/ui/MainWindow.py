@@ -1,7 +1,7 @@
 import sys
 import time
+import fstd.desktop
 from fs_uae_launcher.ui.InfoPanel import InfoPanel
-from fsbc.desktop import open_url_in_browser
 from fs_uae_launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
 from fs_uae_launcher.ui.bottombar.BottomPanel import BottomPanel
 from fs_uae_launcher.ui.bottombar.ScreenshotsPanel import ScreenshotsPanel
@@ -9,6 +9,7 @@ from fs_uae_launcher.ui.bottombar.LaunchGroup import LaunchGroup
 from fs_uae_workspace.shell import shell_open
 import fsui as fsui
 from fsbc.Application import Application
+import fs_uae_launcher.ui
 from ..Config import Config
 from ..Signal import Signal
 from fs_uae_launcher.Options import Option
@@ -39,8 +40,19 @@ class MainWindow(WindowWithTabs):
 
     def __init__(self, fsgs, icon):
         self.fsgs = fsgs
+        border = True
+        maximize = None
+        if fs_uae_launcher.ui.get_screen_size()[1] <= 768:
+            if fstd.desktop.is_running_gnome_3():
+                border = False
+                if "--window-border" in sys.argv:
+                    border = True
+            maximize = True
+        if "--no-window-border" in sys.argv:
+            border = False
         title = "FS-UAE Launcher {0}".format(Application.instance().version)
-        WindowWithTabs.__init__(self, None, title)
+
+        WindowWithTabs.__init__(self, None, title, border=border)
         if icon:
             self.set_icon_from_path(icon)
 
@@ -62,7 +74,7 @@ class MainWindow(WindowWithTabs):
         self.create_column(
             0, min_width=Skin.get_window_padding_left(), content=False)
         # left content
-        # if get_screen_size()[0] > 1024:
+        # if fs_uae_launcher.ui.get_screen_size()[0] > 1024:
         #     left_width = 518
         # else:
         #     left_width = 400
@@ -81,7 +93,7 @@ class MainWindow(WindowWithTabs):
             # need_width += extra_screen_width
             pass
         else:
-            if get_screen_size()[0] >= need_width:
+            if fs_uae_launcher.ui.get_screen_size()[0] >= need_width:
                 # make room for one more screenshot
                 right_width += extra_screenshot_width
                 pass
@@ -103,10 +115,10 @@ class MainWindow(WindowWithTabs):
         #     self.main_layout.add(editor, fill=True, expand=True,
         #                          margin_right=20)
 
-        # if get_screen_size()[1] >= 768:
+        # if fs_uae_launcher.ui.get_screen_size()[1] >= 768:
         #     right_margin = 0
 
-        if get_screen_size()[1] >= 768:
+        if fs_uae_launcher.ui.get_screen_size()[1] >= 768:
             self.bottom_layout = fsui.HorizontalLayout()
             self.main_layout.add(self.bottom_layout, fill=True)
 
@@ -161,7 +173,7 @@ class MainWindow(WindowWithTabs):
         self.set_size(self.layout.get_min_size())
 
         self.center_on_screen()
-        if was_maximized:
+        if was_maximized or maximize:
             self.maximize()
 
         Signal.add_listener("scan_done", self)
@@ -229,14 +241,14 @@ class MainWindow(WindowWithTabs):
 #                        self.add_tab_panel(LaunchGroup, expand=False)
 
             if column == 2 and Settings.get(Option.CONFIG_FEATURE) == "1":
-                if get_screen_size()[0] >= 1280:
+                if fs_uae_launcher.ui.get_screen_size()[0] >= 1280:
                     from fs_uae_launcher.ui.config.browser import ConfigBrowser
                     config_browser = ConfigBrowser(self)
                     config_browser.set_min_width(200)
                     hor_layout.add(config_browser, fill=True, expand=0.5,
                                    margin=10)
             if column == 2:
-                if get_screen_size()[1] >= 1024:
+                if fs_uae_launcher.ui.get_screen_size()[1] >= 1024:
                     vert_layout.add_spacer(100)
 
                 hor2_layout = fsui.HorizontalLayout()
@@ -258,7 +270,7 @@ class MainWindow(WindowWithTabs):
         #     layout.add(config_browser, fill=True, expand=True, margin=10)
 
         layout.add_spacer(0, 10 + Skin.EXTRA_GROUP_MARGIN)
-        # if get_screen_size()[1] >= 768:
+        # if fs_uae_launcher.ui.get_screen_size()[1] >= 768:
         #     right_margin = 0
         #     if column == 0:
         #         bottom_panel = BottomPanel(self)
@@ -304,7 +316,8 @@ class MainWindow(WindowWithTabs):
             self.add_tab_spacer(10)
             self.add_tab_spacer(10)
             # info_panel = self.add_tab_panel(InfoPanel, expand=False)
-            info_panel = self.add_tab_panel(InfoPanel, expand=True)
+            # info_panel = \
+            self.add_tab_panel(InfoPanel, expand=True)
             # info_panel.set_min_width(316)
             # info_panel.set_min_width(326)
             # info_panel.set_min_width(272)
@@ -375,6 +388,8 @@ class MainWindow(WindowWithTabs):
 
     def create_menu(self):
         menu = fsui.Menu()
+        self.add_user_menu_content(menu)
+        menu.add_separator()
         # text = _("Scan for Files")
         menu.add_item(gettext("Scan Files and Configurations") + "...",
                       self.on_scan_button)
@@ -384,8 +399,6 @@ class MainWindow(WindowWithTabs):
         #                   self.on_game_database_refresh)
         menu.add_separator()
         # menu.add_item(_("Custom Options & Settings"),
-        self.add_user_menu_content(menu)
-        menu.add_separator()
         menu.add_item(gettext("ADF Creator") + "...", self.on_adf_creator)
         menu.add_item(gettext("HDF Creator") + "...", self.on_hdf_creator)
         menu.add_separator()
@@ -404,6 +417,9 @@ class MainWindow(WindowWithTabs):
 
         menu.add_about_item(gettext("About {name}").format(
             name="FS-UAE Launcher") + "...", self.on_about)
+        menu.add_separator()
+
+        menu.add_about_item(gettext("Quit"), self.on_quit)
         return menu
 
     def add_page(self, column, content_class, icon_name, title, tooltip=""):
@@ -475,7 +491,7 @@ class MainWindow(WindowWithTabs):
 
     def on_what_is_this(self):
         print("on_what_is_this")
-        open_url_in_browser("http://oagd.net/about")
+        fstd.desktop.open_url_in_browser("http://oagd.net/about")
 
     def on_scan_button(self):
         from .ScanDialog import ScanDialog
@@ -488,6 +504,9 @@ class MainWindow(WindowWithTabs):
     def on_about(self):
         dialog = AboutDialog(self.get_window())
         dialog.show()
+
+    def on_quit(self):
+        self.close()
 
     def on_import_kickstarts(self):
         SetupDialog(self.get_window()).show()
@@ -510,9 +529,3 @@ class MainWindow(WindowWithTabs):
     def on_hdf_creator(self):
         print("on_hdf_creator")
         shell_open("Workspace:Tools/HDFCreator", parent=self)
-
-
-def get_screen_size():
-    # return 1024, 600
-    # return 1366, 768
-    return fsui.get_screen_size()

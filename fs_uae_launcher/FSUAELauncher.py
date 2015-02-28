@@ -42,11 +42,24 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
         if fsui.use_qt:
             from fsui.qt import QStyleFactory, QPalette, QColor, Qt
-            if macosx or "--launcher-theme=fusion" in sys.argv:
-                # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
-                self.qapplication.setStyle(QStyleFactory.create("Fusion"))
+            use_dark_theme = False
+            use_fusion_theme = False
+
+            if macosx in sys.argv:
+                use_fusion_theme = True
+            if "--launcher-theme=fusion" in sys.argv:
+                use_fusion_theme = True
+            if "--launcher-theme=fusion-dark" in sys.argv:
+                use_fusion_theme = True
+                use_dark_theme = True
             # FIXME: document
             if "--dark-theme" in sys.argv:
+                use_dark_theme = True
+
+            if use_fusion_theme:
+                # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
+                self.qapplication.setStyle(QStyleFactory.create("Fusion"))
+            if use_dark_theme:
                 dark_p = QPalette()
                 dark_p.setColor(QPalette.Window, QColor(53, 53, 53))
                 dark_p.setColor(QPalette.WindowText, Qt.white)
@@ -304,11 +317,13 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         configs_dir = FSGSDirectories.get_configurations_dir()
         print("config_startup_scan", configs_dir)
         print(Settings.settings)
+
         settings_mtime = Settings.get("configurations_dir_mtime")
         dir_mtime = self.get_dir_mtime_str(configs_dir)
-        if settings_mtime == dir_mtime:
+        if settings_mtime == dir_mtime + "+" + str(Database.VERSION):
             print("... mtime not changed", settings_mtime, dir_mtime)
             return
+
         database = Database.get_instance()
         file_database = FileDatabase.get_instance()
 
@@ -346,8 +361,10 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 file_database.delete_file(path=path)
         print("... commit")
         database.commit()
-        Settings.set("configurations_dir_mtime",
-                     self.get_dir_mtime_str(configs_dir))
+
+        Settings.set(
+            "configurations_dir_mtime",
+            self.get_dir_mtime_str(configs_dir) + "+" + str(Database.VERSION))
 
     def kickstart_startup_scan(self):
         print("kickstart_startup_scan")
@@ -456,10 +473,15 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
     @classmethod
     def start_local_game_other(cls):
+        # platform_id = Config.get("platform")
+        # FIXME:
+        # if platform_id == "super-nintendo":
+        #     platform_id = "snes"
+        database_name = Config.get("__database")
         variant_uuid = Config.get("variant_uuid")
         assert variant_uuid
 
-        fsgs.game.set_from_variant_uuid(variant_uuid)
+        fsgs.game.set_from_variant_uuid(database_name, variant_uuid)
         platform_handler = PlatformHandler.create(fsgs.game.platform.id)
         runner = platform_handler.get_runner(fsgs)
 

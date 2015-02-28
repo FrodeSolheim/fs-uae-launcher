@@ -134,8 +134,10 @@ class Paths(object):
                 part_compare = unicodedata.normalize("NFC", part_compare)
             # print("part is", part)
             if os.path.isdir(combined):
-                # print("checking case of", combined+ "/" + part)
+                # print("checking case of", combined + "/" + part)
                 for name in os.listdir(combined):
+                    # if part == "Førde":
+                    #     print(os.listdir(combined))
                     name_compare = name
                     name_compare = name_compare.lower()
                     if macosx:
@@ -143,7 +145,9 @@ class Paths(object):
                             "NFC", name_compare)
                     if name_compare == part_compare:
                         # print("found case =", name)
-                        combined += "/" + name
+                        if not combined.endswith("/"):
+                            combined += "/"
+                        combined += name
                         result[k] = name
                         break
                 else:
