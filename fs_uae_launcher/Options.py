@@ -656,14 +656,17 @@ options = {
         "type": "choice",
         "values": [
             ("auto", N_("Auto")),
+            ("auto+border", N_("Auto + Border")),
             ("full", N_("Full Frame")),
             ("640x400", "640x400"),
-            ("640x480", "640x480"),
-            ("640x512", "640x512"),
-            ("auto+border", N_("Auto + Border")),
             ("640x400+border", N_("640x400 + Border")),
+            ("640x480", "640x480"),
             ("640x480+border", N_("640x480 + Border")),
+            ("640x512", "640x512"),
             ("640x512+border", N_("640x512 + Border")),
+            ("704x540", "704x540"),
+            ("704x566", "704x566"),
+            ("724x566", "724x566"),
         ]
     },
 
