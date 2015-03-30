@@ -17,7 +17,7 @@ from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.platform import PlatformHandler
 import fsbc.fs as fs
 import fsui as fsui
-from fsgs import fsgs
+from fsgs.context import fsgs
 from fsgs.Database import Database
 from .ui.MainWindow import MainWindow
 
@@ -48,6 +48,8 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             if macosx in sys.argv:
                 use_fusion_theme = True
             if "--launcher-theme=fusion" in sys.argv:
+                use_fusion_theme = True
+            if Settings.get("launcher_theme") == "fusion":
                 use_fusion_theme = True
             if "--launcher-theme=fusion-dark" in sys.argv:
                 use_fusion_theme = True

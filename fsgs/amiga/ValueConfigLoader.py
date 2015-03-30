@@ -1,5 +1,5 @@
 # FIXME: send fsgs as parameter to ValueConfigLoader instead
-from fsgs import fsgs
+from fsgs.context import fsgs
 import os
 import json
 from fsbc.Paths import Paths
@@ -93,11 +93,11 @@ class ValueConfigLoader(object):
 
         self.load_hard_drives()
         
-        if self.check_all_files():
-            print(" -- all files found --")
-        else:
-            print(" -- some files are missing --")
-            self.options["x_missing_files"] = "1"
+        # if self.check_all_files():
+        #     print(" -- all files found --")
+        # else:
+        #     print(" -- some files are missing --")
+        #     self.options["x_missing_files"] = "1"
 
         # downloadable = values.get("_downloadable", "")
         # if not downloadable:

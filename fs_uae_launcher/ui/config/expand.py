@@ -1418,50 +1418,64 @@ def _uae_ppc_model(c, f):
 def _uae_rtc(c, f):
     if c.uae_chipset_compatible == "-":
         if c.uae_rtc.explicit:
-            # FIXME: ok? keep already specified value
             value = c.uae_rtc.explicit
-            # FIXME: match and normalize values to RP5C01A / MSM6242B
+            if f.matches(value, "none"):
+                value = "none"
+            elif f.matches(value, "auto"):
+                value = "none"
+            elif f.matches(value, "MSM6242B"):
+                value = "MSM6242B"
+            elif f.matches(value, "MSM6242B_A2000"):
+                value = "MSM6242B_A2000"
+            elif f.matches(value, "RP5C01A"):
+                value = "RP5C01A"
+            else:
+                f.warning(value + ": invalid value")
+                value = "none"
         else:
             value = "none"
-    elif c.uae_chipset_compatible == "Generic":
-        value = "RP5C01A"
-    elif c.uae_chipset_compatible == "CDTV":
-        value = "MSM6242B"
-    elif c.uae_chipset_compatible == "CD32":
-        value = "none"
-    elif c.uae_chipset_compatible == "A500":
-        if int(c.int_bogomem_size):
-            value = "MSM6242B"
-        elif int(c.int_chipmem_size) > 0x80000:
-            value = "MSM6242B"
-        elif int(c.int_fastmem_size):
-            value = "MSM6242B"
-        else:
-            value = "none"
-    elif c.uae_chipset_compatible == "A500+":
-        value = "MSM6242B"
-    elif c.uae_chipset_compatible == "A600":
-        value = "none"
-    elif c.uae_chipset_compatible == "A1000":
-        value = "none"
-    elif c.uae_chipset_compatible == "A1200":
-        if int(c.int_fastmem_size) or int(c.int_z3fastmem_size):
-            value = "MSM6242B"
-        else:
-            value = "none"
-    elif c.uae_chipset_compatible == "A2000":
-        value = "MSM6242B"
-    elif c.uae_chipset_compatible == "A3000":
-        value = "RP5C01A"
-    elif c.uae_chipset_compatible == "A3000T":
-        value = "RP5C01A"
-    elif c.uae_chipset_compatible == "A4000":
-        value = "RP5C01A"
-    elif c.uae_chipset_compatible == "A4000T":
-        value = "RP5C01A"
     else:
-        f.fail("Unknown uae_chipset_compatible")
-        raise Exception("Failed")
+        if c.uae_rtc.explicit and c.uae_rtc.explicit != "auto":
+            f.warning("uae_rtc is ignored (compatible chipset enabled)")
+        if c.uae_chipset_compatible == "Generic":
+            value = "RP5C01A"
+        elif c.uae_chipset_compatible == "CDTV":
+            value = "MSM6242B"
+        elif c.uae_chipset_compatible == "CD32":
+            value = "none"
+        elif c.uae_chipset_compatible == "A500":
+            if int(c.int_bogomem_size):
+                value = "MSM6242B"
+            elif int(c.int_chipmem_size) > 0x80000:
+                value = "MSM6242B"
+            elif int(c.int_fastmem_size):
+                value = "MSM6242B"
+            else:
+                value = "none"
+        elif c.uae_chipset_compatible == "A500+":
+            value = "MSM6242B"
+        elif c.uae_chipset_compatible == "A600":
+            value = "none"
+        elif c.uae_chipset_compatible == "A1000":
+            value = "none"
+        elif c.uae_chipset_compatible == "A1200":
+            if int(c.int_fastmem_size) or int(c.int_z3fastmem_size):
+                value = "MSM6242B"
+            else:
+                value = "none"
+        elif c.uae_chipset_compatible == "A2000":
+            value = "MSM6242B"
+        elif c.uae_chipset_compatible == "A3000":
+            value = "RP5C01A"
+        elif c.uae_chipset_compatible == "A3000T":
+            value = "RP5C01A"
+        elif c.uae_chipset_compatible == "A4000":
+            value = "RP5C01A"
+        elif c.uae_chipset_compatible == "A4000T":
+            value = "RP5C01A"
+        else:
+            f.fail("unknown uae_chipset_compatible")
+            raise Exception("Failed")
     c.uae_rtc = value
 
 

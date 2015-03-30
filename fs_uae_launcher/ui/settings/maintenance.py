@@ -3,7 +3,7 @@ import fsui as fsui
 from fsui.extra.taskdialog import TaskDialog
 from ...I18N import gettext
 from fsui.extra.iconheader import IconHeader
-from fsgs import fsgs
+from fsgs.context import fsgs
 from fsgs.Database import Database
 from fsgs.FileDatabase import FileDatabase
 from fsgs.LockerDatabase import LockerDatabase

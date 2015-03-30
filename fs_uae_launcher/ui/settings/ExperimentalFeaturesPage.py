@@ -25,4 +25,4 @@ class ExperimentalFeaturesPage(fsui.Panel):
                             margin_top=10, margin_bottom=10)
 
         add_option("netplay_feature")
-        # add_option("database_feature")
+        add_option("config_feature")

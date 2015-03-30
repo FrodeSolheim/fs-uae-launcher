@@ -49,14 +49,15 @@ class GameDatabase(BaseDatabase):
             return 0, 0
 
     def get_license_code_for_url(self, url):
-        cursor = self.internal_cursor()
-        cursor.execute(
-            "SELECT license_code FROM file "
-            "WHERE external = ? LIMIT 1", (url,))
-        row = cursor.fetchone()
-        if not row:
-            return None
-        return row[0]
+        # cursor = self.internal_cursor()
+        # cursor.execute(
+        #     "SELECT license_code FROM file "
+        #     "WHERE external = ? LIMIT 1", (url,))
+        # row = cursor.fetchone()
+        # if not row:
+        #     return None
+        # return row[0]
+        return None
 
     def add_game(self, game_id, game_uuid, game_data):
         # print("add game", repr(game_id), repr(game_uuid), repr(game_data))

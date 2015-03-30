@@ -1,7 +1,7 @@
 import os
 from fsgs.FileDatabase import FileDatabase
 from .I18N import gettext
-from fsgs.util.GameNameUtil import GameNameUtil
+from fsgs.util.gamenameutil import GameNameUtil
 
 
 class ConfigurationScanner:

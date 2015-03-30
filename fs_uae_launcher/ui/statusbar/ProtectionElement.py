@@ -39,6 +39,10 @@ class ProtectionElement(StatusElement):
                     self.icon = self.disabled_icon
                     self.active = True
                     self.text = gettext("No Protection")
+                elif value.lower() in ["dongle"]:
+                    self.icon = self.disabled_icon
+                    self.active = True
+                    self.text = gettext("Dongle")
                 else:
                     self.icon = self.protection_icon
                     self.active = True

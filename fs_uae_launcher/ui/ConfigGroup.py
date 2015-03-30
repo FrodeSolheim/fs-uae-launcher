@@ -3,7 +3,7 @@ import os
 import time
 import hashlib
 import datetime
-from fsgs import fsgs
+from fsgs.context import fsgs
 from fsgs.Database import Database
 from fsgs.FileDatabase import FileDatabase
 import fsui as fsui

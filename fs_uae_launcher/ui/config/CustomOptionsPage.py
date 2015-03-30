@@ -1,5 +1,5 @@
 import fsui
-from fsgs import fsgs
+from fsgs.context import fsgs
 from ...Config import Config
 
 

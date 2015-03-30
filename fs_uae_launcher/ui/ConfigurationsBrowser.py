@@ -1,6 +1,6 @@
 from fsgs.Database import Database
 from fsgs.platform import PlatformHandler
-from fsgs.util.GameNameUtil import GameNameUtil
+from fsgs.util.gamenameutil import GameNameUtil
 import fsui as fsui
 from ..Config import Config
 from ..Settings import Settings

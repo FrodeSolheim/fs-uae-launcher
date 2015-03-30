@@ -5,7 +5,7 @@ from collections import deque
 from fsgs.platform import PlatformHandler
 from game_center.resources import resources
 from fsbc.system import windows
-from fsgs.util.GameNameUtil import GameNameUtil
+from fsgs.util.gamenameutil import GameNameUtil
 from game_center.gamecenter import GameCenter
 from game_center.main import Main
 from game_center.resources import logger

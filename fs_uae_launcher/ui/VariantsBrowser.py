@@ -1,6 +1,6 @@
 import traceback
 from fs_uae_launcher.ui.ConfigGroup import ConfigGroup
-from fsgs import fsgs
+from fsgs.context import fsgs
 from fsgs.Database import Database
 import fsui
 from ..Config import Config
@@ -102,7 +102,7 @@ class VariantsBrowser(fsui.ItemChoice):
     def set_items(self, items):
         self.items = items
         self.update()
-        self.enable(len(items) > 0)
+        # self.enable(len(items) > 0)
 
     def get_item_count(self):
         return len(self.items)
@@ -195,7 +195,7 @@ class VariantsBrowser(fsui.ItemChoice):
         # self.set_items(self.items)
         # self.set_item_count(len(self.items))
 
-        self.select_item(None)
+        self.select_item(None, signal=False)
 
         select_index = None
         list_uuid = Settings.get("game_list_uuid")

@@ -1,4 +1,4 @@
-from fsgs import fsgs
+from fsgs.context import fsgs
 from game_center.option import Option
 from fsgs.platform import PlatformHandler
 from game_center.glui.navigatable import Navigatable

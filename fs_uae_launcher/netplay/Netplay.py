@@ -3,7 +3,7 @@ import traceback
 import random
 from urllib.request import urlopen, URLError
 from urllib.parse import parse_qs
-from fsgs import fsgs
+from fsgs.context import fsgs
 from .IRC import IRC
 from .Channel import Channel
 from .IRCColor import IRCColor

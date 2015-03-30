@@ -12,7 +12,7 @@ def reset_gnome_extensions(extensions):
     return p.wait() == 0
 
 
-def handle_gnome_extensions():
+def handle_gnome_extensions():||||||||||||||||||||||||||
     original_extensions = []
     try:
         p = subprocess.Popen(
@@ -21,7 +21,10 @@ def handle_gnome_extensions():
         # noinspection PyUnresolvedReferences
         data = p.stdout.read().decode("UTF-8", errors="replace")
         if p.wait() == 0:
+            print("enabled-extensions:")
             print(data)
+            if data.startswith("@as "):
+                data = data[4:]
             original_extensions = json.loads(data.replace("'", "\""))
             print(original_extensions)
     except FileNotFoundError:

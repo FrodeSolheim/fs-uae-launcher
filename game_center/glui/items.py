@@ -9,7 +9,7 @@ from game_center.glui.constants import ROW_NAME, ROW_PLATFORM
 from fsbc.Application import app
 from fsbc.util import memoize
 from fsgs.Database import Database
-from fsgs.util.GameNameUtil import GameNameUtil
+from fsgs.util.gamenameutil import GameNameUtil
 from game_center.resources import resources, gettext
 from .font import BitmapFont
 from .opengl import *

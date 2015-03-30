@@ -2,7 +2,7 @@ from fsbc.desktop import open_url_in_browser
 from fs_uae_launcher.ui.download import DownloadGameWindow
 from fs_uae_workspace.shell import shell_open
 from fsbc.util import unused
-from fsgs import fsgs
+from fsgs.context import fsgs
 import fsui as fsui
 from fsgs.amiga.Amiga import Amiga
 from ..I18N import gettext

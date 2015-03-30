@@ -1,5 +1,5 @@
 import os
-from fsgs import fsgs
+from fsgs.context import fsgs
 import fsui as fsui
 from ..Config import Config
 from ..CDManager import CDManager

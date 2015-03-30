@@ -1,3 +1,12 @@
+Version 2.5.30dev:
+
+* Added a basic WHDLoad settings page (tweak splash delay,
+  show directory for WHDLoad.key file).
+* Fixed loading of .fs-uae config files containg % character in values.
+* Fixed on-demand download of floppy images from HTTP.
+* Remove some inefficiences when selecting database games in config list.
+* Fixed look of variant choice control under OS X.
+
 Version 2.5.28dev:
 
 * Fixed Windows console appearing when using portable launchers.

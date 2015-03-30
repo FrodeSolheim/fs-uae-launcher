@@ -1,4 +1,4 @@
-from fsgs import fsgs
+from fsgs.context import fsgs
 import fsui as fsui
 from fsgs.amiga.Amiga import Amiga
 from ..Signal import Signal

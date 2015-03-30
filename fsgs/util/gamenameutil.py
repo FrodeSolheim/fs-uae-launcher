@@ -1,3 +1,7 @@
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+
 import os
 import re
 import unicodedata
@@ -96,7 +100,7 @@ class GameNameUtil(object):
     @classmethod
     def find_base_name(cls, path):
         name = os.path.basename(path)
-        #name = os.path.normcase(name)
+        # name = os.path.normcase(name)
         pos_list = [name.find('('), name.find('['), name.rfind('.'), len(name)]
         for pos in sorted(pos_list):
             if pos > -1:

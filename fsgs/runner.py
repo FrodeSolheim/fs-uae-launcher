@@ -8,7 +8,7 @@ from fsbc.system import windows, macosx
 from fsbc.task import current_task
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.util.GameNameUtil import GameNameUtil
+from fsgs.util.gamenameutil import GameNameUtil
 
 
 class Port(object):

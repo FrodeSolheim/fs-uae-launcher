@@ -1,1 +1,1 @@
-from .util.GameNameUtil import GameNameUtil
+from .util.gamenameutil import GameNameUtil

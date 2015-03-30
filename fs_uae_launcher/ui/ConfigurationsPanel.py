@@ -112,8 +112,10 @@ class ConfigurationsPanel(fsui.Panel):
                 vert_layout.add(
                     hori_layout, fill=True, expand=False, margin=10,
                     margin_top=20)
+                # Do not use fill=True with the default OS X theme at least,
+                # if you do the item will be rendered with the old Aqua look
                 hori_layout.add(
-                    self.variants_browser, fill=True, expand=True)
+                    self.variants_browser, fill=False, expand=True)
 
                 for rating in [1, 4, 5]:
                     button = RatingButton(self, rating)

@@ -60,6 +60,7 @@ class Option(object):
     UAE_FORCE_0X10000000_Z3 = "uae_force_0x10000000_z3"
     UAE_GFX_LINEMODE = "uae_gfx_linemode"
     UAE_MBRESMEM_SIZE = "uae_mbresmem_size"
+    UAE_RTC = "uae_rtc"
     UAE_SOUND_OUTPUT = "uae_sound_output"
     UAE_Z3CHIPMEM_SIZE = "uae_z3chipmem_size"
     UAE_Z3MAPPING = "uae_z3mapping"
@@ -70,6 +71,7 @@ class Option(object):
     VIDEO_SYNC = "video_sync"
     VIDEO_SYNC_METHOD = "video_sync_method"
     VOLUME = "volume"
+    WHDLOAD_SPLASH_DELAY = "whdload_splash_delay"
     ZOOM = "zoom"
 
 
@@ -128,7 +130,8 @@ options = {
 
     "config_feature": {
         "default": "0",
-        "description": N_("Enable new config feature (requires restart)"),
+        "description": N_(
+            "Enable experimental config visualization (requires restart)"),
         "type": "boolean",
     },
 
@@ -373,7 +376,7 @@ options = {
 
     "sound_card": {
         "default": "0",
-        "description": N_(""),
+        "description": N_("Sound card"),
         "type": "choice",
         "values": [
             ("0", N_("None")),
@@ -564,6 +567,12 @@ options = {
         "max": 131072,
     },
 
+    "uae_rtc": {
+        "default": "`auto`",
+        "description": N_("Enable a real time clock (RTC) module."),
+        "type": "`choice`",
+    },
+
     "uae_sound_output": {
         "default": "",
         "description": N_("Sound emulation"),
@@ -648,6 +657,14 @@ options = {
         "type": "integer",
         "min": 0,
         "max": 100,
+    },
+
+    "whdload_splash_delay": {
+        "default": "200",
+        "description": N_("WHDLoad splash delay"),
+        "type": "integer",
+        "min": -1,
+        "max": 500,
     },
 
     "zoom": {

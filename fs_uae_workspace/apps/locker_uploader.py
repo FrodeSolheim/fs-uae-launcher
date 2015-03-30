@@ -1,6 +1,6 @@
 import time
 import traceback
-from fsgs import fsgs
+from fsgs.context import fsgs
 from fsgs.Archive import Archive
 from fsgs.amiga.ROMManager import ROMManager
 import fsui

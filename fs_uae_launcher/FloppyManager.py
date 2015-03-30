@@ -1,5 +1,5 @@
 import os
-from fsgs import fsgs
+from fsgs.context import fsgs
 from fsgs.ChecksumTool import ChecksumTool
 from .ui.LauncherFilePicker import LauncherFilePicker
 from fsgs.amiga.Amiga import Amiga

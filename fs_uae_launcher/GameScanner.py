@@ -1,13 +1,13 @@
 import time
 import json
 from binascii import hexlify
-from fsgs import fsgs
+from fsgs.context import fsgs
 from .Settings import Settings
 from .I18N import gettext
 from fsgs.FileDatabase import FileDatabase
 from fsgs.GameDatabaseClient import GameDatabaseClient
 from fsgs.GameDatabaseSynchronizer import GameDatabaseSynchronizer
-from fsgs.util.GameNameUtil import GameNameUtil
+from fsgs.util.gamenameutil import GameNameUtil
 # from fsgs.ogd.context import SynchronizerContext
 # from fsgs.ogd.meta import MetaSynchronizer
 from fsgs.ogd.locker import LockerSynchronizer

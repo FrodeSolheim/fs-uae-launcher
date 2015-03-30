@@ -673,6 +673,16 @@ class LaunchHandler(object):
         # make sure the data is CRLF line terminated
         default_prefs = default_prefs.replace("\r\n", "\n")
         default_prefs = default_prefs.replace("\n", "\r\n")
+
+        if self.config.get("__netplay_game", ""):
+            print("WHDLoad defaults only in net play mode")
+        else:
+            splash_delay = self.config.get("whdload_splash_delay", "")
+            if splash_delay:
+                default_prefs = default_prefs.replace(
+                    ";SplashDelay=0", "SplashDelay={}".format(
+                        int(splash_delay)))
+
         with open(path, "wb") as f:
             f.write(default_prefs.encode("UTF-8"))
 

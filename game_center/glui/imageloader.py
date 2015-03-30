@@ -2,7 +2,7 @@ import os
 import time
 from urllib.request import urlopen
 import threading
-from fsgs import fsgs
+from fsgs.context import fsgs
 from uuid import uuid4
 from game_center.resources import logger
 from fsgs.ogd.client import OGDClient

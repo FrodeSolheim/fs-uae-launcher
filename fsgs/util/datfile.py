@@ -1,4 +1,9 @@
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+
 import os
+import io
 import xml.etree.cElementTree as ElementTree
 
 
@@ -23,7 +28,7 @@ class DatFile(object):
             self._load_path(file)
 
     def _load_path(self, path):
-        with open(path, "r", encoding="UTF-8") as f:
+        with io.open(path, "r", encoding="UTF-8") as f:
             self._load_file(f)
 
     def _load_file(self, f):

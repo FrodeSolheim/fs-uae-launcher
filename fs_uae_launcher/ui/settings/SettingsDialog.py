@@ -20,6 +20,7 @@ from .NetplaySettingsPage import NetplaySettingsPage
 from .ScanSettingsPage import ScanSettingsPage
 from .video_sync import VideoSyncSettingsPage
 from .VideoSettingsPage import VideoSettingsPage
+from .whdload import WHDLoadSettingsPage
 from fsui.qt import Qt
 
 
@@ -98,6 +99,9 @@ class SettingsDialog(PagedDialog):
         self.add_page(
             gettext("Advanced Settings"), AdvancedSettingsPage,
             fsui.Icon("settings", "pkg:fs_uae_workspace"))
+        self.add_page(
+            "WHDLoad", WHDLoadSettingsPage,
+            fsui.Icon("blank", "pkg:fs_uae_launcher"))
         self.add_page(
             gettext("Experimental Features"), ExperimentalFeaturesPage,
             fsui.Icon("blank", "pkg:fs_uae_launcher"))

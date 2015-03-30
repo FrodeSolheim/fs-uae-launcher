@@ -22,7 +22,7 @@ class Signal(object):
     def broadcast(cls, signal, *args):
         if signal == "config":
             # temporary, while restructuring        
-            from fsgs import fsgs
+            from fsgs.context import fsgs
             key, value = args
             fsgs.signal.notify("fsgs:config:" + key, value)
 

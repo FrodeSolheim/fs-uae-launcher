@@ -57,7 +57,7 @@ class Choice(QComboBox, Widget):
 class ItemChoice(Choice):
 
     def __init__(self, parent):
-        Choice.__init__(self, parent.get_container())
+        Choice.__init__(self, parent)
 
     def update(self):
         # for i, item in enumerate(self.items):
@@ -74,12 +74,12 @@ class ItemChoice(Choice):
             self.set_index(old_index)
         self.inhibit_change_event = old
 
-    def select_item(self, index):
+    def select_item(self, index, signal=True):
         print("select_item", index)
         if index is None:
-            self.set_index(-1, signal=True)
+            self.set_index(-1, signal=signal)
         else:
-            self.set_index(index, signal=True)
+            self.set_index(index, signal=signal)
 
     def on_change(self):
         self.on_select_item(self.get_index())

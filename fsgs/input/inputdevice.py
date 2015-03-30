@@ -3,7 +3,7 @@ import io
 from configparser import ConfigParser
 from fsbc.system import windows, linux, macosx
 from fsbc.util import memoize
-from fsgs import fsgs
+from fsgs.context import fsgs
 from fsbc.Resources import Resources
 
 

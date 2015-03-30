@@ -56,5 +56,5 @@ zipfile:
 setup:
 	sed s/9.8.7/${version}/g fs-uae-launcher.iss > fs-uae-launcher.iss.tmp
 	python3 iscc.py fs-uae-launcher.iss.tmp
-	python3 sign.py ../../fs-uae-launcher_$(version)_windows.exe
+	python3 sign.py ../fs-uae-launcher_$(version)_windows.exe
 	rm fs-uae-launcher.iss.tmp

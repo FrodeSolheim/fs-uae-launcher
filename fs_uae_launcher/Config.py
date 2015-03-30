@@ -3,7 +3,7 @@ import os
 import hashlib
 import traceback
 from configparser import ConfigParser, NoSectionError
-from fsgs import fsgs
+from fsgs.context import fsgs
 from fsgs.ChecksumTool import ChecksumTool
 from fsgs.amiga.Amiga import Amiga
 from fsgs.amiga.ValueConfigLoader import ValueConfigLoader
@@ -599,7 +599,7 @@ class Config(object):
         #     config = loader.get_config()
         else:
             config_xml_path = ""
-            cp = ConfigParser(strict=False)
+            cp = ConfigParser(interpolation=None, strict=False)
             try:
                 with io.open(path, "r", encoding="UTF-8") as f:
                     cp.readfp(f)

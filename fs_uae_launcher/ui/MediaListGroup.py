@@ -1,5 +1,5 @@
 import os
-from fsgs import fsgs
+from fsgs.context import fsgs
 from fsgs.ChecksumTool import ChecksumTool
 import fsui as fsui
 from fsgs.amiga.Amiga import Amiga
