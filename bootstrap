@@ -300,6 +300,7 @@ copy_files = [
     "dist/macosx/Makefile",
     "dist/macosx/fs-make-standalone-app.py",
     "dist/macosx/Info.plist",
+    "dist/macosx/sign.py",
     "dist/steamos/Makefile",
     "dist/windows/clib.py",
     "dist/windows/iscc.py",

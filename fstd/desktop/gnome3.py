@@ -12,7 +12,7 @@ def reset_gnome_extensions(extensions):
     return p.wait() == 0
 
 
-def handle_gnome_extensions():||||||||||||||||||||||||||
+def handle_gnome_extensions():
     original_extensions = []
     try:
         p = subprocess.Popen(

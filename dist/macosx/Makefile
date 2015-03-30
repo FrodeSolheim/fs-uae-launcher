@@ -27,6 +27,7 @@ launcher:
 	mv fs-uae-launcher_$(version)_macosx/temp.app fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app"
 	cp Info.plist fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app"/Contents/
 	cp ../../icon/fs-uae-launcher.icns $(resources)/fs-uae-launcher.icns
+	# python3 sign.py fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app"
 
 bindist-launcher: launcher
 	cd fs-uae-launcher_$(version)_macosx && GZIP=-9 tar zcfv ../../../fs-uae-launcher_$(version)_macosx.tar.gz *
