@@ -212,6 +212,16 @@ class Database(BaseDatabase):
         cursor.execute(query, (game_uuid,))
         return cursor.fetchall()
 
+    def find_game_database_for_game_variant(self, uuid):
+        cursor = self.internal_cursor()
+        cursor.execute(
+            "SELECT database FROM game_variant WHERE "
+            "uuid = ?", (uuid,))
+        row = cursor.fetchone()
+        if row is None:
+            raise LookupError("game variant not found")
+        return row[0]
+
     def find_game_variants_new(self, game_uuid="", have=3):
         cursor = self.internal_cursor()
         print("FIXME: not looking up ratings yet!")

@@ -1,5 +1,6 @@
 Version 2.5.30dev:
 
+* Fixed loading with variant UUID on command line.
 * Added a basic WHDLoad settings page (tweak splash delay,
   show directory for WHDLoad.key file).
 * Fixed loading of .fs-uae config files containg % character in values.

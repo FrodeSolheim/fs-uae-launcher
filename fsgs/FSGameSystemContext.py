@@ -15,7 +15,6 @@ from .FileDatabase import FileDatabase
 from .GameDatabase import GameDatabase
 from .LockerDatabase import LockerDatabase
 from fsgs.ogd.locker import is_locker_enabled
-from .ogd.client import OGDClient
 from .plugins.pluginmanager import PluginManager
 
 
@@ -211,6 +210,7 @@ class FileContext(BaseContext):
             with open(dst_partial, "wb") as ofs:
                 # ifs_sha1 = hashlib.sha1()
                 while True:
+                    # noinspection PyUnresolvedReferences
                     data = ifs.read()
                     if not data:
                         break
@@ -367,7 +367,16 @@ class FSGameSystemContext(object):
     def load_game_variant(self, variant_uuid):
         # game_database = fsgs.get_game_database()
         # values = game_database.get_game_values_for_uuid(variant_uuid)
-        values = self.game.set_from_variant_uuid(variant_uuid)
+
+        from .Database import Database
+        database = Database.instance()
+        try:
+            database_name = database.find_game_database_for_game_variant(
+                variant_uuid)
+        except LookupError:
+            return False
+
+        values = self.game.set_from_variant_uuid(database_name, variant_uuid)
         if not values:
             return False
 
@@ -397,7 +406,7 @@ class TemporaryDirectory(object):
             return
         if self.path:
             shutil.rmtree(self.path)
-            self.path = None
+            self.path = ""
 
 
 class TemporaryFile(object):
@@ -416,10 +425,10 @@ class TemporaryFile(object):
             return
         if self.path:
             os.unlink(self.path)
-            self.path = None
+            self.path = ""
         if self.dir_path:
             shutil.rmtree(self.dir_path)
-            self.dir_path = None
+            self.dir_path = ""
 
 
 class GameContext(object):
