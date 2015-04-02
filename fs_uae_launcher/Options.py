@@ -217,7 +217,7 @@ options = {
     },
 
     "floppy_drive_volume": {
-        "default": "20",
+        "default": "67",
         "description": N_("Floppy drive volume"),
         "type": "integer",
         "min": 0,
@@ -244,7 +244,7 @@ options = {
 
     "graphics_card": {
         "default": "none",
-        "description": N_(""),
+        "description": "",
         "type": "choice",
         "values": [
             ("none", N_("None")),
@@ -586,7 +586,7 @@ options = {
 
     "uae_z3chipmem_size": {
         "default": "",
-        "description": N_(""),
+        "description": "",
         "type": "integer",
     },
 
@@ -598,7 +598,7 @@ options = {
 
     "uae_z3mem2_size": {
         "default": "",
-        "description": N_(""),
+        "description": "",
         "type": "integer",
     },
 
