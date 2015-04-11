@@ -1,3 +1,7 @@
+Version 2.5.31dev:
+
+* Imported updated translations from crowdin.com.
+
 Version 2.5.30dev:
 
 * Fixed loading with variant UUID on command line.

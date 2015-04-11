@@ -1,8 +1,9 @@
 msgid ""
-msgstr "Project-Id-Version: fs-uae\n"
+msgstr ""
+"Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: fs-uae@fengestad.no\n"
-"POT-Creation-Date: 2014-05-04 22:11+0200\n"
-"PO-Revision-Date: 2014-05-11 15:56-0400\n"
+"POT-Creation-Date: 2015-04-02 15:20+0200\n"
+"PO-Revision-Date: 2015-04-11 02:57-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -10,7 +11,10 @@ msgstr "Project-Id-Version: fs-uae\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: crowdin.net\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: fs-uae\n"
+"X-Crowdin-Language: cs\n"
+"X-Crowdin-File: /fs-uae-launcher/messages.pot\n"
 
 msgid "16-bit"
 msgstr "16-bitové"
@@ -31,35 +35,38 @@ msgid "640x512 + Border"
 msgstr "640x512 + okraje"
 
 msgid "A change of language will only affect applications which are restarted after the change."
-msgstr ""
+msgstr "Změna jazyku se projeví pouze u zrestarovaných aplikací."
 
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
-msgstr ""
+msgstr "ADF - Rozšířený obraz diskety (kódování MFM)"
 
 msgid "ADF - Standard Floppy Disk Image"
 msgstr "ADF - Standardní obraz diskety"
 
 msgid "ADF Creator"
-msgstr ""
+msgstr "ADF tvůrce"
 
 msgid "ADF Disk Image Creator"
-msgstr ""
+msgstr "ADF Tvůrce diskového obrazu"
 
 msgid "Abort"
 msgstr "Zrušit"
 
 msgid "About OAGD.net"
-msgstr ""
+msgstr "O OAGD.net"
 
 #, python-brace-format
 msgid "About {name}"
 msgstr "O {name}"
 
 msgid "Accept"
-msgstr ""
+msgstr "Přijmout"
 
 msgid "Accurate"
 msgstr "Přesnost"
+
+msgid "Add"
+msgstr ""
 
 msgid "Add Directory to Search Path"
 msgstr "Přidat adresář do cesty hledání"
@@ -73,20 +80,29 @@ msgstr "Přidat více CD-ROM najednou"
 msgid "Add Multiple Floppies at Once"
 msgstr "Přidat více disket najednou"
 
+msgid "Advanced"
+msgstr "Rozšířené"
+
 msgid "Advanced Audio Options"
-msgstr ""
+msgstr "Rozšířené možnosti zvuku"
 
 msgid "Advanced Settings"
-msgstr ""
+msgstr "Rozšířené nastavení"
 
 msgid "Advanced Video Settings"
+msgstr "Rozšířené nastavení videa"
+
+msgid "All"
 msgstr ""
 
 msgid "All games and configurations"
-msgstr ""
+msgstr "Všechny hry a konfigurace"
+
+msgid "All games in the database"
+msgstr "Všechny hry v databázi"
 
 msgid "Also synchronize emulation with display when possible (smooth scrolling)"
-msgstr ""
+msgstr "Pokud možno, synchronizovat emulaci s displayem (jemnější posuv)"
 
 msgid "Amiga Forever Import"
 msgstr "Importovat Amiga Forever"
@@ -98,21 +114,24 @@ msgid "Amiga Model"
 msgstr "Amiga model"
 
 msgid "An Error Occurred"
+msgstr "Došlo k chybě"
+
+msgid "Approximate A500/A1200 or cycle-exact"
 msgstr ""
 
 msgid "Audio"
-msgstr ""
+msgstr "Zvuk"
 
 msgid "Audio Settings"
 msgstr "Nastavení zvuku"
 
 msgid "Audio buffer target size (bytes)"
-msgstr ""
+msgstr "Velikost vyrovnávací paměti zvuku (v Bytech)"
 
 msgid "Audio buffer target size (ms)"
-msgstr ""
+msgstr "Velikost vyrovnávací paměti zvuku (v ms)"
 
-msgid "Audio output freqency"
+msgid "Audio output frequency"
 msgstr ""
 
 msgid "Auto"
@@ -127,8 +146,11 @@ msgstr "Auto-fire je vypnut"
 msgid "Auto-Fire is On"
 msgstr "Auto-fire je zapnut"
 
-msgid "Automatic"
+msgid "Autoconfig Z2 Fast RAM"
 msgstr ""
+
+msgid "Automatic"
+msgstr "Automatický"
 
 msgid "Available Kickstart Versions"
 msgstr "K dispozici jsou verze Kickstart"
@@ -143,7 +165,7 @@ msgid "Browse for Folder"
 msgstr "Procházet složku"
 
 msgid "Buffer swap only"
-msgstr ""
+msgstr "Pouze prohodit vyrovnávací paměti"
 
 msgid "Built-in TCP/IP Stack"
 msgstr "Vestavěný TCP/IP stack"
@@ -161,19 +183,19 @@ msgid "CD-ROMs"
 msgstr "CD-ROM disky"
 
 msgid "CD32 Pad"
-msgstr ""
+msgstr "CD32 Ovladač"
 
 msgid "Cancel"
 msgstr "Zrušit"
 
 msgid "Checksumming"
-msgstr ""
+msgstr "Kontrola"
 
 msgid "Checksumming file..."
-msgstr ""
+msgstr "Kontrolní soubor..."
 
 msgid "Chip RAM"
-msgstr ""
+msgstr "Chip RAM"
 
 msgid "Choose CD-ROM Image"
 msgstr "Zvolit soubor obrazu CD-ROM"
@@ -191,7 +213,7 @@ msgid "Choose Kickstart ROM"
 msgstr "Zvolit Kickstart ROM"
 
 msgid "Choose what folders you want to scan for Amiga files"
-msgstr ""
+msgstr "Vyberte složku ve které chcete hledat Amiga soubory"
 
 msgid "Cleaning up..."
 msgstr "Probíhá čištění..."
@@ -230,16 +252,19 @@ msgid "Configuration Browser"
 msgstr "Prohlížeč nastavení"
 
 msgid "Configuration Warning"
-msgstr ""
+msgstr "Výstraha konfigurace"
 
 msgid "Configurations"
 msgstr "Více nastavení"
 
 msgid "Configure joysticks and set preferred joystick devices"
-msgstr ""
+msgstr "Konfigurace ovladače a nastavení upřednostňovaných ovladačů"
 
 msgid "Connect"
 msgstr "Připojit"
+
+msgid "Controls how lines are doubled and interlaced modes are handled"
+msgstr ""
 
 #, python-brace-format
 msgid "Copy {0}\nto {1}"
@@ -252,16 +277,16 @@ msgid "Create"
 msgstr "Vytvořit"
 
 msgid "Create a blank or formatted ADF floppy disk image"
-msgstr ""
+msgstr "Vytvořit prázdný nebo formátovaný ADF obraz diskety"
 
 msgid "Create a single-partition or partitionable hard drive image"
 msgstr ""
 
 msgid "Create an account now"
-msgstr ""
+msgstr "Vytvořit si účet"
 
 msgid "Create disk image of type:"
-msgstr ""
+msgstr "Vytvořit obraz disku typu:"
 
 msgid "Cursor Keys and Right Ctrl/Alt"
 msgstr "Klávesové šipky a Pravý CTRL/ALT"
@@ -279,7 +304,7 @@ msgid "Custom Joystick Port"
 msgstr "Vlastní port joysticku"
 
 msgid "Custom game database server address"
-msgstr ""
+msgstr "Vlastní serverová adresa herní databáze"
 
 msgid "Default"
 msgstr "Výchozí"
@@ -289,19 +314,22 @@ msgid "Default ({0})"
 msgstr "Výchozí ({0})"
 
 msgid "Defragment Databases"
-msgstr ""
+msgstr "Defragmentace databází"
 
 msgid "Defragmenting the databases will improve performance by ensuring that tables and indices are stored contiguously on disk. It will also reclaim some storage space."
 msgstr ""
 
 #, python-brace-format
 msgid "Defragmenting {name}"
-msgstr ""
+msgstr "Defragmentuji {name}"
 
 msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
 msgstr ""
 
 msgid "Device ID used with OAGD.net authentication"
+msgstr ""
+
+msgid "Directory for WHDLoad.key file (if you have it):"
 msgstr ""
 
 msgid "Disconnect"
@@ -311,13 +339,43 @@ msgid "Disk image created"
 msgstr "Obraz disku vytvořen"
 
 msgid "Dislike This Game Variant"
-msgstr ""
+msgstr "Neoblíbená varianta této hry"
 
 msgid "Don't have an account already?"
 msgstr ""
 
-msgid "Double-click a device entry to configure it (map joystick buttons)."
+msgid "Dongle"
 msgstr ""
+
+msgid "Double / Double Fields"
+msgstr ""
+
+msgid "Double / Double Fields+"
+msgstr ""
+
+msgid "Double / Double Frames"
+msgstr ""
+
+msgid "Double Fields / Double Fields"
+msgstr ""
+
+msgid "Double Fields / Double Fields+"
+msgstr ""
+
+msgid "Double Fields / Double Frames"
+msgstr ""
+
+msgid "Double Fields+ / Double Fields"
+msgstr ""
+
+msgid "Double Fields+ / Double Fields+"
+msgstr ""
+
+msgid "Double Fields+ / Double Frames"
+msgstr ""
+
+msgid "Double-click a device entry to configure it (map joystick buttons)."
+msgstr "Poklepejte na zařízení pro její konfiguraci (nastavení tlačítek ovladače)."
 
 msgid "Download Game Manually"
 msgstr ""
@@ -335,19 +393,34 @@ msgid "Downloading {0}..."
 msgstr "Stahuje se {0}..."
 
 msgid "E-mail:"
-msgstr ""
-
-msgid "Edit Custom Options"
-msgstr "Upravit vlastní možnosti"
+msgstr "E-mail:"
 
 msgid "Eject"
 msgstr "Vysunout"
+
+msgid "Enable a real time clock (RTC) module."
+msgstr ""
+
+msgid "Enable default chipset features for a specific model"
+msgstr ""
+
+msgid "Enable experimental config visualization (requires restart)"
+msgstr ""
 
 msgid "Enable experimental net play GUI (requires restart)"
 msgstr "Povolit experimentální grafické rozhraní síťové hry (vyžaduje restart)"
 
 msgid "Enable online database support (requires restart)"
 msgstr "Povolit podporu online databáze (vyžaduje restart)"
+
+msgid "Enable/disable fastest possible CPU speed"
+msgstr ""
+
+msgid "Enable/disable use of OAGD.net locker"
+msgstr ""
+
+msgid "Enable/disable use of SNES database"
+msgstr ""
 
 msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
 msgstr ""
@@ -365,12 +438,18 @@ msgid "Experimental Features"
 msgstr "Experimentální funkce"
 
 msgid "Extended ROM:"
+msgstr "Rozšířená ROM:"
+
+msgid "FIXME"
+msgstr ""
+
+msgid "FS-UAE   Arcade"
 msgstr ""
 
 msgid "FS-UAE Launcher Settings"
 msgstr "FS-UAE nastavení spouštění"
 
-msgid "Fast RAM"
+msgid "Fastest possible"
 msgstr ""
 
 #, python-brace-format
@@ -401,7 +480,7 @@ msgid "Files for this game are still missing. Did you download the game and put 
 msgstr ""
 
 msgid "Filter Settings"
-msgstr ""
+msgstr "Nastavení filtrů"
 
 msgid "Filters"
 msgstr "Filtry"
@@ -413,16 +492,16 @@ msgid "Finding files eligible for OAGD.net Locker"
 msgstr ""
 
 msgid "First rendered line (NTSC)"
-msgstr ""
+msgstr "První vykreslovaná řádka (NTSC)"
 
 msgid "First rendered line (PAL)"
-msgstr ""
+msgstr "První vykreslovaná řádka (PAL)"
 
 msgid "Floppies"
 msgstr "Diskety"
 
 msgid "Floppy Drive Sound Emulation"
-msgstr ""
+msgstr "Emulace zvuku disketové jednotky"
 
 msgid "Floppy Drives"
 msgstr "Disketové mechaniky"
@@ -430,8 +509,11 @@ msgstr "Disketové mechaniky"
 msgid "Floppy drive volume"
 msgstr "Svazek disketové mechaniky"
 
-msgid "Forgot your password?"
+msgid "Force Zorro-III address space at 0x10000000"
 msgstr ""
+
+msgid "Forgot your password?"
+msgstr "Zapomenuté heslo?"
 
 msgid "Full Frame"
 msgstr "Přesné snímkování"
@@ -441,6 +523,9 @@ msgstr "Celoobrazové vyhlazení (FSAA)"
 
 msgid "Fullscreen"
 msgstr "Celá obrazovka"
+
+msgid "Game   Center"
+msgstr ""
 
 msgid "Game Database"
 msgstr "Databáze her"
@@ -452,7 +537,7 @@ msgid "Game database authentication"
 msgstr ""
 
 msgid "Game database email"
-msgstr ""
+msgstr "E-mail herní databáze"
 
 msgid "Game database password"
 msgstr "Heslo herní databáze"
@@ -464,6 +549,9 @@ msgid "Games you have and all downloadable games"
 msgstr ""
 
 msgid "Games you have and automatically downloadable"
+msgstr ""
+
+msgid "Grab keyboard when input is grabbed"
 msgstr ""
 
 msgid "Grab mouse and keyboard input when FS-UAE starts"
@@ -479,19 +567,22 @@ msgid "HDF - Single Partition Hard Disk File"
 msgstr "HDF - Jednotlivý oddíl harddisku"
 
 msgid "HDF Creator"
-msgstr ""
+msgstr "HDF tvůrce"
 
 msgid "HDF Disk Image Creator"
-msgstr ""
+msgstr "Tvůrce diskového obrazu HDF"
 
 msgid "Hard Drives"
 msgstr "Pevné disky"
 
 msgid "Hardware"
-msgstr ""
+msgstr "Hardware"
 
 msgid "Hardware Options"
 msgstr "Možnosti hardware"
+
+msgid "Home"
+msgstr ""
 
 msgid "How to achieve perfectly smooth scrolling"
 msgstr ""
@@ -521,6 +612,9 @@ msgstr "Import je dokončen"
 msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
 msgstr ""
 
+msgid "Include adult-themed games"
+msgstr ""
+
 msgid "Include built-in configurations"
 msgstr "Zahrnout vestavěná nastavení"
 
@@ -536,11 +630,14 @@ msgstr "Vnitřní"
 msgid "Invalid size specified"
 msgstr "Specifikována špatná velikost"
 
-msgid "Joystick"
+msgid "JIT Direct compatible Z3 memory mapping"
 msgstr ""
 
+msgid "Joystick"
+msgstr "Pákový ovladač"
+
 msgid "Joystick & Mouse Port"
-msgstr ""
+msgstr "Port pákového ovladače a myši"
 
 msgid "Joystick Ports"
 msgstr "Joystick porty"
@@ -552,16 +649,19 @@ msgid "Keep aspect ratio when scaling (do not stretch)"
 msgstr "Drž poměr stran při škálování (neroztahovat)"
 
 msgid "Keyboard"
-msgstr ""
+msgstr "Klávesnice"
 
 msgid "Keyboard Setting"
-msgstr ""
+msgstr "Nastavení klávesnice"
 
 msgid "Keyboard Settings"
 msgstr "Nastavení klávesnice"
 
-msgid "Kickstart ROM"
+msgid "Keyword"
 msgstr ""
+
+msgid "Kickstart ROM"
+msgstr "Kickstart ROM"
 
 msgid "Kickstart ROMs are missing"
 msgstr "Chybí Kickstart ROM soubory "
@@ -570,16 +670,19 @@ msgid "Kickstart import task started"
 msgstr "Zadání importu kickstart spuštěno"
 
 msgid "Language"
-msgstr ""
+msgstr "Jazyk"
 
 msgid "Language Preference"
+msgstr "Jazykové předvolby"
+
+msgid "Launch FS-UAE"
 msgstr ""
 
 msgid "Launching FS-UAE"
 msgstr "Spouštím FS-UAE"
 
 msgid "Launching Game"
-msgstr ""
+msgstr "Spuštění hry"
 
 msgid "Least Accurate"
 msgstr "Nejmenší přesnost"
@@ -587,35 +690,44 @@ msgstr "Nejmenší přesnost"
 msgid "Less Accurate"
 msgstr "Menší přesnost"
 
+msgid "Letter"
+msgstr ""
+
 msgid "Like This Game Variant"
+msgstr "Jako je tato varianta hry"
+
+msgid "List"
 msgstr ""
 
 msgid "Load state by number"
 msgstr ""
 
 msgid "Loading..."
-msgstr ""
+msgstr "Nahrávání..."
 
 msgid "Log In"
-msgstr ""
+msgstr "Přihlásit se"
 
 msgid "Log In / Register"
-msgstr ""
+msgstr "Přihlásit se / registrovat"
 
 msgid "Log In to Your OAGD.net Account"
-msgstr ""
+msgstr "Přihlaste se k účtu OAGD.net"
 
 msgid "Log Out"
-msgstr ""
+msgstr "Odhlásit"
 
 msgid "Log Out from Your OAGD.net Account"
+msgstr ""
+
+msgid "Log database query plans"
 msgstr ""
 
 msgid "Log in to enable online game DB"
 msgstr ""
 
 msgid "Logged In"
-msgstr ""
+msgstr "Přihlášen"
 
 msgid "Logging in will enable the online game database and more"
 msgstr ""
@@ -624,7 +736,7 @@ msgid "Low latency video sync"
 msgstr ""
 
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 msgid "Main Configuration Options"
 msgstr "Hlavní volby konfigurace"
@@ -633,10 +745,10 @@ msgid "Main Menu"
 msgstr "Hlavní nabídka"
 
 msgid "Main volume control"
-msgstr ""
+msgstr "Ovládání hlasitosti"
 
 msgid "Maintenance"
-msgstr ""
+msgstr "Údržba"
 
 msgid "Mark This Game Variant as Personal Favorite"
 msgstr ""
@@ -652,13 +764,13 @@ msgid "Miscellaneous functions to optimize {name}"
 msgstr ""
 
 msgid "Missing Files"
-msgstr ""
+msgstr "Chybějící soubory"
 
 msgid "Mouse"
 msgstr "Myš"
 
 msgid "Mouse Setting"
-msgstr ""
+msgstr "Nastavení myši"
 
 msgid "Mouse Settings"
 msgstr "Nastavení myši"
@@ -667,7 +779,7 @@ msgid "Mouse speed (%)"
 msgstr "Rychlost myši (%)"
 
 msgid "N/A"
-msgstr ""
+msgstr "Není k dispozici"
 
 msgid "Net Play"
 msgstr "Síťová hra"
@@ -693,8 +805,11 @@ msgstr "Žádné zařízení"
 msgid "No Host Device"
 msgstr "Žádné hostitelské zařízení"
 
-msgid "No Protection"
+msgid "No Last Played"
 msgstr ""
+
+msgid "No Protection"
+msgstr "Bez ochrany"
 
 msgid "No extended kickstart found for this model. Try 'scan' function."
 msgstr "Nenalezen rozšířený kickstart pro tento model. Zkus funkci 'skenovat'"
@@ -705,8 +820,11 @@ msgstr ""
 msgid "No scan in progress"
 msgstr "Žádné skenování neprobíhá"
 
-msgid "Not logged in"
+msgid "None"
 msgstr ""
+
+msgid "Not logged in"
+msgstr "Nepřihlášen"
 
 msgid "Nothing"
 msgstr "Nic"
@@ -721,7 +839,7 @@ msgid "OAGD.net upload task completed successfully"
 msgstr ""
 
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 msgid "Off"
 msgstr "Vypnuto"
@@ -730,21 +848,39 @@ msgid "On"
 msgstr "Zapnuto"
 
 msgid "Only games you have"
-msgstr ""
-
-msgid "Open Scan Dialog"
-msgstr "Otevřít dialog skenování"
+msgstr "Pouze vaše hry"
 
 msgid "OpenGL Settings"
 msgstr "OpenGL nastavení"
 
+msgid "Options for WHDLoad support in FS-UAE Launcher"
+msgstr ""
+
 msgid "Override Installed Memory"
 msgstr "Nastavit instalovanou paměť na:"
+
+msgid "Override the amount of graphics memory on the graphics card"
+msgstr ""
 
 msgid "Parallel Port Joysticks"
 msgstr "Paralelní porty Joysticků"
 
 msgid "Password:"
+msgstr "Heslo:"
+
+msgid "Picasso II (Zorro II)"
+msgstr ""
+
+msgid "Picasso II+ (Zorro II)"
+msgstr ""
+
+msgid "Picasso IV (Auto)"
+msgstr ""
+
+msgid "Picasso IV (Zorro II)"
+msgstr ""
+
+msgid "Picasso IV (Zorro III)"
 msgstr ""
 
 msgid "Picasso96 Support"
@@ -753,6 +889,9 @@ msgstr "Podpora Picasso96"
 msgid "Picasso96 Support (uaegfx.card)"
 msgstr "Podpora Picasso96 (uaegfx.card)"
 
+msgid "Platform"
+msgstr ""
+
 msgid "Please open the following web page and download the game from there:"
 msgstr ""
 
@@ -760,7 +899,7 @@ msgid "Please wait..."
 msgstr "Čekejte prosím…"
 
 msgid "Preferred Joysticks"
-msgstr ""
+msgstr "Upřednostňovaný ovladač"
 
 msgid "Preferred device for secondary joystick:"
 msgstr "Preferované zařízení pro sekundární joystick:"
@@ -775,7 +914,7 @@ msgid "Preparing hard drives..."
 msgstr "Příprava pevných disků..."
 
 msgid "Preparing kickstart ROMs..."
-msgstr ""
+msgstr "Příprava kickstart ROM..."
 
 msgid "Preparing..."
 msgstr "Připravuje se…"
@@ -783,12 +922,15 @@ msgstr "Připravuje se…"
 msgid "Purging old entries..."
 msgstr "Čistím staré záznamy..."
 
+msgid "Quit"
+msgstr ""
+
 #, python-brace-format
 msgid "Re-trying in {0} seconds..."
 msgstr ""
 
 msgid "Read more"
-msgstr ""
+msgstr "Číst více"
 
 msgid "Refresh Game Configurations from Online Database"
 msgstr ""
@@ -800,6 +942,9 @@ msgid "Refresh List of Connected Joystick Devices"
 msgstr ""
 
 msgid "Reject"
+msgstr "Odmítnout"
+
+msgid "Relax host CPU usage when using fastest-possible CPU"
 msgstr ""
 
 msgid "Remove Directory from Search Path"
@@ -819,7 +964,7 @@ msgid "Render scan lines in RTG graphics mode"
 msgstr "Vykresli řádkování v RTG grafickém módu"
 
 msgid "Reset password via e-mail"
-msgstr ""
+msgstr "Obnovení hesla prostřednictvím e-mailu"
 
 msgid "Resetting game database..."
 msgstr ""
@@ -835,13 +980,13 @@ msgid "Save Configuration"
 msgstr "Uložení konfigurace"
 
 msgid "Save to directory:"
-msgstr ""
+msgstr "Uložtit do adresáře:"
 
 msgid "Saving changes..."
 msgstr "Ukládání změn..."
 
 msgid "Scaling"
-msgstr ""
+msgstr "Změna měřítka"
 
 msgid "Scaling Options"
 msgstr "Nastavení škálování"
@@ -867,11 +1012,17 @@ msgstr "Hledání dokončeno"
 msgid "Scan error"
 msgstr "Chyba při skenování"
 
-msgid "Scan for Files"
-msgstr "Hledat soubory"
-
 msgid "Scan for Kickstarts, Files and Configurations"
 msgstr "Hledání Kickstart, souborů a konfigurací"
+
+msgid "Scanlines / Double Fields"
+msgstr ""
+
+msgid "Scanlines / Double Fields+"
+msgstr ""
+
+msgid "Scanlines / Double Frames"
+msgstr ""
 
 msgid "Scanning .fs-uae files..."
 msgstr "Prohledávám .fs-uae soubory..."
@@ -903,6 +1054,15 @@ msgstr ""
 msgid "Select Destination Directory"
 msgstr "Vybrat cílový adresář"
 
+msgid "Select First Letter"
+msgstr ""
+
+msgid "Select Keyword"
+msgstr ""
+
+msgid "Select List"
+msgstr ""
+
 msgid "Select Multiple CD-ROMs"
 msgstr "Vybrat několik CD-ROM mechanik"
 
@@ -912,8 +1072,14 @@ msgstr "Vybrat několik souborů..."
 msgid "Select Multiple Floppies"
 msgstr "Vybrat několik disket"
 
+msgid "Select Platform"
+msgstr ""
+
 msgid "Select Source Directory"
 msgstr "Vybrat zdrojový adresář"
+
+msgid "Select Year"
+msgstr ""
 
 #, python-brace-format
 msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
@@ -926,27 +1092,54 @@ msgid "Settings"
 msgstr "Nastavení"
 
 msgid "Show games from database"
-msgstr ""
+msgstr "Zobrazit hry z databáze"
 
 msgid "Show kickstart setup page on startup when all ROMs are missing"
 msgstr "Ukaž stránku nastavení pro kickstart, pokud všechny ROM soubory chybějí"
+
+msgid "Shuffle"
+msgstr ""
+
+msgid "Single / Single"
+msgstr ""
+
+msgid "Size in MB of Zorro-II Fast RAM (second) expansion board"
+msgstr ""
+
+msgid "Size in MB of Zorro-II Fast RAM expansion board"
+msgstr ""
+
+msgid "Size in MB of Zorro-III Fast RAM expansion board"
+msgstr ""
+
+msgid "Size in megabytes of motherboard fast memory"
+msgstr ""
+
+msgid "Size in megabytes of processor slot fast memory"
+msgstr ""
 
 msgid "Size:"
 msgstr "Velikost:"
 
 msgid "Slow RAM"
-msgstr ""
+msgstr "Slow RAM"
 
 msgid "Some required files are missing"
+msgstr "Některé požadované soubory chybí"
+
+msgid "Sound card"
 msgstr ""
 
 msgid "Sound emulation"
-msgstr ""
+msgstr "Emulace zvuku"
 
 msgid "Specified directory does not exist"
 msgstr "Zadaný adresář neexistuje"
 
 msgid "Specify global options and settings which does not have UI controls"
+msgstr ""
+
+msgid "Specify the frequency of the emulated CPU in cycle-exact modes"
 msgstr ""
 
 msgid "Start"
@@ -962,13 +1155,16 @@ msgid "Stereo separation"
 msgstr ""
 
 msgid "Stop"
-msgstr ""
+msgstr "Zastavit"
 
 msgid "Stopped by user"
 msgstr ""
 
 msgid "Swap left and right CTRL keys"
 msgstr "Prohodit levou a pravou klávesu CTRL"
+
+msgid "Synchronization"
+msgstr "Synchronizace"
 
 msgid "Synchronize FS-UAE with your display for smooth video"
 msgstr ""
@@ -977,7 +1173,7 @@ msgid "Synchronize buffer swaps with display (prevents tearing)"
 msgstr ""
 
 msgid "Synchronizing game database..."
-msgstr ""
+msgstr "Synchronizace herní databáze..."
 
 msgid "Synchronizing personal ratings..."
 msgstr "Synchronizuji osobní nastavení..."
@@ -994,6 +1190,9 @@ msgstr "Filtr textury"
 msgid "The following joystick will be preferred, if present:"
 msgstr ""
 
+msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
+msgstr ""
+
 msgid "The game may not start properly"
 msgstr ""
 
@@ -1001,7 +1200,7 @@ msgid "This game can be automatically downloaded if you accept the terms"
 msgstr ""
 
 msgid "This game must be downloaded"
-msgstr ""
+msgstr "Tato hra musí být stažena"
 
 msgid "This game must be downloaded before you can play it"
 msgstr ""
@@ -1012,6 +1211,15 @@ msgstr ""
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Přepnout mód plná obrazovka/v okně"
 
+msgid "UAEGFX (Auto)"
+msgstr ""
+
+msgid "UAEGFX (Zorro II)"
+msgstr ""
+
+msgid "UAEGFX (Zorro III)"
+msgstr ""
+
 msgid "Ungrab mouse and keyboard on middle mouse click"
 msgstr "Vypni/zapni myš a klávesnici po kliknutí prostředním tlačítkem myši"
 
@@ -1020,23 +1228,23 @@ msgid "Update available ({version})"
 msgstr "Aktualizace k dispozici ({version})"
 
 msgid "Updating Database"
-msgstr ""
+msgstr "Aktualizace databáze"
 
 msgid "Updating database"
 msgstr "Aktualizuji databázi"
 
 msgid "Updating game lists..."
-msgstr ""
+msgstr "Aktualizace seznamu her"
 
 #, python-brace-format
 msgid "Updating list '{0}'..."
-msgstr ""
+msgstr "Aktualizace seznamu {0}..."
 
 msgid "Updating locker data..."
 msgstr ""
 
 msgid "Upload"
-msgstr ""
+msgstr "Nahrát"
 
 msgid "Upload Files to OAGD.net Locker"
 msgstr ""
@@ -1052,20 +1260,11 @@ msgstr ""
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Použít RDB obrazy disků pro velikost >= {0}"
 
-msgid "User Menu"
-msgstr ""
-
 msgid "Video"
-msgstr ""
-
-msgid "Video (Advanced)"
-msgstr ""
+msgstr "Obraz"
 
 msgid "Video Settings"
 msgstr "Nastavení videa"
-
-msgid "Video Synchronization"
-msgstr ""
 
 msgid "Video Synchronization Settings"
 msgstr ""
@@ -1085,13 +1284,25 @@ msgstr "Formát video textury (na GPU)"
 msgid "WHDLoad Arguments"
 msgstr "WHDLoad parametry"
 
-msgid "Web Links"
+msgid "WHDLoad Settings"
 msgstr ""
+
+msgid "WHDLoad splash delay"
+msgstr ""
+
+msgid "Web Links"
+msgstr "Webové odkazy"
 
 msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
 msgstr ""
 
 msgid "While logged out you will not get database updates"
+msgstr ""
+
+msgid "Write .uaem metadata files"
+msgstr ""
+
+msgid "Year"
 msgstr ""
 
 msgid "You should have kickstart files for each Amiga model you want to use:"
@@ -1100,10 +1311,43 @@ msgstr "Měl bys mít soubory kickstart, pro každý model Amiga, který použij
 msgid "Zoom Amiga display (crop)"
 msgstr "Přiblížit Amiga displej (ostřihnout)"
 
-msgid "Zorro III RAM"
+msgid "Zorro II RAM"
 msgstr ""
+
+msgid "Zorro III RAM"
+msgstr "Zorro III RAM"
 
 #, python-brace-format
 msgid "{amiga_model} with < 2 MB chip memory"
 msgstr ""
+
+msgid "Audio output freqency"
+msgstr "Zvuková výstupní frekvence"
+
+msgid "Commiting locker data..."
+msgstr ""
+
+msgid "Edit Custom Options"
+msgstr "Upravit vlastní možnosti"
+
+msgid "Fast RAM"
+msgstr "Fast RAM"
+
+msgid "Open Scan Dialog"
+msgstr "Otevřít dialog skenování"
+
+msgid "Scan for Files"
+msgstr "Hledat soubory"
+
+msgid "This game can can be automatically downloaded if you accept the terms"
+msgstr ""
+
+msgid "User Menu"
+msgstr "Uživatelské Menu"
+
+msgid "Video (Advanced)"
+msgstr "Video (upřesnění)"
+
+msgid "Video Synchronization"
+msgstr "Synchronizace videa"
 
