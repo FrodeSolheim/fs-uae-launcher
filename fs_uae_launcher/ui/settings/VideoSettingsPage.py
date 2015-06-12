@@ -22,6 +22,7 @@ class VideoSettingsPage(fsui.Panel):
                             margin_top=10, margin_bottom=10)
 
         add_option("fullscreen")
+        add_option("monitor")
 
         label = fsui.HeadingLabel(self, gettext("Scaling"))
         self.layout.add(label, margin_top=20, margin_bottom=20)

@@ -135,11 +135,12 @@ class GameRunner(object):
 
     def screen_size(self):
         refresh_rate_tool = RefreshRateTool()
+        # FIXME: screen size monitor size
         width = refresh_rate_tool.get_current_mode()["width"]
         height = refresh_rate_tool.get_current_mode()["height"]
-        if width > 2 * height:
-            print("width > 2 * height, assuming dual-monitor setup...")
-            return width // 2, height
+        # if width > 2 * height:
+        #     print("width > 2 * height, assuming dual-monitor setup...")
+        #     return width // 2, height
         return width, height
 
     def get_screen_width(self):

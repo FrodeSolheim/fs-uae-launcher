@@ -50,7 +50,7 @@ class QtWindow(QMainWindow):
         else:
             self.setWindowTitle("FS Game Center")
         self.gl_widget = GLWidget(self, callback)
-        if not "--show-cursor" in sys.argv:
+        if "--show-cursor" not in sys.argv:
             self.setCursor(Qt.BlankCursor)
             self.gl_widget.setCursor(Qt.BlankCursor)
         self.setCentralWidget(self.gl_widget)

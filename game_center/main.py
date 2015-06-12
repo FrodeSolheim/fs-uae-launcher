@@ -127,6 +127,7 @@ def main():
     use_fullscreen_window = False
     use_top_clock = check_setting("top_clock") != "0"
     use_top_logo = check_setting("top_logo") != "0"
+    display = 0
 
     if running_in_gnome_3():
         if check_setting("fullscreen") == "0":
@@ -180,6 +181,25 @@ def main():
     app.settings["game-center:top-clock"] = "1" if use_top_clock else "0"
     app.settings["game-center:top-logo"] = "1" if use_top_logo else "0"
 
+    for arg in sys.argv:
+        if arg.startswith("--monitor="):
+            try:
+                display = int(arg[10:]) - 1
+            except ValueError as e:
+                print(repr(e))
+                display = 1
+            print("[Command] Use monitor number", display + 1)
+            app.settings["monitor"] = str(display + 1)
+            break
+    else:
+        if app.settings["monitor"]:
+            try:
+                display = int(app.settings["monitor"]) - 1
+            except ValueError as e:
+                print(repr(e))
+                display = 1
+            print("[Settings] Use monitor number", display + 1)
+
     if macosx and use_fullscreen and use_fullscreen_window:
         # noinspection PyUnresolvedReferences
         import objc
@@ -211,6 +231,18 @@ def main():
     if use_fullscreen:
         # fs_width += 1
         main_window.resize(fs_width, fs_height)
+        # display = 0
+        # print("Displays / Screens:")
+        # for screen in application.qapplication.screens():
+        #     print(screen)
+        #     print(screen.geometry())
+        # screen = application.qapplication.screens()[display]
+
+        desktop = application.qapplication.desktop()
+        geometry = desktop.screenGeometry(display)
+
+        main_window.setGeometry(geometry)
+
         if use_fullscreen_window:
             print("using fullscreen window")
 
@@ -227,6 +259,7 @@ def main():
             # main_window.activateWindow()
         else:
             main_window.showFullScreen()
+        # main_window.windowHandle().setScreen(screen)
     else:
         if not use_window_decorations:
             main_window.setWindowFlags(Qt.FramelessWindowHint)

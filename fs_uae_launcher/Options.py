@@ -38,6 +38,7 @@ class Option(object):
     MIDDLE_CLICK_UNGRAB = "middle_click_ungrab"
     MIN_FIRST_LINE_NTSC = "min_first_line_ntsc"
     MIN_FIRST_LINE_PAL = "min_first_line_pal"
+    MONITOR = "monitor"
     MOUSE_SPEED = "mouse_speed"
     NETPLAY_FEATURE = "netplay_feature"
     NETPLAY_TAG = "netplay_tag"
@@ -339,6 +340,14 @@ options = {
         "default": "26",
         "description": N_("First rendered line (PAL)"),
         "type": "",
+    },
+
+    "monitor": {
+        "default": "1",
+        "description": N_("Monitor to display FS-UAE on (fullscreen)"),
+        "type": "integer",
+        "min": 1,
+        "max": 10,
     },
 
     "mouse_speed": {
