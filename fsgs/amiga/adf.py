@@ -106,7 +106,7 @@ class ADFFile(object):
         for i in range(0, B_SIZE * B_COUNT, B_SIZE):
             self.blocks.append(Block(data[i:i + B_SIZE]))
         assert len(self.blocks) == B_COUNT
-        self.block_usage = [[""] for _ in range(B_COUNT)]
+        self.block_usage = [["block"] for _ in range(B_COUNT)]
         self.dos = False
         self.ofs = False
         self.ffs = False
@@ -142,12 +142,12 @@ class ADFFile(object):
 
         for i, usage in enumerate(self.block_usage):
             if "used" in usage:
-                if len(usage) < 2:
+                if usage == ["block", "used"]:
                     self.warnings.append(
                         "block {0} marked as used but no actual usage".format(
                             i))
             if "free" in usage:
-                if len(usage) != 1:
+                if usage != ["block", "free"]:
                     self.warnings.append(
                         "block {0} marked as used but used for {1}".format(
                             i, repr(usage)))
@@ -157,6 +157,7 @@ class ADFFile(object):
         type = b.ulong(0)
         secondary_type = b.ulong(B_SIZE - 4)
         if type != T_HEADER:
+            print(type, T_HEADER)
             self.warnings.append("root block does not have T_HEADER type")
         if secondary_type != ST_ROOT:
             self.warnings.append("root block does not have ST_ROOT secondary "
@@ -443,8 +444,8 @@ class ADFFile(object):
 
     def read(self, name: str)-> bytes:
         name = name.lower()
-        print(repr(self.file_map))
-        print(repr(name))
+        # print(repr(self.file_map))
+        # print(repr(name))
         file_info = self.file_map[name]
         bytes_left = file_info.size
         data = []  # type: List[bytes]
@@ -473,8 +474,7 @@ def main():
         print(name)
         if not name.endswith("/"):
             data = adf.open(name).read()
-            print(" ", len(data), "bytes")
-            print(" ", hashlib.sha1(data).hexdigest())
+            print("   ", hashlib.sha1(data).hexdigest(), "", len(data))
             # tracks = set()
             # for block in adf.file_map[name.lower()].block_list:
             #     track = block // 11
