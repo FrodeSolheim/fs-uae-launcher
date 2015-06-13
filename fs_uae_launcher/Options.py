@@ -343,11 +343,15 @@ options = {
     },
 
     "monitor": {
-        "default": "1",
+        "default": "middle-left",
         "description": N_("Monitor to display FS-UAE on (fullscreen)"),
-        "type": "integer",
-        "min": 1,
-        "max": 10,
+        "type": "choice",
+        "values": [
+            ("left", N_("Left")),
+            ("middle-left", N_("Middle Left")),
+            ("middle-right", N_("Middle Right")),
+            ("right", N_("Right")),
+        ]
     },
 
     "mouse_speed": {

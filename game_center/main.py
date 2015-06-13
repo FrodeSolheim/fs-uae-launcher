@@ -127,7 +127,6 @@ def main():
     use_fullscreen_window = False
     use_top_clock = check_setting("top_clock") != "0"
     use_top_logo = check_setting("top_logo") != "0"
-    display = 0
 
     if running_in_gnome_3():
         if check_setting("fullscreen") == "0":
@@ -181,24 +180,15 @@ def main():
     app.settings["game-center:top-clock"] = "1" if use_top_clock else "0"
     app.settings["game-center:top-logo"] = "1" if use_top_logo else "0"
 
+    monitor = "middle-left"
     for arg in sys.argv:
         if arg.startswith("--monitor="):
-            try:
-                display = int(arg[10:]) - 1
-            except ValueError as e:
-                print(repr(e))
-                display = 1
-            print("[Command] Use monitor number", display + 1)
-            app.settings["monitor"] = str(display + 1)
+            monitor = arg[10:]
+            app.settings["monitor"] = monitor
             break
     else:
         if app.settings["monitor"]:
-            try:
-                display = int(app.settings["monitor"]) - 1
-            except ValueError as e:
-                print(repr(e))
-                display = 1
-            print("[Settings] Use monitor number", display + 1)
+            monitor = app.settings["monitor"]
 
     if macosx and use_fullscreen and use_fullscreen_window:
         # noinspection PyUnresolvedReferences
@@ -231,15 +221,23 @@ def main():
     if use_fullscreen:
         # fs_width += 1
         main_window.resize(fs_width, fs_height)
-        # display = 0
-        # print("Displays / Screens:")
-        # for screen in application.qapplication.screens():
-        #     print(screen)
-        #     print(screen.geometry())
-        # screen = application.qapplication.screens()[display]
 
         desktop = application.qapplication.desktop()
-        geometry = desktop.screenGeometry(display)
+        screens = []
+        for i in range(desktop.screenCount()):
+            geometry = desktop.screenGeometry(i)
+            screens.append([geometry.x(), i, geometry])
+        screens.sort()
+        if monitor == "left":
+            mon = 0
+        elif monitor == "middle-right":
+            mon = 2
+        elif monitor == "right":
+            mon = 3
+        else:  # middle-left
+            mon = 1
+        display = round(mon / 3 * (len(screens) - 1))
+        geometry = screens[display][2]
 
         main_window.setGeometry(geometry)
 
