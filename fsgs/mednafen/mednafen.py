@@ -42,7 +42,7 @@ class MednafenRunner(GameRunner):
         #     executable=executable)
 
         return self.start_emulator_from_plugin_resource(
-            "mednafen", args=self.args, env_vars=self.env)
+            "fs-mednafen", args=self.args, env_vars=self.env)
 
     def finish(self):
         pass
@@ -142,11 +142,12 @@ class MednafenRunner(GameRunner):
                 self.args.extend(["-%s.stretch" % pfx, "aspect"])
 
         if self.use_fullscreen():
-            self.args.extend(["-fs", "1"])
+            # self.args.extend(["-fs", "1"])
             # self.args.extend(["-%s.scanlines" % pfx,
             #         str(self.get_scanlines_setting())])
+            pass
         else:
-            self.args.extend(["-fs", "0"])
+            # self.args.extend(["-fs", "0"])
             self.args.extend(["-%s.xscale" % pfx, "2"])
             self.args.extend(["-%s.yscale" % pfx, "2"])
 
@@ -186,6 +187,12 @@ class MednafenRunner(GameRunner):
             self.args.extend(["-glvsync", "1"])
         else:
             self.args.extend(["-glvsync", "0"])
+
+        if self.config.get("audio_driver", "") in ["sdl", "pulseaudio"]:
+            # Mednafen does not support pulseaudio directly, but using the
+            # sdl driver will "often" result in pulseaudio being used
+            # indirectly
+            self.args.extend(["-sound.driver", "sdl"])
 
         print("\n" + "-" * 79 + "\n" + "CONFIGURE PORTS")
 

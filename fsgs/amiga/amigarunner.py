@@ -88,8 +88,8 @@ class AmigaRunner(GameRunner):
         save_state_handler = SaveStateHandler(
             self.fsgs, self.get_name(), platform)
 
-        self.config["joystick_port_0"] = self.ports[1].device_id
-        self.config["joystick_port_1"] = self.ports[0].device_id
+        self.config["joystick_port_0"] = self.ports[1].device_id or ""
+        self.config["joystick_port_1"] = self.ports[0].device_id or ""
 
         self.launch_handler = LaunchHandler(
             self.fsgs, self.get_name(), self.config, save_state_handler)

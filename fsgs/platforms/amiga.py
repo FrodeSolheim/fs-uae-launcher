@@ -1,6 +1,6 @@
 from fsgs.platform import PlatformHandler
 from fsgs.amiga.ValueConfigLoader import ValueConfigLoader
-from fsgs.amiga.runner import AmigaRunner
+from fsgs.amiga.amigarunner import AmigaRunner
 
 
 class AmigaPlatformHandler(PlatformHandler):

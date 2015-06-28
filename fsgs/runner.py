@@ -83,9 +83,10 @@ class GameRunner(object):
         return True
 
     def use_vsync(self):
-        if "--no-vsync" in sys.argv:
-            return False
-        return True
+        # if "--no-vsync" in sys.argv:
+        #     return False
+        # return True
+        return self.config.get("video_sync") == "1"
 
     def use_doubling(self):
         return True
@@ -142,6 +143,26 @@ class GameRunner(object):
         #     print("width > 2 * height, assuming dual-monitor setup...")
         #     return width // 2, height
         return width, height
+
+    def screen_rect(self):
+        desktop = app.qapplication.desktop()
+        screens = []
+        for i in range(desktop.screenCount()):
+            geometry = desktop.screenGeometry(i)
+            screens.append([geometry.x(), i, geometry])
+        screens.sort()
+        monitor = self.config.get("monitor", "")
+        if monitor == "left":
+            mon = 0
+        elif monitor == "middle-right":
+            mon = 2
+        elif monitor == "right":
+            mon = 3
+        else:  # middle-left
+            mon = 1
+        display = round(mon / 3 * (len(screens) - 1))
+        geometry = screens[display][2]
+        return geometry.x(), geometry.y(), geometry.width(), geometry.height()
 
     def get_screen_width(self):
         """deprecated"""
@@ -211,7 +232,7 @@ class GameRunner(object):
 
     def start_emulator_from_plugin_resource(
             self, provide_name, args=None, env_vars=None):
-        resource = self.fsgs.plugins.find_resource(provide_name)
+        resource = self.fsgs.plugins.find_executable(provide_name)
         return self.start_emulator("", args=args, env_vars=env_vars,
                                    executable=resource.path)
 
@@ -243,14 +264,29 @@ class GameRunner(object):
 
         env = os.environ.copy()
         if self.use_fullscreen():
-            if env.get("FSGS_WINDOW", ""):
-                # FSGS_WINDOW already specified externally, so we just use
-                # the existing values...
-                pass
+            for key in ["FSGS_GEOMETRY", "FSGS_WINDOW"]:
+                if env.get(key, ""):
+                    # Already specified externally, so we just use
+                    # the existing values...
+                    pass
+                    print("using existing fullscreen window rect")
+                else:
+                    x, y, w, h = self.screen_rect()
+                    env[key] = "{0},{1},{2},{3}".format(x, y, w, h)
+            print("fullscreen rect:", env.get("FSGS_GEOMETRY", ""))
+
+            if self.config.get("fullscreen_mode", "") == "window":
+                print("using fullscreen window mode")
+                env["FSGS_FULLSCREEN"] = "window"
+            elif self.config.get("fullscreen_mode", "") == "fullscreen":
+                print("using fullscreen (legacy) mode")
+                env["FSGS_FULLSCREEN"] = "fullscreen"
             else:
-                x, y = 0, 0
-                w, h = self.screen_size()
-                env["FSGS_WINDOW"] = "{0},{1},{2},{3}".format(x, y, w, h)
+                print("using fullscreen desktop mode")
+                env["FSGS_FULLSCREEN"] = "desktop"
+        else:
+            print("using window mode (no fullscreen)")
+            env["FSGS_FULLSCREEN"] = ""
 
         env.update(self.__env)
         env["HOME"] = self.home.path

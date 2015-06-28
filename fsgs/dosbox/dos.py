@@ -30,6 +30,9 @@ from fsgs.runner import GameRunner
 # noinspection PyAttributeOutsideInit
 class DOSRunner(GameRunner):
 
+    def __init__(self, fsgs):
+        super().__init__(fsgs)
+
     def prepare(self):
         self.temp_dir = self.create_temp_dir("dosbox")
         self.drives_dir = self.create_temp_dir("dosbox-drives")
@@ -102,12 +105,14 @@ class DOSRunner(GameRunner):
         f.write("\n[render]\n")
         f.write("frameskip=0\n")
         if self.use_stretching():
-            # FIXME: this option does not stretch, merely does not correct
+            # This option does not stretch, it merely does not correct
             # aspect for non-square pixels resolutions, e.g. 320x200
             f.write("aspect=false\n")
+            # This custom environment variable however, does cause stretching
             self.set_env("FSGS_STRETCH", "1")
         else:
             f.write("aspect=true\n")
+            self.set_env("FSGS_STRETCH", "0")
 
         f.write("\n[cpu]\n")
         cpu_core = "auto"
@@ -141,8 +146,7 @@ class DOSRunner(GameRunner):
             self.add_arg("-noconsole")
 
     def run(self):
-        # return self.start_emulator("fs-dosbox/dosbox")
-        return self.start_emulator_from_plugin_resource("dosbox")
+        return self.start_emulator_from_plugin_resource("fs-dosbox")
 
     def finish(self):
         pass

@@ -10,7 +10,9 @@ class Option(object):
     BUILTIN_CONFIGS = "builtin_configs"
     CONFIG_FEATURE = "config_feature"
     CPU_IDLE = "cpu_idle"
+    DATABASE_ARCADE = "database_arcade"
     DATABASE_AUTH = "database_auth"
+    DATABASE_DOS = "database_dos"
     DATABASE_EMAIL = "database_email"
     DATABASE_FEATURE = "database_feature"
     DATABASE_LOCKER = "database_locker"
@@ -145,10 +147,22 @@ options = {
         "max": 10,
     },
 
+    "database_arcade": {
+        "default": "",
+        "description": N_("Enable/disable use of the Arcade game database"),
+        "type": "boolean",
+    },
+
     "database_auth": {
         "default": "",
         "description": N_("Game database authentication"),
         "type": "string",
+    },
+
+    "database_dos": {
+        "default": "",
+        "description": N_("Enable/disable use of the DOS game database"),
+        "type": "boolean",
     },
 
     "database_email": {
@@ -201,7 +215,7 @@ options = {
 
     "database_snes": {
         "default": "",
-        "description": N_("Enable/disable use of SNES database"),
+        "description": N_("Enable/disable use of the SNES game database"),
         "type": "boolean",
     },
 

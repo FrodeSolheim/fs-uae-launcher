@@ -337,6 +337,7 @@ class FSGameSystemContext(object):
         return TemporaryFile(suffix)
 
     def find_preferred_game_variant(self, game_uuid):
+        print("find_preferred_game_variant game_uuid =", game_uuid)
         from .Database import Database
         database = Database.instance()
         variants = database.find_game_variants_new(game_uuid=game_uuid)
@@ -472,6 +473,9 @@ class PluginsContext(object):
 
     def find_resource(self, name):
         return PluginManager.instance().find_resource(name)
+
+    def find_executable(self, name):
+        return PluginManager.instance().find_executable(name)
 
 
 class GamePlatform(object):

@@ -100,7 +100,7 @@ class MAMERunner(GameRunner):
             self.cfg_dir.path, "{romset}.cfg".format(romset=self.romset))
         self.add_arg("-cfg_directory", self.cfg_dir.path)
         self.add_arg("-nvram_directory", state_dir)
-        self.add_arg("-memcard_directory", state_dir)
+        # self.add_arg("-memcard_directory", state_dir)
         # self.add_arg("-hiscore_directory", state_dir)
         self.add_arg("-state_directory", state_dir)
         self.add_arg("-diff_directory", state_dir)
@@ -329,7 +329,7 @@ class MAMERunner(GameRunner):
     def run(self):
         self.add_arg(self.romset)
         # return self.start_emulator("fs-mame/mame")
-        return self.start_emulator_from_plugin_resource("mame")
+        return self.start_emulator_from_plugin_resource("fs-mame")
 
     def finish(self):
         # if os.path.exists(os.path.join(self.cfg_dir.path, "default.cfg")):

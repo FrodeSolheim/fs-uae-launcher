@@ -1,3 +1,7 @@
+Version 2.5.33dev:
+
+* hard_drive_x_label and hard_drive_x_priority did not show in custom config.
+
 Version 2.5.32dev:
 
 * Added settings GUI control to select full-screen monitor.

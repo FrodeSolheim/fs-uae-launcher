@@ -41,8 +41,15 @@ class GameScanner(object):
         if True:
             # yield "openretro.org/amiga", self.fsgs.get_game_database()
             yield "openretro.org/amiga", self.fsgs.get_game_database()
+        if Settings.get(Option.DATABASE_ARCADE) == "1":
+            yield "openretro.org/arcade", \
+                  self.fsgs.game_database("openretro.org/arcade")
         if Settings.get(Option.DATABASE_SNES) == "1":
-            yield "openretro.org/snes", self.fsgs.game_database("snes")
+            yield "openretro.org/snes", \
+                  self.fsgs.game_database("openretro.org/snes")
+        if Settings.get(Option.DATABASE_DOS) == "1":
+            yield "openretro.org/dos", \
+                  self.fsgs.game_database("openretro.org/dos")
 
     def update_game_database(self):
         for database_name, game_database in self.game_databases():
