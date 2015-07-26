@@ -44,12 +44,18 @@ class GameScanner(object):
         if Settings.get(Option.DATABASE_ARCADE) == "1":
             yield "openretro.org/arcade", \
                   self.fsgs.game_database("openretro.org/arcade")
-        if Settings.get(Option.DATABASE_SNES) == "1":
-            yield "openretro.org/snes", \
-                  self.fsgs.game_database("openretro.org/snes")
         if Settings.get(Option.DATABASE_DOS) == "1":
             yield "openretro.org/dos", \
                   self.fsgs.game_database("openretro.org/dos")
+        if Settings.get(Option.DATABASE_GBA) == "1":
+            yield "openretro.org/gba", \
+                  self.fsgs.game_database("openretro.org/gba")
+        if Settings.get(Option.DATABASE_NES) == "1":
+            yield "openretro.org/nes", \
+                  self.fsgs.game_database("openretro.org/nes")
+        if Settings.get(Option.DATABASE_SNES) == "1":
+            yield "openretro.org/snes", \
+                  self.fsgs.game_database("openretro.org/snes")
 
     def update_game_database(self):
         for database_name, game_database in self.game_databases():
@@ -258,6 +264,7 @@ class GameScanner(object):
                 pass
 
             game_name = doc.get("game_name", "")
+            game_subtitle = doc.get("game_subtitle", "")
 
             platform = doc.get("platform", "")
             tags = doc.get("tags", "")
@@ -271,6 +278,9 @@ class GameScanner(object):
             screen3_sha1 = doc.get("screen3_sha1", "")
             screen4_sha1 = doc.get("screen4_sha1", "")
             screen5_sha1 = doc.get("screen5_sha1", "")
+            thumb_sha1 = doc.get("thumb_sha1", "")
+            backdrop_sha1 = doc.get("backdrop_sha1", "")
+
             sort_key = doc.get("sort_key", "")
             if not sort_key:
                 # FIXME: handle the/a (etc)
@@ -285,7 +295,7 @@ class GameScanner(object):
 
             search_terms = set()
             for key in ["game_name", "full_name", "game_name_alt",
-                        "search_terms"]:
+                        "search_terms", "game_subtitle"]:
                 value = doc.get(key, "")
                 if value:
                     search_terms.update(GameNameUtil.extract_index_terms(
@@ -308,6 +318,20 @@ class GameScanner(object):
                 search_terms.add("y:" + str(year))
             if platform:
                 search_terms.add("s:" + platform.lower())
+
+            if thumb_sha1:
+                search_terms.add("t:thumb")
+            if backdrop_sha1:
+                search_terms.add("t:backdrop")
+                backdrop_image = "sha1:{}/{}/{}/{}/{}".format(
+                    backdrop_sha1,
+                    doc.get("backdrop_zoom", "1.0"),
+                    doc.get("backdrop_zoom", "1.0"),
+                    doc.get("backdrop_halign", "0.5"),
+                    doc.get("backdrop_valign", "0.5"))
+            else:
+                backdrop_image = ""
+
             min_players = 0
             max_players = 0
             sim_players = 0
@@ -342,8 +366,9 @@ class GameScanner(object):
                 "platform = ?, "
                 "publisher = ?, year = ?, front_image = ?, title_image = ?, "
                 "screen1_image = ?, screen2_image = ?, screen3_image = ?, "
-                "screen4_image = ?, screen5_image = ?, adult = ? "
-                "WHERE id = ?",
+                "screen4_image = ?, screen5_image = ?, "
+                "thumb_image = ?, backdrop_image = ?, "
+                "adult = ?, subtitle = ? WHERE id = ?",
                 (game_name, update_stamp, sort_key, platform,
                  publisher or "", year or 0,
                  "sha1:" + front_sha1 if front_sha1 else "",
@@ -353,7 +378,10 @@ class GameScanner(object):
                  "sha1:" + screen3_sha1 if screen3_sha1 else "",
                  "sha1:" + screen4_sha1 if screen4_sha1 else "",
                  "sha1:" + screen5_sha1 if screen5_sha1 else "",
+                 "sha1:" + thumb_sha1 if thumb_sha1 else "",
+                 backdrop_image,
                  1 if "t:adult" in search_terms else None,
+                 game_subtitle,
                  game_id))
 
             helper.database.update_game_search_terms(game_id, search_terms)

@@ -15,7 +15,9 @@ class Option(object):
     DATABASE_DOS = "database_dos"
     DATABASE_EMAIL = "database_email"
     DATABASE_FEATURE = "database_feature"
+    DATABASE_GBA = "database_gba"
     DATABASE_LOCKER = "database_locker"
+    DATABASE_NES = "database_nes"
     DATABASE_PASSWORD = "database_password"
     DATABASE_SERVER = "database_server"
     DATABASE_SHOW_ADULT = "database_show_adult"
@@ -177,9 +179,22 @@ options = {
         "type": "boolean",
     },
 
+    "database_gba": {
+        "default": "",
+        "description": N_(
+            "Enable/disable use of the Game Boy Advance database"),
+        "type": "boolean",
+    },
+
     "database_locker": {
         "default": "",
         "description": N_("Enable/disable use of OAGD.net locker"),
+        "type": "boolean",
+    },
+
+    "database_nes": {
+        "default": "",
+        "description": N_("Enable/disable use of the Nintendo (NES) database"),
         "type": "boolean",
     },
 
@@ -215,7 +230,7 @@ options = {
 
     "database_snes": {
         "default": "",
-        "description": N_("Enable/disable use of the SNES game database"),
+        "description": N_("Enable/disable use of the Super Nintendo database"),
         "type": "boolean",
     },
 

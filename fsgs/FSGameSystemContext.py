@@ -14,6 +14,7 @@ from .Downloader import Downloader
 from .FileDatabase import FileDatabase
 from .GameDatabase import GameDatabase
 from .LockerDatabase import LockerDatabase
+from fsgs.Database import Database
 from fsgs.ogd.locker import is_locker_enabled
 from .plugins.pluginmanager import PluginManager
 
@@ -301,6 +302,9 @@ class FSGameSystemContext(object):
             self._netplay = NetplayContext(self)
         return self._netplay
 
+    def database(self):
+        return Database.instance()
+
     def get_game_database(self):
         return self.game_database("openretro.org/amiga")
 
@@ -335,6 +339,10 @@ class FSGameSystemContext(object):
 
     def temp_file(self, suffix):
         return TemporaryFile(suffix)
+
+    def load_game_by_uuid(self, game_uuid):
+        variant_uuid = self.find_preferred_game_variant(game_uuid)
+        self.load_game_variant(variant_uuid)
 
     def find_preferred_game_variant(self, game_uuid):
         print("find_preferred_game_variant game_uuid =", game_uuid)

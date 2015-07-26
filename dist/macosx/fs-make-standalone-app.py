@@ -34,7 +34,9 @@ def fix_binary(path, macos_dir):
         if line.startswith("@executable_path"):
             continue
 
-        old = line.split(' ')[0]
+        old = line.split(" ")[0]
+        if old == "@rpath/XCTest.framework/Versions/A/XCTest":
+            continue
         if "Contents" in old:
             continue
         print(old)
@@ -82,15 +84,31 @@ def fix_iteration(app):
     macos_dir = os.path.join(app, "Contents", "MacOS")
     frameworks_dir = os.path.join(app, "Contents", "Frameworks")
     extra_paths = []
-    for name in os.listdir(macos_dir):
-        p = os.path.join(macos_dir, name)
-        if os.path.isdir(p):
-            extra_paths.append(p)
-        else:
-            binaries.append(os.path.join(macos_dir, name))
-    for extra_dir in extra_paths:
-        for name in os.listdir(extra_dir):
-            binaries.append(os.path.join(extra_dir, name))
+    for dir_path, dir_names, file_names in os.walk(macos_dir):
+        for name in file_names:
+            p = os.path.join(dir_path, name)
+            if os.path.isdir(p):
+                pass
+            elif p.endswith("_debug.dylib"):
+                pass
+            else:
+                binaries.append(p)
+    # for name in os.listdir(macos_dir):
+    #     p = os.path.join(macos_dir, name)
+    #    if os.path.isdir(p):
+    #         extra_paths.append(p)
+    #     else:
+    #         binaries.append(os.path.join(macos_dir, name))
+    # for extra_dir in extra_paths:
+    #     for name in os.listdir(extra_dir):
+    #         p = os.path.join(extra_dir, name) 
+    #         if os.path.isdir(p):
+    #             for name2 in os.listdir(p):
+    #                 if not name2.endswith("_debug.dylib"):
+    #                     binaries.append(os.path.join(p, name2))
+    #         else:
+    #             binaries.append(p)
+
     if os.path.exists(frameworks_dir):
         for name in os.listdir(frameworks_dir):
             binaries.append(os.path.join(frameworks_dir, name))

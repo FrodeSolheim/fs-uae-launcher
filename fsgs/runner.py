@@ -145,7 +145,12 @@ class GameRunner(object):
         return width, height
 
     def screen_rect(self):
-        desktop = app.qapplication.desktop()
+        try:
+            desktop = app.qapplication.desktop()
+        except AttributeError:
+            # no QApplication, probably not running via QT
+            # FIXME: log warning
+            return 0, 0, 640, 480
         screens = []
         for i in range(desktop.screenCount()):
             geometry = desktop.screenGeometry(i)

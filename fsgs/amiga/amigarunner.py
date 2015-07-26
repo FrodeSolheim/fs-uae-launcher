@@ -29,6 +29,11 @@ class AmigaRunner(GameRunner):
         },
     ]
 
+    def __init__(self, fsgs):
+        super().__init__(fsgs)
+        self.temp_config_file = None
+        self.launch_handler = None
+
     # def init(self):
     #     print("AmigaGameHandler.init")
     #
@@ -153,10 +158,11 @@ class AmigaRunner(GameRunner):
 
     def finish(self):
         print("removing", self.temp_config_file)
-        try:
-            os.remove(self.temp_config_file)
-        except Exception:
-            print("could not remove config file", self.temp_config_file)
+        if self.temp_config_file is not None:
+            try:
+                os.remove(self.temp_config_file)
+            except Exception:
+                print("could not remove config file", self.temp_config_file)
 
         self.launch_handler.update_changes()
         self.launch_handler.cleanup()

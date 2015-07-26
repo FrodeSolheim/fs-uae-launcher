@@ -41,7 +41,8 @@ class FileScanner(object):
         self.extensions.add(".fs-uae")
         self.extensions.add(".7z")
 
-        if OGDClient.get_server() != "oagd.net":
+        # if OGDClient.get_server() != "oagd.net":
+        if True:
             self.extensions.add(".bin")
 
             # Amstrad CPC

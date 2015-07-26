@@ -28,6 +28,8 @@
 	<true/>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.5.0</string>
+	<key>LSUIPresentationMode</key>
+	<integer>0</integer>
 	<key>NSAppleScriptEnabled</key>
 	<false/>
 	<key>NSHumanReadableCopyright</key>
@@ -36,7 +38,5 @@
 	<string></string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>LSUIPresentationMode</key>
-	<integer>0</integer>
 </dict>
 </plist>

@@ -18,6 +18,11 @@ class Application(ApplicationMixin, fsbc.Application.Application):
 def main():
     Application("fs-uae-game-system")
 
+    if "--unsupported" in sys.argv:
+        if "--http-server" in sys.argv:
+            from fsgs.http.server import http_server_main
+            return http_server_main()
+
     if len(sys.argv) < 3:
         print("")
         print("usage: fsgs run <game>")

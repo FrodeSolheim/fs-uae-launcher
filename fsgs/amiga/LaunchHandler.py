@@ -256,15 +256,16 @@ class LaunchHandler(object):
                 max_image = i
 
         save_image = max_image + 1
-        
-        s = Resources("fsgs", "res").stream("amiga/adf_save_disk.dat")
-        data = s.read()
-        data = zlib.decompress(data)
-        save_disk = os.path.join(self.temp_dir, "Save Disk.adf")
-        with open(save_disk, "wb") as f:
-            f.write(data)
-        key = "floppy_image_{0}".format(save_image)
-        self.config[key] = "Save Disk.adf"
+
+        if self.config.get("save_disk", "") != "0":
+            s = Resources("fsgs", "res").stream("amiga/adf_save_disk.dat")
+            data = s.read()
+            data = zlib.decompress(data)
+            save_disk = os.path.join(self.temp_dir, "Save Disk.adf")
+            with open(save_disk, "wb") as f:
+                f.write(data)
+            key = "floppy_image_{0}".format(save_image)
+            self.config[key] = "Save Disk.adf"
 
     def prepare_cdroms(self):
         print("LaunchHandler.prepare_cdroms")

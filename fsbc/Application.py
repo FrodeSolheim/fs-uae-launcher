@@ -176,7 +176,7 @@ class Application(object):
         raise LookupError(name)
 
     def get_settings_path(self):
-        raise NotImplementedError("get_settings_path not implemented")
+        print("WARNING: Application.get_settings_path not implemented")
 
     @property
     def settings(self):

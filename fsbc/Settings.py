@@ -33,7 +33,12 @@ class Settings(object):
 
     def load(self):
         cp = ConfigParser(interpolation=None)
-        path = self.path or self.app.get_settings_path()
+        path = self.path
+        if self.app and not path:
+            path = self.app.get_settings_path()
+        if not path:
+            print("no settings path")
+            return
         if os.path.exists(path):
             print("loading settings from", path)
         else:
@@ -106,7 +111,7 @@ def set(key: str, value: str) -> None:
 def load() -> None:
     global _settings
     if not _settings:
-        assert _path
+        # assert _path
         _settings = Settings(path=_path)
 
 

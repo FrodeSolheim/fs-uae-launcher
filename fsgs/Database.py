@@ -7,8 +7,8 @@ import threading
 
 
 thread_local = threading.local()
-VERSION = 27
-RESET_VERSION = 27
+VERSION = 30
+RESET_VERSION = 30
 QUOTED_TERMS_RE = re.compile("[\"].*?[\"]")
 
 
@@ -446,7 +446,7 @@ class Database(BaseDatabase):
         query = "SELECT DISTINCT uuid, name, platform, year, publisher, " \
                 "front_image, title_image, screen1_image, screen2_image, " \
                 "screen3_image, screen4_image, screen5_image, have, path, " \
-                "sort_key FROM game"
+                "sort_key, subtitle, thumb_image, backdrop_image FROM game"
 
         args = []
         if list_uuid:
@@ -615,12 +615,13 @@ class Database(BaseDatabase):
         cursor.execute("SELECT uuid, name FROM game_list")
         return cursor.fetchall()
 
-    def update_database_to_version_27(self):
+    def update_database_to_version_30(self):
         cursor = self.internal_cursor()
         cursor.execute("""CREATE TABLE game (
                 id INTEGER PRIMARY KEY,
                 uuid TEXT,
                 name TEXT,
+                subtitle TEXT,
                 platform TEXT,
                 year INTEGER,
                 publisher TEXT,
@@ -631,6 +632,8 @@ class Database(BaseDatabase):
                 screen3_image TEXT,
                 screen4_image TEXT,
                 screen5_image TEXT,
+                thumb_image TEXT,
+                backdrop_image TEXT,
                 sort_key TEXT,
                 have INTEGER,
                 path TEXT,

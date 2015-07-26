@@ -214,6 +214,9 @@ class ValueConfigLoader(object):
         elif key == "hd_requirements":
             self.options["hd_requirements"] = value
 
+        elif key == "save_disk":
+            self.options["save_disk"] = value
+
         elif key == "whdload_args":
             self.options["x_whdload_args"] = value
             self.options["floppy_drive_volume"] = "0"
