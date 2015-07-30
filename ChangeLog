@@ -1,5 +1,10 @@
 Version 2.5.33dev:
 
+* Login / logout entries in main menu did not update correctly.
+* Redesigned model selection GUI (more room for additional models / presets).
+* Do not write empty FS-UAE config values (less noise in the logs).
+* Do not write known launcher-only settings to temp FS-UAE config file.
+* Do not use a temporary kickstart dir, so FS-UAE will find accelerator ROMs.
 * hard_drive_x_label and hard_drive_x_priority did not show in custom config.
 
 Version 2.5.32dev:

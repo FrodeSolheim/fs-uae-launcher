@@ -1,6 +1,61 @@
 from fsgs.amiga.Amiga import Amiga
 
 
+CONFIG_KEY_BLACKLIST = [
+    "_*",
+    "amigamemo_url",
+    "config_base",
+    "config_feature",
+    "config_name",
+    "config_refresh",
+    "config_search",
+    "configurations_dir_mtime",
+    "database_arcade",
+    "database_dos",
+    "database_gba",
+    "database_locker",
+    "database_nes",
+    "database_show_adult",
+    "database_show_games",
+    "database_snes",
+    "database_url",
+    "developer",
+    "front_sha1",
+    "hol_url",
+    "irc_nick",
+    "kickstarts_dir_mtime",
+    "languages",
+    "last_cd_dir",
+    "last_floppy_dir",
+    "last_hd_dir",
+    "last_rom_dir",
+    "last_scan",
+    "last_settings_page",
+    "launcher_theme",
+    "lemon_url",
+    "mobygames_url",
+    "netplay_feature",
+    "parent_uuid",
+    "platform",
+    "players",
+    "primary_joystick",
+    "publisher",
+    "screen1_sha1",
+    "screen2_sha1",
+    "screen3_sha1",
+    "screen4_sha1",
+    "screen5_sha1",
+    "search_path",
+    "title_sha1",
+    "variant_rating",
+    "variant_uuid",
+    "whdload_url",
+    "wikipedia_url",
+    "x_*",
+    "year",
+]
+
+
 class ConfigWriter(object):
 
     def __init__(self, config):
@@ -30,11 +85,18 @@ class ConfigWriter(object):
                         if i >= num_drives:
                             ignore = True
                             break
+            normalized_key = key.lower().replace("-", "_")
+            for ignore_key in CONFIG_KEY_BLACKLIST:
+                if ignore_key == normalized_key or (
+                    ignore_key.endswith("*") and
+                        normalized_key.startswith(ignore_key[:-1])):
+                    ignore = True
             if ignore:
                 continue
             value = self.config[key]
             print(key, repr(value))
             value = value.replace("\\", "\\\\")
-            c.append("{0} = {1}".format(key, value))
+            if value:
+                c.append("{0} = {1}".format(key, value))
 
         return c

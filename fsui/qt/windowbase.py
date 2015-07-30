@@ -94,6 +94,9 @@ def WindowBase(BaseClass):
             # print("FIXME:\n\nDialog.set_size")
             self.resize(size[0], size[1])
 
+        def set_title(self, title):
+            self.setWindowTitle(title)
+
         def is_maximized(self):
             # return self.isMaximized()
             print("FIXME: always returning False")

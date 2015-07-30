@@ -51,7 +51,7 @@ class GameListSelector(fsui.Choice):
         database = Database.instance()
         self.game_lists = database.get_game_lists()
         self.game_lists.insert(
-            0, ["", gettext("All games and configurations")])
+            0, ["", gettext("All Games and Configs")])
 
         self.clear()
         for item in self.game_lists:

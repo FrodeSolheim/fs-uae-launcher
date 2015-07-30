@@ -32,6 +32,7 @@ from .qt.legacydialog import LegacyDialog
 from .qt.ListView import ListView
 from .qt.Menu import Menu
 from .qt.Panel import Panel
+from .qt.scrollarea import VerticalScrollArea
 from .qt.SpinCtrl import SpinCtrl
 from .qt.System import System
 from .qt.timer import IntervalTimer

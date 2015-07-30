@@ -1,0 +1,176 @@
+from fs_uae_launcher.ui.config.ConfigCheckBox import ConfigCheckBox
+from fsbc.util import unused
+import fsui as fsui
+import fs_uae_launcher.ui
+from ...Config import Config
+from fsgs.amiga.Amiga import Amiga
+from ...FloppyManager import FloppyManager
+from ...CDManager import CDManager
+from ...I18N import gettext
+# from .ConfigCheckBox import ConfigCheckBox
+
+
+class ModelGroup(fsui.Group):
+
+    # FIXME: remove with_more_button=True
+    def __init__(self, parent, with_more_button=True):
+        unused(with_more_button)
+        fsui.Group.__init__(self, parent)
+        self.layout = fsui.VerticalLayout()
+
+        self.model_ids = [x["id"] for x in Amiga.models if "/" not in x["id"]]
+        self.model_titles = [x["title"] for x in Amiga.models if "/" not in x["id"]]
+
+        self.sub_model_ids = []
+        self.sub_model_titles = []
+        self.sub_model_updating = False
+
+        self.model_choice = fsui.Choice(self, self.model_titles)
+        self.sub_model_choice = fsui.Choice(self, self.sub_model_titles)
+        self.accuracy_label = fsui.Label(self, "Accuracy:")
+        self.accuracy_choice = fsui.Choice(self, [
+            gettext("High"),
+            gettext("Medium"),
+            gettext("Low")])
+        self.ntsc_checkbox = ConfigCheckBox(self, "NTSC", "ntsc_mode")
+
+        # if fs_uae_launcher.ui.get_screen_size()[1] > 768:
+        # self.layout.add(heading_label, margin=10)
+        # self.layout.add_spacer(0)
+
+        hori_layout = fsui.HorizontalLayout()
+        self.layout.add(hori_layout, fill=True)
+
+        heading_label = fsui.HeadingLabel(self, gettext("Amiga Model"))
+        hori_layout.add(heading_label, margin=10)
+        hori_layout.add_spacer(10)
+        hori_layout.add(self.ntsc_checkbox, expand=False, margin=10)
+        hori_layout.add_spacer(0, expand=True)
+
+        hori_layout.add(self.accuracy_label, margin_right=10)
+        hori_layout.add(self.accuracy_choice, margin_right=10)
+
+        hori_layout = fsui.HorizontalLayout()
+        self.layout.add(hori_layout, fill=True)
+        hori_layout.add(self.model_choice, expand=False, margin=10)
+        hori_layout.add(self.sub_model_choice, expand=True, margin=10)
+
+        self.initialize_from_config()
+        self.set_config_handlers()
+
+    def initialize_from_config(self):
+        self.on_config("amiga_model", Config.get("amiga_model"))
+        self.on_config("accuracy", Config.get("accuracy"))
+
+    def set_config_handlers(self):
+        self.model_choice.on_change = self.on_model_change
+        self.sub_model_choice.on_change = self.on_sub_model_change
+        self.accuracy_choice.on_change = self.on_accuracy_change
+        # self.ntsc_checkbox.on_change = self.on_ntsc_change
+        Config.add_listener(self)
+
+    def on_destroy(self):
+        print("ModelGroup.on_destroy")
+        Config.remove_listener(self)
+
+    def on_model_change(self):
+        print("ModelGroup.on_model_change\n")
+        index = self.model_choice.get_index()
+        model = self.model_ids[index]
+        if model == "A500":
+            # The default model (A500) can be specified with the empty string
+            model = ""
+        Config.set("amiga_model", model)
+        # Config.update_kickstart()
+        # if Amiga.is_cd_based(Config):
+        #     FloppyManager.clear_all()
+        # else:
+        #     CDManager.clear_all()
+
+    def on_sub_model_change(self):
+        print("ModelGroup.on_sub_model_change\n")
+        if self.sub_model_updating:
+            print("sub model list is currently updating")
+            return
+        index = self.sub_model_choice.get_index()
+        # if index == 0:
+        #     # The default model (A500) can be specified with the empty string
+        #     model = ""
+        # else:
+        model = self.model_ids[self.model_choice.get_index()]
+        sub_model = self.sub_model_ids[index]
+        if sub_model:
+            Config.set("amiga_model", model + "/" + sub_model)
+        else:
+            Config.set("amiga_model", model)
+
+        Config.update_kickstart()
+        if Amiga.is_cd_based(Config):
+            FloppyManager.clear_all()
+        else:
+            CDManager.clear_all()
+
+    def on_accuracy_change(self):
+        index = self.accuracy_choice.get_index()
+        if index == 0:
+            Config.set("accuracy", "")
+        else:
+            Config.set("accuracy", str(1 - index))
+
+    def update_sub_models(self, model_id, sub_model_id):
+        sub_model_index = 0
+        model_id_s = model_id + "/"
+        self.sub_model_ids.clear()
+        self.sub_model_titles.clear()
+
+        for i, config in enumerate(Amiga.models):
+            if config["id"] == model_id:
+                self.sub_model_ids.append("")
+                self.sub_model_titles.append(config["subtitle"])
+            elif config["id"].startswith(model_id_s):
+                self.sub_model_ids.append(config["id"].split("/", 1)[1])
+                self.sub_model_titles.append(config["subtitle"])
+            else:
+                continue
+            if sub_model_id == self.sub_model_ids[-1]:
+                sub_model_index = len(self.sub_model_ids) - 1
+
+        self.sub_model_choice.clear()
+        for title in self.sub_model_titles:
+            self.sub_model_choice.add_item(title)
+        self.sub_model_choice.enable(len(self.sub_model_ids) > 1)
+        return sub_model_index
+
+    def on_config(self, key, value):
+        if key == "amiga_model":
+            if value == "":
+                value = "A500"
+
+            if "/" in value:
+                model_id, sub_model_id = value.split("/", 1)
+            else:
+                model_id = value
+                sub_model_id = ""
+
+            model_index = 0
+            sub_model_index = 0
+            self.sub_model_updating = True
+            for i, config in enumerate(Amiga.models_config):
+                if config == value:
+                    # self.model_choice.set_index(i)
+                    # find main model index
+                    model_index = self.model_ids.index(model_id)
+                    sub_model_index = self.update_sub_models(model_id, sub_model_id)
+                    # model_index = i
+                    break
+            # else:
+            #    print("FIXME: could not set model")
+            self.model_choice.set_index(model_index)
+            self.sub_model_choice.set_index(sub_model_index)
+            self.sub_model_updating = False
+        elif key == "accuracy":
+            if not value:
+                index = 0
+            else:
+                index = 1 - int(value)
+            self.accuracy_choice.set_index(index)

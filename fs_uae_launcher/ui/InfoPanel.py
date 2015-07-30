@@ -25,6 +25,10 @@ class InfoPanel(fsui.Panel):
             self, parent, toolbar_mode=False, padding_top=0, padding_bottom=0):
         fsui.Panel.__init__(self, parent, paintable=True)
         Skin.set_background_color(self)
+
+        self.hide()
+        self.set_min_height(48)
+
         self.update_web_url = ""
         self.update_version = ""
         self.toolbar_mode = toolbar_mode
@@ -78,6 +82,7 @@ class InfoPanel(fsui.Panel):
     def on_setting(self, key, value):
         unused(value)
         if key in ["database_auth", "database_username", "database_email"]:
+            self.check_warning()
             self.refresh()
 
     def on_config(self, key, value):
@@ -99,6 +104,7 @@ class InfoPanel(fsui.Panel):
                 new_chip_memory_warning = None
             if new_chip_memory_warning != self.chip_memory_warning:
                 self.chip_memory_warning = new_chip_memory_warning
+                self.check_warning()
                 self.refresh()
         elif key == "__error":
             if value:
@@ -107,16 +113,40 @@ class InfoPanel(fsui.Panel):
                     self.config_error.append("")
             else:
                 self.config_error = ["", ""]
+            self.check_warning()
             self.refresh()
         elif key == "x_missing_files":
             self.missing_files = value
+            self.check_warning()
             self.refresh()
         elif key == "download_page":
             self.download_page = value
+            self.check_warning()
             self.refresh()
         elif key == "download_file":
             self.download_file = value
+            self.check_warning()
             self.refresh()
+
+    def check_warning(self):
+        shown = self.is_visible()
+        if is_warning(self.missing_files) and not self.download_file:
+            show = True
+        elif is_warning(self.config_error):
+            show = True
+        elif is_warning(self.chip_memory_warning):
+            show = True
+        elif is_warning(self.kickstarts_missing):
+            show = True
+        elif is_warning(self.update_available):
+            show = True
+        else:
+            show = False
+
+        if shown != show:
+            print("InfoPanel new visible status:", show)
+            self.show_or_hide(show)
+            self.parent().layout.update()
 
     def on_scan_done_signal(self):
         print("InfoPanel.on_scan_done_signal")
@@ -155,16 +185,16 @@ class InfoPanel(fsui.Panel):
             SetupDialog(self.get_window()).show()
         elif self.update_available:
             open_url_in_browser(self.update_web_url)
-        else:
-            auth = Settings.get("database_auth")
-            if not auth:
-                shell_open("Workspace:Prefs/User/Login",
-                           parent=self.get_window())
+        # else:
+        #     auth = Settings.get("database_auth")
+        #     if not auth:
+        #         shell_open("Workspace:Prefs/User/Login",
+        #                    parent=self.get_window())
 
     def on_paint(self):
         dc = self.create_dc()
-        if not self.toolbar_mode:
-            TabPanel.draw_background(self, dc)
+        # if not self.toolbar_mode:
+        #     TabPanel.draw_background(self, dc)
 
         # print(self.missing_files, "file", self.download_file,
         #       "page", self.download_page)
@@ -192,15 +222,15 @@ class InfoPanel(fsui.Panel):
         else:
             self.draw_user_notification(dc)
 
-    def draw_user_notification(self, dc):
-        username = Settings.get("database_username")
-        # email = Settings.get("database_email")
-        auth = Settings.get("database_auth")
-        if auth:
-            self.draw_notification(dc, None, gettext("Logged In"), username)
-        else:
-            self.draw_notification(dc, None, gettext("Not logged in"),
-                                   gettext("Log in to enable online game DB"))
+    # def draw_user_notification(self, dc):
+    #     username = Settings.get("database_username")
+    #     # email = Settings.get("database_email")
+    #     auth = Settings.get("database_auth")
+    #     if auth:
+    #         self.draw_notification(dc, None, gettext("Logged In"), username)
+    #     else:
+    #         self.draw_notification(dc, None, gettext("Not logged in"),
+    #                                gettext("Log in to enable online game DB"))
 
     def draw_update_available_notification(self, dc):
         self.draw_notification(

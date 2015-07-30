@@ -7,6 +7,7 @@ class Option(object):
     AUDIO_BUFFER_TARGET_SIZE = "audio_buffer_target_size"
     AUDIO_FREQUENCY = "audio_frequency"
     AUTOMATIC_INPUT_GRAB = "automatic_input_grab"
+    BSDSOCKET_LIBRARY = "bsdsocket_library"
     BUILTIN_CONFIGS = "builtin_configs"
     CONFIG_FEATURE = "config_feature"
     CPU_IDLE = "cpu_idle"
@@ -28,7 +29,6 @@ class Option(object):
     FLOPPY_DRIVE_VOLUME = "floppy_drive_volume"
     FSAA = "fsaa"
     FULLSCREEN = "fullscreen"
-    GRAPHICS_CARD = "graphics_card"
     GRAPHICS_MEMORY = "graphics_memory"
     INITIAL_INPUT_GRAB = "initial_input_grab"
     IRC_NICK = "irc_nick"
@@ -77,6 +77,7 @@ class Option(object):
     VIDEO_SYNC_METHOD = "video_sync_method"
     VOLUME = "volume"
     WHDLOAD_SPLASH_DELAY = "whdload_splash_delay"
+    WINDOW_BORDER = "window_border"
     ZOOM = "zoom"
 
 
@@ -124,6 +125,12 @@ options = {
         "default": "1",
         "description": N_(
             "Grab mouse and keyboard input when clicking on FS-UAE window"),
+        "type": "boolean",
+    },
+
+    "bsdsocket_library": {
+        "default": "0",
+        "description": "",
         "type": "boolean",
     },
 
@@ -270,23 +277,6 @@ options = {
         "default": "0",
         "description": N_("Start FS-UAE in fullscreen mode"),
         "type": "boolean",
-    },
-
-    "graphics_card": {
-        "default": "none",
-        "description": "",
-        "type": "choice",
-        "values": [
-            ("none", N_("None")),
-            ("uaegfx", N_("UAEGFX (Auto)")),
-            ("uaegfx-z2", N_("UAEGFX (Zorro II)")),
-            ("uaegfx-z3", N_("UAEGFX (Zorro III)")),
-            ("picasso-ii", N_("Picasso II (Zorro II)")),
-            ("picasso-ii+", N_("Picasso II+ (Zorro II)")),
-            ("picasso-iv", N_("Picasso IV (Auto)")),
-            ("picasso-iv-z2", N_("Picasso IV (Zorro II)")),
-            ("picasso-iv-z3", N_("Picasso IV (Zorro III)")),
-        ]
     },
 
     "graphics_memory": {
@@ -707,6 +697,12 @@ options = {
         "type": "integer",
         "min": -1,
         "max": 500,
+    },
+
+    "window_border": {
+        "default": "",
+        "description": N_("Show window border and decorations"),
+        "type": "boolean",
     },
 
     "zoom": {

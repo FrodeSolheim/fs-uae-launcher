@@ -29,7 +29,12 @@ A600_KICKSTARTS = [
     # "87508de834dc7eb47359cede72d2e3c8a2e5d8db",
 ]
 
-A1200_KICKSTARTS = [
+A1200_3_0_KICKSTARTS = [
+    # Kickstart v3.0 rev 39.106 (1992)(Commodore)(A1200)[!]
+    "70033828182fffc7ed106e5373a8b89dda76faa5",
+]
+
+A1200_3_1_KICKSTARTS = [
     # amiga-os-310-a1200.rom (decrypted)
     # Kickstart v3.1 r40.68 (1993)(Commodore)(A1200)[!]
     "e21545723fe8374e91342617604f1b3d703094f1",

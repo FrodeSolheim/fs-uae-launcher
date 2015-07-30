@@ -88,7 +88,17 @@ def _chip_memory(c, f):
         value = "512"
     elif c.amiga_model == "A1200":
         value = "2048"
+    elif c.amiga_model == "A1200/3.0":
+        value = "2048"
     elif c.amiga_model == "A1200/020":
+        value = "2048"
+    elif c.amiga_model == "A1200/1230":
+        value = "2048"
+    elif c.amiga_model == "A1200/1240":
+        value = "2048"
+    elif c.amiga_model == "A1200/1260":
+        value = "2048"
+    elif c.amiga_model == "A1200/PPC":
         value = "2048"
     elif c.amiga_model == "A3000":
         # FIXME: did it usually have 1 MB?
@@ -129,8 +139,18 @@ def _cpu(c, f):
         c.cpu = "68000"
     elif c.amiga_model == "A1200":
         c.cpu = "68EC020"
+    elif c.amiga_model == "A1200/3.0":
+        c.cpu = "68EC020"
     elif c.amiga_model == "A1200/020":
         c.cpu = "68020"
+    elif c.amiga_model == "A1200/1230":
+        c.cpu = "68030"
+    elif c.amiga_model == "A1200/1240":
+        c.cpu = "68040"
+    elif c.amiga_model == "A1200/1260":
+        c.cpu = "68060"
+    elif c.amiga_model == "A1200/PPC":
+        c.cpu = "68060"
     elif c.amiga_model == "A3000":
         c.cpu = "68030"
     elif c.amiga_model == "A4000":
@@ -535,7 +555,17 @@ def _int_kickstart_ext_sha1(c, f):
         value = ""
     elif t == "A1200":
         value = ""
+    elif t == "A1200/3.0":
+        value = ""
     elif t == "A1200/020":
+        value = ""
+    elif t == "A1200/1230":
+        value = ""
+    elif t == "A1200/1240":
+        value = ""
+    elif t == "A1200/1260":
+        value = ""
+    elif t == "A1200/PPC":
         value = ""
     elif t == "A3000":
         value = ""
@@ -577,10 +607,13 @@ def _int_kickstart_revision(c, f):
     elif t == "5fe04842d04a489720f0f4bb0e46948199406f49":
         # Kickstart v3.1 rev 40.68 (1993)(Commodore)(A4000)
         value = "40.68"
+    elif t == "70033828182fffc7ed106e5373a8b89dda76faa5":
+        # Kickstart v3.0 rev 39.106 (1992)(Commodore)(A1200)[!]
+        value = "39.106"
     elif t == "891e9a547772fe0c6c19b610baf8bc4ea7fcb785":
         # Kickstart v1.3 rev 34.5 (1987)(Commodore)(A500-A1000-A2000-CDTV)[!]
         value = "34.5"
-    elif t == "c5839f5cb98a7a8947065c3ed2f14f5f42e334a":
+    elif t == "c5839f5cb98a7a8947065c3ed2f14f5f42e334a1":
         # Kickstart v2.04 rev 37.175 (1991)(Commodore)(A500+)[!]
         value = "37.175"
     elif t == "e21545723fe8374e91342617604f1b3d703094f1":
@@ -611,7 +644,17 @@ def _int_kickstart_sha1(c, f):
         value = "11f9e62cf299f72184835b7b2a70a16333fc0d88"
     elif c.amiga_model == "A1200":
         value = "e21545723fe8374e91342617604f1b3d703094f1"
+    elif c.amiga_model == "A1200/3.0":
+        value = "70033828182fffc7ed106e5373a8b89dda76faa5"
     elif c.amiga_model == "A1200/020":
+        value = "e21545723fe8374e91342617604f1b3d703094f1"
+    elif c.amiga_model == "A1200/1230":
+        value = "e21545723fe8374e91342617604f1b3d703094f1"
+    elif c.amiga_model == "A1200/1240":
+        value = "e21545723fe8374e91342617604f1b3d703094f1"
+    elif c.amiga_model == "A1200/1260":
+        value = "e21545723fe8374e91342617604f1b3d703094f1"
+    elif c.amiga_model == "A1200/PPC":
         value = "e21545723fe8374e91342617604f1b3d703094f1"
     elif c.amiga_model == "A3000":
         value = "f8e210d72b4c4853e0c9b85d223ba20e3d1b36ee"
@@ -649,6 +692,8 @@ def _int_kickstart_version(c, f):
         value = "2.04"
     elif t == "37.350":
         value = "2.05"
+    elif t == "39.106":
+        value = "3.0"
     elif t == "40.60":
         value = "3.1"
     elif t == "40.68":
@@ -687,7 +732,17 @@ def _int_model(c, f):
         c.int_model = "A1000"
     elif c.amiga_model == "A1200":
         c.int_model = "A1200"
+    elif c.amiga_model == "A1200/3.0":
+        c.int_model = "A1200"
     elif c.amiga_model == "A1200/020":
+        c.int_model = "A1200"
+    elif c.amiga_model == "A1200/1230":
+        c.int_model = "A1200"
+    elif c.amiga_model == "A1200/1240":
+        c.int_model = "A1200"
+    elif c.amiga_model == "A1200/1260":
+        c.int_model = "A1200"
+    elif c.amiga_model == "A1200/PPC":
         c.int_model = "A1200"
     elif c.amiga_model == "A3000":
         c.int_model = "A3000"
@@ -879,6 +934,15 @@ def _kickstart_file(c, f):
 
 
 # noinspection PyUnusedLocal
+def _motherboard_ram(c, f):
+    if c.motherboard_ram.explicit:
+        value = c.motherboard_ram.explicit
+    else:
+        value = "0"
+    c.motherboard_ram = value
+
+
+# noinspection PyUnusedLocal
 def _slow_memory(c, f):
     if c.slow_memory.explicit:
         value = c.slow_memory.explicit
@@ -979,35 +1043,45 @@ def _uae_chipmem_size(c, f):
 def _uae_chipset(c, f):
     if c.uae_chipset.explicit:
         value = c.uae_chipset.explicit
-    elif f.matches(c.amiga_model, "A500"):
+    elif c.amiga_model == "A500":
         value = "ocs"
-    elif f.matches(c.amiga_model, "A500/512K"):
+    elif c.amiga_model == "A500/512K":
         value = "ocs"
-    elif f.matches(c.amiga_model, "A500+"):
+    elif c.amiga_model == "A500+":
         value = "ecs"
-    elif f.matches(c.amiga_model, "A600"):
+    elif c.amiga_model == "A600":
         value = "ecs"
-    elif f.matches(c.amiga_model, "A1000"):
+    elif c.amiga_model == "A1000":
         value = "ocs"
-    elif f.matches(c.amiga_model, "A1200"):
+    elif c.amiga_model == "A1200":
         value = "aga"
-    elif f.matches(c.amiga_model, "A1200/020"):
+    elif c.amiga_model == "A1200/3.0":
         value = "aga"
-    elif f.matches(c.amiga_model, "A3000"):
+    elif c.amiga_model == "A1200/020":
+        value = "aga"
+    elif c.amiga_model == "A1200/1230":
+        value = "aga"
+    elif c.amiga_model == "A1200/1240":
+        value = "aga"
+    elif c.amiga_model == "A1200/1260":
+        value = "aga"
+    elif c.amiga_model == "A1200/PPC":
+        value = "aga"
+    elif c.amiga_model == "A3000":
         value = "ecs"
-    elif f.matches(c.amiga_model, "A4000"):
+    elif c.amiga_model == "A4000":
         value = "aga"
-    elif f.matches(c.amiga_model, "A4000/040"):
+    elif c.amiga_model == "A4000/040":
         value = "aga"
-    elif f.matches(c.amiga_model, "A4000/OS4"):
+    elif c.amiga_model == "A4000/OS4":
         value = "aga"
-    elif f.matches(c.amiga_model, "A4000/PPC"):
+    elif c.amiga_model == "A4000/PPC":
         value = "aga"
-    elif f.matches(c.amiga_model, "CD32"):
+    elif c.amiga_model == "CD32":
         value = "aga"
-    elif f.matches(c.amiga_model, "CD32/FMV"):
+    elif c.amiga_model == "CD32/FMV":
         value = "aga"
-    elif f.matches(c.amiga_model, "CDTV"):
+    elif c.amiga_model == "CDTV":
         value = "ecs_agnus"
     else:
         f.fail("Unknown amiga_model")
@@ -1031,7 +1105,17 @@ def _uae_chipset_compatible(c, f):
         value = "A1000"
     elif c.amiga_model == "A1200":
         value = "A1200"
+    elif c.amiga_model == "A1200/3.0":
+        value = "A1200"
     elif c.amiga_model == "A1200/020":
+        value = "A1200"
+    elif c.amiga_model == "A1200/1230":
+        value = "A1200"
+    elif c.amiga_model == "A1200/1240":
+        value = "A1200"
+    elif c.amiga_model == "A1200/1260":
+        value = "A1200"
+    elif c.amiga_model == "A1200/PPC":
         value = "A1200"
     elif c.amiga_model == "A3000":
         value = "A3000"
@@ -1257,15 +1341,15 @@ def _uae_floppy3type(c, f):
 def _uae_fpu_model(c, f):
     if c.uae_fpu_model.explicit:
         value = c.uae_fpu_model.explicit
-    elif f.matches(c.fpu, "0"):
+    elif c.fpu == "0":
         value = "0"
-    elif f.matches(c.fpu, "68881"):
+    elif c.fpu == "68881":
         value = "68881"
-    elif f.matches(c.fpu, "68882"):
+    elif c.fpu == "68882":
         value = "68882"
-    elif f.matches(c.fpu, "68040"):
+    elif c.fpu == "68040":
         value = "68040"
-    elif f.matches(c.fpu, "68060"):
+    elif c.fpu == "68060":
         value = "68060"
     else:
         f.fail("Unknown FPU")
@@ -1643,6 +1727,7 @@ def expand_config(c, f):
     _joystick_port_3_mode(c, f)
     _kickstart_file(c, f)
     _kickstart_ext_file(c, f)
+    _motherboard_ram(c, f)
     _sound_card(c, f)
     _uae_a2065(c, f)
     _uae_bogomem_size(c, f)

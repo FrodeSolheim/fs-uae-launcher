@@ -161,6 +161,8 @@ class LaunchHandler(object):
             if not src:
                 raise Exception("Did not find required kickstart or ROM")
 
+            use_temp_kickstarts_dir = False
+
             dest = os.path.join(self.temp_dir, os.path.basename(src))
             archive = Archive(src)
             stream = None
@@ -183,8 +185,12 @@ class LaunchHandler(object):
                     f.write(stream.read())
                 else:
                     ROMManager.decrypt_archive_rom(archive, src, file=f)
-                self.config[config_key] = os.path.basename(src)
-            self.config["kickstarts_dir"] = self.temp_dir
+                if use_temp_kickstarts_dir:
+                    self.config[config_key] = os.path.basename(src)
+                else:
+                    self.config[config_key] = dest
+            if use_temp_kickstarts_dir:
+                self.config["kickstarts_dir"] = self.temp_dir
 
     def expand_default_path(self, src, default_dir):
         if "://" in src:

@@ -20,6 +20,7 @@ from .Book import Book
 from .CDPanel import CDPanel
 from .ConfigurationsPanel import ConfigurationsPanel
 from .Constants import Constants
+from .expansionspanel import ExpansionsPanel
 from .FloppiesPanel import FloppiesPanel
 from .HardDrivesPanel import HardDrivesPanel
 from .HardwarePanel import HardwarePanel
@@ -157,7 +158,7 @@ class MainWindow(WindowWithTabs):
         #     layout.add_spacer(0, 10)
 
         self.realize_tabs()
-        self.menu = self.create_menu()
+        # self.menu = self.create_menu()
         if fsui.System.macosx and fsui.toolkit == 'wx':
             # import wx
             # self.tools_menu = self.create_menu()
@@ -177,14 +178,33 @@ class MainWindow(WindowWithTabs):
             self.maximize()
 
         Signal.add_listener("scan_done", self)
+        Signal.add_listener("setting", self)
+
+        self.update_title()
 
     def on_destroy(self):
         print("MainWindow.destroy")
         Signal.remove_listener("scan_done", self)
+        Signal.remove_listener("setting", self)
 
     def on_scan_done_signal(self):
         print("MainWindow.on_scan_done_signal")
         Config.update_kickstart()
+
+    def update_title(self):
+        auth = Settings.get(Option.DATABASE_AUTH)
+        if auth:
+            username = Settings.get(Option.DATABASE_USERNAME)
+            login_info = username
+        else:
+            login_info = gettext("Not logged in")
+        title = "FS-UAE Launcher {0} ({1})".format(
+            Application.instance().version, login_info)
+        self.set_title(title)
+
+    def on_setting(self, key, value):
+        if key == Option.DATABASE_AUTH:
+            self.update_title()
 
     def on_resize(self):
         print("on_resize, size =", self.get_size(), self.is_maximized())
@@ -247,9 +267,15 @@ class MainWindow(WindowWithTabs):
                     config_browser.set_min_width(200)
                     hor_layout.add(config_browser, fill=True, expand=0.5,
                                    margin=10)
+            if column == 1:
+                # vert_layout.add_spacer(100)
+                self.info_panel = InfoPanel(self)
+                vert_layout.add(self.info_panel, fill=True, margin_left=10,
+                                margin_right=10)
+
             if column == 2:
-                if fs_uae_launcher.ui.get_screen_size()[1] >= 1024:
-                    vert_layout.add_spacer(100)
+                # if fs_uae_launcher.ui.get_screen_size()[1] >= 1024:
+                #     vert_layout.add_spacer(100)
 
                 hor2_layout = fsui.HorizontalLayout()
                 vert_layout.add(hor2_layout, fill=True, margin=10)
@@ -307,22 +333,23 @@ class MainWindow(WindowWithTabs):
             #    self.add_tab_spacer(10)
 
             # page_index = 0
-            self.add_page(column, ConfigurationsPanel, "tab_configs",
+            self.add_page(column, ConfigurationsPanel, "",
                           gettext("Configurations"),
                           gettext("Configuration Browser"))
 
             # self.add_tab_spacer(194)
 
-            self.add_tab_spacer(10)
-            self.add_tab_spacer(10)
+            # self.add_tab_spacer(10)
+            # self.add_tab_spacer(10)
+
             # info_panel = self.add_tab_panel(InfoPanel, expand=False)
             # info_panel = \
-            self.add_tab_panel(InfoPanel, expand=True)
+            # self.add_tab_panel(InfoPanel, expand=True)
             # info_panel.set_min_width(316)
             # info_panel.set_min_width(326)
             # info_panel.set_min_width(272)
 
-            # self.add_tab_spacer(0, expand=True)
+            self.add_tab_spacer(0, expand=True)
 
             # self.add_tab_spacer(10)
             # icon = fsui.Image("fs_uae_launcher:res/user_menu.png")
@@ -356,12 +383,10 @@ class MainWindow(WindowWithTabs):
             self.add_page(column, HardDrivesPanel, "tab_hard_drives",
                           gettext("Hard Drives"))
             self.add_page(column, HardwarePanel, "tab_hardware",
-                          gettext("Hardware"), gettext("Hardware Options"))
+                          gettext("Hardware"), gettext("ROM and RAM"))
+            self.add_page(column, ExpansionsPanel, "tab_hardware",
+                          gettext("Expansions"), gettext("Expansions"))
             # self.add_tab_spacer(10)
-            if Settings.get(Option.NETPLAY_FEATURE) == "1":
-                # page_index += 1
-                self.add_page(column, NetplayPanel, "tab_netplay",
-                              gettext("Net Play"))
 
             # if USE_MAIN_MENU:
             # self.add_tab_spacer(80)
@@ -377,13 +402,22 @@ class MainWindow(WindowWithTabs):
             # launch_group = LaunchGroup(self)
             # self.add_tab_panel(launch_group)
             # self.add_tab_panel(LaunchGroup)
-            self.add_tab_spacer(10)
             # self.add_tab_panel(LaunchGroup, expand=False)
             # self.add_tab_spacer(10)
 
+            self.add_tab_spacer(0, expand=True)
+            # FIXME: correct spacing so tabs are centered
+            # self.add_tab_spacer(64)
+
+            if Settings.get(Option.NETPLAY_FEATURE) == "1":
+                # page_index += 1
+                self.add_page(column, NetplayPanel, "tab_netplay",
+                              gettext("Net Play"))
+            self.add_tab_spacer(10)
+
         # column - 1 is the group id of the tab group
-        self.select_tab(
-            default_page_index + default_tab_index_offset, column - 1)
+            self.select_tab(
+                default_page_index + default_tab_index_offset, column - 1)
         self.books[column].set_page(default_page_index)
 
     def create_menu(self):
@@ -428,12 +462,16 @@ class MainWindow(WindowWithTabs):
         if content_class == MainPanel:
             self.main_panel = instance
         book.add_page(instance)
-        icon = fsui.Image("fs_uae_launcher:res/{0}.png".format(icon_name))
+        if icon_name:
+            icon = fsui.Image("fs_uae_launcher:res/{0}.png".format(icon_name))
+        else:
+            icon = None
 
         def function():
             book.set_page(instance)
-        self.add_tab(function, icon, title, tooltip)
 
+        if icon:
+            self.add_tab(function, icon, title, tooltip)
         return instance
 
     def on_custom_button(self):
@@ -444,6 +482,7 @@ class MainWindow(WindowWithTabs):
         if fsui.System.windows:
             if time.time() - getattr(self, "main_menu_close_time", 0) < 0.2:
                 return
+        self.menu = self.create_menu()
         if Skin.use_unified_toolbar():
             self.popup_menu(self.menu, (0, -2))
         else:

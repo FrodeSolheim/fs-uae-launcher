@@ -25,7 +25,7 @@ class FloppiesGroup(fsui.Group):
         hori_layout.add_spacer(0, expand=True)
 
         self.multi_select_button = fsui.Button(
-            self, gettext("Select Multiple Files..."))
+            self, gettext("Multi-Select..."))
         if self.cd_mode:
             self.multi_select_button.set_tooltip(
                 gettext("Add Multiple CD-ROMs at Once"))

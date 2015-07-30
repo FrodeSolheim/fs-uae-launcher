@@ -1,0 +1,11 @@
+Summary: Theme for FS-UAE Launcher
+Type: choice
+Default: native
+Example: fusion
+
+This option only works when FS-UAE Launcher is running with (Py)Qt 5.
+
+Value: native
+Value: fusion
+Value: fusion-adwaita
+Value: fusion-dark

@@ -336,12 +336,14 @@ def create_model(c, show_all=False):
 
     if int(c.uae_fpu_model):
         fpu_item = Item("{0} FPU".format(c.uae_fpu_model))
-        if c.uae_fpu_model == c.uae_cpu_model:
-            cpu_item.add(fpu_item)
     else:
         fpu_item = InactiveItem("No FPU")
         # fpu_item.set_parent(cpu_item)
     fpu_item.represents = ["fpu_model"]
+    if c.uae_fpu_model == c.uae_cpu_model:
+        cpu_item.add(fpu_item)
+    else:
+        model.add(fpu_item)
 
     if int(c.int_chipmem_size) % (1024 * 1024) == 0:
         size = "{0} MB".format(int(c.int_chipmem_size) // (1024 * 1024))
@@ -382,7 +384,10 @@ def create_model(c, show_all=False):
         trapdoor_item.add(bogomem_item)
 
     if int(c.int_fastmem_size):
-        size = "{0} MB".format(int(c.int_fastmem_size) // (1024 * 1024))
+        if int(c.int_fastmem_size) % (1024 * 1024) == 0:
+            size = "{0} MB".format(int(c.int_fastmem_size) // (1024 * 1024))
+        else:
+            size = "{0} KB".format(int(c.int_fastmem_size) // 1024)
         # fastmem_item = Item("{0} Zorro II Fast RAM".format(size))
         fastmem_item = Item("{0} Fast RAM".format(size))
     else:

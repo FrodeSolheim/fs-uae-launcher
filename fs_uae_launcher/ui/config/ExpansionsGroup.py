@@ -21,9 +21,10 @@ class ExpansionsGroup(fsui.Group):
         hori_layout.add(vert_layout, fill=True, expand=True)
 
         hor2_layout = fsui.HorizontalLayout()
-        widget = ConfigCheckBox(self, gettext("Picasso96 Support"),
-                                "uaegfx_card")
-        widget.set_tooltip(gettext("Picasso96 Support (uaegfx.card)"))
+        widget = ConfigCheckBox(
+            self, gettext("UAE Graphics Card (Picasso96 Support)"),
+            "uaegfx_card")
+        # widget.set_tooltip(gettext("Picasso96 Support (uaegfx.card)"))
         hor2_layout.add(widget, expand=True)
         widget = HelpButton(self, "http://fs-uae.net/options#uaegfx-card")
         hor2_layout.add(widget, margin_left=10)
@@ -33,10 +34,11 @@ class ExpansionsGroup(fsui.Group):
         # hori_layout.add(vert_layout, fill=True, expand=True)
 
         hor2_layout = fsui.HorizontalLayout()
-        widget = ConfigCheckBox(self, gettext("Built-in TCP/IP Stack"),
+        # gettext("Built-in TCP/IP Stack")
+        widget = ConfigCheckBox(self, "UAE bsdsocket.library",
                                 "bsdsocket_library")
-        widget.set_tooltip(
-            gettext("Built-in TCP/IP Stack (bsdsocket.library)"))
+        # widget.set_tooltip(
+        #     gettext("Built-in TCP/IP Stack (bsdsocket.library)"))
         hor2_layout.add(widget, expand=True)
         widget = HelpButton(
             self, "http://fs-uae.net/options#bsdsocket-library")

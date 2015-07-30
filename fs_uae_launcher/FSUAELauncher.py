@@ -44,6 +44,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             from fsui.qt import QStyleFactory, QPalette, QColor, Qt
             use_dark_theme = False
             use_fusion_theme = False
+            fusion_variant = ""
 
             if macosx in sys.argv:
                 use_fusion_theme = True
@@ -51,35 +52,54 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 use_fusion_theme = True
             if Settings.get("launcher_theme") == "fusion":
                 use_fusion_theme = True
+            if Settings.get("launcher_theme") == "fusion-adwaita":
+                use_fusion_theme = True
+                fusion_variant = "adwaita"
             if "--launcher-theme=fusion-dark" in sys.argv:
                 use_fusion_theme = True
-                use_dark_theme = True
+                fusion_variant = "dark"
             # FIXME: document
-            if "--dark-theme" in sys.argv:
-                use_dark_theme = True
+            # if "--dark-theme" in sys.argv:
+            #    use_dark_theme = True
 
             if use_fusion_theme:
                 # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
                 self.qapplication.setStyle(QStyleFactory.create("Fusion"))
-            if use_dark_theme:
-                dark_p = QPalette()
-                dark_p.setColor(QPalette.Window, QColor(53, 53, 53))
-                dark_p.setColor(QPalette.WindowText, Qt.white)
-                dark_p.setColor(QPalette.Base, QColor(25, 25, 25))
-                dark_p.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-                dark_p.setColor(QPalette.ToolTipBase, Qt.white)
-                dark_p.setColor(QPalette.ToolTipText, Qt.white)
-                dark_p.setColor(QPalette.Text, Qt.white)
-                dark_p.setColor(QPalette.Button, QColor(53, 53, 53))
-                dark_p.setColor(QPalette.ButtonText, Qt.white)
-                dark_p.setColor(QPalette.BrightText, Qt.red)
-                dark_p.setColor(QPalette.Link, QColor(42, 130, 218))
-                dark_p.setColor(QPalette.Highlight, QColor(42, 130, 218))
-                dark_p.setColor(QPalette.HighlightedText, Qt.black)
-                self.qapplication.setPalette(dark_p)
-                self.qapplication.setStyleSheet(
-                    "QToolTip { color: #ffffff; background-color: #2a82da; "
-                    "border: 1px solid white; }")
+                if fusion_variant == "adwaita":
+                    pa = QPalette()
+                    pa.setColor(QPalette.Window, QColor(237, 237, 237))
+                    # pa.setColor(QPalette.WindowText, Qt.white)
+                    # pa.setColor(QPalette.Base, QColor(25, 25, 25))
+                    pa.setColor(QPalette.AlternateBase, QColor(237, 237, 237))
+                    # pa.setColor(QPalette.ToolTipBase, Qt.white)
+                    # pa.setColor(QPalette.ToolTipText, Qt.white)
+                    # pa.setColor(QPalette.Text, Qt.white)
+                    pa.setColor(QPalette.Button, QColor(237, 237, 237))
+                    # pa.setColor(QPalette.ButtonText, Qt.white)
+                    # pa.setColor(QPalette.BrightText, Qt.red)
+                    # pa.setColor(QPalette.Link, QColor(42, 130, 218))
+                    # pa.setColor(QPalette.Highlight, QColor(42, 130, 218))
+                    # pa.setColor(QPalette.HighlightedText, Qt.black)
+                    self.qapplication.setPalette(pa)
+                elif fusion_variant == "dark":
+                    pa = QPalette()
+                    pa.setColor(QPalette.Window, QColor(53, 53, 53))
+                    pa.setColor(QPalette.WindowText, Qt.white)
+                    pa.setColor(QPalette.Base, QColor(25, 25, 25))
+                    pa.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+                    pa.setColor(QPalette.ToolTipBase, Qt.white)
+                    pa.setColor(QPalette.ToolTipText, Qt.white)
+                    pa.setColor(QPalette.Text, Qt.white)
+                    pa.setColor(QPalette.Button, QColor(53, 53, 53))
+                    pa.setColor(QPalette.ButtonText, Qt.white)
+                    pa.setColor(QPalette.BrightText, Qt.red)
+                    pa.setColor(QPalette.Link, QColor(42, 130, 218))
+                    pa.setColor(QPalette.Highlight, QColor(42, 130, 218))
+                    pa.setColor(QPalette.HighlightedText, Qt.black)
+                    self.qapplication.setPalette(pa)
+                    self.qapplication.setStyleSheet(
+                        "QToolTip { color: #ffffff; background-color: #2a82da; "
+                        "border: 1px solid white; }")
 
             plugin_helper = PluginHelper()
             for res in plugin_helper.find_resource_dirs(

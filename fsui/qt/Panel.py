@@ -8,7 +8,7 @@ class Panel(QWidget, Widget):
 
     def __init__(self, parent, paintable=False):
         unused(paintable)
-        QWidget.__init__(self, parent.get_container())
+        QWidget.__init__(self, parent.get_container() if parent else None)
         self.init_widget(parent)
         self.layout = None
         self._painter = None
