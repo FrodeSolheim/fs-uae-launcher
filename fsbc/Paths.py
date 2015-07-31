@@ -1,7 +1,7 @@
 import os
 import sys
 import unicodedata
-from fsbc.system import macosx
+from fsbc.system import windows, macosx
 from fsbc.user import get_home_dir
 from fsbc.util import memoize
 
@@ -102,7 +102,14 @@ class Paths(object):
         """Check the case for the (case insensitive) path. Used to make the
         database portable across sensitive/insensitive file systems."""
 
-        # not really needed on Linux
+        # get_real_case will fail on Linux if you have "conflicting" paths
+        # (differing only by case), unless we check that the specified path
+        # is already correct. The reason for not simply returning the path
+        # as-is on Linux, is that this function can find files in directories
+        # (portable version) when the directory is specified with wrong case.
+        if not windows and not macosx:
+            if os.path.exists(path):
+                return path
 
         parts = []
         drive, p = os.path.splitdrive(path)
