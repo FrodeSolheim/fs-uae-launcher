@@ -44,7 +44,8 @@ class ModelGroup(fsui.Group):
         heading_label = fsui.HeadingLabel(self, gettext("Amiga Model"))
         hori_layout.add(heading_label, margin=10)
         hori_layout.add_spacer(10)
-        hori_layout.add(self.ntsc_checkbox, expand=False, margin=10)
+        hori_layout.add(self.ntsc_checkbox, expand=False,
+                        margin_left=10, margin_right=10)
         hori_layout.add_spacer(0, expand=True)
 
         hori_layout.add(self.accuracy_label, margin_right=10)

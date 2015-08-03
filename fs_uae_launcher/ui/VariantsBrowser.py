@@ -6,6 +6,7 @@ import fsui
 from ..Config import Config
 from ..Signal import Signal
 from ..Settings import Settings
+from fs_uae_launcher.I18N import gettext
 
 
 class LastVariants(object):
@@ -89,7 +90,9 @@ class VariantsBrowser(fsui.ItemChoice):
                 self.update_list(value)
             else:
                 Settings.set("game_uuid", "")
+                # self.set_items([gettext("Configuration")])
                 self.set_items([])
+                self.disable()
 
     def on_config(self, key, value):
         if key == "variant_rating":

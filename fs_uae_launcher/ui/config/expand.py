@@ -5,6 +5,14 @@
 def _accelerator(c, f):
     if c.accelerator.explicit:
         value = c.accelerator.explicit
+    elif c.amiga_model == "A1200/1230":
+        value = "blizzard-1230-iv"
+    elif c.amiga_model == "A1200/1240":
+        value = "blizzard-1240"
+    elif c.amiga_model == "A1200/1260":
+        value = "blizzard-1260"
+    elif c.amiga_model == "A1200/PPC":
+        value = "blizzard-ppc"
     elif c.amiga_model == "A4000/PPC":
         value = "cyberstorm-ppc"
     elif c.amiga_model == "A4000/OS4":
@@ -13,34 +21,36 @@ def _accelerator(c, f):
         value = "0"
     if f.matches(value, "blizzard-1230-iv"):
         value = "blizzard-1230-iv"
-    elif f.matches(value, "blizzard-1230-iv-scsi"):
-        value = "blizzard-1230-iv-scsi"
+    # elif f.matches(value, "blizzard-1230-iv-scsi"):
+    #     value = "blizzard-1230-iv-scsi"
     # elif f.matches(value, "blizzard-1230-iv+scsi"):
     #     value = "blizzard-1230-iv-scsi"
+    elif f.matches(value, "blizzard-1240"):
+        value = "blizzard-1240"
     elif f.matches(value, "blizzard-1260"):
         value = "blizzard-1260"
-    elif f.matches(value, "blizzard-1260-scsi"):
-        value = "blizzard-1260-scsi"
-    elif f.matches(value, "blizzard-2060"):
-        value = "blizzard-2060"
+    # elif f.matches(value, "blizzard-1260-scsi"):
+    #     value = "blizzard-1260-scsi"
+    # elif f.matches(value, "blizzard-2060"):
+    #     value = "blizzard-2060"
     elif f.matches(value, "blizzard-ppc"):
         value = "blizzard-ppc"
-    elif f.matches(value, "cyberstorm-mk-i"):
-        value = "cyberstorm-mk-i"
-    elif f.matches(value, "cyberstorm-mk-ii"):
-        value = "cyberstorm-mk-ii"
-    elif f.matches(value, "cyberstorm-mk-iii"):
-        value = "cyberstorm-mk-iii"
+    # elif f.matches(value, "cyberstorm-mk-i"):
+    #     value = "cyberstorm-mk-i"
+    # elif f.matches(value, "cyberstorm-mk-ii"):
+    #     value = "cyberstorm-mk-ii"
+    # elif f.matches(value, "cyberstorm-mk-iii"):
+    #     value = "cyberstorm-mk-iii"
     elif f.matches(value, "cyberstorm-ppc"):
         value = "cyberstorm-ppc"
-    elif f.matches(value, "dkb-1230"):
-        value = "dkb-1230"
-    elif f.matches(value, "dkb-1240"):
-        value = "dkb-1240"
-    elif f.matches(value, "fusion-forty"):
-        value = "fusion-forty"
-    elif f.matches(value, "warp-engine-a4000"):
-        value = "warp-engine-a4000"
+    # elif f.matches(value, "dkb-1230"):
+    #     value = "dkb-1230"
+    # elif f.matches(value, "dkb-1240"):
+    #     value = "dkb-1240"
+    # elif f.matches(value, "fusion-forty"):
+    #     value = "fusion-forty"
+    # elif f.matches(value, "warp-engine-a4000"):
+    #     value = "warp-engine-a4000"
     c.accelerator = value
 
 
@@ -48,6 +58,14 @@ def _accelerator(c, f):
 def _accelerator_memory(c, f):
     if c.accelerator_memory.explicit:
         value = c.accelerator_memory.explicit
+    elif f.matches(c.accelerator, "blizzard-1230-iv"):
+        value = str(32 * 1024)
+    elif f.matches(c.accelerator, "blizzard-1240"):
+        value = str(32 * 1024)
+    elif f.matches(c.accelerator, "blizzard-1260"):
+        value = str(32 * 1024)
+    elif f.matches(c.accelerator, "blizzard-ppc"):
+        value = str(256 * 1024)
     elif f.matches(c.accelerator, "cyberstorm-ppc"):
         value = str(128 * 1024)
     else:
@@ -285,12 +303,8 @@ def _int_accelerator_name(c, f):
         value = ""
     elif f.matches(c.uae_cpuboard_type, "Blizzard1230IV"):
         value = "Blizzard 1230 IV"
-    elif f.matches(c.uae_cpuboard_type, "Blizzard1230IV+SCSI"):
-        value = "Blizzard 1230 IV + SCSI"
     elif f.matches(c.uae_cpuboard_type, "Blizzard1260"):
-        value = "Blizzard 1260"
-    elif f.matches(c.uae_cpuboard_type, "Blizzard1260+SCSI"):
-        value = "Blizzard 1260 + SCSI"
+        value = "Blizzard 1240/1260"
     elif f.matches(c.uae_cpuboard_type, "Blizzard2060"):
         value = "Blizzard 2060"
     elif f.matches(c.uae_cpuboard_type, "BlizzardPPC"):
@@ -1218,12 +1232,10 @@ def _uae_cpuboard_type(c, f):
         value = "none"
     elif f.matches(c.accelerator, "blizzard-1230-iv"):
         value = "Blizzard1230IV"
-    elif f.matches(c.accelerator, "blizzard-1230-iv-scsi"):
-        value = "Blizzard1230IV+SCSI"
+    elif f.matches(c.accelerator, "blizzard-1240"):
+        value = "Blizzard1260"
     elif f.matches(c.accelerator, "blizzard-1260"):
         value = "Blizzard1260"
-    elif f.matches(c.accelerator, "blizzard-1260-scsi"):
-        value = "Blizzard1260+SCSI"
     elif f.matches(c.accelerator, "blizzard-2060"):
         value = "Blizzard2060"
     elif f.matches(c.accelerator, "blizzard-ppc"):
@@ -1500,6 +1512,7 @@ def _uae_ppc_model(c, f):
 
 # noinspection PyUnusedLocal
 def _uae_rtc(c, f):
+    # FIXME: Blizzard expansions!
     if c.uae_chipset_compatible == "-":
         if c.uae_rtc.explicit:
             value = c.uae_rtc.explicit

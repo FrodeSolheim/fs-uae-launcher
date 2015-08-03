@@ -3,13 +3,18 @@
 
 class Option(object):
     """Constants for option names."""    
+    ACCELERATOR = "accelerator"
+    ACCELERATOR_MEMORY = "accelerator_memory"
     AUDIO_BUFFER_TARGET_BYTES = "audio_buffer_target_bytes"
     AUDIO_BUFFER_TARGET_SIZE = "audio_buffer_target_size"
     AUDIO_FREQUENCY = "audio_frequency"
     AUTOMATIC_INPUT_GRAB = "automatic_input_grab"
+    BLIZZARD_SCSI_KIT = "blizzard_scsi_kit"
     BSDSOCKET_LIBRARY = "bsdsocket_library"
     BUILTIN_CONFIGS = "builtin_configs"
+    CHIP_MEMORY = "chip_memory"
     CONFIG_FEATURE = "config_feature"
+    CPU = "cpu"
     CPU_IDLE = "cpu_idle"
     DATABASE_ARCADE = "database_arcade"
     DATABASE_AUTH = "database_auth"
@@ -29,13 +34,17 @@ class Option(object):
     FLOPPY_DRIVE_VOLUME = "floppy_drive_volume"
     FSAA = "fsaa"
     FULLSCREEN = "fullscreen"
+    GRAPHICS_CARD = "graphics_card"
     GRAPHICS_MEMORY = "graphics_memory"
     INITIAL_INPUT_GRAB = "initial_input_grab"
     IRC_NICK = "irc_nick"
     IRC_SERVER = "irc_server"
     KEEP_ASPECT = "keep_aspect"
     KEYBOARD_INPUT_GRAB = "keyboard_input_grab"
+    KEYBOARD_KEY_EQUALS = "keyboard_key_equals"
+    KEYBOARD_KEY_INSERT = "keyboard_key_insert"
     KICKSTART_SETUP = "kickstart_setup"
+    LAUNCHER_THEME = "launcher_theme"
     LOAD_STATE = "load_state"
     LOG_QUERY_PLANS = "log_query_plans"
     LOW_LATENCY_VSYNC = "low_latency_vsync"
@@ -71,6 +80,7 @@ class Option(object):
     UAE_Z3MAPPING = "uae_z3mapping"
     UAE_Z3MEM2_SIZE = "uae_z3mem2_size"
     UAE_Z3MEM_SIZE = "uae_z3mem_size"
+    UAEGFX_CARD = "uaegfx_card"
     UAEM_WRITE_FLAGS = "uaem_write_flags"
     VIDEO_FORMAT = "video_format"
     VIDEO_SYNC = "video_sync"
@@ -92,6 +102,37 @@ N_ = lambda x: x
 
 
 options = {
+
+    "accelerator": {
+        "default": "0",
+        "description": N_("CPU Accelerator Board"),
+        "type": "Choice",
+        "values": [
+            ("0", N_("None")),
+            ("blizzard-1230-iv", "Blizzard 1230 IV"),
+            ("blizzard-1240", "Blizzard 1240"),
+            ("blizzard-1260", "Blizzard 1260"),
+            ("blizzard-ppc", "Blizzard PPC"),
+            ("cyberstorm-ppc", "CyberStorm PPC"),
+        ]
+    },
+
+    "accelerator_memory": {
+        "default": "",
+        "description": N_("CPU Accelerator Board RAM"),
+        "type": "Choice",
+        "values": [
+            ("1024", "1 MB"),
+            ("2048", "2 MB"),
+            ("4096", "4 MB"),
+            ("8192", "8 MB"),
+            ("16384", "16 MB"),
+            ("32768", "32 MB"),
+            ("65536", "64 MB"),
+            ("131072", "128 MB"),
+            ("262144", "256 MB"),
+        ]
+    },
 
     "audio_buffer_target_bytes": {
         "default": "8192",
@@ -128,9 +169,15 @@ options = {
         "type": "boolean",
     },
 
+    "blizzard_scsi_kit": {
+        "default": "0",
+        "description": N_("Blizzard SCSI Kit"),
+        "type": "boolean",
+    },
+
     "bsdsocket_library": {
         "default": "0",
-        "description": "",
+        "description": N_("UAE bsdsocket.library"),
         "type": "boolean",
     },
 
@@ -140,11 +187,39 @@ options = {
         "type": "boolean",
     },
 
+    "chip_memory": {
+        "default": "",
+        "description": N_("Chip RAM"),
+        "type": "Choice",
+    },
+
     "config_feature": {
         "default": "0",
         "description": N_(
             "Enable experimental config visualization (requires restart)"),
         "type": "boolean",
+    },
+
+    "cpu": {
+        "default": "",
+        "description": N_("CPU"),
+        "type": "Choice",
+        "values": [
+            ("68000", "68000"),
+            ("68010", "68010"),
+            ("68EC020", "68EC020"),
+            ("68020", "68020"),
+            ("68EC030", "68EC030"),
+            ("68030", "68030"),
+            ("68EC040", "68EC040"),
+            ("68LC040", "68LC040"),
+            ("68040-NOMMU", "68040-NOMMU"),
+            ("68040", "68040"),
+            ("68EC060", "68EC060"),
+            ("68LC060", "68LC060"),
+            ("68060-NOMMU", "68060-NOMMU"),
+            ("68060", "68060"),
+        ]
     },
 
     "cpu_idle": {
@@ -279,11 +354,38 @@ options = {
         "type": "boolean",
     },
 
+    "graphics_card": {
+        "default": "none",
+        "description": N_("Graphics Card"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("uaegfx", "UAEGFX"),
+            ("uaegfx-z2", "UAEGFX Zorro II"),
+            ("uaegfx-z3", "UAEGFX Zorro III"),
+            ("picasso-ii", "Picasso II Zorro II"),
+            ("picasso-ii+", "Picasso II+ Zorro II"),
+            ("picasso-iv", "Picasso IV"),
+            ("picasso-iv-z2", "Picasso IV Zorro II"),
+            ("picasso-iv-z3", "Picasso IV Zorro III"),
+        ]
+    },
+
     "graphics_memory": {
         "default": "",
-        "description": N_(
-            "Override the amount of graphics memory on the graphics card"),
-        "type": "integer",
+        "description": N_("Graphics Card VRAM"),
+        "type": "Choice",
+        "values": [
+            ("1024", "1 MB"),
+            ("2048", "2 MB"),
+            ("4096", "4 MB"),
+            ("8192", "8 MB"),
+            ("16384", "16 MB"),
+            ("32768", "32 MB"),
+            ("65536", "64 MB"),
+            ("131072", "128 MB"),
+            ("262144", "256 MB"),
+        ]
     },
 
     "initial_input_grab": {
@@ -316,11 +418,35 @@ options = {
         "type": "boolean",
     },
 
+    "keyboard_key_equals": {
+        "default": "action_key_equals",
+        "description": N_("keyboard_key_equals"),
+        "type": "",
+    },
+
+    "keyboard_key_insert": {
+        "default": "action_key_backslash",
+        "description": N_("keyboard_key_insert"),
+        "type": "",
+    },
+
     "kickstart_setup": {
         "default": "1",
         "description": N_(
             "Show kickstart setup page on startup when all ROMs are missing"),
         "type": "boolean",
+    },
+
+    "launcher_theme": {
+        "default": "native",
+        "description": N_("Theme for FS-UAE Launcher"),
+        "type": "choice",
+        "values": [
+            ("native", "native"),
+            ("fusion", "fusion"),
+            ("fusion-adwaita", "fusion-adwaita"),
+            ("fusion-dark", "fusion-dark"),
+        ]
     },
 
     "load_state": {
@@ -638,6 +764,12 @@ options = {
         "default": "",
         "description": N_("Size in MB of Zorro-III Fast RAM expansion board"),
         "type": "integer",
+    },
+
+    "uaegfx_card": {
+        "default": "0",
+        "description": N_("uaegfx_card"),
+        "type": "boolean",
     },
 
     "uaem_write_flags": {

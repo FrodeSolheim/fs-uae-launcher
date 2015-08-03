@@ -1,8 +1,13 @@
 Version 2.5.33dev:
 
+* FS-UAE Launcher / Arcade defaults to require PyQt5 now.
+* Minimum OS X version (for official builds) is now 10.7 due to QT 5.5.
+* Updated GUI layout.
+* More expansion config controls (cpu, accelerator, graphics card, ++).
 * Fixed issue with get_real_case usage on case sensitive systems (Linux).
 * Login / logout entries in main menu did not update correctly.
 * Redesigned model selection GUI (more room for additional models / presets).
+* More Amiga model presets added.
 * Do not write empty FS-UAE config values (less noise in the logs).
 * Do not write known launcher-only settings to temp FS-UAE config file.
 * Do not use a temporary kickstart dir, so FS-UAE will find accelerator ROMs.

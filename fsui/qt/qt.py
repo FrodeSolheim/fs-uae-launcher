@@ -5,7 +5,9 @@ import sys
 #     import_order = ["PyQT4", "PySide", "PyQT5"]
 # else:
 #     import_order = ["PyQT5", "PyQT4", "PySide"]
-import_order = ["PyQT4", "PySide", "PyQT5"]
+# import_order = ["PyQT4", "PySide", "PyQT5"]
+
+import_order = ["PyQT5"]
 
 if "--qt-bindings=pyqt5" in sys.argv:
     import_order = ["PyQT5"]

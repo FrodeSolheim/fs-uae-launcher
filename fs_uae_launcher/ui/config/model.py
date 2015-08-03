@@ -373,12 +373,12 @@ def create_model(c, show_all=False):
             size = "{0} MB".format(int(c.int_bogomem_size) // (1024 * 1024))
         else:
             size = "{0} KB".format(int(c.int_bogomem_size) // 1024)
-        bogomem_item = Item("{0} Pseudo-Fast RAM".format(size))
+        bogomem_item = Item("{0} Slow RAM".format(size))
     else:
-        bogomem_item = InactiveItem("No Trapdoor (Slow) RAM")
+        bogomem_item = InactiveItem("No Slow RAM")
     bogomem_item.represents = ["slow_memory", "uae_bogomem_size"]
     if flatten:
-        bogomem_item.extra = "Trapdoor Slot"
+        bogomem_item.extra = "Trapdoor"
         model.add(bogomem_item)
     else:
         trapdoor_item.add(bogomem_item)
@@ -413,7 +413,7 @@ def create_model(c, show_all=False):
         zorro_iii_item.add(z3fastmem_item)
 
     if c.uae_rtc != "none":
-        rtc_item = Item("{0} Real Time Clock".format(c.uae_rtc))
+        rtc_item = Item("{0} RTC".format(c.uae_rtc))
     else:
         rtc_item = InactiveItem("No Real Time Clock")
     rtc_item.represents = ["uae_rtc"]

@@ -24,9 +24,7 @@ launcher:
 	find fs-uae-launcher_$(version)_macosx/ -name *_debug.dylib -delete
 	mv fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app" fs-uae-launcher_$(version)_macosx/temp.app
 
-	# cp -pPR `qtpaths --install-prefix`/qml fs-uae-launcher_$(version)_macosx/temp.app/Contents/MacOS
-	# cp -pPR `qtpaths --install-prefix`/qml fs-uae-launcher_$(version)_macosx/temp.app/Contents
-	cp -pPR `qtpaths --install-prefix`/qml/* fs-uae-launcher_$(version)_macosx/temp.app/Contents/MacOS
+	# cp -pPR `qtpaths --install-prefix`/qml/* fs-uae-launcher_$(version)_macosx/temp.app/Contents/MacOS
 	python3 fs-make-standalone-app.py fs-uae-launcher_$(version)_macosx/temp.app
 
 	mv fs-uae-launcher_$(version)_macosx/temp.app fs-uae-launcher_$(version)_macosx/"FS-UAE Launcher.app"

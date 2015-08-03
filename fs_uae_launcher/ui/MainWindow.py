@@ -1,5 +1,6 @@
 import sys
 import time
+from fs_uae_launcher.ui.config.configscrollarea import ConfigScrollArea
 import fstd.desktop
 from fs_uae_launcher.ui.InfoPanel import InfoPanel
 from fs_uae_launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
@@ -20,10 +21,10 @@ from .Book import Book
 from .CDPanel import CDPanel
 from .ConfigurationsPanel import ConfigurationsPanel
 from .Constants import Constants
-from .expansionspanel import ExpansionsPanel
+from .config.expansionspanel import ExpansionsPanel
+from .config.romrampanel import RomRamPanel
 from .FloppiesPanel import FloppiesPanel
 from .HardDrivesPanel import HardDrivesPanel
-from .HardwarePanel import HardwarePanel
 from .InputPanel import InputPanel
 from .MainPanel import MainPanel
 from .NetplayPanel import NetplayPanel
@@ -171,6 +172,13 @@ class MainWindow(WindowWithTabs):
         self.layout.add(self.status_bar, fill=True)
 
         was_maximized = Settings.get("maximized") == "1"
+
+        if Settings.get(Option.CONFIG_FEATURE) == "1":
+            if fs_uae_launcher.ui.get_screen_size()[0] > 1300:
+                if fs_uae_launcher.ui.get_screen_size()[1] > 1000:
+                    self.layout.min_width = 1280
+                    self.layout.min_height = 720
+
         self.set_size(self.layout.get_min_size())
 
         self.center_on_screen()
@@ -382,10 +390,13 @@ class MainWindow(WindowWithTabs):
                           gettext("CD-ROM Drives"))
             self.add_page(column, HardDrivesPanel, "tab_hard_drives",
                           gettext("Hard Drives"))
-            self.add_page(column, HardwarePanel, "tab_hardware",
-                          gettext("Hardware"), gettext("ROM and RAM"))
-            self.add_page(column, ExpansionsPanel, "tab_hardware",
-                          gettext("Expansions"), gettext("Expansions"))
+            self.add_scroll_page(
+                column, ExpansionsPanel, "tab_hardware",
+                gettext("Expansions"), gettext("Expansions"))
+            self.add_scroll_page(
+                column, RomRamPanel, "tab_hardware",
+                gettext("Hardware"), gettext("ROM and RAM"))
+
             # self.add_tab_spacer(10)
 
             # if USE_MAIN_MENU:
@@ -456,11 +467,7 @@ class MainWindow(WindowWithTabs):
         menu.add_about_item(gettext("Quit"), self.on_quit)
         return menu
 
-    def add_page(self, column, content_class, icon_name, title, tooltip=""):
-        book = self.books[column]
-        instance = content_class(book)
-        if content_class == MainPanel:
-            self.main_panel = instance
+    def _add_page(self, book, instance, icon_name, title, tooltip):
         book.add_page(instance)
         if icon_name:
             icon = fsui.Image("fs_uae_launcher:res/{0}.png".format(icon_name))
@@ -473,6 +480,23 @@ class MainWindow(WindowWithTabs):
         if icon:
             self.add_tab(function, icon, title, tooltip)
         return instance
+
+    def add_page(self, column, content_class, icon_name, title, tooltip=""):
+        book = self.books[column]
+        instance = content_class(book)
+        if content_class == MainPanel:
+            self.main_panel = instance
+        return self._add_page(book, instance, icon_name, title, tooltip)
+
+    def add_scroll_page(self, column, content_class, icon_name, title,
+                        tooltip=""):
+        book = self.books[column]
+        instance = ConfigScrollArea(book)
+        content_instance = content_class(instance)
+        instance.set_widget(content_instance)
+        if content_class == MainPanel:
+            self.main_panel = instance
+        return self._add_page(book, instance, icon_name, title, tooltip)
 
     def on_custom_button(self):
         from .config.ConfigDialog import ConfigDialog

@@ -27,8 +27,8 @@ else:
     app = "fs-uae-launcher"
 
 def main():
-    version = "9.8.7dummy"
-    series = "unknown"
+    version = "2.5.33dev"
+    series = "devel"
 
     # if "--fs-uae-workspace=real" in sys.argv:
     #     try:
@@ -81,7 +81,11 @@ def main():
         from fsgs.ui.qwindow import GameCenterView
         window = GameCenterView()
         from fsui.qt import Qt
-        window.setFlags(Qt.FramelessWindowHint)
+        # window.setFlags(Qt.FramelessWindowHint)
+        window.setFlags(Qt.Window | 
+                        Qt.FramelessWindowHint | 
+                        Qt.WindowMinimizeButtonHint | 
+                        Qt.WindowSystemMenuHint)
         # window.show()
         window.showMaximized()
         # window.showFullScreen()

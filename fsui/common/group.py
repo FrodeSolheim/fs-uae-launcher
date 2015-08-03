@@ -9,6 +9,7 @@ class Group(object):
             # noinspection PyProtectedMember
             self._window = parent._window
         self.position = (0, 0)
+        self.__visible = True
 
     # def __on_destroy(self):
     #     self.on_destroy()
@@ -17,8 +18,11 @@ class Group(object):
     def parent(self):
         return self._parent()
 
+    # def show_or_hide(self, show):
+    #     self.__visible = show
+
     def is_visible(self):
-        return True
+        return self.__visible
 
     # def on_destroy(self):
     #     pass

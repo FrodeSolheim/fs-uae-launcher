@@ -98,7 +98,51 @@ class Amiga(object):
         {
             "id": "A1200/020",
             "title": "Amiga 1200 (68020)",
-            "subtitle": "3.1 ROM, Full 68020 CPU",
+            "subtitle": "3.1 ROM, 68020 CPU",
+            "cd_based": False,
+            "kickstarts": A1200_3_1_KICKSTARTS,
+            "ext_roms": [],
+            "defaults": {
+                "chip_memory": "2048",
+            }
+        },
+        {
+            "id": "A1200/1230",
+            "title": "A1200",
+            "subtitle": "3.1 ROM, Blizzard 1230 IV",
+            "cd_based": False,
+            "kickstarts": A1200_3_1_KICKSTARTS,
+            "ext_roms": [],
+            "defaults": {
+                "chip_memory": "2048",
+            }
+        },
+        {
+            "id": "A1200/1240",
+            "title": "A1200",
+            "subtitle": "3.1 ROM, Blizzard 1240",
+            "cd_based": False,
+            "kickstarts": A1200_3_1_KICKSTARTS,
+            "ext_roms": [],
+            "defaults": {
+                "chip_memory": "2048",
+            }
+        },
+        {
+            "id": "A1200/1260",
+            "title": "A1200",
+            "subtitle": "3.1 ROM, Blizzard 1260",
+            "cd_based": False,
+            "kickstarts": A1200_3_1_KICKSTARTS,
+            "ext_roms": [],
+            "defaults": {
+                "chip_memory": "2048",
+            }
+        },
+        {
+            "id": "A1200/PPC",
+            "title": "A1200",
+            "subtitle": "3.1 ROM, Blizzard PPC",
             "cd_based": False,
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],

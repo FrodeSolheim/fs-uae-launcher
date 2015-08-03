@@ -1,6 +1,6 @@
 %define name fs-uae-launcher
-%define version 2.5.32dev
-%define unmangled_version 2.5.32dev
+%define version 2.5.33dev
+%define unmangled_version 2.5.33dev
 %define release 1%{?dist}
 
 Summary: Graphical configuration frontend and launcher for FS-UAE
@@ -15,7 +15,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Prefix: %{_prefix}
 BuildArch: noarch
 Vendor: Frode Solheim <frode@fs-uae.net>
-Requires: python3-qt4 fs-uae python3-setuptools
+Requires: python3-qt5 fs-uae python3-setuptools
 BuildRequires: python3-devel python3-setuptools
 
 %if 0%{?suse_version}

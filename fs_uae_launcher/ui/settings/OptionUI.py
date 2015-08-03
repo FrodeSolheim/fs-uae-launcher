@@ -16,7 +16,7 @@ class OptionUI(object):
         group.layout.add(group.label, margin_right=20)
         choice_values = []
 
-        if option["type"] == "boolean":
+        if option["type"].lower() == "boolean":
             if option["default"] == "1":
                 default_desc = gettext("Default ({0})").format(gettext("On"))
             elif option["default"] == "0":
@@ -27,7 +27,7 @@ class OptionUI(object):
             choice_values.append(("1", gettext("On")))
             choice_values.append(("0", gettext("Off")))
 
-        elif option["type"] == "choice":
+        elif option["type"].lower() == "choice":
             for i, value in enumerate(option["values"]):
                 if option["default"] == value[0]:
                     default_desc = gettext("Default ({0})").format(
@@ -39,7 +39,7 @@ class OptionUI(object):
             for option in option["values"]:
                 choice_values.append((option[0], gettext(option[1])))
 
-        elif option["type"] == "string":
+        elif option["type"].lower() == "string":
 
             def on_change():
                 val = text_field.get_text()
@@ -51,7 +51,7 @@ class OptionUI(object):
             text_field.on_change = on_change
             group.layout.add(text_field, expand=True)
 
-        elif option["type"] == "integer" and "min" in option \
+        elif option["type"].lower() == "integer" and "min" in option \
                 and "max" in option:
             current = Settings.get(name)
             current_int = int(option["default"])
