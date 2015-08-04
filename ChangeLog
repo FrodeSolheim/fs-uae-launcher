@@ -1,3 +1,14 @@
+Version 2.5.34dev:
+
+* Changed tab panel appearance on OS X to match other platforms.
+* Renamed language prefs to appearance prefs, added launcher theme option.
+* Close login dialog before opening database refresh dialog.
+* Settings UI for specifying empty floppy drive volume (or disabling it).
+* Added keyboard settings to configure equals/insert/backslash/less mapping.
+* Added support for WHDLoad 18.1, set as default version.
+* Replaced some icons, added new rom/ram icon.
+* Fixed an issue with the new CPU selection.
+
 Version 2.5.33dev:
 
 * FS-UAE Launcher / Arcade defaults to require PyQt5 now.

@@ -32,6 +32,7 @@ class AudioSettingsPage(fsui.Panel):
         self.layout.add(label, margin_top=20, margin_bottom=20)
 
         add_option("floppy_drive_volume")
+        add_option("floppy_drive_volume_empty")
 
         label = fsui.HeadingLabel(
             self, gettext("Advanced Audio Options"))

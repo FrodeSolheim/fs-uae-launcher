@@ -53,7 +53,8 @@ class SettingsDialog(PagedDialog):
         self.setAttribute(Qt.WA_DeleteOnClose, True)
 
         self.add_page(
-            gettext("Language"), LanguageSettingsPage,
+            gettext("Appearance"), LanguageSettingsPage,
+            # gettext("Language"), LanguageSettingsPage,
             fsui.Icon("language-settings", "pkg:fs_uae_workspace"))
         self.add_page(
             gettext("Joystick"), JoystickSettingsPage,

@@ -24,7 +24,15 @@ class KeyboardSettingsPage(fsui.Panel):
         # label = fsui.HeadingLabel(self, gettext("Keyboard Settings"))
         # self.layout.add(label, margin=10, margin_bottom=20)
 
-        add_option("automatic_input_grab")
-        add_option("initial_input_grab")
+        # add_option("automatic_input_grab")
+        # add_option("initial_input_grab")
         add_option("keyboard_input_grab")
         add_option("swap_ctrl_keys")
+
+        label = fsui.HeadingLabel(self, gettext("Key Mapping"))
+        self.layout.add(label, margin_top=20, margin_bottom=20)
+
+        add_option("keyboard_key_backslash")
+        add_option("keyboard_key_equals")
+        add_option("keyboard_key_insert")
+        add_option("keyboard_key_less")

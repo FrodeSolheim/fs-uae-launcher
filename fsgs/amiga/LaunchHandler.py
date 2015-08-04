@@ -44,7 +44,8 @@ class LaunchHandler(object):
 
         self.game_paths = game_paths
         self.hd_requirements = set()
-        for req in self.config.get("hd_requirements", "").split(","):
+        for req in self.config.get(
+                "hd_requirements", "").replace(",", ";").split(";"):
             req = req.strip()
             if req:
                 self.hd_requirements.add(req)
@@ -480,6 +481,16 @@ class LaunchHandler(object):
         self.unpack_archive(src, dir_path)
         self.config["hard_drive_{0}".format(i)] = dir_path
 
+    # def create_devs_dir(self):
+    #     devs_dir = os.path.join(dest_dir, "Devs")
+    #     if not os.path.exists(devs_dir):
+    #         os.makedirs(devs_dir)
+    #
+    # def create_fonts_dir(self):
+    #     fonts_dir = os.path.join(dest_dir, "Fonts")
+    #     if not os.path.exists(fonts_dir):
+    #         os.makedirs(fonts_dir)
+
     def copy_hd_files(self):
         whdload_args = self.config.get("x_whdload_args", "").strip()
         hdinst_args = self.config.get("x_hdinst_args", "").strip()
@@ -501,6 +512,7 @@ class LaunchHandler(object):
         libs_dir = os.path.join(dest_dir, "Libs")
         if not os.path.exists(libs_dir):
             os.makedirs(libs_dir)
+
         devs_dir = os.path.join(dest_dir, "Devs")
         if not os.path.exists(devs_dir):
             os.makedirs(devs_dir)
@@ -516,18 +528,30 @@ class LaunchHandler(object):
             self.hd_requirements.add("setpatch")
             self.copy_setpatch(dest_dir)
 
+        amiga_model = self.config.get("amiga_model", "A500").upper()
+        if amiga_model in ["A500+", "A600"]:
+            workbench_version = "2.04"
+        elif amiga_model.startswith("A1200"):
+            workbench_version = "3.0"
+        elif amiga_model.startswith("A4200"):
+            workbench_version = "3.0"
+        else:
+            workbench_version = None
+
         if "workbench" in self.hd_requirements:
-            amiga_model = self.config.get("amiga_model", "A500").upper()
-            if amiga_model in ["A500+", "A600"]:
-                workbench_version = "2.04"
-            elif amiga_model in ["A1200", "A1200/020", "A4000/040"]:
-                workbench_version = "3.0"
-            else:
-                raise Exception("Unsupported workbench version for "
-                                "hd_requirements")
+            if not workbench_version:
+                raise Exception(
+                    "Unsupported workbench version for hd_requirements")
             extractor = WorkbenchExtractor(self.fsgs)
             extractor.install_version(workbench_version, dest_dir)
             # install_workbench_files(self.fsgs, dest_dir, workbench_version)
+
+        for req in self.hd_requirements:
+            if "/" in req:
+                # assume a specific workbench file
+                extractor = WorkbenchExtractor(self.fsgs)
+                extractor.install_version(
+                    workbench_version, dest_dir, [req], startup_sequence=False)
 
         if whdload_args:
             self.copy_whdload_files(dest_dir, s_dir)
@@ -650,6 +674,7 @@ class LaunchHandler(object):
         # FIXME: semi-colon is used in WHDLoad CONFIG options...
         command = "\n".join([x.strip() for x in command.split(";")])
         startup_sequence = os.path.join(s_dir, "Startup-Sequence")
+        # if True:
         if not os.path.exists(startup_sequence):
             with open(startup_sequence, "wb") as f:
                 if "setpatch" in self.hd_requirements:

@@ -33,6 +33,7 @@ class Settings(object):
         "device_id": "",
         "fsaa": "",
         "floppy_drive_volume": "",
+        "floppy_drive_volume_empty": "",
         "fullscreen": "",
         "game_uuid": "",
         "game_list_uuid": "",

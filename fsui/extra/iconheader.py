@@ -4,14 +4,19 @@ from ..common.group import Group
 
 class IconHeader(Group):
 
-    def __init__(self, parent, icon, title, subtitle=""):
+    ICON_LEFT=0
+    ICON_RIGHT=1
+
+    def __init__(self, parent, icon, title, subtitle="",
+                 icon_position=ICON_LEFT):
         Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
 
         image = icon.image(48)
         self.image_view = fsui.ImageView(self, image)
-        self.layout.add(self.image_view)
-        self.layout.add_spacer(20)
+        if icon_position == self.ICON_LEFT:
+            self.layout.add(self.image_view)
+            self.layout.add_spacer(20)
         vert_layout = fsui.VerticalLayout()
         self.layout.add(
             vert_layout, expand=True, fill=False, valign=0.5)
@@ -20,3 +25,6 @@ class IconHeader(Group):
         vert_layout.add_spacer(2)
         self.subtitle_label = fsui.Label(self, subtitle)
         vert_layout.add(self.subtitle_label, fill=True)
+        if icon_position == self.ICON_RIGHT:
+            self.layout.add_spacer(20)
+            self.layout.add(self.image_view)

@@ -1173,11 +1173,15 @@ def _uae_cpu_24bit_addressing(c, f):
         c.uae_cpu_24bit_addressing = "false"
     elif c.cpu == "68LC040":
         c.uae_cpu_24bit_addressing = "false"
+    elif c.cpu == "68040-NOMMU":
+        c.uae_cpu_24bit_addressing = "false"
     elif c.cpu == "68040":
         c.uae_cpu_24bit_addressing = "false"
     elif c.cpu == "68EC060":
         c.uae_cpu_24bit_addressing = "false"
     elif c.cpu == "68LC060":
+        c.uae_cpu_24bit_addressing = "false"
+    elif c.cpu == "68060-NOMMU":
         c.uae_cpu_24bit_addressing = "false"
     elif c.cpu == "68060":
         c.uae_cpu_24bit_addressing = "false"

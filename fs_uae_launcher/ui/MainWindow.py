@@ -380,21 +380,33 @@ class MainWindow(WindowWithTabs):
             self.new_tab_group()
 
             self.add_tab_spacer(10)
-            self.add_page(column, MainPanel, "tab_main", gettext("Config"),
-                          gettext("Main Configuration Options"))
-            self.add_page(column, InputPanel, "tab_input", gettext("Input"),
-                          gettext("Input Options"))
-            self.add_page(column, FloppiesPanel, "tab_floppies",
-                          gettext("Floppies"), gettext("Floppy Drives"))
-            self.add_page(column, CDPanel, "tab_cdroms", gettext("CD-ROMs"),
-                          gettext("CD-ROM Drives"))
-            self.add_page(column, HardDrivesPanel, "tab_hard_drives",
-                          gettext("Hard Drives"))
+            self.add_page(
+                column, MainPanel,
+                "crystal/32x32/apps/starthere",
+                gettext("Config"), gettext("Main Configuration Options"))
+            self.add_page(
+                column, InputPanel,
+                "tab_input_2",
+                gettext("Input"), gettext("Input Options"))
+            self.add_page(
+                column, FloppiesPanel,
+                "crystal/32x32/devices/3floppy_unmount_fs",
+                gettext("Floppies"), gettext("Floppy Drives"))
+            self.add_page(
+                column, CDPanel,
+                "crystal/32x32/devices/cdrom_unmount_fs",
+                gettext("CD-ROMs"), gettext("CD-ROM Drives"))
+            self.add_page(
+                column, HardDrivesPanel,
+                "crystal/32x32/apps/harddrive2",
+                gettext("Hard Drives"))
             self.add_scroll_page(
-                column, ExpansionsPanel, "tab_hardware",
+                column, ExpansionsPanel,
+                "crystal/32x32/apps/hardware_fs",
                 gettext("Expansions"), gettext("Expansions"))
             self.add_scroll_page(
-                column, RomRamPanel, "tab_hardware",
+                column, RomRamPanel,
+                "crystal/32x32/apps/kcmmemory",
                 gettext("Hardware"), gettext("ROM and RAM"))
 
             # self.add_tab_spacer(10)
@@ -422,8 +434,10 @@ class MainWindow(WindowWithTabs):
 
             if Settings.get(Option.NETPLAY_FEATURE) == "1":
                 # page_index += 1
-                self.add_page(column, NetplayPanel, "tab_netplay",
-                              gettext("Net Play"))
+                self.add_page(
+                    column, NetplayPanel,
+                    "crystal/32x32/apps/browser_fs",
+                    gettext("Net Play"))
             self.add_tab_spacer(10)
 
         # column - 1 is the group id of the tab group

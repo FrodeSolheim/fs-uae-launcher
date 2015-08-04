@@ -52,9 +52,12 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 use_fusion_theme = True
             if Settings.get("launcher_theme") == "fusion":
                 use_fusion_theme = True
-            if Settings.get("launcher_theme") == "fusion-adwaita":
+            elif Settings.get("launcher_theme") == "fusion-adwaita":
                 use_fusion_theme = True
                 fusion_variant = "adwaita"
+            elif Settings.get("launcher_theme") == "fusion-dark":
+                use_fusion_theme = True
+                fusion_variant = "dark"
             if "--launcher-theme=fusion-dark" in sys.argv:
                 use_fusion_theme = True
                 fusion_variant = "dark"

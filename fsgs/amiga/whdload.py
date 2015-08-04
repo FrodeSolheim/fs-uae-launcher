@@ -1,4 +1,4 @@
-DEFAULT_WHDLOAD_VERSION = "18.0"
+DEFAULT_WHDLOAD_VERSION = "18.1"
 
 whdload_support_files = {
     "1ad1b55e7226bd5cd66def8370a69f19244da796":
@@ -64,6 +64,9 @@ whdload_files = {
     },
     "18.0": {
         "6f778e28673e9f931f81212ab03d9617a41cee40": "C/WHDLoad",
+    },
+    "18.1": {
+        "fb4c64b0b5e682125e53eb2ace9bf0ccd3b8501f": "C/WHDLoad",
     },
 }
 

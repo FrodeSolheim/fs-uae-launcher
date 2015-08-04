@@ -25,6 +25,7 @@ class ExpansionsPanel(ConfigPanel):
         self.add_option(Option.GRAPHICS_CARD)
         self.add_option(Option.GRAPHICS_MEMORY)
 
+        self.add_option(Option.SOUND_CARD)
         self.add_option(Option.BSDSOCKET_LIBRARY)
 
         self.layout.add_spacer(10)

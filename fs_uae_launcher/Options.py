@@ -32,6 +32,7 @@ class Option(object):
     DATABASE_USERNAME = "database_username"
     DEVICE_ID = "device_id"
     FLOPPY_DRIVE_VOLUME = "floppy_drive_volume"
+    FLOPPY_DRIVE_VOLUME_EMPTY = "floppy_drive_volume_empty"
     FSAA = "fsaa"
     FULLSCREEN = "fullscreen"
     GRAPHICS_CARD = "graphics_card"
@@ -41,8 +42,10 @@ class Option(object):
     IRC_SERVER = "irc_server"
     KEEP_ASPECT = "keep_aspect"
     KEYBOARD_INPUT_GRAB = "keyboard_input_grab"
+    KEYBOARD_KEY_BACKSLASH = "keyboard_key_backslash"
     KEYBOARD_KEY_EQUALS = "keyboard_key_equals"
     KEYBOARD_KEY_INSERT = "keyboard_key_insert"
+    KEYBOARD_KEY_LESS = "keyboard_key_less"
     KICKSTART_SETUP = "kickstart_setup"
     LAUNCHER_THEME = "launcher_theme"
     LOAD_STATE = "load_state"
@@ -62,6 +65,7 @@ class Option(object):
     SWAP_CTRL_KEYS = "swap_ctrl_keys"
     TEXTURE_FILTER = "texture_filter"
     TEXTURE_FORMAT = "texture_format"
+    UAE_A2065 = "uae_a2065"
     UAE_A3000MEM_SIZE = "uae_a3000mem_size"
     UAE_CHIPSET_COMPATIBLE = "uae_chipset_compatible"
     UAE_CPU_FREQUENCY = "uae_cpu_frequency"
@@ -75,7 +79,10 @@ class Option(object):
     UAE_GFX_LINEMODE = "uae_gfx_linemode"
     UAE_MBRESMEM_SIZE = "uae_mbresmem_size"
     UAE_RTC = "uae_rtc"
+    UAE_SANA2 = "uae_sana2"
+    UAE_SLIRP_IMPLEMENTATION = "uae_slirp_implementation"
     UAE_SOUND_OUTPUT = "uae_sound_output"
+    UAE_TOCCATA = "uae_toccata"
     UAE_Z3CHIPMEM_SIZE = "uae_z3chipmem_size"
     UAE_Z3MAPPING = "uae_z3mapping"
     UAE_Z3MEM2_SIZE = "uae_z3mem2_size"
@@ -288,25 +295,25 @@ options = {
 
     "database_server": {
         "default": "oagd.net",
-        "description": N_("Custom game database server address"),
+        "description": N_("Game Database Server"),
         "type": "string",
     },
 
     "database_show_adult": {
         "default": "0",
-        "description": N_("Include adult-themed games"),
+        "description": N_("Adult-Themed Games"),
         "type": "boolean",
     },
 
     "database_show_games": {
         "default": "1",
-        "description": N_("Show games from database"),
+        "description": N_("Database Games"),
         "type": "choice",
         "values": [
-            ("0", N_("All games in the database")),
-            ("1", N_("Games you have and all downloadable games")),
-            ("2", N_("Games you have and automatically downloadable")),
-            ("3", N_("Only games you have")),
+            ("0", N_("All Games")),
+            ("1", N_("Available and Downloadable Games")),
+            ("2", N_("Available and Auto-Downloadable Games")),
+            ("3", N_("Available Games")),
         ]
     },
 
@@ -330,7 +337,15 @@ options = {
 
     "floppy_drive_volume": {
         "default": "67",
-        "description": N_("Floppy drive volume"),
+        "description": N_("Floppy Drive Volume"),
+        "type": "integer",
+        "min": 0,
+        "max": 100,
+    },
+
+    "floppy_drive_volume_empty": {
+        "default": "67",
+        "description": N_("Empty Floppy Drive Volume"),
         "type": "integer",
         "min": 0,
         "max": 100,
@@ -418,16 +433,52 @@ options = {
         "type": "boolean",
     },
 
+    "keyboard_key_backslash": {
+        "default": "action_key_backslash",
+        "description": N_("Host Key BACKSLASH"),
+        "type": "Choice",
+        "values": [
+            ("action_key_2b", "Amiga Key 0x2B"),
+            ("action_key_30", "Amiga Key 0x30"),
+            ("action_key_backslash", "Amiga Key Backslash"),
+            ("action_key_equals", "Amiga Key Equals"),
+        ]
+    },
+
     "keyboard_key_equals": {
         "default": "action_key_equals",
-        "description": N_("keyboard_key_equals"),
-        "type": "",
+        "description": N_("Host Key EQUALS"),
+        "type": "Choice",
+        "values": [
+            ("action_key_2b", "Amiga Key 0x2B"),
+            ("action_key_30", "Amiga Key 0x30"),
+            ("action_key_backslash", "Amiga Key Backslash"),
+            ("action_key_equals", "Amiga Key Equals"),
+        ]
     },
 
     "keyboard_key_insert": {
-        "default": "action_key_backslash",
-        "description": N_("keyboard_key_insert"),
-        "type": "",
+        "default": "action_key_2b",
+        "description": N_("Host Key INSERT"),
+        "type": "Choice",
+        "values": [
+            ("action_key_2b", "Amiga Key 0x2B"),
+            ("action_key_30", "Amiga Key 0x30"),
+            ("action_key_backslash", "Amiga Key Backslash"),
+            ("action_key_equals", "Amiga Key Equals"),
+        ]
+    },
+
+    "keyboard_key_less": {
+        "default": "action_key_30",
+        "description": N_("Host Key LESS"),
+        "type": "Choice",
+        "values": [
+            ("action_key_2b", "Amiga Key 0x2B"),
+            ("action_key_30", "Amiga Key 0x30"),
+            ("action_key_backslash", "Amiga Key Backslash"),
+            ("action_key_equals", "Amiga Key Equals"),
+        ]
     },
 
     "kickstart_setup": {
@@ -442,10 +493,10 @@ options = {
         "description": N_("Theme for FS-UAE Launcher"),
         "type": "choice",
         "values": [
-            ("native", "native"),
-            ("fusion", "fusion"),
-            ("fusion-adwaita", "fusion-adwaita"),
-            ("fusion-dark", "fusion-dark"),
+            ("native", N_("Native")),
+            ("fusion", "Fusion"),
+            ("fusion-adwaita", "Fusion Adwaita"),
+            ("fusion-dark", "Fusion Dark"),
         ]
     },
 
@@ -534,8 +585,8 @@ options = {
 
     "sound_card": {
         "default": "0",
-        "description": N_("Sound card"),
-        "type": "choice",
+        "description": N_("Sound Card"),
+        "type": "Choice",
         "values": [
             ("0", N_("None")),
             ("toccata", "Toccata"),
@@ -588,6 +639,15 @@ options = {
             ("rgba8", "GL_RGBA8"),
             ("rgb5", "GL_RGB5"),
             ("rgb5_1", "GL_RGB5_1"),
+        ]
+    },
+
+    "uae_a2065": {
+        "default": "",
+        "description": N_("uae_a2065"),
+        "type": "",
+        "values": [
+            ("slirp", "slirp"),
         ]
     },
 
@@ -726,9 +786,34 @@ options = {
     },
 
     "uae_rtc": {
-        "default": "`auto`",
+        "default": "auto",
         "description": N_("Enable a real time clock (RTC) module."),
-        "type": "`choice`",
+        "type": "Choice",
+        "values": [
+            ("auto", N_("Auto")),
+            ("none", N_("None")),
+            ("MSM6242B", "Oki MSM6242B)- RTC module in A500/500+/600/1200/2000 models"),
+            ("RP5C01A", "Ricoh RP5C01A"),
+            ("MSM6242B_A2000", "A2000 MSM6242B"),
+        ]
+    },
+
+    "uae_sana2": {
+        "default": "false",
+        "description": N_("uae_sana2"),
+        "type": "BooleanUAE,",
+    },
+
+    "uae_slirp_implementation": {
+        "default": "auto",
+        "description": N_("Slirp Implementation"),
+        "type": "Choice",
+        "values": [
+            ("auto", "auto"),
+            ("none", "none"),
+            ("builtin", "builtin"),
+            ("qemu", "qemu"),
+        ]
     },
 
     "uae_sound_output": {
@@ -740,6 +825,12 @@ options = {
             ("interrupts", "Emulated, No Output"),
             ("exact", "Enabled"),
         ]
+    },
+
+    "uae_toccata": {
+        "default": "",
+        "description": N_("Toccata Z2 sound card emulation"),
+        "type": "uaeyesno",
     },
 
     "uae_z3chipmem_size": {

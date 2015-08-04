@@ -15,7 +15,8 @@ class WorkbenchExtractor(object):
         self.cached_adf = None
         self.cached_adf_sha1 = None
 
-    def install_version(self, version, dest_dir):
+    def install_version(self, version, dest_dir, file_names=None,
+                        startup_sequence=True):
         if version == "2.04":
             startup_sequence = wb_204_startup_sequence
             files = wb_204_files
@@ -28,6 +29,8 @@ class WorkbenchExtractor(object):
             raise Exception("Unsupported WB version")
 
         for name, sha1 in files.items():
+            if file_names is not None and name not in file_names:
+                continue
             name = name.rstrip("/")
             dest_path = os.path.join(dest_dir, name)
             if not sha1:
@@ -35,8 +38,12 @@ class WorkbenchExtractor(object):
                     os.makedirs(dest_path)
                 continue
             self.copy_workbench_file(name, sha1, dest_path, floppies)
-        with open(os.path.join(dest_dir, "S", "Startup-Sequence"), "wb") as f:
-            f.write(startup_sequence.replace("\r\n", "\n").encode("ISO-8859-1"))
+
+        if startup_sequence:
+            with open(os.path.join(dest_dir, "S", "Startup-Sequence"),
+                      "wb") as f:
+                f.write(startup_sequence.replace("\r\n", "\n").encode(
+                    "ISO-8859-1"))
 
     def copy_workbench_file(self, name, sha1, dest_path, floppies):
         print("copying workbench file", name)

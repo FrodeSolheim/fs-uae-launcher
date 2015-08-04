@@ -29,6 +29,12 @@ class LoginWindow(fsui.Dialog):
             self, gettext("Logging in will enable the online game database "
                           "and more")))
 
+        self.username_field = fsui.TextField(
+            self, app.settings["database_email"])
+        self.password_field = fsui.PasswordField(self)
+        if self.username_field.get_text():
+            self.password_field.focus()
+
         self.layout.add_spacer(20)
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
@@ -36,8 +42,6 @@ class LoginWindow(fsui.Dialog):
         label.set_min_width(100)
         hori_layout.add(label)
         hori_layout.add_spacer(20)
-        self.username_field = fsui.TextField(
-            self, app.settings["database_email"])
         # self.username_field.select_all()
         self.username_field.changed.connect(self.on_text_field_changed)
         self.username_field.activated.connect(self.on_username_activated)
@@ -50,9 +54,6 @@ class LoginWindow(fsui.Dialog):
         label.set_min_width(100)
         hori_layout.add(label)
         hori_layout.add_spacer(20)
-        self.password_field = fsui.PasswordField(self)
-        if self.username_field.get_text():
-            self.password_field.focus()
         self.password_field.changed.connect(self.on_text_field_changed)
         self.password_field.activated.connect(self.on_password_activated)
         hori_layout.add(self.password_field, expand=True)
@@ -129,7 +130,13 @@ class LoginWindow(fsui.Dialog):
         task.start()
 
     def on_success(self):
-        shell_open("Workspace:Tools/Refresh", center=self.get_window_center())
+        center = self.get_window_center()
+
+        def start_refresh_task():
+            shell_open("Workspace:Tools/Refresh", center=center)
+
+        fsui.call_after(start_refresh_task)
+        # shell_open("Workspace:Tools/Refresh", center=self.get_window_center())
         self.close()
 
     def on_failure(self, message):

@@ -28,4 +28,4 @@ class GameDatabaseSettingsPage(fsui.Panel):
         # add_option("database_password")
         add_option("database_show_games")
         add_option("database_show_adult")
-        add_option("database_server")
+        # add_option("database_server")
