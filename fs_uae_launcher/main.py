@@ -27,7 +27,7 @@ else:
     app = "fs-uae-launcher"
 
 def main():
-    version = "2.5.34dev"
+    version = "2.5.34dev2"
     series = "devel"
 
     # if "--fs-uae-workspace=real" in sys.argv:
