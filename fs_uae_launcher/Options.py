@@ -12,6 +12,7 @@ class Option(object):
     BLIZZARD_SCSI_KIT = "blizzard_scsi_kit"
     BSDSOCKET_LIBRARY = "bsdsocket_library"
     BUILTIN_CONFIGS = "builtin_configs"
+    CDROM_DRIVE_COUNT = "cdrom_drive_count"
     CHIP_MEMORY = "chip_memory"
     CONFIG_FEATURE = "config_feature"
     CPU = "cpu"
@@ -31,6 +32,9 @@ class Option(object):
     DATABASE_SNES = "database_snes"
     DATABASE_USERNAME = "database_username"
     DEVICE_ID = "device_id"
+    DONGLE_TYPE = "dongle_type"
+    FLOPPY_DRIVE_COUNT = "floppy_drive_count"
+    FLOPPY_DRIVE_SPEED = "floppy_drive_speed"
     FLOPPY_DRIVE_VOLUME = "floppy_drive_volume"
     FLOPPY_DRIVE_VOLUME_EMPTY = "floppy_drive_volume_empty"
     FSAA = "fsaa"
@@ -171,8 +175,7 @@ options = {
 
     "automatic_input_grab": {
         "default": "1",
-        "description": N_(
-            "Grab mouse and keyboard input when clicking on FS-UAE window"),
+        "description": N_("Grab Input on Click"),
         "type": "boolean",
     },
 
@@ -192,6 +195,16 @@ options = {
         "default": "1",
         "description": N_("Include built-in configurations"),
         "type": "boolean",
+    },
+
+    "cdrom_drive_count": {
+        "default": "",
+        "description": N_("CD-ROM Drive Count"),
+        "type": "Choice",
+        "values": [
+            ("0", "0"),
+            ("1", "1"),
+        ]
     },
 
     "chip_memory": {
@@ -335,6 +348,48 @@ options = {
         "type": "string",
     },
 
+    "dongle_type": {
+        "default": "",
+        "description": N_("Dongle"),
+        "type": "Choice",
+        "values": [
+            ("robocop 3", "robocop 3"),
+            ("leaderboard", "leaderboard"),
+            ("b.a.t. ii", "b.a.t. ii"),
+            ("italy'90 soccer", "italy'90 soccer"),
+            ("dames grand maitre", "dames grand maitre"),
+            ("rugby coach", "rugby coach"),
+            ("cricket captain", "cricket captain"),
+            ("leviathan", "leviathan"),
+        ]
+    },
+
+    "floppy_drive_count": {
+        "default": "",
+        "description": N_("Floppy Drive Count"),
+        "type": "Choice",
+        "values": [
+            ("0", "0"),
+            ("1", "1"),
+            ("2", "2"),
+            ("3", "3"),
+            ("4", "4"),
+        ]
+    },
+
+    "floppy_drive_speed": {
+        "default": "100",
+        "description": N_("Floppy Drive Speed"),
+        "type": "Choice",
+        "values": [
+            ("0", N_("Turbo")),
+            ("100", "100%"),
+            ("200", "200 %"),
+            ("400", "400 %"),
+            ("800", "800 %"),
+        ]
+    },
+
     "floppy_drive_volume": {
         "default": "67",
         "description": N_("Floppy Drive Volume"),
@@ -405,7 +460,7 @@ options = {
 
     "initial_input_grab": {
         "default": "",
-        "description": N_("Grab mouse and keyboard input when FS-UAE starts"),
+        "description": N_("Grab Input on FS-UAE Startup"),
         "type": "boolean",
     },
 
@@ -489,12 +544,13 @@ options = {
     },
 
     "launcher_theme": {
-        "default": "native",
+        "default": "fusion",
         "description": N_("Theme for FS-UAE Launcher"),
-        "type": "choice",
+        "type": "Choice",
         "values": [
             ("native", N_("Native")),
-            ("fusion", "Fusion"),
+            ("fusion", "Fusion Auto"),
+            ("fusion-plain", "Fusion Plain"),
             ("fusion-adwaita", "Fusion Adwaita"),
             ("fusion-dark", "Fusion Dark"),
         ]
@@ -522,7 +578,7 @@ options = {
 
     "middle_click_ungrab": {
         "default": "1",
-        "description": N_("Ungrab mouse and keyboard on middle mouse click"),
+        "description": N_("Ungrab Input on Middle Mouse Button"),
         "type": "boolean",
     },
 
@@ -552,7 +608,7 @@ options = {
 
     "mouse_speed": {
         "default": "100",
-        "description": N_("Mouse speed (%)"),
+        "description": N_("Mouse Speed (%)"),
         "type": "integer",
         "min": 1,
         "max": 500,
@@ -595,7 +651,7 @@ options = {
 
     "stereo_separation": {
         "default": "100",
-        "description": N_("Stereo separation"),
+        "description": N_("Stereo Separation"),
         "type": "choice",
         "values": [
             ("100", "100%"),
@@ -908,7 +964,7 @@ options = {
 
     "volume": {
         "default": "100",
-        "description": N_("Main volume control"),
+        "description": N_("Main Volume"),
         "type": "integer",
         "min": 0,
         "max": 100,

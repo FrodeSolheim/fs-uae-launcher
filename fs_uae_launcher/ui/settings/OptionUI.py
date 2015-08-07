@@ -3,6 +3,7 @@ from ...I18N import gettext
 from ...Settings import Settings
 from ...Options import Options
 from ..HelpButton import HelpButton
+from .overridewarning import OverrideWarning
 
 
 class OptionUI(object):
@@ -13,14 +14,15 @@ class OptionUI(object):
         group.layout = fsui.HorizontalLayout()
         option = Options.get(name)
         group.label = fsui.Label(group, gettext(option["description"]) + ":")
-        group.layout.add(group.label, margin_right=20)
+        group.layout.add(group.label, margin_right=10)
+        group.layout.add(OverrideWarning(group, name), margin_right=10)
         choice_values = []
 
         if option["type"].lower() == "boolean":
             if option["default"] == "1":
-                default_desc = gettext("Default ({0})").format(gettext("On"))
+                default_desc = gettext("Default - {0}").format(gettext("On"))
             elif option["default"] == "0":
-                default_desc = gettext("Default ({0})").format(gettext("Off"))
+                default_desc = gettext("Default - {0}").format(gettext("Off"))
             else:
                 default_desc = gettext("Default")
             choice_values.append(("", default_desc))
@@ -30,7 +32,7 @@ class OptionUI(object):
         elif option["type"].lower() == "choice":
             for i, value in enumerate(option["values"]):
                 if option["default"] == value[0]:
-                    default_desc = gettext("Default ({0})").format(
+                    default_desc = gettext("Default - {0}").format(
                         gettext(value[1]))
                     break
             else:

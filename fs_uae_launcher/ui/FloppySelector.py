@@ -1,4 +1,5 @@
 import os
+from fs_uae_launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
 from fsgs.context import fsgs
 import fsui as fsui
 from ..Config import Config
@@ -19,14 +20,17 @@ class FloppySelector(fsui.Group):
         self.config_key_sha1 = ""
 
         self.eject_button = IconButton(self, "eject_button.png")
+        AmigaEnableBehavior(self.eject_button)
         self.eject_button.set_tooltip(gettext("Eject"))
         self.eject_button.activated.connect(self.on_eject)
 
         self.text_field = fsui.TextField(self, "", read_only=True)
+        AmigaEnableBehavior(self.text_field)
 
         self.browse_button = IconButton(self, "browse_file_16.png")
         self.browse_button.set_tooltip(gettext("Browse for File"))
         self.browse_button.activated.connect(self.on_browse)
+        AmigaEnableBehavior(self.browse_button)
 
         self.layout = fsui.HorizontalLayout()
         self.layout.add(self.eject_button)

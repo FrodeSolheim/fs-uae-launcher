@@ -69,6 +69,12 @@ def show_error(message, title=None, parent=None):
     QMessageBox.critical(parent, title, message)
 
 
+def show_warning(message, title=None, parent=None):
+    if not title:
+        title = gettext("Warning")
+    QMessageBox.warning(parent, title, message)
+
+
 def error_function(title):
     def error_function_2(message):
         show_error(message, title)

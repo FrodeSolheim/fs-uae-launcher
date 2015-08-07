@@ -17,7 +17,7 @@ class ExpansionsPanel(ConfigPanel):
         self.layout.add(heading_label, margin=10)
         self.layout.add_spacer(0)
 
-        self.add_option(Option.CPU)
+        # self.add_option(Option.CPU)
         self.add_option(Option.ACCELERATOR)
         self.add_option(Option.ACCELERATOR_MEMORY)
         self.add_option(Option.BLIZZARD_SCSI_KIT)
@@ -27,10 +27,3 @@ class ExpansionsPanel(ConfigPanel):
 
         self.add_option(Option.SOUND_CARD)
         self.add_option(Option.BSDSOCKET_LIBRARY)
-
-        self.layout.add_spacer(10)
-        heading_label = fsui.HeadingLabel(self, gettext("Deprecated Options"))
-        self.layout.add(heading_label, margin=10)
-        self.layout.add_spacer(0)
-
-        self.add_option(Option.UAEGFX_CARD)

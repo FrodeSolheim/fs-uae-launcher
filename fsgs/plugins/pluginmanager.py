@@ -36,7 +36,7 @@ class Plugin:
                 os_name = "linux"
         else:
             raise Exception("unknown plugin os")
-        if platform.machine() in ["x86_64", "i386"]:
+        if platform.machine().lower() in ["x86_64", "x86-64", "amd64", "i386", "i486", "i586", "i686"]:
             if platform.architecture()[0] == "64bit":
                 arch = "x86-64"
             else:

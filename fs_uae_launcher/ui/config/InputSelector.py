@@ -1,3 +1,4 @@
+from fs_uae_launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
 import fsui as fsui
 from ...Config import Config
 from ...DeviceManager import DeviceManager
@@ -26,6 +27,7 @@ class InputSelector(fsui.Group):
                                      gettext("CD32 Pad")]
 
         self.mode_choice = fsui.Choice(self, self.joystick_mode_titles)
+        AmigaEnableBehavior(self.mode_choice)
         self.layout.add(self.mode_choice)
         self.layout.add_spacer(10)
         # else:
@@ -42,6 +44,7 @@ class InputSelector(fsui.Group):
         # self.joystick_values_initialized = True
 
         self.device_choice = fsui.ComboBox(self, [""], read_only=True)
+        AmigaEnableBehavior(self.device_choice)
         self.joystick_values = []
         self.rebuild_device_list()
         self.device_choice.set_index(0)

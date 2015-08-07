@@ -8,6 +8,9 @@ class Settings(object):
 
     base_dir = ""
 
+    # The main use of default_settings is actually to hide the corresponding
+    # options from advanced settings (because there is UI for them, or
+    # because the settings are internal)
     default_settings = {
         "__netplay_ready": "",
         "automatic_input_grab": "",
@@ -17,6 +20,7 @@ class Settings(object):
         "config_base": "",
         "config_changed": "0",
         "config_name": "Unnamed Configuration",
+        "config_feature": "",
         "config_path": "",
         "config_refresh": "",
         "config_search": "",
@@ -50,19 +54,21 @@ class Settings(object):
         "last_rom_dir": "",
         "last_scan": "",
         "last_settings_page": "",
+        "launcher_theme": "",
         "low_latency_vsync": "",
         "maximized": "0",
         "middle_click_ungrab": "",
+        "monitor": "",
         "mouse_speed": "",
         "netplay_feature": "",
         "netplay_tag": "",
         "parent_uuid": "",
         "primary_joystick": "",
-        "rtg_scanlines": "",
+        # "rtg_scanlines": "",
         "scan_configs": "1",
         "scan_files": "1",
         "scan_roms": "1",
-        "scanlines": "",
+        # "scanlines": "",
         "search_path": "",
         "secondary_joystick": "",
         "stereo_separation": "",

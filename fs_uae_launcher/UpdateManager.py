@@ -2,9 +2,11 @@ from urllib.request import urlopen
 import traceback
 import threading
 from .Signal import Signal
+from .Settings import Settings
 from fsbc.Application import Application
 from fsbc.system import windows, macosx, linux
 from fsbc.util import compare_versions
+from fstd.desktop import open_url_in_browser
 
 
 class UpdateManager:
@@ -44,3 +46,10 @@ class UpdateManager:
             web_url = "http://fs-uae.net/{0}/download/".format(
                 series)
             Signal.broadcast("update_available", version_str, web_url)
+            Settings.set("__update_available", version_str)
+
+    @classmethod
+    def start_update(cls, version_str):
+        series = Application.instance().series
+        web_url = "http://fs-uae.net/{0}/download/".format(series)
+        open_url_in_browser(web_url)

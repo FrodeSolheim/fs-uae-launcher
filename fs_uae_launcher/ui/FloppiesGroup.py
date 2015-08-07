@@ -1,3 +1,4 @@
+from fs_uae_launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
 import fsui as fsui
 from ..CDManager import CDManager
 from ..FloppyManager import FloppyManager
@@ -32,6 +33,7 @@ class FloppiesGroup(fsui.Group):
         else:
             self.multi_select_button.set_tooltip(
                 gettext("Add Multiple Floppies at Once"))
+        AmigaEnableBehavior(self.multi_select_button)
         self.multi_select_button.activated.connect(self.on_multi_select_button)
 
         hori_layout.add(self.multi_select_button, margin_right=10)

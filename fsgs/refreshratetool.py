@@ -143,19 +143,24 @@ class RefreshRateTool(object):
         # # FIXME:
         # return 50.0
         # return None
-        return self.get_current_mode()['refresh']
+        return self.get_current_mode()["refresh"]
 
     def get_current_mode(self):
+        refresh = 0
+        width = 640
+        height = 480
+        bpp = 0
+        flags = 0
+
         if windows:
-            settings = win32api.EnumDisplaySettings(
-                None, win32con.ENUM_CURRENT_SETTINGS)
-            refresh = float(settings.DisplayFrequency)
-            width = int(settings.PelsWidth)
-            height = int(settings.PelsHeight)
-            bpp = int(settings.BitsPerPel)
-            flags = int(settings.DisplayFlags)
-            return {'width': width, 'height': height, 'refresh': refresh,
-                    'bpp': bpp, 'flags': flags}
+            if win32api:
+                settings = win32api.EnumDisplaySettings(
+                    None, win32con.ENUM_CURRENT_SETTINGS)
+                refresh = float(settings.DisplayFrequency)
+                width = int(settings.PelsWidth)
+                height = int(settings.PelsHeight)
+                bpp = int(settings.BitsPerPel)
+                flags = int(settings.DisplayFlags)
         elif macosx:
             main_display = Quartz.CGMainDisplayID()
             current_display = Quartz.CGDisplayPrimaryDisplay(
@@ -164,23 +169,21 @@ class RefreshRateTool(object):
             width = Quartz.CGDisplayModeGetWidth(current_mode)
             height = Quartz.CGDisplayModeGetHeight(current_mode)
             refresh = Quartz.CGDisplayModeGetRefreshRate(current_mode)
-
             if not refresh:
                 print("WARNING: returned refresh rate was 0. assuming 60 Hz")
                 refresh = 60
-
             # A bit weird that it crashes, since this is supposed to be a
             # copy of the mode...?
             print("FIXME: Not calling Quartz.CGDisplayModeRelease("
                   "current_mode), seems to crash pygame on exit...")
             # Quartz.CGDisplayModeRelease(current_mode)
-
             flags = 0
             bpp = None
-            return {'width': width, 'height': height, 'refresh': refresh,
-                    'bpp': bpp, 'flags': flags}
         else:
             return self._get_current_mode_x()
+
+        return {"width": width, "height": height, "refresh": refresh,
+                "bpp": bpp, "flags": flags}
 
     def get_all_modes(self):
         modes = []
@@ -246,6 +249,9 @@ class RefreshRateTool(object):
 
     def _set_mode_windows(self, mode):
         print("REFRESH RATE TOOL: setting mode", mode)
+        if not win32api:
+            print("win32api not available, returning")
+            return False
         k = 0
         while True:
             try:

@@ -1,3 +1,14 @@
+Version 2.5.35dev:
+
+* Nicer behavior when kickstart ROM for chosen model is missing.
+* Use Fusion QT style on all platforms by default.
+* Default to Fusion Adwaita style variant when running under GNOME 3.
+* Show warning icon in settings if option is overriden by configuration.
+* Fixed OAGD.net locker uploader.
+* New additional configuration page.
+* Moved custom configuration (button) to additional config page.
+* Removed some "noise" from custom configuration and advanced settings.
+
 Version 2.5.34dev:
 
 * Changed tab panel appearance on OS X to match other platforms.

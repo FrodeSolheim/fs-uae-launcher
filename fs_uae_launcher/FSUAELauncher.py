@@ -15,6 +15,7 @@ from fsbc.util import unused, is_uuid
 from fsgs.application import ApplicationMixin
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.platform import PlatformHandler
+import fstd.desktop
 import fsbc.fs as fs
 import fsui as fsui
 from fsgs.context import fsgs
@@ -39,79 +40,8 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
     def __init__(self):
         fsui.Application.__init__(self, "fs-uae-launcher")
         self.set_icon(fsui.Icon("fs-uae-launcher", "pkg:fs_uae_launcher"))
-
         if fsui.use_qt:
-            from fsui.qt import QStyleFactory, QPalette, QColor, Qt
-            use_dark_theme = False
-            use_fusion_theme = False
-            fusion_variant = ""
-
-            if macosx in sys.argv:
-                use_fusion_theme = True
-            if "--launcher-theme=fusion" in sys.argv:
-                use_fusion_theme = True
-            if Settings.get("launcher_theme") == "fusion":
-                use_fusion_theme = True
-            elif Settings.get("launcher_theme") == "fusion-adwaita":
-                use_fusion_theme = True
-                fusion_variant = "adwaita"
-            elif Settings.get("launcher_theme") == "fusion-dark":
-                use_fusion_theme = True
-                fusion_variant = "dark"
-            if "--launcher-theme=fusion-dark" in sys.argv:
-                use_fusion_theme = True
-                fusion_variant = "dark"
-            # FIXME: document
-            # if "--dark-theme" in sys.argv:
-            #    use_dark_theme = True
-
-            if use_fusion_theme:
-                # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
-                self.qapplication.setStyle(QStyleFactory.create("Fusion"))
-                if fusion_variant == "adwaita":
-                    pa = QPalette()
-                    pa.setColor(QPalette.Window, QColor(237, 237, 237))
-                    # pa.setColor(QPalette.WindowText, Qt.white)
-                    # pa.setColor(QPalette.Base, QColor(25, 25, 25))
-                    pa.setColor(QPalette.AlternateBase, QColor(237, 237, 237))
-                    # pa.setColor(QPalette.ToolTipBase, Qt.white)
-                    # pa.setColor(QPalette.ToolTipText, Qt.white)
-                    # pa.setColor(QPalette.Text, Qt.white)
-                    pa.setColor(QPalette.Button, QColor(237, 237, 237))
-                    # pa.setColor(QPalette.ButtonText, Qt.white)
-                    # pa.setColor(QPalette.BrightText, Qt.red)
-                    # pa.setColor(QPalette.Link, QColor(42, 130, 218))
-                    # pa.setColor(QPalette.Highlight, QColor(42, 130, 218))
-                    # pa.setColor(QPalette.HighlightedText, Qt.black)
-                    self.qapplication.setPalette(pa)
-                elif fusion_variant == "dark":
-                    pa = QPalette()
-                    pa.setColor(QPalette.Window, QColor(53, 53, 53))
-                    pa.setColor(QPalette.WindowText, Qt.white)
-                    pa.setColor(QPalette.Base, QColor(25, 25, 25))
-                    pa.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-                    pa.setColor(QPalette.ToolTipBase, Qt.white)
-                    pa.setColor(QPalette.ToolTipText, Qt.white)
-                    pa.setColor(QPalette.Text, Qt.white)
-                    pa.setColor(QPalette.Button, QColor(53, 53, 53))
-                    pa.setColor(QPalette.ButtonText, Qt.white)
-                    pa.setColor(QPalette.BrightText, Qt.red)
-                    pa.setColor(QPalette.Link, QColor(42, 130, 218))
-                    pa.setColor(QPalette.Highlight, QColor(42, 130, 218))
-                    pa.setColor(QPalette.HighlightedText, Qt.black)
-                    self.qapplication.setPalette(pa)
-                    self.qapplication.setStyleSheet(
-                        "QToolTip { color: #ffffff; background-color: #2a82da; "
-                        "border: 1px solid white; }")
-
-            plugin_helper = PluginHelper()
-            for res in plugin_helper.find_resource_dirs(
-                    "fs-uae-launcher-theme"):
-                qt_css = os.path.join(res, "stylesheet.qss")
-                if os.path.exists(qt_css):
-                    with open(qt_css, "rb") as f:
-                        data = f.read()
-                    self.qapplication.setStyleSheet(data)
+            initialize_qt_style(self.qapplication)
 
     @staticmethod
     def get_game_database_path():
@@ -290,27 +220,6 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         for key, value in config.items():
             print("loaded", key, value)
             fsgs.config.values[key] = value
-
-        # settings = {}
-        # try:
-        #     keys = cp.options("settings")
-        # except configparser.NoSectionError:
-        #     keys = []
-        # for key in keys:
-        #     settings[key] = fs.from_utf8_str(cp.get("settings", key))
-        # for key, value in six.iteritems(settings):
-        #     #if key in Settings.settings:
-        #     #    # this setting is already initialized, possibly via
-        #     #    # command line arguments
-        #     #    pass
-        #     #else:
-        #
-        #     #Settings.settings[key] = value
-        #
-        #     # FIXME: setting values directly in settings dict
-        #     app.settings.values[key] = value
-        #
-        # #Settings.set("config_search", "")
 
     def parse_arguments(self):
         pass
@@ -524,12 +433,12 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         # make sure x_kickstart_file is initialized
         Config.set_kickstart_from_model()
 
-        if not Config.get("x_kickstart_file"):  # or not \
-            #  os.path.exists(Config.get("kickstart_file")):
-            fsui.show_error(
-                gettext("No kickstart found for this model. Use the 'Import "
-                        "Kickstarts' function from the menu."))
-            return
+        # if not Config.get("x_kickstart_file"):  # or not \
+        #     #  os.path.exists(Config.get("kickstart_file")):
+        #     fsui.show_error(
+        #         gettext("No kickstart found for this model. Use the 'Import "
+        #                 "Kickstarts' function from the menu."))
+        #     return
         cs = Amiga.get_model_config(Config.get("amiga_model"))["ext_roms"]
         if len(cs) > 0:
             # extended kickstart ROM is needed
@@ -639,6 +548,10 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         config["kickstart_file"] = config["x_kickstart_file"]
         config["kickstart_ext_file"] = config["x_kickstart_ext_file"]
 
+        if not config["kickstart_file"]:
+            # Warning will have been shown on the status bar
+            config["kickstart_file"] = "internal"
+
         # Copy default configuration values from model defaults. The main
         # purpose of this is to let the launch code know about implied defaults
         # so it can for example configure correct ROM files for expansions.
@@ -658,6 +571,69 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 del config[key]
 
         return config
+
+
+def initialize_qt_style(qapplication):
+    from fsui.qt import QStyleFactory, QPalette, QColor, Qt
+    fusion_variant = ""
+
+    launcher_theme = Settings.get("launcher_theme")
+    if launcher_theme == "native":
+        use_fusion_theme = False
+    elif launcher_theme == "fusion-adwaita":
+        use_fusion_theme = True
+        fusion_variant = "adwaita"
+    elif launcher_theme == "fusion-plain":
+        use_fusion_theme = True
+    elif launcher_theme == "fusion-dark":
+        use_fusion_theme = True
+        fusion_variant = "dark"
+    else:
+        use_fusion_theme = True
+        if fstd.desktop.is_running_gnome_3():
+            fusion_variant = "adwaita"
+
+    if "--launcher-theme=fusion-dark" in sys.argv:
+        use_fusion_theme = True
+        fusion_variant = "dark"
+
+    if use_fusion_theme:
+        # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
+        qapplication.setStyle(QStyleFactory.create("Fusion"))
+        if fusion_variant == "adwaita":
+            pa = QPalette()
+            pa.setColor(QPalette.Window, QColor(237, 237, 237))
+            pa.setColor(QPalette.AlternateBase, QColor(237, 237, 237))
+            pa.setColor(QPalette.Button, QColor(237, 237, 237))
+            qapplication.setPalette(pa)
+        elif fusion_variant == "dark":
+            pa = QPalette()
+            pa.setColor(QPalette.Window, QColor(53, 53, 53))
+            pa.setColor(QPalette.WindowText, Qt.white)
+            pa.setColor(QPalette.Base, QColor(25, 25, 25))
+            pa.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+            pa.setColor(QPalette.ToolTipBase, Qt.white)
+            pa.setColor(QPalette.ToolTipText, Qt.white)
+            pa.setColor(QPalette.Text, Qt.white)
+            pa.setColor(QPalette.Button, QColor(53, 53, 53))
+            pa.setColor(QPalette.ButtonText, Qt.white)
+            pa.setColor(QPalette.BrightText, Qt.red)
+            pa.setColor(QPalette.Link, QColor(42, 130, 218))
+            pa.setColor(QPalette.Highlight, QColor(42, 130, 218))
+            pa.setColor(QPalette.HighlightedText, Qt.black)
+            qapplication.setPalette(pa)
+            qapplication.setStyleSheet(
+                "QToolTip { color: #ffffff; background-color: #2a82da; "
+                "border: 1px solid white; }")
+
+    plugin_helper = PluginHelper()
+    for res in plugin_helper.find_resource_dirs(
+            "fs-uae-launcher-theme"):
+        qt_css = os.path.join(res, "stylesheet.qss")
+        if os.path.exists(qt_css):
+            with open(qt_css, "rb") as f:
+                data = f.read()
+            qapplication.setStyleSheet(data)
 
 
 # FIXME: Files to clean up:

@@ -29,34 +29,24 @@ class InfoPanel(fsui.Panel):
         self.hide()
         self.set_min_height(48)
 
-        self.update_web_url = ""
-        self.update_version = ""
         self.toolbar_mode = toolbar_mode
         self.padding_top = padding_top
         self.padding_bottom = padding_bottom
 
         self.chip_memory_warning = ["", ""]
-        self.kickstarts_missing = ["", ""]
-        self.update_available = ["", ""]
         self.config_error = ["", ""]
         self.missing_files = ["", ""]
         self.download_page = ["", ""]
         self.download_file = ["", ""]
         # self.downloadable = ["", ""]
 
-        self.update_available_icon = fsui.Image(
-            "fs_uae_launcher:res/update_available_32.png")
         self.warning_icon = fsui.Image(
             "fs_uae_launcher:res/warning_32.png")
         self.download_icon = fsui.Image(
             "fs_uae_launcher:res/download_32.png")
-        self.kickstarts_missing_icon = self.warning_icon
 
-        self.check_kickstarts()
         # Config.add_listener(self)
         # Settings.add_listener(self)
-        Signal.add_listener("update_available", self)
-        Signal.add_listener("scan_done", self)
         # Signal.add_listener("locker-updated", self)
 
         Config.add_listener(self)
@@ -70,8 +60,6 @@ class InfoPanel(fsui.Panel):
         # Settings.remove_listener(self)
         Settings.remove_listener(self)
         Config.remove_listener(self)
-        Signal.remove_listener("scan_done", self)
-        Signal.remove_listener("update_available", self)
 
 #    def on_config(self, key, value):
 #        pass
@@ -136,10 +124,6 @@ class InfoPanel(fsui.Panel):
             show = True
         elif is_warning(self.chip_memory_warning):
             show = True
-        elif is_warning(self.kickstarts_missing):
-            show = True
-        elif is_warning(self.update_available):
-            show = True
         else:
             show = False
 
@@ -147,31 +131,6 @@ class InfoPanel(fsui.Panel):
             print("InfoPanel new visible status:", show)
             self.show_or_hide(show)
             self.parent().layout.update()
-
-    def on_scan_done_signal(self):
-        print("InfoPanel.on_scan_done_signal")
-        self.check_kickstarts()
-
-    def check_kickstarts(self):
-        # FIXME: instead of this check, check if x_kickstart_sha1 is set
-        # properly when amiga_model / x_kickstart_sha1 changes, so you''
-        # only get a warning for the Amiga model in question.
-        ok = True
-
-        amiga = Amiga.get_model_config("A500")
-        for sha1 in amiga["kickstarts"]:
-            if fsgs.file.find_by_sha1(sha1):
-                ok = False
-                break
-        self.kickstarts_missing = ok
-        # self.kickstarts_missing = True
-        self.refresh()
-
-    def on_update_available_signal(self, version, web_url):
-        self.update_available = True
-        self.update_version = version
-        self.update_web_url = web_url
-        self.refresh()
 
     def on_left_up(self):
         if self.missing_files:
@@ -181,10 +140,6 @@ class InfoPanel(fsui.Panel):
                 #                                  fsgs)
                 # self.window.show()
                 DownloadGameWindow(self.get_window(), fsgs).show()
-        elif self.kickstarts_missing:
-            SetupDialog(self.get_window()).show()
-        elif self.update_available:
-            open_url_in_browser(self.update_web_url)
         # else:
         #     auth = Settings.get("database_auth")
         #     if not auth:
@@ -215,10 +170,6 @@ class InfoPanel(fsui.Panel):
         elif is_warning(self.chip_memory_warning):
             self.draw_notification(
                 dc, self.warning_icon, *self.chip_memory_warning)
-        elif is_warning(self.kickstarts_missing):
-            self.draw_kickstarts_missing_notification(dc)
-        elif is_warning(self.update_available):
-            self.draw_update_available_notification(dc)
         else:
             self.draw_user_notification(dc)
 
@@ -231,19 +182,6 @@ class InfoPanel(fsui.Panel):
     #     else:
     #         self.draw_notification(dc, None, gettext("Not logged in"),
     #                                gettext("Log in to enable online game DB"))
-
-    def draw_update_available_notification(self, dc):
-        self.draw_notification(
-            dc, self.update_available_icon,
-            gettext("Update available ({version})").format(
-                version=self.update_version),
-            gettext("Click here to download"))
-
-    def draw_kickstarts_missing_notification(self, dc):
-        self.draw_notification(
-            dc, self.kickstarts_missing_icon,
-            gettext("Kickstart ROMs are missing"),
-            gettext("Click here to import kickstarts"))
 
     def draw_notification(self, dc, icon, text1, text2):
         available_height = self.size[1]

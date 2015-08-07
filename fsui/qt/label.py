@@ -3,19 +3,24 @@ from .Widget import Widget
 from urllib.parse import unquote_plus
 
 
-class Label(Widget):
+class Label(fsui.qt.QLabel, Widget):
 
     def __init__(self, parent, label):
-        self._widget = fsui.qt.QLabel(label, parent.get_container())
+        fsui.qt.QLabel.__init__(self, label, parent.get_container())
+        # self._widget = fsui.qt.QLabel(label, parent.get_container())
         # Widget.__init__(self, parent)
         self.init_widget(parent)
 
-        self._widget.setTextFormat(fsui.qt.Qt.RichText)
-        self._widget.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
-        self._widget.setOpenExternalLinks(True)
+        # self._widget.setTextFormat(fsui.qt.Qt.RichText)
+        # self._widget.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
+        # self._widget.setOpenExternalLinks(True)
+        self.setTextFormat(fsui.qt.Qt.RichText)
+        self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
+        self.setOpenExternalLinks(True)
 
     def set_text(self, label):
-        self._widget.setText(label)
+        # self._widget.setText(label)
+        self.setText(label)
 
 
 class URLLabel(Label):

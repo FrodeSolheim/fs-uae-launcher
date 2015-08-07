@@ -43,8 +43,11 @@ cfg = [
     ("joystick_port_3_mode",  "",         "checksum", "sync"),
     ("joystick_port_3_autofire",  "",     "checksum", "sync"),
 
+    ("floppy_drive_count",    "",         "checksum", "sync"),
+    ("cdrom_drive_count",     "",         "checksum", "sync"),
+
     # this is not an Amiga device, so no need to checksum / sync
-    ("joystick_port_4_mode",  "", "custom"),
+    ("joystick_port_4_mode",  "",         "custom"),
 
     ("kickstart_file",        ""),
     ("x_kickstart_file",      "",                             "nosave"),
@@ -155,6 +158,14 @@ class Config(object):
     sync_keys_list = [x[0] for x in cfg if "sync" in x]
     sync_keys_set = set(sync_keys_list)
     no_custom_config = [x[0] for x in cfg if "custom" not in x]
+
+    no_custom_config.append("__changed")
+    no_custom_config.append("__config_name")
+    no_custom_config.append("__database")
+    no_custom_config.append("__ready")
+    no_custom_config.append("x_whdload_icon")
+    no_custom_config.append("platform")
+
     dont_save_keys_set = set([x[0] for x in cfg if "nosave" in x])
 
     reset_values = {}
@@ -204,59 +215,6 @@ class Config(object):
     @classmethod
     def set_multiple(cls, items):
         fsgs.config.set(items)
-
-        # this will allow us to set multiple keys at a time, to provide
-        # "atomic" setting of several keys before notifications are sent
-
-        # items = list(items)
-        # item_keys = [x[0] for x in items]
-        #
-        # changed_keys = set()
-        #
-        # def add_changed_key(key):
-        #     try:
-        #         priority = cls.key_order.index(key)
-        #     except ValueError:
-        #         priority = 1000
-        #     changed_keys.add((priority, key))
-        #
-        # def change(key, value):
-        #     #print("change", key, value)
-        #     if key == "joystick_port_1_mode":
-        #         pass
-        #     if old_config.get(key, "") == value:
-        #         if value:
-        #             print("set {0} to {1} (no change)".format(key, value))
-        #         return
-        #     print("set {0} to {1}".format(key, value))
-        #     add_changed_key(key)
-        #     cls.config[key] = value
-        #
-        # old_config = cls.config.copy()
-        # for key, value in items:
-        #     change(key, value)
-        #     try:
-        #         reset_key, reset_value = cls.reset_values[key]
-        #         #print("  ---", reset_key, reset_value)
-        #     except KeyError:
-        #         pass
-        #     else:
-        #         if reset_key not in item_keys:
-        #             print(" -- reset --", reset_key, "to", repr(reset_value))
-        #             change(reset_key, reset_value)
-        #
-        # # and now broadcast all changed keys at once
-        # if len(changed_keys) > 0:
-        #     for priority, key in sorted(changed_keys):
-        #         #for listener in cls.config_listeners:
-        #         #    listener.on_config(key, cls.get(key))
-        #         Signal.broadcast("config", key, cls.get(key))
-        #     changed_keys = [x[1] for x in changed_keys]
-        #     if "__netplay_ready" not in changed_keys:
-        #         cls.set("__netplay_ready", "0")
-        #
-        # if len(changed_keys) > 0:
-        #     Settings.set("config_changed", "1")
 
     @classmethod
     def update_from_config_dict(cls, config_dict):
@@ -312,7 +270,7 @@ class Config(object):
             else:
                 print("WARNING: no suitable kickstart file found")
                 config_dict["x_kickstart_file"] = ""
-                config_dict["x_kickstart_file_sha1"] = ""
+                config_dict["x_kickstart_file_sha1"] = Amiga.INTERNAL_ROM_SHA1
 
         if config_dict.setdefault("kickstart_ext_file", ""):
             config_dict["x_kickstart_ext_file"] = \

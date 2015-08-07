@@ -211,18 +211,17 @@ class ValueConfigLoader(object):
         #         self.viewport.append(value)
         elif key == "hd_startup":
             self.options["hd_startup"] = value
-        elif key == "hd_requirements":
-            self.options["hd_requirements"] = value
-
-        elif key == "save_disk":
-            self.options["save_disk"] = value
-
+            self.options["floppy_drive_volume_empty"] = "0"
         elif key == "whdload_args":
             self.options["x_whdload_args"] = value
-            self.options["floppy_drive_volume"] = "0"
+            self.options["floppy_drive_volume_empty"] = "0"
         elif key == "hdinst_args":
             self.options["x_hdinst_args"] = value
-            self.options["floppy_drive_volume"] = "0"
+            self.options["floppy_drive_volume_empty"] = "0"
+        elif key == "hd_requirements":
+            self.options["hd_requirements"] = value
+        elif key == "save_disk":
+            self.options["save_disk"] = value
         elif key == "whdload_version":
             self.options["x_whdload_version"] = value
         elif key == "whdload_icon":

@@ -58,10 +58,10 @@ class Config(ContextAware):
             #     pass
             if old_config.get(changed_key, None) == changed_value:
                 if changed_value:
-                    print("set {0} to {1} (no change)".format(
+                    print("config set {0} to {1} (no change)".format(
                         changed_key, changed_value))
                 return
-            print("set {0} to {1}".format(changed_key, changed_value))
+            print("config set {0} to {1}".format(changed_key, changed_value))
             add_changed_key(changed_key)
             self.values[changed_key] = changed_value
 

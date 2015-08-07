@@ -21,6 +21,7 @@ from .Book import Book
 from .CDPanel import CDPanel
 from .ConfigurationsPanel import ConfigurationsPanel
 from .Constants import Constants
+from .config.additionalconfigpanel import AdditionalConfigPanel
 from .config.expansionspanel import ExpansionsPanel
 from .config.romrampanel import RomRamPanel
 from .FloppiesPanel import FloppiesPanel
@@ -408,6 +409,11 @@ class MainWindow(WindowWithTabs):
                 column, RomRamPanel,
                 "crystal/32x32/apps/kcmmemory",
                 gettext("Hardware"), gettext("ROM and RAM"))
+            self.add_scroll_page(
+                column, AdditionalConfigPanel,
+                "crystal/32x32/apps/kcontrol_fs",
+                gettext("Additional Configuration"),
+                gettext("Additional Configuration"))
 
             # self.add_tab_spacer(10)
 
@@ -447,37 +453,37 @@ class MainWindow(WindowWithTabs):
 
     def create_menu(self):
         menu = fsui.Menu()
-        self.add_user_menu_content(menu)
+
+        if Settings.get(Option.DATABASE_AUTH):
+            menu.add_item(gettext("Update Game Database"),
+                          self.on_update_game_database)
+        menu.add_item(gettext("Update File Database"),
+                      self.on_update_file_database)
+
         menu.add_separator()
-        # text = _("Scan for Files")
-        menu.add_item(gettext("Scan Files and Configurations") + "...",
-                      self.on_scan_button)
-        # if Settings.get(Option.DATABASE_FEATURE) == "1":
-        # if True:
-        #     menu.add_item(_("Refresh Game Database"),
-        #                   self.on_game_database_refresh)
-        menu.add_separator()
-        # menu.add_item(_("Custom Options & Settings"),
         menu.add_item(gettext("ADF Creator") + "...", self.on_adf_creator)
         menu.add_item(gettext("HDF Creator") + "...", self.on_hdf_creator)
-        menu.add_separator()
-        menu.add_item(gettext("Custom Configuration") + "...",
-                      self.on_custom_button)
+
         menu.add_separator()
         menu.add_item(gettext("Import Kickstarts") + "...",
                       self.on_import_kickstarts)
         menu.add_item(gettext("Amiga Forever Import") + "...",
                       self.on_import_kickstarts)
-        menu.add_separator()
-        # menu.add_preferences_item(_("Preferences"), self.on_settings_button)
-        menu.add_preferences_item(gettext("Settings") + "...",
-                                  self.on_settings_button)
-        menu.add_separator()
 
+        menu.add_separator()
+        self.add_user_menu_content(menu)
+
+        menu.add_separator()
+        menu.add_preferences_item(
+            gettext("Settings") + "...", self.on_settings_button)
+
+        menu.add_separator()
         menu.add_about_item(gettext("About {name}").format(
             name="FS-UAE Launcher") + "...", self.on_about)
-        menu.add_separator()
+        menu.add_item(gettext("About {name}").format(
+            name="OAGD.net") + "...", self.on_what_is_this)
 
+        menu.add_separator()
         menu.add_about_item(gettext("Quit"), self.on_quit)
         return menu
 
@@ -542,16 +548,14 @@ class MainWindow(WindowWithTabs):
     def add_user_menu_content(self, menu):
         if Settings.get(Option.DATABASE_AUTH):
             # menu.add_item(_("Log In / Register"), self.on_log_in)
-            menu.add_item(gettext("Refresh Game Database"),
-                          self.on_game_database_refresh)
+            # menu.add_item(gettext("Update Game Database"),
+            #               self.on_game_database_refresh)
             menu.add_item(gettext("Upload Files to OAGD.net Locker"),
                           self.on_upload_locker_files)
             # menu.add_separator()
             menu.add_item(gettext("Log Out"), self.on_log_out)
         else:
             menu.add_item(gettext("Log In / Register"), self.on_log_in)
-        # menu.add_separator()
-        menu.add_item(gettext("About OAGD.net"), self.on_what_is_this)
 
     def create_user_menu(self):
         menu = fsui.Menu()
@@ -588,11 +592,10 @@ class MainWindow(WindowWithTabs):
     def on_import_kickstarts(self):
         SetupDialog(self.get_window()).show()
 
-    def on_game_database_refresh(self):
-        print("on_game_database_refresh")
-        # dialog = ScanDialog.refresh_game_database(self.get_window())
-        # dialog.show_modal()
-        # dialog.destroy()
+    def on_update_file_database(self):
+        self.on_scan_button()
+
+    def on_update_game_database(self):
         shell_open("Workspace:Tools/Refresh", parent=self)
 
     def on_upload_locker_files(self):

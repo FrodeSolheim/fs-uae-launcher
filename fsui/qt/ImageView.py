@@ -2,13 +2,12 @@ import fsui.qt
 from .Widget import Widget
 
 
-class ImageView(Widget):
+class ImageView(fsui.qt.QLabel, Widget):
 
     def __init__(self, parent, image):
-        self._widget = fsui.qt.QLabel(parent.get_container())
-        # Widget.__init__(self, parent)
+        fsui.qt.QLabel.__init__(self, parent.get_container())
         self.init_widget(parent)
-        self._widget.setPixmap(image.qpixmap)
+        self.setPixmap(image.qpixmap)
 
     def set_image(self, image):
-        self._widget.setPixmap(image.qpixmap)
+        self.setPixmap(image.qpixmap)

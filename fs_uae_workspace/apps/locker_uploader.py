@@ -34,14 +34,19 @@ class LockerUploaderWindow(fsui.Dialog):
         self.created_label = fsui.Label(self, "")
         hori_layout.add(self.created_label, expand=True)
 
+        self.upload_button = fsui.Button(self, gettext("Upload"))
+        self.upload_button.activated.connect(self.on_upload_activated)
+        hori_layout.add(self.upload_button, margin_left=10)
+
         self.stop_button = fsui.Button(self, gettext("Stop"))
         self.stop_button.activated.connect(self.on_stop_activated)
         self.stop_button.disable()
         hori_layout.add(self.stop_button, margin_left=10)
 
-        self.upload_button = fsui.Button(self, gettext("Upload"))
-        self.upload_button.activated.connect(self.on_upload_activated)
-        hori_layout.add(self.upload_button, margin_left=10)
+        self.close_button = fsui.Button(self, gettext("Close"))
+        self.close_button.activated.connect(self.on_close_activated)
+        # self.stop_button.disable()
+        hori_layout.add(self.close_button, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
@@ -55,6 +60,7 @@ class LockerUploaderWindow(fsui.Dialog):
             self.task.stop()
 
     def on_upload_activated(self):
+        self.close_button.disable()
         self.upload_button.disable()
         self.stop_button.enable()
         self.task = LockerUploaderTask()
@@ -63,6 +69,9 @@ class LockerUploaderWindow(fsui.Dialog):
         self.task.succeeded.connect(self.on_success)
         self.task.stopped.connect(self.on_stopped)
         self.task.start()
+
+    def on_close_activated(self):
+        self.close()
 
     def on_stop_activated(self):
         self.task.stop()
@@ -80,6 +89,7 @@ class LockerUploaderWindow(fsui.Dialog):
         self.after_task_has_stopped()
 
     def after_task_has_stopped(self):
+        self.close_button.enable()
         self.upload_button.enable()
         self.stop_button.disable()
 
@@ -140,7 +150,8 @@ class LockerUploaderTask(Task):
                     self.client.post("/api/locker-upload-file", data=data)
                 except OGDClient.NonRetryableHTTPError as e:
                     raise e
-                except Exception:
+                except Exception as e:
+                    traceback.print_exc()
                     self.progressed(gettext(
                         "Re-trying in {0} seconds...").format(retry_seconds))
                     for _ in range(retry_seconds):
@@ -179,6 +190,7 @@ class LockerUploaderTask(Task):
             except OGDClient.NonRetryableHTTPError as e:
                 raise e
             except Exception:
+                traceback.print_exc()
                 self.progressed(gettext(
                     "Re-trying in {0} seconds...").format(retry_seconds))
                 for _ in range(retry_seconds):

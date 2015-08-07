@@ -86,18 +86,24 @@ class CustomSettingsPage(fsui.Panel):
                 text += "\n# {0} is ignored here " \
                         "(use config dialog instead)\n".format(key)
             value = app.settings[key]
+            if Config.get(key):
+                text += "\n# {0} is overridden by current " \
+                        "configuration\n".format(key)
             text += "{0} = {1}\n".format(key, value)
+            if Config.get(key):
+                text += "\n"
             if key in Config.config_keys:
                 text += "\n"
         return text
 
 DEFAULT_TEXT = """\
-# You can write key = value pairs here to set FS-UAE options for which there
-# are no user interface yet. This is only a temporary feature until the GUI
-# supports all options directly.
+# You can write key = value pairs here to set FS-UAE options
+# not currently supported by the user interface. This is only a
+# temporary feature until the GUI supports all options directly.
 #
-# The options specified here are global and will apply to all configurations.
-# (config options such as hardware and memory options will be ignored)
-# Options suitable here are options like theme options.
+# The options specified here are global and will apply to all
+# configurations. Config options such as hardware and memory
+# options will be ignored. Options suitable here are options
+# like theme options.
 
 """

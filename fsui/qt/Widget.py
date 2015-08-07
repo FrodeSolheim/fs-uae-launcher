@@ -55,6 +55,11 @@ class Widget(MixinBase):
         assert isinstance(widget, QWidget)
         widget.installEventFilter(self.get_window())
 
+        widget.destroyed.connect(self.on_destroy)
+
+    def on_destroy(self):
+        print("on_destroy")
+
     def eventFilter(self, obj, event):
         return False
 

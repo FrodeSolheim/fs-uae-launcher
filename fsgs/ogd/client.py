@@ -118,7 +118,7 @@ class OGDClient(object):
         if auth:
             credentials = self.get_credentials()
             headers[str("Authorization")] = str("Basic " + base64.b64encode(
-                "{0}:{1}".format(*credentials).encode("UTF-8")))
+                "{0}:{1}".format(*credentials).encode("UTF-8")).decode("UTF-8"))
 
         # if data is None:
         #     data = "{}"

@@ -61,6 +61,10 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
                 Settings.set("parent_uuid", "")
                 Settings.set("parent_uuid", old_parent_uuid)
 
+        elif key == "parent_uuid" or key == "config_path":
+            if not (Settings.get("parent_uuid") or Settings.get("config_path")):
+                self.select_item(None)
+
     def set_items(self, items):
         self.items = items
         self.update()
@@ -170,14 +174,3 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
             print("load config from", config_path)
             Config.load_file(config_path)
             Settings.set("parent_uuid", "")
-
-        # database = Database.get_instance()
-        # config_info = database.get_config(configuration_id)
-        # if config_info["data"]:
-        #     Config.load_data(config_info["data"])
-        #     Settings.set("parent_uuid", "")
-        # elif config_info["path"]:
-        #     Config.load_file(config_info["path"])
-        #     Settings.set("parent_uuid", "")
-        # else:
-        #     Settings.set("parent_uuid", config_info["uuid"])

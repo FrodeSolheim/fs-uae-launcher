@@ -19,7 +19,7 @@ class Settings(object):
 
     def set(self, key: str, value: str) -> None:
         if self[key] == value:
-            print("set {0} to {1} (no change)".format(key, value))
+            print("settings set {0} to {1} (no change)".format(key, value))
             return
         _log_key_value(key, value)
         self.values[key] = value
@@ -54,8 +54,10 @@ class Settings(object):
             return
 
         for key in keys:
-            value = cp.get(""
-                           "settings", key)
+            if key.startswith("__"):
+                print("Ignoring setting", key)
+                continue
+            value = cp.get("settings", key)
             print(key, value)
             self.values[key] = value
 
@@ -133,6 +135,6 @@ def set_path(path: str) -> None:
 def _log_key_value(key, value):
     if "username" in key or "password" in key or "auth" in key \
             or "email" in key:
-        print("set {0} to *CENSORED*".format(key))
+        print("setting set {0} to *CENSORED*".format(key))
     else:
-        print("set {0} to {1}".format(key, value))
+        print("settings set {0} to {1}".format(key, value))

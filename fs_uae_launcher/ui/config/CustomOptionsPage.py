@@ -57,16 +57,16 @@ class CustomOptionsPage(fsui.Panel):
             if key in Config.no_custom_config:
                 continue
             value = fsgs.config.values[key]
+            if not value:
+                continue
             text += "{0} = {1}\n".format(key, value)
         return text
 
 DEFAULT_TEXT = """\
-# You can write key = value pairs here to set FS-UAE options for which there
-# are no user interface yet. This is only a temporary feature until the GUI
-# supports all options directly.
+# You can write key = value pairs here to set FS-UAE options
+# not currently supported by the user interface. This is only a
+# temporary feature until the GUI supports all options directly.
 #
 # The options specified here will apply to this configuration only.
-#
-# NOTE: Custom (global) settings are moved to Preferences -> Advanced Settings
 
 """
