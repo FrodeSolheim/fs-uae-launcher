@@ -1,3 +1,8 @@
+Version 2.5.37dev:
+
+* Fixed bug in login window, added close buttons to login/logout.
+* Fixed OAGD.net locker uploader (really, this time).
+
 Version 2.5.35dev:
 
 * Added All Games / All Configurations to drop-down.

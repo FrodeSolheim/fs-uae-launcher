@@ -1,3 +1,4 @@
+from binascii import hexlify
 import time
 import traceback
 from fsgs.context import fsgs
@@ -20,7 +21,7 @@ class LockerUploaderWindow(fsui.Dialog):
         self.set_icon(fsui.Icon("refresh", "pkg:fs_uae_workspace"))
 
         self.layout = fsui.VerticalLayout()
-        self.layout.min_width = 500
+        self.layout.min_width = 600
         self.layout.set_padding(20, 20, 20, 20)
 
         self.icon_header = IconHeader(
@@ -45,7 +46,6 @@ class LockerUploaderWindow(fsui.Dialog):
 
         self.close_button = fsui.Button(self, gettext("Close"))
         self.close_button.activated.connect(self.on_close_activated)
-        # self.stop_button.disable()
         hori_layout.add(self.close_button, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
@@ -59,6 +59,9 @@ class LockerUploaderWindow(fsui.Dialog):
         if self.task is not None:
             self.task.stop()
 
+    def on_close_activated(self):
+        self.close()
+
     def on_upload_activated(self):
         self.close_button.disable()
         self.upload_button.disable()
@@ -69,9 +72,6 @@ class LockerUploaderWindow(fsui.Dialog):
         self.task.succeeded.connect(self.on_success)
         self.task.stopped.connect(self.on_stopped)
         self.task.start()
-
-    def on_close_activated(self):
-        self.close()
 
     def on_stop_activated(self):
         self.task.stop()
@@ -96,8 +96,11 @@ class LockerUploaderWindow(fsui.Dialog):
     def on_progress(self, message):
         if not isinstance(message, str):
             message = message[0]
-        # print("on_progress", status)
         self.icon_header.subtitle_label.set_text(message)
+
+
+def bytes_to_hex(sha1):
+    return hexlify(sha1).decode("ASCII")
 
 
 class LockerUploaderTask(Task):
@@ -116,8 +119,10 @@ class LockerUploaderTask(Task):
         result = self.upload_check(prefix)
         print(len(result))
         for k in range(0, len(result), 20):
+            self.stop_check()
+
             sha1 = result[k:k + 20]
-            path = fsgs.file.find_by_sha1(sha1.encode("hex"))
+            path = fsgs.file.find_by_sha1(bytes_to_hex(sha1))
             if not path:
                 continue
             try:
@@ -126,7 +131,7 @@ class LockerUploaderTask(Task):
                 data = ROMManager.decrypt_archive_rom(archive, path)["data"]
             except Exception:
                 traceback.print_exc()
-                uri = "sha1://{0}".format(sha1.encode("hex"))
+                uri = "sha1://{0}".format(bytes_to_hex(sha1))
                 print(uri)
                 try:
                     input_stream = fsgs.file.open(uri)
@@ -136,13 +141,17 @@ class LockerUploaderTask(Task):
                 assert not input_stream.read()
 
             print("uploading file of size ", len(data))
+
+            # self.progressed(gettext("Verifying {name}").format(
+            #                 name=bytes_to_hex(sha1)))
+            self.progressed(gettext("Uploading {name}").format(
+                            name=bytes_to_hex(sha1)))
             import hashlib
-            print(hashlib.sha1(data).hexdigest())
-            if hashlib.sha1(data).hexdigest() != sha1.encode("hex"):
+            new_hash = hashlib.sha1(data).hexdigest()
+            print(new_hash, "vs", bytes_to_hex(sha1))
+            if hashlib.sha1(data).hexdigest() != bytes_to_hex(sha1):
                 print("hash mismatch, probably Cloanto ROM...")
                 continue
-            self.progressed(gettext("Uploading {name}").format(
-                            name=sha1.encode("hex")))
 
             retry_seconds = 1
             while True:
@@ -150,7 +159,7 @@ class LockerUploaderTask(Task):
                     self.client.post("/api/locker-upload-file", data=data)
                 except OGDClient.NonRetryableHTTPError as e:
                     raise e
-                except Exception as e:
+                except Exception:
                     traceback.print_exc()
                     self.progressed(gettext(
                         "Re-trying in {0} seconds...").format(retry_seconds))

@@ -87,16 +87,24 @@ class LoginWindow(fsui.Dialog):
         self.created_label = fsui.Label(self, "")
         hori_layout.add(self.created_label, expand=True)
         hori_layout.add_spacer(20)
+
         self.login_button = fsui.Button(self, gettext("Log In"))
         self.login_button.disable()
         self.login_button.activated.connect(self.on_login_activated)
         hori_layout.add(self.login_button)
+
+        self.close_button = fsui.Button(self, gettext("Close"))
+        self.close_button.activated.connect(self.on_close_activated)
+        hori_layout.add(self.close_button, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
 
     def __del__(self):
         print("LoginWindow.__del__")
+
+    def on_close_activated(self):
+        self.close()
 
     def on_text_field_changed(self):
         email = self.username_field.get_text().strip()
@@ -132,10 +140,7 @@ class LoginWindow(fsui.Dialog):
     def on_success(self):
         center = self.get_window_center()
 
-        def start_refresh_task():
-            shell_open("Workspace:Tools/Refresh", center=center)
-
-        fsui.call_after(start_refresh_task)
+        fsui.call_after(start_refresh_task, center)
         # shell_open("Workspace:Tools/Refresh", center=self.get_window_center())
         self.close()
 
@@ -152,5 +157,10 @@ class LoginWindow(fsui.Dialog):
 
     # def on_success(self):
     #     self.close()
+
+
+def start_refresh_task(center):
+    shell_open("Workspace:Tools/Refresh", center=center)
+
 
 application = SimpleApplication(LoginWindow)

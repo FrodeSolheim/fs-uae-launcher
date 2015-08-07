@@ -35,16 +35,24 @@ class LogoutWindow(fsui.Dialog):
         self.created_label = fsui.Label(self, "")
         hori_layout.add(self.created_label, expand=True)
         hori_layout.add_spacer(20)
+
         self.logout_button = fsui.Button(self, gettext("Log Out"))
         # self.logout_button.disable()
         self.logout_button.activated.connect(self.on_logout_activated)
         hori_layout.add(self.logout_button)
+
+        self.close_button = fsui.Button(self, gettext("Close"))
+        self.close_button.activated.connect(self.on_close_activated)
+        hori_layout.add(self.close_button, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
 
     def __del__(self):
         print("LogoutWindow.__del__")
+
+    def on_close_activated(self):
+        self.close()
 
     def on_logout_activated(self):
         auth_token = app.settings["database_auth"]
