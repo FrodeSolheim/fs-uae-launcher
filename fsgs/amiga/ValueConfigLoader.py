@@ -82,9 +82,6 @@ class ValueConfigLoader(object):
         if self.viewport:
             self.options["viewport"] = ", ".join(self.viewport)
 
-        # self.options["sub_title"] = amiga_model + " - FS-UAE"
-        # self.options["sub_title"] = "FS-UAE ({0})".format(amiga_model)
-
         if cd_based:
             if self.check_all_files():
                 self.load_cdroms()
@@ -93,18 +90,9 @@ class ValueConfigLoader(object):
 
         self.load_hard_drives()
         
-        # if self.check_all_files():
-        #     print(" -- all files found --")
-        # else:
+        # if not self.check_all_files():
         #     print(" -- some files are missing --")
         #     self.options["x_missing_files"] = "1"
-
-        # downloadable = values.get("_downloadable", "")
-        # if not downloadable:
-        #     downloadable = values.get("__source", "")
-        #     if not downloadable.startswith("http"):
-        #         downloadable = ""
-        # self.options["x_download_page"] = downloadable
 
         download_page = values.get("download_page", "")
         if download_page:

@@ -6,7 +6,6 @@ import fsui
 from ..Config import Config
 from ..Signal import Signal
 from ..Settings import Settings
-from fs_uae_launcher.I18N import gettext
 
 
 class LastVariants(object):
@@ -79,7 +78,7 @@ class VariantsBrowser(fsui.ItemChoice):
         self.load_variant(self.items[index])
         # self.last_variants.cache[self.parent_uuid] = variant_uuid
 
-    def on_activate_item(self, index):
+    def on_activate_item(self, _):
         from ..FSUAELauncher import FSUAELauncher
         FSUAELauncher.start_game()
 
@@ -120,14 +119,19 @@ class VariantsBrowser(fsui.ItemChoice):
         if not have:
             return self.missing_color
 
+    NOT_AVAILABLE = 0
+    MANUAL_AVAILABLE = 1
+    AUTO_AVAILABLE = 2
+    AVAILABLE = 3
+
     def get_item_icon(self, index):
         have = self.items[index]["have"]
-        if not have:
+        if have == self.NOT_AVAILABLE:
             # return self.missing_icon
             return self.blank_icon
-        if have == 1:
+        if have == self.MANUAL_AVAILABLE:
             return self.manual_download_icon
-        if have == 2:
+        if have == self.AUTO_AVAILABLE:
             return self.auto_download_icon
         return self.get_item_extra_icons(index)[0] or self.bullet_icon
         # name = self.items[index]["name"]
@@ -253,12 +257,12 @@ class VariantsBrowser(fsui.ItemChoice):
     def load_variant(self, item):
         try:
             self._load_variant(item)
+            # raise Exception()
         except Exception:
             traceback.print_exc()
             Config.load_default_config()
             Config.load({
-                "__error": ("Error loading configuration\n"
-                            "See log file for details.")
+                "__error": "Error Loading Configuration"
             })
             self.select_item(None)
 
@@ -302,6 +306,10 @@ class VariantsBrowser(fsui.ItemChoice):
         Config.set("variant_rating", str(item["personal_rating"]))
         Config.set("__changed", "0")
         Config.set("__database", item["database"])
+
+        if int(item["have"]) < self.AVAILABLE:
+            print(" -- some files are missing --")
+            Config.set("x_missing_files", "1")
 
     def get_min_width(self):
         return 0

@@ -32,12 +32,6 @@ class DownloadGameWindow(fsui.Window):
             gettext("This game must be downloaded before you can play it"))
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
-        # label = fsui.MultiLineLabel(self, gettext(
-        #     "This game needs to be download before you can play it. Please "
-        #     "open the following link to manually download the game."))
-        # label.set_min_width(600)
-        # self.layout.add(label)
-
         label = fsui.HeadingLabel(self, gettext(
             "Please open the following web page and download the "
             "game from there:"))
@@ -83,8 +77,15 @@ class DownloadGameWindow(fsui.Window):
         self.scan_button.activated.connect(self.on_scan_files)
         hori_layout.add(self.scan_button, margin_left=20)
 
+        self.close_button = fsui.Button(self, gettext("Close"))
+        self.close_button.activated.connect(self.on_close)
+        hori_layout.add(self.close_button, margin_left=10)
+
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
+
+    def on_close(self):
+        self.close()
 
     def on_scan_files(self):
         self.scan_button.disable()
@@ -109,7 +110,6 @@ class DownloadGameWindow(fsui.Window):
 
     def on_success(self):
         if self.fsgs.config.get("x_missing_files"):
-            # we are still missing files
             message = gettext(
                 "Files for this game are still missing. Did you download "
                 "the game and put the file(s) in the Downloads directory?")
@@ -235,9 +235,9 @@ class DownloadTermsTask(Task):
     def run(self):
         for i in range(3):
             try:
-                self.data = urlopen(self.url).read()
+                self.data = urlopen(self.url).read().decode("UTF-8")
             except Exception:
                 time.sleep(0.5)
             else:
                 return
-        self.data = urlopen(self.url).read()
+        self.data = urlopen(self.url).read().decode("UTF-8")

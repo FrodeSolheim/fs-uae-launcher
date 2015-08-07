@@ -12,7 +12,7 @@ exception_handler_enabled = False
 
 
 def initialize_application(
-        name=None, version=None, series=None, patch_unicode=True,
+        name=None, version=None, patch_unicode=True,
         enable_logging=True, enable_exception_handler=True):
 
     global init_called, unicode_patched, logging_enabled, \
@@ -30,10 +30,6 @@ def initialize_application(
     if version is not None:
         Application.app_version = version
         print(version)
-
-    if series is not None:
-        Application.app_series = series
-        print(series)
 
     if enable_exception_handler:
         fsbc.debug.enable_exception_handler()

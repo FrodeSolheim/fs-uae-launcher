@@ -77,7 +77,10 @@ class Version (object):
         self.release = None if v[5] is None else int(v[5])
 
     def cmp_value(self):
-        return self.val, self.mod or "o", int(self.release or 0)
+        mod_cmp = self.mod or "~~o"
+        if not mod_cmp.startswith("~"):
+            mod_cmp = "~~" + mod_cmp
+        return self.val, mod_cmp, int(self.release or 0)
 
     def __lt__(self, other: "Version") -> bool:
         return self.cmp_value() < other.cmp_value()
@@ -95,12 +98,34 @@ def compare_versions(a: Union[Version, str], b: Union[Version, str]):
     -1
     >>> compare_versions("2.0.0", "1.0.1")
     1
+    >>> compare_versions("1.2.3u2", "1.2.3")
+    1
+    >>> compare_versions("1.2.3a2", "1.2.3")
+    -1
     >>> compare_versions("2.0.0", "2.0.0beta3")
     1
-
-    # FIXME
-    #>>> compare_versions("2.0.0", "2.0.0~beta3")
-    #1
+    >>> compare_versions("2.0.1", "2.0.0~beta3")
+    1
+    >>> compare_versions("2.0.0", "2.0.0~beta3")
+    1
+    >>> compare_versions("2.5.30~dev", "2.5.30")
+    -1
+    >>> compare_versions("2.5.30~dev2", "2.5.30~dev1")
+    1
+    >>> compare_versions("2.6beta", "2.5.30~dev1")
+    1
+    >>> compare_versions("2.6beta", "2.6")
+    -1
+    >>> compare_versions("2.6beta", "2.6.0")
+    -1
+    >>> compare_versions("2.6beta", "2.6.1")
+    -1
+    >>> compare_versions("2.6.0beta1", "2.6.1")
+    -1
+    >>> compare_versions("5.9.1.1", "5.9.1dev")
+    1
+    >>> compare_versions("5.9.1.1", "5.9.2dev")
+    -1
     """
     if isinstance(a, Version):
         pass
@@ -121,3 +146,8 @@ def compare_versions(a: Union[Version, str], b: Union[Version, str]):
 def chained_exception(new_e, org_e):
     new_e.__cause__ = org_e
     return new_e
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

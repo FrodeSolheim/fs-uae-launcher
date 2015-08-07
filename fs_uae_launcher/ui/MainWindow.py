@@ -2,7 +2,6 @@ import sys
 import time
 from fs_uae_launcher.ui.config.configscrollarea import ConfigScrollArea
 import fstd.desktop
-from fs_uae_launcher.ui.InfoPanel import InfoPanel
 from fs_uae_launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
 from fs_uae_launcher.ui.bottombar.BottomPanel import BottomPanel
 from fs_uae_launcher.ui.bottombar.ScreenshotsPanel import ScreenshotsPanel
@@ -276,11 +275,6 @@ class MainWindow(WindowWithTabs):
                     config_browser.set_min_width(200)
                     hor_layout.add(config_browser, fill=True, expand=0.5,
                                    margin=10)
-            if column == 1:
-                # vert_layout.add_spacer(100)
-                self.info_panel = InfoPanel(self)
-                vert_layout.add(self.info_panel, fill=True, margin_left=10,
-                                margin_right=10)
 
             if column == 2:
                 # if fs_uae_launcher.ui.get_screen_size()[1] >= 1024:
@@ -478,10 +472,10 @@ class MainWindow(WindowWithTabs):
             gettext("Settings") + "...", self.on_settings_button)
 
         menu.add_separator()
-        menu.add_about_item(gettext("About {name}").format(
-            name="FS-UAE Launcher") + "...", self.on_about)
         menu.add_item(gettext("About {name}").format(
             name="OAGD.net") + "...", self.on_what_is_this)
+        menu.add_about_item(gettext("About {name}").format(
+            name="FS-UAE Launcher") + "...", self.on_about)
 
         menu.add_separator()
         menu.add_about_item(gettext("Quit"), self.on_quit)

@@ -5,6 +5,7 @@ from .Widget import Widget
 class Choice(QComboBox, Widget):
 
     item_selected = Signal(int)
+    ITEM_SEPARATOR = "---"
 
     def __init__(self, parent, items=None):
         if items is None:
@@ -26,7 +27,9 @@ class Choice(QComboBox, Widget):
         # if icon:
         #     item.setIcon(icon.qicon)
         # item.setSizeHint(QSize(-1, 24))
-        if icon is not None:
+        if label == self.ITEM_SEPARATOR:
+            self.insertSeparator(self.count())
+        elif icon is not None:
             self.addItem(icon.qicon, label)
         else:
             self.addItem(label)

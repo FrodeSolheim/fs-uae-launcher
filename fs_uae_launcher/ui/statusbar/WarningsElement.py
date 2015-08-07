@@ -1,3 +1,4 @@
+from operator import itemgetter
 from fs_uae_launcher.Config import Config
 from fs_uae_launcher.DeviceManager import DeviceManager
 from fs_uae_launcher.I18N import gettext
@@ -5,8 +6,10 @@ from fs_uae_launcher.UpdateManager import UpdateManager
 from fs_uae_launcher.ui.SetupDialog import SetupDialog
 from fs_uae_launcher.ui.behaviors.configbehavior import ConfigBehavior
 from fs_uae_launcher.ui.behaviors.settingsbehavior import SettingsBehavior
+from fs_uae_launcher.ui.download import DownloadGameWindow
 from fs_uae_launcher.ui.statusbar.StatusElement import StatusElement
 from fsgs.amiga.Amiga import Amiga
+from fsgs.context import fsgs
 from fsui import Image
 import fsui
 
@@ -24,7 +27,7 @@ class WarningsElement(StatusElement):
     def __init__(self, parent):
         StatusElement.__init__(self, parent)
         self.error_icon = Image("fs_uae_launcher:res/16/error.png")
-        self.warning_icon = Image("fs_uae_launcher:res/16/warning_2.png")
+        self.warning_icon = Image("fs_uae_launcher:res/16/warning_3.png")
         self.notice_icon = Image("fs_uae_launcher:res/16/information.png")
         self.icons = [
             self.error_icon,
@@ -38,16 +41,31 @@ class WarningsElement(StatusElement):
         self.variant_notice = ""
         self.variant_warning = ""
         self.variant_error = ""
+
         self.joy_emu_conflict = ""
         self.using_joy_emu = False
-        self.update_available = ""
+
         self.kickstart_file = ""
         self.x_kickstart_file_sha1 = ""
 
-        ConfigBehavior(self, ["x_game_notice", "x_variant_notice",
-                              "x_variant_warning", "x_variant_error",
-                              "x_joy_emu_conflict", "amiga_model",
-                              "x_kickstart_file_sha1", "kickstart_file"])
+        self.update_available = ""
+        self.__error = ""
+
+        self.x_missing_files = ""
+        self.download_page = ""
+        self.download_file = ""
+
+        self.amiga_model = ""
+        self.amiga_model_calculated = ""
+        self.chip_memory = ""
+        self.chip_memory_calculated = 0
+
+        ConfigBehavior(self, [
+            "x_game_notice", "x_variant_notice", "x_variant_warning",
+            "x_variant_error", "x_joy_emu_conflict", "amiga_model",
+            "x_kickstart_file_sha1", "kickstart_file", "download_page",
+            "download_file", "x_missing_files", "__error",
+            "chip_memory"])
         SettingsBehavior(self, ["__update_available"])
 
         self.on_config("joystick_port_0", Config.get("joystick_port_0"))
@@ -56,45 +74,42 @@ class WarningsElement(StatusElement):
     def on_destroy(self):
         Config.remove_listener(self)
 
-    def rebuild_warnings(self):
-        self.warnings = []
-        if self.using_joy_emu and self.joy_emu_conflict:
-            self.warnings.append((WARNING_LEVEL, self.joy_emu_conflict, ""))
-        for name in ["variant_notice", "game_notice"]:
-            value = getattr(self, name)
-            if not value:
-                continue
-            if value.startswith("WARNING: "):
-                level = WARNING_LEVEL
-                message = value[9:]
-            else:
-                level = NOTICE_LEVEL
-                message = value
-            self.warnings.append((level, message, ""))
-        if self.variant_warning:
-            self.warnings.append((WARNING_LEVEL, self.variant_warning, ""))
-        if self.variant_error:
-            self.warnings.append((ERROR_LEVEL, self.variant_error, ""))
-        if self.update_available:
-            text = gettext("Update Available: {version}").format(
-                version=self.update_available)
-            self.warnings.append((NOTICE_LEVEL, text, "on_update"))
-        if self.x_kickstart_file_sha1 == Amiga.INTERNAL_ROM_SHA1 and \
-                self.kickstart_file != "internal":
-            text = gettext("Compatibility Issue")
-            self.warnings.append((ERROR_LEVEL, text, "on_kickstart_warning"))
-            text = gettext("Using Kickstart ROM Replacement")
-            self.warnings.append((WARNING_LEVEL, text, "on_kickstart_warning"))
-            text = gettext("Click to Import Kickstart ROMs")
-            self.warnings.append((NOTICE_LEVEL, text, "on_import_kickstarts"))
-        self.warnings.sort()
-
-    def rebuild_warnings_and_refresh(self):
-        self.rebuild_warnings()
-        self.refresh()
-
     def on_amiga_model_config(self, value):
         Config.update_kickstart()
+
+        if value != self.amiga_model:
+            self.amiga_model = value
+            self.amiga_model_calculated = value.split("/")[0]
+            self.rebuild_warnings_and_refresh()
+
+    def on_chip_memory_config(self, value):
+        if value != self.chip_memory:
+            self.chip_memory = value
+            try:
+                self.chip_memory_calculated = int(value or "0")
+            except Exception:
+                self.chip_memory_calculated = -1
+            self.rebuild_warnings_and_refresh()
+
+    def on___error_config(self, value):
+        if value != self.__error:
+            self.__error = value
+            self.rebuild_warnings_and_refresh()
+
+    def on_x_missing_files_config(self, value):
+        if value != self.x_missing_files:
+            self.x_missing_files = value
+            self.rebuild_warnings_and_refresh()
+
+    def on_download_page_config(self, value):
+        if value != self.download_page:
+            self.download_page = value
+            self.rebuild_warnings_and_refresh()
+
+    def on_download_file_config(self, value):
+        if value != self.download_file:
+            self.download_file = value
+            self.rebuild_warnings_and_refresh()
 
     def on_kickstart_file_config(self, value):
         if value != self.kickstart_file:
@@ -132,7 +147,7 @@ class WarningsElement(StatusElement):
             self.joy_emu_conflict = value
             self.rebuild_warnings_and_refresh()
 
-    def on_config(self, key, value):
+    def on_config(self, key, _):
         if key in JOYSTICK_KEYS:
             prev_value = self.using_joy_emu
             devices = DeviceManager.get_devices_for_ports(Config)
@@ -168,10 +183,11 @@ class WarningsElement(StatusElement):
 
     def on_left_down(self):
         from fsui.qt import QCursor
+        # noinspection PyArgumentList
         p = self.mapFromGlobal(QCursor.pos())
         for start, stop, handler in self.coordinates:
-            if start <= p.x() < stop:
-                print(start, stop, handler)
+            if start <= p.x() < stop and handler:
+                # print(start, stop, handler)
                 getattr(self, handler)()
 
     def on_update(self):
@@ -195,3 +211,79 @@ class WarningsElement(StatusElement):
 
     def on_import_kickstarts(self):
         SetupDialog(self.get_window()).show()
+
+    def on_download_page(self):
+        DownloadGameWindow(self.get_window(), fsgs).show()
+
+    def rebuild_warnings(self):
+        self.warnings = []
+
+        if self.using_joy_emu and self.joy_emu_conflict:
+            self.warnings.append((WARNING_LEVEL, self.joy_emu_conflict, ""))
+
+        for name in ["variant_notice", "game_notice"]:
+            value = getattr(self, name)
+            if not value:
+                continue
+            if value.startswith("WARNING: "):
+                level = WARNING_LEVEL
+                message = value[9:]
+            else:
+                level = NOTICE_LEVEL
+                message = value
+            self.warnings.append((level, message, ""))
+        if self.variant_warning:
+            self.warnings.append((WARNING_LEVEL, self.variant_warning, ""))
+        if self.variant_error:
+            self.warnings.append((ERROR_LEVEL, self.variant_error, ""))
+
+        if self.update_available:
+            text = gettext("Update Available: {version}").format(
+                version=self.update_available)
+            self.warnings.append((NOTICE_LEVEL, text, "on_update"))
+
+        if self.x_kickstart_file_sha1 == Amiga.INTERNAL_ROM_SHA1 and \
+                self.kickstart_file != "internal":
+            # text = gettext("Compatibility Issue")
+            # self.warnings.append((ERROR_LEVEL, text, "on_kickstart_warning"))
+            text = gettext("Using Kickstart ROM Replacement")
+            self.warnings.append((WARNING_LEVEL, text, "on_kickstart_warning"))
+            text = gettext("Click to Import Kickstart ROMs")
+            self.warnings.append((NOTICE_LEVEL, text, "on_import_kickstarts"))
+
+        if is_warning(self.x_missing_files):
+            if self.download_file:
+                text = gettext("Automatic Download")
+                self.warnings.append((NOTICE_LEVEL, text, ""))
+            elif self.download_page:
+                text = gettext("Click to Download Game")
+                self.warnings.append((WARNING_LEVEL, text, "on_download_page"))
+            else:
+                text = gettext("Missing Game Files")
+                self.warnings.append((ERROR_LEVEL, text, ""))
+
+        if self.__error:
+            self.warnings.append((ERROR_LEVEL, self.__error, ""))
+
+        if self.chip_memory_calculated and \
+                self.chip_memory_calculated < 2048 and \
+                self.amiga_model_calculated in ["A1200", "A4000"]:
+            text = gettext("{amiga_model} with < 2 MB chip memory"
+                           "").format(amiga_model=self.amiga_model)
+            self.warnings.append((WARNING_LEVEL, text, ""))
+
+        self.warnings.sort(key=itemgetter(0))
+
+    def rebuild_warnings_and_refresh(self):
+        self.rebuild_warnings()
+        self.refresh()
+
+
+def is_warning(w):
+    if w is None:
+        return False
+    if isinstance(w, str):
+        return bool(w)
+    if isinstance(w, bool):
+        return w
+    return w[0] or w[1]

@@ -175,7 +175,6 @@ def write(data):
 
 write("""\
 version := $(strip $(shell cat VERSION))
-series := $(strip $(shell cat SERIES))
 build_dir := "."
 dist_name = {tar_name}-$(version)
 dist_dir := $(build_dir)/$(dist_name)
@@ -277,7 +276,6 @@ copy_files = [
     "COPYING",
     "INSTALL",
     "VERSION",
-    "SERIES",
     "Makefile",
     "setup.py",
     "update-version",
@@ -341,11 +339,11 @@ for copy_file in copy_files:
 
 write("""\
     cd $(dist_dir) && ./update-version setup.py --strict
-    cd $(dist_dir) && ./update-version debian/changelog
+    cd $(dist_dir) && ./update-version debian/changelog --deb
     cd $(dist_dir) && ./update-version dist/macosx/Info.plist --strict
-    cd $(dist_dir) && ./update-version fs_uae_launcher/main.py --update-series
-    cd $(dist_dir) && ./update-version {project} --update-series
-    cd $(dist_dir) && ./update-version {project}.spec
+    cd $(dist_dir) && ./update-version fs_uae_launcher/main.py
+    cd $(dist_dir) && ./update-version {project}
+    cd $(dist_dir) && ./update-version {project}.spec --rpm
 
 """.format(project=project.tar_name))
 

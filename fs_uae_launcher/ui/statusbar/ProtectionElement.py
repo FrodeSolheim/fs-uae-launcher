@@ -18,6 +18,7 @@ class ProtectionElement(StatusElement):
         self.icon = self.protection_icon
 
         self.protection = ""
+        self.text = "N/A"
         self.active = False
 
         Config.add_listener(self)
@@ -34,11 +35,11 @@ class ProtectionElement(StatusElement):
                 if not value:
                     self.icon = self.protection_icon
                     self.active = False
-                    self.text = ""
+                    self.text = "N/A"
                 elif value.lower() == "none":
                     self.icon = self.disabled_icon
                     self.active = True
-                    self.text = gettext("No Protection")
+                    self.text = gettext("Unprotected")
                 elif value.lower() in ["dongle"]:
                     self.icon = self.disabled_icon
                     self.active = True

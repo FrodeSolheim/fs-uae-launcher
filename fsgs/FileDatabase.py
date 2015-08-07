@@ -236,9 +236,10 @@ class FileDatabase(BaseDatabase):
 
         cursor = self.internal_cursor()
         # parent = self.ensure_dir(dir)
+        print("add_file", repr(path), repr(sha1), repr(mtime), repr(size),
+              repr(parent))
         if sha1:
             sha1 = unhexlify(sha1)
-        print(repr(path), repr(sha1), repr(mtime), repr(size), repr(parent))
         cursor.execute(
             "INSERT INTO file (path, sha1, mtime, size, parent) "
             "VALUES (?, ?, ?, ?, ?)",

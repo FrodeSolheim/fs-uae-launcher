@@ -44,8 +44,8 @@ class Amiga(object):
             "subtitle": "1.3 ROM, 512 KB \"Slow\" RAM",
             # "subtitle": "1.3 ROM, 512 KB  RAM",
             "cd_based": False,
-            # "kickstarts": A500_KICKSTARTS,
-            "kickstarts": ["0123456789012345678901234567890123456789"],
+            "kickstarts": A500_KICKSTARTS,
+            # "kickstarts": ["0123456789012345678901234567890123456789"],
 
             "ext_roms": [],
             "defaults": {

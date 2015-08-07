@@ -26,9 +26,9 @@ elif sys.argv[0].endswith("fs-game-center"):
 else:
     app = "fs-uae-launcher"
 
+
 def main():
-    version = "2.5.34dev2"
-    series = "devel"
+    version = "2.5.36dev"
 
     # if "--fs-uae-workspace=real" in sys.argv:
     #     try:
@@ -46,8 +46,6 @@ def main():
             key = key.replace("-", "_")
             if key == "fake_version":
                 version = value
-            elif key == "fake_series":
-                series = value
 
     from fsgs.FSGSDirectories import FSGSDirectories
     FSGSDirectories.initialize()
@@ -56,7 +54,7 @@ def main():
     socket.setdefaulttimeout(30.0)
 
     from fsbc.init import initialize_application
-    initialize_application(app, version=version, series=series)
+    initialize_application(app, version=version)
 
     if app == "fs-uae-netplay-server":
         from fs_uae_launcher.server.game import run_server

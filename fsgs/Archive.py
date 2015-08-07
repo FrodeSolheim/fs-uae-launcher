@@ -216,23 +216,15 @@ class Archive(object):
 
         try:
             self._handler = ZipHandler(self.path)
-        except Exception:
+        except Exception as e:
+            if ext == ".zip":
+                print(repr(e))
             try:
                 self._handler = LhaHandler(self.path)
-            except Exception:
-                traceback.print_exc()
+            except Exception as e:
+                if ext == ".lha":
+                    print(repr(e))
                 self._handler = NullHandler(self.path)
-
-        # name, ext = os.path.splitext(self.path)
-        # ext = ext.lower()
-        # print(name, ext)
-        # if ext == ".zip":
-        #     self._handler = ZipHandler(self.path)
-        # elif ext == ".rp9":
-        #     self._handler = ZipHandler(self.path)
-        # elif ext == ".lha" and supports_lha:
-        #     self._handler = LhaHandler(self.path)
-        # else:
         return self._handler
 
     def list_files(self):
@@ -242,9 +234,6 @@ class Archive(object):
             # result.append(os.path.join(self.path, item))
             result.append(self.path + "#/" + item)
         return result
-
-    # def is_archive(self):
-    #     return self.get_handler().is_archive()
 
     def exists(self, path):
         path, sub_path = self.split_path(path)

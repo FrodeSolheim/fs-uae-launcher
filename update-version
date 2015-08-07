@@ -4,8 +4,7 @@ import os
 import sys
 
 
-def update_version(path, version, version_3, series, strict=False,
-                   update_series=False):
+def update_version(path, version, version_3, strict=False):
     if not os.path.exists(path):
         print(path, "does not exist, not updating version")
         return
@@ -14,11 +13,16 @@ def update_version(path, version, version_3, series, strict=False,
     with open(path, "r", encoding="ISO-8859-1", newline="") as f:
         data = f.read()
 
+    version_upstream = version
+    if "--deb" in sys.argv:
+        version = version.replace("alpha", "~alpha")
+        version = version.replace("beta", "~beta")
+        version = version.replace("dev", "~dev")
+
     data = data.replace("9.8.7dummy3", version_3)
     data = data.replace("9.8.7dummy", version)
+    data = data.replace("9.8.7upstream", version_upstream)
     data = data.replace("9.8.7", version_3 if strict else version)
-    if update_series:
-        data = data.replace("unknown", series)
     with open(path, "w", encoding="ISO-8859-1", newline="") as f:
         f.write(data)
 
@@ -39,13 +43,8 @@ def main():
         parts[i] = p
     version_3 = ".".join(parts)
 
-    with open("SERIES", "r", encoding="ISO-8859-1", newline="") as f:
-        series = f.read().strip()
-
-    update_version(
-        sys.argv[1], version, version_3, series,
-        update_series=("--update-series" in sys.argv),
-        strict=("--strict" in sys.argv))
+    update_version(sys.argv[1], version, version_3,
+                   strict=("--strict" in sys.argv))
 
 
 if __name__ == "__main__":

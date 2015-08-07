@@ -545,7 +545,7 @@ options = {
 
     "launcher_theme": {
         "default": "fusion",
-        "description": N_("Theme for FS-UAE Launcher"),
+        "description": N_("FS-UAE Launcher Theme"),
         "type": "Choice",
         "values": [
             ("native", N_("Native")),

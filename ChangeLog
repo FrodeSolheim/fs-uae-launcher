@@ -1,6 +1,9 @@
 Version 2.5.35dev:
 
+* Added All Games / All Configurations to drop-down.
 * Nicer behavior when kickstart ROM for chosen model is missing.
+* Moved more warnings and information to status bar.
+* Fixed handling of downloadable games.
 * Use Fusion QT style on all platforms by default.
 * Default to Fusion Adwaita style variant when running under GNOME 3.
 * Show warning icon in settings if option is overriden by configuration.

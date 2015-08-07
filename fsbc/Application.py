@@ -12,7 +12,6 @@ class Application(object):
 
     app_name = ""
     app_version = ""
-    app_series = ""
     _instance = None
 
     @classmethod
@@ -49,14 +48,13 @@ class Application(object):
         cls._instance = instance
         fsbc.Settings.set_path(instance.get_settings_path())
 
-    def __init__(self, name="", version="", series=""):
+    def __init__(self, name="", version=""):
         # if Application.instance is not None:
         #     raise Exception("An application instance already exists")
         # Application.instance = self
         self.stop_flag = False
         self.name = name or Application.app_name
         self.version = version or Application.app_version
-        self.series = series or Application.app_series
         self.__settings = None
         self._data_dirs = None
         Application.set_instance(self)

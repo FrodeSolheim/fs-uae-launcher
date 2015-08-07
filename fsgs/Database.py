@@ -16,6 +16,8 @@ class Database(BaseDatabase):
 
     VERSION = VERSION
     RESET_VERSION = RESET_VERSION
+    GAME_LIST_GAMES = "cbc209ef-c93d-4db7-be52-c159bfec43dc"
+    GAME_LIST_CONFIGS = "106409c1-dc49-4601-8e47-8cf6780ddb3b"
 
     @classmethod
     def get_path(cls):
@@ -442,6 +444,16 @@ class Database(BaseDatabase):
     def find_games_new(self, search="", have=3, list_uuid="",
                        database_only=False):
         print("Database.find_games_new search = {0}".format(repr(search)))
+        non_database_only = False
+        if list_uuid == self.GAME_LIST_GAMES:
+            database_only = True
+            list_uuid = ""
+        elif list_uuid == self.GAME_LIST_CONFIGS:
+            non_database_only = True
+            list_uuid = ""
+        elif list_uuid:
+            have = 0
+
         cursor = self.internal_cursor()
         query = "SELECT DISTINCT uuid, name, platform, year, publisher, " \
                 "front_image, title_image, screen1_image, screen2_image, " \
@@ -528,6 +540,8 @@ class Database(BaseDatabase):
             args.append(list_uuid)
         if database_only:
             query += " AND path is NULL"
+        elif non_database_only:
+            query += " AND path is NOT NULL"
         query += " ORDER BY"
         if list_uuid:
             query += " game_list_game.position,"

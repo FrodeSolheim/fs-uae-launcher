@@ -50,12 +50,21 @@ class GameListSelector(fsui.Choice):
     def populate_list(self):
         database = Database.instance()
         self.game_lists = database.get_game_lists()
+        if len(self.game_lists) > 0:
+            self.game_lists.insert(0, ["", self.ITEM_SEPARATOR])
         self.game_lists.insert(
-            0, ["", gettext("All Games and Configs")])
+            0, [Database.GAME_LIST_GAMES, gettext("All Games")])
+        self.game_lists.insert(
+            0, [Database.GAME_LIST_CONFIGS, gettext("All Configurations")])
+        self.game_lists.insert(
+            0, ["", gettext("All Games and Configurations")])
 
         self.clear()
         for item in self.game_lists:
-            self.add_item(item[1])
+            list_name = item[1]
+            if list_name == "Favorites":
+                list_name = gettext("Favorites")
+            self.add_item(list_name)
 
     def get_selected_list_uuid(self):
         index = self.get_index()

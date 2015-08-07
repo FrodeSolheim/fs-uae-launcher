@@ -98,14 +98,14 @@ class SettingsDialog(PagedDialog):
             gettext("Maintenance"), MaintenanceSettingsPage,
             fsui.Icon("maintenance", "pkg:fs_uae_workspace"))
         self.add_page(
-            gettext("Advanced Settings"), AdvancedSettingsPage,
-            fsui.Icon("settings", "pkg:fs_uae_workspace"))
-        self.add_page(
             "WHDLoad", WHDLoadSettingsPage,
             fsui.Icon("blank", "pkg:fs_uae_launcher"))
         self.add_page(
             gettext("Experimental Features"), ExperimentalFeaturesPage,
             fsui.Icon("blank", "pkg:fs_uae_launcher"))
+        self.add_page(
+            gettext("Advanced Settings"), AdvancedSettingsPage,
+            fsui.Icon("settings", "pkg:fs_uae_workspace"))
 
         last_index = self.get_page_index_by_title(
             Settings.get("last_settings_page"))

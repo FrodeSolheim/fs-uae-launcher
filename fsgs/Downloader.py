@@ -12,8 +12,7 @@ class Downloader(object):
     @classmethod
     def check_terms_accepted(cls, download_file, download_terms):
         print("check_terms_accepted", download_file, download_terms)
-        uuid = str(uuid5(
-            NAMESPACE_URL, (download_file + download_terms).encode("UTF-8")))
+        uuid = str(uuid5(NAMESPACE_URL, download_file + download_terms))
         path = cls.get_cache_path(uuid)
         print("check_terms_accepted", path)
         return os.path.exists(path)
@@ -21,8 +20,7 @@ class Downloader(object):
     @classmethod
     def set_terms_accepted(cls, download_file, download_terms):
         print("set_terms_accepted", repr(download_file), repr(download_terms))
-        uuid = str(uuid5(
-            NAMESPACE_URL, (download_file + download_terms).encode("UTF-8")))
+        uuid = str(uuid5(NAMESPACE_URL, download_file + download_terms))
         path = cls.get_cache_path(uuid)
         print("set_terms_accepted", path)
         with open(path, "wb") as _:
