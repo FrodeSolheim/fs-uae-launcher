@@ -2,6 +2,7 @@ Version 2.5.37dev:
 
 * Fixed bug in login window, added close buttons to login/logout.
 * Fixed OAGD.net locker uploader (really, this time).
+* Added new logging options panel to settings dialog.
 
 Version 2.5.35dev:
 

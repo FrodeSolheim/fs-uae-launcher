@@ -33,6 +33,7 @@ class Option(object):
     DATABASE_USERNAME = "database_username"
     DEVICE_ID = "device_id"
     DONGLE_TYPE = "dongle_type"
+    FADE_IN_DURATION = "fade_in_duration"
     FLOPPY_DRIVE_COUNT = "floppy_drive_count"
     FLOPPY_DRIVE_SPEED = "floppy_drive_speed"
     FLOPPY_DRIVE_VOLUME = "floppy_drive_volume"
@@ -53,6 +54,7 @@ class Option(object):
     KICKSTART_SETUP = "kickstart_setup"
     LAUNCHER_THEME = "launcher_theme"
     LOAD_STATE = "load_state"
+    LOG_INPUT = "log_input"
     LOG_QUERY_PLANS = "log_query_plans"
     LOW_LATENCY_VSYNC = "low_latency_vsync"
     MIDDLE_CLICK_UNGRAB = "middle_click_ungrab"
@@ -364,6 +366,12 @@ options = {
         ]
     },
 
+    "fade_in_duration": {
+        "default": "0",
+        "description": N_("Fade-in Duration on Start"),
+        "type": "",
+    },
+
     "floppy_drive_count": {
         "default": "",
         "description": N_("Floppy Drive Count"),
@@ -562,6 +570,12 @@ options = {
         "type": "integer",
         "min": 1,
         "max": 9,
+    },
+
+    "log_input": {
+        "default": "0",
+        "description": N_("Log Input Events"),
+        "type": "boolean",
     },
 
     "log_query_plans": {

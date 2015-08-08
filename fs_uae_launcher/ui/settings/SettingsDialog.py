@@ -14,6 +14,7 @@ from .GameDatabaseSettingsPage import GameDatabaseSettingsPage
 from .joystick import JoystickSettingsPage
 from .keyboard import KeyboardSettingsPage
 from .language import LanguageSettingsPage
+from .logging import LoggingSettingsPage
 from .maintenance import MaintenanceSettingsPage
 from .mouse import MouseSettingsPage
 from .NetplaySettingsPage import NetplaySettingsPage
@@ -99,6 +100,9 @@ class SettingsDialog(PagedDialog):
             fsui.Icon("maintenance", "pkg:fs_uae_workspace"))
         self.add_page(
             "WHDLoad", WHDLoadSettingsPage,
+            fsui.Icon("blank", "pkg:fs_uae_launcher"))
+        self.add_page(
+            gettext("Logging"), LoggingSettingsPage,
             fsui.Icon("blank", "pkg:fs_uae_launcher"))
         self.add_page(
             gettext("Experimental Features"), ExperimentalFeaturesPage,
