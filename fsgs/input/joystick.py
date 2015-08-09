@@ -1,6 +1,5 @@
 import os
 import time
-import subprocess
 import threading
 from fsbc.system import windows, macosx
 
@@ -17,8 +16,8 @@ class Joystick(object):
             # let the server periodically start a joystick polling app.
             return hash("FIXME")
 
-            # # using an external app here, because windows seems to cache device
-            # # information while the program is running...
+            # # using an external app here, because windows seems to cache
+            # # device information while the program is running...
             #
             # path = os.path.join(pyapp.plugins.get_plugin(
             #         'no.fengestad.input.platform').get_bin_dir(),

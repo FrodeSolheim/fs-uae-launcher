@@ -27,7 +27,7 @@ from .qt.Icon import Icon
 from .qt.Image import Image
 from .qt.ImageButton import ImageButton
 from .qt.ImageView import ImageView
-from .qt.label import Label, URLLabel, MultiLineLabel
+from .qt.label import Label, PlainLabel, URLLabel, MultiLineLabel
 from .qt.legacydialog import LegacyDialog
 from .qt.ListView import ListView
 from .qt.Menu import Menu

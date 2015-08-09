@@ -13,6 +13,20 @@ class Label(fsui.qt.QLabel, Widget):
         self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
         self.setOpenExternalLinks(True)
 
+        # FIXME: focusPolicy()
+        # FIXME: make Label more plain, and rather make a InteractiveLabel
+        # descendant or something like that
+
+    def set_text(self, label):
+        self.setText(label)
+
+
+class PlainLabel(fsui.qt.QLabel, Widget):
+
+    def __init__(self, parent, label):
+        fsui.qt.QLabel.__init__(self, label, parent.get_container())
+        self.init_widget(parent)
+
     def set_text(self, label):
         self.setText(label)
 

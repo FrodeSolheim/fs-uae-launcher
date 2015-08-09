@@ -664,7 +664,7 @@ options = {
     },
 
     "stereo_separation": {
-        "default": "100",
+        "default": "70",
         "description": N_("Stereo Separation"),
         "type": "choice",
         "values": [

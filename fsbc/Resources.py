@@ -23,7 +23,10 @@ class Resources(object):
         #     return resource_stream(self.package, Paths.encode(resource_name))
         # except Exception:
         #     return open(self.path(resource), "rb")
-        return open(self.path(resource), "rb")
+        try:
+            return open(self.path(resource), "rb")
+        except FileNotFoundError:
+            raise LookupError(resource)
 
     def path(self, resource):
         print("looking up resource", resource)
