@@ -50,6 +50,10 @@ class DeviceManager:
         return cls.joystick_data[device][3]
 
     @classmethod
+    def joystick_guid(cls, device):
+        return cls.joystick_data[device][4]
+
+    @classmethod
     def init(cls):
         if cls.initialized:
             return
@@ -83,7 +87,7 @@ class DeviceManager:
         print("finding connected joysticks")
         try:
             p = FSUAEDeviceHelper.start_with_args(
-                ["list"], stdout=subprocess.PIPE)
+                ["--list"], stdout=subprocess.PIPE)
             joysticks = p.stdout.read()
             p.wait()
         except Exception:
@@ -107,7 +111,9 @@ class DeviceManager:
                 hats = int(parts[3])
                 axes = int(parts[5])
                 balls = int(parts[7])
-                cls.joystick_data[last_joystick] = buttons, hats, axes, balls
+                guid = parts[9]
+                cls.joystick_data[last_joystick] = \
+                    buttons, hats, axes, balls, guid
 
                 continue
             device_type, name = line.split(" ", 1)
@@ -136,7 +142,8 @@ class DeviceManager:
             cls.device_ids.append("Dummy Joystick")
             cls.device_names.append("Dummy Joystick")
             cls.device_types.append("joystick")
-            cls.joystick_data["Dummy Joystick"] = 1, 0, 2, 0
+            cls.joystick_data["Dummy Joystick"] = \
+                1, 0, 2, 0, "c6c1bc29b0124fe6890757bb09ef006f"
 
     @classmethod
     def get_joystick_names(cls):

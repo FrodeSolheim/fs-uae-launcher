@@ -1,3 +1,17 @@
+Version 2.5.38dev:
+
+* Updated joystick configuration dialog.
+* Save SDL 2.0 GUIDs (and more info) in the controller configurations.
+* Configuration dialog: load builtin config if no user config exists.
+* Imported updated translations from crowdin.com.
+
+Version 2.5.37dev:
+
+* Fixed bug in login window, added close buttons to login/logout.
+* Fixed OAGD.net locker uploader (really, this time).
+* Added new logging options panel to settings dialog.
+* Imported updated translations from crowdin.com.
+
 Version 2.5.35dev:
 
 * Added All Games / All Configurations to drop-down.

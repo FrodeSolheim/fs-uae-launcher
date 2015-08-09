@@ -4,6 +4,7 @@ from .Widget import Widget
 
 class Choice(QComboBox, Widget):
 
+    changed = Signal()
     item_selected = Signal(int)
     ITEM_SEPARATOR = "---"
 
@@ -39,6 +40,7 @@ class Choice(QComboBox, Widget):
             # print("Choice.__current_index_changed")
             index = self.currentIndex()
             self.item_selected.emit(index)
+            self.changed.emit()
             return self.on_change()
 
     def get_index(self):

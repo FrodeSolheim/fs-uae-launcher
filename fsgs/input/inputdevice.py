@@ -116,6 +116,20 @@ class InputDevice(object):
         else:
             raise Exception("unknown input device type " + repr(self.type))
 
+    @classmethod
+    def get_builtin_config_for_device_guid(cls, guid):
+        return Resources("fsgs").stream(
+            "res/input/" + guid + ".fs-uae-controller")
+
+    # @classmethod
+    # def get_builtin_config_file_for_device_guid(cls, guid):
+    #     try:
+    #         path = Resources("fsgs").path(
+    #             "res/input/" + guid + ".fs-uae-controller")
+    #     except LookupError:
+    #         return None
+    #     return path
+
     @staticmethod
     @memoize
     def get_config_files():

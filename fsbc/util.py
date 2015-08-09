@@ -127,6 +127,10 @@ def compare_versions(a: Union[Version, str], b: Union[Version, str]):
     >>> compare_versions("5.9.1.1", "5.9.2dev")
     -1
     """
+    # >>> compare_versions("2.6.0beta1", "2.6.0beta1.1")
+    # -1
+    # >>> compare_versions("2.6.0beta2", "2.6.0beta1.1")
+    # 1
     if isinstance(a, Version):
         pass
     elif isinstance(a, str):

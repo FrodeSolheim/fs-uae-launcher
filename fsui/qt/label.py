@@ -7,19 +7,27 @@ class Label(fsui.qt.QLabel, Widget):
 
     def __init__(self, parent, label):
         fsui.qt.QLabel.__init__(self, label, parent.get_container())
-        # self._widget = fsui.qt.QLabel(label, parent.get_container())
-        # Widget.__init__(self, parent)
         self.init_widget(parent)
 
-        # self._widget.setTextFormat(fsui.qt.Qt.RichText)
-        # self._widget.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
-        # self._widget.setOpenExternalLinks(True)
         self.setTextFormat(fsui.qt.Qt.RichText)
         self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
         self.setOpenExternalLinks(True)
 
+        # FIXME: focusPolicy()
+        # FIXME: make Label more plain, and rather make a InteractiveLabel
+        # descendant or something like that
+
     def set_text(self, label):
-        # self._widget.setText(label)
+        self.setText(label)
+
+
+class PlainLabel(fsui.qt.QLabel, Widget):
+
+    def __init__(self, parent, label):
+        fsui.qt.QLabel.__init__(self, label, parent.get_container())
+        self.init_widget(parent)
+
+    def set_text(self, label):
         self.setText(label)
 
 
@@ -32,11 +40,11 @@ class URLLabel(Label):
 
     def set_text(self, label):
         self._label = label
-        self._widget.setText(self._fix_label())
+        self.setText(self._fix_label())
 
     def set_url(self, url):
         self._url = url
-        self._widget.setText(self._fix_label())
+        self.setText(self._fix_label())
 
     def _fix_label(self):
         url = unquote_plus(self._url)

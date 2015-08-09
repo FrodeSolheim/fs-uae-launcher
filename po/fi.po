@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
-"Report-Msgid-Bugs-To: fs-uae@fengestad.no\n"
-"POT-Creation-Date: 2015-04-02 15:20+0200\n"
-"PO-Revision-Date: 2015-04-11 02:57-0400\n"
+"Report-Msgid-Bugs-To: frode@fs-uae.net\n"
+"POT-Creation-Date: 2015-08-09 18:14+0200\n"
+"PO-Revision-Date: 2015-08-09 12:15-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -52,18 +52,12 @@ msgstr "ADF levykekuvan luoja"
 msgid "Abort"
 msgstr "Keskeytä"
 
-msgid "About OAGD.net"
-msgstr "Tietoja OAGD.net:stä"
-
 #, python-brace-format
 msgid "About {name}"
 msgstr "Tietoja {name}sta"
 
 msgid "Accept"
 msgstr "Hyväksy"
-
-msgid "Accurate"
-msgstr "Tarkka"
 
 msgid "Add"
 msgstr "Lisää"
@@ -80,6 +74,12 @@ msgstr "Lisää useita CD-ROM levyjä kerralla"
 msgid "Add Multiple Floppies at Once"
 msgstr "Lisää useita levykkeitä kerralla"
 
+msgid "Additional Configuration"
+msgstr "Lisäasetukset"
+
+msgid "Adult-Themed Games"
+msgstr "Aikuisviihde aiheiset pelit"
+
 msgid "Advanced"
 msgstr "Lisäasetukset"
 
@@ -95,11 +95,14 @@ msgstr "Näytön lisäasetukset"
 msgid "All"
 msgstr "Kaikki"
 
-msgid "All games and configurations"
-msgstr "Kaikki pelit ja kokoonpanomääritykset"
+msgid "All Configurations"
+msgstr "Kaikki kokoonpanot"
 
-msgid "All games in the database"
-msgstr "Kaikki tietokannan pelit"
+msgid "All Games"
+msgstr "Kaikki pelit"
+
+msgid "All Games and Configurations"
+msgstr "Kaikki pelit ja kokoonpanot"
 
 msgid "Also synchronize emulation with display when possible (smooth scrolling)"
 msgstr "Synkronoi emulaattori myös näytön kanssa jos mahdollista (pehmeä vieritys)"
@@ -115,6 +118,12 @@ msgstr "Amigan malli"
 
 msgid "An Error Occurred"
 msgstr "Tapahtui virhe"
+
+msgid "Appearance"
+msgstr "Ulkoasu"
+
+msgid "Appearance Preferences"
+msgstr "Ulkoasun asetukset"
 
 msgid "Approximate A500/A1200 or cycle-exact"
 msgstr "Likimääräinen A500/A1200 tai täsmällinen jaksotus (cycle-exact)"
@@ -152,8 +161,23 @@ msgstr "Määritä Z2 fast - muisti automaattisesti"
 msgid "Automatic"
 msgstr "Automaattinen"
 
+msgid "Automatic Download"
+msgstr "Automaattinen lataus"
+
+msgid "Available Games"
+msgstr "Saatavilla olevat pelit"
+
 msgid "Available Kickstart Versions"
 msgstr "Saatavilla olevat Kickstart versiot"
+
+msgid "Available and Auto-Downloadable Games"
+msgstr "Saatavilla- ja automaattisesti ladattavissa olevat pelit"
+
+msgid "Available and Downloadable Games"
+msgstr "Saatavilla- ja ladattavissa olevat pelit"
+
+msgid "Blizzard SCSI Kit"
+msgstr "Blizzard SCSI paketti"
 
 msgid "Browse"
 msgstr "Selaa"
@@ -167,14 +191,11 @@ msgstr "Selaa kansio"
 msgid "Buffer swap only"
 msgstr "Vain puskurinvaihto (buffer swap)"
 
-msgid "Built-in TCP/IP Stack"
-msgstr "Sisäänrakennettu TCP/IP pino"
-
-msgid "Built-in TCP/IP Stack (bsdsocket.library)"
-msgstr "Sisäänrakennettu TCP/IP pino (bsdsocket.library)"
-
 msgid "CD-ROM Drive"
 msgstr "CD-ROM asema"
+
+msgid "CD-ROM Drive Count"
+msgstr "CD-ROM asemien määrä"
 
 msgid "CD-ROM Drives"
 msgstr "CD-ROM asemat"
@@ -184,6 +205,15 @@ msgstr "CD-ROM:t"
 
 msgid "CD32 Pad"
 msgstr "CD32 Pad-ohjain"
+
+msgid "CPU"
+msgstr "Suoritin"
+
+msgid "CPU Accelerator Board"
+msgstr "Suorittimen kiihdytinkortti"
+
+msgid "CPU Accelerator Board RAM"
+msgstr "Suorittimen kiihdytinkortin RAM-muisti"
 
 msgid "Cancel"
 msgstr "Peruuta"
@@ -212,8 +242,11 @@ msgstr "Valitse kovalevy"
 msgid "Choose Kickstart ROM"
 msgstr "Valitse Kickstart ROM"
 
+msgid "Choose Type"
+msgstr ""
+
 msgid "Choose what folders you want to scan for Amiga files"
-msgstr "Valitset mistä kansioista haluat skannata Amiga-tiedostoja"
+msgstr "Valitse kansiot mistä Amiga-tiedostoja etsitään"
 
 msgid "Cleaning up..."
 msgstr "Siivotaan..."
@@ -227,11 +260,11 @@ msgstr "Klikkaa 'Skannaus' nappia skannataksesi uudelleen"
 msgid "Click 'Scan' button to start scan"
 msgstr "Klikkaa 'Skannaus' nappia käynnistääksesi skannauksen"
 
-msgid "Click here to download"
-msgstr "Lataa klikkaamalla tästä"
+msgid "Click to Download Game"
+msgstr "Napsauta ladataksesi pelin"
 
-msgid "Click here to import kickstarts"
-msgstr "Tuo Kickstart ROM:t klikkaamalla tästä"
+msgid "Click to Import Kickstart ROMs"
+msgstr "Napsauta tuodaksesi Kickstart ROM:it"
 
 msgid "Close"
 msgstr "Sulje"
@@ -251,14 +284,11 @@ msgstr "Kokoonpano"
 msgid "Configuration Browser"
 msgstr "Kokoonpanoselain"
 
-msgid "Configuration Warning"
-msgstr "Kokoonpanovaroitus"
-
 msgid "Configurations"
 msgstr "Kokoonpanomääritykset"
 
 msgid "Configure joysticks and set preferred joystick devices"
-msgstr "Määritä peliohjaimet ja valitse ensisijaisetohjainlaitteet"
+msgstr "Määritä peliohjaimet ja valitse ensisijaiset ohjainlaitteet"
 
 msgid "Connect"
 msgstr "Yhdistä"
@@ -267,8 +297,10 @@ msgid "Controls how lines are doubled and interlaced modes are handled"
 msgstr "Määrittää kuinka näyttöjuovat tuplataan ja lomitetut tilat käsitellään"
 
 #, python-brace-format
-msgid "Copy {0}\nto {1}"
-msgstr "Kopioi {0}\nkohteeseen {1}"
+msgid "Copy {0}\n"
+"to {1}"
+msgstr "Kopioi {0}\n"
+"kohteeseen {1}"
 
 msgid "Could not open file for writing"
 msgstr "Tiedostoa ei voi avata kirjoitusta varten"
@@ -303,8 +335,8 @@ msgstr "Mukautettu IRC palvelinosoite"
 msgid "Custom Joystick Port"
 msgstr "Mukautettu peliohjainportti"
 
-msgid "Custom game database server address"
-msgstr "Mukautettu pelitietokantapalvelimen osoite"
+msgid "Database Games"
+msgstr "Tietokannan pelit"
 
 msgid "Default"
 msgstr "Oletus"
@@ -312,6 +344,10 @@ msgstr "Oletus"
 #, python-brace-format
 msgid "Default ({0})"
 msgstr "Oletus ({0})"
+
+#, python-brace-format
+msgid "Default - {0}"
+msgstr "Oletus - {0}"
 
 msgid "Defragment Databases"
 msgstr "Eheytä tietokannat"
@@ -326,11 +362,20 @@ msgstr "Eheytetään {name}"
 msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
 msgstr "Riippuen käyttöjärjestelmästäsi ja OpenGL ajureista, synkronointi voi käyttää turhan paljon suoritintehoa (erityisesti joissain Linuxeissa). Voit testata eri synkronointivaihtoehtoja parantaaksesi suorituskykyä."
 
+msgid "Deprecated Options"
+msgstr "Vanhentuneet asetukset"
+
 msgid "Device ID used with OAGD.net authentication"
 msgstr "Laitetunniste (ID) käytettäväksi OAGD.net käyttäjätodennukseen"
 
+msgid "Digital Joystick"
+msgstr ""
+
 msgid "Directory for WHDLoad.key file (if you have it):"
 msgstr "WHDLoad.key tiedoston hakemisto (jos sinulla on se):"
+
+msgid "Disabled"
+msgstr "Pois käytöstä"
 
 msgid "Disconnect"
 msgstr "Irrota"
@@ -375,7 +420,7 @@ msgid "Double Fields+ / Double Frames"
 msgstr "Kaksoiskentät+ / Kaksoiskehykset"
 
 msgid "Double-click a device entry to configure it (map joystick buttons)."
-msgstr "Tuplaklikkaa laitemerkintää muokataksesi sitä (määritä peliohjaimen napit)."
+msgstr "Tuplaklikkaa laitemerkintää muokataksesi (määritä peliohjaimen napit)."
 
 msgid "Download Game Manually"
 msgstr "Lataa peli käsin"
@@ -398,6 +443,9 @@ msgstr "Sähköposti:"
 msgid "Eject"
 msgstr "Poista levy"
 
+msgid "Empty Floppy Drive Volume"
+msgstr "Tyhjän levykeaseman äänentaso"
+
 msgid "Enable a real time clock (RTC) module."
 msgstr "Aktivoi reaaliaikakello (RTC) moduuli."
 
@@ -414,13 +462,28 @@ msgid "Enable online database support (requires restart)"
 msgstr "Aktivoi online-pelitietokannan tuki (vaatii uudelleenkäynnistyksen)"
 
 msgid "Enable/disable fastest possible CPU speed"
-msgstr "Nopein mahdollinen suoritinnopeus käytössä / pois käytöstä"
+msgstr "Nopein mahdollinen suoritinnopeus päällä / pois päältä"
 
 msgid "Enable/disable use of OAGD.net locker"
 msgstr "OAGD.net tallelokero käytössä / pois käytöstä"
 
-msgid "Enable/disable use of SNES database"
-msgstr "SNES tietokanta käytössä / pois käytöstä"
+msgid "Enable/disable use of the Arcade game database"
+msgstr "Arcade pelitietokanta käytössä / pois käytöstä"
+
+msgid "Enable/disable use of the DOS game database"
+msgstr "DOS pelitietokanta käytössä / pois käytöstä"
+
+msgid "Enable/disable use of the Game Boy Advance database"
+msgstr "Game Boy Advance pelitietokanta käytössä / pois käytöstä"
+
+msgid "Enable/disable use of the Nintendo (NES) database"
+msgstr "Nintendo (NES) tietokanta käytössä / pois käytöstä"
+
+msgid "Enable/disable use of the Super Nintendo database"
+msgstr "Super Nintendo tietokanta käytössä / pois käytöstä"
+
+msgid "Enabled"
+msgstr "Käytössä"
 
 msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
 msgstr "Seuraavan valinnan laittaminen päälle estää näytön repeilemisen, mutta käyttää myös enemmän suoritintehoa. Ohjainten syöttöviive voi olla hieman korkeampi."
@@ -444,13 +507,22 @@ msgid "FIXME"
 msgstr "KORJAATÄMÄ"
 
 msgid "FS-UAE   Arcade"
-msgstr ""
+msgstr "FS-UAE Arcade"
 
 msgid "FS-UAE Launcher Settings"
 msgstr "FS-UAE Käynnistimen asetukset"
 
+msgid "FS-UAE Launcher Theme"
+msgstr "FS-UAE Launcherin teema"
+
+msgid "Fade-in Duration on Start"
+msgstr ""
+
 msgid "Fastest possible"
 msgstr "Nopein mahdollinen"
+
+msgid "Favorites"
+msgstr "Suosikit"
 
 #, python-brace-format
 msgid "Fetching database entries ({0})"
@@ -485,9 +557,6 @@ msgstr "Suodatinasetukset"
 msgid "Filters"
 msgstr "Suodattimet"
 
-msgid "Filters:"
-msgstr "Suodattimet:"
-
 msgid "Finding files eligible for OAGD.net Locker"
 msgstr "Etsitään kelvollisia tiedostoja OAGD.net:iin"
 
@@ -500,14 +569,20 @@ msgstr "Ensimmäinen renderöitävä juova (PAL)"
 msgid "Floppies"
 msgstr "Levykkeet"
 
+msgid "Floppy Drive Count"
+msgstr "Levykeasemien määrä"
+
 msgid "Floppy Drive Sound Emulation"
 msgstr "Levykeaseman ääniemulointi"
 
+msgid "Floppy Drive Speed"
+msgstr "Levykeaseman nopeus"
+
+msgid "Floppy Drive Volume"
+msgstr "Levykeaseman äänentaso"
+
 msgid "Floppy Drives"
 msgstr "Levykeasemat"
-
-msgid "Floppy drive volume"
-msgstr "Levykeaseman äänitaso"
 
 msgid "Force Zorro-III address space at 0x10000000"
 msgstr "Pakota Zorro-III osoitealueeksi 0x10000000"
@@ -530,6 +605,9 @@ msgstr ""
 msgid "Game Database"
 msgstr "Pelitietokanta"
 
+msgid "Game Database Server"
+msgstr "Pelitietokannan serveri"
+
 msgid "Game Database Settings"
 msgstr "Pelitietokannan asetukset"
 
@@ -545,20 +623,23 @@ msgstr "Pelitietokannan salasana"
 msgid "Game database user name"
 msgstr "Pelitietokannan käyttäjänimi"
 
-msgid "Games you have and all downloadable games"
-msgstr "Sinulla olevat ja kaikki ladattavissa olevat pelit"
+msgid "Gamepad"
+msgstr ""
 
-msgid "Games you have and automatically downloadable"
-msgstr "Sinulla olevat ja automaattisesti ladattavissa olevat pelit"
+msgid "Grab Input on Click"
+msgstr "Kaappaa syötelaitteet napsautuksella"
+
+msgid "Grab Input on FS-UAE Startup"
+msgstr "Kaappaa syötelaitteet FS-UAE:n käynnistyessä"
 
 msgid "Grab keyboard when input is grabbed"
 msgstr "Kaappaa näppäimistö syöttölaitteiden kaappaamisen yhteydessä"
 
-msgid "Grab mouse and keyboard input when FS-UAE starts"
-msgstr "Kaappaa hiiri ja näppäimistö FS-UAE:n käynnistyksen yhteydessä"
+msgid "Graphics Card"
+msgstr "Grafiikkakortti"
 
-msgid "Grab mouse and keyboard input when clicking on FS-UAE window"
-msgstr "Kaappaa hiiri ja näppäimistö kun FS-UAE ikkunaa klikataan"
+msgid "Graphics Card VRAM"
+msgstr "Grafiikkakortin VRAM"
 
 msgid "HDF - Partitionable Hard Drive Image (RDB)"
 msgstr "HDF - Monipartitioinen kovalevytiedosto (RDB)"
@@ -578,11 +659,23 @@ msgstr "Kovalevyt"
 msgid "Hardware"
 msgstr "Rauta"
 
-msgid "Hardware Options"
-msgstr "Rautavalinnat"
+msgid "High"
+msgstr "Korkea"
 
 msgid "Home"
 msgstr "Kotinäyttö"
+
+msgid "Host Key BACKSLASH"
+msgstr "Isäntäkoneen kenoviiva-näppäin (backslash)"
+
+msgid "Host Key EQUALS"
+msgstr "Isäntäkoneen yhtäkuin-näppäin (equals)"
+
+msgid "Host Key INSERT"
+msgstr "Isäntäkoneen lisäys-näppäin (insert)"
+
+msgid "Host Key LESS"
+msgstr "Isäntäkoneen pienempikuin-näppäin (less)"
 
 msgid "How to achieve perfectly smooth scrolling"
 msgstr "Kuinka saavuttaa täysin pehmeä näytönvieritys"
@@ -611,9 +704,6 @@ msgstr "Tuonti suoritettu"
 
 msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
 msgstr "Saavuttaaksesi todella pehmeän Amiga-grafiikan, täytyy seuraava valinta olla päällä, ja lisäksi näyttösi virkistystaajuuden tulee olla asetettuna arvoon 50Hz (PAL Amigalle) tai 60Hz (NTSC Amigalle)."
-
-msgid "Include adult-themed games"
-msgstr "Sisällytä aikuisille suunnatut pelit"
 
 msgid "Include built-in configurations"
 msgstr "Sisällytä sisäänrakennetut kokoonpanot"
@@ -648,6 +738,9 @@ msgstr "Peliohjainasetukset"
 msgid "Keep aspect ratio when scaling (do not stretch)"
 msgstr "Säilytä kuvasuhde skaalatessa (älä venytä)"
 
+msgid "Key Mapping"
+msgstr "Näppäinmääritykset"
+
 msgid "Keyboard"
 msgstr "Näppäimistö"
 
@@ -663,17 +756,14 @@ msgstr "Avainsana"
 msgid "Kickstart ROM"
 msgstr "Kickstart ROM"
 
-msgid "Kickstart ROMs are missing"
-msgstr "Kickstart ROM:t puuttuvat"
-
 msgid "Kickstart import task started"
 msgstr "Kickstart ROM:n tuonti aloitettu"
 
-msgid "Language"
-msgstr "Kieli"
-
 msgid "Language Preference"
 msgstr "Haluttu kieli"
+
+msgid "Language:"
+msgstr "Kieli:"
 
 msgid "Launch FS-UAE"
 msgstr "Käynnistä FS-UAE"
@@ -684,11 +774,8 @@ msgstr "Käynnistetään FS-UAE"
 msgid "Launching Game"
 msgstr "Peli käynnistetään"
 
-msgid "Least Accurate"
-msgstr "Epätarkka"
-
-msgid "Less Accurate"
-msgstr "Vähemmän tarkka"
+msgid "Left"
+msgstr "Vasen"
 
 msgid "Letter"
 msgstr "Kirjain"
@@ -714,6 +801,9 @@ msgstr "Kirjaudu / Rekisteröidy"
 msgid "Log In to Your OAGD.net Account"
 msgstr "Kirjaudu sisään OAGD.net tunnuksellasi"
 
+msgid "Log Input Events"
+msgstr ""
+
 msgid "Log Out"
 msgstr "Kirjaudu ulos"
 
@@ -723,14 +813,14 @@ msgstr "Kirjaudu ulos sinsn OAGD.net tunnukseltasi"
 msgid "Log database query plans"
 msgstr "Kirjaa tietokantakyselyt logiin"
 
-msgid "Log in to enable online game DB"
-msgstr "Kirjaudu sisään käyttääksesi online-pelitietokantaa"
-
-msgid "Logged In"
-msgstr "Sisäänkirjautuneena"
+msgid "Logging"
+msgstr ""
 
 msgid "Logging in will enable the online game database and more"
 msgstr "Sisäänkirjautuminen mahdollistaa online-pelitietokannan ynnä muuta"
+
+msgid "Low"
+msgstr "Matala"
 
 msgid "Low latency video sync"
 msgstr "Matalaviiveinen näytön päivitys"
@@ -744,11 +834,14 @@ msgstr "Pääkokoonpanovalinnat"
 msgid "Main Menu"
 msgstr "Päävalikko"
 
-msgid "Main volume control"
+msgid "Main Volume"
 msgstr "Äänenvoimakkuus"
 
 msgid "Maintenance"
 msgstr "Huolto"
+
+msgid "Make:"
+msgstr ""
 
 msgid "Mark This Game Variant as Personal Favorite"
 msgstr "Merkitse tämä vaihtoehto pelistä suosikiksesi"
@@ -756,8 +849,20 @@ msgstr "Merkitse tämä vaihtoehto pelistä suosikiksesi"
 msgid "Media Swap List"
 msgstr "Median pikavaihtolista"
 
+msgid "Medium"
+msgstr "Keskitaso"
+
 msgid "Memory"
 msgstr "Muisti"
+
+msgid "Memory Configuration"
+msgstr "Muistikokoonpano"
+
+msgid "Middle Left"
+msgstr "Keski-vasen"
+
+msgid "Middle Right"
+msgstr "Keski-oikea"
 
 #, python-brace-format
 msgid "Miscellaneous functions to optimize {name}"
@@ -765,6 +870,18 @@ msgstr "Sekalaisia valintoja {name} optimointiin"
 
 msgid "Missing Files"
 msgstr "Puuttuvia tiedostoja"
+
+msgid "Missing Game Files"
+msgstr "Pelitiedostoja puuttuu"
+
+msgid "Model:"
+msgstr ""
+
+msgid "Monitor to display FS-UAE on (fullscreen)"
+msgstr "Näyttö missä FS-UAE näytetään (kokoruututilassa)"
+
+msgid "Motherboard Fast RAM"
+msgstr "Emolevyn Fast-muisti"
 
 msgid "Mouse"
 msgstr "Hiiri"
@@ -775,11 +892,17 @@ msgstr "Hiiriasetukset"
 msgid "Mouse Settings"
 msgstr "Hiiren asetukset"
 
-msgid "Mouse speed (%)"
+msgid "Mouse Speed (%)"
 msgstr "Hiiren nopeus (%)"
+
+msgid "Multi-Select..."
+msgstr "Usean kohteen valinta..."
 
 msgid "N/A"
 msgstr "Ei mitään"
+
+msgid "Native"
+msgstr "Natiivi"
 
 msgid "Net Play"
 msgstr "Verkkopeli"
@@ -808,14 +931,8 @@ msgstr "Ei isäntälaitetta"
 msgid "No Last Played"
 msgstr "Ei viimeksi pelattu-tietoa"
 
-msgid "No Protection"
-msgstr "Ei suojausta"
-
 msgid "No extended kickstart found for this model. Try 'scan' function."
 msgstr "Laajennettua Kickstartia ei löytynyt tälle mallille. Yritä 'Skannaus' toimintoa."
-
-msgid "No kickstart found for this model. Use the 'Import Kickstarts' function from the menu."
-msgstr "Kickstart ROM:a ei löytynyt tälle mallille. Käytä valikon 'Tuo Kickstart ROM' - toimintoa."
 
 msgid "No scan in progress"
 msgstr "Ei skannausta käynnissä"
@@ -847,47 +964,27 @@ msgstr "Pois"
 msgid "On"
 msgstr "Päällä"
 
-msgid "Only games you have"
-msgstr "Vain sinulla olevat pelit"
-
 msgid "OpenGL Settings"
 msgstr "OpenGL asetukset"
+
+#, python-brace-format
+msgid "Option {name} is overridden by current configuration"
+msgstr "Valinta {name} on korvattu nykyisellä asetuksella."
 
 msgid "Options for WHDLoad support in FS-UAE Launcher"
 msgstr "Valinnat FS-UAE Launcherin WHDLoad - tuelle"
 
+msgid "Other"
+msgstr ""
+
 msgid "Override Installed Memory"
 msgstr "Säädä käsin asennetun muistin määrä"
-
-msgid "Override the amount of graphics memory on the graphics card"
-msgstr "Säädä grafiikkakortin grafiikkamuistin määrä käsin"
 
 msgid "Parallel Port Joysticks"
 msgstr "Rinnakkaisportti-peliohjaimet"
 
 msgid "Password:"
 msgstr "Salasana:"
-
-msgid "Picasso II (Zorro II)"
-msgstr ""
-
-msgid "Picasso II+ (Zorro II)"
-msgstr ""
-
-msgid "Picasso IV (Auto)"
-msgstr ""
-
-msgid "Picasso IV (Zorro II)"
-msgstr ""
-
-msgid "Picasso IV (Zorro III)"
-msgstr ""
-
-msgid "Picasso96 Support"
-msgstr "Picasso96 - tuki"
-
-msgid "Picasso96 Support (uaegfx.card)"
-msgstr "Picasso96 - tuki (uaegfx.card)"
 
 msgid "Platform"
 msgstr "Alusta"
@@ -925,18 +1022,15 @@ msgstr "Siivotaan vanhoja merkintöjä..."
 msgid "Quit"
 msgstr "Lopeta"
 
+msgid "ROM and RAM"
+msgstr "ROM ja RAM muistit"
+
 #, python-brace-format
 msgid "Re-trying in {0} seconds..."
 msgstr "Yritetään uudelleen{0} sekunnin kuluttua..."
 
 msgid "Read more"
 msgstr "Lue lisää"
-
-msgid "Refresh Game Configurations from Online Database"
-msgstr "Virkistä pelikokoonpanot online-tietokannasta"
-
-msgid "Refresh Game Database"
-msgstr "Virkistä pelitietokanta"
 
 msgid "Refresh List of Connected Joystick Devices"
 msgstr "Virkistä lista yhdistetyistä peliohjaimista"
@@ -976,6 +1070,12 @@ msgstr "Palautetaan muutokset..."
 msgid "Retrying last operation (attempt {0})"
 msgstr "Yritetään viimeistä toimintoa uudelleen (yrityskerta {0})"
 
+msgid "Right"
+msgstr "Oikea"
+
+msgid "Save"
+msgstr ""
+
 msgid "Save Configuration"
 msgstr "Tallenna kokoonpano"
 
@@ -999,9 +1099,6 @@ msgstr "Skannaus & indeksointi"
 
 msgid "Scan Downloads"
 msgstr "Skannaa lataukset"
-
-msgid "Scan Files and Configurations"
-msgstr "Skannaa tiedostoja ja kokoonpanoja"
 
 msgid "Scan Settings"
 msgstr "Skannausasetukset"
@@ -1066,9 +1163,6 @@ msgstr "Valitse lista"
 msgid "Select Multiple CD-ROMs"
 msgstr "Valitse useita CD-ROM:eja "
 
-msgid "Select Multiple Files..."
-msgstr "Valitse useita tiedostoja..."
-
 msgid "Select Multiple Floppies"
 msgstr "Valitse useita levykkeitä"
 
@@ -1085,17 +1179,17 @@ msgstr "Valitse vuosi"
 msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
 msgstr "Valitse kansio joka sisältää Amiga kickstart ROM tiedostot ja klikkaa \"{0}\""
 
-msgid "Set preferred language for FS-UAE applications"
-msgstr "Aseta ensisijainen kieli FS-UAE sovelluksille"
+msgid "Set language and look for FS-UAE applications"
+msgstr "Määritä kieli sekä ulkonäkö FS-UAE sovelluksille"
 
 msgid "Settings"
 msgstr "Asetukset"
 
-msgid "Show games from database"
-msgstr "Näytä pelit tietokannasta"
-
 msgid "Show kickstart setup page on startup when all ROMs are missing"
 msgstr "Näytä Kickstart-asetukset käynnistettäessä jos yhtään ROM:a ei löydy"
+
+msgid "Show window border and decorations"
+msgstr "Näytä ikkunan kehys ja koristelu"
 
 msgid "Shuffle"
 msgstr "Sekoita"
@@ -1121,13 +1215,13 @@ msgstr "Prosessorikorttipaikan Fast muistin koko megatavuina"
 msgid "Size:"
 msgstr "Koko:"
 
+msgid "Slirp Implementation"
+msgstr "Slirp toteutus"
+
 msgid "Slow RAM"
 msgstr "Slow muisti"
 
-msgid "Some required files are missing"
-msgstr "Joitain tärkeitä tiedostoja puuttuu"
-
-msgid "Sound card"
+msgid "Sound Card"
 msgstr "Äänikortti"
 
 msgid "Sound emulation"
@@ -1151,8 +1245,8 @@ msgstr "Käynnistä FS-UAE kokoruututilassa"
 msgid "Starting scan"
 msgstr "Käynnistetään skannaus"
 
-msgid "Stereo separation"
-msgstr "Stereoerottelu"
+msgid "Stereo Separation"
+msgstr "Stereoäänen erottelu"
 
 msgid "Stop"
 msgstr "Pysäytä"
@@ -1190,17 +1284,14 @@ msgstr "Tekstuurisuodatin"
 msgid "The following joystick will be preferred, if present:"
 msgstr "Tämä peliohjain on ensisijainen jos se on kytkettynä:"
 
+msgid "The following options may affect performance, so only enable them when needed for testing or  debugging purposes."
+msgstr ""
+
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr "Seuraavat valinnat vaikuttavat vain kun käytät automaattista FS-UAE Launcherin WHDLoad tukea, esimerkiksi Online-pelitietokannan kanssa."
 
-msgid "The game may not start properly"
-msgstr "Peli ei taida käynnistyä kunnolla"
-
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Peli voidaan ladata automaattisesti jos hyväksyt käyttöehdot"
-
-msgid "This game must be downloaded"
-msgstr "Peli täytyy ladata"
 
 msgid "This game must be downloaded before you can play it"
 msgstr "Peli täytyy ladata ennen kun sitä voi pelata"
@@ -1208,24 +1299,36 @@ msgstr "Peli täytyy ladata ennen kun sitä voi pelata"
 msgid "This game variant cannot be started because you don't have all required files."
 msgstr "Tätä pelin vaihtoehtoa ei voi käynnistää koska jotain sen vaatimia tiedostoja  puuttuu."
 
+msgid "Toccata Z2 sound card emulation"
+msgstr "Toccata Z2 äänikortin emulointi"
+
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Vaihda ikkuna- ja kokoruututilan välillä"
 
-msgid "UAEGFX (Auto)"
-msgstr "UAEGFX (Automaattinen)"
+msgid "Turbo"
+msgstr "Turbo"
 
-msgid "UAEGFX (Zorro II)"
-msgstr "UAEGFX (Zorro II)"
+msgid "UAE Graphics Card (Picasso96 Support)"
+msgstr "UAE Grafiikkakortti (Picasso96 tuki)"
 
-msgid "UAEGFX (Zorro III)"
-msgstr "UAEGFX (Zorro III)"
+msgid "UAE bsdsocket.library"
+msgstr "UAE bsdsocket.library"
 
-msgid "Ungrab mouse and keyboard on middle mouse click"
-msgstr "Vapauta hiiri ja näppäimistö hiiren keskinapin klikkauksella"
+msgid "Ungrab Input on Middle Mouse Button"
+msgstr "Lopeta syötteen kaappaus hiiren keskinapilla"
+
+msgid "Unprotected"
+msgstr "Suojaamaton"
 
 #, python-brace-format
-msgid "Update available ({version})"
-msgstr "Päivitys saatavilla ({version})"
+msgid "Update Available: {version}"
+msgstr "Päivitys saatavilla: {version}"
+
+msgid "Update File Database"
+msgstr "Päivitä tiedostotietokanta"
+
+msgid "Update Game Database"
+msgstr "Päivitä pelitietokanta"
 
 msgid "Updating Database"
 msgstr "Päivitetään tietokantaa"
@@ -1260,6 +1363,9 @@ msgstr "Lähetetään {name}"
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Käytä RDB-levykuvia jos koko >= {0}"
 
+msgid "Using Kickstart ROM Replacement"
+msgstr "Käyttää Kickstart Rom:n korvaajaa"
+
 msgid "Video"
 msgstr "Näyttö"
 
@@ -1290,6 +1396,9 @@ msgstr "WHDLoad asetukset"
 msgid "WHDLoad splash delay"
 msgstr "WHDLoad aloitusruudun viive"
 
+msgid "Warning"
+msgstr "Varoitus"
+
 msgid "Web Links"
 msgstr "Verkkolinkit"
 
@@ -1311,43 +1420,22 @@ msgstr "Sinulla täytyy olla Kickstart tiedosto jokaiselle Amiga-mallille mitä 
 msgid "Zoom Amiga display (crop)"
 msgstr "Zoomaa Amiga-näyttö (leikkaa)"
 
-msgid "Zorro II RAM"
-msgstr "Zorro II muisti"
+msgid "Zorro II Fast RAM"
+msgstr "Zorro II Fast muisti"
 
-msgid "Zorro III RAM"
-msgstr "Zorro III muisti"
+msgid "Zorro III Fast RAM"
+msgstr "Zorro III Fast muisti"
+
+msgid "uae_a2065"
+msgstr "uae_a2065"
+
+msgid "uae_sana2"
+msgstr "uae_sana2"
+
+msgid "uaegfx_card"
+msgstr "uaegfx_card"
 
 #, python-brace-format
 msgid "{amiga_model} with < 2 MB chip memory"
 msgstr "{amiga_model} jossa on < 2 MB chip muistia"
-
-msgid "Audio output freqency"
-msgstr "Ääniulostulon taajuus"
-
-msgid "Commiting locker data..."
-msgstr "Tallennetaan tallelokeroa..."
-
-msgid "Edit Custom Options"
-msgstr "Muokkaa mukautettuja valintoja"
-
-msgid "Fast RAM"
-msgstr "Fast muisti"
-
-msgid "Open Scan Dialog"
-msgstr "Avaa skannus-ikkuna"
-
-msgid "Scan for Files"
-msgstr "Skannaa tiedostoja"
-
-msgid "This game can can be automatically downloaded if you accept the terms"
-msgstr "Peli voidaan ladata automaattisesti jos hyväksyt käyttöehdot"
-
-msgid "User Menu"
-msgstr "Käyttäjävalikko"
-
-msgid "Video (Advanced)"
-msgstr "Näyttö (lisäasetukset)"
-
-msgid "Video Synchronization"
-msgstr "Näytön synkronointi"
 
