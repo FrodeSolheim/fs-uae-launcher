@@ -54,6 +54,7 @@ class Option(object):
     KICKSTART_SETUP = "kickstart_setup"
     LAUNCHER_THEME = "launcher_theme"
     LOAD_STATE = "load_state"
+    LOG_AUTOSCALE = "log_autoscale"
     LOG_INPUT = "log_input"
     LOG_QUERY_PLANS = "log_query_plans"
     LOW_LATENCY_VSYNC = "low_latency_vsync"
@@ -572,6 +573,12 @@ options = {
         "max": 9,
     },
 
+    "log_autoscale": {
+        "default": "0",
+        "description": N_("Log Autoscale Changes"),
+        "type": "boolean",
+    },
+
     "log_input": {
         "default": "0",
         "description": N_("Log Input Events"),
@@ -831,19 +838,19 @@ options = {
             "Controls how lines are doubled and interlaced modes are handled"),
         "type": "choice",
         "values": [
-            ("none", N_("Single / Single")),
-            ("double", N_("Double / Double Frames")),
-            ("double2", N_("Double / Double Fields")),
-            ("double3", N_("Double / Double Fields+")),
-            ("scanlines", N_("Scanlines / Double Frames")),
-            ("scanlines2", N_("Scanlines / Double Fields")),
-            ("scanlines3", N_("Scanlines / Double Fields+")),
-            ("scanlines2p", N_("Double Fields / Double Frames")),
-            ("scanlines2p2", N_("Double Fields / Double Fields")),
-            ("scanlines2p3", N_("Double Fields / Double Fields+")),
-            ("scanlines3p", N_("Double Fields+ / Double Frames")),
-            ("scanlines3p2", N_("Double Fields+ / Double Fields")),
-            ("scanlines3p3", N_("Double Fields+ / Double Fields+")),
+            ("none", "Single / Single"),
+            ("double", "Double / Double Frames"),
+            ("double2", "Double / Double Fields"),
+            ("double3", "Double / Double Fields+"),
+            ("scanlines", "Scanlines / Double Frames"),
+            ("scanlines2", "Scanlines / Double Fields"),
+            ("scanlines3", "Scanlines / Double Fields+"),
+            ("scanlines2p", "Double Fields / Double Frames"),
+            ("scanlines2p2", "Double Fields / Double Fields"),
+            ("scanlines2p3", "Double Fields / Double Fields+"),
+            ("scanlines3p", "Double Fields+ / Double Frames"),
+            ("scanlines3p2", "Double Fields+ / Double Fields"),
+            ("scanlines3p3", "Double Fields+ / Double Fields+"),
         ]
     },
 

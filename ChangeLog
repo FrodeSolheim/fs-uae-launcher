@@ -1,3 +1,7 @@
+Version 2.5.39dev:
+
+* Added version update check for beta branch.
+
 Version 2.5.38dev:
 
 * Updated joystick configuration dialog.

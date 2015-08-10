@@ -8,7 +8,7 @@ import unittest
 import traceback
 import zlib
 from fsbc.Paths import Paths
-from fsbc.task import current_task
+from fsbc.task import current_task, TaskFailure
 from fsbc.Resources import Resources
 from fsgs.Archive import Archive
 from fsgs.Downloader import Downloader
@@ -158,9 +158,9 @@ class LaunchHandler(object):
                 continue
             else:
                 src = Paths.expand_path(src)
-
             if not src:
-                raise Exception("Did not find required kickstart or ROM")
+                raise TaskFailure(
+                    gettext("Did not find required Kickstart or ROM"))
 
             use_temp_kickstarts_dir = False
 
@@ -177,9 +177,14 @@ class LaunchHandler(object):
                         src = path
                         break
                 else:
-                    stream = self.fsgs.file.open(src)
-                    if stream is None:
-                        raise Exception("Cannot find kickstart " + repr(src))
+                    try:
+                        stream = self.fsgs.file.open(src)
+                        if stream is None:
+                            raise FileNotFoundError(src)
+                    except FileNotFoundError:
+                        raise TaskFailure(gettext(
+                            "Cannot find required ROM "
+                            "file: {name}".format(name=repr(src))))
 
             with open(dest, "wb") as f:
                 if stream:

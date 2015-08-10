@@ -26,6 +26,8 @@ class UpdateManager:
     def series(cls):
         if "dev" in Application.instance().version:
             return "devel"
+        elif "beta" in Application.instance().version:
+            return "beta"
         return "stable"
 
     @classmethod
