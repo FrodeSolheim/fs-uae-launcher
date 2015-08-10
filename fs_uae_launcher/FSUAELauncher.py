@@ -3,6 +3,7 @@ import sys
 import hashlib
 import traceback
 from collections import defaultdict
+from fs_uae_launcher.ui.config.HardDriveGroup import HardDriveGroup
 from fs_uae_launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
 from fsgs.Downloader import Downloader
 from fs_uae_launcher.PluginHelper import PluginHelper
@@ -21,12 +22,10 @@ import fsui as fsui
 from fsgs.context import fsgs
 from fsgs.Database import Database
 from .ui.MainWindow import MainWindow
-
 from fsgs.FileDatabase import FileDatabase
 from fsbc.Paths import Paths
 from fsgs.amiga.Amiga import Amiga
 from fsgs.amiga.ROMManager import ROMManager
-
 from .Config import Config
 from .ConfigurationScanner import ConfigurationScanner
 from fsgs.FSGSDirectories import FSGSDirectories
@@ -114,22 +113,58 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 sys.dont_write_bytecode = dont_write_bytecode
 
         config_path = None
+        archive_path = None
+        floppy_image_path = None
         config_uuid = None
+
+        # FIXME: replace argument "parsing" with use of argparse module
+        # at some point
+
         if sys.argv[-1].endswith(".fs-uae"):
             config_path = sys.argv[-1]
+        elif sys.argv[-1].endswith(".zip"):
+            archive_path = sys.argv[-1]
+        elif sys.argv[-1].endswith(".lha"):
+            archive_path = sys.argv[-1]
+        elif sys.argv[-1].endswith(".adf"):
+            # FIXME: support / check for other disk images as well
+            floppy_image_path = sys.argv[-1]
         elif is_uuid(sys.argv[-1]):
             config_uuid = sys.argv[-1].lower()
 
         if config_path:
             print("config path given:", config_path)
-            if os.path.exists(config_path):
-                print("config path exists")
-                Config.load_file(config_path)
-                Settings.set("parent_uuid", "")
-                self.start_game()
-            else:
-                print("config path does not exist")
+            if not os.path.exists(config_path):
+                print("config path does not exist", file=sys.stderr)
+                return False
+            Config.load_file(config_path)
+            Settings.set("parent_uuid", "")
+            self.start_game()
             return False
+
+        elif archive_path:
+            print("archive path given:", archive_path)
+            if not os.path.exists(archive_path):
+                print("archive path does not exist", file=sys.stderr)
+                return False
+            # FIXME: if archive is determined to contain (only) floppy disk
+            # images, load those into floppy drives instead
+            values = HardDriveGroup.generate_config_for_archive(archive_path)
+            values["hard_drive_0"] = archive_path
+            Config.load(values)
+            Settings.set("parent_uuid", "")
+            self.start_game()
+            return False
+
+        elif floppy_image_path:
+            values = {
+                "floppy_drive_0": floppy_image_path,
+            }
+            Config.load(values)
+            Settings.set("parent_uuid", "")
+            self.start_game()
+            return False
+
         elif config_uuid:
             print("config uuid given:", config_uuid)
             variant_uuid = config_uuid
@@ -142,33 +177,20 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 variant_uuid = fsgs.find_preferred_game_variant(game_uuid)
                 print("preferred variant:", variant_uuid)
                 fsgs.load_game_variant(variant_uuid)
-
-            # print("")
-            # for key in sorted(values.keys()):
-            #     print(" * {0} = {1}".format(key, values[key]))
-            # print("")
-
-            # platform_handler = PlatformHandler.create(fsgs.game.platform.id)
-            # loader = platform_handler.get_loader(fsgs)
-            # fsgs.config.load(loader.load_values(values))
-
-            # Config.load_
-            # Settings.set("parent_uuid", "")
             self.start_game()
             return False
-        else:
-            window = MainWindow(fsgs, icon=icon)
-            MainWindow.instance = window
-            window.show()
 
-            if "--workspace" in sys.argv:
-                window.set_position((300, 200))
+        window = MainWindow(fsgs, icon=icon)
+        MainWindow.instance = window
+        window.show()
 
-                from fs_uae_workspace.desktop import get_desktop_window
-                get_desktop_window()
+        if "--workspace" in sys.argv:
+            window.set_position((300, 200))
+            from fs_uae_workspace.desktop import get_desktop_window
+            get_desktop_window()
 
-            UpdateManager.run_update_check()
-            return True
+        UpdateManager.run_update_check()
+        return True
 
     @staticmethod
     def load_plugins(plugins_dir):

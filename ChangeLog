@@ -1,5 +1,8 @@
 Version 2.5.39dev:
 
+* If you give the launcher (command line) the path to a zip or lha, it will
+  try to find a contained WHDLoad slave and configure an A600 + 8MB fast RAM
+  and start FS-UAE.
 * Added version update check for beta branch.
 
 Version 2.5.38dev:
