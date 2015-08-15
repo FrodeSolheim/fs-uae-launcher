@@ -15,7 +15,10 @@ class ValueConfigLoader(object):
     def __init__(self, uuid=""):
         self.config = {}
         self.options = {}
+        self.viewport = []
+        self.values = {}
         self.uuid = uuid
+        self._file_list = None
         if uuid:
             self.options["database_url"] = "http://{0}/game/{1}".format(
                 OGDClient.get_server(), uuid)
@@ -163,17 +166,6 @@ class ValueConfigLoader(object):
             self.config["__config_name"] = config_name
         else:
             self.config["__config_name"] = self.values.get("config_name", "")
-
-    def load_cdroms(self):
-        print("\n\n\nload_cdroms\n\n\n")
-        media_list = self.build_media_list(cds=True)
-        for i, values in enumerate(media_list):
-            path, sha1 = values
-            if i < 1:
-                self.config["cdrom_drive_{0}".format(i)] = path
-                self.config["x_cdrom_drive_{0}_sha1".format(i)] = sha1
-            self.config["cdrom_image_{0}".format(i)] = path
-            self.config["x_cdrom_image_{0}_sha1".format(i)] = sha1
 
     def load_option(self, key, value):
         model = self.options.get("amiga_model", "")
@@ -339,6 +331,71 @@ class ValueConfigLoader(object):
             k = "joystick_port_{0}_{1}".format(port, k)
             self.options[k] = v
 
+    def get_file_list(self):
+        if self._file_list is None:
+            file_list_json = self.values.get("file_list", "[]")
+            self._file_list = json.loads(file_list_json)
+        return self._file_list
+
+    def build_media_list(self, floppies=False, cds=False, hds=False):
+        media_list = []
+        added = set()
+        for file_item in self.get_file_list():
+            name = file_item["name"]
+            url = file_item.get("url", "")
+
+            if name.startswith("DH0/"):
+                if hds:
+                    # p = os.path.join(self.path, "HardDrive")
+                    p = "hd://game/" + self.uuid + "/DH0"
+                    if p in added:
+                        # already added
+                        continue
+                    added.add(p)
+                    # FIXME: hack for now
+                    sha1 = self.values.get("dh0_sha1", "")
+                    media_list.append((p, sha1))
+                else:
+                    continue
+
+            sha1 = file_item["sha1"]
+            base, ext = os.path.splitext(name)
+            ext = ext.lower()
+
+            if hds:
+                if ext not in [".zip"]:
+                    continue
+            elif cds:
+                if ext not in [".cue", ".iso"]:
+                    continue
+                if "(Track" in base:
+                    # probably part of a split multi-track cue
+                    continue
+            elif floppies:
+                if ext not in [".adf", ".adz", ".dms", ".ipf"]:
+                    continue
+
+            path = ""
+            found_sha1 = ""
+            if sha1:
+                print(sha1)
+                file = FileDatabase.get_instance().find_file(sha1=sha1)
+                if file:
+                    found_sha1 = sha1
+                    path = file["path"]
+            if url and not path:
+                path = url
+                found_sha1 = sha1
+
+            if path:
+                media_list.append((path, found_sha1))
+            else:
+                pass
+                # return False
+                #  FIXME: handle it with a visible error message
+                # raise Exception("could not find file " + repr(name))
+        return media_list
+
     def load_floppies_from_floppy_list(self):
         media_list = []
         for item in self.values.get("floppy_list").split(","):
@@ -373,85 +430,24 @@ class ValueConfigLoader(object):
         if floppy_drive_count < 4:
             self.config["floppy_drive_count"] = floppy_drive_count
 
-    def build_media_list(self, floppies=False, cds=False, hds=False):
-        media_list = []
-        added = set()
-        # file_nodes = self.root.findall("file")
-        file_list_json = self.values.get("file_list", "[]")
-        file_list = json.loads(file_list_json)
-        for file_item in file_list:
-            name = file_item["name"]
-            url = file_item.get("url", "")
+    def cdrom_sha1_to_uri(self, sha1):
+        for file_item in self.get_file_list():
+            if file_item["sha1"] == sha1:
+                return "game://{}/{}".format(self.uuid, file_item["name"])
+        raise Exception("cdrom_sha1_to_uri: could not find " + sha1)
 
-            # type = file_node.get("type", "")
-            # name = file_node.find("name").text.strip()
-
-            if name.startswith("DH0/"):
-                if hds:
-                    # p = os.path.join(self.path, "HardDrive")
-                    p = "hd://game/" + self.uuid + "/DH0"
-                    if p in added:
-                        # already added
-                        continue
-                    added.add(p)
-                    # FIXME: hack for now
-                    sha1 = self.values.get("dh0_sha1", "")
-                    media_list.append((p, sha1))
-                else:
-                    continue
-
-            sha1 = file_item["sha1"]
-            base, ext = os.path.splitext(name)
-            ext = ext.lower()
-            # if type == "hd" and not hds:
-            #     continue
-            if hds:
-                # if type and not type == "HD":
-                #     continue
-                if ext not in [".zip"]:
-                    continue
-            elif cds:
-                # if type and not type == "cd":
-                #     continue
-                if ext not in [".cue", ".iso"]:
-                    continue
-                if "(Track" in base:
-                    # probably part of a split multi-track cue
-                    continue
-            elif floppies:
-                # if type and not type == "floppy":
-                #     continue
-                if ext not in [".adf", ".adz", ".dms", ".ipf"]:
-                    continue
-
-            path = ""
-            found_sha1 = ""
-            if sha1:
-                print(sha1)
-                file = FileDatabase.get_instance().find_file(sha1=sha1)
-                if file:
-                    found_sha1 = sha1
-                    path = file["path"]
-            if url and not path:
-                path = url
-                found_sha1 = sha1
-            # if not path:
-            #     path = FileDatabase.get_instance().find_file(name=name)
-            # if not path:
-            #     if self.path:
-            #         # loaded from an external XML file:
-            #         path = os.path.join(self.path, name)
-            if path:
-                media_list.append((path, found_sha1))
-            else:
-                pass
-                # return False
-                #  FIXME: handle it with a visible error message
-                # raise Exception("could not find file " + repr(name))
-        return media_list
+    def load_cdroms(self):
+        media_list = self.build_media_list(cds=True)
+        for i, values in enumerate(media_list):
+            path, sha1 = values
+            path = self.cdrom_sha1_to_uri(sha1)
+            if i < 1:
+                self.config["cdrom_drive_{0}".format(i)] = path
+                self.config["x_cdrom_drive_{0}_sha1".format(i)] = sha1
+            self.config["cdrom_image_{0}".format(i)] = path
+            self.config["x_cdrom_image_{0}_sha1".format(i)] = sha1
 
     def load_hard_drives(self):
-        print("load_hard_drives")
         media_list = self.build_media_list(hds=True)
         print(media_list)
         for i, values in enumerate(media_list):

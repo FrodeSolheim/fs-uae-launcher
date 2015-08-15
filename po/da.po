@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-08-07 20:13+0200\n"
-"PO-Revision-Date: 2015-08-08 12:23-0400\n"
+"POT-Creation-Date: 2015-08-11 22:35+0200\n"
+"PO-Revision-Date: 2015-08-15 15:15-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Danish\n"
 "Language: da_DK\n"
@@ -59,6 +59,9 @@ msgstr "Om {name}"
 msgid "Accept"
 msgstr "Accepter"
 
+msgid "Accuracy:"
+msgstr "Nøjagtighed:"
+
 msgid "Add"
 msgstr "Tilføj"
 
@@ -75,10 +78,10 @@ msgid "Add Multiple Floppies at Once"
 msgstr "Tilføj flere disketter på éen gang"
 
 msgid "Additional Configuration"
-msgstr ""
+msgstr "Yderligere konfiguration"
 
 msgid "Adult-Themed Games"
-msgstr ""
+msgstr "Voksen-tema spil"
 
 msgid "Advanced"
 msgstr "Avanceret"
@@ -96,13 +99,13 @@ msgid "All"
 msgstr "Alle"
 
 msgid "All Configurations"
-msgstr ""
+msgstr "Alle konfigurationer"
 
 msgid "All Games"
-msgstr ""
+msgstr "Alle spil"
 
 msgid "All Games and Configurations"
-msgstr ""
+msgstr "Alle spil og konfigurationer"
 
 msgid "Also synchronize emulation with display when possible (smooth scrolling)"
 msgstr "Synkroniser også emulering med video når muligt (jævn scrolling)"
@@ -120,13 +123,7 @@ msgid "An Error Occurred"
 msgstr "Der opstod en fejl"
 
 msgid "Appearance"
-msgstr ""
-
-msgid "Appearance Preferences"
-msgstr ""
-
-msgid "Approximate A500/A1200 or cycle-exact"
-msgstr "Omtrentlig A500/A1200 eller cyklus-nøjagtig"
+msgstr "Udseende"
 
 msgid "Audio"
 msgstr "Lyd"
@@ -155,29 +152,26 @@ msgstr "Auto-Fire er deaktiveret"
 msgid "Auto-Fire is On"
 msgstr "Auto-Fire er aktiveret"
 
-msgid "Autoconfig Z2 Fast RAM"
-msgstr "Autokonfigurer Z2 Fast RAM"
-
 msgid "Automatic"
 msgstr "Automatisk"
 
 msgid "Automatic Download"
-msgstr ""
+msgstr "Automatisk hentning"
 
 msgid "Available Games"
-msgstr ""
+msgstr "Tilgængelige spil"
 
 msgid "Available Kickstart Versions"
 msgstr "Tilgængelige kickstart versioner"
 
 msgid "Available and Auto-Downloadable Games"
-msgstr ""
+msgstr "Tilgængelige og automatisk-hentede spil"
 
 msgid "Available and Downloadable Games"
-msgstr ""
+msgstr "Tilgængelige- og kan hentes spil"
 
 msgid "Blizzard SCSI Kit"
-msgstr ""
+msgstr "Blizzard SCSI-Kit"
 
 msgid "Browse"
 msgstr "Gennemse"
@@ -195,7 +189,7 @@ msgid "CD-ROM Drive"
 msgstr "CD-ROM drev"
 
 msgid "CD-ROM Drive Count"
-msgstr ""
+msgstr "Cd-rom-drev antal"
 
 msgid "CD-ROM Drives"
 msgstr "CD-ROM drev"
@@ -207,16 +201,20 @@ msgid "CD32 Pad"
 msgstr "CD32 Pad"
 
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 msgid "CPU Accelerator Board"
-msgstr ""
+msgstr "CPU Accelerator kort"
 
 msgid "CPU Accelerator Board RAM"
-msgstr ""
+msgstr "CPU Accelerator kort RAM"
 
 msgid "Cancel"
 msgstr "Anuller"
+
+#, python-brace-format
+msgid "Cannot find required ROM file: {name}"
+msgstr "Kan ikke finde krævede ROM fil: {name}"
 
 msgid "Checksumming"
 msgstr "Generer checksum"
@@ -242,6 +240,9 @@ msgstr "Vælg harddisk"
 msgid "Choose Kickstart ROM"
 msgstr "Vælg Kickstart rom"
 
+msgid "Choose Type"
+msgstr "Vælg type"
+
 msgid "Choose what folders you want to scan for Amiga files"
 msgstr "Vælg hvilke mapper du fil scanne for Amiga filer"
 
@@ -258,10 +259,10 @@ msgid "Click 'Scan' button to start scan"
 msgstr "Klik 'Scan' knappen for at starte scanning"
 
 msgid "Click to Download Game"
-msgstr ""
+msgstr "Klik for at hente spil"
 
 msgid "Click to Import Kickstart ROMs"
-msgstr ""
+msgstr "Klik her for at importere Kickstart rom'er"
 
 msgid "Close"
 msgstr "Luk"
@@ -289,9 +290,6 @@ msgstr "Konfigurer joystick og sæt foretrukne joystick enheder"
 
 msgid "Connect"
 msgstr "Forbind"
-
-msgid "Controls how lines are doubled and interlaced modes are handled"
-msgstr "Styrer hvordan linjer er fordoblet og interlaced former er håndteret"
 
 #, python-brace-format
 msgid "Copy {0}\n"
@@ -333,7 +331,7 @@ msgid "Custom Joystick Port"
 msgstr "Egendefineret joystick port"
 
 msgid "Database Games"
-msgstr ""
+msgstr "Database spil"
 
 msgid "Default"
 msgstr "Standard"
@@ -344,7 +342,7 @@ msgstr "Standard ({0})"
 
 #, python-brace-format
 msgid "Default - {0}"
-msgstr ""
+msgstr "Standard - {0}"
 
 msgid "Defragment Databases"
 msgstr "Defragmenter databaser"
@@ -360,16 +358,22 @@ msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly
 msgstr "Afhængigt af dit operativsystem og OpenGL drivere, kan synkronisering bruge overflødigt meget CPU tid (specielt på Linux). Du kan ekperimentere med forskellige sync metoder for at forbedre ydeevnen."
 
 msgid "Deprecated Options"
-msgstr ""
+msgstr "Forældede indstillinger"
 
 msgid "Device ID used with OAGD.net authentication"
 msgstr "Enheds ID brugt med OAGD.net validering"
+
+msgid "Did not find required Kickstart or ROM"
+msgstr "Ikke finde krævet Kickstart eller ROM"
+
+msgid "Digital Joystick"
+msgstr "Digital joystick"
 
 msgid "Directory for WHDLoad.key file (if you have it):"
 msgstr "Mappe til WHDLoad.key fil (hvis du har den):"
 
 msgid "Disabled"
-msgstr ""
+msgstr "Slået fra"
 
 msgid "Disconnect"
 msgstr "Afbryd"
@@ -385,33 +389,6 @@ msgstr "Har ikke en konto?"
 
 msgid "Dongle"
 msgstr "Dongle"
-
-msgid "Double / Double Fields"
-msgstr "Dobbelt / dobbelt felter"
-
-msgid "Double / Double Fields+"
-msgstr "Dobbelt / dobbelt felter+"
-
-msgid "Double / Double Frames"
-msgstr "Dobbelt / Dobbelt frames"
-
-msgid "Double Fields / Double Fields"
-msgstr "Dobbelt felter / Dobbelt felter"
-
-msgid "Double Fields / Double Fields+"
-msgstr "Dobbelt felter / Dobbelt felter+"
-
-msgid "Double Fields / Double Frames"
-msgstr "Dobbelt felter / Dobbelt frames"
-
-msgid "Double Fields+ / Double Fields"
-msgstr "Dobbelt felter+ / Dobbelt felter"
-
-msgid "Double Fields+ / Double Fields+"
-msgstr "Dobbelt felter+ / Dobbelt felter+"
-
-msgid "Double Fields+ / Double Frames"
-msgstr "Dobbelt felter+ / Dobbelt frames"
 
 msgid "Double-click a device entry to configure it (map joystick buttons)."
 msgstr "Dobbel-klik på en enhed for at konfigurere den (indstil joystick knapper)."
@@ -438,13 +415,7 @@ msgid "Eject"
 msgstr "Skub ud"
 
 msgid "Empty Floppy Drive Volume"
-msgstr ""
-
-msgid "Enable a real time clock (RTC) module."
-msgstr "Aktiver et real tid klok (RTC) modul."
-
-msgid "Enable default chipset features for a specific model"
-msgstr "Aktiver standard chipset funktioner for en bestemt model"
+msgstr "Tom diskettedrev enhed"
 
 msgid "Enable experimental config visualization (requires restart)"
 msgstr "Aktiver eksperimentelle konfigurations visualisering (kræver genstart)"
@@ -455,29 +426,26 @@ msgstr "Aktiver eksperimental net spils GUI (kræver genstart)"
 msgid "Enable online database support (requires restart)"
 msgstr "Aktiver online database support (kræver genstart)"
 
-msgid "Enable/disable fastest possible CPU speed"
-msgstr "Aktiver/deaktiver hurtigst mulige CPU hastighed"
-
 msgid "Enable/disable use of OAGD.net locker"
 msgstr "Aktiver/deaktiver brugen af OAGD.net locker"
 
 msgid "Enable/disable use of the Arcade game database"
-msgstr ""
+msgstr "Aktiver/deaktiver brugen af arkade spil database"
 
 msgid "Enable/disable use of the DOS game database"
-msgstr ""
+msgstr "Aktiver/deaktiver brugen af DOS spil database"
 
 msgid "Enable/disable use of the Game Boy Advance database"
-msgstr ""
+msgstr "Aktiver/deaktiver brugen af Game Boy Advance-database"
 
 msgid "Enable/disable use of the Nintendo (NES) database"
-msgstr ""
+msgstr "Aktiver/deaktiver brugen af Nintendo (NES) database"
 
 msgid "Enable/disable use of the Super Nintendo database"
-msgstr ""
+msgstr "Aktiver/deaktiver brugen af Super Nintendo-database"
 
 msgid "Enabled"
-msgstr ""
+msgstr "Slået til"
 
 msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
 msgstr "Aktivering af den følgende indstilling vil forhindre flimmer i at opstå. men vil også bruge mere CPU. Latenstiden for input vil forøges en smule."
@@ -497,9 +465,6 @@ msgstr "Eksperimentale funktioner"
 msgid "Extended ROM:"
 msgstr "Udviddet ROM:"
 
-msgid "FIXME"
-msgstr ""
-
 msgid "FS-UAE   Arcade"
 msgstr ""
 
@@ -507,13 +472,13 @@ msgid "FS-UAE Launcher Settings"
 msgstr "FS-UAE Launcher indstillinger"
 
 msgid "FS-UAE Launcher Theme"
-msgstr ""
+msgstr "FS-UAE Launcher tema"
 
-msgid "Fastest possible"
-msgstr "Hurtigst mulig"
+msgid "Fade-in Duration on Start"
+msgstr "Fade-in varighed på Start"
 
 msgid "Favorites"
-msgstr ""
+msgstr "Favoritter"
 
 #, python-brace-format
 msgid "Fetching database entries ({0})"
@@ -532,6 +497,12 @@ msgstr "Henter synkroniserings informationer..."
 #, python-brace-format
 msgid "Fetching user game ratings ({0})"
 msgstr "Henter bruger spil bedømmelser ({0})"
+
+msgid "File Database"
+msgstr "Fil Database"
+
+msgid "File Database Settings"
+msgstr "Fil databaseindstillinger"
 
 msgid "File already exists"
 msgstr "Filen eksisterer allerede"
@@ -561,22 +532,19 @@ msgid "Floppies"
 msgstr "Disketter"
 
 msgid "Floppy Drive Count"
-msgstr ""
+msgstr "Diskettedrev antal"
 
 msgid "Floppy Drive Sound Emulation"
 msgstr "Floppy drev lyd emulering"
 
 msgid "Floppy Drive Speed"
-msgstr ""
+msgstr "Diskettedrev hastighed"
 
 msgid "Floppy Drive Volume"
-msgstr ""
+msgstr "Diskettedrev volumen"
 
 msgid "Floppy Drives"
 msgstr "Diskettedrev"
-
-msgid "Force Zorro-III address space at 0x10000000"
-msgstr "Gennemtving Zorro-III adresseområde på 0x10000000"
 
 msgid "Forgot your password?"
 msgstr "Glemt adgangskode?"
@@ -597,7 +565,7 @@ msgid "Game Database"
 msgstr "Spil Database"
 
 msgid "Game Database Server"
-msgstr ""
+msgstr "Spil databaseserver"
 
 msgid "Game Database Settings"
 msgstr "Spil database indstillinger"
@@ -614,20 +582,23 @@ msgstr "Spil database adgangskode"
 msgid "Game database user name"
 msgstr "Spil database "
 
+msgid "Gamepad"
+msgstr "Gamepad"
+
 msgid "Grab Input on Click"
-msgstr ""
+msgstr "Grib Input ved klik"
 
 msgid "Grab Input on FS-UAE Startup"
-msgstr ""
+msgstr "Grib Input ved FS-UAE start"
 
 msgid "Grab keyboard when input is grabbed"
 msgstr "Grib tastaturet når input er grebet"
 
 msgid "Graphics Card"
-msgstr ""
+msgstr "Grafikkort"
 
 msgid "Graphics Card VRAM"
-msgstr ""
+msgstr "Grafikkort VRAM"
 
 msgid "HDF - Partitionable Hard Drive Image (RDB)"
 msgstr "HDF - partitionerbart harddisk image (RDB)"
@@ -648,22 +619,22 @@ msgid "Hardware"
 msgstr "Hardware"
 
 msgid "High"
-msgstr ""
+msgstr "Høj"
 
 msgid "Home"
 msgstr "Hjem"
 
 msgid "Host Key BACKSLASH"
-msgstr ""
+msgstr "Værts tast omvendt skråstreg"
 
 msgid "Host Key EQUALS"
-msgstr ""
+msgstr "Værts tast lighedstegn"
 
 msgid "Host Key INSERT"
-msgstr ""
+msgstr "Værts tast Indsæt"
 
 msgid "Host Key LESS"
-msgstr ""
+msgstr "Værts tast mindre"
 
 msgid "How to achieve perfectly smooth scrolling"
 msgstr "Hvordan man får perfekt jævn scrolling"
@@ -708,9 +679,6 @@ msgstr "Intern"
 msgid "Invalid size specified"
 msgstr "Invalid størrelse angivet"
 
-msgid "JIT Direct compatible Z3 memory mapping"
-msgstr "JIT direkte kompatibel Z3 hukommelses kortlægning"
-
 msgid "Joystick"
 msgstr "Joystick"
 
@@ -727,13 +695,10 @@ msgid "Keep aspect ratio when scaling (do not stretch)"
 msgstr "Behold format forholdet når der skaleres (stræk ikke)"
 
 msgid "Key Mapping"
-msgstr ""
+msgstr "Konfigurer taster"
 
 msgid "Keyboard"
 msgstr "Tastatur"
-
-msgid "Keyboard Setting"
-msgstr "Tastatur indstilling"
 
 msgid "Keyboard Settings"
 msgstr "Tastatur indstillinger"
@@ -751,7 +716,7 @@ msgid "Language Preference"
 msgstr "Sprog indstillinger"
 
 msgid "Language:"
-msgstr ""
+msgstr "Sprog:"
 
 msgid "Launch FS-UAE"
 msgstr "Start FS-UAE"
@@ -763,7 +728,7 @@ msgid "Launching Game"
 msgstr "Starter spil"
 
 msgid "Left"
-msgstr ""
+msgstr "Venstre"
 
 msgid "Letter"
 msgstr "Bogstav"
@@ -780,6 +745,9 @@ msgstr "Indlæs tilstand fra nummer"
 msgid "Loading..."
 msgstr "Indlæser..."
 
+msgid "Log Autoscale Changes"
+msgstr "Log autoskalering ændring"
+
 msgid "Log In"
 msgstr "Log ind"
 
@@ -788,6 +756,9 @@ msgstr "Log ind / Registrer"
 
 msgid "Log In to Your OAGD.net Account"
 msgstr "Log ind til din OAGD.net konto"
+
+msgid "Log Input Events"
+msgstr "Log input begivenheder"
 
 msgid "Log Out"
 msgstr "Log ud"
@@ -798,11 +769,14 @@ msgstr "Log ud fra din OAGD.net konto"
 msgid "Log database query plans"
 msgstr "Log database forespørgseler planer"
 
+msgid "Logging"
+msgstr "Logning"
+
 msgid "Logging in will enable the online game database and more"
 msgstr "Log ind vil aktivere den online spil database og mere"
 
 msgid "Low"
-msgstr ""
+msgstr "Lav"
 
 msgid "Low latency video sync"
 msgstr "Lav latens video sync"
@@ -817,10 +791,13 @@ msgid "Main Menu"
 msgstr "Hoved menu"
 
 msgid "Main Volume"
-msgstr ""
+msgstr "Hoved volume"
 
 msgid "Maintenance"
 msgstr "Vedligeholdelse"
+
+msgid "Make:"
+msgstr "Make:"
 
 msgid "Mark This Game Variant as Personal Favorite"
 msgstr "Marker denne spil variant som personlig favorit"
@@ -829,19 +806,19 @@ msgid "Media Swap List"
 msgstr "Medie bytnings liste"
 
 msgid "Medium"
-msgstr ""
+msgstr "Medium"
 
 msgid "Memory"
 msgstr "Hukommelse"
 
 msgid "Memory Configuration"
-msgstr ""
+msgstr "Hukommelseskonfiguration"
 
 msgid "Middle Left"
-msgstr ""
+msgstr "Midterste venstre"
 
 msgid "Middle Right"
-msgstr ""
+msgstr "Midterste højre"
 
 #, python-brace-format
 msgid "Miscellaneous functions to optimize {name}"
@@ -851,34 +828,31 @@ msgid "Missing Files"
 msgstr "Manglende filer"
 
 msgid "Missing Game Files"
-msgstr ""
+msgstr "Manglende spil filer"
+
+msgid "Model:"
+msgstr "Model:"
 
 msgid "Monitor to display FS-UAE on (fullscreen)"
-msgstr ""
+msgstr "Skærm til at vise FS-UAE på (fullscreen)"
 
 msgid "Motherboard Fast RAM"
-msgstr ""
+msgstr "Bundkort Fast RAM"
 
 msgid "Mouse"
 msgstr "Mus"
-
-msgid "Mouse Setting"
-msgstr "Muse indstilling"
 
 msgid "Mouse Settings"
 msgstr "Muse indstillinger"
 
 msgid "Mouse Speed (%)"
-msgstr ""
+msgstr "Mus hastighed (%)"
 
 msgid "Multi-Select..."
-msgstr ""
+msgstr "Valg af flere..."
 
 msgid "N/A"
 msgstr "N/A"
-
-msgid "Native"
-msgstr ""
 
 msgid "Net Play"
 msgstr "Netværks spil"
@@ -945,10 +919,13 @@ msgstr "OpenGL indstillinger"
 
 #, python-brace-format
 msgid "Option {name} is overridden by current configuration"
-msgstr ""
+msgstr "Indstillingen {name} tilsidesættes af nuværende konfiguration"
 
 msgid "Options for WHDLoad support in FS-UAE Launcher"
 msgstr "Indstillinger for WHDLoad understøttelse i FS-UAE Launcher"
+
+msgid "Other Device"
+msgstr "Anden enhed"
 
 msgid "Override Installed Memory"
 msgstr "Tilsidesæt installeret hukommelse"
@@ -996,7 +973,7 @@ msgid "Quit"
 msgstr "Afslut"
 
 msgid "ROM and RAM"
-msgstr ""
+msgstr "ROM og RAM"
 
 #, python-brace-format
 msgid "Re-trying in {0} seconds..."
@@ -1044,7 +1021,10 @@ msgid "Retrying last operation (attempt {0})"
 msgstr "Prøver seneste operation igen (forsøg {0})"
 
 msgid "Right"
-msgstr ""
+msgstr "Højre"
+
+msgid "Save"
+msgstr "Gem"
 
 msgid "Save Configuration"
 msgstr "Gem konfiguration"
@@ -1064,9 +1044,6 @@ msgstr "Skalerings indstillinger"
 msgid "Scan"
 msgstr "Scan"
 
-msgid "Scan & Indexing"
-msgstr "Scan og indeksering"
-
 msgid "Scan Downloads"
 msgstr "Scan hentede filer"
 
@@ -1081,15 +1058,6 @@ msgstr "Scannings fejl"
 
 msgid "Scan for Kickstarts, Files and Configurations"
 msgstr "Scan for kickstarter, filer og konfigurationer"
-
-msgid "Scanlines / Double Fields"
-msgstr "Scanlinier / dobbelt felter"
-
-msgid "Scanlines / Double Fields+"
-msgstr "Scanlinier / dobbelt felter+"
-
-msgid "Scanlines / Double Frames"
-msgstr "Scanlinier / dobbelt frames"
 
 msgid "Scanning .fs-uae files..."
 msgstr "Scanner .fs-uae filer..."
@@ -1150,7 +1118,7 @@ msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
 msgstr "Vælg en mappe der indeholder Amiga Kickstart filer og click \"{0}\""
 
 msgid "Set language and look for FS-UAE applications"
-msgstr ""
+msgstr "Angiv sprog og søg efter FS-UAE applikationer"
 
 msgid "Settings"
 msgstr "Indstillinger"
@@ -1159,43 +1127,19 @@ msgid "Show kickstart setup page on startup when all ROMs are missing"
 msgstr "Vis Kickstart opsætnings siden ved opstart når alle ROMmer mangler"
 
 msgid "Show window border and decorations"
-msgstr ""
+msgstr "Vis vindue ramme og dekorationer"
 
 msgid "Shuffle"
 msgstr "Bland"
 
-msgid "Single / Single"
-msgstr "Enkel / enkelt"
-
-msgid "Size in MB of Zorro-II Fast RAM (second) expansion board"
-msgstr "Størrelse i MB på Zorro-II Fast RAM (anden) udvidelses kort"
-
-msgid "Size in MB of Zorro-II Fast RAM expansion board"
-msgstr "Størrelse i MB på Zorro-II Fast RAM udvidelses kort"
-
-msgid "Size in MB of Zorro-III Fast RAM expansion board"
-msgstr "Størrelse i MB på Zorro-III Fastram udvidelses kort"
-
-msgid "Size in megabytes of motherboard fast memory"
-msgstr "Størrelse i megabyte af bundkortes Fast RAM"
-
-msgid "Size in megabytes of processor slot fast memory"
-msgstr "Størrelse i megabyte på processor slotets Fast RAM"
-
 msgid "Size:"
 msgstr "Størrelse:"
-
-msgid "Slirp Implementation"
-msgstr ""
 
 msgid "Slow RAM"
 msgstr "Slow RAM"
 
 msgid "Sound Card"
-msgstr ""
-
-msgid "Sound emulation"
-msgstr "Lyd emulering"
+msgstr "Lydkort"
 
 msgid "Specified directory does not exist"
 msgstr "Specificeredt bibliotek eksisterer ikke"
@@ -1203,8 +1147,8 @@ msgstr "Specificeredt bibliotek eksisterer ikke"
 msgid "Specify global options and settings which does not have UI controls"
 msgstr "Specificer de globale indstillinger der ikke har UI kontroller"
 
-msgid "Specify the frequency of the emulated CPU in cycle-exact modes"
-msgstr "Angiv frekvensen af emuleret CPU i cyklus-præcise tilstande"
+msgid "Standard"
+msgstr "Standard"
 
 msgid "Start"
 msgstr "Start"
@@ -1216,7 +1160,7 @@ msgid "Starting scan"
 msgstr "Starter scanning"
 
 msgid "Stereo Separation"
-msgstr ""
+msgstr "Stereo adskildelse"
 
 msgid "Stop"
 msgstr "Stop"
@@ -1254,6 +1198,9 @@ msgstr "Tekstur filter"
 msgid "The following joystick will be preferred, if present:"
 msgstr "Det følgende joystick vil være foretrukken, hvis tilgænggelig:"
 
+msgid "The following options may affect performance, so only enable them when needed for testing or debugging purposes."
+msgstr "Følgende indstillinger kan påvirke ydeevnen, så aktiverer dem kun når der er behov for afprøvning eller fejlfindingsformål."
+
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr "Følgende indstillinger gælder kun når du bruger den automatiske WHDLoad understøttelse i FS-UAE Launcher, for eksempel i forbindelse med den online spil database."
 
@@ -1266,36 +1213,33 @@ msgstr "Dette spil skal hentes før du kan spille det"
 msgid "This game variant cannot be started because you don't have all required files."
 msgstr "Denne spil variant kan ikke startes fordi der mangler nogle påkrævede filer."
 
-msgid "Toccata Z2 sound card emulation"
-msgstr ""
-
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Skift mellem fuldskærm og vinduet modus"
 
 msgid "Turbo"
-msgstr ""
+msgstr "Turbo"
 
 msgid "UAE Graphics Card (Picasso96 Support)"
-msgstr ""
+msgstr "UAE grafikkort (Picasso96 understøttelse)"
 
 msgid "UAE bsdsocket.library"
-msgstr ""
+msgstr "UAE bsdsocket.library"
 
 msgid "Ungrab Input on Middle Mouse Button"
-msgstr ""
+msgstr "Frigiv input på midterste museknap"
 
 msgid "Unprotected"
-msgstr ""
+msgstr "Ubeskyttet"
 
 #, python-brace-format
 msgid "Update Available: {version}"
-msgstr ""
+msgstr "Opdatering tilgængelig: {version}"
 
 msgid "Update File Database"
-msgstr ""
+msgstr "Opdater fil database"
 
 msgid "Update Game Database"
-msgstr ""
+msgstr "Opdater spil database"
 
 msgid "Updating Database"
 msgstr "Opdaterer database"
@@ -1331,7 +1275,7 @@ msgid "Use RDB disk images for size >= {0}"
 msgstr "Brug RDB disk images for størrelser >= {0}"
 
 msgid "Using Kickstart ROM Replacement"
-msgstr ""
+msgstr "Brug af Kickstart ROM udskiftning"
 
 msgid "Video"
 msgstr "Video"
@@ -1364,7 +1308,7 @@ msgid "WHDLoad splash delay"
 msgstr "WHDLoad splash forsinkelse"
 
 msgid "Warning"
-msgstr ""
+msgstr "Advarsel"
 
 msgid "Web Links"
 msgstr "Web links"
@@ -1388,19 +1332,13 @@ msgid "Zoom Amiga display (crop)"
 msgstr "Zoom Amiga billede (beskær)"
 
 msgid "Zorro II Fast RAM"
-msgstr ""
+msgstr "Zorro II Fast RAM"
 
 msgid "Zorro III Fast RAM"
-msgstr ""
-
-msgid "uae_a2065"
-msgstr ""
-
-msgid "uae_sana2"
-msgstr ""
+msgstr "Zorro III Fast RAM"
 
 msgid "uaegfx_card"
-msgstr ""
+msgstr "uaegfx_card"
 
 #, python-brace-format
 msgid "{amiga_model} with < 2 MB chip memory"

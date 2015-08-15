@@ -1,7 +1,7 @@
 from fs_uae_launcher.ui.settings.OptionUI import OptionUI
 from fsgs.FSGSDirectories import FSGSDirectories
 import fsui as fsui
-from fsui.extra.iconheader import IconHeader
+from fsui.extra.iconheader import NewIconHeader
 from ...I18N import gettext
 
 
@@ -12,7 +12,7 @@ class WHDLoadSettingsPage(fsui.Panel):
         self.layout = fsui.VerticalLayout()
         # self.layout.set_padding(20, 20, 20, 20)
 
-        self.icon_header = IconHeader(
+        self.icon_header = NewIconHeader(
             self, fsui.Icon("settings", "pkg:fs_uae_workspace"),
             gettext("WHDLoad Settings"),
             gettext("Options for WHDLoad support in FS-UAE Launcher"))

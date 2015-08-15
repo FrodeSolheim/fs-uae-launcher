@@ -46,7 +46,7 @@ class JoystickConfigWindow(fsui.Window):
             gettext("Gamepad"),
             gettext("Digital Joystick"),
             # gettext("Flight Stick"),
-            gettext("Other"),
+            gettext("Other Device"),
         ]
 
         self.type_field = fsui.Choice(panel, self.device_type_labels)

@@ -557,7 +557,7 @@ options = {
         "description": N_("FS-UAE Launcher Theme"),
         "type": "Choice",
         "values": [
-            ("native", N_("Native")),
+            ("standard", N_("Standard")),
             ("fusion", "Fusion Auto"),
             ("fusion-plain", "Fusion Plain"),
             ("fusion-adwaita", "Fusion Adwaita"),
@@ -721,7 +721,7 @@ options = {
 
     "uae_a2065": {
         "default": "",
-        "description": N_("uae_a2065"),
+        "description": "uae_a2065",
         "type": "",
         "values": [
             ("slirp", "slirp"),
@@ -730,7 +730,7 @@ options = {
 
     "uae_a3000mem_size": {
         "default": "",
-        "description": N_("Size in megabytes of motherboard fast memory"),
+        "description": "Size in megabytes of motherboard fast memory",
         "type": "integer",
         "min": 0,
         "max": 65536,
@@ -738,8 +738,8 @@ options = {
 
     "uae_chipset_compatible": {
         "default": "",
-        "description": N_(
-            "Enable default chipset features for a specific model"),
+        "description":
+            "Enable default chipset features for a specific model",
         "type": "choice",
         "values": [
             ("-", "-"),
@@ -761,8 +761,8 @@ options = {
 
     "uae_cpu_frequency": {
         "default": "",
-        "description": N_(
-            "Specify the frequency of the emulated CPU in cycle-exact modes"),
+        "description":
+            "Specify the frequency of the emulated CPU in cycle-exact modes",
         "type": "float",
         "min": 1.0,
         "max": 100.0,
@@ -770,7 +770,7 @@ options = {
 
     "uae_cpu_multiplier": {
         "default": "",
-        "description": N_("FIXME"),
+        "description": "FIXME",
         "type": "integer",
         "min": 0,
         "max": 256,
@@ -778,17 +778,17 @@ options = {
 
     "uae_cpu_speed": {
         "default": "",
-        "description": N_("Enable/disable fastest possible CPU speed"),
+        "description": "Enable/disable fastest possible CPU speed",
         "type": "choice",
         "values": [
-            ("real", N_("Approximate A500/A1200 or cycle-exact")),
-            ("max", N_("Fastest possible")),
+            ("real", "Approximate A500/A1200 or cycle-exact"),
+            ("max", "Fastest possible"),
         ]
     },
 
     "uae_cpu_throttle": {
         "default": "",
-        "description": N_("FIXME"),
+        "description": "FIXME",
         "type": "float",
         "min": -900.0,
         "max": 5000.0,
@@ -796,8 +796,8 @@ options = {
 
     "uae_fastmem2_size": {
         "default": "0",
-        "description": N_(
-            "Size in MB of Zorro-II Fast RAM (second) expansion board"),
+        "description":
+            "Size in MB of Zorro-II Fast RAM (second) expansion board",
         "type": "choice",
         "values": [
             ("0", "0"),
@@ -809,13 +809,13 @@ options = {
 
     "uae_fastmem_autoconfig": {
         "default": "1",
-        "description": N_("Autoconfig Z2 Fast RAM"),
+        "description": "Autoconfig Z2 Fast RAM",
         "type": "boolean",
     },
 
     "uae_fastmem_size": {
         "default": "0",
-        "description": N_("Size in MB of Zorro-II Fast RAM expansion board"),
+        "description": "Size in MB of Zorro-II Fast RAM expansion board",
         "type": "choice",
         "values": [
             ("0", "0"),
@@ -828,14 +828,14 @@ options = {
 
     "uae_force_0x10000000_z3": {
         "default": "false",
-        "description": N_("Force Zorro-III address space at 0x10000000"),
+        "description": "Force Zorro-III address space at 0x10000000",
         "type": "boolean",
     },
 
     "uae_gfx_linemode": {
         "default": "",
-        "description": N_(
-            "Controls how lines are doubled and interlaced modes are handled"),
+        "description":
+            "Controls how lines are doubled and interlaced modes are handled",
         "type": "choice",
         "values": [
             ("none", "Single / Single"),
@@ -856,7 +856,7 @@ options = {
 
     "uae_mbresmem_size": {
         "default": "",
-        "description": N_("Size in megabytes of processor slot fast memory"),
+        "description": "Size in megabytes of processor slot fast memory",
         "type": "integer",
         "min": 0,
         "max": 131072,
@@ -864,12 +864,12 @@ options = {
 
     "uae_rtc": {
         "default": "auto",
-        "description": N_("Enable a real time clock (RTC) module."),
+        "description": "Enable a real time clock (RTC) module.",
         "type": "Choice",
         "values": [
-            ("auto", N_("Auto")),
-            ("none", N_("None")),
-            ("MSM6242B", "Oki MSM6242B)- RTC module in A500/500+/600/1200/2000 models"),
+            ("auto", "Auto"),
+            ("none", "None"),
+            ("MSM6242B", "Oki MSM6242B"),
             ("RP5C01A", "Ricoh RP5C01A"),
             ("MSM6242B_A2000", "A2000 MSM6242B"),
         ]
@@ -877,13 +877,13 @@ options = {
 
     "uae_sana2": {
         "default": "false",
-        "description": N_("uae_sana2"),
+        "description": "uae_sana2",
         "type": "BooleanUAE,",
     },
 
     "uae_slirp_implementation": {
         "default": "auto",
-        "description": N_("Slirp Implementation"),
+        "description": "Slirp Implementation",
         "type": "Choice",
         "values": [
             ("auto", "auto"),
@@ -895,7 +895,7 @@ options = {
 
     "uae_sound_output": {
         "default": "",
-        "description": N_("Sound emulation"),
+        "description": "Sound emulation",
         "type": "",
         "values": [
             ("none", "Disabled"),
@@ -906,7 +906,7 @@ options = {
 
     "uae_toccata": {
         "default": "",
-        "description": N_("Toccata Z2 sound card emulation"),
+        "description": "Toccata Z2 sound card emulation",
         "type": "uaeyesno",
     },
 
@@ -918,7 +918,7 @@ options = {
 
     "uae_z3mapping": {
         "default": "auto",
-        "description": N_("JIT Direct compatible Z3 memory mapping"),
+        "description": "JIT Direct compatible Z3 memory mapping",
         "type": "choice",
     },
 
@@ -930,7 +930,7 @@ options = {
 
     "uae_z3mem_size": {
         "default": "",
-        "description": N_("Size in MB of Zorro-III Fast RAM expansion board"),
+        "description": "Size in MB of Zorro-III Fast RAM expansion board",
         "type": "integer",
     },
 

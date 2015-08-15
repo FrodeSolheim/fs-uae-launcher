@@ -600,7 +600,10 @@ def initialize_qt_style(qapplication):
     fusion_variant = ""
 
     launcher_theme = Settings.get("launcher_theme")
-    if launcher_theme == "native":
+    if launcher_theme == "standard":
+        use_fusion_theme = False
+    elif launcher_theme == "native":
+        # native is an older deprecated name for standard
         use_fusion_theme = False
     elif launcher_theme == "fusion-adwaita":
         use_fusion_theme = True

@@ -10,6 +10,11 @@ class Font(object):
     def set_bold(self, bold):
         self.font.setBold(bold)
 
+    def increase_size(self, increment=1):
+        size = self.font.pointSize()
+        print("pontSize is", size)
+        self.font.setPointSize(size + increment)
+
 
 class DrawingContext(object):
 

@@ -1,9 +1,13 @@
 Version 2.5.39dev:
 
+* CD images for database games will now be extracted from archives on demand.
+  (there will always be a temp copy made right now, even when not needed).
 * If you give the launcher (command line) the path to a zip or lha, it will
   try to find a contained WHDLoad slave and configure an A600 + 8MB fast RAM
   and start FS-UAE.
+* Updated Info.plist and specified 10.7.0 as minimum OS X version.
 * Added version update check for beta branch.
+* Imported updated translations from crowdin.com.
 
 Version 2.5.38dev:
 

@@ -1,7 +1,7 @@
 import fsui as fsui
 from ...I18N import gettext
 from .OptionUI import OptionUI
-from fsui.extra.iconheader import IconHeader
+from fsui.extra.iconheader import NewIconHeader
 
 
 class LoggingSettingsPage(fsui.Panel):
@@ -10,8 +10,8 @@ class LoggingSettingsPage(fsui.Panel):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
-        self.icon_header = IconHeader(
-            self, fsui.Icon("maintenance", "pkg:fs_uae_workspace"),
+        self.icon_header = NewIconHeader(
+            self, fsui.Icon("settings", "pkg:fs_uae_workspace"),
             gettext("Logging"))
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
