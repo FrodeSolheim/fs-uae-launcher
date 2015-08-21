@@ -55,6 +55,7 @@ class Option(object):
     LAUNCHER_THEME = "launcher_theme"
     LOAD_STATE = "load_state"
     LOG_AUTOSCALE = "log_autoscale"
+    LOG_BSDSOCKET = "log_bsdsocket"
     LOG_INPUT = "log_input"
     LOG_QUERY_PLANS = "log_query_plans"
     LOW_LATENCY_VSYNC = "low_latency_vsync"
@@ -576,6 +577,12 @@ options = {
     "log_autoscale": {
         "default": "0",
         "description": N_("Log Autoscale Changes"),
+        "type": "boolean",
+    },
+
+    "log_bsdsocket": {
+        "default": "0",
+        "description": "",
         "type": "boolean",
     },
 

@@ -1,5 +1,8 @@
-Version 2.5.39dev:
+Version 2.5.40dev:
 
+* Enable screenshot bar for 1280x720 resolution.
+
+Version 2.5.39dev:
 * CD images for database games will now be extracted from archives on demand.
   (there will always be a temp copy made right now, even when not needed).
 * If you give the launcher (command line) the path to a zip or lha, it will
