@@ -48,10 +48,6 @@ class LanguageSettingsPage(fsui.Panel):
             self.layout.add(OptionUI.create_group(self, name), fill=True,
                             margin_top=10, margin_bottom=10)
 
-        add_option("launcher_theme")
-
-        self.layout.add_spacer(10)
-
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
         hori_layout.add(fsui.Label(self, gettext("Language:")))
@@ -71,6 +67,14 @@ class LanguageSettingsPage(fsui.Panel):
             "if a supported language is not detected).")
         self.layout.add(
             fsui.MultiLineLabel(self, information, 640))
+
+        label = fsui.HeadingLabel(self, "FS-UAE Launcher")
+        self.layout.add(label, margin_top=20, margin_bottom=20)
+
+        add_option("launcher_theme")
+        add_option("launcher_font_size")
+
+        self.layout.add_spacer(10)
 
         # self.set_size(self.layout.get_min_size())
         # self.set_size((400, 400))

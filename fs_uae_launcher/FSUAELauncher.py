@@ -3,6 +3,7 @@ import sys
 import hashlib
 import traceback
 from collections import defaultdict
+from fs_uae_launcher.Options import Option, Options
 from fs_uae_launcher.ui.config.HardDriveGroup import HardDriveGroup
 from fs_uae_launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
 from fsgs.Downloader import Downloader
@@ -596,7 +597,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
 
 def initialize_qt_style(qapplication):
-    from fsui.qt import QStyleFactory, QPalette, QColor, Qt
+    from fsui.qt import QStyleFactory, QPalette, QColor, Qt, QFont
     fusion_variant = ""
 
     launcher_theme = Settings.get("launcher_theme")
@@ -650,6 +651,19 @@ def initialize_qt_style(qapplication):
             qapplication.setStyleSheet(
                 "QToolTip { color: #ffffff; background-color: #2a82da; "
                 "border: 1px solid white; }")
+
+        font = qapplication.font()
+        print("FONT: Default is {} {}".format(font.family(), font.pointSize()))
+        Options.get(Option.LAUNCHER_FONT_SIZE)["default"] = font.pointSize()
+
+        try:
+            launcher_font_size = int(Settings.get("launcher_font_size"))
+        except ValueError:
+            launcher_font_size = 0
+        if launcher_font_size:
+            print("FONT: Override size {}".format(launcher_font_size))
+            font.setPointSize(launcher_font_size)
+            qapplication.setFont(font)
 
     plugin_helper = PluginHelper()
     for res in plugin_helper.find_resource_dirs(

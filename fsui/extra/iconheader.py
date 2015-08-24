@@ -36,7 +36,7 @@ class NewIconHeader(Group):
     ICON_RIGHT = 1
 
     def __init__(self, parent, icon, title, subtitle="",
-                 icon_position=ICON_LEFT):
+                 icon_position=ICON_RIGHT):
         Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
 

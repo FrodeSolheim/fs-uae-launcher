@@ -52,6 +52,7 @@ class Option(object):
     KEYBOARD_KEY_INSERT = "keyboard_key_insert"
     KEYBOARD_KEY_LESS = "keyboard_key_less"
     KICKSTART_SETUP = "kickstart_setup"
+    LAUNCHER_FONT_SIZE = "launcher_font_size"
     LAUNCHER_THEME = "launcher_theme"
     LOAD_STATE = "load_state"
     LOG_AUTOSCALE = "log_autoscale"
@@ -553,9 +554,17 @@ options = {
         "type": "boolean",
     },
 
+    "launcher_font_size": {
+        "default": "",
+        "description": N_("Font Size"),
+        "type": "Integer",
+        "min": 6,
+        "max": 16,
+    },
+
     "launcher_theme": {
         "default": "fusion",
-        "description": N_("FS-UAE Launcher Theme"),
+        "description": N_("Theme"),
         "type": "Choice",
         "values": [
             ("standard", N_("Standard")),

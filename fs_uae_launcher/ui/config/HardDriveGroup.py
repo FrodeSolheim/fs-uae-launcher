@@ -138,7 +138,7 @@ class HardDriveGroup(fsui.Group):
                 traceback.print_exc()
         values["x_whdload_args"] = whdload_args
         if whdload_args and model_config:
-            values["amiga_model"] = "A600"
+            values["amiga_model"] = "A1200"
             values["fast_memory"] = "8192"
         return values
 

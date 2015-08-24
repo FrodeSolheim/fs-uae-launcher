@@ -1,6 +1,8 @@
 Version 2.5.40dev:
 
+* New option launcher_font_size.
 * Enable screenshot bar for 1280x720 resolution.
+* Launcher WHDLoad zip (command line): use A1200 model.
 
 Version 2.5.39dev:
 * CD images for database games will now be extracted from archives on demand.

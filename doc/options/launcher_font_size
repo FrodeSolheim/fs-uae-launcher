@@ -1,0 +1,5 @@
+Summary: Font Size
+Type: Integer
+Default:
+Example: 12
+Range: 6 - 16
