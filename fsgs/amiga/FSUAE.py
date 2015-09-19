@@ -3,7 +3,7 @@ import tempfile
 import traceback
 import subprocess
 from fsbc.system import windows, macosx
-from fsbc.Application import Application
+from fsbc.Application import Application, app
 
 try:
     getcwd = os.getcwdu
@@ -49,7 +49,7 @@ class FSUAE(object):
             cls.center_window(args, env)
         except Exception:
             traceback.print_exc()
-            env = None
+        cls.add_environment_from_settings(env)
         # env[str("SDL_VIDEO_WINDOW_POS")] = "0,0"
         # args += ["--fullscreen-mode", "desktop"]
         if windows:
@@ -57,6 +57,22 @@ class FSUAE(object):
         else:
             p = subprocess.Popen(args, env=env, **kwargs)
         return p
+
+    @classmethod
+    def add_environment_from_settings(cls, env):
+        for key, value in app.settings.values.items():
+            # if not key.startswith("environment_"):
+            #     continue
+            # key = key[12:].upper()
+            if not key.isupper():
+                continue
+            # Check if it looks like a valid environment variable
+            for c in key:
+                if c not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789":
+                    break
+            else:
+                print("[ENV] {} = {}".format(key, value))
+                env[key] = value
 
     @classmethod
     def center_window(cls, args, env):

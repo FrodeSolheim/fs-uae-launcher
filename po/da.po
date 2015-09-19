@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-08-11 22:35+0200\n"
-"PO-Revision-Date: 2015-08-15 15:15-0400\n"
+"POT-Creation-Date: 2015-09-19 12:02+0200\n"
+"PO-Revision-Date: 2015-09-19 06:02-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Danish\n"
 "Language: da_DK\n"
@@ -33,9 +33,6 @@ msgstr "640x480 + skærmkant"
 
 msgid "640x512 + Border"
 msgstr "640x512 + skærmkant"
-
-msgid "A change of language will only affect applications which are restarted after the change."
-msgstr "En ændring af sprog vil kun ændre programmer der er genstartet efter ændringen."
 
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
 msgstr "ADF - Udviddet Floppydisk image (MFM format)"
@@ -471,9 +468,6 @@ msgstr ""
 msgid "FS-UAE Launcher Settings"
 msgstr "FS-UAE Launcher indstillinger"
 
-msgid "FS-UAE Launcher Theme"
-msgstr "FS-UAE Launcher tema"
-
 msgid "Fade-in Duration on Start"
 msgstr "Fade-in varighed på Start"
 
@@ -545,6 +539,9 @@ msgstr "Diskettedrev volumen"
 
 msgid "Floppy Drives"
 msgstr "Diskettedrev"
+
+msgid "Font Size"
+msgstr ""
 
 msgid "Forgot your password?"
 msgstr "Glemt adgangskode?"
@@ -1203,6 +1200,9 @@ msgstr "Følgende indstillinger kan påvirke ydeevnen, så aktiverer dem kun nå
 
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr "Følgende indstillinger gælder kun når du bruger den automatiske WHDLoad understøttelse i FS-UAE Launcher, for eksempel i forbindelse med den online spil database."
+
+msgid "Theme"
+msgstr ""
 
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Dette spil kan hentes automatisk, hvis du accepterer betingelserne"

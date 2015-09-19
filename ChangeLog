@@ -1,3 +1,9 @@
+Version 2.5.41dev:
+
+* Support FS-UAE environment variables in advanced settings.
+* Fix appearance settings when theme is set to standard.
+* Imported updated translations from crowdin.com.
+
 Version 2.5.40dev:
 
 * New option launcher_font_size.

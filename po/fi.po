@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-08-11 22:35+0200\n"
-"PO-Revision-Date: 2015-08-15 15:15-0400\n"
+"POT-Creation-Date: 2015-09-19 12:02+0200\n"
+"PO-Revision-Date: 2015-09-19 06:02-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -33,9 +33,6 @@ msgstr "640x480 + kehys"
 
 msgid "640x512 + Border"
 msgstr "640x512 + kehys"
-
-msgid "A change of language will only affect applications which are restarted after the change."
-msgstr "Kielen vaihtaminen vaikuttaa vain sovelluksiin jotka uudelleenkäynnistetään vaihdon jälkeen."
 
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
 msgstr "ADF - Laajennettu levykekuva (MFM enkoodattu)"
@@ -471,9 +468,6 @@ msgstr "FS-UAE Arcade"
 msgid "FS-UAE Launcher Settings"
 msgstr "FS-UAE Käynnistimen asetukset"
 
-msgid "FS-UAE Launcher Theme"
-msgstr "FS-UAE Launcherin teema"
-
 msgid "Fade-in Duration on Start"
 msgstr "Sisäänhäivytyksen kesto käynnistyksessä"
 
@@ -499,10 +493,10 @@ msgid "Fetching user game ratings ({0})"
 msgstr "Ladataan pelien käyttäjäarvioita ({0})"
 
 msgid "File Database"
-msgstr ""
+msgstr "Tiedostotietokanta"
 
 msgid "File Database Settings"
-msgstr ""
+msgstr "Tiedostotietokannan asetukset"
 
 msgid "File already exists"
 msgstr "Tiedosto on jo olemassa"
@@ -545,6 +539,9 @@ msgstr "Levykeaseman äänentaso"
 
 msgid "Floppy Drives"
 msgstr "Levykeasemat"
+
+msgid "Font Size"
+msgstr "Fontin koko"
 
 msgid "Forgot your password?"
 msgstr "Unohditko salasanasi?"
@@ -746,7 +743,7 @@ msgid "Loading..."
 msgstr "Ladataan..."
 
 msgid "Log Autoscale Changes"
-msgstr ""
+msgstr "Kirjaa automaattiskaalauksen muutokset"
 
 msgid "Log In"
 msgstr "Kirjaudu sisään"
@@ -925,7 +922,7 @@ msgid "Options for WHDLoad support in FS-UAE Launcher"
 msgstr "Valinnat FS-UAE Launcherin WHDLoad - tuelle"
 
 msgid "Other Device"
-msgstr ""
+msgstr "Muu laite"
 
 msgid "Override Installed Memory"
 msgstr "Säädä käsin asennetun muistin määrä"
@@ -1148,7 +1145,7 @@ msgid "Specify global options and settings which does not have UI controls"
 msgstr "Määritä yleiset valinnat ja asetukset joille ei ole käyttöliittymässä asetusmahdollisuutta"
 
 msgid "Standard"
-msgstr ""
+msgstr "Tavallinen"
 
 msgid "Start"
 msgstr "Käynnistä"
@@ -1199,10 +1196,13 @@ msgid "The following joystick will be preferred, if present:"
 msgstr "Tämä peliohjain on ensisijainen jos se on kytkettynä:"
 
 msgid "The following options may affect performance, so only enable them when needed for testing or debugging purposes."
-msgstr ""
+msgstr "Seuraavat valinnat voivat vaikuttaa suorituskykyyn, joten aktivoi ne ainoastaan tarvittaessa testi- tai virheenetsintä tarkoituksiin."
 
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr "Seuraavat valinnat vaikuttavat vain kun käytät automaattista FS-UAE Launcherin WHDLoad tukea, esimerkiksi Online-pelitietokannan kanssa."
+
+msgid "Theme"
+msgstr "Teema"
 
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Peli voidaan ladata automaattisesti jos hyväksyt käyttöehdot"

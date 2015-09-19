@@ -559,7 +559,7 @@ options = {
         "description": N_("Font Size"),
         "type": "Integer",
         "min": 6,
-        "max": 16,
+        "max": 18,
     },
 
     "launcher_theme": {

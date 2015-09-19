@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-08-11 22:35+0200\n"
-"PO-Revision-Date: 2015-08-15 15:15-0400\n"
+"POT-Creation-Date: 2015-09-19 12:02+0200\n"
+"PO-Revision-Date: 2015-09-19 06:02-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -33,9 +33,6 @@ msgstr "640x480 + ramka"
 
 msgid "640x512 + Border"
 msgstr "640x512 + ramka"
-
-msgid "A change of language will only affect applications which are restarted after the change."
-msgstr "Zmiany w ustawieniu języka będą widoczne po ponownym uruchomieniu."
 
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
 msgstr "ADF - Rozszerzony obraz dyskietki (MFM zakodowany)"
@@ -471,9 +468,6 @@ msgstr "FS-UAE   Arcade"
 msgid "FS-UAE Launcher Settings"
 msgstr "Ustawienia FS-UAE Launcher"
 
-msgid "FS-UAE Launcher Theme"
-msgstr "Motyw FS-UAE Launcher"
-
 msgid "Fade-in Duration on Start"
 msgstr "Czas rozjaśniania obrazu przy starcie"
 
@@ -499,10 +493,10 @@ msgid "Fetching user game ratings ({0})"
 msgstr "Pobieranie ocen gier użytkownika ({0})"
 
 msgid "File Database"
-msgstr ""
+msgstr "Baza danych plików"
 
 msgid "File Database Settings"
-msgstr ""
+msgstr "Ustawienia bazy danych plików"
 
 msgid "File already exists"
 msgstr "Plik już istnieje"
@@ -545,6 +539,9 @@ msgstr "Głośność stacji dyskietek"
 
 msgid "Floppy Drives"
 msgstr "Stacje dyskietek"
+
+msgid "Font Size"
+msgstr "Rozmiar czcionki"
 
 msgid "Forgot your password?"
 msgstr "Zapomniałeś hasła?"
@@ -925,7 +922,7 @@ msgid "Options for WHDLoad support in FS-UAE Launcher"
 msgstr "Wsparcie dla opcji WHDLoad w FS-UAE Launcher"
 
 msgid "Other Device"
-msgstr ""
+msgstr "Inne urządzenie"
 
 msgid "Override Installed Memory"
 msgstr "Zastąp pamięć zainstalowaną"
@@ -1148,7 +1145,7 @@ msgid "Specify global options and settings which does not have UI controls"
 msgstr "Określ opcje globalne i ustawienia, których nie posiada interfejs użytkownika"
 
 msgid "Standard"
-msgstr ""
+msgstr "Domyślny"
 
 msgid "Start"
 msgstr "Start"
@@ -1203,6 +1200,9 @@ msgstr "Następujące opcje mogą wpłynąć na wydajność, więc należy je w�
 
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr "Poniższe opcje dotyczą tylko automatycznej obsługi WHDLoad w FS-UAE Launcher, na przykład w odniesieniu do bazy danych gier online."
+
+msgid "Theme"
+msgstr "Motyw"
 
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Ta gra może być pobrana automatycznie jeśli zaakceptujesz warunki pobierania"

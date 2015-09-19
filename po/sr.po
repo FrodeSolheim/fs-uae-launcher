@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-08-11 22:35+0200\n"
-"PO-Revision-Date: 2015-08-15 15:16-0400\n"
+"POT-Creation-Date: 2015-09-19 12:02+0200\n"
+"PO-Revision-Date: 2015-09-19 06:03-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Serbian (Latin)\n"
 "Language: sr_CS\n"
@@ -33,9 +33,6 @@ msgstr "640x480 + okvir"
 
 msgid "640x512 + Border"
 msgstr "640x512 + okvir"
-
-msgid "A change of language will only affect applications which are restarted after the change."
-msgstr "Promena jezika će uticati samo na aplikacije koje se restartuju nakon promene."
 
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
 msgstr "ADF - Proširena slika diskete (MFM kodirana)"
@@ -471,9 +468,6 @@ msgstr ""
 msgid "FS-UAE Launcher Settings"
 msgstr "Podešavanja FS-UAE Launcher-a"
 
-msgid "FS-UAE Launcher Theme"
-msgstr ""
-
 msgid "Fade-in Duration on Start"
 msgstr ""
 
@@ -545,6 +539,9 @@ msgstr ""
 
 msgid "Floppy Drives"
 msgstr "Disketni uređaji"
+
+msgid "Font Size"
+msgstr ""
 
 msgid "Forgot your password?"
 msgstr "Zaboravili ste lozinku?"
@@ -1202,6 +1199,9 @@ msgid "The following options may affect performance, so only enable them when ne
 msgstr ""
 
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
+msgstr ""
+
+msgid "Theme"
 msgstr ""
 
 msgid "This game can be automatically downloaded if you accept the terms"

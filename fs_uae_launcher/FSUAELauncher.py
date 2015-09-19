@@ -623,6 +623,10 @@ def initialize_qt_style(qapplication):
         use_fusion_theme = True
         fusion_variant = "dark"
 
+    font = qapplication.font()
+    print("FONT: Default is {} {}".format(font.family(), font.pointSize()))
+    Options.get(Option.LAUNCHER_FONT_SIZE)["default"] = font.pointSize()
+
     if use_fusion_theme:
         # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
         qapplication.setStyle(QStyleFactory.create("Fusion"))
@@ -651,10 +655,6 @@ def initialize_qt_style(qapplication):
             qapplication.setStyleSheet(
                 "QToolTip { color: #ffffff; background-color: #2a82da; "
                 "border: 1px solid white; }")
-
-        font = qapplication.font()
-        print("FONT: Default is {} {}".format(font.family(), font.pointSize()))
-        Options.get(Option.LAUNCHER_FONT_SIZE)["default"] = font.pointSize()
 
         try:
             launcher_font_size = int(Settings.get("launcher_font_size"))

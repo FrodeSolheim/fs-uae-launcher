@@ -50,6 +50,7 @@ class LanguageSettingsPage(fsui.Panel):
 
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
+        # hori_layout.add(fsui.Label(self, gettext("Language:")))
         hori_layout.add(fsui.Label(self, gettext("Language:")))
         hori_layout.add_spacer(0, expand=True)
         self.language_choice = LanguageSettingChoice(self)
@@ -57,10 +58,11 @@ class LanguageSettingsPage(fsui.Panel):
 
         self.layout.add_spacer(20)
 
-        information = gettext(
-            "A change of language will only affect applications "
-            "which are restarted after the change.")
-        information += "\n\n"
+        information = ""
+        # information = gettext(
+        #     "A change of language will only affect applications "
+        #     "which are restarted after the change.")
+        # information += "\n\n"
         information += gettext(
             "When Automatic is specified, your preferred language is set "
             "based on information from the operating system (or English, "

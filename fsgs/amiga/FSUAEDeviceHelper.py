@@ -18,8 +18,11 @@ class FSUAEDeviceHelper(object):
         print("using fs-uae executable:", exe)
         args = [exe] + args
         print(args)
+        env = os.environ.copy()
+        FSUAE.add_environment_from_settings(env)
         process = subprocess.Popen(
-            args, stdin=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
+            args, env=env, stdin=subprocess.PIPE,
+            stderr=subprocess.PIPE, **kwargs)
         return process
 
     @classmethod
