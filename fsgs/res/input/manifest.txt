@@ -53,6 +53,9 @@
 4f0415b3000000000000504944564944.fs-uae-controller
 4f0420b3000000000000504944564944.fs-uae-controller
 5e040000000000008e02000000000000.fs-uae-controller
+5e048e02000000000000504944564944.fs-uae-controller
+5e04a102000000000000504944564944.fs-uae-controller
+5e04d102000000000000504944564944.fs-uae-controller
 6d0400000000000016c2000000000000.fs-uae-controller
 6d0400000000000018c2000000000000.fs-uae-controller
 6d0400000000000019c2000000000000.fs-uae-controller
@@ -63,6 +66,9 @@
 6d0416c2000000000000504944564944.fs-uae-controller
 6d0418c2000000000000504944564944.fs-uae-controller
 6d0419c2000000000000504944564944.fs-uae-controller
+6d041dc2000000000000504944564944.fs-uae-controller
+6d041ec2000000000000504944564944.fs-uae-controller
+6d041fc2000000000000504944564944.fs-uae-controller
 6d04d2ca000000000000504944564944.fs-uae-controller
 8117000000000000990a000000000000.fs-uae-controller
 8117990a000000000000504944564944.fs-uae-controller
@@ -80,6 +86,7 @@ controller_rumble_gamepad_f510_10_5_1_0_windows.conf
 controller_wireless_gamepad_f710_10_5_1_0_windows.conf
 controller_xbox_360_for_windows_10_5_1_0_windows.conf
 controller_xbox_360_wireless_receiver_for_windows_10_5_1_0_windows.conf
+controller_xbox_one_for_windows_11_6_1_0_windows.conf
 custom/custom_x_arcade.ini
 custom/custom_x_arcade_right.ini
 dual_analog_pad_12_4_1_0_macosx.conf
