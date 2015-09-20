@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-08-07 20:13+0200\n"
-"PO-Revision-Date: 2015-08-08 12:23-0400\n"
+"POT-Creation-Date: 2015-09-19 12:02+0200\n"
+"PO-Revision-Date: 2015-09-19 06:02-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -34,9 +34,6 @@ msgstr "640x480 + ramka"
 msgid "640x512 + Border"
 msgstr "640x512 + ramka"
 
-msgid "A change of language will only affect applications which are restarted after the change."
-msgstr "Zmiany w ustawieniu języka będą widoczne po ponownym uruchomieniu."
-
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
 msgstr "ADF - Rozszerzony obraz dyskietki (MFM zakodowany)"
 
@@ -58,6 +55,9 @@ msgstr "O {name}"
 
 msgid "Accept"
 msgstr "Akceptuj"
+
+msgid "Accuracy:"
+msgstr "Dokładność:"
 
 msgid "Add"
 msgstr "Dodaj"
@@ -122,12 +122,6 @@ msgstr "Wystąpił błąd"
 msgid "Appearance"
 msgstr "Wygląd"
 
-msgid "Appearance Preferences"
-msgstr "Preferencje wyglądu"
-
-msgid "Approximate A500/A1200 or cycle-exact"
-msgstr "Zbliżone do A500/A1200 lub cycle-exact"
-
 msgid "Audio"
 msgstr "Audio"
 
@@ -154,9 +148,6 @@ msgstr "Auto-Fire wyłączony"
 
 msgid "Auto-Fire is On"
 msgstr "Auto-Fire włączony"
-
-msgid "Autoconfig Z2 Fast RAM"
-msgstr "Auto konfiguracja Z2 Fast RAM"
 
 msgid "Automatic"
 msgstr "Automatycznie"
@@ -218,6 +209,10 @@ msgstr "RAM karty turbo"
 msgid "Cancel"
 msgstr "Anuluj"
 
+#, python-brace-format
+msgid "Cannot find required ROM file: {name}"
+msgstr "Nie można znaleźć pliku ROM: {name}"
+
 msgid "Checksumming"
 msgstr "Sprawdzanie sum kontrolnych"
 
@@ -241,6 +236,9 @@ msgstr "Wybierz dysk twardy"
 
 msgid "Choose Kickstart ROM"
 msgstr "Wybierz ROM (kickstart)"
+
+msgid "Choose Type"
+msgstr "Wybierz typ"
 
 msgid "Choose what folders you want to scan for Amiga files"
 msgstr "Wybierz katalogi, które chcesz skanować pod kątem plików Amigi"
@@ -289,9 +287,6 @@ msgstr "Skonfiguruj joysticki, oraz ustaw preferowane joysticki"
 
 msgid "Connect"
 msgstr "Połącz"
-
-msgid "Controls how lines are doubled and interlaced modes are handled"
-msgstr "Określ jak linie są podwajane, a tryb z przeplotem obsługiwany"
 
 #, python-brace-format
 msgid "Copy {0}\n"
@@ -365,6 +360,12 @@ msgstr "Przestarzałe opcje"
 msgid "Device ID used with OAGD.net authentication"
 msgstr "ID urządzenia dla uwierzytelniania w OAGD.net"
 
+msgid "Did not find required Kickstart or ROM"
+msgstr "Brak wymaganego pliku Kickstart lub ROM"
+
+msgid "Digital Joystick"
+msgstr "Joystick cyfrowy"
+
 msgid "Directory for WHDLoad.key file (if you have it):"
 msgstr "Katalog dla pliku WHDLoad.key (jeśli taki masz):"
 
@@ -385,33 +386,6 @@ msgstr "Nie masz jeszcze konta?"
 
 msgid "Dongle"
 msgstr "Klucz"
-
-msgid "Double / Double Fields"
-msgstr "Podwojone / Podwojony obszar"
-
-msgid "Double / Double Fields+"
-msgstr "Podwojone / Podwojony obszar+"
-
-msgid "Double / Double Frames"
-msgstr "Podwojone / Podwojenie klatek"
-
-msgid "Double Fields / Double Fields"
-msgstr "Podwojony obszar / Podwojony obszar"
-
-msgid "Double Fields / Double Fields+"
-msgstr "Podwojony obszar / Podwojony obszar+"
-
-msgid "Double Fields / Double Frames"
-msgstr "Podwojony obszar / Podwojenie klatek"
-
-msgid "Double Fields+ / Double Fields"
-msgstr "Podwojony obszar+ / Podwojony obszar"
-
-msgid "Double Fields+ / Double Fields+"
-msgstr "Podwojony obszar+ / Podwojony obszar+"
-
-msgid "Double Fields+ / Double Frames"
-msgstr "Podwojony obszar+ / Podwojenie klatek"
 
 msgid "Double-click a device entry to configure it (map joystick buttons)."
 msgstr "Dwukrotnie kliknij pozycję urządzenia, aby go skonfigurować (mapowanie przycisków joysticka)."
@@ -440,12 +414,6 @@ msgstr "Wysuń"
 msgid "Empty Floppy Drive Volume"
 msgstr "Głośność pustej stacji dyskietek"
 
-msgid "Enable a real time clock (RTC) module."
-msgstr "Włącz moduł zegara czasu rzeczywistego (RTC)."
-
-msgid "Enable default chipset features for a specific model"
-msgstr "Ustaw domyślne opcje chipsetu dla określonego modelu"
-
 msgid "Enable experimental config visualization (requires restart)"
 msgstr "Eksperymentalna wizualizacja ustawień (wymaga restartu)"
 
@@ -454,9 +422,6 @@ msgstr "Włącz eksperymentalny interfejs gry sieciowej (wymaga restartu)"
 
 msgid "Enable online database support (requires restart)"
 msgstr "Włącz obsługę bazy danych online (wymaga restartu)"
-
-msgid "Enable/disable fastest possible CPU speed"
-msgstr "Włącz/Wyłącz najszybsza możliwą prędkość CPU"
 
 msgid "Enable/disable use of OAGD.net locker"
 msgstr "Włącz/Wyłącz korzystanie ze schowka OAGD.net"
@@ -497,20 +462,14 @@ msgstr "Funkcje eksperymentalne"
 msgid "Extended ROM:"
 msgstr "Rozszerzony ROM:"
 
-msgid "FIXME"
-msgstr "NAPRAW MNIE"
-
 msgid "FS-UAE   Arcade"
 msgstr "FS-UAE   Arcade"
 
 msgid "FS-UAE Launcher Settings"
 msgstr "Ustawienia FS-UAE Launcher"
 
-msgid "FS-UAE Launcher Theme"
-msgstr "Motyw FS-UAE Launcher"
-
-msgid "Fastest possible"
-msgstr "Najszybciej"
+msgid "Fade-in Duration on Start"
+msgstr "Czas rozjaśniania obrazu przy starcie"
 
 msgid "Favorites"
 msgstr "Ulubione"
@@ -532,6 +491,12 @@ msgstr "Pobieranie informacji synchronizowania..."
 #, python-brace-format
 msgid "Fetching user game ratings ({0})"
 msgstr "Pobieranie ocen gier użytkownika ({0})"
+
+msgid "File Database"
+msgstr "Baza danych plików"
+
+msgid "File Database Settings"
+msgstr "Ustawienia bazy danych plików"
 
 msgid "File already exists"
 msgstr "Plik już istnieje"
@@ -575,8 +540,8 @@ msgstr "Głośność stacji dyskietek"
 msgid "Floppy Drives"
 msgstr "Stacje dyskietek"
 
-msgid "Force Zorro-III address space at 0x10000000"
-msgstr "Wymuś adresowanie Zorro-III od 0x10000000"
+msgid "Font Size"
+msgstr "Rozmiar czcionki"
 
 msgid "Forgot your password?"
 msgstr "Zapomniałeś hasła?"
@@ -613,6 +578,9 @@ msgstr "Hasło bazy danych gier"
 
 msgid "Game database user name"
 msgstr "Nazwa użytkownika bazy danych gier"
+
+msgid "Gamepad"
+msgstr "Gamepad"
 
 msgid "Grab Input on Click"
 msgstr "Przechwyć po kliknięciu"
@@ -708,9 +676,6 @@ msgstr "Wbudowany"
 msgid "Invalid size specified"
 msgstr "Niepoprawnie podany rozmiar"
 
-msgid "JIT Direct compatible Z3 memory mapping"
-msgstr "Bezpośrednie mapowanie pamięci zgodne z Z3"
-
 msgid "Joystick"
 msgstr "Joystick"
 
@@ -731,9 +696,6 @@ msgstr "Mapowanie klawiszy"
 
 msgid "Keyboard"
 msgstr "Klawiatura"
-
-msgid "Keyboard Setting"
-msgstr "Ustawienia klawiatury"
 
 msgid "Keyboard Settings"
 msgstr "Opcje klawiatury"
@@ -780,6 +742,9 @@ msgstr "Załaduj numer stanu gry"
 msgid "Loading..."
 msgstr "Ładowanie..."
 
+msgid "Log Autoscale Changes"
+msgstr "Loguj zmiany auto skalowania"
+
 msgid "Log In"
 msgstr "Zaloguj"
 
@@ -789,6 +754,9 @@ msgstr "Zaloguj / Zarejestruj"
 msgid "Log In to Your OAGD.net Account"
 msgstr "Zaloguj do twojego konta OAGD.net"
 
+msgid "Log Input Events"
+msgstr "Loguj zdarzenia wejścia"
+
 msgid "Log Out"
 msgstr "Wyloguj"
 
@@ -797,6 +765,9 @@ msgstr "Wyloguj z twojego konta OAGD.net"
 
 msgid "Log database query plans"
 msgstr "Loguj plany zapytań w bazie danych"
+
+msgid "Logging"
+msgstr "Logowanie"
 
 msgid "Logging in will enable the online game database and more"
 msgstr "Zalogowanie daje możliwość korzystania z bazy gier online i więcej"
@@ -821,6 +792,9 @@ msgstr "Główna głośność"
 
 msgid "Maintenance"
 msgstr "Konserwacja"
+
+msgid "Make:"
+msgstr "Marka:"
 
 msgid "Mark This Game Variant as Personal Favorite"
 msgstr "Oznacz ten wariant gry jako twój ulubiony"
@@ -853,6 +827,9 @@ msgstr "Brakujące pliki"
 msgid "Missing Game Files"
 msgstr "Brakujące pliki gry"
 
+msgid "Model:"
+msgstr "Model:"
+
 msgid "Monitor to display FS-UAE on (fullscreen)"
 msgstr "Monitor do wyświetlenia FS-UAE (pełny ekran)"
 
@@ -861,9 +838,6 @@ msgstr "Fast RAM płyty głównej"
 
 msgid "Mouse"
 msgstr "Myszka"
-
-msgid "Mouse Setting"
-msgstr "Ustawienia myszki"
 
 msgid "Mouse Settings"
 msgstr "Ustawienia myszki"
@@ -876,9 +850,6 @@ msgstr "Wybór kilku..."
 
 msgid "N/A"
 msgstr "N/D"
-
-msgid "Native"
-msgstr "Natywny"
 
 msgid "Net Play"
 msgstr "Gra przez sieć"
@@ -949,6 +920,9 @@ msgstr "Opcja {name} jest zastąpiona przez bieżącą konfigurację"
 
 msgid "Options for WHDLoad support in FS-UAE Launcher"
 msgstr "Wsparcie dla opcji WHDLoad w FS-UAE Launcher"
+
+msgid "Other Device"
+msgstr "Inne urządzenie"
 
 msgid "Override Installed Memory"
 msgstr "Zastąp pamięć zainstalowaną"
@@ -1046,6 +1020,9 @@ msgstr "Ponawianie ostatniej operacji (próba {0})"
 msgid "Right"
 msgstr "Prawy"
 
+msgid "Save"
+msgstr "Zapisz"
+
 msgid "Save Configuration"
 msgstr "Zapisz konfigurację"
 
@@ -1064,9 +1041,6 @@ msgstr "Opcje skalowania"
 msgid "Scan"
 msgstr "Skanuj"
 
-msgid "Scan & Indexing"
-msgstr "Skanowanie i indeksowanie"
-
 msgid "Scan Downloads"
 msgstr "Skanuj pobrane pliki"
 
@@ -1081,15 +1055,6 @@ msgstr "Błąd skanowania"
 
 msgid "Scan for Kickstarts, Files and Configurations"
 msgstr "Skanuj w poszukiwaniu plików, plików kickstart i konfiguracji"
-
-msgid "Scanlines / Double Fields"
-msgstr "Scanlines / Podwojony obszar"
-
-msgid "Scanlines / Double Fields+"
-msgstr "Scanlines / Podwojony obszar+"
-
-msgid "Scanlines / Double Frames"
-msgstr "Scanlines / Podwojenie klatek"
 
 msgid "Scanning .fs-uae files..."
 msgstr "Skanuje pliki .fs-uae..."
@@ -1164,29 +1129,8 @@ msgstr "Pokaż obramowanie i dekoracje okna"
 msgid "Shuffle"
 msgstr "Losowo"
 
-msgid "Single / Single"
-msgstr "Pojedyncza / Pojedyncze"
-
-msgid "Size in MB of Zorro-II Fast RAM (second) expansion board"
-msgstr "Rozmiar w MB Fast RAM (drugiej) karty rozszerzeń Zorro-II"
-
-msgid "Size in MB of Zorro-II Fast RAM expansion board"
-msgstr "Rozmiar w MB Fast RAM karty rozszerzeń Zorro-II"
-
-msgid "Size in MB of Zorro-III Fast RAM expansion board"
-msgstr "Rozmiar w MB Fast RAM karty rozszerzeń Zorro-III"
-
-msgid "Size in megabytes of motherboard fast memory"
-msgstr "Rozmiar w megabajtach pamięci fast płyty głównej"
-
-msgid "Size in megabytes of processor slot fast memory"
-msgstr "Rozmiar w megabajtach slotu pamięci fast procesora"
-
 msgid "Size:"
 msgstr "Rozmiar:"
-
-msgid "Slirp Implementation"
-msgstr "Implementacja slirp"
 
 msgid "Slow RAM"
 msgstr "Slow RAM"
@@ -1194,17 +1138,14 @@ msgstr "Slow RAM"
 msgid "Sound Card"
 msgstr "Karta dźwiękowa"
 
-msgid "Sound emulation"
-msgstr "Emulacja dźwięku"
-
 msgid "Specified directory does not exist"
 msgstr "Podany katalog nie istnieje"
 
 msgid "Specify global options and settings which does not have UI controls"
 msgstr "Określ opcje globalne i ustawienia, których nie posiada interfejs użytkownika"
 
-msgid "Specify the frequency of the emulated CPU in cycle-exact modes"
-msgstr "Określ częstotliwość emulowanego CPU w trybach cycle-exact"
+msgid "Standard"
+msgstr "Domyślny"
 
 msgid "Start"
 msgstr "Start"
@@ -1254,8 +1195,14 @@ msgstr "Filtr teksturowania"
 msgid "The following joystick will be preferred, if present:"
 msgstr "Poniższy joystick będzie preferowanym, jeśli będzie dostępny:"
 
+msgid "The following options may affect performance, so only enable them when needed for testing or debugging purposes."
+msgstr "Następujące opcje mogą wpłynąć na wydajność, więc należy je włączyć tylko w razie potrzeby testowania lub debugowania."
+
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr "Poniższe opcje dotyczą tylko automatycznej obsługi WHDLoad w FS-UAE Launcher, na przykład w odniesieniu do bazy danych gier online."
+
+msgid "Theme"
+msgstr "Motyw"
 
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Ta gra może być pobrana automatycznie jeśli zaakceptujesz warunki pobierania"
@@ -1265,9 +1212,6 @@ msgstr "Tą grę należy pobrać zanim będzie można w nią zagrać"
 
 msgid "This game variant cannot be started because you don't have all required files."
 msgstr "Ten wariant gry nie można uruchomić, ponieważ brak wymaganych plików."
-
-msgid "Toccata Z2 sound card emulation"
-msgstr "Emulacja karty dźwiękowej Toccata Z2"
 
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Przełącz między trybem okna a pełnym ekranem"
@@ -1392,12 +1336,6 @@ msgstr "Fast RAM Zorro II"
 
 msgid "Zorro III Fast RAM"
 msgstr "Fast RAM Zorro III"
-
-msgid "uae_a2065"
-msgstr "uae_a2065"
-
-msgid "uae_sana2"
-msgstr "uae_sana2"
 
 msgid "uaegfx_card"
 msgstr "uaegfx_card"

@@ -1,3 +1,25 @@
+Version 2.5.41dev:
+
+* Support FS-UAE environment variables in advanced settings.
+* Fix appearance settings when theme is set to standard.
+* Imported updated translations from crowdin.com.
+
+Version 2.5.40dev:
+
+* New option launcher_font_size.
+* Enable screenshot bar for 1280x720 resolution.
+* Launcher WHDLoad zip (command line): use A1200 model.
+
+Version 2.5.39dev:
+* CD images for database games will now be extracted from archives on demand.
+  (there will always be a temp copy made right now, even when not needed).
+* If you give the launcher (command line) the path to a zip or lha, it will
+  try to find a contained WHDLoad slave and configure an A600 + 8MB fast RAM
+  and start FS-UAE.
+* Updated Info.plist and specified 10.7.0 as minimum OS X version.
+* Added version update check for beta branch.
+* Imported updated translations from crowdin.com.
+
 Version 2.5.38dev:
 
 * Updated joystick configuration dialog.

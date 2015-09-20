@@ -120,7 +120,7 @@ class MainWindow(WindowWithTabs):
         # if fs_uae_launcher.ui.get_screen_size()[1] >= 768:
         #     right_margin = 0
 
-        if fs_uae_launcher.ui.get_screen_size()[1] >= 768:
+        if fs_uae_launcher.ui.get_screen_size()[1] >= 720:
             self.bottom_layout = fsui.HorizontalLayout()
             self.main_layout.add(self.bottom_layout, fill=True)
 

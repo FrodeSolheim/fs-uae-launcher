@@ -82,31 +82,30 @@ class SettingsDialog(PagedDialog):
         #     gettext("Filters & Scaling"), FilterSettingsPage,
         #     fsui.Icon("video-settings", "pkg:fs_uae_workspace"))
         # self.add_page(gettext("OpenGL Settings"), OpenGLSettingsPage)
-        if Settings.get("netplay_feature") == "1":
-            self.add_page(
-                gettext("Net Play"), NetplaySettingsPage,
-                fsui.Icon("netplay-settings", "pkg:fs_uae_workspace"))
         # if Settings.get("database_feature") == "1":
         self.add_page(
-            gettext("Scan & Indexing"), ScanSettingsPage,
+            gettext("File Database"), ScanSettingsPage,
             fsui.Icon("indexing-settings", "pkg:fs_uae_workspace"))
-        if True:
-            self.add_page(
-                gettext("Game Database"), GameDatabaseSettingsPage,
-                fsui.Icon("database-settings", "pkg:fs_uae_workspace"))
+        self.add_page(
+            gettext("Game Database"), GameDatabaseSettingsPage,
+            fsui.Icon("database-settings", "pkg:fs_uae_workspace"))
         # self.add_page(gettext("Custom Settings"), CustomSettingsPage)
         self.add_page(
             gettext("Maintenance"), MaintenanceSettingsPage,
             fsui.Icon("maintenance", "pkg:fs_uae_workspace"))
+        if Settings.get("netplay_feature") == "1":
+            self.add_page(
+                gettext("Net Play"), NetplaySettingsPage,
+                fsui.Icon("netplay-settings", "pkg:fs_uae_workspace"))
         self.add_page(
             "WHDLoad", WHDLoadSettingsPage,
-            fsui.Icon("blank", "pkg:fs_uae_launcher"))
+            fsui.Icon("settings", "pkg:fs_uae_workspace"))
         self.add_page(
             gettext("Logging"), LoggingSettingsPage,
-            fsui.Icon("blank", "pkg:fs_uae_launcher"))
+            fsui.Icon("settings", "pkg:fs_uae_workspace"))
         self.add_page(
             gettext("Experimental Features"), ExperimentalFeaturesPage,
-            fsui.Icon("blank", "pkg:fs_uae_launcher"))
+            fsui.Icon("settings", "pkg:fs_uae_workspace"))
         self.add_page(
             gettext("Advanced Settings"), AdvancedSettingsPage,
             fsui.Icon("settings", "pkg:fs_uae_workspace"))

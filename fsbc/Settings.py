@@ -33,6 +33,7 @@ class Settings(object):
 
     def load(self):
         cp = ConfigParser(interpolation=None)
+        cp.optionxform = str
         path = self.path
         if self.app and not path:
             path = self.app.get_settings_path()
@@ -77,6 +78,7 @@ class Settings(object):
                 save_values[(section, key)] = value
 
         cp = ConfigParser(interpolation=None)
+        cp.optionxform = str
         # We want the settings section to be listed first.
         cp.add_section("settings")
 

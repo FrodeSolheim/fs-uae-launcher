@@ -27,13 +27,13 @@
 	<key>LSHasLocalizedDisplayName</key>
 	<true/>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.5.0</string>
+	<string>10.7.0</string>
 	<key>LSUIPresentationMode</key>
 	<integer>0</integer>
 	<key>NSAppleScriptEnabled</key>
 	<false/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2011-2014 Frode Solheim</string>
+	<string>Copyright 2012-2015 Frode Solheim</string>
 	<key>NSMainNibFile</key>
 	<string></string>
 	<key>NSPrincipalClass</key>

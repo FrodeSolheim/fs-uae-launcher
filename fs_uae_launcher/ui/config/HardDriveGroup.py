@@ -114,17 +114,36 @@ class HardDriveGroup(fsui.Group):
         values = [(self.config_key, path),
                   (self.config_key_sha1, sha1)]
         if self.index == 0:
-            whdload_args = ""
-            dummy, ext = os.path.splitext(path)
-            if not dir_mode and ext.lower() in Archive.extensions:
-                try:
-                    whdload_args = self.calculate_whdload_args(full_path)
-                except Exception:
-                    traceback.print_exc()
-            values.append(("x_whdload_args", whdload_args))
+            # whdload_args = ""
+            # dummy, ext = os.path.splitext(path)
+            # if not dir_mode and ext.lower() in Archive.extensions:
+            #     try:
+            #         whdload_args = self.calculate_whdload_args(full_path)
+            #     except Exception:
+            #         traceback.print_exc()
+            # values.append(("x_whdload_args", whdload_args))
+            values.extend(self.generate_config_for_archive(
+                full_path, model_config=False).items())
         Config.set_multiple(values)
 
-    def calculate_whdload_args(self, archive_path):
+    @classmethod
+    def generate_config_for_archive(cls, path, model_config=True):
+        values = {}
+        whdload_args = ""
+        dummy, ext = os.path.splitext(path)
+        if ext.lower() in Archive.extensions:
+            try:
+                whdload_args = cls.calculate_whdload_args(path)
+            except Exception:
+                traceback.print_exc()
+        values["x_whdload_args"] = whdload_args
+        if whdload_args and model_config:
+            values["amiga_model"] = "A1200"
+            values["fast_memory"] = "8192"
+        return values
+
+    @classmethod
+    def calculate_whdload_args(cls, archive_path):
         archive = Archive(archive_path)
         slave = ""
         for path in archive.list_files():

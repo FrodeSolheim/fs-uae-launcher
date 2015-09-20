@@ -1,6 +1,6 @@
 from fs_uae_launcher.ui.settings.OptionUI import OptionUI
 import fsui
-from fsui.extra.iconheader import IconHeader
+from fsui.extra.iconheader import NewIconHeader
 from fs_uae_launcher.res import gettext
 from ...Settings import Settings
 
@@ -33,10 +33,10 @@ class LanguageSettingsPage(fsui.Panel):
         self.layout = fsui.VerticalLayout()
         # self.layout.set_padding(20, 20, 20, 20)
 
-        self.icon_header = IconHeader(
+        self.icon_header = NewIconHeader(
             self, fsui.Icon("language-settings", "pkg:fs_uae_workspace"),
             # gettext("Language Preference"),
-            gettext("Appearance Preferences"),
+            gettext("Appearance"),
             gettext("Set language and look for FS-UAE applications"))
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
@@ -48,12 +48,9 @@ class LanguageSettingsPage(fsui.Panel):
             self.layout.add(OptionUI.create_group(self, name), fill=True,
                             margin_top=10, margin_bottom=10)
 
-        add_option("launcher_theme")
-
-        self.layout.add_spacer(10)
-
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
+        # hori_layout.add(fsui.Label(self, gettext("Language:")))
         hori_layout.add(fsui.Label(self, gettext("Language:")))
         hori_layout.add_spacer(0, expand=True)
         self.language_choice = LanguageSettingChoice(self)
@@ -61,16 +58,25 @@ class LanguageSettingsPage(fsui.Panel):
 
         self.layout.add_spacer(20)
 
-        information = gettext(
-            "A change of language will only affect applications "
-            "which are restarted after the change.")
-        information += "\n\n"
+        information = ""
+        # information = gettext(
+        #     "A change of language will only affect applications "
+        #     "which are restarted after the change.")
+        # information += "\n\n"
         information += gettext(
             "When Automatic is specified, your preferred language is set "
             "based on information from the operating system (or English, "
             "if a supported language is not detected).")
         self.layout.add(
             fsui.MultiLineLabel(self, information, 640))
+
+        label = fsui.HeadingLabel(self, "FS-UAE Launcher")
+        self.layout.add(label, margin_top=20, margin_bottom=20)
+
+        add_option("launcher_theme")
+        add_option("launcher_font_size")
+
+        self.layout.add_spacer(10)
 
         # self.set_size(self.layout.get_min_size())
         # self.set_size((400, 400))

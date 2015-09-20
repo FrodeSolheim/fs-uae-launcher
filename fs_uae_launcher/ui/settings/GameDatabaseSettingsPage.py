@@ -1,5 +1,5 @@
 import fsui as fsui
-from fsui.extra.iconheader import IconHeader
+from fsui.extra.iconheader import NewIconHeader
 from ...I18N import gettext
 from .OptionUI import OptionUI
 
@@ -11,7 +11,7 @@ class GameDatabaseSettingsPage(fsui.Panel):
         self.layout = fsui.VerticalLayout()
         # self.layout.set_padding(20, 20, 20, 20)
 
-        self.icon_header = IconHeader(
+        self.icon_header = NewIconHeader(
             self, fsui.Icon("database-settings", "pkg:fs_uae_workspace"),
             gettext("Game Database Settings"),
             "")

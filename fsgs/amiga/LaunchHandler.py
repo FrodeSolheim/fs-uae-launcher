@@ -8,7 +8,7 @@ import unittest
 import traceback
 import zlib
 from fsbc.Paths import Paths
-from fsbc.task import current_task
+from fsbc.task import current_task, TaskFailure
 from fsbc.Resources import Resources
 from fsgs.Archive import Archive
 from fsgs.Downloader import Downloader
@@ -158,9 +158,9 @@ class LaunchHandler(object):
                 continue
             else:
                 src = Paths.expand_path(src)
-
             if not src:
-                raise Exception("Did not find required kickstart or ROM")
+                raise TaskFailure(
+                    gettext("Did not find required Kickstart or ROM"))
 
             use_temp_kickstarts_dir = False
 
@@ -177,9 +177,14 @@ class LaunchHandler(object):
                         src = path
                         break
                 else:
-                    stream = self.fsgs.file.open(src)
-                    if stream is None:
-                        raise Exception("Cannot find kickstart " + repr(src))
+                    try:
+                        stream = self.fsgs.file.open(src)
+                        if stream is None:
+                            raise FileNotFoundError(src)
+                    except FileNotFoundError:
+                        raise TaskFailure(gettext(
+                            "Cannot find required ROM "
+                            "file: {name}".format(name=repr(src))))
 
             with open(dest, "wb") as f:
                 if stream:
@@ -274,12 +279,61 @@ class LaunchHandler(object):
             key = "floppy_image_{0}".format(save_image)
             self.config[key] = "Save Disk.adf"
 
+    def prepare_cdrom(key):
+        src = self.config.get(key, "").strip()
+        if not src:
+            return
+
+        src, archive = self.expand_default_path(
+            src, self.fsgs.amiga.get_floppies_dir())
+        dst_name = os.path.basename(src)
+        current_task.set_progress(dst_name)
+
+        if self.config["writable_floppy_images"] == "1" and \
+                os.path.isfile(src):
+            # the config value directly refers to a local file, and the config
+            # value already refers to the file, but since we may have
+            # changed floppy_dir and the path may be relative, we set the
+            # resolved path directly
+            self.config[key] = src
+        else:
+            dst = os.path.join(self.temp_dir, dst_name)
+            self.fsgs.file.copy_game_file(src, dst)
+            self.config[key] = os.path.basename(dst)
+
     def prepare_cdroms(self):
         print("LaunchHandler.prepare_cdroms")
         if not self.config.get("cdrom_drive_count", ""):
             if self.config.get("cdrom_drive_0", "") or \
                     self.config.get("cdrom_image_0", ""):
                 self.config["cdrom_drive_count"] = "1"
+
+        cdrom_drive_0 = self.config.get("cdrom_drive_0", "")
+        if cdrom_drive_0.startswith("game:"):
+            scheme, dummy, game_uuid, name = cdrom_drive_0.split("/")
+            file_list = self.get_file_list_for_game_uuid(game_uuid)
+            for file_item in file_list:
+                src = self.fsgs.file.find_by_sha1(file_item["sha1"])
+
+                src, archive = self.expand_default_path(
+                    src, self.fsgs.amiga.get_cdroms_dir())
+                dst_name = file_item["name"]
+                current_task.set_progress(dst_name)
+
+                dst = os.path.join(self.temp_dir, dst_name)
+                self.fsgs.file.copy_game_file(src, dst)
+
+            for i in range(Amiga.MAX_CDROM_DRIVES):
+                key = "cdrom_drive_{0}".format(i)
+                value = self.config.get(key, "")
+                self.config[key] = os.path.join(
+                    self.temp_dir, os.path.basename(value))
+
+            for i in range(Amiga.MAX_CDROM_IMAGES):
+                key = "cdrom_image_{0}".format(i)
+                value = self.config.get(key, "")
+                self.config[key] = os.path.join(
+                    self.temp_dir, os.path.basename(value))
 
         cdroms = []
         for i in range(Amiga.MAX_CDROM_DRIVES):
@@ -388,20 +442,19 @@ class LaunchHandler(object):
             os.makedirs(dir_path)
         self.config["hard_drive_{0}".format(i)] = dir_path
 
+    def get_file_list_for_game_uuid(self, game_uuid):
+        game_database = self.fsgs.get_game_database()
+        values = game_database.get_game_values_for_uuid(game_uuid)
+        file_list = json.loads(values["file_list"])
+        return file_list
+
     def unpack_game_hard_drive(self, drive_index, src):
         print("unpack_game_hard_drive", drive_index, src)
         scheme, dummy, dummy, game_uuid, drive = src.split("/")
         drive_prefix = drive + "/"
-
-        game_database = self.fsgs.get_game_database()
-        # game_database_client = GameDatabaseClient(game_database)
-        # game_id = game_database_client.get_game_id(game_uuid)
-        # values = game_database_client.get_final_game_values(game_id)
-        values = game_database.get_game_values_for_uuid(game_uuid)
-        file_list = json.loads(values["file_list"])
-
         dir_name = "DH{0}".format(drive_index)
         dir_path = os.path.join(self.temp_dir, dir_name)
+        file_list = self.get_file_list_for_game_uuid(game_uuid)
         for file_entry in file_list:
             if self.stop_flag:
                 return

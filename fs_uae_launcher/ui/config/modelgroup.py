@@ -19,8 +19,10 @@ class ModelGroup(fsui.Group):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
-        self.model_ids = [x["id"] for x in Amiga.models if "/" not in x["id"]]
-        self.model_titles = [x["title"] for x in Amiga.models if "/" not in x["id"]]
+        self.model_ids = [
+            x["id"] for x in Amiga.models if "/" not in x["id"]]
+        self.model_titles = [
+            x["title"] for x in Amiga.models if "/" not in x["id"]]
 
         self.sub_model_ids = []
         self.sub_model_titles = []
@@ -30,7 +32,7 @@ class ModelGroup(fsui.Group):
         AmigaEnableBehavior(self.model_choice)
         self.sub_model_choice = fsui.Choice(self, self.sub_model_titles)
         AmigaEnableBehavior(self.sub_model_choice)
-        self.accuracy_label = fsui.Label(self, "Accuracy:")
+        self.accuracy_label = fsui.Label(self, gettext("Accuracy:"))
         self.accuracy_choice = fsui.Choice(self, [
             gettext("High"),
             gettext("Medium"),

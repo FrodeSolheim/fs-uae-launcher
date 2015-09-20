@@ -1,7 +1,7 @@
 import fsui as fsui
 from ...I18N import gettext
 from .OptionUI import OptionUI
-from fsui.extra.iconheader import IconHeader
+from fsui.extra.iconheader import NewIconHeader
 
 
 class MouseSettingsPage(fsui.Panel):
@@ -11,9 +11,9 @@ class MouseSettingsPage(fsui.Panel):
         self.layout = fsui.VerticalLayout()
         # self.layout.set_padding(20, 20, 20, 20)
 
-        self.icon_header = IconHeader(
+        self.icon_header = NewIconHeader(
             self, fsui.Icon("mouse-settings", "pkg:fs_uae_workspace"),
-            gettext("Mouse Setting"),
+            gettext("Mouse Settings"),
             "")
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 

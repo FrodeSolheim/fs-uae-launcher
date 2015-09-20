@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-08-07 20:13+0200\n"
-"PO-Revision-Date: 2015-08-08 12:23-0400\n"
+"POT-Creation-Date: 2015-09-19 12:02+0200\n"
+"PO-Revision-Date: 2015-09-19 06:02-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -34,9 +34,6 @@ msgstr "640x480 + okraje"
 msgid "640x512 + Border"
 msgstr "640x512 + okraje"
 
-msgid "A change of language will only affect applications which are restarted after the change."
-msgstr "Změna jazyku se projeví pouze u zrestarovaných aplikací."
-
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
 msgstr "ADF - Rozšířený obraz diskety (kódování MFM)"
 
@@ -58,6 +55,9 @@ msgstr "O {name}"
 
 msgid "Accept"
 msgstr "Přijmout"
+
+msgid "Accuracy:"
+msgstr ""
 
 msgid "Add"
 msgstr ""
@@ -122,12 +122,6 @@ msgstr "Došlo k chybě"
 msgid "Appearance"
 msgstr ""
 
-msgid "Appearance Preferences"
-msgstr ""
-
-msgid "Approximate A500/A1200 or cycle-exact"
-msgstr ""
-
 msgid "Audio"
 msgstr "Zvuk"
 
@@ -154,9 +148,6 @@ msgstr "Auto-fire je vypnut"
 
 msgid "Auto-Fire is On"
 msgstr "Auto-fire je zapnut"
-
-msgid "Autoconfig Z2 Fast RAM"
-msgstr ""
 
 msgid "Automatic"
 msgstr "Automatický"
@@ -218,6 +209,10 @@ msgstr ""
 msgid "Cancel"
 msgstr "Zrušit"
 
+#, python-brace-format
+msgid "Cannot find required ROM file: {name}"
+msgstr ""
+
 msgid "Checksumming"
 msgstr "Kontrola"
 
@@ -241,6 +236,9 @@ msgstr "Zvolit Harddisk"
 
 msgid "Choose Kickstart ROM"
 msgstr "Zvolit Kickstart ROM"
+
+msgid "Choose Type"
+msgstr ""
 
 msgid "Choose what folders you want to scan for Amiga files"
 msgstr "Vyberte složku ve které chcete hledat Amiga soubory"
@@ -289,9 +287,6 @@ msgstr "Konfigurace ovladače a nastavení upřednostňovaných ovladačů"
 
 msgid "Connect"
 msgstr "Připojit"
-
-msgid "Controls how lines are doubled and interlaced modes are handled"
-msgstr ""
 
 #, python-brace-format
 msgid "Copy {0}\n"
@@ -365,6 +360,12 @@ msgstr ""
 msgid "Device ID used with OAGD.net authentication"
 msgstr ""
 
+msgid "Did not find required Kickstart or ROM"
+msgstr ""
+
+msgid "Digital Joystick"
+msgstr ""
+
 msgid "Directory for WHDLoad.key file (if you have it):"
 msgstr ""
 
@@ -384,33 +385,6 @@ msgid "Don't have an account already?"
 msgstr ""
 
 msgid "Dongle"
-msgstr ""
-
-msgid "Double / Double Fields"
-msgstr ""
-
-msgid "Double / Double Fields+"
-msgstr ""
-
-msgid "Double / Double Frames"
-msgstr ""
-
-msgid "Double Fields / Double Fields"
-msgstr ""
-
-msgid "Double Fields / Double Fields+"
-msgstr ""
-
-msgid "Double Fields / Double Frames"
-msgstr ""
-
-msgid "Double Fields+ / Double Fields"
-msgstr ""
-
-msgid "Double Fields+ / Double Fields+"
-msgstr ""
-
-msgid "Double Fields+ / Double Frames"
 msgstr ""
 
 msgid "Double-click a device entry to configure it (map joystick buttons)."
@@ -440,12 +414,6 @@ msgstr "Vysunout"
 msgid "Empty Floppy Drive Volume"
 msgstr ""
 
-msgid "Enable a real time clock (RTC) module."
-msgstr ""
-
-msgid "Enable default chipset features for a specific model"
-msgstr ""
-
 msgid "Enable experimental config visualization (requires restart)"
 msgstr ""
 
@@ -454,9 +422,6 @@ msgstr "Povolit experimentální grafické rozhraní síťové hry (vyžaduje re
 
 msgid "Enable online database support (requires restart)"
 msgstr "Povolit podporu online databáze (vyžaduje restart)"
-
-msgid "Enable/disable fastest possible CPU speed"
-msgstr ""
 
 msgid "Enable/disable use of OAGD.net locker"
 msgstr ""
@@ -497,19 +462,13 @@ msgstr "Experimentální funkce"
 msgid "Extended ROM:"
 msgstr "Rozšířená ROM:"
 
-msgid "FIXME"
-msgstr ""
-
 msgid "FS-UAE   Arcade"
 msgstr ""
 
 msgid "FS-UAE Launcher Settings"
 msgstr "FS-UAE nastavení spouštění"
 
-msgid "FS-UAE Launcher Theme"
-msgstr ""
-
-msgid "Fastest possible"
+msgid "Fade-in Duration on Start"
 msgstr ""
 
 msgid "Favorites"
@@ -532,6 +491,12 @@ msgstr ""
 #, python-brace-format
 msgid "Fetching user game ratings ({0})"
 msgstr "Načítám uživ. hodnocení hry ({0})"
+
+msgid "File Database"
+msgstr ""
+
+msgid "File Database Settings"
+msgstr ""
 
 msgid "File already exists"
 msgstr "Soubor již existuje"
@@ -575,7 +540,7 @@ msgstr ""
 msgid "Floppy Drives"
 msgstr "Disketové mechaniky"
 
-msgid "Force Zorro-III address space at 0x10000000"
+msgid "Font Size"
 msgstr ""
 
 msgid "Forgot your password?"
@@ -613,6 +578,9 @@ msgstr "Heslo herní databáze"
 
 msgid "Game database user name"
 msgstr "Jméno herní databáze"
+
+msgid "Gamepad"
+msgstr ""
 
 msgid "Grab Input on Click"
 msgstr ""
@@ -708,9 +676,6 @@ msgstr "Vnitřní"
 msgid "Invalid size specified"
 msgstr "Specifikována špatná velikost"
 
-msgid "JIT Direct compatible Z3 memory mapping"
-msgstr ""
-
 msgid "Joystick"
 msgstr "Pákový ovladač"
 
@@ -731,9 +696,6 @@ msgstr ""
 
 msgid "Keyboard"
 msgstr "Klávesnice"
-
-msgid "Keyboard Setting"
-msgstr "Nastavení klávesnice"
 
 msgid "Keyboard Settings"
 msgstr "Nastavení klávesnice"
@@ -780,6 +742,9 @@ msgstr ""
 msgid "Loading..."
 msgstr "Nahrávání..."
 
+msgid "Log Autoscale Changes"
+msgstr ""
+
 msgid "Log In"
 msgstr "Přihlásit se"
 
@@ -789,6 +754,9 @@ msgstr "Přihlásit se / registrovat"
 msgid "Log In to Your OAGD.net Account"
 msgstr "Přihlaste se k účtu OAGD.net"
 
+msgid "Log Input Events"
+msgstr ""
+
 msgid "Log Out"
 msgstr "Odhlásit"
 
@@ -796,6 +764,9 @@ msgid "Log Out from Your OAGD.net Account"
 msgstr ""
 
 msgid "Log database query plans"
+msgstr ""
+
+msgid "Logging"
 msgstr ""
 
 msgid "Logging in will enable the online game database and more"
@@ -821,6 +792,9 @@ msgstr ""
 
 msgid "Maintenance"
 msgstr "Údržba"
+
+msgid "Make:"
+msgstr ""
 
 msgid "Mark This Game Variant as Personal Favorite"
 msgstr ""
@@ -853,6 +827,9 @@ msgstr "Chybějící soubory"
 msgid "Missing Game Files"
 msgstr ""
 
+msgid "Model:"
+msgstr ""
+
 msgid "Monitor to display FS-UAE on (fullscreen)"
 msgstr ""
 
@@ -861,9 +838,6 @@ msgstr ""
 
 msgid "Mouse"
 msgstr "Myš"
-
-msgid "Mouse Setting"
-msgstr "Nastavení myši"
 
 msgid "Mouse Settings"
 msgstr "Nastavení myši"
@@ -876,9 +850,6 @@ msgstr ""
 
 msgid "N/A"
 msgstr "Není k dispozici"
-
-msgid "Native"
-msgstr ""
 
 msgid "Net Play"
 msgstr "Síťová hra"
@@ -948,6 +919,9 @@ msgid "Option {name} is overridden by current configuration"
 msgstr ""
 
 msgid "Options for WHDLoad support in FS-UAE Launcher"
+msgstr ""
+
+msgid "Other Device"
 msgstr ""
 
 msgid "Override Installed Memory"
@@ -1046,6 +1020,9 @@ msgstr "Opakuji poslední operaci (pokus {0})"
 msgid "Right"
 msgstr ""
 
+msgid "Save"
+msgstr ""
+
 msgid "Save Configuration"
 msgstr "Uložení konfigurace"
 
@@ -1064,9 +1041,6 @@ msgstr "Nastavení škálování"
 msgid "Scan"
 msgstr "Prohledat"
 
-msgid "Scan & Indexing"
-msgstr "Prohledat & Indexace"
-
 msgid "Scan Downloads"
 msgstr ""
 
@@ -1081,15 +1055,6 @@ msgstr "Chyba při skenování"
 
 msgid "Scan for Kickstarts, Files and Configurations"
 msgstr "Hledání Kickstart, souborů a konfigurací"
-
-msgid "Scanlines / Double Fields"
-msgstr ""
-
-msgid "Scanlines / Double Fields+"
-msgstr ""
-
-msgid "Scanlines / Double Frames"
-msgstr ""
 
 msgid "Scanning .fs-uae files..."
 msgstr "Prohledávám .fs-uae soubory..."
@@ -1164,29 +1129,8 @@ msgstr ""
 msgid "Shuffle"
 msgstr ""
 
-msgid "Single / Single"
-msgstr ""
-
-msgid "Size in MB of Zorro-II Fast RAM (second) expansion board"
-msgstr ""
-
-msgid "Size in MB of Zorro-II Fast RAM expansion board"
-msgstr ""
-
-msgid "Size in MB of Zorro-III Fast RAM expansion board"
-msgstr ""
-
-msgid "Size in megabytes of motherboard fast memory"
-msgstr ""
-
-msgid "Size in megabytes of processor slot fast memory"
-msgstr ""
-
 msgid "Size:"
 msgstr "Velikost:"
-
-msgid "Slirp Implementation"
-msgstr ""
 
 msgid "Slow RAM"
 msgstr "Slow RAM"
@@ -1194,16 +1138,13 @@ msgstr "Slow RAM"
 msgid "Sound Card"
 msgstr ""
 
-msgid "Sound emulation"
-msgstr "Emulace zvuku"
-
 msgid "Specified directory does not exist"
 msgstr "Zadaný adresář neexistuje"
 
 msgid "Specify global options and settings which does not have UI controls"
 msgstr ""
 
-msgid "Specify the frequency of the emulated CPU in cycle-exact modes"
+msgid "Standard"
 msgstr ""
 
 msgid "Start"
@@ -1254,7 +1195,13 @@ msgstr "Filtr textury"
 msgid "The following joystick will be preferred, if present:"
 msgstr ""
 
+msgid "The following options may affect performance, so only enable them when needed for testing or debugging purposes."
+msgstr ""
+
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
+msgstr ""
+
+msgid "Theme"
 msgstr ""
 
 msgid "This game can be automatically downloaded if you accept the terms"
@@ -1264,9 +1211,6 @@ msgid "This game must be downloaded before you can play it"
 msgstr ""
 
 msgid "This game variant cannot be started because you don't have all required files."
-msgstr ""
-
-msgid "Toccata Z2 sound card emulation"
 msgstr ""
 
 msgid "Toggle Between Windowed and Full-Screen Mode"
@@ -1391,12 +1335,6 @@ msgid "Zorro II Fast RAM"
 msgstr ""
 
 msgid "Zorro III Fast RAM"
-msgstr ""
-
-msgid "uae_a2065"
-msgstr ""
-
-msgid "uae_sana2"
 msgstr ""
 
 msgid "uaegfx_card"

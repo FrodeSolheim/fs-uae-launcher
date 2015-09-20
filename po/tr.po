@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-08-07 20:13+0200\n"
-"PO-Revision-Date: 2015-08-08 12:23-0400\n"
+"POT-Creation-Date: 2015-09-19 12:02+0200\n"
+"PO-Revision-Date: 2015-09-19 06:02-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -34,9 +34,6 @@ msgstr "640x480 + Kenar"
 msgid "640x512 + Border"
 msgstr "640x512 + Kenar"
 
-msgid "A change of language will only affect applications which are restarted after the change."
-msgstr "Dil değişimi yalnızca değişimden sonra yeniden başlatılan uygulamaları etkileyecektir."
-
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
 msgstr "ADF - Genişletilmiş Disket İmajı (MFM Şifreli)"
 
@@ -58,6 +55,9 @@ msgstr "{name} hakkında"
 
 msgid "Accept"
 msgstr "Kabul Et"
+
+msgid "Accuracy:"
+msgstr ""
 
 msgid "Add"
 msgstr "Ekle"
@@ -122,12 +122,6 @@ msgstr "Bir Hata Meydana Geldi"
 msgid "Appearance"
 msgstr ""
 
-msgid "Appearance Preferences"
-msgstr ""
-
-msgid "Approximate A500/A1200 or cycle-exact"
-msgstr "Yaklaşık olarak A500/1200 veya tam-döngü"
-
 msgid "Audio"
 msgstr "Ses"
 
@@ -154,9 +148,6 @@ msgstr "Otomatik Ateş Kapalı"
 
 msgid "Auto-Fire is On"
 msgstr "Otomatik Ateş Açık"
-
-msgid "Autoconfig Z2 Fast RAM"
-msgstr "Z2 Fast RAM otomatik yapılandır"
 
 msgid "Automatic"
 msgstr "Otomatik"
@@ -218,6 +209,10 @@ msgstr ""
 msgid "Cancel"
 msgstr "Vazgeç"
 
+#, python-brace-format
+msgid "Cannot find required ROM file: {name}"
+msgstr ""
+
 msgid "Checksumming"
 msgstr "Sağlama Toplamı"
 
@@ -241,6 +236,9 @@ msgstr "Hard Diski Seçin"
 
 msgid "Choose Kickstart ROM"
 msgstr "Kickstart ROM'unu Seçin"
+
+msgid "Choose Type"
+msgstr ""
 
 msgid "Choose what folders you want to scan for Amiga files"
 msgstr "Amiga dosyaları için taramak istediğiniz klasörleri seçin"
@@ -289,9 +287,6 @@ msgstr "Joystickleri ayarla ve tercih edilen joystick ayarlarını belirle"
 
 msgid "Connect"
 msgstr "Bağlan"
-
-msgid "Controls how lines are doubled and interlaced modes are handled"
-msgstr "Çizgilerin nasıl ikileneceğini ve interlace modlarının nasıl idare edileceğini kontrol eder"
 
 #, python-brace-format
 msgid "Copy {0}\n"
@@ -365,6 +360,12 @@ msgstr ""
 msgid "Device ID used with OAGD.net authentication"
 msgstr "OAGD.net kimlik doğrulaması ile kullanılan Aygıt kimliği"
 
+msgid "Did not find required Kickstart or ROM"
+msgstr ""
+
+msgid "Digital Joystick"
+msgstr ""
+
 msgid "Directory for WHDLoad.key file (if you have it):"
 msgstr "WHDLoad.key dosyası için dizin (varsa):"
 
@@ -385,33 +386,6 @@ msgstr "Henüz bir hesabınız yok mu?"
 
 msgid "Dongle"
 msgstr "Program Kilidi"
-
-msgid "Double / Double Fields"
-msgstr "Çift / Çift Alan"
-
-msgid "Double / Double Fields+"
-msgstr "Çift / Çift Alan+"
-
-msgid "Double / Double Frames"
-msgstr "Çift / Çift Kare"
-
-msgid "Double Fields / Double Fields"
-msgstr "Çift Alan / Çift Alan"
-
-msgid "Double Fields / Double Fields+"
-msgstr "Çift Alan / Çift Alan+"
-
-msgid "Double Fields / Double Frames"
-msgstr "Çift Alan / Çift Kare"
-
-msgid "Double Fields+ / Double Fields"
-msgstr "Çift Alan+ / Çift Alan"
-
-msgid "Double Fields+ / Double Fields+"
-msgstr "Çift Alan+ / Çift Alan+"
-
-msgid "Double Fields+ / Double Frames"
-msgstr "Çift Alan+ / Çift Kare"
 
 msgid "Double-click a device entry to configure it (map joystick buttons)."
 msgstr "Ayarlamak için cihaz ismine çift tıklayın (joystick düğmelerini atamak için)."
@@ -440,12 +414,6 @@ msgstr "Çıkar"
 msgid "Empty Floppy Drive Volume"
 msgstr ""
 
-msgid "Enable a real time clock (RTC) module."
-msgstr "Gerçek zamanlı saat (RTC) modülünü etkinleştir."
-
-msgid "Enable default chipset features for a specific model"
-msgstr "Belli model için varsayılan yonga özelliklerini etkinleştir"
-
 msgid "Enable experimental config visualization (requires restart)"
 msgstr "Deneysel ayar görselleştirmeyi etkinleştir (yeniden başlatmanız gerekir)"
 
@@ -454,9 +422,6 @@ msgstr "Deneysel net oyunu arayüzünü aktifleştir (yeniden başlatmanız gere
 
 msgid "Enable online database support (requires restart)"
 msgstr "Online veritabanı desteğini aktifleştir (yeniden başlatmanız gerekir)"
-
-msgid "Enable/disable fastest possible CPU speed"
-msgstr "Mümkün olan en yüksek CPU hızını etkinleştir/devre dışı bırak"
 
 msgid "Enable/disable use of OAGD.net locker"
 msgstr "OAGD.net dolabının kullanımını etkinleştir/devre dışı bırak"
@@ -497,20 +462,14 @@ msgstr "Deneysel Özellikler"
 msgid "Extended ROM:"
 msgstr "Genişletilmiş ROM:"
 
-msgid "FIXME"
-msgstr ""
-
 msgid "FS-UAE   Arcade"
 msgstr ""
 
 msgid "FS-UAE Launcher Settings"
 msgstr "FS-UAE Çalıştırıcı Ayarları"
 
-msgid "FS-UAE Launcher Theme"
+msgid "Fade-in Duration on Start"
 msgstr ""
-
-msgid "Fastest possible"
-msgstr "Mümkün olan en hızlısı"
 
 msgid "Favorites"
 msgstr ""
@@ -532,6 +491,12 @@ msgstr "Senkronizasyon bilgisi alınıyor..."
 #, python-brace-format
 msgid "Fetching user game ratings ({0})"
 msgstr "Oyunun kullanıcı puanları alınıyor ({0})"
+
+msgid "File Database"
+msgstr ""
+
+msgid "File Database Settings"
+msgstr ""
 
 msgid "File already exists"
 msgstr "Dosya zaten mevcut"
@@ -575,8 +540,8 @@ msgstr ""
 msgid "Floppy Drives"
 msgstr "Disket Sürücüler"
 
-msgid "Force Zorro-III address space at 0x10000000"
-msgstr "0x10000000'de Zorro-III adres alanını kullan"
+msgid "Font Size"
+msgstr ""
 
 msgid "Forgot your password?"
 msgstr "Şifrenizi mi unuttunuz?"
@@ -613,6 +578,9 @@ msgstr "Oyun veritabanı şifresi"
 
 msgid "Game database user name"
 msgstr "Oyun veritabanı kullanıcı ismi"
+
+msgid "Gamepad"
+msgstr ""
 
 msgid "Grab Input on Click"
 msgstr ""
@@ -708,9 +676,6 @@ msgstr "Dahili"
 msgid "Invalid size specified"
 msgstr "Geçersiz boyut seçildi"
 
-msgid "JIT Direct compatible Z3 memory mapping"
-msgstr "JIT Direct uyumlu Z3 bellek eşleme"
-
 msgid "Joystick"
 msgstr "Joystick"
 
@@ -731,9 +696,6 @@ msgstr ""
 
 msgid "Keyboard"
 msgstr "Klavye"
-
-msgid "Keyboard Setting"
-msgstr "Klavye Ayarı"
 
 msgid "Keyboard Settings"
 msgstr "Klavye Ayarları"
@@ -780,6 +742,9 @@ msgstr "Sayıyla durum yükle"
 msgid "Loading..."
 msgstr "Yükleniyor..."
 
+msgid "Log Autoscale Changes"
+msgstr ""
+
 msgid "Log In"
 msgstr "Giriş Yap"
 
@@ -789,6 +754,9 @@ msgstr "Giriş Yap / Kayıt Ol"
 msgid "Log In to Your OAGD.net Account"
 msgstr "OAGD.net Hesabınıza Giriş Yapın"
 
+msgid "Log Input Events"
+msgstr ""
+
 msgid "Log Out"
 msgstr "Çıkış Yap"
 
@@ -797,6 +765,9 @@ msgstr "OAGD.net Hesabınızdan Çıkış Yapın"
 
 msgid "Log database query plans"
 msgstr "Kütük veritabanı sorgu planları"
+
+msgid "Logging"
+msgstr ""
 
 msgid "Logging in will enable the online game database and more"
 msgstr "Giriş yaptığınızda çevrimiçi oyun veritabanı ve fazlası aktifleşecektir"
@@ -821,6 +792,9 @@ msgstr ""
 
 msgid "Maintenance"
 msgstr "Bakım"
+
+msgid "Make:"
+msgstr ""
 
 msgid "Mark This Game Variant as Personal Favorite"
 msgstr "Bu Oyun Varyantını Kişisel Favori Olarak İşaretle"
@@ -853,6 +827,9 @@ msgstr "Eksik Dosyalar"
 msgid "Missing Game Files"
 msgstr ""
 
+msgid "Model:"
+msgstr ""
+
 msgid "Monitor to display FS-UAE on (fullscreen)"
 msgstr ""
 
@@ -861,9 +838,6 @@ msgstr ""
 
 msgid "Mouse"
 msgstr "Fare"
-
-msgid "Mouse Setting"
-msgstr "Fare Ayarı"
 
 msgid "Mouse Settings"
 msgstr "Fare Ayarları"
@@ -876,9 +850,6 @@ msgstr ""
 
 msgid "N/A"
 msgstr "Yok"
-
-msgid "Native"
-msgstr ""
 
 msgid "Net Play"
 msgstr "Net Oyunu"
@@ -949,6 +920,9 @@ msgstr ""
 
 msgid "Options for WHDLoad support in FS-UAE Launcher"
 msgstr "FS-UAE Çalıştırıcı'da WHDLoad desteği seçenekleri"
+
+msgid "Other Device"
+msgstr ""
 
 msgid "Override Installed Memory"
 msgstr "Kurulu Hafızanın Üzerine Yaz"
@@ -1046,6 +1020,9 @@ msgstr "Son işlem tekrar deneniyor (deneme {0})"
 msgid "Right"
 msgstr ""
 
+msgid "Save"
+msgstr ""
+
 msgid "Save Configuration"
 msgstr "Konfigürasyonu Kaydet"
 
@@ -1064,9 +1041,6 @@ msgstr "Büyütme Seçenekleri"
 msgid "Scan"
 msgstr "Tara"
 
-msgid "Scan & Indexing"
-msgstr "Tarama & İndeksleme"
-
 msgid "Scan Downloads"
 msgstr "İndirilenleri Tara"
 
@@ -1081,15 +1055,6 @@ msgstr "Tarama hatası"
 
 msgid "Scan for Kickstarts, Files and Configurations"
 msgstr "Kickstart, Dosya ve Konfigürasyonlar İçin Tara"
-
-msgid "Scanlines / Double Fields"
-msgstr "Tarama Çizgileri / Çift Alan"
-
-msgid "Scanlines / Double Fields+"
-msgstr "Tarama Çizgileri / Çift Alan+"
-
-msgid "Scanlines / Double Frames"
-msgstr "Tarama Çizgileri / Çift Kare"
 
 msgid "Scanning .fs-uae files..."
 msgstr ".fs-uae dosyaları taranıyor..."
@@ -1164,29 +1129,8 @@ msgstr ""
 msgid "Shuffle"
 msgstr "Karıştır"
 
-msgid "Single / Single"
-msgstr "Tekli / Tekli"
-
-msgid "Size in MB of Zorro-II Fast RAM (second) expansion board"
-msgstr ""
-
-msgid "Size in MB of Zorro-II Fast RAM expansion board"
-msgstr ""
-
-msgid "Size in MB of Zorro-III Fast RAM expansion board"
-msgstr ""
-
-msgid "Size in megabytes of motherboard fast memory"
-msgstr ""
-
-msgid "Size in megabytes of processor slot fast memory"
-msgstr ""
-
 msgid "Size:"
 msgstr "Boyut:"
-
-msgid "Slirp Implementation"
-msgstr ""
 
 msgid "Slow RAM"
 msgstr "Yavaş RAM"
@@ -1194,16 +1138,13 @@ msgstr "Yavaş RAM"
 msgid "Sound Card"
 msgstr ""
 
-msgid "Sound emulation"
-msgstr "Ses emülasyonu"
-
 msgid "Specified directory does not exist"
 msgstr "Belirtilen klasör mevcut değil"
 
 msgid "Specify global options and settings which does not have UI controls"
 msgstr "Genel ayarları ve UI kontrolleri olmayan ayarları belirleyin"
 
-msgid "Specify the frequency of the emulated CPU in cycle-exact modes"
+msgid "Standard"
 msgstr ""
 
 msgid "Start"
@@ -1254,7 +1195,13 @@ msgstr "Doku filtresi"
 msgid "The following joystick will be preferred, if present:"
 msgstr "Mevcut olduğu taktirde aşağıdaki joystick tercih edilecektir:"
 
+msgid "The following options may affect performance, so only enable them when needed for testing or debugging purposes."
+msgstr ""
+
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
+msgstr ""
+
+msgid "Theme"
 msgstr ""
 
 msgid "This game can be automatically downloaded if you accept the terms"
@@ -1265,9 +1212,6 @@ msgstr "Bu oyunu oynayabilmek için önce indirmeniz gerekir"
 
 msgid "This game variant cannot be started because you don't have all required files."
 msgstr "Gerekli tüm dosyalara sahip olmadığınızdan bu oyun varyantını çalıştıramazsınız."
-
-msgid "Toccata Z2 sound card emulation"
-msgstr ""
 
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Pencere ve Tam-Ekran Modu Arasında Geçiş Yap"
@@ -1391,12 +1335,6 @@ msgid "Zorro II Fast RAM"
 msgstr ""
 
 msgid "Zorro III Fast RAM"
-msgstr ""
-
-msgid "uae_a2065"
-msgstr ""
-
-msgid "uae_sana2"
 msgstr ""
 
 msgid "uaegfx_card"
