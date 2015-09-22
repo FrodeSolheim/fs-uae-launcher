@@ -1,6 +1,8 @@
 version = $(strip $(shell cat ../../VERSION))
-emulator_dir = fs-uae_$(version)_windows
-launcher_dir = fs-uae-launcher_$(version)_windows
+arch = $(strip $(shell python3 ../arch.py))
+
+emulator_dir = fs-uae_$(version)_windows_$(arch)
+launcher_dir = fs-uae-launcher_$(version)_windows_$(arch)
 
 all: progdir zipfile setup
 
@@ -54,7 +56,8 @@ zipfile:
 	cd $(launcher_dir) && zip -9 -r ../../../$(launcher_dir).zip *
 
 setup:
-	sed s/9.8.7/${version}/g fs-uae-launcher.iss > fs-uae-launcher.iss.tmp
+	sed s/9.8.7/${version}/g fs-uae-launcher.iss > fs-uae-launcher.iss2.tmp
+	sed s/ARCH/${arch}/g fs-uae-launcher.iss2.tmp > fs-uae-launcher.iss.tmp
 	python3 iscc.py fs-uae-launcher.iss.tmp
-	python3 sign.py ../fs-uae-launcher_$(version)_windows.exe
+	python3 sign.py ../fs-uae-launcher_$(version)_windows_$(arch).exe
 	rm fs-uae-launcher.iss.tmp

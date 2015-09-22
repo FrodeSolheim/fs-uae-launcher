@@ -5,7 +5,7 @@ AppVerName=FS-UAE Launcher 9.8.7
 DefaultDirName={localappdata}\fs-uae-launcher
 DefaultGroupName=FS-UAE
 UninstallDisplayIcon={app}\fs-uae-launcher.exe
-OutputBaseFilename=fs-uae-launcher_9.8.7_windows
+OutputBaseFilename=fs-uae-launcher_9.8.7_windows_ARCH
 OutputDir=..
 PrivilegesRequired=lowest
 ShowLanguageDialog=no
@@ -16,7 +16,7 @@ DisableStartupPrompt=yes
 DisableProgramGroupPage=yes
 
 [Files]
-Source: "fs-uae-launcher_9.8.7_windows\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion;
+Source: "fs-uae-launcher_9.8.7_windows_ARCH\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion;
 
 [installDelete]
 Type: files; Name: "{userprograms}\FS-UAE\FS-UAE Emulator.lnk"

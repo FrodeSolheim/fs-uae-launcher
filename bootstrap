@@ -292,6 +292,7 @@ copy_files = [
     "icon/{0}.icns".format(project.tar_name),
     "{0}.spec".format(project.tar_name),
     "{0}".format(project.tar_name),
+    "dist/arch.py",
     "dist/linux/build.py",
     "dist/linux/Makefile",
     "dist/linux/standalone.py",
