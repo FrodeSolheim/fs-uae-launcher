@@ -1,3 +1,7 @@
+Version 2.7.2dev:
+
+* Fixed /hostgame netplay command (server was started on wrong port).
+
 Version 2.5.41dev:
 
 * Support FS-UAE environment variables in advanced settings.

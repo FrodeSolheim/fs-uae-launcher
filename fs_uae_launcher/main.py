@@ -57,8 +57,8 @@ def main():
     initialize_application(app, version=version)
 
     if app == "fs-uae-netplay-server":
-        from fs_uae_launcher.server.game import run_server
-        run_server()
+        from fs_uae_launcher.server.game import main
+        main()
 
     elif app == "fs-game-center":
         print("FS Game Center")
