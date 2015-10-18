@@ -112,6 +112,8 @@ gioteck_ps3_wired_controller_13_4_1_0_windows.conf
 gioteck_vx2_wired_controller_12_4_1_0_windows.conf
 goodbetterbest_ltd_gioteck_vx2_wired_controller_16_5_1_0_linux.conf
 jess_tech_dual_analog_pad_12_4_1_0_linux.conf
+keyboard.conf
+keyboard.ini
 linux/saitek_dual_analog_pad_12_4_1_0_linux.conf
 logitech/controller_rumble_gamepad_f510.ini
 logitech/controller_wireless_gamepad_f710.ini
@@ -151,6 +153,8 @@ mosic/a_speed_link_competition_pro.ini
 mosic/speed_link_competition_pro.ini
 mosic/usb_2a4k_gamepad.ini
 mosic_speed_link_competition_pro_4_2_0_0_linux.conf
+mouse.conf
+mouse.ini
 other/retro_joystick_interface_v1_2.ini
 other/usb_2_axis_8_button_gamepad.ini
 p880_12_4_1_0_macosx.conf
@@ -185,7 +189,9 @@ thrustmaster_2_in_1_dt_12_4_1_0_linux.conf
 thrustmaster_dual_analog_3_2_12_4_1_0_macosx.conf
 thrustmaster_dual_analog_3_2_12_4_1_0_windows.conf
 thrustmaster_thrustmaster_dual_analog_3_2_12_4_1_0_linux.conf
+universal_gamepad.conf
 universal_gamepad.ini
+unknown.conf
 unknown.ini
 usb_2_axis_8_button_gamepad_8_2_0_0_linux.conf
 usb_2_axis_8_button_gamepad_8_2_0_0_macosx.conf

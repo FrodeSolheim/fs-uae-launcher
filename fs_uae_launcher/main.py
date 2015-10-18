@@ -28,7 +28,7 @@ else:
 
 
 def main():
-    version = "2.7.2dev"
+    version = "2.7.3dev"
 
     # if "--fs-uae-workspace=real" in sys.argv:
     #     try:
