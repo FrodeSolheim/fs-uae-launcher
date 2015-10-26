@@ -1,3 +1,8 @@
+Version 2.7.4dev:
+
+* Fixed bug when base-dir in config file had a trailing slash.
+* Imported updated translations from crowdin.com.
+
 Version 2.7.2dev:
 
 * Fixed /hostgame netplay command (server was started on wrong port).
