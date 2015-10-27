@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-09-19 12:02+0200\n"
-"PO-Revision-Date: 2015-09-19 06:02-0400\n"
+"POT-Creation-Date: 2015-09-21 00:42+0200\n"
+"PO-Revision-Date: 2015-10-26 14:17-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -493,10 +493,10 @@ msgid "Fetching user game ratings ({0})"
 msgstr "Hole Benutzer-Spielebewertungen ({0})"
 
 msgid "File Database"
-msgstr ""
+msgstr "Dateidatenbank"
 
 msgid "File Database Settings"
-msgstr ""
+msgstr "Datenbank-Einstellungen"
 
 msgid "File already exists"
 msgstr "Datei existiert bereits"
@@ -541,7 +541,7 @@ msgid "Floppy Drives"
 msgstr "Disketten Laufwerke"
 
 msgid "Font Size"
-msgstr ""
+msgstr "Schriftgröße"
 
 msgid "Forgot your password?"
 msgstr "Passwort vergessen?"
@@ -922,7 +922,7 @@ msgid "Options for WHDLoad support in FS-UAE Launcher"
 msgstr "Optionen für WHDLoad-Unterstützung in FS-UAE Launcher"
 
 msgid "Other Device"
-msgstr ""
+msgstr "Anderes Gerät"
 
 msgid "Override Installed Memory"
 msgstr "Überschreibe installierten Speicher"
@@ -1145,7 +1145,7 @@ msgid "Specify global options and settings which does not have UI controls"
 msgstr "Optionen und Einstellungen, die über grafische Benutzeroberfläche nicht verfügbar"
 
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 msgid "Start"
 msgstr "Start"
@@ -1202,7 +1202,7 @@ msgid "The following options only apply when you use the automatic WHDLoad suppo
 msgstr "Die folgenden Optionen werden nur angewendet, wenn die automatische WHDLoad-Unterstützung im FS-UAE Launcher aktiviert ist, z. B. im Zusammenspiel mit der Online-Spieledatenbank."
 
 msgid "Theme"
-msgstr ""
+msgstr "Erscheinungsbild"
 
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Dieses Spiel kann automatisch heruntergeladen werden, wenn Sie die Lizenz-/Nutzungsbedingungen akzeptieren"

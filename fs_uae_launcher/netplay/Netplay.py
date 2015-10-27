@@ -458,10 +458,10 @@ class Netplay:
             return
         result = cls.parse_server_args(args, cls.new_host_port())
         if not result:
-            IRC.warning("usage: /hostgame <host>[:<port>] "
+            IRC.warning("usage: /hostgame <address>[,<address2>][:<port>] "
                         "[<players>] [<password>]")
             return
-        host, port, players, password = result
+        addresses, port, players, password = result
 
         if not channel.is_op():
             IRC.warning("hostgame: you need to be an operator")
@@ -481,10 +481,10 @@ class Netplay:
             ("__netplay_players", str(players)),
             ("__netplay_port", str(port)),
             ("__netplay_host", ""),
-            ("__netplay_addresses", host)])
+            ("__netplay_addresses", addresses)])
         channel.info("started game id: {0} password: {1} "
                      "server: {2} port: {3}".format(
-                         game_id, password, host, port))
+                         game_id, password, addresses, port))
 
     @classmethod
     def command_setserver(cls, args):
@@ -497,7 +497,7 @@ class Netplay:
             return
         result = cls.parse_server_args(args, 25100)
         if not result:
-            IRC.warning("usage: /customgame <addresses>[:<port>] "
+            IRC.warning("usage: /customgame <address>[,<address2>][:<port>] "
                         "[<players>] [<password>]")
             return
         addresses, port, players, password = result
