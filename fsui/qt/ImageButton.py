@@ -9,7 +9,9 @@ class ImageButton(fsui.qt.QPushButton, Widget):
     def __init__(self, parent, image):
         fsui.qt.QPushButton.__init__(self, parent.get_container())
         self.init_widget(parent)
-        self.setIcon(image.qicon)
+        icon = image.qicon
+        self.setIcon(icon)
+        self.setIconSize(fsui.qt.QSize(image.size[0], image.size[1]))
         self.clicked.connect(self.__clicked)
 
     def set_image(self, image):

@@ -17,6 +17,11 @@ class Label(fsui.qt.QLabel, Widget):
         # FIXME: make Label more plain, and rather make a InteractiveLabel
         # descendant or something like that
 
+    def set_text_color(self, color):
+        palette = self.palette()
+        palette.setColor(self.foregroundRole(), color)
+        self.setPalette(palette)
+
     def set_text(self, label):
         self.setText(label)
 

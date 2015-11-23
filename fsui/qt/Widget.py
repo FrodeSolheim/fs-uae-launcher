@@ -1,5 +1,5 @@
 import weakref
-from fsui.qt import Qt, QPoint
+from fsui.qt import Qt, QPoint, QCursor
 from fsui.qt import QFontMetrics, QPalette, QWidget
 from ..common.layout import Layout
 from .DrawingContext import Font
@@ -85,6 +85,9 @@ class Widget(MixinBase):
         widget = getattr(self, "_widget", self)
         return widget.isVisible()
 
+    def visible(self):
+        return self.is_visible()
+
     def measure_text(self, text):
         widget = getattr(self, "_widget", self)
         font = widget.font()
@@ -109,6 +112,19 @@ class Widget(MixinBase):
             widget.show()
         else:
             widget.hide()
+
+    # def show(self, show=True):
+    #     widget = getattr(self, "_widget", None)
+    #     if widget is None:
+    #         if show:
+    #             widget.show()
+    #         else:
+    #             widget.hide()
+    #     else:
+    #         if show:
+    #             super().show()
+    #         else:
+    #             super().hide()
 
     def focus(self):
         widget = getattr(self, "_widget", self)
@@ -221,6 +237,10 @@ class Widget(MixinBase):
             self.layout.set_size(self.get_size())
             self.layout.update()
 
+    def get_background_color(self):
+        # noinspection PyUnresolvedReferences
+        return Color(self.palette().color(QPalette.Window))
+
     def set_background_color(self, color):
         # noinspection PyUnresolvedReferences
         self.setAutoFillBackground(True)
@@ -231,14 +251,35 @@ class Widget(MixinBase):
         # p.setColor(self.backgroundRole(), QColor(0xff, 0xaa, 0xaa))
         widget.setPalette(p)
 
-    def popup_menu(self, menu, pos=(0, 0)):
+    # def on_left_up(self):
+    #     pass
+
+    def popup_menu(self, menu, pos=(0, 0), blocking=True):
         # popup does not block, and if menu goes out of the scope of the
         # caller, it will disappear (unless we keep a reference here
-        self.__last_popup_menu = menu
+        # FIXME: using exec now
+        # self.__last_popup_menu = menu
         widget = getattr(self, "_widget", self)
         global_pos = widget.mapToGlobal(QPoint(pos[0], pos[1]))
-        menu.qmenu.popup(global_pos)
+        menu.set_parent(self)
+        if blocking:
+            menu.qmenu.exec(global_pos)
+        else:
+            menu.qmenu.popup(global_pos)
 
-    def get_background_color(self):
+        # Firing off a fake mouse left up event really assumes that the
+        # menu was opened with a left down event, so implementation isn't
+        # ideal. Better to add a listener to menu close instead.
+
+        # if hasattr(self, "on_left_up"):
+        #     self.on_left_up()
+
+    def is_mouse_over(self):
+        # noinspection PyArgumentList
+        c = QCursor.pos()
         # noinspection PyUnresolvedReferences
-        return Color(self.palette().color(QPalette.Window))
+        p = self.mapToGlobal(QPoint(0, 0))
+        s = self.get_size()
+        if p.x() <= c.x() < p.x() + s[0] and p.y() <= c.y() < p.y() + s[1]:
+            return True
+        return False

@@ -12,13 +12,20 @@ class Image(object):
         else:
             self.qimage = QImage()
 
-            index = name.find(":")
-            if index > 1:
-                package, file_ = name.split(":", 1)
-                stream = Resources(package).stream(file_)
+            if hasattr(name, "read"):
+                self.qimage.loadFromData(name.read())
+            elif name.startswith("pkg://"):
+                parts = name.split("/", 3)
+                stream = Resources(parts[2]).stream(parts[3])
                 self.qimage.loadFromData(stream.read())
             else:
-                self.qimage.load(name)
+                index = name.find(":")
+                if index > 1:
+                    package, file_ = name.split(":", 1)
+                    stream = Resources(package).stream(file_)
+                    self.qimage.loadFromData(stream.read())
+                else:
+                    self.qimage.load(name)
             # self._bitmap = None
 
     @property

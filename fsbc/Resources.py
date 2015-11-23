@@ -29,11 +29,11 @@ class Resources(object):
             raise LookupError(resource)
 
     def path(self, resource):
-        print("looking up resource", resource)
-        print("- package:", self.package)
+        # print("looking up resource", resource)
+        # print("- package:", self.package)
         application = Application.get_instance()
         resource_name = self.resource_name(resource)
-        print("resource_name", resource_name)
+        # print("resource_name", resource_name)
 
         relative_path = os.path.join(self.package, resource_name)
         try:
@@ -42,8 +42,8 @@ class Resources(object):
             pass
 
         try:
-            print("resource_filename(\"{0}\", \"{1}\")".format(
-                self.package, resource_name))
+            # print("resource_filename(\"{0}\", \"{1}\")".format(
+            #     self.package, resource_name))
             return resource_filename(self.package, resource_name)
             # return resource_filename(
             #     self.package, Paths.encode(resource_name))

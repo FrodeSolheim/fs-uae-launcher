@@ -614,6 +614,9 @@ def initialize_qt_style(qapplication):
     elif launcher_theme == "fusion-dark":
         use_fusion_theme = True
         fusion_variant = "dark"
+    elif launcher_theme == "experimental":
+        use_fusion_theme = True
+        fusion_variant = "experimental"
     else:
         use_fusion_theme = True
         if fstd.desktop.is_running_gnome_3():
@@ -635,6 +638,12 @@ def initialize_qt_style(qapplication):
             pa.setColor(QPalette.Window, QColor(237, 237, 237))
             pa.setColor(QPalette.AlternateBase, QColor(237, 237, 237))
             pa.setColor(QPalette.Button, QColor(237, 237, 237))
+            qapplication.setPalette(pa)
+        elif fusion_variant == "experimental":
+            pa = QPalette()
+            pa.setColor(QPalette.Window, QColor(242, 242, 242))
+            pa.setColor(QPalette.AlternateBase, QColor(242, 242, 242))
+            pa.setColor(QPalette.Button, QColor(242, 242, 242))
             qapplication.setPalette(pa)
         elif fusion_variant == "dark":
             pa = QPalette()

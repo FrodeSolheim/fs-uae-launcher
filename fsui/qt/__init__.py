@@ -12,6 +12,12 @@ def get_screen_size():
     return size
 
 
+def get_mouse_position():
+    # noinspection PyArgumentList
+    pos = QCursor.pos()
+    return pos.x(), pos.y()
+
+
 class CustomEvent(QEvent):
     
     def __init__(self):

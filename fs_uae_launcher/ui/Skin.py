@@ -2,6 +2,7 @@ import fsui
 import fsbc.system
 from fsbc.util import memoize
 from .Constants import Constants
+from ..Options import Option
 from ..Settings import Settings
 
 # LEVEL = 0xce
@@ -12,6 +13,7 @@ LEVEL = 0xeb
 class Skin(object):
 
     EXTRA_GROUP_MARGIN = 0
+    _experimental = None
 
     @classmethod
     def use_unified_toolbar(cls):
@@ -67,3 +69,10 @@ class Skin(object):
     def get_bottom_panel_height(cls):
         return (Constants.SCREEN_SIZE[1] + 20 + 2 + 1 + 1 +
                 cls.get_bottom_margin())
+
+    @classmethod
+    def experimental(cls):
+        if cls._experimental is None:
+            cls._experimental = Settings.get(Option.LAUNCHER_THEME) == \
+                                "experimental"
+        return cls._experimental

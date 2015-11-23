@@ -28,12 +28,19 @@ class BottomPanel(fsui.Panel):
             self.line_color_1 = fsui.Color(0xff, 0xff, 0xff, 0xa0)
             self.line_color_2 = self.line_color_1
 
+        self.border_color = fsui.Color(0xe5, 0xe5, 0xe5, 0xff)
+        self.white_color = fsui.Color(0xff, 0xff, 0xff, 0xff)
+
     def on_paint(self):
         dc = self.create_dc()
         self.draw_background(dc)
 
     def draw_background(self, dc):
         size = self.size
+        if Skin.experimental():
+            dc.draw_rectangle(0, 0, size[0], 2, self.border_color)
+            dc.draw_rectangle(0, 2, size[0], size[1] - 2, self.white_color)
+            return
         dc.draw_line(0, 0, size[0], 0, self.line_color_1)
         dc.draw_line(0, 1, size[0], 1, self.line_color_2)
         dc.draw_vertical_gradient(

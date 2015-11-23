@@ -57,6 +57,7 @@ class Option(object):
     LOAD_STATE = "load_state"
     LOG_AUTOSCALE = "log_autoscale"
     LOG_BSDSOCKET = "log_bsdsocket"
+    LOG_FLUSH = "log_flush"
     LOG_INPUT = "log_input"
     LOG_QUERY_PLANS = "log_query_plans"
     LOW_LATENCY_VSYNC = "low_latency_vsync"
@@ -67,6 +68,7 @@ class Option(object):
     MOUSE_SPEED = "mouse_speed"
     NETPLAY_FEATURE = "netplay_feature"
     NETPLAY_TAG = "netplay_tag"
+    RELATIVE_PATHS = "relative_paths"
     RTG_SCANLINES = "rtg_scanlines"
     SCANLINES = "scanlines"
     SOUND_CARD = "sound_card"
@@ -595,6 +597,12 @@ options = {
         "type": "boolean",
     },
 
+    "log_flush": {
+        "default": "",
+        "description": N_("Flush log after each log line"),
+        "type": "boolean",
+    },
+
     "log_input": {
         "default": "0",
         "description": N_("Log Input Events"),
@@ -662,6 +670,12 @@ options = {
         "default": "UNK",
         "description": N_("Net play tag (max 3 characters)"),
         "type": "string",
+    },
+
+    "relative_paths": {
+        "default": "",
+        "description": N_("Relative paths"),
+        "type": "",
     },
 
     "rtg_scanlines": {

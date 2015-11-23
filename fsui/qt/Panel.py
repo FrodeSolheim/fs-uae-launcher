@@ -19,6 +19,7 @@ class Panel(QWidget, Widget):
         # super().__init__()
         self.move(0, 2000)
         self.setAutoFillBackground(True)
+        self._ignore_next_left_down_event = False
 
     @property
     def size(self):
@@ -31,6 +32,9 @@ class Panel(QWidget, Widget):
         pass
 
     def on_left_dclick(self):
+        pass
+
+    def on_mouse_motion(self):
         pass
 
     def on_paint(self):
@@ -47,6 +51,7 @@ class Panel(QWidget, Widget):
         
         self._painter = QPainter(self)
         self._painter.setRenderHint(QPainter.Antialiasing)
+        # self._painter.setRenderHint(QPainter.Qt4CompatiblePainting)
         try:
             self.on_paint()
         except Exception:
@@ -56,11 +61,21 @@ class Panel(QWidget, Widget):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            self.on_left_down()
+            # A temp code is made in case _ignore_next_left_down_event is
+            # altered inside on_left_down.
+            ignore = self._ignore_next_left_down_event
+            self._ignore_next_left_down_event = False
+            if ignore:
+                print("_ignore_next_left_down_event was True", self)
+            else:
+                self.on_left_down()
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.on_left_up()
+
+    def mouseMoveEvent(self, event):
+        self.on_mouse_motion()
 
     def mouseDoubleClickEvent(self, event):
         if event.button() == Qt.LeftButton:

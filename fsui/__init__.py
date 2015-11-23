@@ -21,6 +21,7 @@ from .qt.ComboBox import ComboBox
 from .qt.dialog import Dialog
 from .qt.dialogbuttons import DialogButtons
 from .qt.DirDialog import DirDialog
+from .qt.DrawingContext import DrawingContext, Font
 from .qt.FileDialog import FileDialog, pick_directory, pick_file, pick_files
 from .qt.HeadingLabel import HeadingLabel
 from .qt.Icon import Icon
@@ -30,7 +31,7 @@ from .qt.ImageView import ImageView
 from .qt.label import Label, PlainLabel, URLLabel, MultiLineLabel
 from .qt.legacydialog import LegacyDialog
 from .qt.ListView import ListView
-from .qt.Menu import Menu
+from .qt.Menu import Menu, PopupMenu
 from .qt.Panel import Panel
 from .qt.scrollarea import VerticalScrollArea
 from .qt.SpinCtrl import SpinCtrl

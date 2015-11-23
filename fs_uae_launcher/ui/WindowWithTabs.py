@@ -1,3 +1,4 @@
+from fs_uae_launcher.ui.titlebar import TitleBar
 import fsui as fsui
 from .TabPanel import TabPanel
 from .TabButton import TabButton
@@ -13,6 +14,9 @@ class WindowWithTabs(fsui.Window):
         self.toolbar = None
         self.tab_panel = TabPanel(self)
         self.layout = fsui.VerticalLayout()
+        if Skin.experimental():
+            self.title_bar = TitleBar(self)
+            self.layout.add(self.title_bar, fill=True)
         if self.tab_panel:
             self.layout.add(self.tab_panel, fill=True)
         self.current_tab_group_id = 0
@@ -63,13 +67,27 @@ class WindowWithTabs(fsui.Window):
             left_padding=left_padding, right_padding=right_padding)
         button.set_tooltip(tooltip)
         button.group_id = self.current_tab_group_id
+        menu_data = [None]
         if function:
             button.activated.connect(function)
         elif menu_function:
+
             def menu_wrapper():
-                menu_function()
-                button.check_hover()
+                print("menu button click")
+                print(menu_data[0] is not None and menu_data[0].is_open())
+                if menu_data[0] is not None and menu_data[0].is_open():
+                    menu_data[0].close()
+                else:
+                    menu_data[0] = menu_function()
+                    button.check_hover()
+
+            # def on_left_up():
+            #     print("on left up")
+            #     # menu_data[0].close()
+
             button.on_left_down = menu_wrapper
+            button.on_left_dclick = menu_wrapper
+            # button.on_left_up = on_left_up
         self.tab_panel.add(button)
         # noinspection PyTypeChecker
         self.tab_groups[self.current_tab_group_id].append(button)

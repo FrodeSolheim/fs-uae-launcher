@@ -1,6 +1,7 @@
 import sys
 import time
 from fs_uae_launcher.ui.config.configscrollarea import ConfigScrollArea
+from fs_uae_launcher.ui.titlebar import TitleBar
 import fstd.desktop
 from fs_uae_launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
 from fs_uae_launcher.ui.bottombar.BottomPanel import BottomPanel
@@ -50,8 +51,12 @@ class MainWindow(WindowWithTabs):
                 if "--window-border" in sys.argv:
                     border = True
             maximize = True
+
+        if Skin.experimental():
+            border = False
         if "--no-window-border" in sys.argv:
             border = False
+
         title = "FS-UAE Launcher {0}".format(Application.instance().version)
 
         WindowWithTabs.__init__(self, None, title, border=border)
@@ -446,7 +451,7 @@ class MainWindow(WindowWithTabs):
         self.books[column].set_page(default_page_index)
 
     def create_menu(self):
-        menu = fsui.Menu()
+        menu = fsui.PopupMenu()
 
         if Settings.get(Option.DATABASE_AUTH):
             menu.add_item(gettext("Update Game Database"),
@@ -528,6 +533,7 @@ class MainWindow(WindowWithTabs):
                 self.menu, (0, self.menu_button.size[1] - 2))
         if fsui.System.windows:
             self.main_menu_close_time = time.time()
+        return self.menu
 
     # def open_user_menu(self):
     #     if fsui.System.windows:

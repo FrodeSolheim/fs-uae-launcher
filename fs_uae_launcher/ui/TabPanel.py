@@ -58,7 +58,10 @@ class TabPanel(fsui.Panel):
         size = widget.size
 
         line_color_1 = Skin.get_background_color()
-        if line_color_1 is not None:
+        if Skin.experimental():
+            line_color_1 = fsui.Color(0xe5, 0xe5, 0xe5, 0xff)
+            line_color_2 = line_color_1
+        elif line_color_1 is not None:
             line_color_1 = line_color_1.mix(fsui.Color(0xff, 0xff, 0xff))
             line_color_2 = line_color_1
         else:
@@ -84,6 +87,11 @@ class TabPanel(fsui.Panel):
         y = 0
         w = widget.size[0]
         h = widget.size[1] - 2
+
+        if Skin.experimental():
+            dc.draw_rectangle(0, 0, w, h, fsui.Color(255, 255, 255))
+            return
+
         if fsbc.system.macosx:
             # dc.draw_line(0, 0, w, 0, fsui.Color(198, 198, 198))
             # dc.draw_line(0, 0, w, 0, fsui.Color(188, 188, 188))
@@ -140,7 +148,10 @@ class TabPanel(fsui.Panel):
     @classmethod
     def draw_selected_tab(cls, widget, dc):
         line_color_1 = Skin.get_background_color()
-        if fsbc.system.macosx and False:
+        if Skin.experimental():
+            line_color_1 = fsui.Color(0xe5, 0xe5, 0xe5, 0xff)
+            line_color_2 = line_color_1
+        elif fsbc.system.macosx and False:
             line_color_1 = fsui.Color(0xa7, 0xa7, 0xa7)
             line_color_2 = Skin.get_background_color().mix(
                 fsui.Color(0xff, 0xff, 0xff))

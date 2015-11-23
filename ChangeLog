@@ -1,3 +1,7 @@
+Version 2.7.5dev:
+
+* Remember maximized state.
+
 Version 2.7.4dev:
 
 * Fixed bug when base-dir in config file had a trailing slash.

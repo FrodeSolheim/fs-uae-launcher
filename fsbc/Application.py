@@ -168,7 +168,7 @@ class Application(object):
         """
         for data_dir in self.data_dirs():
             path = os.path.join(data_dir, name)
-            print("- checking", path)
+            # print("- checking", path)
             if os.path.exists(path):
                 return path
         raise LookupError(name)
