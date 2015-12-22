@@ -8,15 +8,16 @@ from .Skin import Skin
 
 class WindowWithTabs(fsui.Window):
 
-    def __init__(self, parent, title, border=True):
-        fsui.Window.__init__(self, parent, title, border=border)
+    def __init__(self, parent, title, border=True, menu=False):
+        fsui.Window.__init__(
+            self, parent, title, border=border, separator=False, menu=menu)
         Skin.set_background_color(self)
         self.toolbar = None
         self.tab_panel = TabPanel(self)
         self.layout = fsui.VerticalLayout()
-        if Skin.experimental():
-            self.title_bar = TitleBar(self)
-            self.layout.add(self.title_bar, fill=True)
+        # if Skin.fws():
+        #     self.title_bar = TitleBar(self)
+        #     self.layout.add(self.title_bar, fill=True)
         if self.tab_panel:
             self.layout.add(self.tab_panel, fill=True)
         self.current_tab_group_id = 0

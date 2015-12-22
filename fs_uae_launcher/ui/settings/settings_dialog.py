@@ -1,29 +1,28 @@
 import weakref
-import fsui as fsui
+
+import fsui
+from .advanced_settings_page import AdvancedSettingsPage
+from .advanced_video_settings import AdvancedVideoSettingsPage
+from .audio_settings_page import AudioSettingsPage
+from ..PagedDialog import PagedDialog
 from ...I18N import gettext
 from ...Settings import Settings
 from ...Signal import Signal
-from ..PagedDialog import PagedDialog
-from .advanced import AdvancedSettingsPage
-from .advanced_video import AdvancedVideoSettingsPage
-from .AudioSettingsPage import AudioSettingsPage
 # from .CustomSettingsPage import CustomSettingsPage
-from .ExperimentalFeaturesPage import ExperimentalFeaturesPage
+from .experimental_features_page import ExperimentalFeaturesPage
 # from .FilterSettingsPage import FilterSettingsPage
-from .GameDatabaseSettingsPage import GameDatabaseSettingsPage
-from .joystick import JoystickSettingsPage
-from .keyboard import KeyboardSettingsPage
-from .language import LanguageSettingsPage
-from .logging import LoggingSettingsPage
-from .maintenance import MaintenanceSettingsPage
-from .mouse import MouseSettingsPage
-from .NetplaySettingsPage import NetplaySettingsPage
-from .ScanSettingsPage import ScanSettingsPage
-from .video_sync import VideoSyncSettingsPage
-from .VideoSettingsPage import VideoSettingsPage
-from .whdload import WHDLoadSettingsPage
-from fsui.qt import Qt
-
+from .game_database_settings_page import GameDatabaseSettingsPage
+from .joystick_settings_page import JoystickSettingsPage
+from .keyboard_settings_page import KeyboardSettingsPage
+from .language_settings_page import LanguageSettingsPage
+from .logging_settings_page import LoggingSettingsPage
+from .maintenance_settings_page import MaintenanceSettingsPage
+from .mouse_settings_page import MouseSettingsPage
+from .netplay_settings_page import NetplaySettingsPage
+from .scan_settings_page import ScanSettingsPage
+from .video_sync_settings_page import VideoSyncSettingsPage
+from .video_settings_page import VideoSettingsPage
+from .whdload_settings_page import WHDLoadSettingsPage
 
 SPACE = ""
 
@@ -51,7 +50,7 @@ class SettingsDialog(PagedDialog):
         PagedDialog.__init__(self, parent, gettext("FS-UAE Launcher Settings"))
 
         # FIXME: remove this once the dialog uses Window as base class
-        self.setAttribute(Qt.WA_DeleteOnClose, True)
+        # self.setAttribute(Qt.WA_DeleteOnClose, True)
 
         self.add_page(
             gettext("Appearance"), LanguageSettingsPage,
@@ -73,11 +72,11 @@ class SettingsDialog(PagedDialog):
             gettext("Video"), VideoSettingsPage,
             fsui.Icon("video-settings", "pkg:fs_uae_workspace"))
         self.add_page(
-            SPACE + gettext("Synchronization"), VideoSyncSettingsPage,
-            fsui.Icon("blank", "pkg:fs_uae_launcher"))
+            gettext("Advanced Video"), AdvancedVideoSettingsPage,
+            fsui.Icon("video-settings", "pkg:fs_uae_workspace"))
         self.add_page(
-            SPACE + gettext("Advanced"), AdvancedVideoSettingsPage,
-            fsui.Icon("blank", "pkg:fs_uae_launcher"))
+            gettext("Synchronization"), VideoSyncSettingsPage,
+            fsui.Icon("video-settings", "pkg:fs_uae_workspace"))
         # self.add_page(
         #     gettext("Filters & Scaling"), FilterSettingsPage,
         #     fsui.Icon("video-settings", "pkg:fs_uae_workspace"))
@@ -110,12 +109,17 @@ class SettingsDialog(PagedDialog):
             gettext("Advanced Settings"), AdvancedSettingsPage,
             fsui.Icon("settings", "pkg:fs_uae_workspace"))
 
+        # Old texts
+        # gettext("Video Synchronization")
+        # gettext("Synchronization")
+        gettext("Advanced")
+
         last_index = self.get_page_index_by_title(
             Settings.get("last_settings_page"))
         index = last_index or index
         self.list_view.set_index(index)
 
-        self.set_size((900, 560))
+        self.set_size((940, 560))
         # self.center_on_parent()
 
         self.closed.connect(self.__closed)

@@ -1,11 +1,10 @@
 import fsui as fsui
+from fs_uae_launcher.I18N import gettext
+from fs_uae_launcher.ui.settings.option_ui import OptionUI
 from fsui.extra.iconheader import NewIconHeader
-from ...I18N import gettext
-from .OptionUI import OptionUI
 
 
 class FilterSettingsPage(fsui.Panel):
-
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()

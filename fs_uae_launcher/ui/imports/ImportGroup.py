@@ -1,6 +1,5 @@
 import fsui as fsui
 from ...I18N import gettext
-from ...Signal import Signal
 from .ImportDialog import ImportDialog
 
 
@@ -68,6 +67,7 @@ class ImportGroup(fsui.Group):
 
     def on_import(self):
         dialog = ImportDialog(self.get_window(), self.path, self.type)
-        dialog.show_modal()
+        # dialog.show_modal()
         # dialog.destroy()
-        Signal.broadcast("scan_done")
+        dialog.show()
+        # Signal.broadcast("scan_done")

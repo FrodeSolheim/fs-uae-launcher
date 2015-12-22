@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.ScanSettingsPage import ScanSettingsPage
+from fs_uae_launcher.ui.settings.scan_settings_page import ScanSettingsPage
 from fs_uae_launcher.res import gettext
 
 

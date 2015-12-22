@@ -1,6 +1,6 @@
 import weakref
 from fsui.qt import Qt, QSize, QAbstractListModel, QListView, QBrush, Signal
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
 class Model(QAbstractListModel):
@@ -36,7 +36,7 @@ class Model(QAbstractListModel):
         # return QVariant()
 
 
-class VerticalItemView(QListView, Widget):
+class VerticalItemView(QListView, WidgetMixin):
 
     item_selected = Signal(int)
     item_activated = Signal(int)

@@ -3,7 +3,7 @@ from ...I18N import gettext
 from ...Settings import Settings
 from ...Options import Options
 from ..HelpButton import HelpButton
-from .overridewarning import OverrideWarning
+from .override_warning import OverrideWarning
 
 
 class OptionUI(object):

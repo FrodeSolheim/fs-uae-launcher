@@ -8,12 +8,13 @@ class AutoCloseMenu(QMenu):
         parent = self._parent()
         # noinspection PyArgumentList
         c = QCursor.pos()
-        p = parent.mapToGlobal(QPoint(0, 0))
+        p = parent.widget().mapToGlobal(QPoint(0, 0))
         s = parent.get_size()
         if p.x() <= c.x() < p.x() + s[0] and p.y() <= c.y() < p.y() + s[1]:
             # We want to close the menu (and not re-open it) if we click
             # on the widget used to open the menu.
-            parent._ignore_next_left_down_event = True
+            # parent._ignore_next_left_down_event = True
+            pass
         super().mousePressEvent(event)
 
 

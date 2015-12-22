@@ -1,12 +1,12 @@
 from fsui.qt import QPushButton, QSignal
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class Button(QPushButton, Widget):
+class Button(QPushButton, WidgetMixin):
 
     activated = QSignal()
 
-    def __init__(self, parent, label):
+    def __init__(self, parent, label=""):
         label = "  " + label + "  "
         # self._widget = QPushButton(label, parent.get_container())
         QPushButton.__init__(self, label, parent.get_container())

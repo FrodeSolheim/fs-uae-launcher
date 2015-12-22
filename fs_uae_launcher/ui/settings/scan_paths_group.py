@@ -1,26 +1,15 @@
+import fsui
+from fs_uae_launcher.I18N import gettext
+from fs_uae_launcher.Settings import Settings
+from fs_uae_launcher.ui.IconButton import IconButton
 from fsbc.util import unused
-import fsui as fsui
 from fsgs.FSGSDirectories import FSGSDirectories
-from ...I18N import gettext
-from ...Settings import Settings
-from ..IconButton import IconButton
 
 
 class ScanPathsGroup(fsui.Group):
-
     def __init__(self, parent):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
-        # self.layout.padding_left = 10
-        # self.layout.padding_top = 10
-        # self.layout.padding_right = 10
-        # self.layout.padding_bottom = 10
-
-        # image = fsui.Image("fs_uae_launcher:res/search_group.png")
-        # self.image_view = fsui.ImageView(self, image)
-        # self.layout.add_spacer(20)
-        # self.layout.add(self.image_view, valign=0.0)
-        # self.layout.add_spacer(20)
 
         self.layout2 = fsui.VerticalLayout()
         self.layout.add(self.layout2, fill=True, expand=True)
@@ -88,21 +77,17 @@ class ScanPathsGroup(fsui.Group):
             else:
                 if p not in paths:
                     paths.append(p)
-        # the Configurations dir is always scanned on startup (whenever
+        # The Configurations dir is always scanned on startup (whenever
         # modification time has changed). If we don't include it here too
         # always, the result will be that the configs sometimes appear (on
-        # startup) and disappear (on scan)
+        # startup) and disappear (on scan).
         if not FSGSDirectories.get_configurations_dir() in paths:
             paths.append(FSGSDirectories.get_configurations_dir())
         return paths
 
     def on_add_button(self):
-        # paths = self.get_search_path()
-        # search_path = Settings.get("search_path")
-
         search_path = Settings.get("search_path")
         search_path = [x.strip() for x in search_path.split(";") if x.strip()]
-
         path = fsui.pick_directory(parent=self.get_window())
         if path:
             for i in range(len(search_path)):
@@ -112,7 +97,7 @@ class ScanPathsGroup(fsui.Group):
                         break
                 else:
                     if search_path[i] == path:
-                        # already added
+                        # Already added.
                         break
             else:
                 default_paths = FSGSDirectories.get_default_search_path()
@@ -122,15 +107,12 @@ class ScanPathsGroup(fsui.Group):
 
     def on_remove_button(self):
         path = self.list_view.get_item(self.list_view.get_index())
-        # search_path = self.get_search_path()
-
         search_path = Settings.get("search_path")
         search_path = [x.strip() for x in search_path.split(";") if x.strip()]
-
         for i in range(len(search_path)):
             if search_path[i].startswith("-"):
                 if path == search_path[i][1:]:
-                    # already removed
+                    # Already removed.
                     break
             else:
                 if search_path[i] == path:

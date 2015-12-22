@@ -1,8 +1,8 @@
 from fsui.qt import QComboBox, Signal
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class Choice(QComboBox, Widget):
+class Choice(QComboBox, WidgetMixin):
 
     changed = Signal()
     item_selected = Signal(int)

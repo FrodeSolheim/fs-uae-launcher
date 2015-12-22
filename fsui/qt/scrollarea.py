@@ -1,9 +1,9 @@
 import weakref
 from fsui.qt import Qt, QScrollArea, QFrame
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class VerticalScrollArea(QScrollArea, Widget):
+class VerticalScrollArea(QScrollArea, WidgetMixin):
 
     def __init__(self, parent):
         QScrollArea.__init__(self, parent.get_container())
@@ -29,8 +29,9 @@ class VerticalScrollArea(QScrollArea, Widget):
         self.on_resize()
 
     def get_child(self):
-        child = self.__child()
-        return child
+        # child = self.__child()
+        # return child
+        return self.__child
 
     def get_min_width(self):
         return self.get_child().get_min_width()
@@ -40,8 +41,10 @@ class VerticalScrollArea(QScrollArea, Widget):
         height = child.get_min_height()
         child.set_size((self.viewport().width(), height))
 
-    def set_widget(self, widget):
-        self.__child = weakref.ref(widget)
+    def set_widget(self, child):
+        # self.__child = weakref.ref(child)
+        self.__child = child
+        widget = child.widget()
         self.setWidget(widget)
         widget.move(0, 0)
         self.on_resize()

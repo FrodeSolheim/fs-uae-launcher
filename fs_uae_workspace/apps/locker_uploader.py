@@ -14,10 +14,11 @@ from fs_uae_launcher.res import gettext
 from io import BytesIO as StringIO
 
 
-class LockerUploaderWindow(fsui.Dialog):
+class LockerUploaderWindow(fsui.Window):
 
     def __init__(self):
-        super().__init__(None, gettext("OAGD.net Locker Uploader"))
+        title = gettext("OAGD.net Locker Uploader")
+        super().__init__(None, title, maximizable=False)
         self.set_icon(fsui.Icon("refresh", "pkg:fs_uae_workspace"))
 
         self.layout = fsui.VerticalLayout()
@@ -44,9 +45,9 @@ class LockerUploaderWindow(fsui.Dialog):
         self.stop_button.disable()
         hori_layout.add(self.stop_button, margin_left=10)
 
-        self.close_button = fsui.Button(self, gettext("Close"))
-        self.close_button.activated.connect(self.on_close_activated)
-        hori_layout.add(self.close_button, margin_left=10)
+        # self.close_button = fsui.Button(self, gettext("Close"))
+        # self.close_button.activated.connect(self.on_close_activated)
+        # hori_layout.add(self.close_button, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
@@ -59,11 +60,11 @@ class LockerUploaderWindow(fsui.Dialog):
         if self.task is not None:
             self.task.stop()
 
-    def on_close_activated(self):
-        self.close()
+    # def on_close_activated(self):
+    #     self.close()
 
     def on_upload_activated(self):
-        self.close_button.disable()
+        # self.close_button.disable()
         self.upload_button.disable()
         self.stop_button.enable()
         self.task = LockerUploaderTask()
@@ -89,7 +90,7 @@ class LockerUploaderWindow(fsui.Dialog):
         self.after_task_has_stopped()
 
     def after_task_has_stopped(self):
-        self.close_button.enable()
+        # self.close_button.enable()
         self.upload_button.enable()
         self.stop_button.disable()
 

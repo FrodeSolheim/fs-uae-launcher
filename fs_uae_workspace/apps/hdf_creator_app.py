@@ -8,12 +8,13 @@ from fs_uae_launcher.res import gettext
 from fsui.extra.iconheader import IconHeader
 
 
-class HDFCreatorWindow(fsui.Dialog):
+class HDFCreatorWindow(fsui.Window):
 
     def __init__(self, parent=None):
-        super().__init__(parent, gettext("HDF Disk Image Creator"))
+        title = gettext("HDF Disk Image Creator")
+        super().__init__(parent, title=title, maximizable=False)
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        buttons.create_close_button()
+        # buttons.create_close_button()
 
         self.dialog = None
         self.path = ""

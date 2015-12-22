@@ -1,8 +1,8 @@
 import fsui.qt
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class ImageButton(fsui.qt.QPushButton, Widget):
+class ImageButton(fsui.qt.QPushButton, WidgetMixin):
 
     activated = fsui.qt.QSignal()
 

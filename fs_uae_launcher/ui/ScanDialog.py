@@ -1,13 +1,13 @@
 import fsui as fsui
 from ..Scanner import Scanner
 from ..I18N import gettext
-from .settings.ScanPathsGroup import ScanPathsGroup
+from .settings.scan_paths_group import ScanPathsGroup
 
 
 TIMER_INTERVAL = 100
 
 
-class ScanDialog(fsui.Dialog):
+class ScanDialog(fsui.Window):
 
     @classmethod
     def refresh_game_database(cls, window):
@@ -16,7 +16,7 @@ class ScanDialog(fsui.Dialog):
 
     def __init__(self, parent, minimal=False, interactive=True,
                  scan_for_files=True):
-        super().__init__(parent, gettext("Scan"))
+        super().__init__(parent, gettext("Update File Database"))
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
         buttons.create_close_button()
 

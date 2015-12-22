@@ -1,8 +1,8 @@
 from fs_uae_launcher.ui.behaviors.configbehavior import ConfigBehavior
-from fs_uae_launcher.ui.settings.overridewarning import OverrideWarning
+from fs_uae_launcher.ui.settings.override_warning import OverrideWarning
 import fsui as fsui
 from ...I18N import gettext
-from ..settings.FullscreenToggleButton import FullscreenToggleButton
+from ..settings.fullscreen_toggle_button import FullscreenToggleButton
 
 
 class LaunchGroup(fsui.Group):

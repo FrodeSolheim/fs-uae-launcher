@@ -18,6 +18,7 @@ def WindowBase(BaseClass):
             if parent is None and len(default_window_parent) > 0:
                 parent = default_window_parent[-1]
                 print("using default parent", parent)
+                parent = parent.real_window()
 
             super().__init__(parent, *args, **kwargs)
             # MixinBase.__init__(self)

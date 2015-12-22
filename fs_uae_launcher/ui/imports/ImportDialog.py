@@ -1,11 +1,12 @@
 import fsui as fsui
 from ...I18N import gettext
 from .ImportTask import ImportTask
+from ...Signal import Signal
 
 TIMER_INTERVAL = 100
 
 
-class ImportDialog(fsui.Dialog):
+class ImportDialog(fsui.Window):
 
     AMIGA_FOREVER = 1
 
@@ -14,7 +15,7 @@ class ImportDialog(fsui.Dialog):
             title = gettext("Import From Amiga Forever CD/DVD")
         else:
             title = gettext("Import Kickstarts and ROMs")
-        super().__init__(parent, title)
+        super().__init__(parent, title, maximizable=False)
         self.layout = fsui.VerticalLayout()
         self.layout.padding_left = 20
         self.layout.padding_top = 20
@@ -44,6 +45,7 @@ class ImportDialog(fsui.Dialog):
 
     def on_timer(self):
         if self.task.done:
+            Signal.broadcast("scan_done")
             self.close_button.enable()
         else:
             fsui.call_later(TIMER_INTERVAL, self.on_timer)
@@ -53,4 +55,5 @@ class ImportDialog(fsui.Dialog):
         self.line_count += len(lines)
 
     def on_close_button(self):
-        self.end_modal(False)
+        # self.end_modal(False)
+        self.close()

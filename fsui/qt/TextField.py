@@ -1,8 +1,8 @@
 from fsui.qt import QLineEdit, Signal
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class TextField(QLineEdit, Widget):
+class TextField(QLineEdit, WidgetMixin):
 
     changed = Signal()
     activated = Signal()

@@ -1,15 +1,19 @@
 import fsui as fsui
 from fsui.qt import Signal
+from .Skin import Skin
 
 
-class PagedDialog(fsui.Dialog):
+class PagedDialog(fsui.Window):
 
     page_changed = Signal()
 
     def __init__(self, parent, title):
-        super().__init__(parent, title)
-        buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        buttons.create_close_button()
+        super().__init__(parent, title, minimizable=False, maximizable=False)
+        # buttons, layout = fsui.DialogButtons.create_with_layout(self)
+        # buttons.create_close_button()
+        self.layout = fsui.VerticalLayout()
+        # self.layout.set_padding(20)
+        layout = self.layout
 
         hor_layout = fsui.HorizontalLayout()
         layout.add(hor_layout, fill=True, expand=True)
@@ -19,9 +23,26 @@ class PagedDialog(fsui.Dialog):
         # layout_2.padding_bottom = 20
         # layout_2.padding_left = 20
 
-        self.list_view = fsui.ListView(self)
-        self.list_view.set_min_width(200)
+        self.list_view = fsui.ListView(self, border=False)
+        self.list_view.set_min_width(240)
         self.list_view.item_selected.connect(self.on_select_item)
+        if Skin.fws():
+            self.list_view.set_row_height(28)
+            # self.list_view.set_background_color(fsui.Color(0xeb, 0xeb, 0xeb))
+            self.list_view.setStyleSheet("""
+            QListView {
+                padding-top: 20px;
+                background-color: #ebebeb;
+                outline: none;
+            }
+            QListView::item {
+                padding-left: 20px;
+                border: 0px;
+            }
+            QListView::item:selected {
+                background-color: #4080ff;
+            }
+            """)
         layout_2.add(self.list_view, fill=True, expand=True)
         hor_layout.add(layout_2, fill=True)
 
@@ -29,7 +50,8 @@ class PagedDialog(fsui.Dialog):
 
         self.page_container = fsui.Panel(self)
         self.page_container.layout = fsui.VerticalLayout()
-        hor_layout.add(self.page_container, fill=True, expand=True)
+        hor_layout.add(self.page_container, fill=True, expand=True,
+                       margin_top=20, margin_right=20, margin_bottom=20)
 
         # self.layout.add_spacer(20)
 
@@ -44,7 +66,7 @@ class PagedDialog(fsui.Dialog):
         # elf.add_page(_("Custom Options"), CustomOptionsPage)
 
         self.current_page = None
-        self.set_size((800, 640))
+        self.set_size((840, 640))
         self.center_on_parent()
 
     # def on_close_button(self):

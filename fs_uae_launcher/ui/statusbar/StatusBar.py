@@ -17,7 +17,7 @@ class StatusBar(Panel):
         # self.set_background_color(Color(0xd8, 0xd8, 0xd8))
         self.layout = VerticalLayout()
         self.hori_layout = HorizontalLayout()
-        if Skin.experimental():
+        if Skin.fws():
             self.top_border_size = 2
         else:
             self.top_border_size = 1
@@ -79,17 +79,18 @@ class StatusBar(Panel):
 
     def on_paint(self):
         dc = self.create_dc()
-        if Skin.experimental():
+        size = self.size()
+        if Skin.fws():
             dc.draw_rectangle(
-                0, 0, self.size[0], 2, Color(0xe5, 0xe5, 0xe5, 0xff))
+                0, 0, size[0], 2, Color(0xe5, 0xe5, 0xe5, 0xff))
             return
         color_1 = Skin.get_background_color()
         if color_1 is not None:
             color_1 = color_1.copy().darken(0.12)
         else:
             color_1 = Color(0x00, 0x00, 0x00, 0x30)
-        dc.draw_line(0, 0, self.size[0], 0, color_1)
-        self.draw_background(self, dc, offset=1, height=self.size[1] - 1)
+        dc.draw_line(0, 0, size[0], 0, color_1)
+        self.draw_background(self, dc, offset=1, height=size[1] - 1)
 
     @classmethod
     def draw_element_background(cls, widget, dc):
@@ -97,8 +98,8 @@ class StatusBar(Panel):
 
     @classmethod
     def draw_background(cls, widget, dc, offset=None, height=None):
-        size = widget.size
-        if Skin.experimental():
+        size = widget.size()
+        if Skin.fws():
             return
         x = 0
         y = 0

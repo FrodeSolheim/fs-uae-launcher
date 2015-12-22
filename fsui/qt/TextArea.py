@@ -1,8 +1,8 @@
 import fsui.qt
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class TextArea(fsui.qt.QTextEdit, Widget):
+class TextArea(fsui.qt.QTextEdit, WidgetMixin):
 
     changed = fsui.qt.Signal()
 

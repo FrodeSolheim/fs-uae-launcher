@@ -4,13 +4,16 @@ from fsbc.Application import app
 from ..I18N import gettext
 
 
-class AboutDialog(fsui.Dialog):
+class AboutDialog(fsui.Window):
 
     def __init__(self, parent):
         title = gettext("About {name}").format(name="FS-UAE Launcher")
-        super().__init__(parent, title)
-        buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        buttons.create_close_button()
+        super().__init__(parent, title, minimizable=False, maximizable=False)
+        # buttons, layout = fsui.DialogButtons.create_with_layout(self)
+        # buttons.create_close_button()
+        self.layout = fsui.VerticalLayout()
+        self.layout.set_padding(20)
+        layout = self.layout
 
         self.icon_header = IconHeader(
             self, fsui.Icon("fs-uae-launcher", "pkg:fs_uae_launcher"),

@@ -5,7 +5,7 @@ from fs_uae_workspace.shell import SimpleApplication, shell_open
 from fs_uae_launcher.res import gettext
 
 
-class LoginWindow(fsui.Dialog):
+class LoginWindow(fsui.Window):
 
     def __init__(self):
         super().__init__(None, gettext("Log In to Your OAGD.net Account"))

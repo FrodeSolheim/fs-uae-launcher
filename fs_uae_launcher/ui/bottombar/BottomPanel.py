@@ -36,12 +36,12 @@ class BottomPanel(fsui.Panel):
         self.draw_background(dc)
 
     def draw_background(self, dc):
-        size = self.size
-        if Skin.experimental():
+        size = self.size()
+        if Skin.fws():
             dc.draw_rectangle(0, 0, size[0], 2, self.border_color)
             dc.draw_rectangle(0, 2, size[0], size[1] - 2, self.white_color)
             return
         dc.draw_line(0, 0, size[0], 0, self.line_color_1)
         dc.draw_line(0, 1, size[0], 1, self.line_color_2)
         dc.draw_vertical_gradient(
-            0, 2, self.size[0], self.size[1] - 2, self.color_1, self.color_2)
+            0, 2, size[0], size[1] - 2, self.color_1, self.color_2)

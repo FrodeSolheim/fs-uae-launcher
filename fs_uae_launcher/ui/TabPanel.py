@@ -55,10 +55,10 @@ class TabPanel(fsui.Panel):
 
     @classmethod
     def draw_border(cls, widget, dc):
-        size = widget.size
+        size = widget.size()
 
         line_color_1 = Skin.get_background_color()
-        if Skin.experimental():
+        if Skin.fws():
             line_color_1 = fsui.Color(0xe5, 0xe5, 0xe5, 0xff)
             line_color_2 = line_color_1
         elif line_color_1 is not None:
@@ -83,13 +83,37 @@ class TabPanel(fsui.Panel):
         else:
             cls.draw_border(widget, dc)
 
+        size = widget.size()
         x = 0
         y = 0
-        w = widget.size[0]
-        h = widget.size[1] - 2
+        w = size[0]
+        h = size[1] - 2
 
-        if Skin.experimental():
-            dc.draw_rectangle(0, 0, w, h, fsui.Color(255, 255, 255))
+        if Skin.fws():
+            white = fsui.Color(0xff, 0xff, 0xff)
+            if selected:
+                bg_color = fsui.Color(0xf2, 0xf2, 0xf2)
+                bd_color = fsui.Color(0xe5, 0xe5, 0xe5)
+            elif hover:
+                bg_color = fsui.Color(0xf8, 0xf8, 0xf8)
+                bd_color = fsui.Color(0xf0, 0xf0, 0xf0)
+            else:
+                bg_color = fsui.Color(0xff, 0xff, 0xff)
+                bd_color = fsui.Color(0xff, 0xff, 0xff)
+
+            # dc.draw_rectangle(0, 0, w, h, bd_color)
+            if selected or hover:
+                dc.draw_vertical_gradient(0, 0, 2, size[1], white, bd_color)
+                dc.draw_vertical_gradient(
+                    size[0] - 2, 0, 2, size[1], white, bd_color)
+                # dc.draw_rectangle(2, 2, w - 4, h - 2, bg_color)
+                dc.draw_vertical_gradient(
+                    2, 0, size[0] - 4, size[1], white, bg_color)
+                if hover and not selected:
+                    dc.draw_rectangle(0, size[1] - 2, size[0], 2,
+                                      fsui.Color(0xe5, 0xe5, 0xe5))
+            else:
+                dc.draw_rectangle(0, 0, w, h, bd_color)
             return
 
         if fsbc.system.macosx:
@@ -148,7 +172,7 @@ class TabPanel(fsui.Panel):
     @classmethod
     def draw_selected_tab(cls, widget, dc):
         line_color_1 = Skin.get_background_color()
-        if Skin.experimental():
+        if Skin.fws():
             line_color_1 = fsui.Color(0xe5, 0xe5, 0xe5, 0xff)
             line_color_2 = line_color_1
         elif fsbc.system.macosx and False:
@@ -162,7 +186,8 @@ class TabPanel(fsui.Panel):
             line_color_1 = fsui.Color(0xff, 0xff, 0xff, 0x00)
             line_color_2 = fsui.Color(0xff, 0xff, 0xff, 0xa0)
 
-        dc.draw_vertical_gradient(0, 0, 2, widget.size[1],
+        size = widget.size()
+        dc.draw_vertical_gradient(0, 0, 2, size[1],
                                   line_color_1, line_color_2)
-        dc.draw_vertical_gradient(widget.size[0] - 2, 0, 2, widget.size[1],
+        dc.draw_vertical_gradient(size[0] - 2, 0, 2, size[1],
                                   line_color_1, line_color_2)

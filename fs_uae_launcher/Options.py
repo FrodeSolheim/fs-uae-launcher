@@ -404,7 +404,7 @@ options = {
     },
 
     "floppy_drive_volume": {
-        "default": "67",
+        "default": "25",
         "description": N_("Floppy Drive Volume"),
         "type": "integer",
         "min": 0,
@@ -412,7 +412,7 @@ options = {
     },
 
     "floppy_drive_volume_empty": {
-        "default": "67",
+        "default": "25",
         "description": N_("Empty Floppy Drive Volume"),
         "type": "integer",
         "min": 0,
@@ -1049,6 +1049,7 @@ options = {
             ("640x480+border", N_("640x480 + Border")),
             ("640x512", "640x512"),
             ("640x512+border", N_("640x512 + Border")),
+            ("704x520", "704x520"),
             ("704x540", "704x540"),
             ("704x566", "704x566"),
             ("724x566", "724x566"),

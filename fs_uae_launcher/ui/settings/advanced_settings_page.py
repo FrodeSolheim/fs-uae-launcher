@@ -1,52 +1,39 @@
+import fsui
+from fs_uae_launcher.Config import Config
+from fs_uae_launcher.I18N import gettext
+from fs_uae_launcher.Settings import Settings
+from fs_uae_launcher.ui.settings.settings_page import SettingsPage
 from fsbc.Application import app
-import fsui as fsui
-from ...Config import Config
-from ...Settings import Settings
 
 
-class CustomSettingsPage(fsui.Panel):
-
+class AdvancedSettingsPage(SettingsPage):
     def __init__(self, parent):
-        fsui.Panel.__init__(self, parent)
-        self.layout = fsui.VerticalLayout()
+        super().__init__(parent)
+        icon = fsui.Icon("settings", "pkg:fs_uae_workspace")
+        gettext("Advanced")
+        title = gettext("Advanced Settings")
+        subtitle = gettext("Specify global options and settings which does "
+                           "not have UI controls")
+        self.add_header(icon, title, subtitle)
 
-        # self.layout.add_spacer(580, 20)
+        label = fsui.MultiLineLabel(self, (
+            "You can write key = value pairs here to set FS-UAE options "
+            "not currently supported by the user interface. This is only a "
+            "temporary feature until the GUI supports all options "
+            "directly. "), 640)
+        self.layout.add(label, fill=True, margin_bottom=10)
 
-        hor_layout = fsui.HorizontalLayout()
-        self.layout.add(hor_layout, fill=True, expand=True)
+        label = fsui.MultiLineLabel(self, (
+            "The options specified here are global and will apply to all "
+            "configurations. Config options such as hardware and memory "
+            "options will be ignored. Options suitable here are options "
+            "like theme options."), 640)
+        self.layout.add(label, fill=True, margin_bottom=10)
 
-        # hor_layout.add_spacer(20)
         self.text_area = fsui.TextArea(self, font_family="monospace")
-        # self.text_area.set_min_height(400)
         self.text_area.set_text(self.get_initial_text())
-        hor_layout.add(self.text_area, fill=True, expand=True)
-
-        # hor_layout.add_spacer(20)
-
-        # self.layout.add_spacer(20)
-
-        # hor_layout = fsui.HorizontalLayout()
-        # self.layout.add(hor_layout, fill=True)
-
-        # hor_layout.add_spacer(20, expand=True)
-        # self.close_button = fsui.Button(self, _("Close"))
-        # self.close_button.activated.connect(self.on_close_button)
-        # hor_layout.add(self.close_button)
-        # hor_layout.add_spacer(20)
-
-        # self.layout.add_spacer(20)
-        # self.set_size(self.layout.get_min_size())
-        # self.center_on_parent()
-
-        # self.get_window().add_close_listener(self.on_close_window)
-
+        self.layout.add(self.text_area, fill=True, expand=True)
         self.text_area.changed.connect(self.update_settings)
-
-    # def on_close_window(self):
-    #     self.update_settings()
-
-    # def on_close_button(self):
-    #     self.end_modal(0)
 
     def update_settings(self):
         text = self.text_area.get_text()
@@ -70,13 +57,13 @@ class CustomSettingsPage(fsui.Panel):
                 app.settings[key] = value
 
     def get_initial_text(self):
-        text = DEFAULT_TEXT
+        text = ""
         # FIXME: accessing values directly here, not very nice
         keys = app.settings.values.keys()
         for key in sorted(keys):
             if key in Settings.default_settings:
                 continue
-            #    #print("(settings) ignoring key", key)
+            # #print("(settings) ignoring key", key)
             #    text += "# key {0} will be ignored\n".format(key)
             # if key in Config.config_keys:
             #     print("(settings) ignoring key", key)
@@ -95,15 +82,3 @@ class CustomSettingsPage(fsui.Panel):
             if key in Config.config_keys:
                 text += "\n"
         return text
-
-DEFAULT_TEXT = """\
-# You can write key = value pairs here to set FS-UAE options
-# not currently supported by the user interface. This is only a
-# temporary feature until the GUI supports all options directly.
-#
-# The options specified here are global and will apply to all
-# configurations. Config options such as hardware and memory
-# options will be ignored. Options suitable here are options
-# like theme options.
-
-"""

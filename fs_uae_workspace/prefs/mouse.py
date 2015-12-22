@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.mouse import MouseSettingsPage
+from fs_uae_launcher.ui.settings.mouse_settings_page import MouseSettingsPage
 from fs_uae_launcher.res import gettext
 
 

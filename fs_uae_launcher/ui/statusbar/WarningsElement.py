@@ -169,7 +169,7 @@ class WarningsElement(StatusElement):
         self.coordinates.clear()
         dc.set_font(dc.get_font())
         x = 6
-        w, h = self.size
+        w, h = self.size()
         for level, warning, handler in self.warnings:
             icon = self.icons[level]
             start = x

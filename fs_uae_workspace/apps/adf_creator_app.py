@@ -10,12 +10,13 @@ from fs_uae_launcher.res import gettext
 from fsui.extra.iconheader import IconHeader
 
 
-class ADFCreatorWindow(fsui.Dialog):
+class ADFCreatorWindow(fsui.Window):
 
     def __init__(self, parent=None):
-        super().__init__(parent, gettext("ADF Disk Image Creator"))
+        title = gettext("ADF Disk Image Creator")
+        super().__init__(parent, title=title, maximizable=False)
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        buttons.create_close_button()
+        # buttons.create_close_button()
 
         self.dialog = None
         self.path = ""
@@ -95,7 +96,7 @@ class ADFCreatorWindow(fsui.Dialog):
         self.list_view.select_item(0)
         self.update_name_suggestion()
 
-        # self.set_size(layout.get_min_size())
+        # self.set_size_from_layout()
         # self.center_on_parent()
 
     def __del__(self):

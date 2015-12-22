@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.AudioSettingsPage import AudioSettingsPage
+from fs_uae_launcher.ui.settings.audio_settings_page import AudioSettingsPage
 from fs_uae_launcher.res import gettext
 
 

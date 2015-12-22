@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.joystick import JoystickSettingsPage
+from fs_uae_launcher.ui.settings.joystick_settings_page import JoystickSettingsPage
 from fs_uae_launcher.res import gettext
 
 

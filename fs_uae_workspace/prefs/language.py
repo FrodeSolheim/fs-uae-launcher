@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.language import LanguageSettingsPage
+from fs_uae_launcher.ui.settings.language_settings_page import LanguageSettingsPage
 from fs_uae_launcher.res import gettext
 
 

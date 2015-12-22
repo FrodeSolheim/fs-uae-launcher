@@ -1,9 +1,9 @@
 import fsui.qt
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 from urllib.parse import unquote_plus
 
 
-class Label(fsui.qt.QLabel, Widget):
+class Label(fsui.qt.QLabel, WidgetMixin):
 
     def __init__(self, parent, label):
         fsui.qt.QLabel.__init__(self, label, parent.get_container())
@@ -26,7 +26,7 @@ class Label(fsui.qt.QLabel, Widget):
         self.setText(label)
 
 
-class PlainLabel(fsui.qt.QLabel, Widget):
+class PlainLabel(fsui.qt.QLabel, WidgetMixin):
 
     def __init__(self, parent, label):
         fsui.qt.QLabel.__init__(self, label, parent.get_container())
@@ -60,7 +60,7 @@ class URLLabel(Label):
         return Label.get_min_height(self) + 1
 
 
-class MultiLineLabel(Widget):
+class MultiLineLabel(WidgetMixin):
 
     def __init__(self, parent, label, min_width=None):
         self._widget = fsui.qt.QLabel(label, parent.get_container())
@@ -93,4 +93,4 @@ class MultiLineLabel(Widget):
                 if hasattr(self, "min_height"):
                     return max(self.min_height, height)
                 return height
-        return Widget.get_min_height(self) + 1
+        return WidgetMixin.get_min_height(self) + 1

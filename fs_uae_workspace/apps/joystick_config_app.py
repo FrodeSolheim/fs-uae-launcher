@@ -14,19 +14,27 @@ import fsui
 from fsgs.FSGSDirectories import FSGSDirectories
 from fs_uae_workspace.shell import register_window, raise_window
 from fs_uae_launcher.I18N import gettext
+from fs_uae_launcher.ui.Skin import Skin
 
 
 class JoystickConfigWindow(fsui.Window):
 
     def __init__(self, device_name):
-        fsui.Window.__init__(self, None, "Configure {device_name}".format(
-            device_name=device_name))
+        title = gettext("Configure {device_name}").format(
+            device_name=device_name)
+        super().__init__(None, title=title, minimizable=False,
+                         maximizable=False, separator=False)
 
         self.layout = fsui.VerticalLayout()
 
         self.image = fsui.Image("fs_uae_workspace:res/gamepad-config.png")
         self.joystick_panel = fsui.ImageView(self, self.image)
         self.layout.add(self.joystick_panel)
+
+        if Skin.fws():
+            from fws.gui import TitleSeparator
+            separator = TitleSeparator(self)
+            self.layout.add(separator, fill=True)
 
         panel = fsui.Panel(self)
         self.layout.add(panel, fill=True)
@@ -56,7 +64,7 @@ class JoystickConfigWindow(fsui.Window):
         panel.layout.add(fsui.PlainLabel(
             panel, gettext("Make:")), margin_left=20)
         self.make_field = fsui.TextField(panel)
-        self.make_field.set_min_width(100)
+        self.make_field.set_min_width(140)
         self.make_field.changed.connect(self.on_change)
         panel.layout.add(self.make_field, margin_left=10)
 
@@ -70,9 +78,9 @@ class JoystickConfigWindow(fsui.Window):
         self.save_button.activated.connect(self.on_save_button)
         panel.layout.add(self.save_button, margin_left=20)
 
-        self.close_button = fsui.Button(panel, gettext("Close"))
-        self.close_button.activated.connect(self.on_close_button)
-        panel.layout.add(self.close_button, margin_left=10)
+        # self.close_button = fsui.Button(panel, gettext("Close"))
+        # self.close_button.activated.connect(self.on_close_button)
+        # panel.layout.add(self.close_button, margin_left=10)
 
         self.device_name = device_name
         existing_config = self.read_existing_config()
@@ -113,8 +121,8 @@ class JoystickConfigWindow(fsui.Window):
         self.save_config()
         self.save_button.disable()
 
-    def on_close_button(self):
-        self.close()
+    # def on_close_button(self):
+    #     self.close()
 
     def set_information(self, device_type, device_make, device_model):
         print("set_information", repr(device_type), repr(device_make),

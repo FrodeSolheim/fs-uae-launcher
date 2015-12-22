@@ -60,6 +60,8 @@ class TitleBar(fsui.Panel):
             x_offset = self.close_button.width() + 20
         else:
             x_offset = 20
-        text = self.parent().get_title()
+        # print(self.parent())
+        # text = self.parent().title()
+        text = "FIXME"
         tw, th = dc.measure_text(text)
         dc.draw_text(text, x_offset, (self.height() - th) // 2)

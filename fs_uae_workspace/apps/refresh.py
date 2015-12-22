@@ -5,10 +5,11 @@ from fs_uae_workspace.shell import SimpleApplication
 from fs_uae_launcher.res import gettext
 
 
-class RefreshWindow(fsui.Dialog):
+class RefreshWindow(fsui.Window):
 
     def __init__(self):
-        super().__init__(None, gettext("Updating Database"))
+        title = gettext("Updating Database")
+        super().__init__(None, title, maximizable=False)
         self.set_icon(fsui.Icon("refresh", "pkg:fs_uae_workspace"))
 
         self.layout = fsui.VerticalLayout()

@@ -2,7 +2,8 @@ from weakref import WeakValueDictionary
 from fs_uae_workspace.vfs import get_vfs_item
 
 
-window_uris = WeakValueDictionary()
+# window_uris = WeakValueDictionary()
+window_uris = {}
 # window_uris = {}
 opened_count = 0
 
@@ -37,6 +38,11 @@ def register_window(uri, window):
     # window.closed.connect(on_window_closed)
 
     window_uris[uri] = window
+
+    def on_close():
+        print("Window closed:", uri)
+        del window_uris[uri]
+    window.closed.connect(on_close)
 
 
 def shell_open(uri, args=None, parent=None, center=None):

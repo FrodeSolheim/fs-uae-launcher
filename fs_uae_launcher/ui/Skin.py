@@ -4,6 +4,10 @@ from fsbc.util import memoize
 from .Constants import Constants
 from ..Options import Option
 from ..Settings import Settings
+try:
+    import fws
+except ImportError:
+    fws = None
 
 # LEVEL = 0xce
 LEVEL = 0xeb
@@ -13,7 +17,7 @@ LEVEL = 0xeb
 class Skin(object):
 
     EXTRA_GROUP_MARGIN = 0
-    _experimental = None
+    _fws = None
 
     @classmethod
     def use_unified_toolbar(cls):
@@ -71,8 +75,9 @@ class Skin(object):
                 cls.get_bottom_margin())
 
     @classmethod
-    def experimental(cls):
-        if cls._experimental is None:
-            cls._experimental = Settings.get(Option.LAUNCHER_THEME) == \
-                                "experimental"
-        return cls._experimental
+    def fws(cls):
+        if cls._fws is None:
+            cls._fws = Settings.get(Option.LAUNCHER_THEME) == "fws"
+            if fws is None:
+                cls._fws = None
+        return cls._fws

@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.GameDatabaseSettingsPage import \
+from fs_uae_launcher.ui.settings.game_database_settings_page import \
     GameDatabaseSettingsPage
 from fs_uae_launcher.res import gettext
 

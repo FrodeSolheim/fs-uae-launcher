@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.NetplaySettingsPage import NetplaySettingsPage
+from fs_uae_launcher.ui.settings.netplay_settings_page import NetplaySettingsPage
 from fs_uae_launcher.res import gettext
 
 

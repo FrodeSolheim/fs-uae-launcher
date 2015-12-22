@@ -45,21 +45,26 @@ class MainWindow(WindowWithTabs):
         self.fsgs = fsgs
         border = True
         maximize = None
+        menu = False
         if fs_uae_launcher.ui.get_screen_size()[1] <= 768:
             if fstd.desktop.is_running_gnome_3():
                 border = False
                 if "--window-border" in sys.argv:
                     border = True
             maximize = True
-
-        if Skin.experimental():
+        if Skin.fws():
             border = False
+            menu = True
         if "--no-window-border" in sys.argv:
             border = False
 
-        title = "FS-UAE Launcher {0}".format(Application.instance().version)
+        if Skin.fws():
+            title = "FS-UAE Launcher"
+        else:
+            title = "FS-UAE Launcher {0}".format(
+                Application.instance().version)
 
-        WindowWithTabs.__init__(self, None, title, border=border)
+        WindowWithTabs.__init__(self, None, title, border=border, menu=menu)
         if icon:
             self.set_icon_from_path(icon)
 
@@ -164,7 +169,7 @@ class MainWindow(WindowWithTabs):
         #     layout.add_spacer(0, 10)
 
         self.realize_tabs()
-        # self.menu = self.create_menu()
+        # self._menu = self.create_menu()
         if fsui.System.macosx and fsui.toolkit == 'wx':
             # import wx
             # self.tools_menu = self.create_menu()
@@ -205,6 +210,9 @@ class MainWindow(WindowWithTabs):
         Config.update_kickstart()
 
     def update_title(self):
+        if Skin.fws():
+            # Just want to keep "FS-UAE Launcher" in the title
+            return
         auth = Settings.get(Option.DATABASE_AUTH)
         if auth:
             username = Settings.get(Option.DATABASE_USERNAME)
@@ -330,11 +338,14 @@ class MainWindow(WindowWithTabs):
         default_page_index = 0
         default_tab_index_offset = 0
         if column == 1:
-            # if USE_MAIN_MENU:
-            icon = fsui.Image("fs_uae_launcher:res/main_menu.png")
-            self.menu_button = self.add_tab_button(
-                None, icon, gettext("Main Menu"),
-                menu_function=self.open_main_menu, left_padding=5)
+            if Skin.fws():
+                self.add_tab_spacer(60)
+            else:
+                # if USE_MAIN_MENU:
+                icon = fsui.Image("fs_uae_launcher:res/main_menu.png")
+                self.menu_button = self.add_tab_button(
+                    None, icon, gettext("Main Menu"),
+                    menu_function=self.open_main_menu, left_padding=5)
             default_tab_index_offset = 1
             # self.add_tab_spacer(60)
             # else:
@@ -521,19 +532,23 @@ class MainWindow(WindowWithTabs):
         from .config.ConfigDialog import ConfigDialog
         ConfigDialog.run(self.get_window())
 
+    def menu(self):
+        self._menu = self.create_menu()
+        return self._menu
+
     def open_main_menu(self):
         if fsui.System.windows:
             if time.time() - getattr(self, "main_menu_close_time", 0) < 0.2:
                 return
-        self.menu = self.create_menu()
+        self._menu = self.create_menu()
         if Skin.use_unified_toolbar():
-            self.popup_menu(self.menu, (0, -2))
+            self.popup_menu(self._menu, (0, -2))
         else:
             self.menu_button.popup_menu(
-                self.menu, (0, self.menu_button.size[1] - 2))
+                self._menu, (0, self.menu_button.size()[1] - 2))
         if fsui.System.windows:
             self.main_menu_close_time = time.time()
-        return self.menu
+        return self._menu
 
     # def open_user_menu(self):
     #     if fsui.System.windows:
@@ -579,7 +594,7 @@ class MainWindow(WindowWithTabs):
         ScanDialog(self.get_window()).show()
 
     def on_settings_button(self):
-        from .settings.SettingsDialog import SettingsDialog
+        from .settings.settings_dialog import SettingsDialog
         SettingsDialog.open(self)
 
     def on_about(self):

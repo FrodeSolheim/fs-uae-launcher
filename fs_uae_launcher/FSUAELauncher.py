@@ -614,9 +614,11 @@ def initialize_qt_style(qapplication):
     elif launcher_theme == "fusion-dark":
         use_fusion_theme = True
         fusion_variant = "dark"
-    elif launcher_theme == "experimental":
+    elif launcher_theme == "fws":
         use_fusion_theme = True
-        fusion_variant = "experimental"
+        fusion_variant = "fws"
+        from fsui.qt.window import FwsWindow
+        FwsWindow.set_default()
     else:
         use_fusion_theme = True
         if fstd.desktop.is_running_gnome_3():
@@ -639,7 +641,7 @@ def initialize_qt_style(qapplication):
             pa.setColor(QPalette.AlternateBase, QColor(237, 237, 237))
             pa.setColor(QPalette.Button, QColor(237, 237, 237))
             qapplication.setPalette(pa)
-        elif fusion_variant == "experimental":
+        elif fusion_variant == "fws":
             pa = QPalette()
             pa.setColor(QPalette.Window, QColor(242, 242, 242))
             pa.setColor(QPalette.AlternateBase, QColor(242, 242, 242))
@@ -668,10 +670,17 @@ def initialize_qt_style(qapplication):
         try:
             launcher_font_size = int(Settings.get("launcher_font_size"))
         except ValueError:
-            launcher_font_size = 0
+            if fusion_variant == "fws":
+                launcher_font_size = 13
+            else:
+                launcher_font_size = 0
         if launcher_font_size:
             print("FONT: Override size {}".format(launcher_font_size))
             font.setPointSize(launcher_font_size)
+            if fusion_variant == "fws":
+                font = fsui.Font("Roboto", launcher_font_size).qfont()
+                font.setPointSizeF(10.5)
+                font.setHintingPreference(QFont.PreferNoHinting)
             qapplication.setFont(font)
 
     plugin_helper = PluginHelper()

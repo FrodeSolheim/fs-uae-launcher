@@ -102,7 +102,7 @@ class ScreenshotsPanel(BottomPanel):
         # print("on_left_down")
         width = 22 + Constants.SCREEN_SIZE[0] * 6 + 22 * 5
         if self.x_offset == 0:
-            self.x_offset = self.size[0] - width
+            self.x_offset = self.size()[0] - width
         else:
             self.x_offset = 0
         self.refresh()
@@ -110,7 +110,7 @@ class ScreenshotsPanel(BottomPanel):
     def on_paint(self):
         dc = self.create_dc()
         self.draw_background(dc)
-        size = self.size
+        size = self.size()
 
         y = 2 + 20
         x = 10 + self.x_offset

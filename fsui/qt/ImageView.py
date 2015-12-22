@@ -1,8 +1,8 @@
 import fsui.qt
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class ImageView(fsui.qt.QLabel, Widget):
+class ImageView(fsui.qt.QLabel, WidgetMixin):
 
     def __init__(self, parent, image):
         fsui.qt.QLabel.__init__(self, parent.get_container())

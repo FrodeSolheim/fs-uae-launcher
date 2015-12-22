@@ -185,7 +185,7 @@ class GameInfoPanel(BottomPanel):
             text_x = 10 + Constants.COVER_SIZE[0] + 20
 
         y = 2 + 20
-        size = self.size
+        size = self.size()
 
         image = self.image
         # dc.draw_image(image, x, y)

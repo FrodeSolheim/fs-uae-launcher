@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.OpenGLSettingsPage import OpenGLSettingsPage
+from fs_uae_launcher.ui.settings.opengl_settings_page import OpenGLSettingsPage
 from fs_uae_launcher.res import gettext
 
 

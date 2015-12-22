@@ -14,6 +14,9 @@ class Font(object):
             if size:
                 self.font.setPixelSize(size)
 
+    def qfont(self):
+        return self.font
+
     def set_bold(self, bold=True):
         self.font.setBold(bold)
 

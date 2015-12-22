@@ -5,10 +5,11 @@ from fs_uae_workspace.shell import SimpleApplication
 from fs_uae_launcher.res import gettext
 
 
-class LogoutWindow(fsui.Dialog):
+class LogoutWindow(fsui.Window):
 
     def __init__(self):
-        super().__init__(None, gettext("Log Out from Your OAGD.net Account"))
+        title = gettext("Log Out from Your OAGD.net Account")
+        super().__init__(None, title, minimizable=False, maximizable=False)
         self.set_icon(fsui.Icon("password", "pkg:fs_uae_workspace"))
 
         self.layout = fsui.VerticalLayout()
@@ -41,12 +42,12 @@ class LogoutWindow(fsui.Dialog):
         self.logout_button.activated.connect(self.on_logout_activated)
         hori_layout.add(self.logout_button)
 
-        self.close_button = fsui.Button(self, gettext("Close"))
-        self.close_button.activated.connect(self.on_close_activated)
-        hori_layout.add(self.close_button, margin_left=10)
+        # self.close_button = fsui.Button(self, gettext("Close"))
+        # self.close_button.activated.connect(self.on_close_activated)
+        # hori_layout.add(self.close_button, margin_left=10)
 
-        self.set_size(self.layout.get_min_size())
-        self.center_on_parent()
+        # self.set_size(self.layout.get_min_size())
+        # self.center_on_parent()
 
     def __del__(self):
         print("LogoutWindow.__del__")

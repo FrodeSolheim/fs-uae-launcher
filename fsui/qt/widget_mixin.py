@@ -34,7 +34,7 @@ class MixinBase(object):
 
 
 # noinspection PyPep8Naming
-class Widget(MixinBase):
+class WidgetMixin(MixinBase):
 
     def __init__(self, *_):
         # MixinBase.__init__(self)
@@ -225,12 +225,17 @@ class Widget(MixinBase):
     def set_tooltip(self, tool_tip):
         self.set_tool_tip(tool_tip)
 
+    def set_enabled(self, enable=True):
+        widget = getattr(self, "_widget", self)
+        widget.setEnabled(enable)
+
+    # DEPRECATED
     def disable(self):
         return self.enable(False)
 
+    # DEPRECATED
     def enable(self, enable=True):
-        widget = getattr(self, "_widget", self)
-        widget.setEnabled(enable)
+        self.set_enabled(enable)
 
     def on_resize(self):
         if hasattr(self, "layout") and isinstance(self.layout, Layout):

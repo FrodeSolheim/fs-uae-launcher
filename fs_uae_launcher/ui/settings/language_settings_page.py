@@ -1,52 +1,17 @@
-from fs_uae_launcher.ui.settings.OptionUI import OptionUI
 import fsui
-from fsui.extra.iconheader import NewIconHeader
 from fs_uae_launcher.res import gettext
-from ...Settings import Settings
+from fs_uae_launcher.Settings import Settings
+from fs_uae_launcher.ui.settings.settings_page import SettingsPage
 
 
-LANGUAGE_ITEMS = [
-    # language name, language code, country flag code
-    (gettext("Automatic"), "", "unknown"),
-    ("Čeština", "cs", "cz"),
-    ("Dansk", "da", "dk"),
-    ("Deutsch", "de", "de"),
-    ("English", "en", "gb"),
-    ("Español", "es", "es"),
-    ("Français", "fr", "fr"),
-    ("Eλληνικά", "el", "gr"),  # greek
-    ("Italiano", "it", "it"),
-    ("Norsk (bokmål)", "nb", "no"),
-    ("Polski", "pl", "pl"),
-    ("Português", "pt", "pt"),
-    ("Srpski", "sr", "rs"),  # srpski or српски
-    ("Svensk", "sv", "se"),
-    ("Suomi", "fi", "fi"),
-    ("Türkçe", "tr", "tr"),
-]
-
-
-class LanguageSettingsPage(fsui.Panel):
+class LanguageSettingsPage(SettingsPage):
 
     def __init__(self, parent):
-        fsui.Panel.__init__(self, parent)
-        self.layout = fsui.VerticalLayout()
-        # self.layout.set_padding(20, 20, 20, 20)
-
-        self.icon_header = NewIconHeader(
-            self, fsui.Icon("language-settings", "pkg:fs_uae_workspace"),
-            # gettext("Language Preference"),
-            gettext("Appearance"),
-            gettext("Set language and look for FS-UAE applications"))
-        self.layout.add(self.icon_header, fill=True, margin_bottom=20)
-
-        # label = fsui.Label(self, "Select language:")
-        # self.layout.add(label, fill=True)
-        # self.layout.add_spacer(6)
-
-        def add_option(name):
-            self.layout.add(OptionUI.create_group(self, name), fill=True,
-                            margin_top=10, margin_bottom=10)
+        super().__init__(parent)
+        icon = fsui.Icon("language-settings", "pkg:fs_uae_workspace")
+        title = gettext("Appearance")
+        subtitle = gettext("Set language and look for FS-UAE applications")
+        self.add_header(icon, title, subtitle)
 
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
@@ -70,16 +35,10 @@ class LanguageSettingsPage(fsui.Panel):
         self.layout.add(
             fsui.MultiLineLabel(self, information, 640))
 
-        label = fsui.HeadingLabel(self, "FS-UAE Launcher")
-        self.layout.add(label, margin_top=20, margin_bottom=20)
+        self.add_section("FS-UAE Launcher")
 
-        add_option("launcher_theme")
-        add_option("launcher_font_size")
-
-        self.layout.add_spacer(10)
-
-        # self.set_size(self.layout.get_min_size())
-        # self.set_size((400, 400))
+        self.add_option("launcher_theme")
+        self.add_option("launcher_font_size")
 
     def __del__(self):
         print("LanguageWindow.__del__")
@@ -107,3 +66,24 @@ class LanguageSettingChoice(fsui.Choice):
 
     def __item_changed(self, index):
         Settings.set("language", LANGUAGE_ITEMS[index][1])
+
+
+LANGUAGE_ITEMS = [
+    # language name, language code, country flag code
+    (gettext("Automatic"), "", "unknown"),
+    ("Čeština", "cs", "cz"),
+    ("Dansk", "da", "dk"),
+    ("Deutsch", "de", "de"),
+    ("English", "en", "gb"),
+    ("Español", "es", "es"),
+    ("Français", "fr", "fr"),
+    ("Eλληνικά", "el", "gr"),  # greek
+    ("Italiano", "it", "it"),
+    ("Norsk (bokmål)", "nb", "no"),
+    ("Polski", "pl", "pl"),
+    ("Português", "pt", "pt"),
+    ("Srpski", "sr", "rs"),  # srpski or српски
+    ("Svensk", "sv", "se"),
+    ("Suomi", "fi", "fi"),
+    ("Türkçe", "tr", "tr"),
+]

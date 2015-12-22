@@ -1,8 +1,8 @@
 from fsui.qt import QSpinBox
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class SpinCtrl(Widget):
+class SpinCtrl(WidgetMixin):
 
     def __init__(self, parent, min_value, max_value, initial_value):
         self._widget = QSpinBox(parent.get_container())

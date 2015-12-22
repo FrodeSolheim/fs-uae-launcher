@@ -4,7 +4,7 @@ from fsui.qt import QListView
 from fsui.qt import QFrame
 import fsui
 
-from fsui.qt.Widget import Widget
+from fsui.qt.widget_mixin import WidgetMixin
 
 
 class Model(QAbstractListModel):
@@ -37,7 +37,7 @@ class Model(QAbstractListModel):
         # return QVariant()
 
 
-class IconView(QListView, Widget):
+class IconView(QListView, WidgetMixin):
 
     def __init__(self, parent):
         if hasattr(parent, "get_container"):

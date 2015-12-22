@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.VideoSettingsPage import VideoSettingsPage
+from fs_uae_launcher.ui.settings.video_settings_page import VideoSettingsPage
 from fs_uae_launcher.res import gettext
 
 

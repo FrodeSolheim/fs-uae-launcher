@@ -1,16 +1,18 @@
 from fsui.qt import QCheckBox, Signal
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class CheckBox(QCheckBox, Widget):
+class CheckBox(QCheckBox, WidgetMixin):
 
     changed = Signal()
 
-    def __init__(self, parent, text=""):
+    def __init__(self, parent, text="", check=False):
         # self._widget = QCheckBox(text, parent.get_container())
         QCheckBox.__init__(self, text, parent.get_container())
         # Widget.__init__(self, parent)
         self.init_widget(parent)
+        if check:
+            self.setChecked(True)
         # self._widget.stateChanged.connect(self.__state_changed)
         self.stateChanged.connect(self.__state_changed)
 

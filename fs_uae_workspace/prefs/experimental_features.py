@@ -1,6 +1,6 @@
 import fsui
 from fs_uae_workspace.shell import SimpleApplication
-from fs_uae_launcher.ui.settings.ExperimentalFeaturesPage import \
+from fs_uae_launcher.ui.settings.experimental_features_page import \
     ExperimentalFeaturesPage
 from fs_uae_launcher.res import gettext
 

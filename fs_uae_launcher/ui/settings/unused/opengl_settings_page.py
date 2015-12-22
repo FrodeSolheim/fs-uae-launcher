@@ -1,10 +1,9 @@
 import fsui as fsui
-from ...I18N import gettext
-from .OptionUI import OptionUI
+from fs_uae_launcher.I18N import gettext
+from fs_uae_launcher.ui.settings.option_ui import OptionUI
 
 
 class OpenGLSettingsPage(fsui.Panel):
-
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()

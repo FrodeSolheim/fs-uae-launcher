@@ -1,8 +1,8 @@
 from fsui.qt import QComboBox
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class ComboBox(QComboBox, Widget):
+class ComboBox(QComboBox, WidgetMixin):
 
     def __init__(self, parent, items=[], read_only=False):
         QComboBox.__init__(self, parent.get_container())

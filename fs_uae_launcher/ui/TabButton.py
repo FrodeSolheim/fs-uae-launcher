@@ -39,11 +39,11 @@ class TabButton(fsui.Panel):
             self, dc, selected=selected, hover=self.hover,
             button_style=(self.type == self.TYPE_BUTTON))
         # TabPanel.draw_border(self, dc)
-
-        x = self.left_padding + (self.size[0] - self.left_padding -
+        size = self.size()
+        x = self.left_padding + (size[0] - self.left_padding -
                                  self.right_padding - self.icon.size[0]) // 2
         # subtracting two because of bottom border
-        y = (self.size[1] - 2 - self.icon.size[1]) // 2
+        y = (size[1] - 2 - self.icon.size[1]) // 2
         dc.draw_image(self.icon, x, y)
 
     def check_hover(self):
