@@ -1,3 +1,7 @@
+Version 2.7.7dev:
+
+* Added support for WHDLoad 18.2, set as default version.
+
 Version 2.7.6dev:
 
 * Most dialogs are non-modal again.
