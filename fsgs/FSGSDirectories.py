@@ -120,6 +120,10 @@ class FSGSDirectories(object):
             path = os.path.join(path, "Amiga Files")
             if os.path.exists(path):
                 paths.append(path)
+        path = cls.get_base_dir()
+        path = os.path.join(path, "AmigaForever", "Amiga Files")
+        if os.path.exists(path):
+            paths.append(path)
         return paths
 
     @classmethod
