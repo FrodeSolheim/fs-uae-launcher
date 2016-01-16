@@ -192,7 +192,7 @@ class VariantsBrowser(fsui.ItemChoice):
             item["personal_rating"], ignored = database.get_ratings_for_game(
                 item["uuid"])
 
-            sort_key = (1 - bool(item["have"]), 1000000 - item["like_rating"],
+            sort_key = (0, 1000000 - item["like_rating"],
                         1000000 - item["work_rating"], name)
             sortable_items.append(
                 (sort_key, i, item))
@@ -228,8 +228,18 @@ class VariantsBrowser(fsui.ItemChoice):
                     select_index = i
                     break
             else:
-                if len(self.items) > 0:
-                    select_index = 0
+                for i, item in enumerate(self.items):
+                    if item["have"] >= 3:
+                        select_index = i
+                        break
+                else:
+                    for i, item in enumerate(self.items):
+                        if item["have"] >= 1:
+                            select_index = i
+                            break
+                    else:
+                        if len(self.items) > 0:
+                            select_index = 0
 
         # self.clear()
         # for i, item in enumerate(self.items):

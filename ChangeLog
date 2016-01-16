@@ -1,6 +1,8 @@
 Version 2.7.7dev:
 
-* Automatically scan $BASE/AmigaForever/Amiga Files/shared/rom for Kickstarts.
+* Always sort variant list in rated order from oagd.net, but prefer
+  locally available variants.
+* Automatically scan $BASE/AmigaForever/Amiga Files/Shared/rom for Kickstarts.
 * Automatically add $BASE/AmigaForever/Amiga Files to file scanner.
 * Kickstart import: Show how many ROM files were imported (or warn if none).
 * Blacklist mouse_integration from advanced settings (use per-config instead).
