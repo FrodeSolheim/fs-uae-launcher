@@ -14,7 +14,7 @@ sys.modules["typing"] = fstd.typing
 
 
 def launcher_main(app):
-    version = "2.7.6dev"
+    version = "2.7.7dev"
 
     # if "--fs-uae-workspace=real" in sys.argv:
     #     try:
