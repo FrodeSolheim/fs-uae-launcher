@@ -1,7 +1,9 @@
 import traceback
 import queue
+
 from fsui.res import gettext
 from .qt import *
+from .helpers import QParent
 
 
 def get_screen_size():
@@ -72,13 +74,13 @@ def show_error(message, title=None, parent=None):
     # message_box.setIcon(QMessageBox.Critical)
     # message_box.setText(message)
     # message_box.exec_()
-    QMessageBox.critical(parent, title, message)
+    QMessageBox.critical(QParent(parent), title, message)
 
 
 def show_warning(message, title=None, parent=None):
     if not title:
         title = gettext("Warning")
-    QMessageBox.warning(parent, title, message)
+    QMessageBox.warning(QParent(parent), title, message)
 
 
 def error_function(title):

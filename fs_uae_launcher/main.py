@@ -12,22 +12,8 @@ if sys.version_info[0] < 3 or sys.version_info[1] < 2:
 import fstd.typing
 sys.modules["typing"] = fstd.typing
 
-if "--server" in sys.argv:
-    sys.argv.remove("--server")
-    app = "fs-uae-netplay-server"
-elif "--fs-uae-arcade" in sys.argv:
-    sys.argv.remove("--fs-uae-arcade")
-    app = "fs-uae-arcade"
-elif "--fs-game-center" in sys.argv:
-    sys.argv.remove("--fs-game-center")
-    app = "fs-game-center"
-elif sys.argv[0].endswith("fs-game-center"):
-    app = "fs-game-center"
-else:
-    app = "fs-uae-launcher"
 
-
-def main():
+def launcher_main(app):
     version = "2.7.6dev"
 
     # if "--fs-uae-workspace=real" in sys.argv:
@@ -71,11 +57,18 @@ def main():
 
         def http_server_thread():
             return http_server_main()
-        
+
         threading.Thread(target=http_server_thread).start()
 
         # from fsgs.ui.mainwindow import FSGSMainWindow
         # window = FSGSMainWindow()
+
+        if sys.platform.startswith("linux"):
+            # Must load OpenGL to work around crash with Qt Quick on
+            # nVidia / Linux (due to libgl.so from mesa being loaded).
+            import ctypes
+            ctypes.CDLL("libGL.so.1", ctypes.RTLD_GLOBAL)
+
         from fsgs.ui.qwindow import GameCenterView
         window = GameCenterView()
         from fsui.qt import Qt

@@ -31,11 +31,17 @@ class ImportTask(threading.Thread):
         self.log("")
         print("ImportTask.run")
         try:
-            self.run_task()
+            count = self.run_task()
         except Exception as e:
             self.log("")
             self.log(repr(e))
             traceback.print_exc()
+        else:
+            if count == 0:
+                self.log(gettext("Warning: No ROM files were found!"))
+            else:
+                self.log("")
+                self.log(gettext("{} ROM files were imported").format(count))
         self.done = True
         print("ImportTask.run is done")
         self.log("")
@@ -58,15 +64,15 @@ class ImportTask(threading.Thread):
 
     def run_task(self):
         if self.type == 0:
-            self.import_roms()
+            return self.import_roms()
         elif self.type == 1:
-            self.import_amiga_forever()
+            return self.import_amiga_forever()
 
     def import_roms(self):
-        self.copy_roms(self.path, FSGSDirectories.get_kickstarts_dir())
+        return self.copy_roms(self.path, FSGSDirectories.get_kickstarts_dir())
 
     def import_amiga_forever(self):
-        self.copy_roms(os.path.join(
+        return self.copy_roms(os.path.join(
             self.path, "Amiga Files", "Shared", "rom"),
             FSGSDirectories.get_kickstarts_dir())
 
@@ -89,9 +95,10 @@ class ImportTask(threading.Thread):
         shutil.copy(src, dst)
 
     def copy_roms(self, src, dst):
+        count = 0
         if not os.path.isdir(src):
             self.log("{0} is not a directory".format(src))
-            return
+            return count
         src_file = os.path.join(src, "rom.key")
         if os.path.exists(src_file):
             dst_file = os.path.join(dst, "rom.key")
@@ -107,3 +114,5 @@ class ImportTask(threading.Thread):
             database = FileDatabase.get_instance()
             ROMManager.add_rom_to_database(dst_file, database, self.log)
             database.commit()
+            count += 1
+        return count

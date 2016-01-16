@@ -238,6 +238,10 @@ class GameRunner(object):
     def start_emulator_from_plugin_resource(
             self, provide_name, args=None, env_vars=None):
         resource = self.fsgs.plugins.find_executable(provide_name)
+        if env_vars is None:
+            env_vars = os.environ.copy()
+        # Set LD_LIBRARY_PATH for Linux plugins with bundled libraries
+        env_vars["LD_LIBRARY_PATH"] = os.path.dirname(resource.path)
         return self.start_emulator("", args=args, env_vars=env_vars,
                                    executable=resource.path)
 

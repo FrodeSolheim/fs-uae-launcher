@@ -117,6 +117,8 @@ cfg = [
     ("screen5_sha1",          ""),
     ("front_sha1",            ""),
     ("title_sha1",            ""),
+
+    ("mouse_integration", "", "checksum", "sync"),
 ]
 
 for _i in range(Amiga.MAX_FLOPPY_DRIVES):

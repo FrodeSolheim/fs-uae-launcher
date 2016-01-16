@@ -266,7 +266,9 @@ class Window(QObject):
         self.real_window().setWindowIcon(icon.qicon())
 
     def position(self):
-        self._real_window.position()
+        # position = self._real_window.position()
+        # return position.x(), position.y()
+        return self._real_window.position()
 
     def set_position(self, position):
         self._real_window.set_position(position)
@@ -323,7 +325,9 @@ class Window(QObject):
         return self._real_window.minimize()
 
     def get_window_center(self):
-        return self.x() + self.width() // 2, self.y() + self.height() // 2
+        position = self.position()
+        size = self.size()
+        return position[0] + size[0] // 2, position[1] + size[1] // 2
 
     def center_on_parent(self):
         self.set_initial_size_from_layout()

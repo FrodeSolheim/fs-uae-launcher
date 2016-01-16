@@ -88,7 +88,7 @@ class Downloader(object):
             os.makedirs(os.path.dirname(path))
         cache_path = cls.get_cache_path(sha1)
         if os.path.exists(cache_path):
-            print("(in cache)")
+            print("[CACHE]", cache_path)
             shutil.copy(cache_path, path)
             # so we later can delete least accessed files in cache...
             os.utime(cache_path, None)
@@ -105,7 +105,7 @@ class Downloader(object):
                 h.update(data)
                 ofile.write(data)
         if h.hexdigest() != sha1:
-            print("error: downloaded sha1 is", sha1)
+            print("error: downloaded sha1 is", h.hexdigest(), "- wanted", sha1)
             raise Exception("sha1 of downloaded file does not match")
         temp_cache_path = cache_path + ".partial." + str(uuid4())
         shutil.copy(temp_path, temp_cache_path)

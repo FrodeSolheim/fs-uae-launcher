@@ -93,9 +93,9 @@ class LoginWindow(fsui.Window):
         self.login_button.activated.connect(self.on_login_activated)
         hori_layout.add(self.login_button)
 
-        self.close_button = fsui.Button(self, gettext("Close"))
-        self.close_button.activated.connect(self.on_close_activated)
-        hori_layout.add(self.close_button, margin_left=10)
+        # self.close_button = fsui.Button(self, gettext("Close"))
+        # self.close_button.activated.connect(self.on_close_activated)
+        # hori_layout.add(self.close_button, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()

@@ -345,13 +345,14 @@ class RefreshRateTool(object):
             line = line.strip()
             line = line.replace("+", "")
             # collapse multiple spaces
-            line = re.sub(' +', ' ', line)
+            line = re.sub(' +', ' ', line).strip()
             parts = line.split(' ')
             resolution = parts[0]
             rates = parts[1:]
             width, height = resolution.split('x')
             width = int(width)
             height = int(height)
+            print(rates)
             for rate in rates:
                 if rate[-1] == '*':
                     refresh = float(rate[:-1])

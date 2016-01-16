@@ -24,3 +24,4 @@ class DOSLoader(SimpleLoader):
 
     def load_extra(self, values):
         self.config["hd_startup"] = values["hd_startup"]
+        self.config["dosbox_cpu_cycles"] = values["dosbox_cpu_cycles"]

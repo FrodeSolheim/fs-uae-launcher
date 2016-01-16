@@ -1,5 +1,8 @@
 Version 2.7.7dev:
 
+* Automatically scan $BASE/AmigaForever/Amiga Files/shared/rom.
+* Kickstart import: Show how many ROM files were imported (or warn if none).
+* Blacklist mouse_integration from advanced settings (use per-config instead).
 * Added support for WHDLoad 18.2, set as default version.
 
 Version 2.7.6dev:

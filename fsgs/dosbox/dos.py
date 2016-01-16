@@ -48,7 +48,7 @@ class DOSRunner(GameRunner):
         self.unpack_game_hard_drives(file_list)
 
     def unpack_game_hard_drives(self, file_list):
-        # dir_path = os.path.join(self.temp_dir, dir_name)
+
         drives_added = set()
         dir_path = self.drives_dir.path
         for file_entry in file_list:
@@ -57,7 +57,7 @@ class DOSRunner(GameRunner):
             name = file_entry["name"].upper()
             drives_added.add(name[0])
 
-            # extract relative path and convert each path component
+            # Extract relative path and convert each path component
             # to host file name (where needed).
 
             rel_path = name
@@ -106,9 +106,9 @@ class DOSRunner(GameRunner):
         f.write("frameskip=0\n")
         if self.use_stretching():
             # This option does not stretch, it merely does not correct
-            # aspect for non-square pixels resolutions, e.g. 320x200
+            # aspect for non-square pixels resolutions, e.g. 320x200.
             f.write("aspect=false\n")
-            # This custom environment variable however, does cause stretching
+            # This custom environment variable however, does cause stretching.
             self.set_env("FSGS_STRETCH", "1")
         else:
             f.write("aspect=true\n")
@@ -118,6 +118,10 @@ class DOSRunner(GameRunner):
         cpu_core = "auto"
         f.write("core={0}\n".format(cpu_core))
         cpu_cycles = "auto"
+        if self.config["dosbox_cpu_cycles"]:
+            cpu_cycles = self.config["dosbox_cpu_cycles"]
+            if cpu_cycles not in ["auto", "max"]:
+                cpu_cycles = "fixed " + cpu_cycles
         f.write("cycles={0}\n".format(cpu_cycles))
 
         f.write("\n[autoexec]\n")
@@ -136,13 +140,15 @@ class DOSRunner(GameRunner):
         f.write("CLS\n")
         # for i in range(25):
         #     f.write("echo.\n")
-        for command in self.config["hd_startup"].split(";"):
-            command = command.strip()
-            f.write("{0}\n".format(command))
-        f.write("exit\n")
+        if not os.environ.get("FSGS_AUTOEXEC", "") == "0":
+            for command in self.config["hd_startup"].split(";"):
+                command = command.strip()
+                f.write("{0}\n".format(command))
+        if not os.environ.get("FSGS_AUTOEXIT", "") == "0":
+            f.write("exit\n")
 
         if windows:
-            # we don't want to open the separate console window on windows
+            # We don't want to open the separate console window on windows.
             self.add_arg("-noconsole")
 
     def run(self):
