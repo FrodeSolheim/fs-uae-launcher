@@ -1,5 +1,5 @@
 import time
-from fsbc.Application import app
+from fsbc.application import app
 from fsbc.signal import Signal
 from fsbc.task import Task
 from fsgs.Database import Database
@@ -27,9 +27,9 @@ class DatabaseRefreshTask(Task):
         # FIXME, dependency on fs_uae_launcher
         # from fs_uae_launcher.Scanner import Scanner
         # Scanner.start([], scan_for_files=False, update_game_database=True)
-        from fs_uae_launcher.GameRatingSynchronizer \
+        from launcher.game_rating_synchronizer \
             import GameRatingSynchronizer
-        from fs_uae_launcher.GameScanner import GameScanner
+        from launcher.game_scanner import GameScanner
 
         context = SynchronizerContext()
 

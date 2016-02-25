@@ -7,12 +7,12 @@ import tempfile
 import subprocess
 
 dirs = [
-    "fs_uae_launcher",
-    "fs_uae_workspace",
+    "arcade",
     "fsui",
     "fsbc",
     "fsgs",
-    "game_center",
+    "launcher",
+    "workspace",
 ]
 files = []
 extensions = [".py"]

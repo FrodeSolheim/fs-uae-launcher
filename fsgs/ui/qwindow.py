@@ -5,7 +5,7 @@ from PyQt5.QtQuick import QQuickView
 # to make sure cxFreeze includes it
 import PyQt5.QtNetwork
 import PyQt5.QtQml
-from fsbc.Application import app
+from fsbc.application import app
 
 
 class GameCenterView(QQuickView):

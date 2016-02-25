@@ -1,13 +1,15 @@
+import traceback
 import weakref
-from fsui import default_window_center, default_window_parent
+
+from fsbc.system import macosx
+# from fsui import default_window_center, default_window_parent
 from fsui.qt import QMainWindow, QObject, QSignal, QWidget, Qt, QDesktopWidget
 from fsui.qt import QPainter, QPoint, QRect
-from fsui.qt.Color import Color
 from fsui.qt.Image import Image
-
-
+from fsui.qt.qt import init_qt
 # noinspection PyProtectedMember
 from fsui.qt.helpers import QParent
+import fsboot
 
 windows = set()
 _use_fws = False
@@ -32,13 +34,16 @@ class Margins:
 class RealWindow(QMainWindow):
 
     def __init__(self, parent, child, minimizable=True, maximizable=True,
-                 border=True):
+                 border=True, below=False):
         super().__init__(parent)
         self.margins = Margins()
 
         flags = Qt.Window
+        if macosx:
+            flags &= ~Qt.WindowFullscreenButtonHint
+
         if border:
-            flags | Qt.CustomizeWindowHint
+            flags |= Qt.CustomizeWindowHint
             flags |= Qt.WindowCloseButtonHint
             flags |= Qt.WindowTitleHint
             if minimizable:
@@ -48,38 +53,49 @@ class RealWindow(QMainWindow):
         else:
             flags |= Qt.FramelessWindowHint
             flags |= Qt.NoDropShadowWindowHint
+            if below:
+                flags |= Qt.WindowStaysOnBottomHint
         self.setWindowFlags(flags)
+        # self.setAttribute(Qt.WA_DeleteOnClose, True)
 
-        self._child = weakref.ref(child)
-        self.already_closed = False
+        # self._child = weakref.ref(child)
+        self._child = child
+        self.__already_closed = False
+        self._size_set = False
 
+        # self.destroyed.connect(self.__on_destroyed)
+
+    @property
     def child(self):
-        return self._child()
+        # return self._child()
+        return self._child
 
-    def resizeEvent(self, event):
-        child = self.child()
-        size = event.size()
+    def resize_to(self, size):
+        print("RealWindow.resize_to", size[0], size[1])
         x = self.margins.left
         y = self.margins.top
-        width = size.width() - self.margins.left - self.margins.right
-        height = size.height() - self.margins.top - self.margins.bottom
-        assert isinstance(child._real_widget, QWidget)
-        if child.title_panel is not None:
-            title_height = child.title_panel.height()
-            # child.title_panel.setGeometry(x, y, width, title_height)
-            child.title_panel.set_position_and_size(
-                (x, y), (width, title_height))
-            y += title_height
-            height -= title_height
-        child._real_widget.setGeometry(x, y, width, height)
+        width = size[0] - self.margins.left - self.margins.right
+        height = size[1] - self.margins.top - self.margins.bottom
+        assert isinstance(self.child._real_widget, QWidget)
+        if self.child.title_panel is not None:
+            if self.child.title_panel_visible:
+                title_height = self.child.title_panel.height()
+                self.child.title_panel.set_position_and_size(
+                    (x, y), (width, title_height))
+                y += title_height
+                height -= title_height
+        self.child._real_widget.setGeometry(x, y, width, height)
 
     def set_size(self, size):
+        self._size_set = True
+        print("RealWindow.set_size", size)
         width = size[0] + self.margins.left + self.margins.right
         height = size[1] + self.margins.top + self.margins.bottom
-        child = self.child()
-        if child.title_panel is not None:
-            title_height = child.title_panel.height()
-            height += title_height
+        if self.child.title_panel is not None:
+            if self.child.title_panel_visible:
+                title_height = self.child.title_panel.height()
+                height += title_height
+        print("RealWindow.set_size final size", (width, height))
         self.resize(width, height)
 
     def position(self):
@@ -93,37 +109,102 @@ class RealWindow(QMainWindow):
 
     def height(self):
         height = super().height() - self.margins.top - self.margins.bottom
-        if self.child().title_panel is not None:
-            height -= 40
+        if self.child.title_panel is not None:
+            if self.child.title_panel_visible:
+                height -= 40
         return height
 
     def closeEvent(self, event):
-        # print(str(self) + ".closeEvent")
+        print(str(self) + ".closeEvent")
         event.accept()
-        self._on_close()
+        self.__on_closed()
 
-    def _on_close(self):
-        child = self.child()
-        print("WindowMixin.cleanup_on_close_event")
-        if self.already_closed:
-            print("Looks like a duplicate event, ignoring this one")
-            return
-        print("closed.emit")
-        child.closed.emit()
-        child.on_close()
-        self.already_closed = True
+    def showEvent(self, event):
+        event.accept()
+        self.child.shown.emit()
+
+    def resizeEvent(self, event):
+        # event.accept()
+        size = event.size()
+        print("RealWindow.resizeEvent", size.width(), size.height())
+        print(size, "vs", self.size())
+        # According to docs, event.size() should be same as 
+        # QWidget.size(), but this isn't always the case :-/.
+        size = self.size()
+        self.resize_to((size.width(), size.height()))
+
+    # def changeEvent(self, event):
+    #     print(event.type(), QEvent.WindowStateChange)
+    #     if event.type() == QEvent.WindowStateChange:
+    #         size = self.size()
+    #         print("RealWindow.changeEvent(WindowStateChange)")
+    #         self.resize_to((size.width(), size.height()))
+
+    # def __on_destroyed(self, _):
+    #     print("__on_destroyed")
+    #     self.child.destroyed.emit()
+
+    def __on_closed(self):
+        try:
+            print("RealWindow.__on_closed")
+            if self.__already_closed:
+                print("Looks like a duplicate event, ignoring this one")
+                return
+            print("closed.emit")
+            self.child.closed.emit()
+            self.child.on_close()
+            self.__already_closed = True
+        except Exception:
+            traceback.print_exc()
 
     def is_maximized(self):
         return self.windowState() == Qt.WindowMaximized
 
+    def is_fullscreen(self):
+        return self.windowState() == Qt.WindowFullScreen
+
     def restore_margins(self):
         self.margins.set(0)
 
-    def set_maximized(self, maximize=True):
+    def set_maximized(self, maximize=True, geometry=None):
         print("set_maximized", maximize)
         if maximize:
             self.margins.set(0)
+            # if geometry is not None:
+            #     print("set_maximized geometry", geometry)
+            #     self.setGeometry(*geometry)
+            # else:
+            #     if not self._size_set:
+            #         self._size_set = True
+            #         print("resizing to 1, 1")
+            #         self.resize(1, 1)
+            # self.resize(1, 1)
+            # self.resize(1920, 1080)
             self.showMaximized()
+            print("size after showMaximized",
+                  (self.size().width(), self.size().height()))
+        else:
+            self.restore_margins()
+            self.setWindowState(Qt.WindowNoState)
+
+    def set_fullscreen(self, fullscreen=True, geometry=None):
+        print("set_fullscreen", fullscreen)
+        if fullscreen:
+            self.margins.set(0)
+            # Workaround, without setting size to something initially,
+            # showFullScreen sometimes fails to update size on Linux, causing
+            # only a small part of the screen to be filled.
+            if geometry is not None:
+                print("set_fullscreen geometry", geometry)
+                self.setGeometry(*geometry)
+            else:
+                if not self._size_set:
+                    self._size_set = True
+                    print("resizing to 1, 1")
+                    self.resize(1, 1)
+            self.showFullScreen()
+            print("size after showFullScreen",
+                  (self.size().width(), self.size().height()))
         else:
             self.restore_margins()
             self.setWindowState(Qt.WindowNoState)
@@ -148,10 +229,11 @@ class RealWidget(QWidget):
         self.owner().on_resize()
 
     def showEvent(self, _):
-        if not self._centered_on_initial_show:
-            if self.parent():
-                self.owner().center_on_parent()
-            self._centered_on_initial_show = True
+        if self.owner().center_on_show:
+            if not self._centered_on_initial_show:
+                if self.parent():
+                    self.owner().center_on_parent()
+                self._centered_on_initial_show = True
 
         self.owner().set_initial_size_from_layout()
         self.owner().on_resize()
@@ -160,28 +242,35 @@ class RealWidget(QWidget):
 # noinspection PyPep8Naming
 class Window(QObject):
 
+    shown = QSignal()
     closed = QSignal()
 
     def __init__(self, parent, title="", border=True, minimizable=True,
                  maximizable=True, separator=True, menu=False,
-                 native=None, **kwargs):
+                 native=None, header=True, below=False, closable=True,
+                 color=None, **_):
+        init_qt()
         super().__init__()
 
-        if parent is None and len(default_window_parent) > 0:
-            parent = default_window_parent[-1]
-            print("using default parent", parent)
+        # if parent is None and len(default_window_parent) > 0:
+        #     parent = default_window_parent[-1]
+        #     print("using default parent", parent)
 
         # FIXME
         self._window = weakref.ref(self)
 
         if native is None:
-            native = not _use_fws
+            if fsboot.get("fws") == "1":
+                native = False
+            else:
+                native = not _use_fws
         if native:
             self._real_window = RealWindow(
                 QParent(parent, True), self, minimizable=minimizable,
-                maximizable=maximizable)
+                maximizable=maximizable, below=below, border=border)
         else:
-            self._real_window = FwsWindow(QParent(parent, True), self)
+            self._real_window = FwsWindow(
+                    QParent(parent, True), self, below=below)
 
         self._real_widget = RealWidget(self._real_window, self)
 
@@ -198,12 +287,14 @@ class Window(QObject):
         # _windows.add(self)
         self.destroyed.connect(self.__destroyed)
 
-        # self.setAttribute(Qt.WA_DeleteOnClose, True)
+        self._real_window.setAttribute(Qt.WA_DeleteOnClose, True)
+
         # if not border:
         #     self.setWindowFlags(Qt.FramelessWindowHint |
         #                         Qt.NoDropShadowWindowHint)
         #     # self.setWindowFlags(Qt.FramelessWindowHint)
 
+        self.center_on_show = True
         self._centered_on_initial_show = False
         if hasattr(self, "accepted"):
             self.accepted.connect(self.__accepted)
@@ -215,19 +306,34 @@ class Window(QObject):
         windows.add(self)
         self.closed.connect(self.__closed)
 
+        self.title_panel = None
+        self.title_panel_visible = False
         if not native:
             self.real_window()._window = weakref.ref(self)
-            from fws.gui.window import WindowHeader
-            self.title_panel = WindowHeader(
-                self.real_window(), menu=menu, minimizable=minimizable,
-                maximizable=maximizable, separator=separator)
-            self.set_background_color(Color(0xf2, 0xf2, 0xf2))
-        else:
-            self.title_panel = None
+            from workspace.ui.theme import Theme
+            from workspace.ui.window import WindowHeader
+            if header:
+                self.title_panel = WindowHeader(
+                    self.real_window(), menu=menu, minimizable=minimizable,
+                    maximizable=maximizable, separator=separator,
+                    closable=closable, background=color)
+            self.title_panel_visible = True
+            self.set_background_color(Theme.instance().window_background)
 
     def __closed(self):
         print("Removing window reference", self)
         windows.remove(self)
+
+    @property
+    def visible(self):
+        return self._real_window.isVisible()
+
+    @visible.setter
+    def visible(self, visible):
+        self._real_window.setVisible(visible)
+
+    def alert(self, msecs=0):
+        init_qt().alert(self._real_window, msecs)
 
     def close(self):
         self._real_window.close()
@@ -290,7 +396,12 @@ class Window(QObject):
         # self.SetClientSize(size)
         # print("FIXME:\n\nDialog.set_size")
         # self.resize(size[0], size[1])
-        print("set size", size[0], size[1])
+        # import traceback
+        # traceback.print_stack()
+        if size[0] == 0 or size[1] == 0:
+            print("Window.set_size ignoring size", size)
+            return
+        print("Window.set_size", size)
         self._real_window.set_size(size)
         self._real_widget.resize(size[0], size[1])
 
@@ -299,7 +410,9 @@ class Window(QObject):
             self.set_size_from_layout()
 
     def set_size_from_layout(self):
-        self.set_size(self.layout.get_min_size())
+        size = self.layout.get_min_size()
+        print("set_size_from_layout, size =", size)
+        self.set_size(size)
 
     def title(self):
         return self._real_window.windowTitle()
@@ -307,7 +420,15 @@ class Window(QObject):
     def set_title(self, title):
         self._real_window.setWindowTitle(title)
 
-    def show(self, maximized=False):
+    def show(self, maximized=False, center=False, offset=False):
+        if center:
+            print("CENTER")
+            self.center_on_parent()
+            # self._centered_on_initial_show = True
+        elif offset:
+            self.offset_from_parent((20, 20))
+            # self._centered_on_initial_show = True
+            self.center_on_show = False
         if maximized:
             self._real_window.showMaximized()
         else:
@@ -317,8 +438,23 @@ class Window(QObject):
         # return self._real_window.windowState() == Qt.WindowMaximized
         return self._real_window.is_maximized()
 
-    def set_maximized(self, maximize=True):
-        self._real_window.set_maximized(maximize)
+    def is_fullscreen(self):
+        return self._real_window.is_fullscreen()
+
+    def set_fullscreen(self, fullscreen=True, geometry=None):
+        # We must set the size before maximizing, so this isn't done within
+        # showMaximized -> ... -> set_initial_size_from_layout -> set_size.
+        self.set_initial_size_from_layout()
+        if self.title_panel is not None:
+            self.title_panel.set_visible(not fullscreen)
+            self.title_panel_visible = not fullscreen
+        self._real_window.set_fullscreen(fullscreen, geometry)
+
+    def set_maximized(self, maximize=True, geometry=None):
+        # We must set the size before maximizing, so this isn't done within
+        # showMaximized -> ... -> set_initial_size_from_layout -> set_size.
+        self.set_initial_size_from_layout()
+        self._real_window.set_maximized(maximize, geometry)
 
     def minimize(self):
         # self.setWindowState(Qt.WindowMinimized)
@@ -330,9 +466,12 @@ class Window(QObject):
         return position[0] + size[0] // 2, position[1] + size[1] // 2
 
     def center_on_parent(self):
+        # import traceback
+        # traceback.print_stack()
         self.set_initial_size_from_layout()
         real_parent = self.real_window().parent()
-        print("center_on_parent real_parent = ", real_parent, default_window_center)
+        # print("center_on_parent real_parent = ",
+        #       real_parent, default_window_center)
         if real_parent:
             pp = real_parent.x(), real_parent.y()
             ps = real_parent.width(), real_parent.height()
@@ -340,10 +479,19 @@ class Window(QObject):
             print(pp, ps, ss)
             self.set_position((pp[0] + (ps[0] - ss[0]) // 2,
                                pp[1] + (ps[1] - ss[1]) // 2))
-        elif len(default_window_center) > 0:
-            x, y = default_window_center[-1]
-            ss = self.size()
-            self.set_position((x - ss[0] // 2, y - ss[1] // 2))
+        # elif len(default_window_center) > 0:
+        #     x, y = default_window_center[-1]
+        #     ss = self.size()
+        #     self.set_position((x - ss[0] // 2, y - ss[1] // 2))
+
+    def offset_from_parent(self, offset):
+        self.set_initial_size_from_layout()
+        real_parent = self.real_window().parent()
+        # print("offset_from_parent real_parent = ",
+        #       real_parent, default_window_center)
+        if real_parent:
+            pp = real_parent.x(), real_parent.y()
+            self.set_position((pp[0] + offset[0], pp[1] + offset[1]))
 
     def center_on_screen(self):
         frame_rect = self._real_window.frameGeometry()
@@ -367,11 +515,11 @@ class Window(QObject):
 
     def __rejected(self):
         print(str(self) + ".__rejected")
-        self.__on_close()
+        self.__on_closed()
 
     def __accepted(self):
         print(str(self) + ".__accepted")
-        self.__on_close()
+        self.__on_closed()
 
     def on_resize(self):
         if self.layout:
@@ -418,20 +566,20 @@ class Window(QObject):
 class WindowImages:
 
     def __init__(self):
-        self.nw = Image("pkg://fws.gui/data/window-shadow-nw.png")
-        self.n = Image("pkg://fws.gui/data/window-shadow-n.png")
-        self.ne = Image("pkg://fws.gui/data/window-shadow-ne.png")
-        self.e = Image("pkg://fws.gui/data/window-shadow-e.png")
-        self.se = Image("pkg://fws.gui/data/window-shadow-se.png")
-        self.s = Image("pkg://fws.gui/data/window-shadow-s.png")
-        self.sw = Image("pkg://fws.gui/data/window-shadow-sw.png")
-        self.w = Image("pkg://fws.gui/data/window-shadow-w.png")
+        self.nw = Image("pkg://workspace.ui/data/window-shadow-nw.png")
+        self.n = Image("pkg://workspace.ui/data/window-shadow-n.png")
+        self.ne = Image("pkg://workspace.ui/data/window-shadow-ne.png")
+        self.e = Image("pkg://workspace.ui/data/window-shadow-e.png")
+        self.se = Image("pkg://workspace.ui/data/window-shadow-se.png")
+        self.s = Image("pkg://workspace.ui/data/window-shadow-s.png")
+        self.sw = Image("pkg://workspace.ui/data/window-shadow-sw.png")
+        self.w = Image("pkg://workspace.ui/data/window-shadow-w.png")
 
 
 class FwsWindow(RealWindow):
 
-    def __init__(self, parent, child):
-        super().__init__(parent, child, border=False)
+    def __init__(self, parent, child, below=False):
+        super().__init__(parent, child, border=False, below=below)
         self.restore_margins()
         # self.child = child
 
@@ -447,7 +595,7 @@ class FwsWindow(RealWindow):
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
 
     def restore_margins(self):
-        self.margins.set(20)
+        self.margins.set(10)
 
     def paintEvent(self, event):
         # noinspection PyNoneFunctionAssignment
@@ -456,14 +604,14 @@ class FwsWindow(RealWindow):
         w = size.width()
         h = size.height()
         painter = QPainter(self)
-        painter.drawImage(QPoint(0, 0), images.nw.qimage)
-        painter.drawImage(QRect(40, 0, w - 80, 20), images.n.qimage)
-        painter.drawImage(QPoint(w - 40, 0), images.ne.qimage)
-        painter.drawImage(QRect(w - 20, 40, 20, h - 80), images.e.qimage)
-        painter.drawImage(QPoint(w - 40, h - 40), images.se.qimage)
-        painter.drawImage(QRect(40, h - 20, w - 80, 20), images.s.qimage)
-        painter.drawImage(QPoint(0, h - 40), images.sw.qimage)
-        painter.drawImage(QRect(0, 40, 20, h - 80), images.w.qimage)
+        painter.drawImage(QPoint(-10, -10), images.nw.qimage)
+        painter.drawImage(QRect(30, -10, w - 60, -10), images.n.qimage)
+        painter.drawImage(QPoint(w - 30, -10), images.ne.qimage)
+        painter.drawImage(QRect(w - 10, 30, -10, h - 60), images.e.qimage)
+        painter.drawImage(QPoint(w - 30, h - 30), images.se.qimage)
+        painter.drawImage(QRect(30, h - 10, w - 60, -10), images.s.qimage)
+        painter.drawImage(QPoint(-10, h - 30), images.sw.qimage)
+        painter.drawImage(QRect(-10, 30, -10, h - 60), images.w.qimage)
 
     def maximize(self, maximized):
         # FIXME: Better to this via event or something
@@ -485,8 +633,9 @@ class FwsWindow(RealWindow):
     def set_default(cls):
         global _use_fws
         try:
-            import fws
+            import workspace
         except ImportError:
-            pass
+            fws = None
         else:
             _use_fws = True
+        del fws

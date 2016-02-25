@@ -15,3 +15,7 @@ class IntervalTimer(fsui.qt.QObject):
     # noinspection PyPep8Naming
     def timerEvent(self, _):
         self.activated.emit()
+
+    def stop(self):
+        print("[TIMER] Stop")
+        self.activated.disconnect()

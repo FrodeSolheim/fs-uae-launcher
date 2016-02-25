@@ -1,10 +1,9 @@
 import os
 import re
-from fsbc.Application import app
+from fsbc.application import app
 from fsgs.BaseDatabase import BaseDatabase
 from fsgs.FSGSDirectories import FSGSDirectories
 import threading
-
 
 thread_local = threading.local()
 VERSION = 30
@@ -21,8 +20,7 @@ class Database(BaseDatabase):
 
     @classmethod
     def get_path(cls):
-        path = os.path.join(FSGSDirectories.get_data_dir(), "Database.sqlite")
-        return path
+        return os.path.join(FSGSDirectories.databases_dir(), "Launcher.sqlite")
 
     def __init__(self, sentinel):
         BaseDatabase.__init__(self, sentinel)
@@ -511,6 +509,11 @@ class Database(BaseDatabase):
             elif term == "have:false":
                 have_false = True
                 continue
+
+            if term.startswith("s:"):
+                from fsgs.platform import normalize_platform_id
+                term = "s:" + normalize_platform_id(term[2:])
+
             if term:
                 # searching for quoted terms with space won't generally work
                 # if " " in term:

@@ -8,6 +8,7 @@ Note:
 """
 REGISTRY_NAME = 'lists'
 import ctypes, _ctypes
+# Note: these are the same definitions as for GLES, so we are not cross-polluting
 from OpenGL.raw.GL import _types 
 from OpenGL.arrays import _arrayconstants as GL_1_1
 from OpenGL import constant, error
@@ -26,7 +27,7 @@ def err_on_copy( func ):
             raise error.CopyError(
                 """%s passed, cannot copy with ERROR_ON_COPY set, please use an array type which has native data-pointer support (e.g. numpy or ctypes arrays)"""%( value.__class__.__name__, )
             )
-        raiseErrorOnCopy.__name__ = func.__name__
+        raiseErrorOnCopy.__name__ = getattr(func,'__name__','raiseErrorOnCopy')
         return raiseErrorOnCopy
 
 class ListHandler( formathandler.FormatHandler ):

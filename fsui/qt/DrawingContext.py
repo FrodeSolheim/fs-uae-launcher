@@ -67,8 +67,8 @@ class DrawingContext(object):
     def measure_text(self, text):
         # return self.dc.GetTextExtent(text)
         # return (10, 10)
-        rect = self.qpainter.boundingRect(0, 0, 10000, 1000,
-                Qt.AlignLeft | Qt.AlignTop, text)
+        rect = self.qpainter.boundingRect(
+            0, 0, 10000, 1000, Qt.AlignLeft | Qt.AlignTop, text)
         return rect.width(), rect.height()
 
     # def set_color(self, color):

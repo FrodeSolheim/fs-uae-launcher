@@ -6,12 +6,12 @@ from fsgs.context import fsgs
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.platform import PlatformHandler
 from fsgs.Database import Database
-import fsbc.Application
+import fsbc.application
 from fsgs.application import ApplicationMixin
 from fsgs.util.gamenameutil import GameNameUtil
 
 
-class Application(ApplicationMixin, fsbc.Application.Application):
+class Application(ApplicationMixin, fsbc.application.Application):
     pass
 
 
@@ -74,7 +74,7 @@ def main():
         assert game_uuid
         variant_uuid = find_preferred_variant(game_uuid)
         load_game_variant(variant_uuid)
-    run_game()
+    fsgs.run_game()
 
 
 def find_preferred_variant(game_uuid):
@@ -83,21 +83,6 @@ def find_preferred_variant(game_uuid):
 
 def load_game_variant(variant_uuid):
     return fsgs.load_game_variant(variant_uuid)
-
-
-def run_game():
-    platform_handler = PlatformHandler.create(fsgs.game.platform.id)
-    runner = platform_handler.get_runner(fsgs)
-
-    device_helper = EnumerateHelper()
-    device_helper.default_port_selection(runner.ports)
-
-    runner.prepare()
-
-    process = runner.run()
-    process.wait()
-
-    runner.finish()
 
 
 def load_file(path):

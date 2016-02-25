@@ -14,35 +14,12 @@ class MednafenRunner(GameRunner):
 
     def __init__(self, fsgs):
         super().__init__(fsgs)
+        self.emulator = "mednafen-fs"
 
     def prepare(self):
         # self.temp_home = self.create_temp_dir("mednafen-home")
         with open(self.mednafen_cfg_path(), "w", encoding="UTF-8") as f:
             self.mednafen_configure(f)
-
-    def run(self):
-        # self.env["HOME"] = self.temp_home.path
-
-        # executable = None
-        # if windows:
-        #     found_executable = self.find_emulator_executable(
-        #         "fs-mednafen/mednafen")
-        #     if not found_executable:
-        #         raise Exception("could not find mednafen.exe")
-        #     dir_path = os.path.dirname(found_executable)
-        #     for name in os.listdir(dir_path):
-        #         src = os.path.join(dir_path, name)
-        #         dst = os.path.join(self.temp_home.path, name)
-        #         shutil.copyfile(src, dst)
-        #     executable = os.path.join(
-        #         self.temp_home.path, "mednafen.exe")
-        #
-        # return self.start_emulator(
-        #     "fs-mednafen/mednafen", args=self.args, env_vars=self.env,
-        #     executable=executable)
-
-        return self.start_emulator_from_plugin_resource(
-            "fs-mednafen", args=self.args, env_vars=self.env)
 
     def finish(self):
         pass
@@ -86,15 +63,13 @@ class MednafenRunner(GameRunner):
         return None, None
 
     def mednafen_configure(self, f):
-        self.args = []
-        self.env = {}
         pfx = self.mednafen_system_prefix()
 
         screen_w, screen_h = self.screen_size()
 
         dest_w, dest_h = screen_w, screen_h
         # a_ratio = self.force_aspect_ratio()
-        a_ratio = None
+        a_ratio = 0
         # game_w, game_h = self.mednafen_video_size()
         src, dst = self.mednafen_viewport()
         if src is None:
@@ -183,16 +158,18 @@ class MednafenRunner(GameRunner):
         # self.args.extend(["-%s.special" % pfx,
         # self.mednafen_special_filter()])
 
-        if self.configure_vsync():
+        if self.configure_vsync() and False:
             self.args.extend(["-glvsync", "1"])
         else:
             self.args.extend(["-glvsync", "0"])
 
         if self.config.get("audio_driver", "") in ["sdl", "pulseaudio"]:
-            # Mednafen does not support pulseaudio directly, but using the
-            # sdl driver will "often" result in pulseaudio being used
-            # indirectly
+            # Mednafen does not support PulseAudio directly, but using the
+            # sdl driver will "often" result in PulseAudio being used
+            # indirectly.
             self.args.extend(["-sound.driver", "sdl"])
+
+        self.args.extend(["-video.driver", "opengl"])
 
         print("\n" + "-" * 79 + "\n" + "CONFIGURE PORTS")
 
@@ -238,14 +215,14 @@ class MednafenRunner(GameRunner):
         return []
 
     def mednafen_post_configure(self):
-        # can be overriden by subclasses
+        # can be overridden by subclasses
         pass
 
     # def mednafen_refresh_rate(self):
     #     return 0.0
     #
     # def get_game_refresh_rate(self):
-    #     # can be overriden by subclasses
+    #     # can be overridden by subclasses
     #     return self.mednafen_refresh_rate()
 
     def mednafen_cfg_path(self):
@@ -354,10 +331,7 @@ class MednafenInputMapper(InputMapper):
         return "keyboard {0}".format(key.sdl_code)
 
     @memoize
-    def get_unique_id(self, device, device_id):
-        # unique_id = self._get_unique_id(device)
-        # print("joystick unique id:", unique_id)
-        # return unique_id
+    def get_unique_id(self, device, _):
         return self.id_map[device.id]
 
     @memoize
@@ -370,6 +344,7 @@ class MednafenInputMapper(InputMapper):
 
         m = hashlib.md5()
         print(device.axes, device.balls, device.hats, device.buttons)
+        # noinspection SpellCheckingInspection
         buffer = struct.pack("iiii", device.axes, device.balls,
                              device.hats, device.buttons)
 

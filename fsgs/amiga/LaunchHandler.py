@@ -7,9 +7,9 @@ import tempfile
 import unittest
 import traceback
 import zlib
-from fsbc.Paths import Paths
+from fsbc.paths import Paths
 from fsbc.task import current_task, TaskFailure
-from fsbc.Resources import Resources
+from fsbc.resources import Resources
 from fsgs.Archive import Archive
 from fsgs.Downloader import Downloader
 from fsgs.GameChangeHandler import GameChangeHandler
@@ -279,28 +279,6 @@ class LaunchHandler(object):
             key = "floppy_image_{0}".format(save_image)
             self.config[key] = "Save Disk.adf"
 
-    def prepare_cdrom(key):
-        src = self.config.get(key, "").strip()
-        if not src:
-            return
-
-        src, archive = self.expand_default_path(
-            src, self.fsgs.amiga.get_floppies_dir())
-        dst_name = os.path.basename(src)
-        current_task.set_progress(dst_name)
-
-        if self.config["writable_floppy_images"] == "1" and \
-                os.path.isfile(src):
-            # the config value directly refers to a local file, and the config
-            # value already refers to the file, but since we may have
-            # changed floppy_dir and the path may be relative, we set the
-            # resolved path directly
-            self.config[key] = src
-        else:
-            dst = os.path.join(self.temp_dir, dst_name)
-            self.fsgs.file.copy_game_file(src, dst)
-            self.config[key] = os.path.basename(dst)
-
     def prepare_cdroms(self):
         print("LaunchHandler.prepare_cdroms")
         if not self.config.get("cdrom_drive_count", ""):
@@ -443,8 +421,18 @@ class LaunchHandler(object):
         self.config["hard_drive_{0}".format(i)] = dir_path
 
     def get_file_list_for_game_uuid(self, game_uuid):
-        game_database = self.fsgs.get_game_database()
-        values = game_database.get_game_values_for_uuid(game_uuid)
+        # FIXME: This is an ugly hack, we should already be told what
+        # database to use.
+        try:
+            game_database = self.fsgs.get_game_database()
+            values = game_database.get_game_values_for_uuid(game_uuid)
+        except LookupError:
+            try:
+                game_database = self.fsgs.game_database("CD32")
+                values = game_database.get_game_values_for_uuid(game_uuid)
+            except LookupError:
+                game_database = self.fsgs.game_database("CDTV")
+                values = game_database.get_game_values_for_uuid(game_uuid)
         file_list = json.loads(values["file_list"])
         return file_list
 
@@ -917,7 +905,7 @@ class LaunchHandler(object):
         print("LaunchHandler.run")
         # self.on_progress(gettext("Starting FS-UAE..."))
         # current_task.set_progress(gettext("Starting FS-UAE..."))
-        current_task.set_progress("")
+        current_task.set_progress("__run__")
         config = self.create_config()
         process, config_file = FSUAE.start_with_config(config)
         process.wait()
@@ -1031,19 +1019,20 @@ def amiga_filename_to_host_filename(amiga_name, ascii=False):
 
 EVIL_CHARS = '%\\*?\"/|<>'
 
-system_configuration = b"\x08\x00\x00\x05\x00\x00\x00\x00\x00\x00" \
-    b"\xc3P\x00\x00\x00\x00\x00\t'\xc0\x00\x00\x00\x01\x00\x00N \x00\x00\x00\x00" \
-    b"\xc0\x00@\x00p\x00\xb0\x00<\x00L\x00?\x00C\x00\x1f\xc0 \xc0\x1f\xc0 \x00" \
-    b"\x0f\x00\x11\x00\r\x80\x12\x80\x04\xc0\t@\x04`\x08\xa0\x00 \x00@\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\xff\x00\x0eD\x00\x00\x0e\xec\x00\x01\n\xaa\x00\x00\x0f" \
-    b"\xff\x06\x8b\x00\x00\x00\x81\x00,\x00\x00\x00\x00generic\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x05\x00K\x00\x00\x00\x00\x00\x00\x00\x07" \
-    b"\x00 \x00B\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00"
-
+system_configuration = (
+    b"\x08\x00\x00\x05\x00\x00\x00\x00\x00\x00\xc3"
+    b"P\x00\x00\x00\x00\x00\t'\xc0\x00\x00\x00\x01\x00\x00N \x00\x00\x00\x00"
+    b"\xc0\x00@\x00p\x00\xb0\x00<\x00L\x00?\x00C\x00\x1f\xc0 \xc0\x1f\xc0 \x00"
+    b"\x0f\x00\x11\x00\r\x80\x12\x80\x04\xc0\t@\x04`\x08\xa0\x00 \x00@\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\xff\x00\x0eD\x00\x00\x0e\xec\x00\x01\n\xaa\x00\x00\x0f"
+    b"\xff\x06\x8b\x00\x00\x00\x81\x00,\x00\x00\x00\x00generic\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x05\x00K\x00\x00\x00\x00\x00\x00\x00\x07"
+    b"\x00 \x00B\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00"
+    b"\x00")
 
 workbench_disks_with_setpatch_39_6 = [
     # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)

@@ -7,6 +7,7 @@ from .helpers import QParent
 
 
 def get_screen_size():
+    init_qt()
     desktop = QDesktopWidget()
     geometry = desktop.geometry()
     size = geometry.width(), geometry.height()

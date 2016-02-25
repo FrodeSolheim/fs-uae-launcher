@@ -15,9 +15,9 @@ class OAGDClient(object):
         self.data = b""
 
         # FIXME: we don't want dependency on Settings here
-        from fs_uae_launcher.Settings import Settings
+        from launcher.launcher_settings import LauncherSettings
         self.username = "auth_token"
-        self.password = Settings.get("database_auth")
+        self.password = LauncherSettings.get("database_auth")
 
     def server(self):
         return OGDClient.get_server()

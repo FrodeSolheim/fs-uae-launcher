@@ -3,11 +3,11 @@ from .base import SynchronizerBase
 from ..LockerDatabase import LockerDatabase
 from fsgs.FileDatabase import FileDatabase
 from fsgs.res import gettext
-import fsbc.Settings
+import fsbc.settings
 
 
 def is_locker_enabled():
-    return fsbc.Settings.get("database_locker") != "0"
+    return fsbc.settings.get("database_locker") != "0"
 
 
 class LockerSynchronizer(SynchronizerBase):

@@ -59,7 +59,7 @@ class Listener(object):
         return self.description
 
 
-class Signal():
+class Signal:
 
     # FIXME: should have type Dict[str, Callable]
     # or # type_xxx: Dict[str, Function]

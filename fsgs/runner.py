@@ -2,13 +2,18 @@ import os
 import sys
 import io
 import subprocess
+import warnings
 from collections import defaultdict
-from fsbc.Application import app
+
+import fsboot
+from fsbc.application import Application
 from fsbc.system import windows, macosx
 from fsbc.task import current_task
+from fsgs.plugins.plugin_manager import PluginManager
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.util.gamenameutil import GameNameUtil
+from fsbc.settings import Settings
 
 
 class Port(object):
@@ -42,11 +47,12 @@ class GameRunner(object):
 
     def __init__(self, fsgs):
         self.fsgs = fsgs
-        self.__env = {}
-        self.__args = []
+        self.args = []
+        self.env = {}
+        self.emulator = "no-emulator"
 
         self.config = defaultdict(str)
-        for key, value in app.settings.values.items():
+        for key, value in Settings.instance().values.items():
             # FIXME: re-enable this check?
             # if key in Config.config_keys:
             #     print("... ignoring config key from settings:", key)
@@ -69,6 +75,17 @@ class GameRunner(object):
         self.cwd = self.create_temp_dir("cwd")
         self.home = self.cwd
 
+    def set_env(self, name, value):
+        warnings.warn("deprecated", DeprecationWarning)
+        self.env[name] = value
+
+    def add_arg(self, *args):
+        warnings.warn("deprecated", DeprecationWarning)
+        self.args.extend(args)
+
+    # def set_emulator(self, emulator):
+    #     self._emulator = emulator
+
     # self.inputs.append(self.create_input(
     #         name='Controller {0}'.format(i + 1),
     #         type='megadrive',
@@ -76,9 +93,10 @@ class GameRunner(object):
 
     def use_fullscreen(self):
         # FIXME: not a very nice hack to hard-code application name here...
-        if app.name == "fs-uae-arcade":
-            return True
-        if app.settings["fullscreen"] == "0":
+        if Application.instance():
+            if Application.instance().name == "fs-uae-arcade":
+                return True
+        if Settings.instance()["fullscreen"] == "0":
             return False
         return True
 
@@ -97,14 +115,14 @@ class GameRunner(object):
     def use_stretching(self):
         if "--no-stretch" in sys.argv:
             return False
-        if app.settings["stretch"] == "0":
+        if Settings.instance()["stretch"] == "0":
             return False
         return True
 
     def use_audio_frequency(self):
-        if app.settings["audio_frequency"]:
+        if Settings.instance()["audio_frequency"]:
             try:
-                return int(app.settings["audio_frequency"])
+                return int(Settings.instance()["audio_frequency"])
             except ValueError:
                 pass
         return 48000
@@ -146,7 +164,9 @@ class GameRunner(object):
 
     def screen_rect(self):
         try:
-            desktop = app.qapplication.desktop()
+            from fsui.qt import init_qt
+            qapplication = init_qt()
+            desktop = qapplication.desktop()
         except AttributeError:
             # no QApplication, probably not running via QT
             # FIXME: log warning
@@ -229,15 +249,17 @@ class GameRunner(object):
     def create_temp_file(self, suffix):
         return self.fsgs.temp_file(suffix)
 
-    def set_env(self, name, value):
-        self.__env[name] = value
-
-    def add_arg(self, *args):
-        self.__args.extend(args)
+    def run(self):
+        executable = PluginManager.instance().find_executable(self.emulator)
+        if executable is None:
+            raise LookupError("Could not find emulator " + repr(self.emulator))
+        return self.start_emulator(executable)
 
     def start_emulator_from_plugin_resource(
             self, provide_name, args=None, env_vars=None):
         resource = self.fsgs.plugins.find_executable(provide_name)
+        if resource is None:
+            raise Exception("Could not find emulator " + repr(provide_name))
         if env_vars is None:
             env_vars = os.environ.copy()
         # Set LD_LIBRARY_PATH for Linux plugins with bundled libraries
@@ -248,24 +270,23 @@ class GameRunner(object):
     def start_emulator(
             self, emulator, args=None, env_vars=None, executable=None,
             cwd=None):
-        if "/" in emulator:
-            if not executable:
-                executable = self.find_emulator_executable(emulator)
-            if not executable:
-                emulator = emulator.split("/")[-1]
+        # if "/" in emulator:
+        #     if not executable:
+        #         executable = self.find_emulator_executable(emulator)
+        #     if not executable:
+        #         emulator = emulator.split("/")[-1]
+        #
+        # if not executable:
+        #     executable = self.find_emulator_executable("fs-" + emulator)
+        # if not executable:
+        #     executable = self.find_emulator_executable(emulator)
+        #
+        # if not executable:
+        #     raise Exception("could not find executable for " + emulator)
 
-        if not executable:
-            executable = self.find_emulator_executable("fs-" + emulator)
-        if not executable:
-            executable = self.find_emulator_executable(emulator)
-
-        if not executable:
-            raise Exception("could not find executable for " + emulator)
-        process_args = [executable]
-        process_args.extend(self.__args)
-        if args is not None:
-            process_args.extend(args)
-        print(repr(process_args))
+        args = []
+        args.extend(self.args)
+        print(repr(args))
 
         if "SDL_VIDEODRIVER" in os.environ:
             print("SDL_VIDEODRIVER was present in environment, removing!")
@@ -297,14 +318,13 @@ class GameRunner(object):
             print("using window mode (no fullscreen)")
             env["FSGS_FULLSCREEN"] = ""
 
-        env.update(self.__env)
+        env.update(self.env)
         env["HOME"] = self.home.path
 
         if env_vars:
             env.update(env_vars)
         print(env)
 
-        args = [process_args]
         kwargs = {}
         if env is not None:
             kwargs["env"] = env
@@ -314,11 +334,12 @@ class GameRunner(object):
             kwargs["cwd"] = self.cwd.path
         if windows:
             kwargs["close_fds"] = True
-        print(" ".join(process_args))
+        print(" ".join(args))
         current_task.set_progress(
             "Starting {emulator}".format(emulator=emulator))
-        process = subprocess.Popen(*args, **kwargs)
-        return process
+        # process = subprocess.Popen(*args, **kwargs)
+        return emulator.popen(args, **kwargs)
+        # return process
 
     def find_emulator_executable(self, name):
         # if os.path.isdir("../fs-uae/src"):
@@ -340,27 +361,27 @@ class GameRunner(object):
             # first we check if the emulator is bundled inside the launcher
             # directory
             exe = os.path.join(
-                app.executable_dir(), package, name + ".exe")
+                fsboot.executable_dir(), package, name + ".exe")
             if not os.path.exists(exe):
                 # for when the emulators are placed alongside the launcher /
                 # game center directory
                 exe = os.path.join(
-                    app.executable_dir(), "..", package, name + ".exe")
+                    fsboot.executable_dir(), "..", package, name + ".exe")
             if not os.path.exists(exe):
                 # when the emulators are placed alongside the fs-uae/ directory
                 # containing launcher/, for FS-UAE Launcher & FS-UAE Arcade
                 exe = os.path.join(
-                    app.executable_dir(), "..", "..", package, name + ".exe")
+                    fsboot.executable_dir(), "..", "..", package, name + ".exe")
             if not os.path.exists(exe):
                 return None
             return exe
         elif macosx:
             exe = os.path.join(
-                app.executable_dir(), "..",
+                fsboot.executable_dir(), "..",
                 package + ".app", "Contents", "MacOS", name)
             if not os.path.exists(exe):
                 exe = os.path.join(
-                    app.executable_dir(), "..", "..", "..",
+                    fsboot.executable_dir(), "..", "..", "..",
                     package + ".app", "Contents", "MacOS", name)
             if not os.path.exists(exe):
                 exe = os.path.join(

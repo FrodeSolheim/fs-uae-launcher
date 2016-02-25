@@ -1,3 +1,4 @@
+import sys
 from collections import defaultdict
 from .ContextAware import ContextAware
 
@@ -25,6 +26,14 @@ class Config(ContextAware):
                 self.set(key, "")
         # for key in self.values.keys():
         #     del self.values[key]
+
+    def add_from_argv(self):
+        for arg in sys.argv:
+            if arg.startswith("--config:"):
+                arg = arg[9:]
+                key, value = arg.split("=", 1)
+                key = key.replace("-", "_")
+                self.set(key, value)
 
     def load(self, values):
         self.clear()

@@ -1,6 +1,6 @@
 import fsui
 from fsui.extra.iconheader import IconHeader
-from fs_uae_launcher.res import gettext
+from launcher.res import gettext
 
 
 class TaskDialog(fsui.Window):
@@ -8,14 +8,14 @@ class TaskDialog(fsui.Window):
     def __init__(self, parent, task):
         fsui.Window.__init__(
             self, parent, task.get_task_name())
-        self.set_icon(fsui.Icon("tools", "pkg:fs_uae_workspace"))
+        self.set_icon(fsui.Icon("tools", "pkg:workspace"))
 
         self.layout = fsui.VerticalLayout()
         self.layout.min_width = 500
         self.layout.set_padding(20, 20, 20, 20)
 
         self.icon_header = IconHeader(
-            self, fsui.Icon("tools", "pkg:fs_uae_workspace"),
+            self, fsui.Icon("tools", "pkg:workspace"),
             task.get_task_name(), "")
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 

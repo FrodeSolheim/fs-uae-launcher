@@ -65,8 +65,12 @@ class Color(QColor, BaseColor):
             return self.blue()
         raise IndexError("Invalid color component")
 
-    def to_hsv(self):
-        return HSVColor.from_rgb(self.red(), self.green(), self.blue())
+    def to_hex(self):
+        if self.alpha() != 255:
+            return "#{:02x}{:02x}{:02x}{:02x}".format(
+                    self.red(), self.green(), self.blue(), self.alpha())
+        return "#{:02x}{:02x}{:02x}".format(
+                self.red(), self.green(), self.blue())
 
     def to_hsl(self):
         return HSLColor.from_rgb(self.red(), self.green(), self.blue())

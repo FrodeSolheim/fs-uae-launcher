@@ -1,3 +1,18 @@
+Version 2.7.8dev:
+
+* You can add custom config on startup (--config:key=value). Especially
+  useful when auto-launching games and you want to override config.
+* You can start with custom settings (--settings:key=value). Note that the
+  changed settings will be permanent / saved.
+* Make distinction between Amiga device type and host device more explicit.
+* Made launch dialog non-modal.
+* Net play feature is enabled by default.
+* Moved net play UI into a separate window.
+* Clear search field when changing game/config list in dropdown.
+* All .sqlite databases moved into Data/Databases.
+* Some user interface adjustments.
+* Quite a bit of code cleanup and some restructuring.
+
 Version 2.7.7dev:
 
 * Always sort variant list in rated order from oagd.net, but prefer

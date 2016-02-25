@@ -342,7 +342,7 @@ write("""\
     cd $(dist_dir) && ./update-version setup.py --strict
     cd $(dist_dir) && ./update-version debian/changelog --deb
     cd $(dist_dir) && ./update-version dist/macosx/Info.plist --strict
-    cd $(dist_dir) && ./update-version fs_uae_launcher/main.py
+    cd $(dist_dir) && ./update-version launcher/version.py
     cd $(dist_dir) && ./update-version {project}
     cd $(dist_dir) && ./update-version {project}.spec --rpm
 

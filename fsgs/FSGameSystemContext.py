@@ -7,16 +7,17 @@ import threading
 import traceback
 # import hashlib
 # from fsbc.task import current_task
+
 from fsgs.Archive import Archive
 from fsbc.util import unused
-from .BaseContext import BaseContext
-from .Downloader import Downloader
-from .FileDatabase import FileDatabase
-from .GameDatabase import GameDatabase
-from .LockerDatabase import LockerDatabase
+from fsgs.BaseContext import BaseContext
+from fsgs.Downloader import Downloader
+from fsgs.FileDatabase import FileDatabase
+from fsgs.GameDatabase import GameDatabase
+from fsgs.LockerDatabase import LockerDatabase
 from fsgs.Database import Database
 from fsgs.ogd.locker import is_locker_enabled
-from .plugins.pluginmanager import PluginManager
+from fsgs.plugins.plugin_manager import PluginManager
 
 
 class NotFoundError(RuntimeError):
@@ -306,12 +307,12 @@ class FSGameSystemContext(object):
         return Database.instance()
 
     def get_game_database(self):
-        return self.game_database("openretro.org/amiga")
+        return self.game_database("Amiga")
 
     def game_database(self, database_name):
-        if database_name == "openretro.org/amiga":
-            # use legacy name for now
-            database_name = "oagd.net"
+        # if database_name == "Amiga":
+        #     # use legacy name for now
+        #     database_name = "oagd.net"
         attr_name = "game_database_" + database_name.replace("/", "_")
         if not hasattr(self.thread_local, attr_name):
             # FIXME
@@ -319,7 +320,7 @@ class FSGameSystemContext(object):
             # FIXME
             # path = os.path.join(
             #     FSGSDirectories.get_cache_dir(), "openretro.org")
-            path = os.path.join(FSGSDirectories.get_cache_dir(),
+            path = os.path.join(FSGSDirectories.databases_dir(),
                                 database_name + ".sqlite")
             if not os.path.exists(os.path.dirname(path)):
                 os.makedirs(os.path.dirname(path))
@@ -399,6 +400,20 @@ class FSGameSystemContext(object):
         loader = platform_handler.get_loader(self)
         self.config.load(loader.load_values(values))
         return True
+
+    def run_game(self):
+        from fsgs.platform import PlatformHandler
+        platform_handler = PlatformHandler.create(self.game.platform.id)
+        runner = platform_handler.get_runner(self)
+
+        from fsgs.input.enumeratehelper import EnumerateHelper
+        device_helper = EnumerateHelper()
+        device_helper.default_port_selection(runner.ports)
+
+        runner.prepare()
+        process = runner.run()
+        process.wait()
+        runner.finish()
 
 
 class TemporaryDirectory(object):

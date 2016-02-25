@@ -1,6 +1,6 @@
 from weakref import ref
 from .qt import Qt, QDesktopWidget, QSignal
-from .. import default_window_center, default_window_parent
+# from .. import default_window_center, default_window_parent
 
 
 _windows = set()
@@ -15,10 +15,10 @@ def WindowBase(BaseClass):
         closed = QSignal()
 
         def __init__(self, parent, *args, title="", border=True, **kwargs):
-            if parent is None and len(default_window_parent) > 0:
-                parent = default_window_parent[-1]
-                print("using default parent", parent)
-                parent = parent.real_window()
+            # if parent is None and len(default_window_parent) > 0:
+            #     parent = default_window_parent[-1]
+            #     print("using default parent", parent)
+            #     parent = parent.real_window()
 
             super().__init__(parent, *args, **kwargs)
             # MixinBase.__init__(self)
@@ -129,10 +129,10 @@ def WindowBase(BaseClass):
                 ss = self.get_size()
                 self.move(pp[0] + (ps[0] - ss[0]) // 2,
                           pp[1] + (ps[1] - ss[1]) // 2)
-            elif len(default_window_center) > 0:
-                x, y = default_window_center[-1]
-                ss = self.get_size()
-                self.move(x - ss[0] // 2, y - ss[1] // 2,)
+            # elif len(default_window_center) > 0:
+            #     x, y = default_window_center[-1]
+            #     ss = self.get_size()
+            #     self.move(x - ss[0] // 2, y - ss[1] // 2,)
 
         def center_on_screen(self):
             frect = self.frameGeometry()

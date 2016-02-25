@@ -4,7 +4,7 @@ from configparser import ConfigParser
 from fsbc.system import windows, linux, macosx
 from fsbc.util import memoize
 from fsgs.context import fsgs
-from fsbc.Resources import Resources
+from fsbc.resources import Resources
 
 
 class InputDeviceNotFoundException(Exception):
@@ -149,7 +149,7 @@ class InputDevice(object):
                 name, _ = os.path.splitext(file_name)
                 if len(parts) > 1:
                     configs[parts[-2] + '_' + name] = "fsgs:res/input/" + path
-                print(" -", path)
+                # print(" -", path)
                 configs[name] = "fsgs:res/input/" + path
 
         # FIXME: fix dependency

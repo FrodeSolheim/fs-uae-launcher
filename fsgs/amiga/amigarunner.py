@@ -1,5 +1,6 @@
 import os
-from fsbc.Application import app
+
+from fsbc.settings import Settings
 from fsgs.runner import GameRunner
 from fsgs.amiga.FSUAE import FSUAE
 from fsgs.amiga.LaunchHandler import LaunchHandler
@@ -110,8 +111,10 @@ class AmigaRunner(GameRunner):
         if self.use_fullscreen():
             self.launch_handler.config["fullscreen"] = "1"
             if not self.launch_handler.config.get("fullscreen_mode", ""):
-                if app.settings["fs-uae:fullscreen-mode::default"]:
-                    self.launch_handler.config["fullscreen_mode"] = "window"
+                # Check if fullscreen mode is overridden by temporary setting.
+                if Settings.instance()["__fullscreen_mode"]:
+                    self.launch_handler.config["fullscreen_mode"] = \
+                        Settings.instance()["__fullscreen_mode"]
         else:
             self.launch_handler.config["fullscreen"] = "0"
 

@@ -1,4 +1,4 @@
-from fsbc.Application import app
+from fsbc.application import app
 from fsgs.res import gettext
 from .base import SynchronizerBase
 

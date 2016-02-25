@@ -1,17 +1,10 @@
+import weakref
 from .common.element import Element, LightElement
 from .common.group import Group
 from .common.layout import VerticalLayout, HorizontalLayout
 from .common.spacer import Spacer
-
-
-default_window_parent = []
-default_window_center = []
-
-toolkit = "qt"
-use_qt = True
-
-
 from .qt import *
+from .qt.adapter import Adapter
 from .qt.Application import Application
 from .qt.Button import Button
 from .qt.CheckBox import CheckBox, HeadingCheckBox
@@ -41,3 +34,64 @@ from .qt.TextArea import TextArea
 from .qt.TextField import TextField, PasswordField
 from .qt.VerticalItemView import VerticalItemView
 from .qt.window import Window
+
+
+default_window_parent = []
+default_window_center = []
+toolkit = "qt"
+use_qt = True
+
+
+# noinspection PyProtectedMember
+def open_window_instance(cls, parent=None):
+    if not hasattr(cls, "_window_instance"):
+        cls._window_instance = None
+    if cls._window_instance is not None:
+        cls._window_instance.raise_and_activate()
+        return
+    cls._window_instance = cls(parent)
+
+    def reset_instance():
+        print("SettingsDialog.reset_instance")
+        # cls._window_instance.deleteLater()
+        cls._window_instance = None
+
+    cls._window_instance.closed.connect(reset_instance)
+    cls._window_instance.show()
+
+    def monitor_instance_2(count):
+        if count < 100:
+            call_after(monitor_instance_2, count + 1)
+            return
+        print("DESTROYED SIGNAL RECEIVED 2")
+        instance = weak_instance()
+        if instance is not None:
+            print("WARNING: SettingsDialog is still alive")
+            import gc
+            print(gc.get_referrers(instance))
+            print("real window:")
+            print(gc.get_referrers(instance.real_window()))
+        else:
+            print("Instance is now", instance)
+
+    def monitor_instance():
+        print("DESTROYED SIGNAL RECEIVED")
+        call_after(monitor_instance_2, 1)
+
+    weak_instance = weakref.ref(cls._window_instance)
+    # cls._window_instance.destroyed.connect(monitor_instance)
+    cls._window_instance.closed.connect(monitor_instance)
+
+    # if getattr(cls, "_window_instance", None) and cls._window_instance():
+    #     cls._window_instance().raise_and_activate()
+    # else:
+    #     window = cls(parent)
+    #     window.show()
+    #     cls._window_instance = weakref.ref(window)
+
+
+# noinspection PyProtectedMember
+def current_window_instance(cls):
+    if not hasattr(cls, "_window_instance"):
+        return None
+    return cls._window_instance

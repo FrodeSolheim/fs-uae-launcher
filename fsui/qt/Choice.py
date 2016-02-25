@@ -1,3 +1,5 @@
+from contextlib import contextmanager
+
 from fsui.qt import QComboBox, Signal
 from .widget_mixin import WidgetMixin
 
@@ -23,6 +25,16 @@ class Choice(QComboBox, WidgetMixin):
             self.set_index(0)
         self.currentIndexChanged.connect(self.__current_index_changed)
 
+    @contextmanager
+    def inhibit_signal(self, name):
+        attr = "_inhibit_" + name
+        old = getattr(self, attr, False)
+        print("setattr", self, attr, True)
+        setattr(self, attr, True)
+        yield
+        print("setattr", self, attr, old)
+        setattr(self, attr, old)
+
     def add_item(self, label, icon=None):
         # item = QStandardItem(label)
         # if icon:
@@ -36,11 +48,14 @@ class Choice(QComboBox, WidgetMixin):
             self.addItem(label)
 
     def __current_index_changed(self):
+        print("__current_index_changed", self.currentIndex(),
+              self.inhibit_change_event)
         if not self.inhibit_change_event:
             # print("Choice.__current_index_changed")
             index = self.currentIndex()
             self.item_selected.emit(index)
-            self.changed.emit()
+            if not getattr(self, "_inhibit_changed", False):
+                self.changed.emit()
             return self.on_change()
 
     def get_index(self):

@@ -33,7 +33,7 @@ class GameDatabaseSynchronizer(object):
                 self.host = "oagd.net"
         else:
             self.host = ""
-            self.platform_id = platform_id
+            self.platform_id = platform_id.lower()
 
     def stop_check(self):
         if self._stop_check:
@@ -150,7 +150,9 @@ class GameDatabaseSynchronizer(object):
         self.set_status(
             gettext("Fetching database entries ({0})").format(last_id + 1))
         server = self.get_server()[0]
-        url = "http://{0}/api/sync/{1}/games?last={2}".format(
+        # url = "http://{0}/api/sync/{1}/games?last={2}".format(
+        #     server, self.platform_id, last_id)
+        url = "http://{0}/api/sync/{1}/games?v=2&last={2}".format(
             server, self.platform_id, last_id)
         print(url)
         data = self.fetch_data(url)

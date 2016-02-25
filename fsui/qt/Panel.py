@@ -3,7 +3,6 @@ import traceback
 from fsbc.util import unused
 from fsui.qt import Qt, QWidget, QPainter
 from fsui.qt.helpers import QParent
-from .widget_mixin import WidgetMixin
 from fsui.qt.widget import Widget
 
 
@@ -29,6 +28,7 @@ class Panel(Widget):
         # super(Panel, self).__init__(parent.get_container())
         # super().__init__()
         self._ignore_next_left_down_event = False
+        # self._widget.setFocusPolicy(Qt.NoFocus)
 
     def window(self):
         return self._window()
@@ -57,6 +57,15 @@ class Panel(Widget):
 
     def on_mouse_leave(self):
         pass
+
+    def on_key_press(self, event):
+        pass
+
+    def add(self, child):
+        if hasattr(self, "set_layout"):
+            self.set_layout(child)
+        else:
+            self.layout = child
 
 
 # noinspection PyProtectedMember
@@ -95,6 +104,9 @@ class WidgetWithEventHandlers(QWidget):
                 print("_ignore_next_left_down_event was True", self)
             else:
                 self.owner().on_left_down()
+
+    def keyPressEvent(self, event):
+        self.owner().on_key_press(event)
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:

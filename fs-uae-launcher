@@ -2,40 +2,34 @@
 import os
 import sys
 
+if sys.version_info[0] < 3 or sys.version_info[1] < 2:
+    print("You need at least Python 3.2 to run FS-UAE Launcher")
+    sys.exit(1)
+
+if os.environ.get("FSGS_PYTHONPATH", ""):
+    sys.path.insert(0, os.environ.get("FSGS_PYTHONPATH"))
+
+
+def print_help():
+    print("fs-uae-launcher")
+    print("FIXME")
+
+
+def print_version():
+    import launcher.version
+    print(launcher.version.VERSION)
+
 
 def main():
-    # Check deprecated/legacy app options
-    if "--server" in sys.argv:
-        sys.argv.remove("--server")
-        app = "fs-uae-netplay-server"
-    elif "--fs-uae-arcade" in sys.argv:
-        sys.argv.remove("--fs-uae-arcade")
-        app = "fs-uae-arcade"
-    elif "--fs-game-center" in sys.argv:
-        sys.argv.remove("--fs-game-center")
-        app = "fs-game-center"
-    elif sys.argv[0].endswith("fs-game-center"):
-        app = "fs-game-center"
-    else:
-        app = "fs-uae-launcher"
+    if "--help" in sys.argv:
+        print_help()
+        sys.exit(0)
+    elif "--version" in sys.argv:
+        print_version()
+        sys.exit(0)
 
-    # Check new app option
-    for app_name in ["fs-uae-launcher", "fs-uae-arcade", "fs-game-center",
-                     "game-database-dumper"]:
-        option = "--app=" + app_name
-        if option in sys.argv:
-            app = app_name
-            sys.argv.remove(option)
-
-    if os.environ.get("FSGS_PYTHONPATH", ""):
-        sys.path.insert(0, os.environ.get("FSGS_PYTHONPATH"))
-
-    if app == "game-database-dumper":
-        from fsgs.gamedb.game_database_dumper import game_database_dumper_main
-        game_database_dumper_main()
-    else:
-        from fs_uae_launcher.main import launcher_main
-        launcher_main(app)
+    import launcher.apps
+    launcher.apps.main()
 
 
 main()

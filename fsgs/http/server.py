@@ -155,7 +155,7 @@ def post_session_init_handler(request, session_id):
     print(request.params.game_uuid)
     request.fsgs.load_game_by_uuid(request.params.game_uuid)
 
-    from fsbc.Application import app
+    from fsbc.application import app
     if request.params.fullscreen:
         # print("setting fullscreen to", repr(request.params.fullscreen))
         # request.fsgs.config.set("fullscreen", request.params.fullscreen)

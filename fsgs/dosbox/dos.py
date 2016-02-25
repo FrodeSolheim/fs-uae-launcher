@@ -18,10 +18,11 @@
 Game Runner for DOS.
 
 """
-import os
+import hashlib
 import io
 import json
-import hashlib
+import os
+
 from fsbc.path import str_path
 from fsbc.system import windows
 from fsgs.runner import GameRunner
@@ -29,9 +30,9 @@ from fsgs.runner import GameRunner
 
 # noinspection PyAttributeOutsideInit
 class DOSRunner(GameRunner):
-
     def __init__(self, fsgs):
         super().__init__(fsgs)
+        self.emulator = "dosbox-fs"
 
     def prepare(self):
         self.temp_dir = self.create_temp_dir("dosbox")
@@ -41,7 +42,13 @@ class DOSRunner(GameRunner):
         self.prepare_media()
         with io.open(config_file, "w", encoding="UTF-8") as f:
             self.configure(f)
-        self.add_arg("-conf", config_file)
+        self.args.extend(["-conf", config_file])
+
+        # DOSBox-FS does not work nicely with G-SYNC yet. Enabling G-SYNC
+        # causes stuttering.
+        self.env["__GL_GSYNC_ALLOWED"] = "0"
+        # Disable V-Sync
+        self.env["__GL_SYNC_TO_VBLANK"] = "0"
 
     def prepare_media(self):
         file_list = json.loads(self.config["file_list"])
@@ -109,10 +116,10 @@ class DOSRunner(GameRunner):
             # aspect for non-square pixels resolutions, e.g. 320x200.
             f.write("aspect=false\n")
             # This custom environment variable however, does cause stretching.
-            self.set_env("FSGS_STRETCH", "1")
+            self.env["FSGS_STRETCH"] = "1"
         else:
             f.write("aspect=true\n")
-            self.set_env("FSGS_STRETCH", "0")
+            self.env["FSGS_STRETCH"] = "0"
 
         f.write("\n[cpu]\n")
         cpu_core = "auto"
@@ -131,11 +138,11 @@ class DOSRunner(GameRunner):
         for name in os.listdir(self.drives_dir.path):
             if name in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
                 if name in "DEF":
-                    f.write('MOUNT {0} "{1}" -t cdrom\n'.format(name,
-                            os.path.join(self.drives_dir.path, name)))
+                    f.write('MOUNT {0} "{1}" -t cdrom\n'.format(
+                        name, os.path.join(self.drives_dir.path, name)))
                 else:
-                    f.write('MOUNT {0} "{1}"\n'.format(name,
-                            os.path.join(self.drives_dir.path, name)))
+                    f.write('MOUNT {0} "{1}"\n'.format(
+                        name, os.path.join(self.drives_dir.path, name)))
         f.write("C:\n")
         f.write("CLS\n")
         # for i in range(25):
@@ -149,10 +156,7 @@ class DOSRunner(GameRunner):
 
         if windows:
             # We don't want to open the separate console window on windows.
-            self.add_arg("-noconsole")
-
-    def run(self):
-        return self.start_emulator_from_plugin_resource("fs-dosbox")
+            self.args.append("-noconsole")
 
     def finish(self):
         pass

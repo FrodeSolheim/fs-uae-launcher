@@ -9,7 +9,7 @@ from functools import wraps
 from urllib.parse import urlencode
 from http.client import HTTPConnection
 from urllib.error import HTTPError
-from fsbc.Application import app
+from fsbc.application import app
 from fsbc.task import Task
 from fsbc.util import memoize
 from fsgs.FSGSDirectories import FSGSDirectories
@@ -104,7 +104,7 @@ class OGDClient(object):
                 with io.open(p, "r", encoding="UTF-8") as f:
                     server = f.read().strip()
         if not server:
-            server = "oagd.net"
+            server = "openretro.org"
         return server
 
     @staticmethod

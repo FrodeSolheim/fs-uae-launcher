@@ -32,10 +32,7 @@ class FileDatabase(BaseDatabase):
 
     @classmethod
     def get_path(cls):
-        # FIXME: remove direct dependency on launcher
-        cache_dir = FSGSDirectories.get_cache_dir()
-        path = os.path.join(cache_dir, "Files.sqlite")
-        return path
+        return os.path.join(FSGSDirectories.databases_dir(), "Files.sqlite")
 
     @classmethod
     def get_version(cls):

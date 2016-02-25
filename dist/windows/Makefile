@@ -16,7 +16,6 @@ progdir:
 	make -C ../..
 
 	rm -Rf ../build
-	# ../dist
 	cd ../.. && python3 setup.py build_exe
 	mv ../../build/exe.mingw-3.4 $(launcher_dir)
 
@@ -34,23 +33,7 @@ progdir:
 
 	cp -a ../../share $(launcher_dir)
 
-	# mkdir -p $(launcher_dir)/share/fs-uae-launcher/fs_uae_launcher
-	# cp -pPR ../../fs_uae_launcher/res $(launcher_dir)/share/fs-uae-launcher/fs_uae_launcher/
-	# cp -pPR ../../fs_uae_launcher/data $(launcher_dir)/share/fs-uae-launcher/fs_uae_launcher/
-	# mkdir -p $(launcher_dir)/share/fs-uae-launcher/fs_uae_workspace
-	# cp -pPR ../../fs_uae_workspace/data $(launcher_dir)/share/fs-uae-launcher/fs_uae_workspace/
-
 	python3 sign.py $(launcher_dir)/fs-uae-launcher.exe
-
-	#cp -a /c/Microsoft.VC90.CRT $(launcher_dir)/
-	#cp -a /c/msvcr100.dll $(launcher_dir)/
-	#cp -a /c/msvcp100.dll $(launcher_dir)/
-	# cp -a /c/Python33/Lib/site-packages/PyQt5/libEGL.dll $(launcher_dir)/
-	# cp -a /c/Python33/Lib/site-packages/PyQt5/Qt5Svg.dll $(launcher_dir)/
-	# cp -a /c/Python33/Lib/site-packages/PyQt4/QtSvg4.dll $(launcher_dir)/
-	# cp -a /c/Python33/Lib/site-packages/PyQt4/QtXml4.dll $(launcher_dir)/
-	# cp -a /c/Python33/DLLs/python3.dll $(launcher_dir)/
-	# cp -a $(emulator_dir) $(launcher_dir)/FS-UAE
 
 zipfile:
 	cd $(launcher_dir) && zip -9 -r ../../../$(launcher_dir).zip *

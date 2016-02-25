@@ -89,6 +89,12 @@ class Widget(QObject):
     def refresh(self):
         return self.widget().update()
 
+    def set_min_size(self, size):
+        # noinspection PyAttributeOutsideInit
+        self.min_width = size[0]
+        # noinspection PyAttributeOutsideInit
+        self.min_height = size[1]
+
     def set_min_width(self, width):
         # noinspection PyAttributeOutsideInit
         self.min_width = width
@@ -151,6 +157,12 @@ class Widget(QObject):
     def size(self):
         return self.widget().width(), self.widget().height()
 
+    def width(self):
+        return self.size()[0]
+
+    def height(self):
+        return self.size()[1]
+
     def set_tool_tip(self, tool_tip):
         widget = getattr(self, "_widget", self)
         widget.setToolTip(tool_tip)
@@ -202,14 +214,16 @@ class Widget(QObject):
         #     self.on_left_up()
 
     def is_mouse_over(self):
-        # noinspection PyArgumentList
-        c = QCursor.pos()
-        # noinspection PyUnresolvedReferences
-        p = self.widget().mapToGlobal(QPoint(0, 0))
-        s = self.size()
-        if p.x() <= c.x() < p.x() + s[0] and p.y() <= c.y() < p.y() + s[1]:
-            return True
-        return False
+        # # noinspection PyArgumentList
+        # c = QCursor.pos()
+        # # noinspection PyUnresolvedReferences
+        # p = self.widget().mapToGlobal(QPoint(0, 0))
+        # s = self.size()
+        # print(c, p, s)
+        # if p.x() <= c.x() < p.x() + s[0] and p.y() <= c.y() < p.y() + s[1]:
+        #     return True
+        # return False
+        return self.widget().underMouse()
 
     # DEPRECATED
     def get_parent(self):

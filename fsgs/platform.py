@@ -77,14 +77,37 @@ platforms = {
     "commodore-64": Commodore64PlatformHandler,
     "dos": DOSPlatformHandler,
     "game-boy": GameBoyPlatformHandler,
-    "game-boy-advance": GameBoyAdvancePlatformHandler,
+    "gba": GameBoyAdvancePlatformHandler,
     "game-boy-color": GameBoyColorPlatformHandler,
     "game-gear": GameGearPlatformHandler,
     "lynx": LynxPlatformHandler,
     "master-system": MasterSystemPlatformHandler,
     "mega-drive": MegaDrivePlatformHandler,
-    "nintendo": NintendoPlatformHandler,
-    "super-nintendo": SuperNintendoPlatformHandler,
+    "nes": NintendoPlatformHandler,
+    "snes": SuperNintendoPlatformHandler,
     "turbografx-16": TurboGrafx16PlatformHandler,
     "zx-spectrum": ZXSpectrumPlatformHandler,
+
+    # Aliases
+    "game-boy-advance": GameBoyAdvancePlatformHandler,
+    "nintendo": NintendoPlatformHandler,
+    "super-nintendo": SuperNintendoPlatformHandler,
 }
+
+
+def normalize_platform_id(platform_id):
+    platform_id = platform_id.lower().replace("-", "").replace("_", "")
+    # noinspection SpellCheckingInspection
+    if platform_id in ["commodorecdtv"]:
+        return "cdtv"
+    elif platform_id in ["amigacd32"]:
+        return "cd32"
+    elif platform_id in ["msdos"]:
+        return "dos"
+    elif platform_id in ["gameboyadvance"]:
+        return "gba"
+    elif platform_id in ["nintendo", "famicom"]:
+        return "nes"
+    elif platform_id in ["supernintendo", "supernes", "superfamicom"]:
+        return "snes"
+    return platform_id

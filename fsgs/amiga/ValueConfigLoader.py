@@ -2,7 +2,7 @@
 from fsgs.context import fsgs
 import os
 import json
-from fsbc.Paths import Paths
+from fsbc.paths import Paths
 from fsgs.amiga.Amiga import Amiga
 from fsgs.FileDatabase import FileDatabase
 from fsgs.ogd.client import OGDClient

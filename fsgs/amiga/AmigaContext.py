@@ -1,5 +1,5 @@
 import os
-from fsbc.Paths import Paths
+from fsbc.paths import Paths
 from fsgs.Archive import Archive
 from fsgs.ChecksumTool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
