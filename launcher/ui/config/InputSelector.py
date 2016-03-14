@@ -231,6 +231,6 @@ def fix_device_name(name):
     if name == "Keyboard":
         return gettext("{system} Keyboard").format(system=system)
     elif name == "Mouse":
-        return gettext("{system} Mouse").format(system=system)
+        return gettext("Mouse: {system} Mouse").format(system=system)
     else:
         return gettext(name)

@@ -1,5 +1,6 @@
 Version 2.7.9.dev:
 
+* Fixed issue when you have a mouse with the same device name as a joystick.
 * More compact binary distributions, far fewer data files.
 * OS X: New skeleton .app launchers for portable suite.
 * Windows: Proxy executables passes on arguments.

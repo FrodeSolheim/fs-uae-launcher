@@ -84,7 +84,7 @@ class DeviceManager:
 
     @classmethod
     def init_fsuae(cls):
-        print("finding connected joysticks")
+        print("DeviceManager: finding connected joysticks")
         try:
             p = FSUAEDeviceHelper.start_with_args(
                 ["--list"], stdout=subprocess.PIPE)
@@ -120,8 +120,8 @@ class DeviceManager:
             # if name.lower() in ["keyboard", "mouse"]:
             #     # these are automatically added
             #     continue
-            name_count = cls.device_name_count.get(name, 0) + 1
-            cls.device_name_count[name] = name_count
+            name_count = cls.device_name_count.get((device_type, name), 0) + 1
+            cls.device_name_count[(device_type, name)] = name_count
             if name_count > 1:
                 name = name + " #" + str(name_count)
             cls.device_ids.append(name)
