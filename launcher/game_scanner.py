@@ -45,6 +45,10 @@ class GameScanner(object):
             yield "CDTV", self.fsgs.game_database("CDTV")
         if LauncherSettings.get(Option.DATABASE_ARCADE) == "1":
             yield "Arcade", self.fsgs.game_database("Arcade")
+        if LauncherSettings.get(Option.DATABASE_C64) == "1":
+            yield "C64", self.fsgs.game_database("C64")
+        if LauncherSettings.get(Option.DATABASE_CPC) == "1":
+            yield "CPC", self.fsgs.game_database("CPC")
         if LauncherSettings.get(Option.DATABASE_DOS) == "1":
             yield "DOS", self.fsgs.game_database("DOS")
         if LauncherSettings.get(Option.DATABASE_GBA) == "1":
@@ -53,6 +57,8 @@ class GameScanner(object):
             yield "NES", self.fsgs.game_database("NES")
         if LauncherSettings.get(Option.DATABASE_SNES) == "1":
             yield "SNES", self.fsgs.game_database("SNES")
+        if LauncherSettings.get(Option.DATABASE_ATARI) == "1":
+            yield "Atari", self.fsgs.game_database("Atari")
 
     def update_game_database(self):
         for database_name, game_database in self.game_databases():

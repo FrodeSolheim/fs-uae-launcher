@@ -33,7 +33,11 @@ class Font(object):
         try:
             self.font_id = Font.font_ids[path]
         except Exception:
-            self.font_id = self.database.addApplicationFont(path)
+            if isinstance(path, str):
+                self.font_id = self.database.addApplicationFont(path)
+            else:
+                self.font_id = self.database.addApplicationFontFromData(
+                    path.read())
             Font.font_ids[path] = self.font_id
         self.families = self.database.applicationFontFamilies(self.font_id)
         print(self.families)

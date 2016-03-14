@@ -171,9 +171,11 @@ class DeviceManager:
     def get_preferred_joysticks(cls):
         prefs = []
         if LauncherSettings.get("primary_joystick"):
-            prefs.append(create_cmp_id(LauncherSettings.get("primary_joystick")))
+            prefs.append(
+                create_cmp_id(LauncherSettings.get("primary_joystick")))
         if LauncherSettings.get("secondary_joystick"):
-            prefs.append(create_cmp_id(LauncherSettings.get("secondary_joystick")))
+            prefs.append(
+                create_cmp_id(LauncherSettings.get("secondary_joystick")))
         return prefs
 
     @classmethod
@@ -212,16 +214,16 @@ class DeviceManager:
         #     print(device.port, device.id)
         # print("-")
 
-        def autofill(port, type):
+        def auto_fill(port, type):
             mode = config.get("joystick_port_{0}_mode".format(port))
             if not mode:
                 mode = cls.get_calculated_port_mode(config, port)
-            value = config.get("joystick_port_{0}".format(port))
-            if value:
+            val = config.get("joystick_port_{0}".format(port))
+            if val:
                 # specific device chosen
-                for device in cls.devices:
-                    if device.id == value:
-                        ports[port] = device
+                for dev in cls.devices:
+                    if dev.id == val:
+                        ports[port] = dev
                         break
                 return
             if type == "mouse":
@@ -229,12 +231,12 @@ class DeviceManager:
                 if mode != "mouse":
                     return
                 # print("b")
-                for device in cls.devices:
+                for dev in cls.devices:
                     # print("c")
-                    if device.type == "mouse" and device.port is None:
+                    if dev.type == "mouse" and dev.port is None:
                         # print("d")
-                        ports[port] = device
-                        device.port = port
+                        ports[port] = dev
+                        dev.port = port
                         return
             elif type == "joystick":
                 if mode == "cd32 gamepad":
@@ -245,27 +247,27 @@ class DeviceManager:
                     return
                 # try to find an available preferred device first
                 for pref in prefs:
-                    for device in cls.devices:
-                        if device.cmp_id == pref and device.port is None:
-                            ports[port] = device
-                            device.port = port
+                    for dev in cls.devices:
+                        if dev.cmp_id == pref and dev.port is None:
+                            ports[port] = dev
+                            dev.port = port
                             return
                 # find first suitable device
-                for device in cls.devices:
-                    if device.type == "joystick" and device.port is None:
-                        ports[port] = device
-                        device.port = port
+                for dev in cls.devices:
+                    if dev.type == "joystick" and dev.port is None:
+                        ports[port] = dev
+                        dev.port = port
                         return
-                for device in cls.devices:
-                    if device.type == "keyboard" and device.port is None:
-                        ports[port] = device
-                        device.port = port
+                for dev in cls.devices:
+                    if dev.type == "keyboard" and dev.port is None:
+                        ports[port] = dev
+                        dev.port = port
                         return
 
         for p in [0, 1, 2, 3]:
-            autofill(p, "mouse")
+            auto_fill(p, "mouse")
         for p in [1, 0, 3, 2]:
-            autofill(p, "joystick")
+            auto_fill(p, "joystick")
         return ports
 
     @classmethod

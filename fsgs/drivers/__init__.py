@@ -1,5 +1,5 @@
-# FSGS - Common functionality for Fengestad Game System.
-# Copyright (C) 2013  Frode Solheim <frode-code@fengestad.no>
+# FSGS - Common functionality for FS Game System.
+# Copyright (C) 2013-2016  Frode Solheim <frode@openretro.org>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -14,6 +14,3 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-"""
-Package with support for Atari ST via Hatari.
-"""

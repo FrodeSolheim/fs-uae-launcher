@@ -164,11 +164,11 @@ class LauncherConfig(object):
     no_custom_config = [x[0] for x in cfg if "custom" not in x]
 
     no_custom_config.append("__changed")
-    no_custom_config.append("__config_name")
-    no_custom_config.append("__database")
     no_custom_config.append("__ready")
-    no_custom_config.append("x_whdload_icon")
-    no_custom_config.append("platform")
+    no_custom_config.append("__config_name")
+    # no_custom_config.append("__database")
+    # no_custom_config.append("x_whdload_icon")
+    # no_custom_config.append("platform")
 
     dont_save_keys_set = set([x[0] for x in cfg if "nosave" in x])
 

@@ -54,9 +54,15 @@ def initialize_locale(language=None):
         if not os.path.exists(check):
             continue
         locale_base = os.path.join(dir, "locale")
+        break
+    if not locale_base and getattr(sys, "frozen", False):
+        locale_base = os.path.abspath(
+            os.path.join(
+                fsboot.executable_dir(), "..", "..", "Data", "Locale"))
+
+    if locale_base:
         print("[I18N] bindtextdomain fs-uae-launcher:", locale_base)
         gettext_module.bindtextdomain("fs-uae-launcher", locale_base)
-        break
 
     mo_path = None
     if locale_base:

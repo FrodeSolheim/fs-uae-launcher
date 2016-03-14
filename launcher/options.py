@@ -18,7 +18,10 @@ class Option(object):
     CPU = "cpu"
     CPU_IDLE = "cpu_idle"
     DATABASE_ARCADE = "database_arcade"
+    DATABASE_ATARI = "database_atari"
     DATABASE_AUTH = "database_auth"
+    DATABASE_C64 = "database_c64"
+    DATABASE_CPC = "database_cpc"
     DATABASE_DOS = "database_dos"
     DATABASE_EMAIL = "database_email"
     DATABASE_FEATURE = "database_feature"
@@ -264,10 +267,30 @@ options = {
         "type": "boolean",
     },
 
+    "database_atari": {
+        "default": "",
+        "description": N_("Enable/disable use of the Atari ST game database"),
+        "type": "boolean",
+    },
+
     "database_auth": {
         "default": "",
         "description": N_("Game database authentication"),
         "type": "string",
+    },
+
+    "database_c64": {
+        "default": "",
+        "description": N_(
+            "Enable/disable use of the Commodore 64 (C64) database"),
+        "type": "boolean",
+    },
+
+    "database_cpc": {
+        "default": "",
+        "description": N_(
+            "Enable/disable use of the Amstrad CPC game database"),
+        "type": "boolean",
     },
 
     "database_dos": {

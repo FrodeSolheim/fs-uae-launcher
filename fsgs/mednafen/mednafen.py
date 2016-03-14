@@ -1,9 +1,9 @@
 import os
 import struct
 import hashlib
+from functools import lru_cache
 
 from fsbc.system import windows
-from fsbc.util import memoize
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.input.mapper import InputMapper
 from fsgs.runner import GameRunner
@@ -158,7 +158,7 @@ class MednafenRunner(GameRunner):
         # self.args.extend(["-%s.special" % pfx,
         # self.mednafen_special_filter()])
 
-        if self.configure_vsync() and False:
+        if self.configure_vsync():
             self.args.extend(["-glvsync", "1"])
         else:
             self.args.extend(["-glvsync", "0"])
@@ -292,11 +292,12 @@ class MednafenInputMapper(InputMapper):
         seen_ids = set()
         self.id_map = {}
         for device in helper.devices:
-            uid = self._get_unique_id(device)
+            uid = self.calculate_unique_id(device)
             while uid in seen_ids:
                 uid += 1
             seen_ids.add(uid)
             self.id_map[device.id] = uid
+            # self.id_map[device.id.upper()] = uid
         print("MednafenInputMapper device map")
         for id, uid in self.id_map.items():
             print(uid, id)
@@ -306,7 +307,7 @@ class MednafenInputMapper(InputMapper):
             offset = 0x8000
         else:
             offset = 0xc000
-        joystick_id = self.get_unique_id(self.device, self.device.id)
+        joystick_id = self.unique_id(self.device, self.device.id)
         return "joystick {0:x} {1:08x}".format(
             joystick_id, axis + offset)
 
@@ -317,12 +318,12 @@ class MednafenInputMapper(InputMapper):
             "up": 1,
             "down": 4,
         }[direction]
-        joystick_id = self.get_unique_id(self.device, self.device.id)
+        joystick_id = self.unique_id(self.device, self.device.id)
         return "joystick {0:x} {1:08x}".format(
             joystick_id, 0x2000 + offset)
 
     def button(self, button):
-        joystick_id = self.get_unique_id(self.device, self.device.id)
+        joystick_id = self.unique_id(self.device, self.device.id)
         return "joystick {0:x} {1:08x}".format(
             joystick_id, int(button))
 
@@ -330,24 +331,26 @@ class MednafenInputMapper(InputMapper):
         # FIXME: Need other key codes on Windows ... ?
         return "keyboard {0}".format(key.sdl_code)
 
-    @memoize
-    def get_unique_id(self, device, _):
-        return self.id_map[device.id]
+    @lru_cache()
+    def unique_id(self, device, _):
+        try:
+            return self.id_map[device.id]
+        except KeyError:
+            print("id_map:", self.id_map)
+            raise
 
-    @memoize
-    def _get_unique_id(self, device):
+    @lru_cache()
+    def calculate_unique_id(self, device):
+        """Implements the joystick ID algorithm in mednafen.
+        Was src/drivers/joystick.cpp:GetJoystickUniqueID
+        Now src/drivers/Joystick.cpp:CalcOldStyleID.
+        """
         print("get_unique_id for", device.id)
-
-        # Implemented the algorithm in mednafen
-        # was src/drivers/joystick.cpp:GetJoystickUniqueID
-        # now src/drivers/Joystick.cpp:CalcOldStyleID
-
         m = hashlib.md5()
         print(device.axes, device.balls, device.hats, device.buttons)
         # noinspection SpellCheckingInspection
         buffer = struct.pack("iiii", device.axes, device.balls,
                              device.hats, device.buttons)
-
         m.update(buffer)
         digest = m.digest()
         ret = 0

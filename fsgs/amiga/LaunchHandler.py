@@ -301,17 +301,25 @@ class LaunchHandler(object):
                 dst = os.path.join(self.temp_dir, dst_name)
                 self.fsgs.file.copy_game_file(src, dst)
 
+            cue_sheets = self.get_cue_sheets_for_game_uuid(game_uuid)
+            for cue_sheet in cue_sheets:
+                with open(os.path.join(self.temp_dir,
+                                       cue_sheet["name"]), "wb") as f:
+                    f.write(cue_sheet["data"].encode("UTF-8"))
+
             for i in range(Amiga.MAX_CDROM_DRIVES):
                 key = "cdrom_drive_{0}".format(i)
                 value = self.config.get(key, "")
-                self.config[key] = os.path.join(
-                    self.temp_dir, os.path.basename(value))
+                if value:
+                    self.config[key] = os.path.join(
+                        self.temp_dir, os.path.basename(value))
 
             for i in range(Amiga.MAX_CDROM_IMAGES):
                 key = "cdrom_image_{0}".format(i)
                 value = self.config.get(key, "")
-                self.config[key] = os.path.join(
-                    self.temp_dir, os.path.basename(value))
+                if value:
+                    self.config[key] = os.path.join(
+                        self.temp_dir, os.path.basename(value))
 
         cdroms = []
         for i in range(Amiga.MAX_CDROM_DRIVES):
@@ -435,6 +443,24 @@ class LaunchHandler(object):
                 values = game_database.get_game_values_for_uuid(game_uuid)
         file_list = json.loads(values["file_list"])
         return file_list
+
+    def get_cue_sheets_for_game_uuid(self, game_uuid):
+        # FIXME: This is an ugly hack, we should already be told what
+        # database to use.
+        try:
+            game_database = self.fsgs.get_game_database()
+            values = game_database.get_game_values_for_uuid(game_uuid)
+        except LookupError:
+            try:
+                game_database = self.fsgs.game_database("CD32")
+                values = game_database.get_game_values_for_uuid(game_uuid)
+            except LookupError:
+                game_database = self.fsgs.game_database("CDTV")
+                values = game_database.get_game_values_for_uuid(game_uuid)
+        if not values.get("cue_sheets", ""):
+            return []
+        cue_sheets = json.loads(values["cue_sheets"])
+        return cue_sheets
 
     def unpack_game_hard_drive(self, drive_index, src):
         print("unpack_game_hard_drive", drive_index, src)

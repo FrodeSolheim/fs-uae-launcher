@@ -19,19 +19,55 @@ progdir:
 	cd ../.. && python3 setup.py build_exe
 	mv ../../build/exe.mingw-3.4 $(launcher_dir)
 
-	rm -f $(launcher_dir)/imageformats/qgif*.dll
+	rm -f $(launcher_dir)/imageformats/qdds*.dll
+	rm -f $(launcher_dir)/imageformats/qicns*.dll
+	rm -f $(launcher_dir)/imageformats/qjp2*.dll
 	rm -f $(launcher_dir)/imageformats/qmng*.dll
 	rm -f $(launcher_dir)/imageformats/qsvg*.dll
 	rm -f $(launcher_dir)/imageformats/qtga*.dll
 	rm -f $(launcher_dir)/imageformats/qtiff*.dll
+	rm -f $(launcher_dir)/imageformats/qwbmp*.dll
+	rm -f $(launcher_dir)/imageformats/qwebp*.dll
 	rm -f $(launcher_dir)/imageformats/*d.dll
 	rm -f $(launcher_dir)/imageformats/*d4.dll
 	rm -f $(launcher_dir)/platforms/qminimal*.dll
 	rm -f $(launcher_dir)/platforms/*d.dll
 
+	# mv $(launcher_dir)/imageformats/* $(launcher_dir)
+	# rm -Rf $(launcher_dir)/imageformats/
+	# mv $(launcher_dir)/platforms/* $(launcher_dir)
+	# rm -Rf $(launcher_dir)/platforms/
+
 	python3 clib.py libjpeg-8.dll $(launcher_dir)
 
 	cp -a ../../share $(launcher_dir)
+	rm -Rf $(launcher_dir)/share/applications
+	rm -Rf $(launcher_dir)/share/icons
+
+	rm -Rf $(launcher_dir)/OpenGL
+	rm -Rf $(launcher_dir)/arcade
+	rm -Rf $(launcher_dir)/fsbc
+	rm -Rf $(launcher_dir)/fsgs
+	rm -Rf $(launcher_dir)/fstd
+	rm -Rf $(launcher_dir)/fsui
+	rm -Rf $(launcher_dir)/launcher
+	rm -Rf $(launcher_dir)/oyoyo
+	rm -Rf $(launcher_dir)/six
+	rm -Rf $(launcher_dir)/workspace
+
+	zip -d $(launcher_dir)/library.zip OpenGL/\*
+	zip -d $(launcher_dir)/library.zip arcade/\*
+	zip -d $(launcher_dir)/library.zip fsbc/\*
+	zip -d $(launcher_dir)/library.zip fsgs/\*
+	zip -d $(launcher_dir)/library.zip fstd/\*
+	zip -d $(launcher_dir)/library.zip fsui/\*
+	zip -d $(launcher_dir)/library.zip launcher/\*
+	zip -d $(launcher_dir)/library.zip oyoyo/\*
+	zip -d $(launcher_dir)/library.zip six/\*
+	zip -d $(launcher_dir)/library.zip workspace/\*
+
+	make -C ../python
+	cp -a ../python/*.zip $(launcher_dir)
 
 	python3 sign.py $(launcher_dir)/fs-uae-launcher.exe
 

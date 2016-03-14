@@ -1,4 +1,6 @@
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
+from launcher.ui.settings.fullscreen_mode_button import FullscreenModeButton
+from launcher.ui.settings.monitor_button import MonitorButton
 from launcher.ui.settings.override_warning import OverrideWarning
 import fsui as fsui
 from ...i18n import gettext
@@ -17,6 +19,9 @@ class LaunchGroup(fsui.Group):
         self.hori_layout = fsui.HorizontalLayout()
         self.layout.add(self.hori_layout, fill=True, expand=True)
 
+        self.hori_layout.add(
+            FullscreenModeButton(self), fill=True, margin_right=10)
+        self.hori_layout.add(MonitorButton(self), fill=True, margin_right=10)
         self.hori_layout.add_spacer(0, expand=True)
 
         self.hori_layout.add(OverrideWarning(self, "fullscreen"),

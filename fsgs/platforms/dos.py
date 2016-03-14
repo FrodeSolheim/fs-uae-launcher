@@ -1,5 +1,5 @@
+from fsgs.drivers.dos import DOSDriver
 from fsgs.platform import PlatformHandler
-from fsgs.dosbox.dos import DOSRunner
 from .loader import SimpleLoader
 
 
@@ -14,7 +14,7 @@ class DOSPlatformHandler(PlatformHandler):
         return DOSLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return DOSRunner(fsgs)
+        return DOSDriver(fsgs)
 
 
 class DOSLoader(SimpleLoader):

@@ -121,6 +121,10 @@ def init_qt():
             # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
             QApplication.setLibraryPaths([fsboot.executable_dir()])
 
+    if getattr(sys, "frozen", False):
+        # noinspection PyCallByClass,PyTypeChecker
+        QApplication.setLibraryPaths([fsboot.executable_dir()])
+
     # Should not be necessary with Qt 5.2.x:
     # fix_qt_for_maverick()
 

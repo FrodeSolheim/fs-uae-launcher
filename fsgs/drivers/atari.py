@@ -1,5 +1,5 @@
-# FSGS - Common functionality for Fengestad Game System.
-# Copyright (C) 2013  Frode Solheim <frode-code@fengestad.no>
+# FSGS - Common functionality for FS Game System.
+# Copyright (C) 2013-2016  Frode Solheim <frode@openretro.org>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -15,68 +15,75 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
-Game Runner for Atari ST.
+FSGS Game Driver for Atari ST (Atari).
 
 TODO:
-- support saving disk changes
-- support (persistent) save states
-- check and/or fix support for vsync
-- NTSC vs PAL?
-- joystick support and keyboard joystick emulation
-- mouse in port 0
-- multiple floppies and floppy swapping
+
+* Support saving disk changes.
+* Support (persistent) save states.
+* Check and/or fix support for vsync.
+* NTSC vs PAL?.
+* Joystick support and keyboard joystick emulation.
+* Mouse in port 0.
+* Multiple floppies and floppy swapping.
+* Screenshots are saved to the (temp) current working directory, not the
+  global screenshots directory.
 
 """
 import os
-import io
 import traceback
+
 from fsgs.runner import GameRunner
 
-
 ATARI_WIDTH = 832
-# ATARI_HEIGHT = 576
-ATARI_HEIGHT = 552
+ATARI_HEIGHT = 552  # ATARI_HEIGHT = 576
 
-# TOS v1.02 (1987)(Atari Corp)(Mega ST)(GB)[MEGA TOS].img
-# tos102uk.bin
+# TOS v1.02 (1987)(Atari Corp)(Mega ST)(GB)[MEGA TOS].img, tos102uk.bin
+# noinspection SpellCheckingInspection
 TOS_102_UK = "87900a40a890fdf03bd08be6c60cc645855cbce5"
 
-# TOS v1.04 (1989)(Atari Corp)(Mega ST)(GB)[Rainbow TOS].img
-# tos104uk.bin
+# TOS v1.04 (1989)(Atari Corp)(Mega ST)(GB)[Rainbow TOS].img, tos104uk.bin
+# noinspection SpellCheckingInspection
 TOS_104_UK = "9526ef63b9cb1d2a7109e278547ae78a5c1db6c6"
 
+# TOS v1.62 (1990)(Atari)(GB)[STE TOS, Rev 2][STE].img
+# noinspection SpellCheckingInspection
+TOS_106_2_UK = "70db24a7c252392755849f78940a41bfaebace71"
 
-# noinspection PyAttributeOutsideInit
-class AtariSTRunner(GameRunner):
+
+class AtariDriver(GameRunner):
+
+    def __init__(self, fsgs):
+        super().__init__(fsgs)
+        self.emulator = "hatari-fs"
 
     def prepare(self):
-        self.temp_dir = self.create_temp_dir("hatari")
-        config_file = os.path.join(self.temp_dir.path, "hatari.cfg")
-        with io.open(config_file, "w", encoding="UTF-8") as f:
-            self.configure(f)
-        self.add_arg("--configfile", config_file)
-        self.add_arg("--statusbar", "0")
-        self.add_arg("--drive-led", "0")
-
-    def configure(self, f):
-        # floppies_dir = os.path.join(self.context.temp.dir('uae'), 'Disks')
-        floppies_dir = os.path.join(self.temp_dir.path, "Disks")
-        os.makedirs(floppies_dir)
+        floppies_dir = self.temp_dir("Disks").path
         original_floppies = self.prepare_floppies()
         floppies = []
         for p in original_floppies:
             dest_path = os.path.join(floppies_dir, os.path.basename(p))
             self.fsgs.file.copy_game_file(p, dest_path)
             floppies.append(dest_path)
-
-        # self.changes = ChangeHandler(floppies_dir)
-        # self.changes.init(os.path.join(self.context.game.state_dir, 'Disks'))
-
-        num_floppy_drives = 2
-        # sorted_floppies = self.sort_floppies(floppies)
         sorted_floppies = floppies
-        inserted_floppies = sorted_floppies[:num_floppy_drives]
 
+        config_file = self.temp_file("hatari.cfg").path
+        with open(config_file, "w", encoding="UTF-8") as f:
+            self.configure(f, sorted_floppies)
+        self.args.extend(["--configfile", config_file])
+        # noinspection SpellCheckingInspection
+        self.args.extend(["--statusbar", "0"])
+        self.args.extend(["--drive-led", "0"])
+
+    def prepare_floppies(self):
+        floppies = []
+        if self.config["floppy_drive_0"]:
+            floppies.append(self.config["floppy_drive_0"])
+        return floppies
+
+    def configure(self, f, sorted_floppies):
+        num_floppy_drives = 2
+        inserted_floppies = sorted_floppies[:num_floppy_drives]
         f.write("[Floppy]\n")
         f.write("szDiskAFileName = {path}\n".format(
                 path=inserted_floppies[0]))
@@ -87,11 +94,13 @@ class AtariSTRunner(GameRunner):
         bios_path = self.prepare_tos()
         f.write("[ROM]\n")
         f.write("szTosImageFileName = {path}\n".format(path=bios_path))
+        f.write("bPatchTOS = FALSE\n")
 
         f.write("[System]\n")
         # don't patch Timer-D to reduce number of interrupts
         f.write("bPatchTimerD = FALSE\n")
-        # f.write("bFastBoot = FALSE\n")
+        f.write("bFastBoot = FALSE\n")
+        f.write("bBlitter = FALSE\n")
 
         f.write("[Sound]\n")
         if self.use_audio_frequency():
@@ -100,22 +109,13 @@ class AtariSTRunner(GameRunner):
         if self.use_fullscreen():
             self.configure_fullscreen_scaling()
 
-    def prepare_floppies(self):
-        floppies = []
-        # media_dir = os.path.dirname(self.context.game.file)
-        # base_match = self.extract_match_name(os.path.basename(
-        #         self.context.game.file))
-        # for name in os.listdir(media_dir):
-        #     dummy, ext = os.path.splitext(name)
-        #     if ext.lower() not in ['.st']:
-        #         continue
-        #     match = self.extract_match_name(name)
-        #     if base_match == match:
-        #         floppies.append(os.path.join(media_dir, name))
-        #         #floppies.append(name)
-        if self.config["floppy_drive_0"]:
-            floppies.append(self.config["floppy_drive_0"])
-        return floppies
+        model = self.atari_model()
+
+        f.write("[Memory]\n")
+        if model.startswith("1040"):
+            f.write("nMemorySize = 1\n")
+        else:
+            f.write("nMemorySize = 0\n")
 
     def configure_fullscreen_scaling(self):
         sx, sy, sw, sh = 0, 0, ATARI_WIDTH, ATARI_HEIGHT
@@ -126,7 +126,6 @@ class AtariSTRunner(GameRunner):
                 sx, sy, sw, sh = int(sx), int(sy), int(sw), int(sh)
         except Exception:
             traceback.print_exc("Could not get viewport information")
-
         screen_w, screen_h = self.screen_size()
         print("viewport is", sx, sy, sw, sh)
         if self.use_stretching():
@@ -146,41 +145,32 @@ class AtariSTRunner(GameRunner):
                     (ATARI_WIDTH / 2.0)
         offset_y = -(sy + (sh / 2.0) - ATARI_HEIGHT / 2.0) / \
                     (ATARI_HEIGHT / 2.0)
-
         hz = scale_x / orig_scale_x
         vz = scale_y / orig_scale_y
-        # hz = int(round(scale_x / orig_scale_x * 100000000))
-        # vz = int(round(scale_y / orig_scale_y * 100000000))
         print("horizontal zoom:", hz / 100000000.0)
         print("vertical zoom:", vz / 100000000.0)
-        # ho = int(round(offset_x * 100000000))
-        # vo = int(round(offset_y * 100000000))
-        # print("horizontal offset:", ho / 100000000.0);
-        # print("vertical offset:", vo / 100000000.0);
-        self.set_env("FILTER_VERT_OFFSET", str(offset_y))
-        self.set_env("FILTER_HORIZ_OFFSET", str(offset_x))
-        self.set_env("FILTER_VERT_ZOOM", str(vz))
-        self.set_env("FILTER_HORIZ_ZOOM", str(hz))
+        self.env["FILTER_VERT_OFFSET"] = str(offset_y)
+        self.env["FILTER_HORIZ_OFFSET"] = str(offset_x)
+        self.env["FILTER_VERT_ZOOM"] = str(vz)
+        self.env["FILTER_HORIZ_ZOOM"] = str(hz)
 
     def atari_model(self):
-        return "ST"
+        # FIXME: 520ST - or perhaps 520STF(M) -512 KB RAM
+        # FIXME: 1040ST - 1MB - 1040STF(M)
+        # FIXME: 520STE
+        # FIXME: 1040STE
+        return "520ST"
 
     def prepare_tos(self):
-        if self.atari_model() == "ST":
-            tos_sha1 = TOS_102_UK
+        model = self.atari_model()
+        if "STE" in model:
+            tos_sha1 = TOS_106_2_UK
         else:
-            raise Exception("unknown Atari model")
+            tos_sha1 = TOS_102_UK
 
         uri = self.fsgs.file.find_by_sha1(tos_sha1)
         stream = self.fsgs.file.open(uri)
-        self.bios_temp = self.create_temp_file("tos.img")
-        with open(self.bios_temp.path, "wb") as f:
+        bios_temp = self.temp_file("tos.img")
+        with open(bios_temp.path, "wb") as f:
             f.write(stream.read())
-        return self.bios_temp.path
-
-    def run(self):
-        # return self.start_emulator("fs-hatari/hatari")
-        return self.start_emulator_from_plugin_resource("hatari")
-
-    def finish(self):
-        pass
+        return bios_temp.path

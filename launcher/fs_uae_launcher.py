@@ -262,7 +262,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                             "because you don't have all required files."))
                 return
 
-        platform_id = LauncherConfig.get("platform")
+        platform_id = LauncherConfig.get("platform").lower()
         amiga_platform = platform_id in ["", "amiga", "cdtv", "cd32"]
         if amiga_platform:
             cls.start_local_game_amiga()

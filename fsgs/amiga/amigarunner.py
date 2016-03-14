@@ -223,13 +223,7 @@ class AmigaRunner(GameRunner):
                 "down": "JOY1_DOWN",
             }]
 
-        # f.write("input.config=1\n")
-
         f.write("\n[input]\n")
-        # f.write("joyport0=none\n")
-        # f.write("joyport1=none\n")
-        # f.write("input.1.keyboard.0.empty=false\n")
-        # f.write("input.1.keyboard.0.disabled=false\n")
 
         for i, input in enumerate(self.inputs):
             if not input.device:

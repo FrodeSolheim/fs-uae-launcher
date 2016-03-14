@@ -1,3 +1,10 @@
+Version 2.7.9.dev:
+
+* More compact binary distributions, far fewer data files.
+* OS X: New skeleton .app launchers for portable suite.
+* Windows: Proxy executables passes on arguments.
+* Recognize .ccd CD variants from the online game database.
+
 Version 2.7.8dev:
 
 * You can add custom config on startup (--config:key=value). Especially

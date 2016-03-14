@@ -1,5 +1,5 @@
-# FSGS - Common functionality for Fengestad Game System.
-# Copyright (C) 2013  Frode Solheim <frode-code@fengestad.no>
+# FSGS - Common functionality for FS Game System.
+# Copyright (C) 2013-2016  Frode Solheim <frode@openretro.org>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -15,7 +15,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
-Game Runner for DOS.
+FSGS Game Driver for DOS.
 
 """
 import hashlib
@@ -29,15 +29,14 @@ from fsgs.runner import GameRunner
 
 
 # noinspection PyAttributeOutsideInit
-class DOSRunner(GameRunner):
+class DOSDriver(GameRunner):
     def __init__(self, fsgs):
         super().__init__(fsgs)
         self.emulator = "dosbox-fs"
 
     def prepare(self):
-        self.temp_dir = self.create_temp_dir("dosbox")
-        self.drives_dir = self.create_temp_dir("dosbox-drives")
-        config_file = os.path.join(self.temp_dir.path, "dosbox.cfg")
+        self.drives_dir = self.temp_dir("drives")
+        config_file = self.temp_file("dosbox.cfg").path
         self.drives = []
         self.prepare_media()
         with io.open(config_file, "w", encoding="UTF-8") as f:

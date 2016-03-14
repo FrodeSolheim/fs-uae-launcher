@@ -21,6 +21,32 @@ def print_version():
 
 
 def main():
+    if getattr(sys, "frozen", False):
+        print("frozen")
+        import fsboot
+        # os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = fsboot.executable_dir()
+        os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
+            fsboot.executable_dir(), "platforms")
+        libs_dirs = [fsboot.executable_dir()]
+        libs_dir = os.path.abspath(
+            os.path.join(fsboot.executable_dir(), "..", "..", "Python"))
+        print(libs_dir, os.path.exists(libs_dir))
+        if os.path.exists(libs_dir):
+            libs_dirs.append(libs_dir)
+        else:
+            libs_dir = os.path.abspath(
+                os.path.join(fsboot.executable_dir(), "..", "..", "..",
+                             "..", "..", "Python"))
+            print(libs_dir, os.path.exists(libs_dir))
+            if os.path.exists(libs_dir):
+                libs_dirs.append(libs_dir)
+        for libs_dir in libs_dirs:
+            for item in os.listdir(libs_dir):
+                if item.endswith(".zip"):
+                    path = os.path.join(libs_dir, item)
+                    print("adding", path)
+                    sys.path.insert(0, path)
+
     if "--help" in sys.argv:
         print_help()
         sys.exit(0)

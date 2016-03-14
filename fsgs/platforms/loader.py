@@ -28,7 +28,7 @@ class SimpleLoader:
 
         self.config["platform"] = values["platform"]
         self.config["model"] = values["model"]
-
+        self.config["protection"] = values["protection"]
         self.config["viewport"] = values["viewport"]
         self.config["video_standard"] = values["video_standard"]
 

@@ -1,7 +1,7 @@
 import os
 import sys
 import io
-import subprocess
+import tempfile
 import warnings
 from collections import defaultdict
 
@@ -41,6 +41,56 @@ class Port(object):
         return self.types[self.index]["description"]
 
 
+class TemporaryItem:
+
+    def __init__(self, root, prefix="tmp", suffix="", dir=False):
+        self.root = root
+        self.prefix = prefix
+        self.suffix = suffix
+        self._path = None
+        self.dir = dir
+
+    @property
+    def path(self):
+        if self._path is None:
+            if hasattr(self.root, "path"):
+                # We want to delay temp dir creation as long as possible,
+                # so we only call root.path when we have to.
+                root = self.root.path
+            else:
+                root = self.root
+            if self.dir:
+                self._path = tempfile.mkdtemp(
+                    prefix=self.prefix, suffix=self.suffix, dir=root)
+            else:
+                fd, self._path = tempfile.mkstemp(
+                    prefix=self.prefix, suffix=self.suffix, dir=root)
+                os.close(fd)
+        return self._path
+
+
+class TemporaryNamedItem:
+
+    def __init__(self, root, name, dir=False):
+        self.root = root
+        self.name = name
+        self._path = None
+        self.dir = dir
+
+    @property
+    def path(self):
+        if self._path is None:
+            root = self.root.path
+            self._path = os.path.join(root, self.name)
+            if not os.path.exists(self._path):
+                if self.dir:
+                    os.makedirs(self._path)
+                else:
+                    with open(self.path, "wb"):
+                        pass
+        return self._path
+
+
 class GameRunner(object):
 
     PORTS = []
@@ -70,17 +120,23 @@ class GameRunner(object):
 
         self.__vsync = False
         self.__game_temp_file = None
+        self.temp_root = TemporaryItem(
+            root=None, prefix="fsgs-", suffix="tmp", dir=True)
 
-        # default current working directory for emulator
-        self.cwd = self.create_temp_dir("cwd")
-        self.home = self.cwd
+        # self.cwd = self.create_temp_dir("cwd")
+        # self.home = self.cwd
+
+        # Default current working directory for the emulator.
+        self.cwd = self.temp_dir("cwd")
+        # Fake home directory for the emulator.
+        self.home = self.temp_dir("home")
 
     def set_env(self, name, value):
-        warnings.warn("deprecated", DeprecationWarning)
+        warnings.warn("set_env is deprecated", DeprecationWarning)
         self.env[name] = value
 
     def add_arg(self, *args):
-        warnings.warn("deprecated", DeprecationWarning)
+        warnings.warn("add_arg is deprecated", DeprecationWarning)
         self.args.extend(args)
 
     # def set_emulator(self, emulator):
@@ -104,7 +160,7 @@ class GameRunner(object):
         # if "--no-vsync" in sys.argv:
         #     return False
         # return True
-        return self.config.get("video_sync") == "1"
+        return self.config.get("video_sync") in ["1", "auto"]
 
     def use_doubling(self):
         return True
@@ -153,16 +209,11 @@ class GameRunner(object):
         raise Exception("Unrecognized platform")
 
     def screen_size(self):
-        refresh_rate_tool = RefreshRateTool()
-        # FIXME: screen size monitor size
-        width = refresh_rate_tool.get_current_mode()["width"]
-        height = refresh_rate_tool.get_current_mode()["height"]
-        # if width > 2 * height:
-        #     print("width > 2 * height, assuming dual-monitor setup...")
-        #     return width // 2, height
-        return width, height
+        rect = self.screen_rect()
+        return rect[2], rect[3]
 
-    def screen_rect(self):
+    def _screens(self):
+        screens = []
         try:
             from fsui.qt import init_qt
             qapplication = init_qt()
@@ -170,11 +221,36 @@ class GameRunner(object):
         except AttributeError:
             # no QApplication, probably not running via QT
             # FIXME: log warning
-            return 0, 0, 640, 480
-        screens = []
-        for i in range(desktop.screenCount()):
-            geometry = desktop.screenGeometry(i)
-            screens.append([geometry.x(), i, geometry])
+            pass
+        else:
+            for i in range(desktop.screenCount()):
+                geometry = desktop.screenGeometry(i)
+                screens.append([geometry.x(), i, geometry])
+        return screens
+
+    def screen_refresh_rate(self):
+        try:
+            from fsui.qt import init_qt
+            qapplication = init_qt()
+        except AttributeError:
+            return 0
+        else:
+            for i, screen in enumerate(qapplication.screens()):
+                print("Screen {0} refresh rate = {1}".format(
+                    i, screen.refreshRate()))
+            index = self.screen_index()
+            screen = qapplication.screens()[index]
+            return int(round(screen.refreshRate()))
+
+    def screen_index(self):
+        rect = self.screen_rect()
+        for i, s in enumerate(self._screens()):
+            if rect == (s[2].x(), s[2].y(), s[2].width(), s[2].height()):
+                return i
+        raise Exception("Could not find screen at position {}".format(rect))
+
+    def screen_rect(self):
+        screens = self._screens()
         screens.sort()
         monitor = self.config.get("monitor", "")
         if monitor == "left":
@@ -188,14 +264,6 @@ class GameRunner(object):
         display = round(mon / 3 * (len(screens) - 1))
         geometry = screens[display][2]
         return geometry.x(), geometry.y(), geometry.width(), geometry.height()
-
-    def get_screen_width(self):
-        """deprecated"""
-        return self.screen_size()[0]
-
-    def get_screen_height(self):
-        """deprecated"""
-        return self.screen_size()[1]
 
     def get_name(self):
         # return "{0} ({1}, {2})".format(
@@ -244,10 +312,18 @@ class GameRunner(object):
         return self.__game_temp_file.path
 
     def create_temp_dir(self, suffix):
-        return self.fsgs.temp_dir(suffix)
+        warnings.warn("create_temp_dir is deprecated", DeprecationWarning)
+        return self.temp_dir(suffix)
 
     def create_temp_file(self, suffix):
-        return self.fsgs.temp_file(suffix)
+        warnings.warn("create_temp_file is deprecated", DeprecationWarning)
+        return self.temp_file(suffix)
+
+    def temp_dir(self, name):
+        return TemporaryNamedItem(root=self.temp_root, name=name, dir=True)
+
+    def temp_file(self, name):
+        return TemporaryNamedItem(root=self.temp_root, name=name, dir=False)
 
     def run(self):
         executable = PluginManager.instance().find_executable(self.emulator)
@@ -294,6 +370,9 @@ class GameRunner(object):
 
         env = os.environ.copy()
         if self.use_fullscreen():
+            fullscreen_mode = self.config.get("fullscreen_mode", "")
+
+            x, y, w, h = self.screen_rect()
             for key in ["FSGS_GEOMETRY", "FSGS_WINDOW"]:
                 if env.get(key, ""):
                     # Already specified externally, so we just use
@@ -301,22 +380,29 @@ class GameRunner(object):
                     pass
                     print("using existing fullscreen window rect")
                 else:
-                    x, y, w, h = self.screen_rect()
                     env[key] = "{0},{1},{2},{3}".format(x, y, w, h)
             print("fullscreen rect:", env.get("FSGS_GEOMETRY", ""))
+            # SDL 1.2 multi-display support. Hopefully, SDL's display
+            # enumeration is the same as QT's.
+            env["SDL_VIDEO_FULLSCREEN_DISPLAY"] = str(self.screen_index())
 
-            if self.config.get("fullscreen_mode", "") == "window":
+            if fullscreen_mode == "window":
                 print("using fullscreen window mode")
-                env["FSGS_FULLSCREEN"] = "window"
-            elif self.config.get("fullscreen_mode", "") == "fullscreen":
-                print("using fullscreen (legacy) mode")
-                env["FSGS_FULLSCREEN"] = "fullscreen"
+                # env["FSGS_FULLSCREEN"] = "window"
+                env["FSGS_FULLSCREEN"] = "1"
             else:
-                print("using fullscreen desktop mode")
-                env["FSGS_FULLSCREEN"] = "desktop"
+                del env["FSGS_WINDOW"]
+                if fullscreen_mode == "fullscreen":
+                    print("using fullscreen (legacy) mode")
+                    # env["FSGS_FULLSCREEN"] = "fullscreen"
+                    env["FSGS_FULLSCREEN"] = "2"
+                else:
+                    print("using fullscreen desktop mode")
+                    # env["FSGS_FULLSCREEN"] = "desktop"
+                    env["FSGS_FULLSCREEN"] = "3"
         else:
             print("using window mode (no fullscreen)")
-            env["FSGS_FULLSCREEN"] = ""
+            env["FSGS_FULLSCREEN"] = "0"
 
         env.update(self.env)
         env["HOME"] = self.home.path
@@ -433,14 +519,30 @@ class GameRunner(object):
             #     game_refresh = 60.0
             # else:
             #     game_refresh = 50.0
-            refresh_rate_tool = RefreshRateTool(
-                game_platform=self.fsgs.game.platform.id,
-                game_refresh=round(game_refresh))
-            refresh_rate_tool.set_best_mode()
-            if refresh_rate_tool.allow_vsync():
+
+            # refresh_rate_tool = RefreshRateTool(
+            #     game_platform=self.fsgs.game.platform.id,
+            #     game_refresh=round(game_refresh))
+            # refresh_rate_tool.set_best_mode()
+            # if refresh_rate_tool.allow_vsync():
+            #     print("setting vsync to true")
+            #     self.set_vsync(True)
+            #     return refresh_rate_tool.get_display_refresh()
+            screen_refresh = self.screen_refresh_rate()
+            if self.config["assume_refresh_rate"]:
+                try:
+                    screen_refresh = float(self.config["assume_refresh_rate"])
+                except ValueError:
+                    print("Could not parse 'assume_refresh_rate' value")
+                else:
+                    print("Assuming screen refresh rate:", screen_refresh)
+
+            print("Game refresh rate:", game_refresh)
+            print("Screen refresh rate:", screen_refresh)
+            if int(round(screen_refresh)) == int(round(game_refresh)):
                 print("setting vsync to true")
                 self.set_vsync(True)
-                return refresh_rate_tool.get_display_refresh()
+                return True
         else:
             print("vsync is not enabled")
         print("setting vsync to false")
@@ -453,3 +555,6 @@ class GameRunner(object):
 
     def abort(self):
         print("GameRunner.abort - WARNING: not implemented")
+
+    def finish(self):
+        pass

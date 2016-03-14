@@ -10,7 +10,8 @@ class MAMERunner(GameRunner):
 
     def __init__(self, fsgs):
         super().__init__(fsgs)
-        self.emulator = "mame-fs"
+        # noinspection SpellCheckingInspection
+        self.emulator = "multiemu-fs"
         self.mame_init()
 
     def mame_emulator_name(self):

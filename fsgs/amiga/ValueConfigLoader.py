@@ -19,6 +19,7 @@ class ValueConfigLoader(object):
         self.values = {}
         self.uuid = uuid
         self._file_list = None
+        self._cue_sheets = None
         if uuid:
             self.options["database_url"] = "http://{0}/game/{1}".format(
                 OGDClient.get_server(), uuid)
@@ -45,14 +46,15 @@ class ValueConfigLoader(object):
         platform = self.values.get("platform", "Amiga")
         self.options["platform"] = platform.lower()
 
-        if platform == "Amiga":
+        platform = platform.lower()
+        if platform == "amiga":
             pass
-        elif platform == "CD32":
+        elif platform == "cd32":
             amiga_model = "CD32"
             cd_based = True
             self.options["joystick_port_1_mode"] = "cd32 gamepad"
-        elif platform == "CDTV":
-            amiga_model = "CDTV"
+        elif platform == "cdtv":
+            amiga_model = "cdtv"
             cd_based = True
         else:
             raise Exception("unknown platform")
@@ -113,6 +115,11 @@ class ValueConfigLoader(object):
         # for now, just copy all options to config without checking
         for key, value in self.options.items():
             self.config[key] = value
+
+        if (self.config.get("amiga_model", "") == "A500" and
+                self.config.get("slow_memory") == "0"):
+            self.config["amiga_model"] = "A500/512K"
+            self.config["slow_memory"] = ""
 
         self.set_name_and_uuid()
         self.contract_paths()
@@ -337,6 +344,12 @@ class ValueConfigLoader(object):
             self._file_list = json.loads(file_list_json)
         return self._file_list
 
+    def get_cue_sheets(self):
+        if self._cue_sheets is None:
+            cue_sheets_json = self.values.get("cue_sheets", "[]")
+            self._cue_sheets = json.loads(cue_sheets_json)
+        return self._cue_sheets
+
     def build_media_list(self, floppies=False, cds=False, hds=False):
         media_list = []
         added = set()
@@ -437,7 +450,31 @@ class ValueConfigLoader(object):
         raise Exception("cdrom_sha1_to_uri: could not find " + sha1)
 
     def load_cdroms(self):
-        media_list = self.build_media_list(cds=True)
+        # media_list = self.build_media_list(cds=True)
+        cue_sheets = self.get_cue_sheets()
+        if cue_sheets:
+            return self.load_cdroms_from_cue_sheets(cue_sheets)
+        cue = False
+        ccd = False
+        # iso = False
+        for file_item in self.get_file_list():
+            if file_item["name"].endswith(".cue"):
+                cue = True
+            if file_item["name"].endswith(".ccd"):
+                ccd = True
+            # if file_item["name"].endswith(".iso"):
+            #     iso = True
+        media_list = []
+        if ccd:
+            ext = ".ccd"
+        elif cue:
+            ext = ".cue"
+        else:
+            ext = ".iso"
+        for file_item in self.get_file_list():
+            if file_item["name"].endswith(ext):
+                media_list.append((file_item["name"], file_item["sha1"]))
+        print("load_cdroms media_list =", media_list)
         for i, values in enumerate(media_list):
             path, sha1 = values
             path = self.cdrom_sha1_to_uri(sha1)
@@ -446,6 +483,13 @@ class ValueConfigLoader(object):
                 self.config["x_cdrom_drive_{0}_sha1".format(i)] = sha1
             self.config["cdrom_image_{0}".format(i)] = path
             self.config["x_cdrom_image_{0}_sha1".format(i)] = sha1
+
+    def load_cdroms_from_cue_sheets(self, cue_sheets):
+        for i, item in enumerate(cue_sheets):
+            path = "game://{}/{}".format(self.uuid, item["name"])
+            if i < 1:
+                self.config["cdrom_drive_{0}".format(i)] = path
+            self.config["cdrom_image_{0}".format(i)] = path
 
     def load_hard_drives(self):
         media_list = self.build_media_list(hds=True)

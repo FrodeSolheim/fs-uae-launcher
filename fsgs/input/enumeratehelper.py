@@ -1,12 +1,12 @@
 import re
-import traceback
 import subprocess
+import traceback
+
 from fsgs.amiga.FSUAEDeviceHelper import FSUAEDeviceHelper
 from .device import Device
 
 
 class EnumerateHelper(object):
-
     def __init__(self):
         self.devices = []
         self.joystick_devices = []
@@ -105,7 +105,6 @@ class EnumerateHelper(object):
         #     device.configure("megadrive")
 
         joystick_like_devices = self.joystick_like_devices[:]
-
         print("ports:")
         for port in ports:
             for i, device in enumerate(joystick_like_devices):
@@ -114,5 +113,4 @@ class EnumerateHelper(object):
                     joystick_like_devices.pop(i)
                     port.device = device
                     break
-
             print(" /", port.name, port.device)

@@ -367,8 +367,8 @@ class LauncherWindow(WindowWithTabs):
                 hor2_layout = fsui.HorizontalLayout()
                 vert_layout.add(hor2_layout, fill=True, margin=10)
                 launch_group = LaunchGroup(self)
-                hor2_layout.add_spacer(0, expand=True)
-                hor2_layout.add(launch_group)
+                # hor2_layout.add_spacer(0, expand=True)
+                hor2_layout.add(launch_group, expand=True)
 
             self.books.append(book)
             self.add_column_content(column)

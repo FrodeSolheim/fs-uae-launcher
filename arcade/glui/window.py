@@ -376,13 +376,13 @@ liberation_sans_narrow_bold_path = None
 vera_font_path = None
 
 
-def find_font_path(name):
+def find_font_path_or_stream(name):
     path = os.path.join(
         FSGSDirectories.get_base_dir(), "Workspace", "Fonts", name)
     if os.path.exists(path):
         return path
-    path = resources.resource_filename(name)
-    return path
+    stream = resources.resource_stream(name)
+    return stream
 
 
 def reinit_fonts():
@@ -393,7 +393,8 @@ def reinit_fonts():
     global vera_font_path
 
     if liberation_sans_bold_path is None:
-        liberation_sans_bold_path = find_font_path("LiberationSans-Bold.ttf")
+        liberation_sans_bold_path = find_font_path_or_stream(
+            "LiberationSans-Bold.ttf")
 
     # if liberation_sans_narrow_bold_path is None:
     #     liberation_sans_narrow_bold_path = resources.resource_filename(
