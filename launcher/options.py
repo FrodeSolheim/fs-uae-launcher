@@ -42,6 +42,7 @@ class Option(object):
     FLOPPY_DRIVE_VOLUME = "floppy_drive_volume"
     FLOPPY_DRIVE_VOLUME_EMPTY = "floppy_drive_volume_empty"
     FSAA = "fsaa"
+    FULL_KEYBOARD = "full_keyboard"
     FULLSCREEN = "fullscreen"
     GRAPHICS_CARD = "graphics_card"
     GRAPHICS_MEMORY = "graphics_memory"
@@ -452,6 +453,12 @@ options = {
             ("4", "4x4"),
             ("8", "8x8"),
         ]
+    },
+
+    "full_keyboard": {
+        "default": "0",
+        "description": N_("Start with full keyboard emulation"),
+        "type": "boolean",
     },
 
     "fullscreen": {
