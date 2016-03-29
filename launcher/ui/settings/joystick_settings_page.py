@@ -10,8 +10,8 @@ class JoystickSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("joystick-settings", "pkg:workspace")
-        gettext("Joystick Settings")
-        title = gettext("Joystick")
+        # gettext("Joystick Settings")
+        title = gettext("Joysticks & Gamepads")
         subtitle = gettext("Configure joysticks and set preferred joystick "
                            "devices")
         self.add_header(icon, title, subtitle)

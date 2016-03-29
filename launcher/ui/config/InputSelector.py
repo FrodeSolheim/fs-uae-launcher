@@ -26,7 +26,7 @@ class InputSelector(fsui.Group):
         self.joystick_mode_titles = [gettext("No Amiga Device"),
                                      gettext("Amiga Mouse"),
                                      gettext("Amiga Joystick"),
-                                     gettext("CD32 Controller")]
+                                     gettext("CD32 Pad")]
 
         self.mode_choice = fsui.Choice(self, self.joystick_mode_titles)
         AmigaEnableBehavior(self.mode_choice)

@@ -1,10 +1,13 @@
 Version 2.7.9.dev:
 
+* New GUI controls for monitor, fullscreen mode, video sync and monitor info.
 * New settings control for starting FS-UAE with full keyboard emulation.
 * Fixed issue when you have a mouse with the same device name as a joystick.
 * More compact binary distributions, far fewer data files.
 * OS X: New skeleton .app launchers for portable suite.
 * Windows: Proxy executables passes on arguments.
+* CD-based games are now downloadable from OAGD.net locker (if the user has
+  them stored there).
 * Recognize .ccd CD variants from the online game database.
 
 Version 2.7.8dev:

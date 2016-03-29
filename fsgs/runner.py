@@ -5,6 +5,8 @@ import tempfile
 import warnings
 from collections import defaultdict
 
+from fsgs.amiga.FSUAE import FSUAE
+
 import fsboot
 from fsbc.application import Application
 from fsbc.system import windows, macosx
@@ -212,7 +214,8 @@ class GameRunner(object):
         rect = self.screen_rect()
         return rect[2], rect[3]
 
-    def _screens(self):
+    @classmethod
+    def _screens(cls):
         screens = []
         try:
             from fsui.qt import init_qt
@@ -228,7 +231,8 @@ class GameRunner(object):
                 screens.append([geometry.x(), i, geometry])
         return screens
 
-    def screen_refresh_rate(self):
+    @classmethod
+    def screen_refresh_rate_for_monitor(cls, monitor):
         try:
             from fsui.qt import init_qt
             qapplication = init_qt()
@@ -236,23 +240,47 @@ class GameRunner(object):
             return 0
         else:
             for i, screen in enumerate(qapplication.screens()):
-                print("Screen {0} refresh rate = {1}".format(
+                print("Screen {0} refresh rate (Qt) = {1}".format(
                     i, screen.refreshRate()))
-            index = self.screen_index()
+            index = cls.screen_index_for_monitor(monitor)
             screen = qapplication.screens()[index]
-            return int(round(screen.refreshRate()))
 
-    def screen_index(self):
-        rect = self.screen_rect()
-        for i, s in enumerate(self._screens()):
+            if windows or macosx:
+                return int(round(screen.refreshRate()))
+
+            refresh_rate_tool = RefreshRateTool()
+            screens = refresh_rate_tool.screens_xrandr()
+            rect = cls.screen_rect_for_monitor(monitor)
+            # from pprint import pprint
+            # pprint(screens)
+            for screen in screens:
+                print("Screen {} refresh rate (Xrandr) = {}".format(
+                    screen, screens[screen]["refresh_rate"]))
+            for screen in screens:
+                if rect == screen:
+                    return screens[screen]["refresh_rate"]
+            return 0
+
+    def screen_refresh_rate(self):
+        monitor = self.config.get("monitor", "")
+        return self.screen_refresh_rate_for_monitor(monitor)
+
+    @classmethod
+    def screen_index_for_monitor(cls, monitor):
+        rect = cls.screen_rect_for_monitor(monitor)
+        for i, s in enumerate(cls._screens()):
             if rect == (s[2].x(), s[2].y(), s[2].width(), s[2].height()):
                 return i
         raise Exception("Could not find screen at position {}".format(rect))
 
-    def screen_rect(self):
-        screens = self._screens()
-        screens.sort()
+    def screen_index(self):
         monitor = self.config.get("monitor", "")
+        return self.screen_index_for_monitor(monitor)
+
+    @classmethod
+    def screen_rect_for_monitor(cls, monitor):
+        screens = cls._screens()
+        screens.sort()
         if monitor == "left":
             mon = 0
         elif monitor == "middle-right":
@@ -264,6 +292,10 @@ class GameRunner(object):
         display = round(mon / 3 * (len(screens) - 1))
         geometry = screens[display][2]
         return geometry.x(), geometry.y(), geometry.width(), geometry.height()
+
+    def screen_rect(self):
+        monitor = self.config.get("monitor", "")
+        return self.screen_rect_for_monitor(monitor)
 
     def get_name(self):
         # return "{0} ({1}, {2})".format(
@@ -369,6 +401,7 @@ class GameRunner(object):
             del os.environ["SDL_VIDEODRIVER"]
 
         env = os.environ.copy()
+        FSUAE.add_environment_from_settings(env)
         if self.use_fullscreen():
             fullscreen_mode = self.config.get("fullscreen_mode", "")
 

@@ -18,4 +18,6 @@ class GameBoyAdvancePlatformHandler(PlatformHandler):
 
 
 class GameBoyAdvanceLoader(SimpleLoader):
-    pass
+
+    def load_extra(self, values):
+       	self.config["sram_type"] = values["sram_type"]

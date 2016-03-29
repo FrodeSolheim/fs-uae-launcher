@@ -46,7 +46,7 @@ class SettingsDialog(PagedDialog):
             # gettext("Language"), LanguageSettingsPage,
             fsui.Icon("language-settings", "pkg:workspace"))
         self.add_page(
-            gettext("Joystick"), JoystickSettingsPage,
+            gettext("Joysticks & Gamepads"), JoystickSettingsPage,
             fsui.Icon("joystick-settings", "pkg:workspace"))
         self.add_page(
             gettext("Keyboard"), KeyboardSettingsPage,

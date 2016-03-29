@@ -15,14 +15,22 @@ class VideoSyncSettingsPage(SettingsPage):
         self.add_header(icon, title, subtitle)
 
         label = fsui.MultiLineLabel(self, gettext(
-            "Enabling the following option will prevent tearing from "
-            "occurring, but will also use more CPU. Input latency "
-            "may become slightly higher."), 640)
+            "Enabling the following option will synchronize the emulation "
+            "to the display when the emulation refresh rate matches the"
+            "screen refresh rate."), 640)
         self.layout.add(label, fill=True, margin_top=0)
+        self.video_sync_group = self.add_option("video_sync")
 
-        self.vblank_checkbox = fsui.HeadingCheckBox(self, gettext(
-            "Synchronize buffer swaps with display (prevents tearing)"))
-        self.layout.add(self.vblank_checkbox, margin_top=20)
+        self.low_latency_group = self.add_option("low_latency_vsync")
+
+        # label = fsui.MultiLineLabel(self, gettext(
+        #     "Enabling the following option will prevent tearing from "
+        #     "occurring, but will also use more CPU. Input latency "
+        #     "may become slightly higher."), 640)
+        # self.layout.add(label, fill=True, margin_top=0)
+        # self.vblank_checkbox = fsui.HeadingCheckBox(self, gettext(
+        #     "Synchronize buffer swaps with display (prevents tearing)"))
+        # self.layout.add(self.vblank_checkbox, margin_top=20)
 
         self.sync_method_label = fsui.MultiLineLabel(self, gettext(
             "Depending on your OS and OpenGL drivers, synchronizing "
@@ -30,21 +38,17 @@ class VideoSyncSettingsPage(SettingsPage):
             "Linux). You can experiment with different sync methods "
             "to improve performance."), 640)
         self.layout.add(self.sync_method_label, fill=True, margin_top=20)
-
         self.sync_method_group = self.add_option("video_sync_method")
 
-        self.smooth_label = fsui.MultiLineLabel(self, gettext(
-            "In order to get really smooth Amiga graphics, you need to "
-            "enable the following option, and also make sure your display "
-            "is running at 50Hz (for PAL) or 60Hz (for NTSC)."), 640)
-        self.layout.add(self.smooth_label, fill=True, margin_top=20)
-
-        self.full_sync_checkbox = fsui.HeadingCheckBox(self, gettext(
-            "Also synchronize emulation with display when possible "
-            "(smooth scrolling)"))
-        self.layout.add(self.full_sync_checkbox, margin_top=20)
-
-        self.low_latency_group = self.add_option("low_latency_vsync")
+        # self.smooth_label = fsui.MultiLineLabel(self, gettext(
+        #     "In order to get really smooth Amiga graphics, you need to "
+        #     "enable the following option, and also make sure your display "
+        #     "is running at 50Hz (for PAL) or 60Hz (for NTSC)."), 640)
+        # self.layout.add(self.smooth_label, fill=True, margin_top=20)
+        # self.full_sync_checkbox = fsui.HeadingCheckBox(self, gettext(
+        #     "Also synchronize emulation with display when possible "
+        #     "(smooth scrolling)"))
+        # self.layout.add(self.full_sync_checkbox, margin_top=20)
 
         self.layout.add_spacer(0, expand=True)
 
@@ -71,45 +75,45 @@ class VideoSyncSettingsPage(SettingsPage):
         for key in ["video_sync"]:
             self.on_setting(key, LauncherSettings.get(key))
 
-        self.vblank_checkbox.changed.connect(self.on_vblank_changed)
-        self.full_sync_checkbox.changed.connect(self.on_full_sync_changed)
+        # self.vblank_checkbox.changed.connect(self.on_vblank_changed)
+        # self.full_sync_checkbox.changed.connect(self.on_full_sync_changed)
 
     def on_destroy(self):
         LauncherSettings.remove_listener(self)
 
     def on_setting(self, key, value):
         if key == "video_sync":
-            value = value.lower()
-            self.vblank_checkbox.check(value in ["auto", "full", "vblank"])
-            self.full_sync_checkbox.check(value in ["auto", "full"])
+            # value = value.lower()
+            # self.vblank_checkbox.check(value in ["auto", "full", "vblank"])
+            # self.full_sync_checkbox.check(value in ["auto", "full"])
             self.update_widgets()
 
-    def on_vblank_changed(self):
-        self.on_either_checkbox_changed()
-
-    def on_full_sync_changed(self):
-        self.on_either_checkbox_changed()
-
-    def on_either_checkbox_changed(self):
-        value = ""
-        if self.vblank_checkbox.is_checked():
-            if self.full_sync_checkbox.is_checked():
-                value = "auto"
-            else:
-                value = "vblank"
-        LauncherSettings.set("video_sync", value)
+    # def on_vblank_changed(self):
+    #     self.on_either_checkbox_changed()
+    #
+    # def on_full_sync_changed(self):
+    #     self.on_either_checkbox_changed()
+    #
+    # def on_either_checkbox_changed(self):
+    #     value = ""
+    #     if self.vblank_checkbox.is_checked():
+    #         if self.full_sync_checkbox.is_checked():
+    #             value = "auto"
+    #         else:
+    #             value = "vblank"
+    #     LauncherSettings.set("video_sync", value)
 
     def update_widgets(self):
         value = LauncherSettings.get("video_sync")
-        vblank = value in ["vblank", "auto", "full"]
-        full = value in ["auto", "full"]
+        vblank = value in ["1", "auto", "full", "vblank"]
+        full = value in ["1", "auto", "full"]
 
-        self.full_sync_checkbox.enable(vblank)
+        # self.full_sync_checkbox.enable(vblank)
         self.sync_method_group.label.enable(vblank)
         self.sync_method_group.widget.enable(vblank)
         self.sync_method_group.help_button.enable(vblank)
         self.sync_method_label.enable(vblank)
-        self.smooth_label.enable(vblank)
+        # self.smooth_label.enable(vblank)
         self.low_latency_group.label.enable(full)
         self.low_latency_group.widget.enable(full)
         self.low_latency_group.help_button.enable(full)

@@ -191,6 +191,15 @@ class C64Driver(GameRunner):
         else:
             f.write("VICIIHwScale=0\n")
 
+        audio_driver = self.config.get("vice_audio_driver", "")
+        if audio_driver:
+            print("Using video audio driver", repr(audio_driver))
+            f.write("SoundDeviceName={0}\n".format(audio_driver))
+        else:
+            audio_driver = self.config.get("audio_driver", "")
+            if audio_driver == "sdl":
+                f.write("SoundDeviceName={0}\n".format(audio_driver))
+
         if self.use_audio_frequency():
             f.write("SoundSampleRate={0}\n".format(self.use_audio_frequency()))
         # default buffer size for vice is 100ms, that's far too much...

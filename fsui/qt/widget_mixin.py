@@ -106,6 +106,9 @@ class WidgetMixin(MixinBase):
         widget = getattr(self, "_widget", self)
         return widget.isEnabled()
 
+    def set_visible(self, visible):
+        return self.show_or_hide(visible)
+
     def show_or_hide(self, show):
         widget = getattr(self, "_widget", self)
         if show:

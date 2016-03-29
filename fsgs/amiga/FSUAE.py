@@ -64,11 +64,7 @@ class FSUAE(object):
             values = app.settings.values
         except AttributeError:
             values = {}
-
         for key, value in values.items():
-            # if not key.startswith("environment_"):
-            #     continue
-            # key = key[12:].upper()
             if not key.isupper():
                 continue
             # Check if it looks like a valid environment variable

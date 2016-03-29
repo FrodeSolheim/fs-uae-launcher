@@ -1,5 +1,7 @@
 import re
 import subprocess
+import traceback
+
 from fsbc.system import windows, macosx
 
 if windows:
@@ -367,3 +369,65 @@ class RefreshRateTool(object):
                                   'refresh': float(rate), 'bpp': 0,
                                   'flags': 0})
         return mode
+
+    def screens_xrandr(self):
+        try:
+            return self._screens_xrandr()
+        except Exception:
+            traceback.print_exc()
+            return {}
+
+    def _screens_xrandr(self):
+        screens = {}
+        screen = {
+            "modes": []
+        }
+        args = ["/usr/bin/env", "xrandr", "-q"]
+        p = subprocess.Popen(args, stdout=subprocess.PIPE)
+        for line in p.stdout:
+            last_refresh_rate = 0.0
+            line = line.decode("ISO-8859-1")
+            if line.startswith(" "):
+                line = line.replace("*", " * ")
+                line = line.replace("+", " + ")
+                line = re.sub(" +", " ", line).strip()
+                parts = line.split(" ")
+                resolution_str = parts[0]
+                w, h = resolution_str.split("x")
+                w = int(w)
+                h = int(h)
+                for part in parts[1:]:
+                    if part == "*":
+                        screen["refresh_rate"] = last_refresh_rate
+                    elif part == "+":
+                        pass
+                    else:
+                        last_refresh_rate = float(part)
+                        screen["modes"].append({
+                            "width": w,
+                            "height": h,
+                            "refresh_rate": last_refresh_rate
+                        })
+            else:
+                line = re.sub(" +", " ", line).strip()
+                parts = line.split(" ")
+                for part in parts:
+                    if "x" not in part or "+" not in part:
+                        continue
+                    geom = part.replace("x", " ").replace("+", " ")
+                    print(geom)
+                    w, h, x, y = geom.split(" ")
+                    w = int(w)
+                    h = int(h)
+                    x = int(x)
+                    y = int(y)
+                    screen = {
+                        "x": x,
+                        "y": x,
+                        "width": x,
+                        "height": x,
+                        "modes": [],
+                        "refresh_rate": 0.0,
+                    }
+                    screens[(x, y, w, h)] = screen
+        return screens

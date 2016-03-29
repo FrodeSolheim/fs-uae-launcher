@@ -646,7 +646,7 @@ options = {
     },
 
     "low_latency_vsync": {
-        "default": "0",
+        "default": "1",
         "description": N_("Low latency video sync"),
         "type": "boolean",
     },
@@ -1018,13 +1018,12 @@ options = {
     },
 
     "video_sync": {
-        "default": "off",
+        "default": "0",
         "description": N_("Video synchronization"),
         "type": "choice",
         "values": [
-            ("auto", N_("Auto")),
-            ("vblank", N_("Buffer swap only")),
-            ("off", N_("Off")),
+            ("1", N_("Auto")),
+            ("0", N_("Off")),
         ]
     },
 

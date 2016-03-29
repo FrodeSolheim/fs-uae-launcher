@@ -2,6 +2,7 @@ import fsui as fsui
 from fsbc.application import app
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
+from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
 
 class FullscreenModeButton(fsui.ImageButton):
@@ -12,26 +13,25 @@ class FullscreenModeButton(fsui.ImageButton):
         self.desktop_icon = fsui.Image(
             "launcher:res/16/fullscreen_desktop.png")
         super().__init__(parent, self.desktop_icon)
-        self.set_tooltip(gettext("Toggle fullscreen mode"))
+        self.set_tooltip(gettext(
+            "Change fullscreen mode (desktop, fullscreen, window)"))
         self.set_min_width(40)
         self.fullscreen_mode = "desktop"
-        self.on_setting("fullscreen_mode", app.settings["fullscreen_mode"])
-        LauncherSettings.add_listener(self)
+        SettingsBehavior(self, ["fullscreen", "fullscreen_mode"])
 
-    def on_destroy(self):
-        LauncherSettings.remove_listener(self)
+    def on_fullscreen_setting(self, value):
+        self.set_enabled(value == "1")
 
-    def on_setting(self, key, value):
-        if key == "fullscreen_mode":
-            if value == "fullscreen":
-                self.fullscreen_mode = "fullscreen"
-                self.set_image(self.fullscreen_icon)
-            elif value == "window":
-                self.fullscreen_mode = "window"
-                self.set_image(self.window_icon)
-            else:
-                self.fullscreen_mode = "desktop"
-                self.set_image(self.desktop_icon)
+    def on_fullscreen_mode_setting(self, value):
+        if value == "fullscreen":
+            self.fullscreen_mode = "fullscreen"
+            self.set_image(self.fullscreen_icon)
+        elif value == "window":
+            self.fullscreen_mode = "window"
+            self.set_image(self.window_icon)
+        else:
+            self.fullscreen_mode = "desktop"
+            self.set_image(self.desktop_icon)
 
     def on_activate(self):
         if self.fullscreen_mode == "fullscreen":

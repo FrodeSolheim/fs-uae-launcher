@@ -635,7 +635,7 @@ class FwsWindow(RealWindow):
         try:
             import workspace
         except ImportError:
-            fws = None
+            workspace = None
         else:
             _use_fws = True
-        del fws
+        del workspace
