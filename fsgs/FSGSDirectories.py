@@ -23,12 +23,16 @@ class FSGSDirectories(object):
             return
         print("FSGSDirectories._initialize")
         cls.get_base_dir()
-        # cls.portable_dir()
         cls._initialized = True
 
     @classmethod
+    @functools.lru_cache()
     def get_base_dir(cls):
-        return fsboot.base_dir()
+        path = fsboot.base_dir()
+        # Configuration and file database depends on path normalization,
+        # especially for cross-platform portable mode.
+        path = Paths.get_real_case(path)
+        return path
 
     @classmethod
     @functools.lru_cache()

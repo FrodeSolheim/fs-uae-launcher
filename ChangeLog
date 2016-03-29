@@ -1,5 +1,6 @@
 Version 2.7.9.dev:
 
+* Scanned files were not stored with proper relative paths on Windows.
 * New GUI controls for monitor, fullscreen mode, video sync and monitor info.
 * New settings control for starting FS-UAE with full keyboard emulation.
 * Fixed issue when you have a mouse with the same device name as a joystick.
