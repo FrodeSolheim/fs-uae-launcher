@@ -39,6 +39,8 @@ class ListView(QListView, WidgetMixin):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
             self.__double_clicked()
+        else:
+            super().keyPressEvent(event)
 
     def __double_clicked(self):
         index = self.get_index()

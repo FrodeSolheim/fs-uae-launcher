@@ -6,7 +6,7 @@ from configparser import ConfigParser
 import fsboot
 from fsbc.paths import Paths
 from fsbc.settings import Settings
-from fsbc.system import windows
+from fsbc.system import windows, macosx
 from fsbc.user import get_common_documents_dir
 from fsbc.user import get_documents_dir
 
@@ -312,20 +312,29 @@ class FSGSDirectories(object):
         return paths
 
     @classmethod
-    def get_default_search_path(cls):
+    def get_amiga_forever_directories(cls):
         paths = []
-        path = cls.get_base_dir()
-        # if windows:
-        #     path = path.replace("/", "\\")
-        paths.append(path)
-
         if windows:
             path = get_common_documents_dir()
             path = os.path.join(path, "Amiga Files")
             if os.path.exists(path):
                 paths.append(path)
+        else:
+            path = os.path.expanduser(
+                "~/.wine/drive_c/users/Public/Documents/Amiga Files")
+            if os.path.exists(path):
+                paths.append(path)
         path = cls.get_base_dir()
         path = os.path.join(path, "AmigaForever", "Amiga Files")
         if os.path.exists(path):
+            paths.append(path)
+        return paths
+
+    @classmethod
+    def get_default_search_path(cls):
+        paths = []
+        path = cls.get_base_dir()
+        paths.append(path)
+        for path in cls.get_amiga_forever_directories():
             paths.append(path)
         return paths

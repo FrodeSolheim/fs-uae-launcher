@@ -20,21 +20,9 @@ class IRC:
         self.my_nick = ""
         self.client = None
         # FIXME: should not be hardcoded here
-        self.default_channel = "#lobby"
+        self.default_channel = "#Lobby"
         self.active_channel_name = self.default_channel
         self.connection = None
-
-    # 
-    # def reset(cls):
-    #     self.running = False
-    #     self.stopping = False
-    #     self.nick_number = 0
-    #     self.channels = {}
-    #     self.my_nick = ""
-    #     self.client = None
-    #     # FIXME: should not be hardcoded here
-    #     self.default_channel = "#lobby"
-    #     self.active_channel_name = self.default_channel
 
     def message(self, message, color=None):
         self.channel(self.active_channel_name).message(message, color)

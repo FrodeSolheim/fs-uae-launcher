@@ -1,5 +1,8 @@
-Version 2.7.9.dev:
+Version 2.7.9dev:
 
+* Warn about old plugin versions, if detected.
+* Detect ~/.wine/users/Public/Documents/Amiga Files, if present.
+* Some changes to the settings dialog, video pages merged from 3 to 2.
 * Scanned files were not stored with proper relative paths on Windows.
 * New GUI controls for monitor, fullscreen mode, video sync and monitor info.
 * New settings control for starting FS-UAE with full keyboard emulation.

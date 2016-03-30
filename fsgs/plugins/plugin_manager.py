@@ -5,18 +5,42 @@ import subprocess
 import traceback
 from configparser import ConfigParser, NoSectionError
 from operator import attrgetter
+
+from fsbc.util import Version
+
 from fsbc.system import windows, linux, macosx
 from fsgs.FSGSDirectories import FSGSDirectories
 
 logger = logging.getLogger("PLUGINS")
 
+known_plugin_versions = {
+    "CAPSImg": "5.1fs2",
+    "DOSBox-FS": "0.74.3969fs3",
+    "Hatari-FS": "1.9.0fs2",
+    "Mednafen-FS": "0.9.38.7fs2",
+    "MultiEmu-FS": "0.168fs0",
+    "QEMU-UAE": "3.8.1qemu2.2.0",
+    "Regina-FS": "3.9.1fs0",
+    "UADE-FS": "2.13fs1",
+    "Vice-FS": "2.4.25fs3",
+}
+
 
 class BasePlugin:
 
-    def __init__(self, path, name):
+    def __init__(self, path, name, version="0.0.0"):
         self.path = path
         self.name = name
+        self.version = version
         self._provides = {}
+        # outdated being None implies that it is unknown
+        self.outdated = None
+        known_version = known_plugin_versions.get(self.name, None)
+        if known_version:
+            try:
+                self.outdated = Version(self.version) < Version(known_version)
+            except ValueError:
+                pass
 
     def add_provide(self, key, value):
         self._provides[key] = value
@@ -28,15 +52,14 @@ class BasePlugin:
 class Plugin(BasePlugin):
 
     def __init__(self, path, name, version, cp):
-        super().__init__(path, name)
-        self.version = version
+        super().__init__(path, name, version)
         self.load_provides(cp)
 
     def load_provides(self, cp):
         logger.debug("loading provides for %s %s", self.path, self.platform())
         try:
             for key, value in cp.items(self.platform()):
-                self.provides[key] = value
+                self._provides[key] = value
         except NoSectionError:
             pass
 
@@ -89,7 +112,10 @@ class Expansion(BasePlugin):
 
     def __init__(self, path, arch_path):
         name = os.path.basename(path)
-        super().__init__(path, name)
+        version_path = os.path.join(arch_path, "Version.txt")
+        with open(version_path, "r", encoding="UTF-8") as f:
+            version = f.read().strip()
+        super().__init__(path, name, version)
         self._arch_path = arch_path
 
     def load_provides(self):

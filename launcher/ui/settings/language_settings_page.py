@@ -10,8 +10,10 @@ class LanguageSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("language-settings", "pkg:workspace")
-        title = gettext("Appearance")
-        subtitle = gettext("Set language and look for FS-UAE applications")
+        # gettext("Appearance")
+        title = gettext("Language")
+        # gettext("Set language and look for FS-UAE applications")
+        subtitle = gettext("Set language for FS-UAE applications")
         self.add_header(icon, title, subtitle)
 
         hori_layout = fsui.HorizontalLayout()
@@ -36,14 +38,14 @@ class LanguageSettingsPage(SettingsPage):
         self.layout.add(
             fsui.MultiLineLabel(self, information, 640))
 
-        if fsboot.get("fws") == "1":
-            # We omit the appearance settings, since they have no effect
-            # when running under the workspace environment.
-            pass
-        else:
-            self.add_section("FS-UAE Launcher")
-            self.add_option("launcher_theme")
-            self.add_option("launcher_font_size")
+        # if fsboot.get("fws") == "1":
+        #     # We omit the appearance settings, since they have no effect
+        #     # when running under the workspace environment.
+        #     pass
+        # else:
+        #     self.add_section("FS-UAE Launcher")
+        #     self.add_option("launcher_theme")
+        #     self.add_option("launcher_font_size")
 
     def __del__(self):
         print("LanguageWindow.__del__")

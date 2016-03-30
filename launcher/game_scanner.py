@@ -1,6 +1,11 @@
+import os
 import time
 import json
 from binascii import hexlify
+from functools import lru_cache
+
+from fsgs.FSGSDirectories import FSGSDirectories
+
 from fsgs.context import fsgs
 from .launcher_settings import LauncherSettings
 from .i18n import gettext
@@ -37,7 +42,7 @@ class GameScanner(object):
         if self.on_status:
             self.on_status((title, status))
 
-    def game_databases(self):
+    def game_databases(self, custom=True):
         if True:
             # yield "openretro.org/amiga", self.fsgs.get_game_database()
             yield "Amiga", self.fsgs.get_game_database()
@@ -59,9 +64,22 @@ class GameScanner(object):
             yield "SNES", self.fsgs.game_database("SNES")
         if LauncherSettings.get(Option.DATABASE_ATARI) == "1":
             yield "Atari", self.fsgs.game_database("Atari")
+        if custom:
+            for name in self.custom_database_names():
+                yield name, self.fsgs.game_database(name)
+
+    @lru_cache()
+    def custom_database_names(self):
+        custom_dir = os.path.join(FSGSDirectories.databases_dir(), "Custom")
+        custom_databases = []
+        if os.path.exists(custom_dir):
+            for item in os.listdir(custom_dir):
+                if item.endswith(".sqlite"):
+                    custom_databases.append("Custom/" + item[:-7])
+        return custom_databases
 
     def update_game_database(self):
-        for database_name, game_database in self.game_databases():
+        for database_name, game_database in self.game_databases(custom=False):
             with game_database:
                 self._update_game_database(database_name, game_database)
             if self.stop_check():

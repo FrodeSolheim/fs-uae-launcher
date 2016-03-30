@@ -128,14 +128,8 @@ class StartupScan:
 
     @classmethod
     def amiga_forever_kickstart_scan(cls):
-        if windows:
-            print("amiga forever kickstart scan")
-            path = fsbc.user.get_common_documents_dir()
-            path = os.path.join(path, "Amiga Files", "Shared", "rom")
+        for path in FSGSDirectories.get_amiga_forever_directories():
             cls.scan_dir_for_kickstarts(path)
-        path = os.path.join(FSGSDirectories.get_base_dir(), "AmigaForever",
-                            "Amiga Files", "Shared", "rom")
-        cls.scan_dir_for_kickstarts(path)
 
     @staticmethod
     def scan_dir_for_kickstarts(scan_dir):

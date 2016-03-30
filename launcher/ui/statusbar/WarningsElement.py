@@ -1,7 +1,11 @@
 from operator import itemgetter
+
+from fsgs.plugins.plugin_manager import PluginManager
+
 from launcher.launcher_config import LauncherConfig
 from launcher.device_manager import DeviceManager
 from launcher.i18n import gettext
+from launcher.ui.settings.settings_dialog import SettingsDialog
 from launcher.update_manager import UpdateManager
 from launcher.ui.SetupDialog import SetupDialog
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
@@ -59,6 +63,12 @@ class WarningsElement(StatusElement):
         self.amiga_model_calculated = ""
         self.chip_memory = ""
         self.chip_memory_calculated = 0
+
+        self.outdated_plugins = []
+        plugin_manager = PluginManager.instance()
+        for plugin in plugin_manager.plugins():
+            if plugin.outdated:
+                self.outdated_plugins.append(plugin.name)
 
         ConfigBehavior(self, [
             "x_game_notice", "x_variant_notice", "x_variant_warning",
@@ -194,6 +204,10 @@ class WarningsElement(StatusElement):
     def on_update(self):
         UpdateManager.start_update(self.update_available)
 
+    def on_outdated_plugins(self):
+        dialog = SettingsDialog.open(self.get_window())
+        dialog.set_page_by_title(gettext("Plugins"))
+
     def on_kickstart_warning(self):
         text = ("The Kickstart ROM for the chosen Amiga model was not found "
                 "on your system.\n\n"
@@ -239,28 +253,33 @@ class WarningsElement(StatusElement):
             self.warnings.append((ERROR_LEVEL, self.variant_error, ""))
 
         if self.update_available:
-            text = gettext("Update Available: {version}").format(
+            text = gettext("Update available: {version}").format(
                 version=self.update_available)
             self.warnings.append((NOTICE_LEVEL, text, "on_update"))
+
+        if self.outdated_plugins:
+            text = gettext("Outdated plugins: {0}".format(
+                ", ".join(self.outdated_plugins)))
+            self.warnings.append((ERROR_LEVEL, text, "on_outdated_plugins"))
 
         if self.x_kickstart_file_sha1 == Amiga.INTERNAL_ROM_SHA1 and \
                 self.kickstart_file != "internal":
             # text = gettext("Compatibility Issue")
             # self.warnings.append((ERROR_LEVEL, text, "on_kickstart_warning"))
-            text = gettext("Using Kickstart ROM Replacement")
+            text = gettext("Using Kickstart ROM replacement")
             self.warnings.append((WARNING_LEVEL, text, "on_kickstart_warning"))
-            text = gettext("Click to Import Kickstart ROMs")
+            text = gettext("Click to import Kickstart ROMs")
             self.warnings.append((NOTICE_LEVEL, text, "on_import_kickstarts"))
 
         if is_warning(self.x_missing_files):
             if self.download_file:
-                text = gettext("Automatic Download")
+                text = gettext("Automatic download")
                 self.warnings.append((NOTICE_LEVEL, text, ""))
             elif self.download_page:
-                text = gettext("Click to Download Game")
+                text = gettext("Click to download game")
                 self.warnings.append((WARNING_LEVEL, text, "on_download_page"))
             else:
-                text = gettext("Missing Game Files")
+                text = gettext("Missing game files")
                 self.warnings.append((ERROR_LEVEL, text, ""))
 
         if self.__error:

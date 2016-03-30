@@ -48,7 +48,7 @@ def open_window_instance(cls, parent=None):
         cls._window_instance = None
     if cls._window_instance is not None:
         cls._window_instance.raise_and_activate()
-        return
+        return cls._window_instance
     cls._window_instance = cls(parent)
 
     def reset_instance():
@@ -58,6 +58,7 @@ def open_window_instance(cls, parent=None):
 
     cls._window_instance.closed.connect(reset_instance)
     cls._window_instance.show()
+    return cls._window_instance
 
     def monitor_instance_2(count):
         if count < 100:

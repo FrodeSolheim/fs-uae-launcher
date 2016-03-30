@@ -1,7 +1,7 @@
-import weakref
-
 import fsui
 from launcher.options import Option
+from launcher.ui.settings.launcher_settings_page import LauncherSettingsPage
+from launcher.ui.settings.plugins_settings_page import PluginsSettingsPage
 from .advanced_settings_page import AdvancedSettingsPage
 from .advanced_video_settings import AdvancedVideoSettingsPage
 from .audio_settings_page import AudioSettingsPage
@@ -9,9 +9,6 @@ from ..PagedDialog import PagedDialog
 from ...i18n import gettext
 from ...launcher_settings import LauncherSettings
 from ...launcher_signal import LauncherSignal
-# from .CustomSettingsPage import CustomSettingsPage
-from .experimental_features_page import ExperimentalFeaturesPage
-# from .FilterSettingsPage import FilterSettingsPage
 from .game_database_settings_page import GameDatabaseSettingsPage
 from .joystick_settings_page import JoystickSettingsPage
 from .keyboard_settings_page import KeyboardSettingsPage
@@ -21,7 +18,6 @@ from .maintenance_settings_page import MaintenanceSettingsPage
 from .mouse_settings_page import MouseSettingsPage
 from .netplay_settings_page import NetplaySettingsPage
 from .scan_settings_page import ScanSettingsPage
-from .video_sync_settings_page import VideoSyncSettingsPage
 from .video_settings_page import VideoSettingsPage
 from .whdload_settings_page import WHDLoadSettingsPage
 
@@ -42,8 +38,8 @@ class SettingsDialog(PagedDialog):
         # self.setAttribute(Qt.WA_DeleteOnClose, True)
 
         self.add_page(
-            gettext("Appearance"), LanguageSettingsPage,
-            # gettext("Language"), LanguageSettingsPage,
+            # gettext("Appearance"), LanguageSettingsPage,
+            gettext("Language"), LanguageSettingsPage,
             fsui.Icon("language-settings", "pkg:workspace"))
         self.add_page(
             gettext("Joysticks & Gamepads"), JoystickSettingsPage,
@@ -63,14 +59,20 @@ class SettingsDialog(PagedDialog):
         self.add_page(
             gettext("Advanced Video"), AdvancedVideoSettingsPage,
             fsui.Icon("video-settings", "pkg:workspace"))
-        self.add_page(
-            gettext("Synchronization"), VideoSyncSettingsPage,
-            fsui.Icon("video-settings", "pkg:workspace"))
+        # self.add_page(
+        #     gettext("Synchronization"), VideoSyncSettingsPage,
+        #     fsui.Icon("video-settings", "pkg:workspace"))
         # self.add_page(
         #     gettext("Filters & Scaling"), FilterSettingsPage,
         #     fsui.Icon("video-settings", "pkg:workspace"))
         # self.add_page(gettext("OpenGL Settings"), OpenGLSettingsPage)
         # if Settings.get("database_feature") == "1":
+        self.add_page(
+            gettext("Logging"), LoggingSettingsPage,
+            fsui.Icon("settings", "pkg:workspace"))
+        self.add_page(
+            "FS-UAE Launcher", LauncherSettingsPage,
+            fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
             gettext("File Database"), ScanSettingsPage,
             fsui.Icon("indexing-settings", "pkg:workspace"))
@@ -78,9 +80,6 @@ class SettingsDialog(PagedDialog):
             gettext("Game Database"), GameDatabaseSettingsPage,
             fsui.Icon("database-settings", "pkg:workspace"))
         # self.add_page(gettext("Custom Settings"), CustomSettingsPage)
-        self.add_page(
-            gettext("Maintenance"), MaintenanceSettingsPage,
-            fsui.Icon("maintenance", "pkg:workspace"))
         if LauncherSettings.get(Option.NETPLAY_FEATURE) != "0":
             self.add_page(
                 gettext("Net Play"), NetplaySettingsPage,
@@ -89,11 +88,14 @@ class SettingsDialog(PagedDialog):
             "WHDLoad", WHDLoadSettingsPage,
             fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
-            gettext("Logging"), LoggingSettingsPage,
+            gettext("Plugins"), PluginsSettingsPage,
             fsui.Icon("settings", "pkg:workspace"))
+        # self.add_page(
+        #     gettext("Experimental Features"), ExperimentalFeaturesPage,
+        #     fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
-            gettext("Experimental Features"), ExperimentalFeaturesPage,
-            fsui.Icon("settings", "pkg:workspace"))
+            gettext("Maintenance"), MaintenanceSettingsPage,
+            fsui.Icon("maintenance", "pkg:workspace"))
         self.add_page(
             gettext("Advanced Settings"), AdvancedSettingsPage,
             fsui.Icon("settings", "pkg:workspace"))

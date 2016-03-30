@@ -115,3 +115,10 @@ class PagedDialog(fsui.Window):
         self.layout.update()
 
         self.page_changed.emit()
+
+    def set_page_by_title(self, title):
+        index = self.get_page_index_by_title(title)
+        if index is not None:
+            # self.set_page(index)
+            self.list_view.set_index(index)
+        return index

@@ -53,7 +53,7 @@ def split_version(version_string: str) -> List[str]:
     pattern = re.compile(
         "^([0-9]{1,4})(?:\.([0-9]{1,4}))?"
         "(?:\.([0-9]{1,4}))?(?:\.([0-9]{1,4}))?"
-        "(~?[a-z][a-z0-9]*)?(?:_([0-9]+))?$")
+        "(~?[a-z][a-z0-9\.]*)?(?:_([0-9]+))?$")
     m = pattern.match(version_string)
     if m is None:
         raise ValueError(version_string + " is not a valid version number")
@@ -126,6 +126,10 @@ def compare_versions(a: Union[Version, str], b: Union[Version, str]):
     1
     >>> compare_versions("5.9.1.1", "5.9.2dev")
     -1
+    >>> compare_versions("3.8.1qemu2.2.0", "3.9.1qemu2.2.0")
+    -1
+    >>> compare_versions("3.8.1qemu2.4.0", "3.8.1qemu2.2.0")
+    1
     """
     # >>> compare_versions("2.6.0beta1", "2.6.0beta1.1")
     # -1
