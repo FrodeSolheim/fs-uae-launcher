@@ -27,7 +27,6 @@ class GameListSelector(fsui.Choice):
                 old_list_uuid = self.get_selected_list_uuid()
                 print("- old list uuid", repr(old_list_uuid))
                 print("- set choice index to None")
-                self.set_index(None, signal=False)
                 self.populate_list()
                 print("- game lists", self.game_lists)
                 for i, item in enumerate(self.game_lists):
@@ -35,7 +34,7 @@ class GameListSelector(fsui.Choice):
                     if item[0] == old_list_uuid:
                         if self.get_index() != i:
                             print("- set choice index to", i)
-                            self.set_index(i, signal=False)
+                            self.set_index(i)
                         list_found = True
                         break
             if not list_found:
@@ -63,12 +62,16 @@ class GameListSelector(fsui.Choice):
         self.game_lists.insert(
             0, ["", gettext("Configs and Games")])
 
+        currIndex = self.get_index()
+        self.blockSignals(True)
         self.clear()
         for item in self.game_lists:
             list_name = item[1]
             if list_name == "Favorites":
                 list_name = gettext("Favorites")
             self.add_item(list_name)
+        self.blockSignals(False)
+        self.set_index(currIndex)
 
     def get_selected_list_uuid(self):
         index = self.get_index()
@@ -81,4 +84,4 @@ class GameListSelector(fsui.Choice):
     def on_item_selected(self, index):
         unused(index)
         list_uuid = self.get_selected_list_uuid()
-        app.settings["game_list_uuid"] = list_uuid
+        LauncherSettings.set("game_list_uuid", list_uuid)
