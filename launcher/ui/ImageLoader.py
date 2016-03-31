@@ -104,6 +104,8 @@ class ImageLoader(object):
         data = r.read()
         cache_file_partial = "{}.{}.partial".format(
             cache_file, str(uuid4())[:8])
+        if not os.path.exists(os.path.dirname(cache_file_partial)):
+            os.makedirs(os.path.dirname(cache_file_partial))
         with open(cache_file_partial, "wb") as f:
             f.write(data)
         os.rename(cache_file_partial, cache_file)

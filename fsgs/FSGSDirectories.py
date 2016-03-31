@@ -184,8 +184,8 @@ class FSGSDirectories(object):
     @functools.lru_cache()
     def images_dir_for_sha1(cls, sha1):
         path = os.path.join(cls.images_dir(), sha1[:2])
-        if not os.path.exists(path):
-            os.makedirs(path)
+        # if not os.path.exists(path):
+        #     os.makedirs(path)
         return path
 
     @classmethod

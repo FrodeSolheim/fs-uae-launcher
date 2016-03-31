@@ -31,6 +31,8 @@ def get_file_for_sha1(sha1):
 
     server = OGDClient.get_server()
     cache_file_partial = cache_file + ".{0}.partial".format(str(uuid4())[:8])
+    if not os.path.exists(os.path.dirname(cache_file_partial)):
+        os.makedirs(os.path.dirname(cache_file_partial))
     with open(cache_file_partial, "wb") as f:
         url = "http://{0}/image/{1}?{2}".format(server, sha1, size_arg)
         print(url)
