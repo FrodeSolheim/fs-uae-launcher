@@ -1,5 +1,6 @@
 Version 2.7.10dev:
 
+* Force the kickstarts directory to be included in file scanner.
 * Game list selector entry was not respected after updating the game db.
 
 Version 2.7.9dev:

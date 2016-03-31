@@ -83,6 +83,9 @@ class ScanPathsGroup(fsui.Group):
         # startup) and disappear (on scan).
         if not FSGSDirectories.get_configurations_dir() in paths:
             paths.append(FSGSDirectories.get_configurations_dir())
+        # Likewise, we force the Kickstarts directory to always be scanned.
+        if not FSGSDirectories.get_kickstarts_dir() in paths:
+            paths.append(FSGSDirectories.get_kickstarts_dir())
         return paths
 
     def on_add_button(self):
