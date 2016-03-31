@@ -12,7 +12,6 @@ class GameListSelector(fsui.Choice):
         fsui.Choice.__init__(self, parent)
         self.game_lists = []
         self.populate_list()
-        self.item_selected.connect(self.on_item_selected)
 
         LauncherSettings.add_listener(self)
         self.on_setting("game_list_uuid", app.settings["game_list_uuid"])
@@ -27,7 +26,7 @@ class GameListSelector(fsui.Choice):
                 old_list_uuid = self.get_selected_list_uuid()
                 print("- old list uuid", repr(old_list_uuid))
                 print("- set choice index to None")
-                self.set_index(None, signal=False)
+                self.set_index(None)
                 self.populate_list()
                 print("- game lists", self.game_lists)
                 for i, item in enumerate(self.game_lists):
@@ -35,7 +34,7 @@ class GameListSelector(fsui.Choice):
                     if item[0] == old_list_uuid:
                         if self.get_index() != i:
                             print("- set choice index to", i)
-                            self.set_index(i, signal=False)
+                            self.set_index(i)
                         list_found = True
                         break
             if not list_found:
@@ -46,7 +45,8 @@ class GameListSelector(fsui.Choice):
             for i, item in enumerate(self.game_lists):
                 if item[0] == value:
                     if self.get_index() != i:
-                        self.set_index(i)
+                        with self.inhibit_signal("changed"):
+                            self.set_index(i)
                     break
             else:
                 self.set_index(0)
@@ -78,7 +78,6 @@ class GameListSelector(fsui.Choice):
             # should not really happen...
             return ""
 
-    def on_item_selected(self, index):
-        unused(index)
+    def on_changed(self):
         list_uuid = self.get_selected_list_uuid()
         app.settings["game_list_uuid"] = list_uuid

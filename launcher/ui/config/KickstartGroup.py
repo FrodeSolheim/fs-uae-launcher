@@ -64,15 +64,15 @@ class KickstartGroup(fsui.Group):
         self.on_config("kickstart_ext_file", LauncherConfig.get("kickstart_ext_file"))
 
     def set_config_handlers(self):
-        self.kickstart_type_choice.on_change = self.on_kickstart_type_change
-        self.ext_rom_type_choice.on_change = self.on_ext_rom_type_change
+        self.kickstart_type_choice.on_changed = self.on_kickstart_type_changed
+        self.ext_rom_type_choice.on_changed = self.on_ext_rom_type_changed
         LauncherConfig.add_listener(self)
 
     def on_destroy(self):
         print("on_destroy")
         LauncherConfig.remove_listener(self)
 
-    def on_kickstart_type_change(self):
+    def on_kickstart_type_changed(self):
         index = self.kickstart_type_choice.get_index()
         if index == 0:
             if LauncherConfig.get("kickstart_file") == "":
@@ -86,7 +86,7 @@ class KickstartGroup(fsui.Group):
             LauncherConfig.set("kickstart_file", LauncherConfig.get("x_kickstart_file"))
         LauncherConfig.update_kickstart()
 
-    def on_ext_rom_type_change(self):
+    def on_ext_rom_type_changed(self):
         index = self.ext_rom_type_choice.get_index()
         if index == 0:
             if LauncherConfig.get("kickstart_ext_file") == "":

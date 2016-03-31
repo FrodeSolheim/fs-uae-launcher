@@ -51,7 +51,7 @@ class ConfigGroup(fsui.Group):
         #                 margin_top=0, margin_bottom=0)
 
         self.on_setting("config_name", LauncherSettings.get("config_name"))
-        self.config_name_field.on_change = self.on_config_name_change
+        self.config_name_field.on_changed = self.on_config_name_changed
 
         # Config.add_listener(self)
         LauncherSettings.add_listener(self)
@@ -74,7 +74,7 @@ class ConfigGroup(fsui.Group):
             if value != self.config_name_field.get_text().strip():
                 self.config_name_field.set_text(value)
 
-    def on_config_name_change(self):
+    def on_config_name_changed(self):
         text = self.config_name_field.get_text().strip()
         LauncherSettings.set("config_name", text)
         # Settings.set("config_changed", "1")

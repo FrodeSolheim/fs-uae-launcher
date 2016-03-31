@@ -86,8 +86,8 @@ class InputSelector(fsui.Group):
 
     def set_config_handlers(self):
         if self.mode_choice is not None:
-            self.mode_choice.on_change = self.on_mode_change
-        self.device_choice.on_change = self.on_device_change
+            self.mode_choice.on_change = self.on_mode_changed
+        self.device_choice.on_change = self.on_device_changed
         LauncherConfig.add_listener(self)
         LauncherSignal.add_listener("settings_updated", self)
         LauncherSignal.add_listener("device_list_updated", self)
@@ -98,7 +98,7 @@ class InputSelector(fsui.Group):
         LauncherSignal.remove_listener("settings_updated", self)
         LauncherSignal.remove_listener("device_list_updated", self)
 
-    def on_mode_change(self):
+    def on_mode_changed(self):
         if self.mode_choice is not None:
             index = self.mode_choice.get_index()
             value = self.joystick_mode_values[index]
@@ -121,7 +121,7 @@ class InputSelector(fsui.Group):
         if LauncherConfig.get(self.mode_option_key) != value:
             LauncherConfig.set(self.mode_option_key, value)
 
-    def on_device_change(self):
+    def on_device_changed(self):
         index = self.device_choice.get_index()
 
         value = self.joystick_values[index]

@@ -37,7 +37,7 @@ class ConfigurationsPanel(fsui.Panel):
 
         self.text_field = fsui.TextField(
             self, LauncherSettings.get("config_search"))
-        self.text_field.on_change = self.on_search_change
+        self.text_field.on_changed = self.on_search_changed
         if VariantsBrowser.use_horizontal_layout():
             # window is big enough to use fixed size
             # self.text_field.set_min_width(210)
@@ -103,7 +103,7 @@ class ConfigurationsPanel(fsui.Panel):
     def on_favorite_button(self):
         pass
 
-    def on_search_change(self):
+    def on_search_changed(self):
         text = self.text_field.get_text()
         LauncherSettings.set("config_search", text)
 

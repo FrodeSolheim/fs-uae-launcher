@@ -11,7 +11,7 @@ class PickGameDialog(fsui.LegacyDialog):
         self.info = {}
         self.layout = fsui.VerticalLayout(padding=20)
         self.text = fsui.TextField(self)
-        self.text.on_change = self.on_text
+        self.text.on_changed = self.on_text
         self.layout.add(self.text, fill=True)
         self.layout.add_spacer(20)
         self.view = GameListView(self)

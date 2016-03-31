@@ -24,12 +24,12 @@ class TextField(QLineEdit, WidgetMixin):
     def set_cursor_position(self, position):
         self.setCursorPosition(position)
 
-    def on_change(self):
+    def on_changed(self):
         pass
 
-    def __text_changed(self, text):
+    def __text_changed(self, _):
         self.changed.emit()
-        self.on_change()
+        self.on_changed()
 
     def select_all(self):
         self.selectAll()

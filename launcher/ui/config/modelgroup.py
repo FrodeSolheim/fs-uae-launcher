@@ -65,11 +65,11 @@ class ModelGroup(fsui.Group):
 
         ConfigBehavior(self, ["accuracy", "amiga_model"])
 
-        self.model_choice.on_change = self.on_model_change
-        self.sub_model_choice.on_change = self.on_sub_model_change
-        self.accuracy_choice.on_change = self.on_accuracy_change
+        self.model_choice.on_changed = self.on_model_changed
+        self.sub_model_choice.on_change = self.on_sub_model_changed
+        self.accuracy_choice.on_changed = self.on_accuracy_changed
 
-    def on_model_change(self):
+    def on_model_changed(self):
         print("ModelGroup.on_model_change\n")
         index = self.model_choice.get_index()
         model = self.model_ids[index]
@@ -83,7 +83,7 @@ class ModelGroup(fsui.Group):
         # else:
         #     CDManager.clear_all()
 
-    def on_sub_model_change(self):
+    def on_sub_model_changed(self):
         print("ModelGroup.on_sub_model_change\n")
         if self.sub_model_updating:
             print("sub model list is currently updating")
@@ -105,7 +105,7 @@ class ModelGroup(fsui.Group):
         else:
             CDManager.clear_all()
 
-    def on_accuracy_change(self):
+    def on_accuracy_changed(self):
         index = self.accuracy_choice.get_index()
         if index == 0:
             LauncherConfig.set("accuracy", "")

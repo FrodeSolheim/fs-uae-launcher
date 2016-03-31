@@ -19,7 +19,7 @@ class ConfigCheckBox(fsui.CheckBox):
     def on_destroy(self):
         LauncherConfig.remove_listener(self)
 
-    def on_change(self):
+    def on_changed(self):
         if self.is_checked():
             LauncherConfig.set(self.config_key, "1")
         else:

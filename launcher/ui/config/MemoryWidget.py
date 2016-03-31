@@ -14,7 +14,7 @@ class MemoryWidget(fsui.Group):
         # label = fsui.Label(self, label + ":")
         # self.layout.add(label, expand=True, margin_right=10)
         self.checkbox = fsui.CheckBox(self, label + ":")
-        self.checkbox.on_change = self.on_checkbox_change
+        self.checkbox.on_changed = self.on_checkbox_changed
         self.layout.add(self.checkbox, expand=True, margin_right=10)
 
         # choices = [_("Default")]
@@ -39,7 +39,7 @@ class MemoryWidget(fsui.Group):
         self.on_config(self.option_key, LauncherConfig.get(self.option_key))
 
     def set_config_handlers(self):
-        self.choice.on_change = self.on_choice_change
+        self.choice.on_changed = self.on_choice_changed
         LauncherConfig.add_listener(self)
 
     def on_destroy(self):
@@ -49,7 +49,7 @@ class MemoryWidget(fsui.Group):
         return Amiga.get_default_option_value(LauncherConfig.get("amiga_model"),
                                               self.option_key)
 
-    def on_checkbox_change(self):
+    def on_checkbox_changed(self):
         print("\n\n\n\non_checkbox_change\n\n\n\n")
         if self.checkbox.is_checked():
             if LauncherConfig.get(self.option_key) == "":
@@ -77,7 +77,7 @@ class MemoryWidget(fsui.Group):
     #         self.choice.disable()
     #         self.select_value(self.get_default_value())
 
-    def on_choice_change(self):
+    def on_choice_changed(self):
         print("\n\n\n\n -- on_choice_change -- \n\n\n\n")
         index = self.choice.get_index()
         # if index == 0:

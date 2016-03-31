@@ -34,7 +34,7 @@ class ChoiceConfigControl(fsui.Choice):
 
         # FIXME: listen to implicit config also
 
-    def on_change(self):
+    def on_changed(self):
         index = self.get_index()
         LauncherConfig.set(self.option_name, self.choice_values[index])
 
@@ -115,14 +115,14 @@ class ConfigOptionUI(object):
 
         elif option["type"].lower() == "string":
 
-            def on_change():
+            def on_changed():
                 val = text_field.get_text()
                 LauncherConfig.set(name, val.strip())
 
             text_field = fsui.TextField(group)
             # text_field.set_min_width(400)
             text_field.set_text(LauncherConfig.get(name))
-            text_field.on_change = on_change
+            text_field.on_change = on_changed
             group.layout.add(text_field, expand=True)
 
         elif option["type"].lower() == "integer" and "min" in option \
@@ -164,7 +164,7 @@ class ConfigOptionUI(object):
 
         if choice_values:
 
-            def on_change():
+            def on_changed():
                 index = choice.get_index()
                 LauncherConfig.set(name, choice_values[index][0])
 
@@ -175,7 +175,7 @@ class ConfigOptionUI(object):
                 if current == value[0]:
                     choice.set_index(i)
                     break
-            choice.on_change = on_change
+            choice.on_change = on_changed
             group.layout.add_spacer(0, expand=True)
             group.layout.add(choice)
             group.widget = choice

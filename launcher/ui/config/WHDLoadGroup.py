@@ -30,7 +30,7 @@ class WHDLoadGroup(fsui.Group):
         self.on_config("x_whdload_args", LauncherConfig.get("x_whdload_args"))
 
     def set_config_handlers(self):
-        self.text_field.on_change = self.on_text_change
+        self.text_field.on_changed = self.on_text_changed
         LauncherConfig.add_listener(self)
 
     def on_destroy(self):
@@ -42,5 +42,5 @@ class WHDLoadGroup(fsui.Group):
             if value != self.text_field.get_text():
                 self.text_field.set_text(value)
 
-    def on_text_change(self):
+    def on_text_changed(self):
         LauncherConfig.set("x_whdload_args", self.text_field.get_text())

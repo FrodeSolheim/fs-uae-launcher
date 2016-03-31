@@ -18,8 +18,8 @@ class SpinCtrl(WidgetMixin):
     def set_value(self, value):
         self._widget.setValue(value)
 
-    def __value_changed(self, value):
-        self.on_change()
+    def __value_changed(self, _):
+        self.on_changed()
 
     def on_change(self):
         pass

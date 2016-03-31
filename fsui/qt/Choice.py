@@ -49,19 +49,20 @@ class Choice(QComboBox, WidgetMixin):
 
     def __current_index_changed(self):
         print("__current_index_changed", self.currentIndex(),
-              self.inhibit_change_event)
+              "inhibit", self.inhibit_change_event)
         if not self.inhibit_change_event:
             # print("Choice.__current_index_changed")
-            index = self.currentIndex()
-            self.item_selected.emit(index)
             if not getattr(self, "_inhibit_changed", False):
+                if not getattr(self, "_inhibit_item_selected", False):
+                    index = self.currentIndex()
+                    self.item_selected.emit(index)
                 self.changed.emit()
-            return self.on_change()
+                self.on_changed()
 
     def get_index(self):
         return self.currentIndex()
 
-    def set_index(self, index, signal=False):
+    def set_index(self, index, signal=True):
         try:
             if not signal:
                 self.inhibit_change_event = True
@@ -70,7 +71,7 @@ class Choice(QComboBox, WidgetMixin):
             if not signal:
                 self.inhibit_change_event = False
 
-    def on_change(self):
+    def on_changed(self):
         pass
 
 
@@ -101,7 +102,7 @@ class ItemChoice(Choice):
         else:
             self.set_index(index, signal=signal)
 
-    def on_change(self):
+    def on_changed(self):
         self.on_select_item(self.get_index())
 
     def on_select_item(self, index):

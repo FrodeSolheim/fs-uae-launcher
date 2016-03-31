@@ -18,7 +18,7 @@ class CheckBox(QCheckBox, WidgetMixin):
 
     def __state_changed(self):
         self.changed.emit()
-        self.on_change()
+        self.on_changed()
 
     def is_checked(self):
         return self.isChecked()
@@ -26,7 +26,7 @@ class CheckBox(QCheckBox, WidgetMixin):
     def check(self, checked=True):
         self.setChecked(checked)
 
-    def on_change(self):
+    def on_changed(self):
         pass
 
 

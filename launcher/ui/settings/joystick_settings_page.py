@@ -118,13 +118,13 @@ class PreferredJoystickSelector(fsui.Group):
         self.on_setting(self.key, LauncherSettings.get(self.key))
 
     def set_settings_handlers(self):
-        self.device_choice.on_change = self.on_device_change
+        self.device_choice.on_changed = self.on_device_changed
         LauncherSettings.add_listener(self)
 
     def on_destroy(self):
         LauncherSettings.remove_listener(self)
 
-    def on_device_change(self):
+    def on_device_changed(self):
         value = self.device_choice.get_text()
         print("on_device_change", value)
         if value == get_keyboard_title():
