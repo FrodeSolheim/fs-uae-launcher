@@ -1,31 +1,33 @@
 import os
-import time
-import weakref
-from uuid import uuid4
-from fsgs.ogd.client import OGDClient
-from urllib.request import urlopen
 import threading
+import time
 import traceback
+import weakref
+from urllib.request import urlopen
+from uuid import uuid4
+
 import fsui as fsui
 from fsgs.FSGSDirectories import FSGSDirectories
-from ..launcher_signal import LauncherSignal
+from fsgs.ogd.client import OGDClient
 from .Constants import Constants
+from ..launcher_signal import LauncherSignal
 
 
 class ImageLoader(object):
-
     def __init__(self):
         self.stop_flag = False
-        self.requests_lock = threading.Lock()
         self.requests = []
+        self.requests_lock = threading.Lock()
+        self.requests_condition = threading.Condition(self.requests_lock)
         threading.Thread(target=self.image_loader_thread,
                          name="ImageLoaderThread").start()
-
         LauncherSignal.add_listener("quit", self)
 
     def stop(self):
         print("ImageLoader.stop")
-        self.stop_flag = True
+        with self.requests_lock:
+            self.stop_flag = True
+            self.requests_condition.notify()
 
     def on_quit_signal(self):
         print("ImageLoader.on_quit_signal")
@@ -44,18 +46,18 @@ class ImageLoader(object):
         request.image = None
         request.size = size
         request.on_load = on_load
-
         request.args = kwargs
         with self.requests_lock:
             self.requests.append(weakref.ref(request))
+            self.requests_condition.notify()
         return request
 
     def _image_loader_thread(self):
-        while not self.stop_flag:
-            # self.condition.wait()
-
+        while True:
             request = None
             with self.requests_lock:
+                if self.stop_flag:
+                    break
                 while len(self.requests) > 0:
                     request = self.requests.pop(0)()
                     if request is not None:
@@ -63,8 +65,11 @@ class ImageLoader(object):
             if request:
                 self.fill_request(request)
                 request.notify()
-            # FIXME: replace with condition
-            time.sleep(0.01)
+            else:
+                with self.requests_lock:
+                    if self.stop_flag:
+                        break
+                    self.requests_condition.wait()
 
     def fill_request(self, request):
         try:
@@ -73,47 +78,32 @@ class ImageLoader(object):
             traceback.print_exc()
 
     def get_cache_path_for_sha1(self, request, sha1):
-        # print("get_cache_path_for_sha1", sha1)
         cover = request.args.get("is_cover", False)
         if cover:
-            # size_arg = "?size={0}".format(256)
-            # cache_ext = "_{0}".format(256)
-            # size_arg = "?size={0}".format(128)
-            # cache_ext = "_{0}".format(128)
             size_arg = "?w={0}&h={1}&t=lbcover".format(
                 Constants.COVER_SIZE[0], Constants.COVER_SIZE[1])
             cache_ext = "{0}x{1}_lbcover.png".format(
                 Constants.COVER_SIZE[0], Constants.COVER_SIZE[1])
         elif request.size:
-            # size_arg = "?w={0}&h={1}".format(request.size[0],
-            #         request.size[1])
-            # cache_ext = "_{0}x{1}".format(request.size[0],
-            #         request.size[1])
             size_arg = "?s=1x"
             cache_ext = "_1x.png"
         else:
             size_arg = ""
             cache_ext = ""
-
-        cache_dir = os.path.join(
-            FSGSDirectories.get_cache_dir(), "Images", sha1[:3])
-        if not os.path.exists(cache_dir):
-            os.makedirs(cache_dir)
+        cache_dir = FSGSDirectories.images_dir_for_sha1(sha1)
         cache_file = os.path.join(cache_dir, sha1 + cache_ext)
         if os.path.exists(cache_file):
-            # an old bug made it possible for 0-byte files to exist, so
-            # we check for that here..
+            # An old bug made it possible for 0-byte files to exist, so
+            # we check for that here...
             if os.path.getsize(cache_file) > 0:
                 return cache_file
-
         server = OGDClient.get_server()
         url = "http://{}/image/{}{}".format(server, sha1, size_arg)
         print(url)
         r = urlopen(url)
         data = r.read()
-
-        cache_file_partial = "{}.{}.partial".format(cache_file,
-                                                    str(uuid4())[:8])
+        cache_file_partial = "{}.{}.partial".format(
+            cache_file, str(uuid4())[:8])
         with open(cache_file_partial, "wb") as f:
             f.write(data)
         os.rename(cache_file_partial, cache_file)
@@ -123,15 +113,12 @@ class ImageLoader(object):
         if request.path is None:
             return
         cover = request.args.get("is_cover", False)
-        
         if request.path.startswith("sha1:"):
             path = self.get_cache_path_for_sha1(request, request.path[5:])
         else:
             path = request.path
-
         if not path:
             return
-
         print("loading image from", request.path)
         image = fsui.Image(path)
         print(image.size, request.size)
@@ -142,7 +129,6 @@ class ImageLoader(object):
         if image.size == dest_size:
             request.image = image
             return
-
         if cover:
             try:
                 ratio = image.size[0] / image.size[1]
@@ -163,7 +149,6 @@ class ImageLoader(object):
 
 
 class ImageLoadRequest(object):
-
     def __init__(self):
         self.on_load = self._dummy_on_load_function
         self.size = None
@@ -172,6 +157,7 @@ class ImageLoadRequest(object):
     def notify(self):
         def on_load_function():
             self.on_load(self)
+
         fsui.call_after(on_load_function)
 
     def _dummy_on_load_function(self, obj):

@@ -170,7 +170,22 @@ class FSGSDirectories(object):
         path = os.path.join(cls.get_data_dir(), "Databases")
         if not os.path.exists(path):
             os.makedirs(path)
-        path = Paths.get_real_case(path)
+        return path
+
+    @classmethod
+    @functools.lru_cache()
+    def images_dir(cls):
+        path = os.path.join(cls.get_data_dir(), "Images")
+        if not os.path.exists(path):
+            os.makedirs(path)
+        return path
+
+    @classmethod
+    @functools.lru_cache()
+    def images_dir_for_sha1(cls, sha1):
+        path = os.path.join(cls.images_dir(), sha1[:2])
+        if not os.path.exists(path):
+            os.makedirs(path)
         return path
 
     @classmethod

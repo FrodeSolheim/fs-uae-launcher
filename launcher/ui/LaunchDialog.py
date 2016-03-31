@@ -64,10 +64,16 @@ class LaunchDialog(fsui.Window):
 
     def on_progress(self, progress):
 
+        def hide_function():
+            self.visible = False
+
         def function():
             if progress == "__run__":
-                print("-- HIDE LAUNCHDIALOG --")
-                self.visible = False
+                self.cancel_button.disable()
+                # Hide dialog after 1.5 seconds. The reason for delaying it
+                # is to avoid "confusing" flickering if/when the dialog is
+                # only shown for a split second.
+                fsui.call_later(1500, hide_function)
             else:
                 self.sub_title_label.set_text(progress)
 
