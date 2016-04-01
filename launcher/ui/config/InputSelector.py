@@ -86,8 +86,8 @@ class InputSelector(fsui.Group):
 
     def set_config_handlers(self):
         if self.mode_choice is not None:
-            self.mode_choice.on_change = self.on_mode_changed
-        self.device_choice.on_change = self.on_device_changed
+            self.mode_choice.on_changed = self.on_mode_changed
+        self.device_choice.on_changed = self.on_device_changed
         LauncherConfig.add_listener(self)
         LauncherSignal.add_listener("settings_updated", self)
         LauncherSignal.add_listener("device_list_updated", self)

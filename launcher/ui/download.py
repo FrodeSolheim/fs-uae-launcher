@@ -64,7 +64,7 @@ class DownloadGameWindow(fsui.Window):
         hori_layout.add(fsui.ImageView(self, fsui.Image(
             "launcher:res/16/folder.png")))
 
-        label = fsui.Label(self, FSGSDirectories.get_downloads_dir())
+        label = fsui.Label(self, FSGSDirectories.ensure_downloads_dir())
         hori_layout.add(label, margin_left=6)
 
         hori_layout = fsui.HorizontalLayout()
@@ -139,7 +139,7 @@ class RescanTask(Task):
     def _run(self, database):
         context = SynchronizerContext()
 
-        paths = [FSGSDirectories.get_downloads_dir()]
+        paths = [FSGSDirectories.downloads_dir()]
         scanner = FileScanner(
             paths, purge_other_dirs=False, on_status=self.on_status,
             stop_check=self.stop_check)

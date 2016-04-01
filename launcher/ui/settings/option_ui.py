@@ -85,14 +85,14 @@ class OptionUI(object):
                 else:
                     spin_ctrl.enable()
 
-            check_box.on_change = on_checkbox
+            check_box.on_changed = on_checkbox
 
             def on_spin():
                 val = spin_ctrl.get_value()
                 val = max(option["min"], min(option["max"], val))
                 LauncherSettings.set(name, str(val))
 
-            spin_ctrl.on_change = on_spin
+            spin_ctrl.on_changed = on_spin
             group.layout.add_spacer(0, expand=True)
             group.layout.add(check_box)
             group.layout.add(spin_ctrl, margin_left=10)
@@ -110,7 +110,7 @@ class OptionUI(object):
                 if current == value[0]:
                     choice.set_index(i)
                     break
-            choice.on_change = on_changed
+            choice.on_changed = on_changed
             group.layout.add_spacer(0, expand=True)
             group.layout.add(choice)
             group.widget = choice

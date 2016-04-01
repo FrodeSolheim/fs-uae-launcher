@@ -124,6 +124,9 @@ class FileScanner(object):
             all_database_file_ids = None
 
         for dir in scan_dirs:
+            if not os.path.exists(dir):
+                print("[SCANNER] Directory does not exist:", dir)
+                continue
             # this is important to make sure the database is portable across
             # operating systems
             dir = Paths.get_real_case(dir)

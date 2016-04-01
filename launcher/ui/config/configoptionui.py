@@ -122,7 +122,7 @@ class ConfigOptionUI(object):
             text_field = fsui.TextField(group)
             # text_field.set_min_width(400)
             text_field.set_text(LauncherConfig.get(name))
-            text_field.on_change = on_changed
+            text_field.on_changed = on_changed
             group.layout.add(text_field, expand=True)
 
         elif option["type"].lower() == "integer" and "min" in option \
@@ -150,14 +150,14 @@ class ConfigOptionUI(object):
                 else:
                     spin_ctrl.enable()
 
-            check_box.on_change = on_checkbox
+            check_box.on_changed = on_checkbox
 
             def on_spin():
                 val = spin_ctrl.get_value()
                 val = max(option["min"], min(option["max"], val))
                 LauncherConfig.set(name, str(val))
 
-            spin_ctrl.on_change = on_spin
+            spin_ctrl.on_changed = on_spin
             group.layout.add_spacer(0, expand=True)
             group.layout.add(check_box)
             group.layout.add(spin_ctrl, margin_left=10)
@@ -175,7 +175,7 @@ class ConfigOptionUI(object):
                 if current == value[0]:
                     choice.set_index(i)
                     break
-            choice.on_change = on_changed
+            choice.on_changed = on_changed
             group.layout.add_spacer(0, expand=True)
             group.layout.add(choice)
             group.widget = choice

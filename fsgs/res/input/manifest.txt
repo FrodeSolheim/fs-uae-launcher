@@ -100,6 +100,7 @@ controller_xbox_360_wireless_receiver_for_windows_10_5_1_0_windows.conf
 controller_xbox_one_for_windows_11_6_1_0_windows.conf
 custom/custom_x_arcade.ini
 custom/custom_x_arcade_right.ini
+default_keyboard.conf
 dual_analog_pad_12_4_1_0_macosx.conf
 dual_analog_pad_12_4_1_0_windows.conf
 f02521c1000000000000504944564944.fs-uae-controller

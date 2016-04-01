@@ -41,7 +41,7 @@ class NetplayPanel(fsui.Panel):
         # self.nick_field = fsui.TextField(self, Settings.get("irc_nick"))
         # self.nick_field.set_min_width(130)
         # hori_layout.add(self.nick_field, margin_right=10)
-        # #self.nick_field.on_change = self.on_nick_change
+        # #self.nick_field.on_changed = self.on_nick_change
         #
         # self.connect_button = fsui.Button(self, _("Connect"))
         # hori_layout.add(self.connect_button, margin_right=10)

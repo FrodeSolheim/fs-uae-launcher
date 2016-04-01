@@ -17,7 +17,7 @@ def app_main():
     print("* controllers_dir =", FSGSDirectories.get_controllers_dir())
     print("* covers_dir =", FSGSDirectories.get_covers_dir())
     print("* data_dir =", FSGSDirectories.get_data_dir())
-    print("* downloads_dir =", FSGSDirectories.get_downloads_dir())
+    print("* downloads_dir =", FSGSDirectories.downloads_dir())
     print("* floppies_dir =", FSGSDirectories.get_floppies_dir())
     print("* hard_drives_dir =", FSGSDirectories.get_hard_drives_dir())
     # print("* images_dir =", FSGSDirectories.get_images_dir())

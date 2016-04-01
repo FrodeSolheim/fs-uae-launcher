@@ -100,13 +100,20 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_downloads_dir(cls):
+    def downloads_dir(cls):
         path = cls.portable_dir("downloads_dir")
         if not path:
             path = os.path.join(cls.get_base_dir(), "Downloads")
         if not os.path.exists(path):
             os.makedirs(path)
         path = Paths.get_real_case(path)
+        return path
+
+    @classmethod
+    def ensure_downloads_dir(cls):
+        path = cls.downloads_dir()
+        if not os.path.exists(path):
+            os.makedirs(path)
         return path
 
     @classmethod

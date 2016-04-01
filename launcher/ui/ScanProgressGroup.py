@@ -35,21 +35,21 @@ class ScanProgressGroup(fsui.Group):
         # self.scan_roms = fsui.CheckBox(self, _("ROMs"))
         # if Settings.get("scan_roms") == "1":
         #     self.scan_roms.check()
-        # self.scan_roms.on_change = self.on_change
+        # self.scan_roms.on_changed = self.on_change
         # hor_layout.add(self.scan_roms)
         # hor_layout.add_spacer(10)
 
         # self.scan_files = fsui.CheckBox(self, _("Game Files"))
         # if Settings.get("scan_files") == "1":
         #     self.scan_files.check()
-        # self.scan_files.on_change = self.on_change
+        # self.scan_files.on_changed = self.on_change
         # hor_layout.add(self.scan_files)
         # hor_layout.add_spacer(10)
 
         # self.scan_configs = fsui.CheckBox(self, _("Configurations"))
         # if Settings.get("scan_configs") == "1":
         #     self.scan_configs.check()
-        # self.scan_configs.on_change = self.on_change
+        # self.scan_configs.on_changed = self.on_change
         # hor_layout.add(self.scan_configs)
         # hor_layout.add_spacer(10)
 

@@ -1,16 +1,13 @@
-import os
 import threading
-import time
 import traceback
 import weakref
-from urllib.request import urlopen
-from uuid import uuid4
 
 import fsui as fsui
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.ogd.client import OGDClient
 from .Constants import Constants
 from ..launcher_signal import LauncherSignal
+
+# FIXME: Remove dependency on arcade package (move stuff into fsgs instead)
+from arcade.glui.imageloader import get_file_for_sha1_cached
 
 
 class ImageLoader(object):
@@ -24,13 +21,13 @@ class ImageLoader(object):
         LauncherSignal.add_listener("quit", self)
 
     def stop(self):
-        print("ImageLoader.stop")
+        print("[IMAGES] ImageLoader.stop")
         with self.requests_lock:
             self.stop_flag = True
             self.requests_condition.notify()
 
     def on_quit_signal(self):
-        print("ImageLoader.on_quit_signal")
+        print("[IMAGES] ImageLoader.on_quit_signal")
         self.stop_flag = True
 
     def image_loader_thread(self):
@@ -82,7 +79,7 @@ class ImageLoader(object):
         if cover:
             size_arg = "?w={0}&h={1}&t=lbcover".format(
                 Constants.COVER_SIZE[0], Constants.COVER_SIZE[1])
-            cache_ext = "{0}x{1}_lbcover.png".format(
+            cache_ext = "_{0}x{1}_lbcover.png".format(
                 Constants.COVER_SIZE[0], Constants.COVER_SIZE[1])
         elif request.size:
             size_arg = "?s=1x"
@@ -90,26 +87,7 @@ class ImageLoader(object):
         else:
             size_arg = ""
             cache_ext = ""
-        cache_dir = FSGSDirectories.images_dir_for_sha1(sha1)
-        cache_file = os.path.join(cache_dir, sha1 + cache_ext)
-        if os.path.exists(cache_file):
-            # An old bug made it possible for 0-byte files to exist, so
-            # we check for that here...
-            if os.path.getsize(cache_file) > 0:
-                return cache_file
-        server = OGDClient.get_server()
-        url = "http://{}/image/{}{}".format(server, sha1, size_arg)
-        print(url)
-        r = urlopen(url)
-        data = r.read()
-        cache_file_partial = "{}.{}.partial".format(
-            cache_file, str(uuid4())[:8])
-        if not os.path.exists(os.path.dirname(cache_file_partial)):
-            os.makedirs(os.path.dirname(cache_file_partial))
-        with open(cache_file_partial, "wb") as f:
-            f.write(data)
-        os.rename(cache_file_partial, cache_file)
-        return cache_file
+        return get_file_for_sha1_cached(sha1, size_arg, cache_ext)
 
     def _fill_request(self, request):
         if request.path is None:
@@ -121,7 +99,7 @@ class ImageLoader(object):
             path = request.path
         if not path:
             return
-        print("loading image from", request.path)
+        print("[IMAGES] Loading", request.path)
         image = fsui.Image(path)
         print(image.size, request.size)
         if request.size is not None:

@@ -288,7 +288,7 @@ class ValueConfigLoader(object):
                 "joystick_port_4_mode"]:
             self. load_joystick_port_x_mode_option(key, value)
         elif key in [
-                "amiga_model", "accuracy",
+                "amiga_model", "accuracy", "cdrom_drive_0_delay",
                 "floppy_drive_count", "slow_memory", "front_sha1",
                 "screen1_sha1", "screen2_sha1", "screen3_sha1",
                 "screen4_sha1", "screen5_sha1", "title_sha1",

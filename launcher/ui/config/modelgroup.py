@@ -66,7 +66,7 @@ class ModelGroup(fsui.Group):
         ConfigBehavior(self, ["accuracy", "amiga_model"])
 
         self.model_choice.on_changed = self.on_model_changed
-        self.sub_model_choice.on_change = self.on_sub_model_changed
+        self.sub_model_choice.on_changed = self.on_sub_model_changed
         self.accuracy_choice.on_changed = self.on_accuracy_changed
 
     def on_model_changed(self):
