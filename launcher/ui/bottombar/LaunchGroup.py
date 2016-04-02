@@ -63,7 +63,7 @@ class ScreenInfoLabel(fsui.Label):
             pass
         else:
             for screen in qapplication.screens():
-                screen.availableGeometryChanged.connect(self.on_screen_change)
+                screen.geometryChanged.connect(self.on_screen_change)
                 screen.refreshRateChanged.connect(self.on_screen_change)
             qapplication.screenAdded.connect(self.on_screen_added)
         SettingsBehavior(self, ["fullscreen", "monitor", "assume_refresh_rate"])
@@ -77,7 +77,7 @@ class ScreenInfoLabel(fsui.Label):
 
     def on_screen_added(self, screen):
         print("-- screen added --")
-        screen.availableGeometryChanged.connect(self.on_screen_change)
+        screen.geometryChanged.connect(self.on_screen_change)
         screen.refreshRateChanged.connect(self.on_screen_change)
         self.update_info()
 

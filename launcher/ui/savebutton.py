@@ -60,7 +60,7 @@ class SaveButton(IconButton):
                 value = LauncherConfig.get(key)
                 if key.startswith("__"):
                     continue
-                if key in LauncherConfig.dont_save_keys_set:
+                if key in LauncherConfig.no_save_keys_set:
                     continue
                 # elif key == "joystick_port_2_mode" and value == "nothing":
                 #     continue

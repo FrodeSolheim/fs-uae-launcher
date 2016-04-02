@@ -52,11 +52,11 @@ cfg = [
     ("joystick_port_4_mode",  "",         "custom"),
 
     ("kickstart_file",        ""),
-    ("x_kickstart_file",      "",                             "nosave"),
-    ("x_kickstart_file_sha1", "",         "checksum", "sync", "nosave"),
+    ("x_kickstart_file",      "",                             "no_save"),
+    ("x_kickstart_file_sha1", "",         "checksum", "sync", "no_save"),
     ("kickstart_ext_file",    ""),
-    ("x_kickstart_ext_file",  "",                             "nosave"),
-    ("x_kickstart_ext_file_sha1", "",     "checksum", "sync", "nosave"),
+    ("x_kickstart_ext_file",  "",                             "no_save"),
+    ("x_kickstart_ext_file_sha1", "",     "checksum", "sync", "no_save"),
 
     ("x_whdload_args",        "",         "checksum", "sync"),
     ("x_whdload_version",     "",     "checksum", "sync"),
@@ -121,24 +121,25 @@ cfg = [
     ("title_sha1",            ""),
 
     ("mouse_integration", "", "checksum", "sync"),
+    ("cdrom_drive_0_delay", "", "checksum", "sync"),
 ]
 
 for _i in range(Amiga.MAX_FLOPPY_DRIVES):
     cfg.append(("floppy_drive_{0}".format(_i), ""))
     cfg.append(("x_floppy_drive_{0}_sha1".format(_i),
-                "", "checksum", "sync", "nosave"))
+                "", "checksum", "sync", "no_save"))
 for _i in range(Amiga.MAX_FLOPPY_IMAGES):
     cfg.append(("floppy_image_{0}".format(_i), ""))
     cfg.append(("x_floppy_image_{0}_sha1".format(_i),
-                "", "checksum", "sync", "nosave"))
+                "", "checksum", "sync", "no_save"))
 for _i in range(Amiga.MAX_CDROM_DRIVES):
     cfg.append(("cdrom_drive_{0}".format(_i), ""))
     cfg.append(("x_cdrom_drive_{0}_sha1".format(_i),
-                "", "checksum", "sync", "nosave"))
+                "", "checksum", "sync", "no_save"))
 for _i in range(Amiga.MAX_CDROM_IMAGES):
     cfg.append(("cdrom_image_{0}".format(_i), ""))
     cfg.append(("x_cdrom_image_{0}_sha1".format(_i),
-                "", "checksum", "sync", "nosave"))
+                "", "checksum", "sync", "no_save"))
 for _i in range(Amiga.MAX_HARD_DRIVES):
     cfg.append(("hard_drive_{0}".format(_i), ""))
     cfg.append(("hard_drive_{0}_label".format(_i),
@@ -146,7 +147,7 @@ for _i in range(Amiga.MAX_HARD_DRIVES):
     cfg.append(("hard_drive_{0}_priority".format(_i),
                 "", "checksum", "sync", "custom"))
     cfg.append(("x_hard_drive_{0}_sha1".format(_i),
-                "", "checksum", "sync", "nosave"))
+                "", "checksum", "sync", "no_save"))
 
 
 class LauncherConfig(object):
@@ -170,7 +171,7 @@ class LauncherConfig(object):
     # no_custom_config.append("x_whdload_icon")
     # no_custom_config.append("platform")
 
-    dont_save_keys_set = set([x[0] for x in cfg if "nosave" in x])
+    no_save_keys_set = set([x[0] for x in cfg if "no_save" in x])
 
     reset_values = {}
     for i in range(Amiga.MAX_FLOPPY_DRIVES):

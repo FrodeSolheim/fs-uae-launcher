@@ -1,5 +1,6 @@
 Version 2.7.10dev:
 
+* Fixed a compatibility issue with Qt 5.2 (availableGeometryChanged).
 * Cached images can be read from pre-generated zip files to reduce the
   amount of small files.
 * Force the kickstarts directory to be included in file scanner.

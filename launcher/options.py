@@ -12,6 +12,7 @@ class Option(object):
     BLIZZARD_SCSI_KIT = "blizzard_scsi_kit"
     BSDSOCKET_LIBRARY = "bsdsocket_library"
     BUILTIN_CONFIGS = "builtin_configs"
+    CDROM_DRIVE_0_DELAY = "cdrom_drive_0_delay"
     CDROM_DRIVE_COUNT = "cdrom_drive_count"
     CHIP_MEMORY = "chip_memory"
     CONFIG_FEATURE = "config_feature"
@@ -206,6 +207,12 @@ options = {
         "default": "1",
         "description": N_("Include built-in configurations"),
         "type": "boolean",
+    },
+
+    "cdrom_drive_0_delay": {
+        "default": "0",
+        "description": N_("Delayed insert of CD-ROM"),
+        "type": "Boolean",
     },
 
     "cdrom_drive_count": {
