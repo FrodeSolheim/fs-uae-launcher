@@ -252,6 +252,7 @@ class FSGSDirectories(object):
     @classmethod
     @functools.lru_cache()
     def databases_dir(cls):
+        # XXX: maybe missing cls.get_portable_dir("databases_dir")?
         path = os.path.join(cls.get_data_dir(), "Databases")
         if not os.path.exists(path):
             os.makedirs(path)
@@ -282,6 +283,7 @@ class FSGSDirectories(object):
         path = Paths.get_real_case(path)
         return path
 
+    # FIXME: redundant?
     @classmethod
     @functools.lru_cache()
     def screenshots_output_dir(cls):
@@ -304,6 +306,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
+    # FIXME: missing "Images" dir?
     def get_images_dir(cls):
         cls._initialize()
         path = cls.get_base_dir()
@@ -358,6 +361,7 @@ class FSGSDirectories(object):
         ]
         return paths
 
+    # FIXME: redundant?
     @classmethod
     @functools.lru_cache()
     def get_titles_dirs(cls):
@@ -366,6 +370,7 @@ class FSGSDirectories(object):
         ]
         return paths
 
+    # FIXME: redundant?
     @classmethod
     @functools.lru_cache()
     def get_screenshots_dirs(cls):
@@ -374,6 +379,7 @@ class FSGSDirectories(object):
         ]
         return paths
 
+    # FIXME: redundant?
     @classmethod
     @functools.lru_cache()
     def get_images_dirs(cls):
@@ -382,6 +388,7 @@ class FSGSDirectories(object):
         ]
         return paths
 
+    # FIXME: redundant?
     @classmethod
     @functools.lru_cache()
     def get_covers_dirs(cls):
@@ -390,6 +397,7 @@ class FSGSDirectories(object):
         ]
         return paths
 
+    # FIXME: redundant?
     @classmethod
     @functools.lru_cache()
     def get_themes_dirs(cls):
