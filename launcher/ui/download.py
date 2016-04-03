@@ -64,6 +64,7 @@ class DownloadGameWindow(fsui.Window):
         hori_layout.add(fsui.ImageView(self, fsui.Image(
             "launcher:res/16/folder.png")))
 
+        FSGSDirectories.ensure_dir_exists(FSGSDirectories.DOWNLOAD_DIR)
         label = fsui.Label(self, FSGSDirectories.get_downloads_dir())
         hori_layout.add(label, margin_left=6)
 
