@@ -1,9 +1,7 @@
-# from fsbc.Application import app
 from .client import OGDClient
 
 
 class SynchronizerContext(object):
-
     meta = {}
 
     def __init__(self):

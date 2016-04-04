@@ -609,7 +609,7 @@ class LauncherWindow(WindowWithTabs):
 
     def on_what_is_this(self):
         print("on_what_is_this")
-        fstd.desktop.open_url_in_browser("http://oagd.net/about")
+        fstd.desktop.open_url_in_browser("https://oagd.net/about")
 
     def on_scan_button(self):
         from .ScanDialog import ScanDialog

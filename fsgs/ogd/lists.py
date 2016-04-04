@@ -1,10 +1,9 @@
-from .base import SynchronizerBase
-from ..Database import Database
+from fsgs.Database import Database
+from fsgs.ogd.base import SynchronizerBase
 from fsgs.res import gettext
 
 
 class ListsSynchronizer(SynchronizerBase):
-
     def __init__(self, *args, **kwargs):
         SynchronizerBase.__init__(self, *args, **kwargs)
 
@@ -70,7 +69,8 @@ class ListsSynchronizer(SynchronizerBase):
                     break
             else:
                 # this old list should be removed
-                self.set_status(gettext("Removing list {0}".format(existing_list_uuid)))
+                self.set_status(
+                    gettext("Removing list {0}".format(existing_list_uuid)))
                 self.remove_list(database, existing_list_uuid)
 
         database.commit()

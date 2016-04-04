@@ -61,7 +61,7 @@ class InputSelector(fsui.Group):
             self.autofire_button = None
 
             self.help_button = HelpButton(
-                self, "http://fs-uae.net/custom-joystick-port")
+                self, "https://fs-uae.net/custom-joystick-port")
             self.layout.add(self.help_button, margin_left=10)
 
         self.initialize_from_config()

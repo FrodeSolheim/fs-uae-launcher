@@ -1,18 +1,18 @@
+import json
 import os
 import time
-import json
 from binascii import hexlify
 from functools import lru_cache
 
 from fsgs.FSGSDirectories import FSGSDirectories
-
-from fsgs.context import fsgs
-from .launcher_settings import LauncherSettings
-from .i18n import gettext
 from fsgs.FileDatabase import FileDatabase
 from fsgs.GameDatabaseClient import GameDatabaseClient
-from fsgs.GameDatabaseSynchronizer import GameDatabaseSynchronizer
+from fsgs.context import fsgs
+from fsgs.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
 from fsgs.util.gamenameutil import GameNameUtil
+from .i18n import gettext
+from .launcher_settings import LauncherSettings
+
 # from fsgs.ogd.context import SynchronizerContext
 # from fsgs.ogd.meta import MetaSynchronizer
 from fsgs.ogd.locker import LockerSynchronizer

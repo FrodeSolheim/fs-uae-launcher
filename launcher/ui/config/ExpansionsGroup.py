@@ -26,7 +26,7 @@ class ExpansionsGroup(fsui.Group):
             "uaegfx_card")
         # widget.set_tooltip(gettext("Picasso96 Support (uaegfx.card)"))
         hor2_layout.add(widget, expand=True)
-        widget = HelpButton(self, "http://fs-uae.net/options#uaegfx-card")
+        widget = HelpButton(self, "https://fs-uae.net/options#uaegfx-card")
         hor2_layout.add(widget, margin_left=10)
         vert_layout.add(hor2_layout, fill=True, margin=10)
 
@@ -41,6 +41,6 @@ class ExpansionsGroup(fsui.Group):
         #     gettext("Built-in TCP/IP Stack (bsdsocket.library)"))
         hor2_layout.add(widget, expand=True)
         widget = HelpButton(
-            self, "http://fs-uae.net/options#bsdsocket-library")
+            self, "https://fs-uae.net/options#bsdsocket-library")
         hor2_layout.add(widget, margin_left=10)
         vert_layout.add(hor2_layout, fill=True, margin=10)

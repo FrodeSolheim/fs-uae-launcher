@@ -1,5 +1,5 @@
 from launcher.file_scanner import FileScanner
-from fsgs.Downloader import Downloader
+from fsgs.download import Downloader
 from fsgs.FSGSDirectories import FSGSDirectories
 import fsui
 from fsui.extra.iconheader import IconHeader

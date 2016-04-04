@@ -41,7 +41,8 @@ class UpdateManager:
             platform = "linux"
         else:
             platform = "other"
-        url = "http://fs-uae.net/{0}/latest-{1}".format(cls.series(), platform)
+        url = "https://fs-uae.net/{0}/latest-{1}".format(
+            cls.series(), platform)
         f = urlopen(url)
         version_str = f.read().strip().decode("UTF-8")
         print("latest version available: ", version_str)
@@ -58,5 +59,5 @@ class UpdateManager:
     @classmethod
     def start_update(cls, version_str):
         unused(version_str)
-        web_url = "http://fs-uae.net/{0}/download/".format(cls.series())
+        web_url = "https://fs-uae.net/{0}/download/".format(cls.series())
         open_url_in_browser(web_url)

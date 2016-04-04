@@ -9,7 +9,7 @@ from zipfile import ZipFile
 from arcade.glui.texturemanager import TextureManager
 from arcade.resources import logger
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.ogd.client import OGDClient
+from fsgs.network import openretro_url_prefix
 from fsui.qt import QImage
 
 error_set = set()
@@ -41,8 +41,7 @@ def get_file_for_sha1_cached(sha1, size_arg, cache_ext):
         if os.path.getsize(cache_file) > 0:
             return cache_file
 
-    server = OGDClient.get_server()
-    url = "http://{}/image/{}{}".format(server, sha1, size_arg)
+    url = "{}/image/{}{}".format(openretro_url_prefix(), sha1, size_arg)
     print("[IMAGES]", url)
     r = urlopen(url)
     data = r.read()

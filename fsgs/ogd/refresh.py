@@ -1,4 +1,5 @@
 import time
+
 from fsbc.application import app
 from fsbc.signal import Signal
 from fsbc.task import Task
@@ -9,7 +10,6 @@ from fsgs.ogd.meta import MetaSynchronizer
 
 
 class DatabaseRefreshTask(Task):
-
     def __init__(self):
         Task.__init__(self, "DatabaseRefreshTask")
 
@@ -27,7 +27,7 @@ class DatabaseRefreshTask(Task):
         # FIXME, dependency on fs_uae_launcher
         # from fs_uae_launcher.Scanner import Scanner
         # Scanner.start([], scan_for_files=False, update_game_database=True)
-        from launcher.game_rating_synchronizer \
+        from fsgs.ogd.game_rating_synchronizer \
             import GameRatingSynchronizer
         from launcher.game_scanner import GameScanner
 

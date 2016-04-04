@@ -72,7 +72,7 @@ class LoginWindow(fsui.Window):
         hori_layout.add_spacer(20)
         label = fsui.URLLabel(
             self, gettext("Create an account now"),
-            "http://oagd.net/user/register?referrer=fs-uae-launcher")
+            "https://oagd.net/user/register?referrer=fs-uae-launcher")
         hori_layout.add(label, expand=True)
 
         self.layout.add_spacer(6)
@@ -84,7 +84,7 @@ class LoginWindow(fsui.Window):
         hori_layout.add_spacer(20)
         self.reset_label = fsui.URLLabel(
             self, gettext("Reset password via e-mail"),
-            "http://oagd.net/user/reset?referrer=fs-uae-launcher")
+            "https://oagd.net/user/reset?referrer=fs-uae-launcher")
         hori_layout.add(self.reset_label, expand=True)
 
         self.layout.add_spacer(20)
@@ -122,7 +122,7 @@ class LoginWindow(fsui.Window):
         password = self.password_field.get_text().strip()
         self.login_button.enable(bool(email) and bool(password))
         self.reset_label.set_url(
-            "http://oagd.net/user/reset?referrer=fs-uae-launcher"
+            "https://oagd.net/user/reset?referrer=fs-uae-launcher"
             "&email={0}".format(email))
 
     def on_username_activated(self):

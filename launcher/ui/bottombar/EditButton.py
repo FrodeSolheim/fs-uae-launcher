@@ -1,4 +1,4 @@
-from fsgs.ogd.client import OGDClient
+from fsgs.network import openretro_url_prefix
 from fsui import Image
 from ...launcher_config import LauncherConfig
 from .WebButton import WebButton
@@ -14,5 +14,5 @@ class EditButton(WebButton):
         variant_uuid = LauncherConfig.get("variant_uuid", "")
         if not variant_uuid:
             return
-        return "http://{0}/game/{1}/edit#{1}".format(
-            OGDClient.get_server(), variant_uuid)
+        return "{0}/game/{1}/edit#{1}".format(
+            openretro_url_prefix(), variant_uuid)

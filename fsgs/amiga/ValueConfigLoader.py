@@ -5,7 +5,7 @@ import json
 from fsbc.paths import Paths
 from fsgs.amiga.Amiga import Amiga
 from fsgs.FileDatabase import FileDatabase
-from fsgs.ogd.client import OGDClient
+from fsgs.network import openretro_url_prefix
 
 
 class ValueConfigLoader(object):
@@ -21,8 +21,8 @@ class ValueConfigLoader(object):
         self._file_list = None
         self._cue_sheets = None
         if uuid:
-            self.options["database_url"] = "http://{0}/game/{1}".format(
-                OGDClient.get_server(), uuid)
+            self.options["database_url"] = "{0}/game/{1}".format(
+                openretro_url_prefix(), uuid)
 
     def get_config(self):
         return self.config.copy()

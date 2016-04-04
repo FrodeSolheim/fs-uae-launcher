@@ -181,7 +181,7 @@ class ConfigOptionUI(object):
             group.widget = choice
 
         # group.help_button = HelpButton(
-        #     parent, "http://fs-uae.net/doc/options#" + name)
+        #     parent, "https://fs-uae.net/options#" + name)
         # group.layout.add(group.help_button, margin_left=10)
 
         return group

@@ -1,18 +1,16 @@
-import io
-import os
-import time
-import json
 import base64
+import json
 import platform
-from uuid import uuid4
+import time
 from functools import wraps
-from urllib.parse import urlencode
-from http.client import HTTPConnection
 from urllib.error import HTTPError
+from urllib.parse import urlencode
+from uuid import uuid4
+
 from fsbc.application import app
 from fsbc.task import Task
-from fsbc.util import memoize
-from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.network import openretro_http_connection, openretro_url_prefix, \
+    opener_for_url_prefix
 
 
 class NonRetryableHTTPError(HTTPError):
@@ -49,11 +47,11 @@ def retry(f):
                 print(repr(e))
                 time.sleep(i * 0.5)
         return f(*args, **kwargs)
+
     return wrapper
 
 
 class OGDClient(object):
-
     HTTPError = HTTPError
     BadRequestError = BadRequestError
     UnauthorizedError = UnauthorizedError
@@ -93,19 +91,13 @@ class OGDClient(object):
             auth=False)
         return result
 
-    @staticmethod
-    @memoize
-    def get_server():
-        server = app.settings["database_server"]
-        if not server:
-            p = os.path.join(FSGSDirectories.get_data_dir(), "Settings",
-                             "database-server")
-            if os.path.exists(p):
-                with io.open(p, "r", encoding="UTF-8") as f:
-                    server = f.read().strip()
-        if not server:
-            server = "openretro.org"
-        return server
+    def url_prefix(self):
+        return openretro_url_prefix()
+
+    def opener(self):
+        username, password = self.get_credentials()
+        # FIXME: use cache dict?
+        return opener_for_url_prefix(self.url_prefix(), username, password)
 
     @staticmethod
     def get_credentials():
@@ -113,25 +105,19 @@ class OGDClient(object):
         return "auth_token", auth_token
 
     def post(self, path, params=None, data=None, auth=True):
-        headers = {
-        }
+        headers = {}
         if auth:
             credentials = self.get_credentials()
             headers[str("Authorization")] = str("Basic " + base64.b64encode(
                 "{0}:{1}".format(*credentials).encode("UTF-8")).decode("UTF-8"))
-
-        # if data is None:
-        #     data = "{}"
-        server = self.get_server()
-        connection = HTTPConnection(server, timeout=30)
-        url = "http://{0}{1}".format(server, path)
+        connection = openretro_http_connection()
+        url = "{0}{1}".format(openretro_url_prefix(), path)
         # if params:
         #     url += "?" + urlencode(params)
         if not data and params:
             data = urlencode(params)
             headers[str("Content-Type")] = \
                 str("application/x-www-form-urlencoded")
-
         print(url, headers)
         if isinstance(data, dict):
             data = json.dumps(data)
@@ -167,7 +153,6 @@ def get_device_name():
 
 
 class LoginTask(Task):
-
     def __init__(self, client, username, password):
         Task.__init__(self, "Login Task")
         self.client = client
@@ -192,7 +177,6 @@ class LoginTask(Task):
 
 
 class LogoutTask(Task):
-
     def __init__(self, client, auth_token):
         Task.__init__(self, "Logout Task")
         self.client = client

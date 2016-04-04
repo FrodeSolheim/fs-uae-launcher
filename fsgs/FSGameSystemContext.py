@@ -11,12 +11,13 @@ import traceback
 from fsgs.Archive import Archive
 from fsbc.util import unused
 from fsgs.BaseContext import BaseContext
-from fsgs.Downloader import Downloader
+from fsgs.download import Downloader
 from fsgs.FileDatabase import FileDatabase
 from fsgs.GameDatabase import GameDatabase
 from fsgs.LockerDatabase import LockerDatabase
 from fsgs.Database import Database
-from fsgs.ogd.locker import is_locker_enabled
+from fsgs.network import is_http_url
+from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
 from fsgs.plugins.plugin_manager import PluginManager
 
 
@@ -34,6 +35,10 @@ class FileContext(BaseContext):
 
     def __init__(self, main_context):
         BaseContext.__init__(self, main_context)
+        # FIXME: When using cache dict, should close/delete openers
+        # when we are done for the time being
+        # self.opener_cache_dict = {}
+        self.opener_cache_dict = None
 
     def find_by_sha1(self, sha1):
         database = FileDatabase.instance()
@@ -73,12 +78,11 @@ class FileContext(BaseContext):
         elif uri.startswith("db://"):
             # old name for sha1://
             return self.open_sha1_uri(uri)
-        elif uri.startswith("http://"):
-            return self.open_url(uri)
-        elif uri.startswith("https://"):
+        elif is_http_url(uri):
             return self.open_url(uri)
         elif uri.startswith("locker://"):
-            return self.open_locker_uri(uri)
+            return open_locker_uri(
+                uri, opener_cache_dict=self.opener_cache_dict)
         else:
             if prefer_path and os.path.exists(uri):
                 # return helper object so isinstance does not match with str
@@ -103,23 +107,6 @@ class FileContext(BaseContext):
         sha1 = uri.split("/")[2]
         assert len(sha1) == 40
         return self.find_by_sha1(sha1)
-
-    def open_locker_uri(self, uri):
-        sha1 = uri[9:]
-        assert len(sha1) == 40
-
-        # very ugly dependencies here...
-        from .ogd.context import SynchronizerContext
-        from .ogd.base import SynchronizerBase
-        context = SynchronizerContext()
-
-        fixme = SynchronizerBase(context)
-        server = fixme.get_server()
-        opener = fixme.get_opener()
-
-        url = "http://{0}/api/locker/{1}".format(server, sha1)
-        path = Downloader.cache_file_from_url(url, opener=opener)
-        return path
 
     def open_url(self, url):
         original_url = url

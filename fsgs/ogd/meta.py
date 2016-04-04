@@ -1,10 +1,9 @@
 from fsbc.application import app
+from fsgs.ogd.base import SynchronizerBase
 from fsgs.res import gettext
-from .base import SynchronizerBase
 
 
 class MetaSynchronizer(SynchronizerBase):
-
     def __init__(self, *args, **kwargs):
         SynchronizerBase.__init__(self, *args, **kwargs)
 

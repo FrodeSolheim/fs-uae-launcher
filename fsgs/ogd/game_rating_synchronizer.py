@@ -1,11 +1,11 @@
 import time
 from urllib.parse import quote_plus
-from .i18n import gettext
-from fsgs.GameDatabaseSynchronizer import GameDatabaseSynchronizer
+
+from fsgs.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
+from launcher.i18n import gettext
 
 
 class GameRatingSynchronizer(GameDatabaseSynchronizer):
-
     username = ""
     password = ""
 
@@ -20,9 +20,7 @@ class GameRatingSynchronizer(GameDatabaseSynchronizer):
             # that probably means we didn't want to synchronize with the
             # server now, therefore we just return
             return
-
         self.set_status(gettext("Synchronizing personal ratings..."))
-
         last_json_data = ""
         while True:
             if self.stop_check():
@@ -62,14 +60,11 @@ class GameRatingSynchronizer(GameDatabaseSynchronizer):
         row = cursor.fetchone()
         last_time = row[0]
         if not last_time:
-            last_time = "2012-01-01 00:00:00"            
+            last_time = "2012-01-01 00:00:00"
         self.set_status(
             gettext("Fetching user game ratings ({0})").format(last_time))
-        server = self.get_server()[0]
-        url = "http://{0}/games/api/1/user_ratings?from={1}".format(
-            server, quote_plus(last_time))
+        url = "{0}/api/1/user_ratings?from={1}".format(
+            self.url_prefix(), quote_plus(last_time))
         print(url)
         data, json_data = self.fetch_json(url)
-        # self.downloaded_size += len(data)
-
         return json_data

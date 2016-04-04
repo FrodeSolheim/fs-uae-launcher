@@ -8,7 +8,7 @@ from launcher.startup_scan import StartupScan
 from launcher.ui.config.HardDriveGroup import HardDriveGroup
 from launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
 from fsbc.settings import Settings
-from fsgs.Downloader import Downloader
+from fsgs.download import Downloader
 from fsbc.application import app
 from configparser import ConfigParser, NoSectionError
 from fsbc.task import Task

@@ -3,26 +3,29 @@ from uuid import uuid4, uuid5, NAMESPACE_URL
 import shutil
 from urllib.request import urlopen
 import hashlib
-# FIXME: temporary package dependency cycle, must be fixed
+
 from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.network import fs_uae_url_from_sha1_and_name
 
 
 class Downloader(object):
 
     @classmethod
     def check_terms_accepted(cls, download_file, download_terms):
-        print("check_terms_accepted", download_file, download_terms)
+        print("[DOWNLOADER] check_terms_accepted",
+              download_file, download_terms)
         uuid = str(uuid5(NAMESPACE_URL, download_file + download_terms))
         path = cls.get_cache_path(uuid)
-        print("check_terms_accepted", path)
+        print("[DOWNLOADER] check_terms_accepted", path)
         return os.path.exists(path)
 
     @classmethod
     def set_terms_accepted(cls, download_file, download_terms):
-        print("set_terms_accepted", repr(download_file), repr(download_terms))
+        print("[DOWNLOADER] set_terms_accepted",
+              repr(download_file), repr(download_terms))
         uuid = str(uuid5(NAMESPACE_URL, download_file + download_terms))
         path = cls.get_cache_path(uuid)
-        print("set_terms_accepted", path)
+        print("[DOWNLOADER] set_terms_accepted", path)
         with open(path, "wb") as _:
             pass
 
@@ -45,11 +48,10 @@ class Downloader(object):
 
     @classmethod
     def cache_file_from_url(cls, url, download=True, opener=None):
-        print("DownloadService.cache_file_from_url", url)
-
+        print("[DOWNLOADER] cache_file_from_url", url)
         cache_path = cls.get_url_cache_path(url)
         if os.path.exists(cache_path):
-            print("(in cache)")
+            print("[DOWNLOADER] (in cache)")
             # so we later can delete least accessed files in cache...
             os.utime(cache_path, None)
             return cache_path
@@ -71,7 +73,7 @@ class Downloader(object):
 
     @classmethod
     def install_file_from_url(cls, url, path):
-        print("DownloadService.install_file_from_url", url)
+        print("[DOWNLOADER] install_file_from_url", url)
         print(repr(path))
         if not os.path.exists(os.path.dirname(path)):
             os.makedirs(os.path.dirname(path))
@@ -82,7 +84,7 @@ class Downloader(object):
 
     @classmethod
     def install_file_by_sha1(cls, sha1, name, path):
-        print("DownloadService.install_file_by_sha1", sha1)
+        print("[DOWNLOADER] install_file_by_sha1", sha1)
         print(repr(path))
         if not os.path.exists(os.path.dirname(path)):
             os.makedirs(os.path.dirname(path))
@@ -94,16 +96,16 @@ class Downloader(object):
             os.utime(cache_path, None)
             return
         url = cls.sha1_to_url(sha1, name)
-        ifile = urlopen(url)
+        input = urlopen(url)
         temp_path = path + ".partial." + str(uuid4())
         h = hashlib.sha1()
-        with open(temp_path, "wb") as ofile:
+        with open(temp_path, "wb") as output:
             while True:
-                data = ifile.read(65536)
+                data = input.read(65536)
                 if not data:
                     break
                 h.update(data)
-                ofile.write(data)
+                output.write(data)
         if h.hexdigest() != sha1:
             print("error: downloaded sha1 is", h.hexdigest(), "- wanted", sha1)
             raise Exception("sha1 of downloaded file does not match")
@@ -114,9 +116,7 @@ class Downloader(object):
 
     @classmethod
     def sha1_to_url(cls, sha1, name):
-        url = "http://fs-uae.net/s/sha1/{0}/{1}".format(sha1, name)
-        print(url)
-        return url
+        return fs_uae_url_from_sha1_and_name(sha1, name)
 
     @classmethod
     def get_cache_path(cls, sha1_or_uuid):
@@ -128,10 +128,4 @@ class Downloader(object):
 
     @classmethod
     def get_url_cache_path(cls, url):
-        if isinstance(url, str):
-            # Python 3
-            return cls.get_cache_path(str(uuid5(NAMESPACE_URL, url)))
-        else:
-            # Python 2 / unicode
-            return cls.get_cache_path(
-                str(uuid5(NAMESPACE_URL, url.encode("UTF-8"))))
+        return cls.get_cache_path(str(uuid5(NAMESPACE_URL, url)))

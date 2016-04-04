@@ -2,9 +2,11 @@ import json
 import time
 from gzip import GzipFile
 from io import StringIO
-from fsgs.ogd.client import OGDClient
-from urllib.request import HTTPBasicAuthHandler, build_opener, Request
 from urllib.parse import quote_plus
+from urllib.request import Request
+
+from fsgs.network import openretro_url_prefix, opener_for_url_prefix, \
+    is_http_url
 from fsgs.res import gettext
 
 
@@ -13,7 +15,6 @@ def bytes_to_int(m):
 
 
 class GameDatabaseSynchronizer(object):
-
     username = ""
     password = ""
 
@@ -34,6 +35,7 @@ class GameDatabaseSynchronizer(object):
         else:
             self.host = ""
             self.platform_id = platform_id.lower()
+        self.opener_cache_dict = {}
 
     def stop_check(self):
         if self._stop_check:
@@ -132,28 +134,27 @@ class GameDatabaseSynchronizer(object):
         print("downloaded size: {0:0.2f} MiB".format(
             self.downloaded_size / (1024 * 1024)))
 
-    def get_server(self):
+    def url_prefix(self):
         if self.host:
-            server = self.host
+            if is_http_url(self.host):
+                url_prefix = self.host
+            else:
+                url_prefix = "http://{}".format(self.host)
         else:
-            server = OGDClient.get_server()
-        auth_handler = HTTPBasicAuthHandler()
-        auth_handler.add_password(
-            realm="Open Amiga Game Database",
-            uri="http://{0}".format(server), user=self.username,
-            passwd=self.password)
-        opener = build_opener(auth_handler)
-        return server, opener
+            url_prefix = openretro_url_prefix()
+        return url_prefix
+
+    def opener(self):
+        return opener_for_url_prefix(
+            self.url_prefix(), self.username, self.password,
+            cache_dict=self.opener_cache_dict)
 
     def fetch_game_sync_data(self):
         last_id = self.database.get_last_game_id()
         self.set_status(
             gettext("Fetching database entries ({0})").format(last_id + 1))
-        server = self.get_server()[0]
-        # url = "http://{0}/api/sync/{1}/games?last={2}".format(
-        #     server, self.platform_id, last_id)
-        url = "http://{0}/api/sync/{1}/games?v=2&last={2}".format(
-            server, self.platform_id, last_id)
+        url = "{0}/api/sync/{1}/games?v=2&last={2}".format(
+            self.url_prefix(), self.platform_id, last_id)
         print(url)
         data = self.fetch_data(url)
         self.downloaded_size += len(data)
@@ -165,40 +166,47 @@ class GameDatabaseSynchronizer(object):
         row = cursor.fetchone()
         last_time = row[0]
         if not last_time:
-            last_time = "2012-01-01 00:00:00"            
+            last_time = "2012-01-01 00:00:00"
         self.set_status(
             gettext("Fetching game ratings ({0})").format(last_time))
-        server = self.get_server()[0]
-        url = "http://{0}/api/sync/{1}/ratings?from={2}".format(
-            server, self.platform_id, quote_plus(last_time))
+        url = "{0}/api/sync/{1}/ratings?from={2}".format(
+            self.url_prefix(), self.platform_id, quote_plus(last_time))
         print(url)
         data, json_data = self.fetch_json(url)
         self.downloaded_size += len(data)
         return json_data
 
     def fetch_json_attempt(self, url):
-        server, opener = self.get_server()
         request = Request(url)
         request.add_header("Accept-Encoding", "gzip")
-        response = opener.open(request)
+        response = self.opener().open(request)
         # print(response.headers)
         data = response.read()
-
         try:
             getheader = response.headers.getheader
         except AttributeError:
             getheader = response.getheader
         content_encoding = getheader("content-encoding", "").lower()
         if content_encoding == "gzip":
-            # data = zlib.decompress(data)
             fake_stream = StringIO(data)
             data = GzipFile(fileobj=fake_stream).read()
-
-        # else:
-        #     data = response.read()
-        # if int(time.time()) % 2 == 0:
-        #     raise Exception("fail horribly")
         return data, json.loads(data.decode("UTF-8"))
+
+    def fetch_data_attempt(self, url):
+        request = Request(url)
+        # request.add_header("Accept-Encoding", "gzip")
+        response = self.opener().open(request)
+        # print(response.headers)
+        data = response.read()
+        try:
+            getheader = response.headers.getheader
+        except AttributeError:
+            getheader = response.getheader
+        content_encoding = getheader("content-encoding", "").lower()
+        if content_encoding == "gzip":
+            fake_stream = StringIO(data)
+            data = GzipFile(fileobj=fake_stream).read()
+        return data
 
     def fetch_json(self, url):
         for i in range(20):
@@ -209,39 +217,13 @@ class GameDatabaseSynchronizer(object):
                 sleep_time = 2.0 + i * 0.3
                 # FIXME: change second {0} to {1}
                 self.set_status(gettext("Download failed (attempt {0}) - "
-                                "retrying in {0} seconds").format(
-                                i + 1, int(sleep_time)))
+                                        "retrying in {0} seconds").format(
+                    i + 1, int(sleep_time)))
                 time.sleep(sleep_time)
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
                         i + 1))
-
         return self.fetch_json_attempt(url)
-
-    def fetch_data_attempt(self, url):
-        server, opener = self.get_server()
-        request = Request(url)
-        # request.add_header("Accept-Encoding", "gzip")
-        response = opener.open(request)
-        # print(response.headers)
-        data = response.read()
-
-        try:
-            getheader = response.headers.getheader
-        except AttributeError:
-            getheader = response.getheader
-
-        content_encoding = getheader("content-encoding", "").lower()
-        if content_encoding == "gzip":
-            # data = zlib.decompress(data)
-            fake_stream = StringIO(data)
-            data = GzipFile(fileobj=fake_stream).read()
-
-        # else:
-        #     data = response.read()
-        # if int(time.time()) % 2 == 0:
-        #     raise Exception("fail horribly")
-        return data
 
     def fetch_data(self, url):
         for i in range(10):
@@ -252,11 +234,10 @@ class GameDatabaseSynchronizer(object):
                 sleep_time = 2.0 + i * 0.3
                 # FIXME: change second {0} to {1}
                 self.set_status(gettext("Download failed (attempt {0}) - "
-                                "retrying in {0} seconds").format(
-                                i + 1, int(sleep_time)))
+                                        "retrying in {0} seconds").format(
+                    i + 1, int(sleep_time)))
                 time.sleep(sleep_time)
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
                         i + 1))
-
         return self.fetch_data_attempt(url)

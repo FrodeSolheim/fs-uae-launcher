@@ -19,7 +19,7 @@ def find_downloadable_file(sha1):
 
 
 def sha1_to_url(sha1):
-    return "http://fs-uae.net/s/{0}/{1}/{2}".format(
+    return "https://fs-uae.net/s/{0}/{1}/{2}".format(
         sha1[:2], sha1, urllib.parse.quote(downloadable[sha1].encode("UTF-8")))
 
 
@@ -137,7 +137,7 @@ configurations = [
     #   <file>
     #     <name>Downfall.adf</name>
     #     <sha1>cc9ea0e8d1ae139ea5313d9b22eccc2e965744e2</sha1>
-    #     <url>http://fengestad.no/sha1/cc/cc9ea0e8d1ae139ea5313d9b22eccc2e965744e2</url>
+    #     <url>https://fengestad.no/sha1/cc/cc9ea0e8d1ae139ea5313d9b22eccc2e965744e2</url>
     #   </file>
     # </config>
     # """

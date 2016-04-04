@@ -11,7 +11,7 @@ from fsbc.paths import Paths
 from fsbc.task import current_task, TaskFailure
 from fsbc.resources import Resources
 from fsgs.Archive import Archive
-from fsgs.Downloader import Downloader
+from fsgs.download import Downloader
 from fsgs.GameChangeHandler import GameChangeHandler
 from fsgs.GameNameUtil import GameNameUtil
 from fsgs.amiga.ADFFileExtractor import ADFFileExtractor
@@ -22,6 +22,7 @@ from fsgs.amiga.ROMManager import ROMManager
 from fsgs.amiga.whdload import DEFAULT_WHDLOAD_VERSION, whdload_files, \
     whdload_support_files, default_whdload_prefs
 from fsgs.amiga.workbench import WorkbenchExtractor
+from fsgs.network import is_http_url
 from fsgs.res import gettext
 from .roms import PICASSO_IV_74_ROM, CD32_FMV_ROM
 
@@ -347,7 +348,7 @@ class LaunchHandler(object):
             dummy, ext = os.path.splitext(src)
             ext = ext.lower()
 
-            if src.startswith("http://") or src.startswith("https://"):
+            if is_http_url(src):
                 name = src.rsplit("/", 1)[-1]
                 name = urllib.parse.unquote(name)
                 self.on_progress(gettext("Downloading {0}...".format(name)))

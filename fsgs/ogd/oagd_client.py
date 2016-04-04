@@ -2,40 +2,22 @@ import json
 from gzip import GzipFile
 from io import StringIO
 from urllib.parse import urlencode
-from urllib.request import HTTPBasicAuthHandler, build_opener, Request
+from urllib.request import Request
+
 from fsgs.ogd.client import OGDClient
 
 
-class OAGDClient(object):
+# FIXME: Merge with OGDClient
 
+
+class OAGDClient(OGDClient):
     def __init__(self):
-        self._server = None
-        self._opener = None
+        super().__init__()
         self._json = None
         self.data = b""
 
-        # FIXME: we don't want dependency on Settings here
-        from launcher.launcher_settings import LauncherSettings
-        self.username = "auth_token"
-        self.password = LauncherSettings.get("database_auth")
-
-    def server(self):
-        return OGDClient.get_server()
-
-    def opener(self):
-        if self._opener:
-            return self._opener
-        server = self.server()
-        auth_handler = HTTPBasicAuthHandler()
-        auth_handler.add_password(
-            realm="Open Amiga Game Database",
-            uri="http://{0}".format(server), user=self.username,
-            passwd=self.password)
-        self._opener = build_opener(auth_handler)
-        return self._opener
-
     def build_url(self, path, **kwargs):
-        url = "http://{0}{1}".format(self.server(), path)
+        url = "{0}{1}".format(self.url_prefix(), path)
         if kwargs:
             url += "?" + urlencode(kwargs)
         return url
@@ -43,7 +25,6 @@ class OAGDClient(object):
     def handle_response(self, response):
         self._json = None
         self.data = response.read()
-
         # print(dir(response.headers))
         try:
             getheader = response.headers.getheader
@@ -65,11 +46,10 @@ class OAGDClient(object):
         return doc.get(key, default)
 
     def get_request(self, url):
-        opener = self.opener()
         request = Request(url)
         print("get_request:", url)
         request.add_header("Accept-Encoding", "gzip")
-        response = opener.open(request)
+        response = self.opener().opener.open(request)
         return self.handle_response(response)
 
     def rate_variant(self, variant_uuid, like=None, work=None):

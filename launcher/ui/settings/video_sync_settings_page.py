@@ -65,7 +65,7 @@ class VideoSyncSettingsPage(SettingsPage):
             "Synchronizing with the display can in some cases cause "
             "increased stuttering and low frame rates (esp. in some Linux "
             "desktop environments with compositing enabled).")
-        link = (" <a href='http://fs-uae.net/video-synchronization-issues'>"
+        link = (" <a href='https://fs-uae.net/video-synchronization-issues'>"
                 "{0}</a>.".format(gettext("Read more")))
 
         label = fsui.MultiLineLabel(self, text + link, min_width=640)

@@ -1,13 +1,12 @@
 from fsgs.Database import Database
+from fsgs.ogd.oagd_client import OAGDClient
 from fsui import ImageButton, Image
-from fsgs.OAGDClient import OAGDClient
-from ...launcher_config import LauncherConfig
-from ...i18n import gettext
-from ..IconButton import IconButton
+from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
+from launcher.ui.IconButton import IconButton
 
 
 class RatingButton(ImageButton):
-
     def __init__(self, parent, rating):
         self.rating = rating
         self.icons = [None, None]

@@ -1,19 +1,19 @@
-import time
 import threading
+import time
 import traceback
+
+import fsui as fsui
 from fsgs.Database import Database
 from fsgs.ogd.context import SynchronizerContext
+from fsgs.ogd.game_rating_synchronizer import GameRatingSynchronizer
+from fsgs.ogd.lists import ListsSynchronizer
 from fsgs.ogd.meta import MetaSynchronizer
-import fsui as fsui
-from .file_scanner import FileScanner
 from .configuration_scanner import ConfigurationScanner
-from .launcher_config import LauncherConfig
+from .file_scanner import FileScanner
 from .game_scanner import GameScanner
+from .launcher_config import LauncherConfig
 from .launcher_settings import LauncherSettings
 from .launcher_signal import LauncherSignal
-
-from .game_rating_synchronizer import GameRatingSynchronizer
-from fsgs.ogd.lists import ListsSynchronizer
 
 
 class Scanner:
