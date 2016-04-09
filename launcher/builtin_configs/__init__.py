@@ -19,7 +19,7 @@ def find_downloadable_file(sha1):
 
 
 def sha1_to_url(sha1):
-    return "https://fs-uae.net/s/{0}/{1}/{2}".format(
+    return "http://fs-uae.net/s/{0}/{1}/{2}".format(
         sha1[:2], sha1, urllib.parse.quote(downloadable[sha1].encode("UTF-8")))
 
 

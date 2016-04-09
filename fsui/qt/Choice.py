@@ -1,12 +1,11 @@
-from contextlib import contextmanager
-
-from fsui.qt import QComboBox, Signal
+from fsui.qt import QComboBox
+from fsui.qt.signal import Signal, SignalWrapper
 from .widget_mixin import WidgetMixin
 
 
 class Choice(QComboBox, WidgetMixin):
 
-    changed = Signal()
+    changed_signal = Signal()
     item_selected = Signal(int)
     ITEM_SEPARATOR = "---"
 
@@ -25,15 +24,18 @@ class Choice(QComboBox, WidgetMixin):
             self.set_index(0)
         self.currentIndexChanged.connect(self.__current_index_changed)
 
-    @contextmanager
-    def inhibit_signal(self, name):
-        attr = "_inhibit_" + name
-        old = getattr(self, attr, False)
-        print("setattr", self, attr, True)
-        setattr(self, attr, True)
-        yield
-        print("setattr", self, attr, old)
-        setattr(self, attr, old)
+        self.changed = SignalWrapper(self, "changed")
+        # self.changed.inhibit = self.inhibit_signal
+
+    # @contextmanager
+    # def inhibit_signal(self, name):
+    #     attr = "_inhibit_" + name
+    #     old = getattr(self, attr, False)
+    #     print("setattr", self, attr, True)
+    #     setattr(self, attr, True)
+    #     yield
+    #     print("setattr", self, attr, old)
+    #     setattr(self, attr, old)
 
     def add_item(self, label, icon=None):
         # item = QStandardItem(label)
@@ -46,13 +48,18 @@ class Choice(QComboBox, WidgetMixin):
             self.addItem(icon.qicon, label)
         else:
             self.addItem(label)
+        return self.count() - 1
+
+    def remove_item(self, index):
+        self.removeItem(index)
 
     def __current_index_changed(self):
         print("__current_index_changed", self.currentIndex(),
               "inhibit", self.inhibit_change_event)
         if not self.inhibit_change_event:
             # print("Choice.__current_index_changed")
-            if not getattr(self, "_inhibit_changed", False):
+            # if not getattr(self, "_inhibit_changed", False):
+            if not self.changed.inhibit:
                 if not getattr(self, "_inhibit_item_selected", False):
                     index = self.currentIndex()
                     self.item_selected.emit(index)
@@ -71,8 +78,14 @@ class Choice(QComboBox, WidgetMixin):
             if not signal:
                 self.inhibit_change_event = False
 
+    def set_item_text(self, index, text):
+        self.setItemText(index, text)
+
     def on_changed(self):
         pass
+
+    def __len__(self):
+        return self.count()
 
 
 class ItemChoice(Choice):

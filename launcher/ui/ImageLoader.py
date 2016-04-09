@@ -2,7 +2,7 @@ import threading
 import traceback
 import weakref
 
-import fsui as fsui
+import fsui
 from .Constants import Constants
 from ..launcher_signal import LauncherSignal
 

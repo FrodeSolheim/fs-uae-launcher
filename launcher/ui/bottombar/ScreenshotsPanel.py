@@ -1,5 +1,5 @@
 from fsbc.util import unused
-import fsui as fsui
+import fsui
 from ...launcher_settings import LauncherSettings
 from ...game_paths import GamePaths
 from ..Constants import Constants

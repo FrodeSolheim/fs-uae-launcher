@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from fsbc.application import app
 from fsgs.Database import Database
 from launcher.i18n import gettext
@@ -14,7 +14,7 @@ class GameListSelector(fsui.Choice):
 
     def on_config_refresh_setting(self, _):
         list_found = False
-        with self.inhibit_signal("changed"):
+        with self.changed.inhibit:
             old_list_uuid = self.get_selected_list_uuid()
             print("- old list uuid", repr(old_list_uuid))
             print("- set choice index to None")
@@ -37,7 +37,7 @@ class GameListSelector(fsui.Choice):
         for i, item in enumerate(self.game_lists):
             if item[0] == value:
                 if self.get_index() != i:
-                    with self.inhibit_signal("changed"):
+                    with self.changed.inhibit:
                         self.set_index(i)
                 break
         else:

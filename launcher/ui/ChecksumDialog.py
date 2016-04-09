@@ -1,6 +1,6 @@
 import hashlib
 from fsbc.util import unused
-import fsui as fsui
+import fsui
 from ..i18n import gettext
 
 

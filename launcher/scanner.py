@@ -2,7 +2,7 @@ import threading
 import time
 import traceback
 
-import fsui as fsui
+import fsui
 from fsgs.Database import Database
 from fsgs.ogd.context import SynchronizerContext
 from fsgs.ogd.game_rating_synchronizer import GameRatingSynchronizer

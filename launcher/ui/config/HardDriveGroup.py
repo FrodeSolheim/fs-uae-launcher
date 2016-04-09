@@ -1,7 +1,7 @@
 import os
 import traceback
 from fsgs.ChecksumTool import ChecksumTool
-import fsui as fsui
+import fsui
 from fsgs.Archive import Archive
 from ...launcher_config import LauncherConfig
 from fsgs.FSGSDirectories import FSGSDirectories
@@ -69,6 +69,8 @@ class HardDriveGroup(fsui.Group):
         else:
             path = name
         self.text_field.set_text(path)
+        self.text_field.set_cursor_position(0)
+        self.eject_button.enable(bool(value))
 
     def on_eject_button(self):
         LauncherConfig.set_multiple([(self.config_key, ""),

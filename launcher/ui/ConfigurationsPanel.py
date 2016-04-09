@@ -1,7 +1,7 @@
 from launcher.ui.ConfigGroup import ConfigGroup
 from launcher.ui.bottombar.RatingButton import RatingButton
 from launcher.ui.newbutton import NewButton
-import fsui as fsui
+import fsui
 from ..launcher_settings import LauncherSettings
 from .ConfigurationsBrowser import ConfigurationsBrowser
 from .GameListSelector import GameListSelector

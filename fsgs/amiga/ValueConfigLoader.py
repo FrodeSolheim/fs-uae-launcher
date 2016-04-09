@@ -211,8 +211,8 @@ class ValueConfigLoader(object):
             self.options["save_disk"] = value
         elif key == "whdload_version":
             self.options["x_whdload_version"] = value
-        elif key == "whdload_icon":
-            self.options["x_whdload_icon"] = value
+        # elif key == "whdload_icon":
+        #     self.options["__whdload_icon"] = value
         elif key == "kickstart":
             if value == "1.2":
                 self.options["amiga_model"] = "A1000"

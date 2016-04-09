@@ -3,52 +3,53 @@ import sys
 import time
 import weakref
 
-from fsbc.util import unused
-
-from launcher.netplay.netplay_dialog import NetplayDialog
-from launcher.update_manager import UpdateManager
-from launcher.ui.config.configscrollarea import ConfigScrollArea
 import fstd.desktop
-from launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
+import fsui
+import launcher.ui
+from fsbc.application import Application
+from fsbc.util import unused
+from fsgs.context import default_context
+from launcher.implicit_handler import ImplicitConfigHandler
+from launcher.launcher_config import LauncherConfig
+from launcher.netplay.netplay_dialog import NetplayDialog
+from launcher.option import Option
 from launcher.ui.bottombar.BottomPanel import BottomPanel
+from launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
 from launcher.ui.bottombar.ScreenshotsPanel import ScreenshotsPanel
-from launcher.ui.bottombar.LaunchGroup import LaunchGroup
+from launcher.ui.config.browser import ConfigBrowser
+from launcher.ui.config.configscrollarea import ConfigScrollArea
+from launcher.ui.launch import LaunchGroup
+from launcher.ui.romram import RomRamPanel
+from launcher.update_manager import UpdateManager
 from workspace.apps.adf_creator_app import ADFCreatorWindow
 from workspace.apps.hdf_creator_app import HDFCreatorWindow
 from workspace.apps.locker_uploader import LockerUploaderWindow
 from workspace.apps.login import LoginWindow
 from workspace.apps.logout import LogoutWindow
 from workspace.apps.refresh import RefreshWindow
-import fsui as fsui
-from fsbc.application import Application
-import launcher.ui
-from ..launcher_config import LauncherConfig
-from ..launcher_signal import LauncherSignal
-from launcher.options import Option
-from ..launcher_settings import LauncherSettings
-from ..i18n import gettext
-from .about_dialog import AboutDialog
 from .Book import Book
 from .CDPanel import CDPanel
 from .ConfigurationsPanel import ConfigurationsPanel
 from .Constants import Constants
-from .config.additionalconfigpanel import AdditionalConfigPanel
-from .config.expansionspanel import ExpansionsPanel
-from .config.romrampanel import RomRamPanel
 from .FloppiesPanel import FloppiesPanel
 from .HardDrivesPanel import HardDrivesPanel
 from .InputPanel import InputPanel
 from .MainPanel import MainPanel
 from .SetupDialog import SetupDialog
 from .Skin import Skin
-from .statusbar.StatusBar import StatusBar
 from .WindowWithTabs import WindowWithTabs
-from fsgs.context import default_context
-
+from .about_dialog import AboutDialog
+from .config.additionalconfigpanel import AdditionalConfigPanel
+from .config.expansionspanel import ExpansionsPanel
+from .statusbar.StatusBar import StatusBar
+from ..i18n import gettext
+from ..launcher_settings import LauncherSettings
+from ..launcher_signal import LauncherSignal
 
 USE_MAIN_MENU = 1
 
 
+# noinspection PyMethodMayBeStatic
 class LauncherWindow(WindowWithTabs):
 
     @classmethod
@@ -61,11 +62,14 @@ class LauncherWindow(WindowWithTabs):
 
     def __init__(self, fsgs=None):
         LauncherWindow._current = weakref.ref(self)
-
+        # Old name
         if fsgs is not None:
             self.fsgs = fsgs
         else:
             self.fsgs = default_context()
+        # New name
+        self.gsc = self.fsgs
+
         from launcher.fs_uae_launcher import FSUAELauncher
         FSUAELauncher.pre_start()
 
@@ -103,7 +107,7 @@ class LauncherWindow(WindowWithTabs):
         self.user_menu_close_time = 0
         self.user_button = None
         self.main_panel = None
-
+        self.config_browser = None
         self.main_layout = fsui.VerticalLayout()
         self.set_content(self.main_layout)
 
@@ -211,7 +215,7 @@ class LauncherWindow(WindowWithTabs):
 
         was_maximized = LauncherSettings.get("maximized") == "1"
 
-        if LauncherSettings.get(Option.CONFIG_FEATURE) == "1":
+        if LauncherSettings.get(Option.LAUNCHER_CONFIG_FEATURE) == "1":
             if launcher.ui.get_screen_size()[0] > 1300:
                 if launcher.ui.get_screen_size()[1] > 1000:
                     self.layout.min_width = 1280
@@ -228,9 +232,11 @@ class LauncherWindow(WindowWithTabs):
 
         self.update_title()
         self.check_for_update_once()
+        self.implicit_config_handler = ImplicitConfigHandler(self)
 
     def on_destroy(self):
-        print("LauncherWindow.destroy")
+        # FIXME: Is this being run?
+        print("LauncherWindow.on_destroy")
         LauncherSignal.remove_listener("scan_done", self)
         LauncherSignal.remove_listener("setting", self)
 
@@ -303,7 +309,6 @@ class LauncherWindow(WindowWithTabs):
             LauncherSettings.set("maximized", "1")
         else:
             LauncherSettings.set("maximized", "0")
-
         if self.screenshots_panel is not None:
             window_width = self.get_size()[0]
             available = (window_width - 10 - 10 -
@@ -314,7 +319,6 @@ class LauncherWindow(WindowWithTabs):
             screenshots_panel_width = \
                 (Constants.SCREEN_SIZE[0] + 22) * num_screenshots - 22 + 22
             self.screenshots_panel.set_min_width(screenshots_panel_width)
-
         fsui.Window.on_resize(self)
 
     def is_editor_enabled(self):
@@ -352,13 +356,24 @@ class LauncherWindow(WindowWithTabs):
 #                        self.add_tab_panel(LaunchGroup, expand=False)
 
             if column == 2 and \
-                    LauncherSettings.get(Option.CONFIG_FEATURE) == "1":
+                    LauncherSettings.get(Option.LAUNCHER_CONFIG_FEATURE) == "1":
                 if launcher.ui.get_screen_size()[0] >= 1280:
-                    from launcher.ui.config.browser import ConfigBrowser
-                    config_browser = ConfigBrowser(self)
-                    config_browser.set_min_width(200)
-                    hor_layout.add(config_browser, fill=True, expand=0.5,
-                                   margin=10)
+                    hor_layout.add_spacer(10)
+                    # if not Skin.fws():
+                    #     line_panel = fsui.Panel(self)
+                    #     line_panel.set_background_color(
+                    #         fsui.Color(*BORDER_COLOR))
+                    #     line_panel.set_min_width(2)
+                    #     hor_layout.add(line_panel, fill=True, margin_top=-10,
+                    #                    margin_bottom=-10)
+                    self.config_browser = ConfigBrowser(self)
+                    self.config_browser.set_min_width(200)
+                    #if Skin.fws():
+                    hor_layout.add(self.config_browser, fill=True,
+                                   expand=0.5, margin=-10, margin_left=0)
+                    #else:
+                    #    hor_layout.add(self.config_browser, fill=True,
+                    #                   expand=0.5, margin=10)
 
             if column == 2:
                 # if fs_uae_launcher.ui.get_screen_size()[1] >= 1024:
@@ -366,7 +381,7 @@ class LauncherWindow(WindowWithTabs):
 
                 hor2_layout = fsui.HorizontalLayout()
                 vert_layout.add(hor2_layout, fill=True, margin=10)
-                launch_group = LaunchGroup(self)
+                launch_group = LaunchGroup(self, self.gsc)
                 # hor2_layout.add_spacer(0, expand=True)
                 hor2_layout.add(launch_group, expand=True)
 
@@ -439,10 +454,6 @@ class LauncherWindow(WindowWithTabs):
                 "32x32/go-home",
                 gettext("Config"), gettext("Main Configuration Options"))
             self.add_page(
-                column, InputPanel,
-                "32x32/applications-games",
-                gettext("Input"), gettext("Input Options"))
-            self.add_page(
                 column, FloppiesPanel,
                 "32x32/media-floppy",
                 gettext("Floppies"), gettext("Floppy Drives"))
@@ -455,13 +466,17 @@ class LauncherWindow(WindowWithTabs):
                 "32x32/drive-harddisk",
                 gettext("Hard Drives"))
             self.add_scroll_page(
-                column, ExpansionsPanel,
-                "32x32/audio-card",
-                gettext("Expansions"), gettext("Expansions"))
-            self.add_scroll_page(
                 column, RomRamPanel,
                 "32x32/application-x-firmware",
                 gettext("Hardware"), gettext("ROM and RAM"))
+            self.add_page(
+                column, InputPanel,
+                "32x32/applications-games",
+                gettext("Input"), gettext("Input Options"))
+            self.add_scroll_page(
+                column, ExpansionsPanel,
+                "32x32/audio-card",
+                gettext("Expansions"), gettext("Expansions"))
             self.add_scroll_page(
                 column, AdditionalConfigPanel,
                 "32x32/system-shutdown",

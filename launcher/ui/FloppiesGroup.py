@@ -1,5 +1,7 @@
+from launcher.option import Option
 from launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
-import fsui as fsui
+import fsui
+from launcher.ui.options import ConfigWidgetFactory
 from ..cd_manager import CDManager
 from ..floppy_manager import FloppyManager
 from ..i18n import gettext
@@ -19,11 +21,19 @@ class FloppiesGroup(fsui.Group):
         self.layout.add(hori_layout, fill=True)
 
         if cd_mode:
-            self.label = fsui.HeadingLabel(self, gettext("CD-ROM Drive"))
+            title = gettext("CD-ROM Drive")
+            drive_count_option = Option.CDROM_DRIVE_COUNT
         else:
-            self.label = fsui.HeadingLabel(self, gettext("Floppy Drives"))
+            title = gettext("Floppy Drives")
+            drive_count_option = Option.FLOPPY_DRIVE_COUNT
+
+        self.label = fsui.HeadingLabel(self, title)
         hori_layout.add(self.label, margin=10)
         hori_layout.add_spacer(0, expand=True)
+
+        hori_layout.add(ConfigWidgetFactory().create(
+            self, drive_count_option, text=gettext("Drive Count")),
+            fill=True, margin_right=20)
 
         self.multi_select_button = fsui.Button(
             self, gettext("Multi-Select..."))
@@ -46,7 +56,7 @@ class FloppiesGroup(fsui.Group):
             if cd_mode:
                 selector.set_cd_mode(True)
             self.selectors.append(selector)
-            self.layout.add(selector, fill=True, margin=10)
+            self.layout.add(selector, fill=True, margin=10, margin_bottom=0)
 
     def on_multi_select_button(self):
         if self.cd_mode:

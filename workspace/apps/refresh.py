@@ -31,9 +31,9 @@ class RefreshWindow(fsui.Window):
         self.created_label = fsui.Label(self, "")
         hori_layout.add(self.created_label, expand=True)
         hori_layout.add_spacer(20)
-        self.abort_button = fsui.Button(self, gettext("Stop"))
-        self.abort_button.activated.connect(self.on_abort_activated)
-        hori_layout.add(self.abort_button)
+        self.stop_button = fsui.Button(self, gettext("Stop"))
+        self.stop_button.activated.connect(self.on_abort_activated)
+        hori_layout.add(self.stop_button)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
@@ -51,6 +51,7 @@ class RefreshWindow(fsui.Window):
         print("RefreshWindow.__del__")
 
     def on_close(self):
+        print("RefreshWindow.on_close")
         self.task.stop()
 
     # def on_closed_signal(self):
@@ -58,7 +59,7 @@ class RefreshWindow(fsui.Window):
 
     def on_abort_activated(self):
         self.task.stop()
-        self.abort_button.disable()
+        self.stop_button.disable()
 
     def on_failure(self, message):
         fsui.show_error(message, parent=self.get_window())

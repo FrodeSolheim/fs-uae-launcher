@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from fsui.qt import Signal
 from .Skin import Skin
 

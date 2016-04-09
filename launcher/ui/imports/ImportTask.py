@@ -3,7 +3,7 @@ import shutil
 import threading
 import traceback
 from fsbc.path import is_same_file
-import fsui as fsui
+import fsui
 from ...i18n import gettext
 from fsgs.amiga.ROMManager import ROMManager
 from fsgs.FSGSDirectories import FSGSDirectories

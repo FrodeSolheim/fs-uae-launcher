@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from launcher.i18n import gettext
 from launcher.ui.settings.option_ui import OptionUI
 from fsui.extra.iconheader import NewIconHeader

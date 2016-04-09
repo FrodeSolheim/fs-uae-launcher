@@ -1,5 +1,5 @@
 import fsui
-from launcher.options import Option
+from launcher.option import Option
 from launcher.ui.settings.launcher_settings_page import LauncherSettingsPage
 from launcher.ui.settings.plugins_settings_page import PluginsSettingsPage
 from .advanced_settings_page import AdvancedSettingsPage

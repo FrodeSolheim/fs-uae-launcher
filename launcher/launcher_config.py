@@ -11,6 +11,7 @@ from fsgs.ChecksumTool import ChecksumTool
 from fsgs.amiga.Amiga import Amiga
 from fsgs.amiga.ValueConfigLoader import ValueConfigLoader
 from fsgs.FSGSDirectories import FSGSDirectories
+from launcher.option import Option
 from .launcher_settings import LauncherSettings
 from fsbc.signal import Signal
 
@@ -60,10 +61,10 @@ cfg = [
 
     ("x_whdload_args",        "",         "checksum", "sync"),
     ("x_whdload_version",     "",     "checksum", "sync"),
-    ("floppy_drive_count",    "",         "checksum", "sync", "custom"),
-    ("floppy_drive_speed",    "",         "checksum", "sync", "custom"),
-    ("cdrom_drive_count",     "",         "checksum", "sync", "custom"),
-    ("dongle_type",           "",         "checksum", "sync", "custom"),
+    ("floppy_drive_count",    "",         "checksum", "sync"),
+    ("floppy_drive_speed",    "",         "checksum", "sync"),
+    ("cdrom_drive_count",     "",         "checksum", "sync"),
+    ("dongle_type",           "",         "checksum", "sync"),
 
     ("__netplay_game",        "",         "checksum", "sync"),
     ("__netplay_password",    "",         "checksum", "sync"),
@@ -95,6 +96,8 @@ cfg = [
     ("amigamemo_url",         ""),
     ("whdload_url",           ""),
     ("mobygames_url",         ""),
+    ("thelegacy_url",         ""),
+    ("homepage_url",         ""),
     ("longplay_url",          ""),
     ("__variant_rating",      ""),
     ("variant_rating",        ""),
@@ -122,6 +125,21 @@ cfg = [
 
     ("mouse_integration", "", "checksum", "sync"),
     ("cdrom_drive_0_delay", "", "checksum", "sync"),
+    ("cpu", "", "checksum", "sync"),
+    ("graphics_card", "", "checksum", "sync"),
+    ("graphics_memory", "", "checksum", "sync"),
+    ("accelerator", "", "checksum", "sync"),
+    ("accelerator_memory", "", "checksum", "sync"),
+    ("blizzard_scsi_kit", "", "checksum", "sync"),
+    ("motherboard_ram", "", "checksum", "sync"),
+    ("sound_card", "", "checksum", "sync"),
+    ("jit_compiler", "", "checksum", "sync"),
+    ("__database", ""),
+    ("platform", ""),
+    ("floppy_drive_volume_empty", "", "sync"),
+    ("save_disk", "", "checksum", "sync"),
+    ("network_card", "", "checksum", "sync"),
+    ("freezer_cartridge", "", "checksum", "sync"),
 ]
 
 for _i in range(Amiga.MAX_FLOPPY_DRIVES):
@@ -194,6 +212,10 @@ class LauncherConfig(object):
 
     # config = default_config.copy()
     # config_listeners = []
+
+    @classmethod
+    def keys(cls):
+        return fsgs.config.values.keys()
 
     @classmethod
     def copy(cls):
@@ -328,9 +350,19 @@ class LauncherConfig(object):
         for key, value in cls.default_config.items():
             update_config[key] = value
         for key in list(fsgs.config.values.keys()):
+            # if key not in cls.default_config:
+            #     # this is not a recognized key, so we remove it
+            #     del fsgs.config.values[key]
             if key not in cls.default_config:
-                # this is not a recognized key, so we remove it
-                del fsgs.config.values[key]
+                # We need to broadcast changed for all config keys, also
+                # the ones this class does not know about
+                if key.startswith("__implicit_"):
+                    # Unless it is an implicit config key, in which case
+                    # it should be properly updated by another component, and
+                    # we don't want to have the options flip-flop too much.
+                    pass
+                else:
+                    update_config[key] = ""
 
         for key, value in config.items():
             # if this is a settings key, change settings instead
@@ -344,7 +376,12 @@ class LauncherConfig(object):
         # print("about to set", update_config)
         cls.set_multiple(update_config.items())
         # Settings.set("config_changed", "0")
-        cls.set("__changed", "0")
+        if "__changed" in update_config:
+            # We specifically loaded __changed, probably in fix_loaded_config.
+            pass
+        else:
+            # Mark config as unchanged (i.e. does not need to be saved).
+            cls.set("__changed", "0")
 
         # cls.update_kickstart()
 
@@ -428,85 +465,6 @@ class LauncherConfig(object):
                 config["joystick_port_0"] = "none"
 
     @classmethod
-    def fix_loaded_config(cls, config):
-        # cls.fix_joystick_ports(config)
-
-        # FIXME: parent
-        checksum_tool = ChecksumTool(None)
-
-        def fix_file_checksum(sha1_key, key, base_dir, is_rom=False):
-            path = config.get(key, "")
-            # hack to synchronize URLs
-            # print(repr(path))
-            if path.startswith("http://") or path.startswith("https://"):
-                sha1 = path
-                config[sha1_key] = sha1
-                return
-            path = Paths.expand_path(path)
-            sha1 = config.get(sha1_key, "")
-            if not path:
-                return
-            if sha1:
-                # assuming sha1 is correct
-                return
-            if not os.path.exists(path):
-                print(repr(path), "does not exist")
-                path = os.path.join(base_dir, path)
-                if not os.path.exists(path):
-                    print(repr(path), "does not exist")
-                    return
-            if os.path.isdir(path):
-                # could set a fake checksum here or something, to indicate
-                # that it isn't supposed to be set..
-                return
-            print("checksumming", repr(path))
-            size = os.path.getsize(path)
-            if size > 64 * 1024 * 1024:
-                # not checksumming large files right now
-                print("not checksumming large file")
-                return
-
-            if is_rom:
-                sha1 = checksum_tool.checksum_rom(path)
-            else:
-                sha1 = checksum_tool.checksum(path)
-            config[sha1_key] = sha1
-
-        for i in range(Amiga.MAX_FLOPPY_DRIVES):
-            fix_file_checksum(
-                "x_floppy_drive_{0}_sha1".format(i),
-                "floppy_drive_{0}".format(i),
-                FSGSDirectories.get_floppies_dir())
-        for i in range(Amiga.MAX_FLOPPY_IMAGES):
-            fix_file_checksum(
-                "x_floppy_image_{0}_sha1".format(i),
-                "floppy_image_{0}".format(i),
-                FSGSDirectories.get_floppies_dir())
-        for i in range(Amiga.MAX_CDROM_DRIVES):
-            fix_file_checksum(
-                "x_cdrom_drive_{0}_sha1".format(i),
-                "cdrom_drive_{0}".format(i),
-                FSGSDirectories.get_cdroms_dir())
-        for i in range(Amiga.MAX_CDROM_IMAGES):
-            fix_file_checksum(
-                "x_cdrom_image_{0}_sha1".format(i),
-                "cdrom_image_{0}".format(i),
-                FSGSDirectories.get_cdroms_dir())
-        for i in range(Amiga.MAX_HARD_DRIVES):
-            fix_file_checksum(
-                "x_hard_drive_{0}_sha1".format(i),
-                "hard_drive_{0}".format(i),
-                FSGSDirectories.get_hard_drives_dir())
-
-        # FIXME: need to handle checksums for Cloanto here
-        fix_file_checksum(
-            "x_kickstart_file_sha1", "x_kickstart_file",
-            FSGSDirectories.get_kickstarts_dir(), is_rom=True)
-        fix_file_checksum(
-            "x_kickstart_ext_file_sha1", "x_kickstart_ext_file",
-            FSGSDirectories.get_kickstarts_dir(), is_rom=True)
-
-    @classmethod
     def load_file(cls, path):
         try:
             cls._load_file(path, "")
@@ -587,6 +545,8 @@ class LauncherConfig(object):
         LauncherSettings.set("config_path", path)
 
         cls.load(config)
+        # Changed may have been set by fix_loaded_config
+        changed = cls.get("__changed", "0")
 
         config_name = config.get("__config_name", "")
         if config_name:
@@ -607,7 +567,7 @@ class LauncherConfig(object):
         LauncherSettings.set("config_name", config_name)
         LauncherSettings.set("config_xml_path", config_xml_path)
         # Settings.set("config_changed", "0")
-        cls.set("__changed", "0")
+        cls.set("__changed", changed)
 
     @classmethod
     def load_values(cls, values, uuid=""):
@@ -653,3 +613,116 @@ class LauncherConfig(object):
         LauncherSettings.set("config_xml_path", "")
         # Settings.set("config_changed", "0")
         cls.set("__changed", "0")
+
+    @staticmethod
+    def is_implicit_option(key):
+        return key.startswith("__implicit_")
+
+    @staticmethod
+    def is_custom_uae_option(key):
+        return key.startswith("uae_")
+
+    @classmethod
+    def is_custom_option(cls, key):
+        return key not in cls.config_keys
+
+    @classmethod
+    def is_config_only_option(cls, key):
+        if key in LauncherSettings.default_settings:
+            # This key is specifically white-listed as a settings key
+            return False
+        if cls.is_custom_uae_option(key):
+            return True
+        if not cls.is_custom_option(key):
+            return True
+        return False
+
+    @classmethod
+    def fix_loaded_config(cls, config):
+        print("[CONFIG] Fix loaded config")
+        # cls.fix_joystick_ports(config)
+
+        # FIXME: parent
+        checksum_tool = ChecksumTool(None)
+
+        def fix_file_checksum(sha1_key, key, base_dir, is_rom=False):
+            path = config.get(key, "")
+            # hack to synchronize URLs
+            # print(repr(path))
+            if path.startswith("http://") or path.startswith("https://"):
+                sha1 = path
+                config[sha1_key] = sha1
+                return
+            path = Paths.expand_path(path)
+            sha1 = config.get(sha1_key, "")
+            if not path:
+                return
+            if sha1:
+                # assuming sha1 is correct
+                return
+            if not os.path.exists(path):
+                print(repr(path), "does not exist")
+                path = os.path.join(base_dir, path)
+                if not os.path.exists(path):
+                    print(repr(path), "does not exist")
+                    return
+            if os.path.isdir(path):
+                # could set a fake checksum here or something, to indicate
+                # that it isn't supposed to be set..
+                return
+            print("checksumming", repr(path))
+            size = os.path.getsize(path)
+            if size > 64 * 1024 * 1024:
+                # not checksumming large files right now
+                print("not checksumming large file")
+                return
+
+            if is_rom:
+                sha1 = checksum_tool.checksum_rom(path)
+            else:
+                sha1 = checksum_tool.checksum(path)
+            config[sha1_key] = sha1
+
+        for i in range(Amiga.MAX_FLOPPY_DRIVES):
+            fix_file_checksum(
+                "x_floppy_drive_{0}_sha1".format(i),
+                "floppy_drive_{0}".format(i),
+                FSGSDirectories.get_floppies_dir())
+        for i in range(Amiga.MAX_FLOPPY_IMAGES):
+            fix_file_checksum(
+                "x_floppy_image_{0}_sha1".format(i),
+                "floppy_image_{0}".format(i),
+                FSGSDirectories.get_floppies_dir())
+        for i in range(Amiga.MAX_CDROM_DRIVES):
+            fix_file_checksum(
+                "x_cdrom_drive_{0}_sha1".format(i),
+                "cdrom_drive_{0}".format(i),
+                FSGSDirectories.get_cdroms_dir())
+        for i in range(Amiga.MAX_CDROM_IMAGES):
+            fix_file_checksum(
+                "x_cdrom_image_{0}_sha1".format(i),
+                "cdrom_image_{0}".format(i),
+                FSGSDirectories.get_cdroms_dir())
+        for i in range(Amiga.MAX_HARD_DRIVES):
+            fix_file_checksum(
+                "x_hard_drive_{0}_sha1".format(i),
+                "hard_drive_{0}".format(i),
+                FSGSDirectories.get_hard_drives_dir())
+
+        # FIXME: need to handle checksums for Cloanto here
+        fix_file_checksum(
+            "x_kickstart_file_sha1", "x_kickstart_file",
+            FSGSDirectories.get_kickstarts_dir(), is_rom=True)
+        fix_file_checksum(
+            "x_kickstart_ext_file_sha1", "x_kickstart_ext_file",
+            FSGSDirectories.get_kickstarts_dir(), is_rom=True)
+
+        # Convert uaegfx_card to new graphics_card option
+        uae_gfx_card = config.get(Option.UAEGFX_CARD, "")
+        if uae_gfx_card:
+            if uae_gfx_card == "1":
+                if not config.get(Option.GRAPHICS_CARD, ""):
+                    config[Option.GRAPHICS_CARD] = "uaegfx"
+            del config[Option.UAEGFX_CARD]
+            # FIXME: Set changed!
+            config["__changed"] = "1"

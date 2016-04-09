@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from .Constants import Constants
 from .Skin import Skin
 from .TabPanel import TabPanel

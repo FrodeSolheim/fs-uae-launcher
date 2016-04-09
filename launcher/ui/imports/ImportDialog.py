@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from ...i18n import gettext
 from .ImportTask import ImportTask
 from ...launcher_signal import LauncherSignal

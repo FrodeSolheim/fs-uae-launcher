@@ -1,5 +1,6 @@
-import fsui as fsui
-from ..i18n import gettext
+import fsui
+from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
 
 
 class LaunchDialog(fsui.Window):
@@ -59,13 +60,14 @@ class LaunchDialog(fsui.Window):
         self.close()
 
     def __closed(self):
+        LauncherConfig.set("__running", "")
         self.cancel()
         return False
 
     def on_progress(self, progress):
 
-        def hide_function():
-            self.visible = False
+        # def hide_function():
+        #     self.visible = False
 
         def function():
             if progress == "__run__":
@@ -73,11 +75,18 @@ class LaunchDialog(fsui.Window):
                 # Hide dialog after 1.5 seconds. The reason for delaying it
                 # is to avoid "confusing" flickering if/when the dialog is
                 # only shown for a split second.
-                fsui.call_later(1500, hide_function)
+                # fsui.call_later(1500, hide_function)
+                LauncherConfig.set(
+                    "__progress", gettext("Running: Emulator"))
             else:
                 self.sub_title_label.set_text(progress)
+                LauncherConfig.set(
+                    "__progress", "Preparing: {}".format(progress))
 
         fsui.call_after(function)
+
+    def show(self):
+        pass
 
     def on_complete(self):
 

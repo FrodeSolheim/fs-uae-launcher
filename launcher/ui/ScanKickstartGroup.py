@@ -1,5 +1,5 @@
 from fsgs.context import fsgs
-import fsui as fsui
+import fsui
 from fsgs.amiga.Amiga import Amiga
 from ..launcher_signal import LauncherSignal
 from ..i18n import gettext

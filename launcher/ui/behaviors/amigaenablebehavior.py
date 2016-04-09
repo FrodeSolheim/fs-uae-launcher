@@ -8,10 +8,11 @@ class AmigaEnableBehavior:
         parent.__amiga_enable_behavior = self
         self._parent = weakref.ref(parent)
         LauncherConfig.add_listener(self)
-        # FIXME
+
+        # FIXME: We need to disconnect the listener
         parent.destroyed.connect(self.on_destroy)
 
-    def on_destroy(self, *args):
+    def on_destroy(self, *_):
         LauncherConfig.remove_listener(self)
 
     def on_config(self, key, value):

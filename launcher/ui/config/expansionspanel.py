@@ -1,6 +1,6 @@
 import fsui
 from launcher.i18n import gettext
-from launcher.options import Option
+from launcher.option import Option
 from launcher.ui.config.configpanel import ConfigPanel
 from launcher.ui.config.ExpansionsGroup import ExpansionsGroup
 
@@ -19,11 +19,10 @@ class ExpansionsPanel(ConfigPanel):
 
         # self.add_option(Option.CPU)
         self.add_option(Option.ACCELERATOR)
-        self.add_option(Option.ACCELERATOR_MEMORY)
+        # self.add_option(Option.ACCELERATOR_MEMORY)
         self.add_option(Option.BLIZZARD_SCSI_KIT)
-
         self.add_option(Option.GRAPHICS_CARD)
-        self.add_option(Option.GRAPHICS_MEMORY)
-
+        # self.add_option(Option.GRAPHICS_MEMORY)
         self.add_option(Option.SOUND_CARD)
+        self.add_option(Option.NETWORK_CARD)
         self.add_option(Option.BSDSOCKET_LIBRARY)

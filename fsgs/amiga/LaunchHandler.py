@@ -22,6 +22,9 @@ from fsgs.amiga.ROMManager import ROMManager
 from fsgs.amiga.whdload import DEFAULT_WHDLOAD_VERSION, whdload_files, \
     whdload_support_files, default_whdload_prefs
 from fsgs.amiga.workbench import WorkbenchExtractor
+from fsgs.knownfiles import ACTION_REPLAY_MK_III_3_17_ROM, \
+    ACTION_REPLAY_MK_III_3_17_MOD_ROM, ACTION_REPLAY_MK_II_2_14_ROM, \
+    ACTION_REPLAY_MK_II_2_14_MOD_ROM
 from fsgs.network import is_http_url
 from fsgs.res import gettext
 from .roms import PICASSO_IV_74_ROM, CD32_FMV_ROM
@@ -138,6 +141,19 @@ class LaunchHandler(object):
         if self.config["accelerator"].lower() == "cyberstorm-ppc":
             roms.append(("accelerator_rom", ["cyberstormppc.rom"]))
 
+        if self.config["freezer_cartridge"] == "action-replay-2":
+            # Ideally, we would want to recognize ROMs based on zeroing the
+            # first four bytes, but right now we simply recognize a common
+            # additional version. freezer_cartridge_rom isn't a real option,
+            # we just want to copy the rom file and let FS-UAE find it
+            roms.append(("[freezer_cartridge]",
+                         [ACTION_REPLAY_MK_II_2_14_ROM.sha1,
+                          ACTION_REPLAY_MK_II_2_14_MOD_ROM.sha1]))
+        elif self.config["freezer_cartridge"] == "action-replay-3":
+            roms.append(("[freezer_cartridge]",
+                         [ACTION_REPLAY_MK_III_3_17_ROM.sha1,
+                          ACTION_REPLAY_MK_III_3_17_MOD_ROM.sha1]))
+
         for config_key, default_roms in roms:
             print("ROM:", config_key, default_roms)
             src = self.config[config_key]
@@ -157,11 +173,13 @@ class LaunchHandler(object):
                         src = sha1
             elif src == "internal":
                 continue
-            else:
+            elif src:
                 src = Paths.expand_path(src)
             if not src:
                 raise TaskFailure(
-                    gettext("Did not find required Kickstart or ROM"))
+                    gettext("Did not find required Kickstart or "
+                            "ROM for {}. Wanted one of these files: {}".format(
+                                config_key, repr(default_roms))))
 
             use_temp_kickstarts_dir = False
 
@@ -719,8 +737,7 @@ class LaunchHandler(object):
                 print("WHDLoad base dir exists, copying resources...")
                 self.copy_folder_tree(src_dir, dest_dir)
 
-        # FIXME: currently disabled
-        # icon = self.config.get("x_whdload_icon", "")
+        # icon = self.config.get("__whdload_icon", "")
         icon = ""
         if icon:
             shutil.copy(os.path.expanduser("~/kgiconload"), 

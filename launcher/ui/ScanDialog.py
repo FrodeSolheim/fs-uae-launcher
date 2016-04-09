@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from ..scanner import Scanner
 from ..i18n import gettext
 from .settings.scan_paths_group import ScanPathsGroup

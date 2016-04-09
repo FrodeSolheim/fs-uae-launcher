@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from ...i18n import gettext
 from .ImportDialog import ImportDialog
 

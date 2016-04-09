@@ -76,12 +76,12 @@ def add_packages():
             for n in file_names:
                 if n != "__init__.py":
                     continue
-                pname_rev = []
+                p_name_rev = []
                 path = dir_path
                 while os.path.exists(os.path.join(path, "__init__.py")):
-                    pname_rev.append(os.path.basename(path))
+                    p_name_rev.append(os.path.basename(path))
                     path = os.path.dirname(path)
-                sub_name = ".".join(reversed(pname_rev))
+                sub_name = ".".join(reversed(p_name_rev))
                 package_dir[sub_name] = (package_dir[name] + "/" +
                                          sub_name.replace(".", "/"))
                 add_package(sub_name, dir_name)
@@ -137,14 +137,16 @@ if sys.argv[1] == "build_exe":
             continue
         dp = os.path.join(name, "res")
         # dp = os.path.join("share", tar_name, dp)
-        #build_exe_options["include_files"].append((sp, dp))
+        # build_exe_options["include_files"].append((sp, dp))
         for dir_path, dir_names, file_names in os.walk(sp):
             for name in file_names:
                 p = os.path.join(dir_path, name)
                 rp = p[len(sp) + 1:]
-                #build_exe_options["zip_includes"].append((p, os.path.join(dp, rp)))
-                build_exe_options["include_files"].append((p, os.path.join(dp, rp)))
-                #print(p, rp)
+                # build_exe_options["zip_includes"].append(
+                #     (p, os.path.join(dp, rp)))
+                build_exe_options["include_files"].append(
+                    (p, os.path.join(dp, rp)))
+                # print(p, rp)
     setup_options["build_exe"] = build_exe_options
     if os.path.exists("extra_imports.py"):
         build_exe_options["includes"].append("extra_imports")
@@ -217,8 +219,8 @@ catalogs = \\
 mo: $(catalogs)
 
 """.format(project.tar_name, " \\\n".join(
-           ["    share/locale/{0}/LC_MESSAGES/{1}.mo".format(x,
-           project.tar_name) for x in locales])))
+    ["    share/locale/{0}/LC_MESSAGES/{1}.mo".format(
+        x, project.tar_name) for x in locales])))
 
 
 write("""\

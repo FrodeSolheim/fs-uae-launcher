@@ -1,7 +1,7 @@
 import os
 from launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
 from fsgs.context import fsgs
-import fsui as fsui
+import fsui
 from ..launcher_config import LauncherConfig
 from ..cd_manager import CDManager
 from ..floppy_manager import FloppyManager
@@ -18,14 +18,14 @@ class FloppySelector(fsui.Group):
         self.drive = drive
         self.config_key = ""
         self.config_key_sha1 = ""
+        self.config_key_implicit = ""
 
         self.eject_button = IconButton(self, "eject_button.png")
-        AmigaEnableBehavior(self.eject_button)
+        # AmigaEnableBehavior(self.eject_button)
         self.eject_button.set_tooltip(gettext("Eject"))
         self.eject_button.activated.connect(self.on_eject)
 
         self.text_field = fsui.TextField(self, "", read_only=True)
-        AmigaEnableBehavior(self.text_field)
 
         self.browse_button = IconButton(self, "browse_file_16.png")
         self.browse_button.set_tooltip(gettext("Browse for File"))
@@ -58,24 +58,34 @@ class FloppySelector(fsui.Group):
         self.eject_button.enable(enable)
 
     def on_config(self, key, value):
-        if key != self.config_key:
-            return
-        dir, name = os.path.split(value)
-        if dir:
-            path = "{0} ({1})".format(name, dir)
-        else:
-            path = name
-        self.text_field.set_text(path)
-        self.text_field.set_cursor_position(0)
+        if key == self.config_key:
+            dir, name = os.path.split(value)
+            if dir:
+                path = "{0} ({1})".format(name, dir)
+            else:
+                path = name
+            self.text_field.set_text(path)
+            self.text_field.set_cursor_position(0)
+            self.eject_button.enable(bool(value))
+        elif key == self.config_key_implicit:
+            if self.cd_mode:
+                self.text_field.enable(value != "0")
+            else:
+                self.text_field.enable(value != "-1")
 
     def update_config_key(self):
         if self.cd_mode:
-            self.config_key = "cdrom_drive_{0}".format(self.drive)
-            self.config_key_sha1 = "x_cdrom_drive_{0}_sha1".format(self.drive)
+            self.config_key = "cdrom_drive_{}".format(self.drive)
+            self.config_key_sha1 = "x_cdrom_drive_{}_sha1".format(self.drive)
+            self.config_key_implicit = "__implicit_cdrom_drive_count"
         else:
-            self.config_key = "floppy_drive_{0}".format(self.drive)
-            self.config_key_sha1 = "x_floppy_drive_{0}_sha1".format(self.drive)
+            self.config_key = "floppy_drive_{}".format(self.drive)
+            self.config_key_sha1 = "x_floppy_drive_{}_sha1".format(self.drive)
+            self.config_key_implicit = \
+                "__implicit_uae_floppy{}type".format(self.drive)
         self.on_config(self.config_key, LauncherConfig.get(self.config_key))
+        self.on_config(self.config_key_implicit,
+                       LauncherConfig.get(self.config_key_implicit))
 
     def set_cd_mode(self, cd_mode):
         self.cd_mode = cd_mode

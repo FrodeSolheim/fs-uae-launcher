@@ -17,3 +17,6 @@ Lib
 *.pyc
 *.pyo
 /setup.py
+/.idea/tasks.xml
+/.idea/workspace.xml
+

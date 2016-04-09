@@ -1,16 +1,19 @@
-from fsui.qt import QSpinBox
-from .widget_mixin import WidgetMixin
+from fsui.qt.helpers import QParent
+from fsui.qt.qt import QSpinBox
+from fsui.qt.signal import Signal, SignalWrapper
+from fsui.qt.widget import Widget
 
 
-class SpinCtrl(WidgetMixin):
+class SpinCtrl(Widget):
+    changed_signal = Signal()
 
     def __init__(self, parent, min_value, max_value, initial_value):
-        self._widget = QSpinBox(parent.get_container())
-        # Widget.__init__(self, parent)
-        self.init_widget(parent)
+        super().__init__()
+        self.set_widget(QSpinBox(QParent(parent)))
         self._widget.setRange(min_value, max_value)
         self._widget.setValue(initial_value)
         self._widget.valueChanged.connect(self.__value_changed)
+        self.changed = SignalWrapper(self, "changed")
 
     def get_value(self):
         return self._widget.value()
@@ -19,7 +22,8 @@ class SpinCtrl(WidgetMixin):
         self._widget.setValue(value)
 
     def __value_changed(self, _):
-        self.on_changed()
+        if not self.changed.inhibit:
+            self.on_changed()
 
     def on_change(self):
-        pass
+        self.changed.emit()

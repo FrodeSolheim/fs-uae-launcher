@@ -2,84 +2,30 @@ import functools
 import os
 import sys
 
-import fsboot
 import fsbc.application
 import fsbc.desktop
-from fsbc.settings import Settings
+import fsboot
 import fstd.desktop
+from fsbc.settings import Settings
 
-import_order = ["PyQT5"]
-if "--qt-bindings=pyqt5" in sys.argv:
-    import_order = ["PyQT5"]
-elif "--qt-bindings=pyqt4" in sys.argv:
-    import_order = ["PyQT4"]
-elif "--qt-bindings=pyside" in sys.argv:
-    import_order = ["PySide"]
-for name in import_order:
-    if name == "PyQT5":
-        try:
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            import PyQt5
-        except ImportError:
-            continue
-        else:
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt5.QtCore import *
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt5.QtGui import *
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt5.QtWidgets import *
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt5.QtCore import pyqtSignal as Signal
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt5.QtCore import pyqtSignal as QSignal
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt5.QtOpenGL import *
-            try:
-                # noinspection PyUnresolvedReferences, PyPackageRequirements
-                from PyQt5.QtX11Extras import *
-            except ImportError:
-                pass
-    elif name == "PyQT4":
-        try:
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            import PyQt4
-        except ImportError:
-            continue
-        else:
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            import sip
-            sip.setapi("QString", 2)
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt4.QtCore import *
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt4.QtGui import *
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt4.QtCore import pyqtSignal as Signal
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt4.QtCore import pyqtSignal as QSignal
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PyQt4.QtOpenGL import *
-    elif name == "PySide":
-        try:
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            import PySide
-        except ImportError:
-            continue
-        else:
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PySide.QtCore import *
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PySide.QtCore import Signal as QSignal
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PySide.QtGui import *
-            # noinspection PyUnresolvedReferences, PyPackageRequirements
-            from PySide.QtOpenGL import *
-    else:
-        raise Exception("unknown QT python bindings specified")
-    break
-else:
-    raise Exception("no QT python bindings found")
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt5.QtCore import *
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt5.QtGui import *
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt5.QtWidgets import *
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt5.QtCore import pyqtSignal as Signal
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt5.QtCore import pyqtSignal as QSignal
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt5.QtOpenGL import *
+
+try:
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt5.QtX11Extras import *
+except ImportError:
+    pass
 
 
 def open_url_in_browser(url):
@@ -88,27 +34,12 @@ def open_url_in_browser(url):
     QDesktopServices.openUrl(QUrl(url))
 
 
-# def fix_qt_for_maverick():
-#     """ Fixes Qt 4 for Mac OS X 10.9.
-#     http://successfulsoftware.net/2013/10/23/fixing-qt-4-for-mac-os-x-10-9-mavericks/
-#     """
-#     if not macosx:
-#         return
-#     #if QSysInfo.MacintoshVersion <= QSysInfo.MV_10_8:
-#     #    return
-#
-#     # fix Mac OS X 10.9 (mavericks) font issue
-#     # https://bugreports.qt-project.org/browse/QTBUG-32789
-#     QFont.insertSubstitution(".Lucida Grande UI", "Lucida Grande")
-
-
 class QtBaseApplication(QApplication):
     pass
 
 
 @functools.lru_cache()
 def init_qt():
-
     if sys.platform == "darwin":
         # qt_plugins_dir = os.path.join(
         #     BaseApplication.executable_dir(), "..", "Resources",
@@ -122,7 +53,7 @@ def init_qt():
             QApplication.setLibraryPaths([fsboot.executable_dir()])
 
     if getattr(sys, "frozen", False):
-        # noinspection PyCallByClass,PyTypeChecker
+        # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
         QApplication.setLibraryPaths([fsboot.executable_dir()])
 
     # Should not be necessary with Qt 5.2.x:
@@ -207,7 +138,7 @@ def initialize_qt_style(qapplication):
 
         try:
             launcher_font_size = int(
-                    Settings.instance().get("launcher_font_size"))
+                Settings.instance().get("launcher_font_size"))
         except ValueError:
             if fusion_variant == "fws":
                 launcher_font_size = 13

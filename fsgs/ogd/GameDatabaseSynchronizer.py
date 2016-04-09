@@ -76,6 +76,8 @@ class GameDatabaseSynchronizer(object):
             if self.stop_check():
                 return
             data = self.fetch_game_sync_data()
+            if self.stop_check():
+                return
             if not data:
                 print("no more changes")
                 break
@@ -104,6 +106,8 @@ class GameDatabaseSynchronizer(object):
             if self.stop_check():
                 return
             json_data = self.fetch_rating_entries()
+            if self.stop_check():
+                return
             if json_data == last_json_data:
                 print("no more changes")
                 break
@@ -217,9 +221,12 @@ class GameDatabaseSynchronizer(object):
                 sleep_time = 2.0 + i * 0.3
                 # FIXME: change second {0} to {1}
                 self.set_status(gettext("Download failed (attempt {0}) - "
-                                        "retrying in {0} seconds").format(
+                                        "retrying in {1} seconds").format(
                     i + 1, int(sleep_time)))
-                time.sleep(sleep_time)
+                for _ in range(int(sleep_time) * 10):
+                    time.sleep(0.1)
+                    if self.stop_check():
+                        return
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
                         i + 1))
@@ -234,9 +241,12 @@ class GameDatabaseSynchronizer(object):
                 sleep_time = 2.0 + i * 0.3
                 # FIXME: change second {0} to {1}
                 self.set_status(gettext("Download failed (attempt {0}) - "
-                                        "retrying in {0} seconds").format(
+                                        "retrying in {1} seconds").format(
                     i + 1, int(sleep_time)))
-                time.sleep(sleep_time)
+                for _ in range(int(sleep_time) * 10):
+                    time.sleep(0.1)
+                    if self.stop_check():
+                        return
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
                         i + 1))

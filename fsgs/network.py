@@ -19,7 +19,11 @@ def default_openretro_server_from_file():
 
 
 def default_openretro_server():
-    return "https://openretro.org"
+    return "http://openretro.org"
+
+
+def fs_uae_url_from_sha1_and_name(sha1, name):
+    return "http://fs-uae.net/s/sha1/{0}/{1}".format(sha1, name)
 
 
 def openretro_server():
@@ -83,7 +87,3 @@ def opener_for_url_prefix(
 
 def is_http_url(url):
     return url.startswith("http://") or url.startswith("https://")
-
-
-def fs_uae_url_from_sha1_and_name(sha1, name):
-    return "https://fs-uae.net/s/sha1/{0}/{1}".format(sha1, name)

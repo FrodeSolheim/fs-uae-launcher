@@ -18,8 +18,12 @@ class Button(QPushButton, WidgetMixin):
         self.clicked.connect(self.__clicked)
 
     def __clicked(self):
-        self.on_activate()
+        self.on_activated()
+
+    def on_activated(self):
         self.activated.emit()
+        # FIXME: Remove
+        self.on_activate()
 
     def on_activate(self):
         pass

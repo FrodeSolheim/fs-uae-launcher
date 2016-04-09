@@ -1,7 +1,7 @@
 import os
 from xml.etree.cElementTree import ElementTree, SubElement
 from xml.etree.cElementTree import fromstring, tostring
-import fsui as fsui
+import fsui
 
 
 class XMLControl(fsui.TextArea):

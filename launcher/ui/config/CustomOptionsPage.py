@@ -34,10 +34,12 @@ class CustomOptionsPage(fsui.Panel):
 
     def update_config(self):
         text = self.text_area.get_text()
+        update_config = {}
+        # First mark all unknown config values as cleared
         for key in list(fsgs.config.values.keys()):
             if key not in LauncherConfig.default_config:
-                del fsgs.config.values[key]
-
+                update_config[key] = ""
+        # Then we overwrite with specific values
         for line in text.split("\n"):
             line = line.strip()
             if line.startswith("# You can write key = value pairs here"):
@@ -48,14 +50,21 @@ class CustomOptionsPage(fsui.Panel):
                 # if key in Config.no_custom_config:
                 #     continue
                 value = parts[1].strip()
-                LauncherConfig.set(key, value)
+                update_config[key] = value
+        # Finally, set everything at once
+        LauncherConfig.set_multiple(update_config.items())
 
     def get_initial_text(self):
         text = DEFAULT_TEXT
         keys = fsgs.config.values.keys()
         for key in sorted(keys):
+            # FIXME: Move to LauncherConfig as a method, maybe use
+            # is_custom_option.
             if key in LauncherConfig.no_custom_config:
                 continue
+            if key.startswith("__implicit_"):
+                continue
+
             value = fsgs.config.values[key]
             if not value:
                 continue

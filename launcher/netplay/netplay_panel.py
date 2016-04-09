@@ -1,5 +1,6 @@
-import fsui as fsui
+import fsui
 from launcher.i18n import gettext
+from launcher.netplay.irc import LOBBY_CHANNEL
 from launcher.netplay.irc_broadcaster import IRCBroadcaster
 from launcher.netplay.netplay import Netplay
 from launcher.ui.Skin import Skin
@@ -71,8 +72,7 @@ class NetplayPanel(fsui.Panel):
         self.input_field.activated.connect(self.on_input)
         self.layout.add(self.input_field, fill=True, margin=10, margin_top=0)
 
-        # FIXME: should not be hardcoded here
-        self.active_channel = "#lobby"
+        self.active_channel = LOBBY_CHANNEL
 
         self.input_field.focus()
 

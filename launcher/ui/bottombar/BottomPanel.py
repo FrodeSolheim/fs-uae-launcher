@@ -1,5 +1,8 @@
-import fsui as fsui
+import fsui
 from ..Skin import Skin
+
+
+BORDER_COLOR = (0xe5, 0xe5, 0xe5, 0xff)
 
 
 class BottomPanel(fsui.Panel):
@@ -28,7 +31,7 @@ class BottomPanel(fsui.Panel):
             self.line_color_1 = fsui.Color(0xff, 0xff, 0xff, 0xa0)
             self.line_color_2 = self.line_color_1
 
-        self.border_color = fsui.Color(0xe5, 0xe5, 0xe5, 0xff)
+        self.border_color = fsui.Color(*BORDER_COLOR)
         self.white_color = fsui.Color(0xff, 0xff, 0xff, 0xff)
 
     def on_paint(self):

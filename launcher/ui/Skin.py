@@ -2,7 +2,7 @@ import fsui
 import fsbc.system
 from fsbc.util import memoize
 from .Constants import Constants
-from ..options import Option
+from ..option import Option
 from ..launcher_settings import LauncherSettings
 import fsboot
 try:

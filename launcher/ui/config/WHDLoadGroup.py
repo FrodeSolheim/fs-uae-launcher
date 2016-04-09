@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from ...launcher_config import LauncherConfig
 from ...i18n import gettext
 from ..HelpButton import HelpButton

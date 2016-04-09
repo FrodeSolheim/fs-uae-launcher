@@ -147,7 +147,8 @@ class Netplay:
         # used again
         self.reset_netplay_config()
 
-    def get_config_hash(self):
+    @staticmethod
+    def get_config_hash():
         return LauncherConfig.checksum()
 
     # noinspection SpellCheckingInspection
@@ -252,10 +253,12 @@ class Netplay:
         # reset list of players
         self.players = {}
 
-    def reset_config(self):
+    @staticmethod
+    def reset_config():
         LauncherConfig.load_default_config()
 
-    def reset_netplay_config(self):
+    @staticmethod
+    def reset_netplay_config():
         LauncherConfig.set_multiple([
             ("__netplay_id", ""),
             ("__netplay_password", ""),

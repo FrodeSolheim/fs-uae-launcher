@@ -1,13 +1,12 @@
-from .ui.LauncherFilePicker import LauncherFilePicker
-from fsgs.amiga.Amiga import Amiga
-from .launcher_config import LauncherConfig
-from .i18n import gettext
 from fsbc.paths import Paths
 from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.amiga.Amiga import Amiga
+from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
+from launcher.ui.LauncherFilePicker import LauncherFilePicker
 
 
-class CDManager(object):
-
+class CDManager:
     @classmethod
     def clear_all(cls):
         for i in range(1):

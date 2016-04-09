@@ -4,8 +4,6 @@ from .launcher_signal import LauncherSignal
 
 
 class LauncherSettings(object):
-    irc_server = "irc.fengestad.no"
-
     base_dir = ""
 
     # The main use of default_settings is actually to hide the corresponding
@@ -86,9 +84,7 @@ class LauncherSettings(object):
     settings = default_settings.copy()
     # settings_listeners = []
 
-    initialize_from_config = set([
-        "fullscreen",
-    ])
+    initialize_from_config = {"fullscreen"}
 
     @classmethod
     def get(cls, key):
@@ -98,6 +94,14 @@ class LauncherSettings(object):
     @classmethod
     def set(cls, key, value):
         Settings.instance()[key] = value
+
+    @classmethod
+    def keys(cls):
+        return Settings.instance().values.keys()
+
+    @classmethod
+    def items(cls):
+        return Settings.instance().values.items()
 
     @classmethod
     def add_listener(cls, listener):
@@ -142,4 +146,4 @@ class LauncherSettings(object):
         value = cls.get("irc_server").strip()
         if value:
             return value
-        return "irc.fengestad.no"
+        return "irc.fs-uae.net"

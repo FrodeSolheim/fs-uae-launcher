@@ -1,6 +1,6 @@
 import fsui
 from launcher.i18n import gettext
-from ..behaviors.configbehavior import ConfigBehavior
+from launcher.ui.behaviors.configbehavior import ConfigBehavior
 
 
 class OverrideWarning(fsui.ImageView):

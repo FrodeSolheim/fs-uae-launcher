@@ -1,5 +1,5 @@
 import os
-import fsui as fsui
+import fsui
 from fsgs.FSGSDirectories import FSGSDirectories
 from ..launcher_settings import LauncherSettings
 

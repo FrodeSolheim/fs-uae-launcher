@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from ..Skin import Skin
 
 

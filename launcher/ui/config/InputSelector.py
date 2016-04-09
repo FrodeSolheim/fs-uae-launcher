@@ -1,6 +1,6 @@
 import sys
 
-import fsui as fsui
+import fsui
 from launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
 from ..HelpButton import HelpButton
 from ..IconButton import IconButton
@@ -11,7 +11,7 @@ from ...launcher_signal import LauncherSignal
 
 
 class InputSelector(fsui.Group):
-    def __init__(self, parent, port):
+    def __init__(self, parent, port, autofire_button=True):
         self.port = port
         self.device_option_key = "joystick_port_{0}".format(port)
         self.mode_option_key = "joystick_port_{0}_mode".format(port)
@@ -53,13 +53,14 @@ class InputSelector(fsui.Group):
         # print(self.device_choice.get_index())
         self.layout.add(self.device_choice, expand=True)
 
-        if port < 4:
+        if port < 4 and autofire_button:
             self.autofire_button = IconButton(self, "16/lightning_off.png")
             self.autofire_button.activated.connect(self.on_autofire_button)
             self.layout.add(self.autofire_button, margin_left=10)
         else:
             self.autofire_button = None
 
+        if port == 4:
             self.help_button = HelpButton(
                 self, "https://fs-uae.net/custom-joystick-port")
             self.layout.add(self.help_button, margin_left=10)

@@ -1,20 +1,22 @@
 import os
-from fsgs.context import fsgs
-from fsgs.ChecksumTool import ChecksumTool
-import fsui as fsui
-from fsgs.amiga.Amiga import Amiga
-from ..cd_manager import CDManager
-from ..launcher_config import LauncherConfig
-from ..floppy_manager import FloppyManager
-from ..i18n import gettext
+
+import fsui
 from fsbc.paths import Paths
+from fsgs.ChecksumTool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
-from .IconButton import IconButton
-from .LauncherFilePicker import LauncherFilePicker
+from fsgs.amiga.Amiga import Amiga
+from fsgs.context import fsgs
+from launcher.cd_manager import CDManager
+from launcher.floppy_manager import FloppyManager
+from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
+from launcher.option import Option
+from launcher.ui.IconButton import IconButton
+from launcher.ui.LauncherFilePicker import LauncherFilePicker
+from launcher.ui.behaviors.configbehavior import ConfigBehavior
 
 
 class MediaListGroup(fsui.Group):
-
     def __init__(self, parent, cd_mode):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
@@ -29,44 +31,59 @@ class MediaListGroup(fsui.Group):
             self.file_key = "floppy_image_{0}"
             self.sha1_key = "x_floppy_image_{0}_sha1"
 
+        hori_layout = fsui.HorizontalLayout()
+        self.layout.add(hori_layout, expand=False, fill=True)
         self.heading_label = fsui.HeadingLabel(
             self, gettext("Media Swap List"))
-        self.layout.add(self.heading_label, margin=10)
-        self.layout.add_spacer(0)
-
-        hori_layout = fsui.HorizontalLayout()
-        self.layout.add(hori_layout, expand=True, fill=True)
-
-        self.list_view = fsui.ListView(self)
-        self.list_view.on_activate_item = self.on_activate_item
-        if self.cd_mode:
-            # self.list_view.set_default_icon(
-            #     fsui.Image("launcher:res/cdrom_16.png"))
-            self.default_icon = fsui.Image("launcher:res/cdrom_16.png")
-        else:
-            # self.list_view.set_default_icon(
-            #     fsui.Image("launcher:res/floppy_16.png"))
-            self.default_icon = fsui.Image("launcher:res/floppy_16.png")
-        hori_layout.add(self.list_view, expand=True, fill=True, margin=10,
-                        margin_right=0)
-
-        vert_layout = fsui.VerticalLayout()
-        hori_layout.add(vert_layout, fill=True)
-
-        add_button = IconButton(self, "add_button.png")
-        add_button.set_tooltip(gettext("Add Files to List"))
-        add_button.activated.connect(self.on_add_button)
-        vert_layout.add(add_button, margin=10)
-
-        remove_button = IconButton(self, "remove_button.png")
-        remove_button.set_tooltip(gettext("Remove Selected Files"))
-        remove_button.activated.connect(self.on_remove_button)
-        vert_layout.add(remove_button, margin=10)
-
+        hori_layout.add(
+            self.heading_label, margin=10, margin_top=20, margin_bottom=20)
+        hori_layout.add_spacer(0, expand=True)
+        if not self.cd_mode:
+            # hori_layout.add(ConfigWidgetFactory().create(
+            #     self, Option.SAVE_DISK), margin_right=20)
+            hori_layout.add(SaveDiskCheckBox(self), margin_right=20)
         clear_button = IconButton(self, "clear_button.png")
         clear_button.set_tooltip(gettext("Clear List"))
         clear_button.activated.connect(self.on_clear_list)
-        vert_layout.add(clear_button, margin=10)
+        hori_layout.add(clear_button, margin_right=10)
+        remove_button = IconButton(self, "remove_button.png")
+        remove_button.set_tooltip(gettext("Remove Selected Files"))
+        remove_button.activated.connect(self.on_remove_button)
+        hori_layout.add(remove_button, margin_right=10)
+        add_button = IconButton(self, "add_button.png")
+        add_button.set_tooltip(gettext("Add Files to List"))
+        add_button.activated.connect(self.on_add_button)
+        hori_layout.add(add_button, margin_right=10)
+
+        # hori_layout = fsui.HorizontalLayout()
+        # self.layout.add(hori_layout, expand=True, fill=True)
+        self.list_view = fsui.ListView(self)
+        self.list_view.on_activate_item = self.on_activate_item
+        if self.cd_mode:
+            self.default_icon = fsui.Image("launcher:res/cdrom_16.png")
+        else:
+            self.default_icon = fsui.Image("launcher:res/floppy_16.png")
+        # hori_layout.add(self.list_view, expand=True, fill=True, margin=10)
+        self.layout.add(
+            self.list_view, expand=True, fill=True, margin=10, margin_top=0)
+
+        # vert_layout = fsui.VerticalLayout()
+        # hori_layout.add(vert_layout, fill=True)
+
+        # add_button = IconButton(self, "add_button.png")
+        # add_button.set_tooltip(gettext("Add Files to List"))
+        # add_button.activated.connect(self.on_add_button)
+        # vert_layout.add(add_button, margin=10)
+        #
+        # remove_button = IconButton(self, "remove_button.png")
+        # remove_button.set_tooltip(gettext("Remove Selected Files"))
+        # remove_button.activated.connect(self.on_remove_button)
+        # vert_layout.add(remove_button, margin=10)
+        #
+        # clear_button = IconButton(self, "clear_button.png")
+        # clear_button.set_tooltip(gettext("Clear List"))
+        # clear_button.activated.connect(self.on_clear_list)
+        # vert_layout.add(clear_button, margin=10)
 
         self.update_list()
         LauncherConfig.add_listener(self)
@@ -110,7 +127,7 @@ class MediaListGroup(fsui.Group):
             else:
                 label = path
             self.list_view.add_item(label, self.default_icon)
-        # self.list_view.set_items(items)
+            # self.list_view.set_items(items)
 
     def on_clear_list(self):
         if self.cd_mode:
@@ -174,3 +191,17 @@ class MediaListGroup(fsui.Group):
             set_list.append((self.file_key.format(i), path))
             set_list.append((self.sha1_key.format(i), sha1))
         LauncherConfig.set_multiple(set_list)
+
+
+class SaveDiskCheckBox(fsui.CheckBox):
+    def __init__(self, parent):
+        super().__init__(parent, gettext("Include Save Disk"))
+        self.set_tooltip(gettext(
+            "When checked, include a save disk in FS-UAE's floppy swap list"))
+        ConfigBehavior(self, [Option.SAVE_DISK])
+
+    def on_changed(self):
+        LauncherConfig.set(Option.SAVE_DISK, "" if self.is_checked() else "0")
+
+    def on_save_disk_config(self, value):
+        self.check(value != "0")

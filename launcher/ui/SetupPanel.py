@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from .imports.ImportGroup import ImportGroup
 from .ScanKickstartGroup import ScanKickstartGroup
 

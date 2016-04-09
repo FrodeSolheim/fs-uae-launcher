@@ -1,24 +1,15 @@
-import fsui as fsui
-from .ExpansionsGroup import ExpansionsGroup
-from ..Skin import Skin
-from launcher.options import Option
-from .configoptionui import ConfigOptionUI
+from fsui import Panel, VerticalLayout
+from launcher.ui.Skin import Skin
+from launcher.ui.options import ConfigWidgetFactory
 
 
-class ConfigPanel(fsui.Panel):
-
+class ConfigPanel(Panel):
     def __init__(self, parent):
-        fsui.Panel.__init__(self, parent)
+        super().__init__(parent)
         Skin.set_background_color(self)
+        self.layout = VerticalLayout()
+        self.config_widget_factory = ConfigWidgetFactory()
 
-        # self.panel = fsui.Panel(self)
-        # self.set_widget(self.panel)
-
-        # self.expansions_group = ExpansionsGroup(self.panel)
-
-        self.layout = fsui.VerticalLayout()
-        # self.panel.layout.add(self.expansions_group, fill=True)
-
-    def add_option(self, name):
-        self.layout.add(ConfigOptionUI.create_group(self, name),
-                        fill=True, margin=10)
+    def add_option(self, name, fill=True):
+        self.layout.add(self.config_widget_factory.create(
+            self, name), fill=fill, margin=10, margin_bottom=0)

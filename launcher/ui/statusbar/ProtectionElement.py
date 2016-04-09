@@ -17,8 +17,9 @@ class ProtectionElement(StatusElement):
         # self.disabled_icon = self.disabled_icon.grey_scale()
         self.icon = self.protection_icon
 
+        self.na_text = " "
         self.protection = ""
-        self.text = "N/A"
+        self.text = self.na_text
         self.active = False
 
         LauncherConfig.add_listener(self)
@@ -35,13 +36,13 @@ class ProtectionElement(StatusElement):
                 if not value:
                     self.icon = self.protection_icon
                     self.active = False
-                    self.text = "N/A"
+                    self.text = self.na_text
                 elif value.lower() == "none":
                     # self.icon = self.disabled_icon
                     # self.active = True
                     self.icon = self.protection_icon
                     self.active = False
-                    self.text = gettext("Unprotected")
+                    self.text = gettext("No Protection")
                 elif value.lower() in ["dongle"]:
                     # self.icon = self.disabled_icon
                     # self.active = True

@@ -1,19 +1,18 @@
-import fsui as fsui
+import fsui
+from fsbc.application import app
+from launcher.option import Option
+from .override_warning import OverrideWarning
+from ..HelpButton import HelpButton
 from ...i18n import gettext
 from ...launcher_settings import LauncherSettings
-from ...options import Options, Option
-from ..HelpButton import HelpButton
-from .override_warning import OverrideWarning
-from fsbc.application import app
 
 
 class OptionUI(object):
-
     @classmethod
     def create_group(cls, parent, name):
         group = fsui.Group(parent)
         group.layout = fsui.HorizontalLayout()
-        option = Options.get(name)
+        option = Option.get(name)
         group.label = fsui.Label(group, gettext(option["description"]) + ":")
         group.layout.add(group.label, margin_right=10)
         group.layout.add(OverrideWarning(group, name), margin_right=10)
@@ -60,7 +59,7 @@ class OptionUI(object):
 
             if name == Option.LAUNCHER_FONT_SIZE:
                 font = app.qapplication.font()
-                Options.get(Option.LAUNCHER_FONT_SIZE)["default"] = \
+                Option.get(Option.LAUNCHER_FONT_SIZE)["default"] = \
                     font.pointSize()
 
             current_int = int(option["default"])

@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from .config.WHDLoadGroup import WHDLoadGroup
 from .config.HardDriveGroup import HardDriveGroup
 from .Skin import Skin

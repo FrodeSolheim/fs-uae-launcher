@@ -22,7 +22,8 @@ class Model(QAbstractListModel):
         row = index.row()
         # print("data for", index, "role", role)
         if role == Qt.SizeHintRole:
-            return QSize(26, 26)
+            height = self.parent()._row_height
+            return QSize(height, height)
         elif role == Qt.DecorationRole:
             icon = self.parent().get_item_icon(row)
             if icon:
@@ -41,12 +42,14 @@ class VerticalItemView(QListView, WidgetMixin):
     item_selected = Signal(int)
     item_activated = Signal(int)
 
-    def __init__(self, parent):
+    def __init__(self, parent, border=True):
         QListView.__init__(self, parent.get_container())
         # Widget.__init__(self, parent)
         self.init_widget(parent)
         self.viewport().installEventFilter(self.get_window())
         self.verticalScrollBar().installEventFilter(self.get_window())
+        if not border:
+            self.setFrameStyle(0)
 
         # self.setSelectionModel()
         # self.model = QStandardItemModel(self)
@@ -59,6 +62,10 @@ class VerticalItemView(QListView, WidgetMixin):
         self.doubleClicked.connect(self.__double_clicked)
         # self.returnPressed.connect(self.__double_clicked)
         # self.activated.connect(self.__double_clicked)
+        self._row_height = 26
+
+    def set_row_height(self, height):
+        self._row_height = height
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:

@@ -1,5 +1,5 @@
 from fsbc.util import unused
-import fsui as fsui
+import fsui
 from fsgs.amiga.Amiga import Amiga
 from ..launcher_config import LauncherConfig
 from .FloppiesGroup import FloppiesGroup

@@ -2,7 +2,7 @@ from launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.config.ConfigCheckBox import ConfigCheckBox
 from fsbc.util import unused
-import fsui as fsui
+import fsui
 from ...launcher_config import LauncherConfig
 from fsgs.amiga.Amiga import Amiga
 from ...floppy_manager import FloppyManager

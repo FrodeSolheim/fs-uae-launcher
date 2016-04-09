@@ -1,6 +1,6 @@
 from fsbc.util import unused
 from fsgs.Database import Database
-import fsui as fsui
+import fsui
 
 
 class GameListView(fsui.ListView):

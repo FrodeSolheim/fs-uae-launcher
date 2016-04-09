@@ -1,6 +1,6 @@
-import fsui as fsui
+import fsui
 from launcher.i18n import gettext
-from launcher.options import Option
+from launcher.option import Option
 from launcher.ui.settings.settings_page import SettingsPage
 
 

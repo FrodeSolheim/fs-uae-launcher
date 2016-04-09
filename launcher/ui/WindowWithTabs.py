@@ -1,5 +1,5 @@
 from launcher.ui.titlebar import TitleBar
-import fsui as fsui
+import fsui
 from .TabPanel import TabPanel
 from .TabButton import TabButton
 from .Constants import Constants

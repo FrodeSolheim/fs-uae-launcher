@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from ...device_manager import DeviceManager
 from ...i18n import gettext
 from ..IconButton import IconButton
@@ -7,7 +7,7 @@ from .InputSelector import InputSelector
 
 class InputGroup(fsui.Group):
 
-    def __init__(self, parent, with_more_options=True,
+    def __init__(self, parent, autofire_button=True, refresh_button=False,
                  parallel_ports=False, custom_ports=False):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
@@ -29,7 +29,7 @@ class InputGroup(fsui.Group):
         hori_layout.add(heading_label, margin=10)
         hori_layout.add_spacer(0, expand=True)
 
-        if with_more_options:
+        if refresh_button:
             self.refresh_button = IconButton(self, "refresh_button.png")
             self.refresh_button.set_tooltip(
                 gettext("Refresh List of Connected Joystick Devices"))
@@ -50,7 +50,7 @@ class InputGroup(fsui.Group):
         input_ports = [1, 0, 2, 3, 4]
         for i in input_ports[offset:offset + count]:
             # self.layout.add_spacer(10)
-            selector = InputSelector(self, i)
+            selector = InputSelector(self, i, autofire_button=autofire_button)
             self.layout.add(selector, fill=True, margin=10)
 
     def on_refresh_button(self):

@@ -17,7 +17,7 @@ from .launcher_settings import LauncherSettings
 # from fsgs.ogd.meta import MetaSynchronizer
 from fsgs.ogd.locker import LockerSynchronizer
 
-from launcher.options import Option
+from launcher.option import Option
 
 GAME_ENTRY_TYPE_GAME = 1 << 0
 GAME_ENTRY_TYPE_VARIANT = 1 << 1

@@ -17,7 +17,7 @@ from fsgs.application import ApplicationMixin
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.platform import PlatformHandler
 import fsbc.fs as fs
-import fsui as fsui
+import fsui
 from fsgs.context import fsgs
 from .ui.launcher_window import LauncherWindow
 from fsgs.amiga.Amiga import Amiga
@@ -285,6 +285,8 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         dialog = LaunchDialog(
             LauncherWindow.current(), gettext("Launching Game"), task)
         dialog.show()
+
+        LauncherConfig.set("__running", "1")
         task.start()
         # dialog.show_modal()
         # dialog.close()
@@ -353,6 +355,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             return True
         fsgs.file.on_show_license_information = on_show_license_information
 
+        LauncherConfig.set("__running", "1")
         task.start()
         # dialog.show_modal()
         # dialog.close()
@@ -360,16 +363,18 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
     @classmethod
     def prepare_config(cls, original_config):
         config = defaultdict(str)
-        for key, value in app.settings.values.items():
-            if key in LauncherConfig.config_keys:
-                print("... ignoring config key from settings:", key)
-                continue
+        for key, value in LauncherSettings.items():
+            # We now show warnings on status bar instead
+            # if key in LauncherConfig.config_keys:
+            #     print("... ignoring config key from settings:", key)
+            #     continue
             config[key] = value
 
         config["base_dir"] = FSGSDirectories.get_base_dir()
 
         for key, value in original_config.items():
-            config[key] = value
+            if value:
+                config[key] = value
 
         if not config["joystick_port_0_mode"]:
             config["joystick_port_0_mode"] = "mouse"

@@ -1,5 +1,6 @@
 import sys
 from collections import defaultdict
+
 from .ContextAware import ContextAware
 
 
@@ -8,6 +9,11 @@ class Config(ContextAware):
     def __init__(self, context):
         ContextAware.__init__(self, context)
         self.values = {}
+
+    def add_behavior(self, instance, options):
+        # FIXME: Move to fsgs
+        from launcher.ui.behaviors.configbehavior import ConfigBehavior
+        ConfigBehavior(instance, options)
 
     def copy(self):
         # return a defaultdict so lookups for unset keys return an empty string
@@ -66,9 +72,9 @@ class Config(ContextAware):
             # if key == "joystick_port_1_mode":
             #     pass
             if old_config.get(changed_key, None) == changed_value:
-                if changed_value:
-                    print("config set {0} to {1} (no change)".format(
-                        changed_key, changed_value))
+                # if changed_value:
+                #     print("config set {0} to {1} (no change)".format(
+                #         changed_key, changed_value))
                 return
             print("config set {0} to {1}".format(changed_key, changed_value))
             add_changed_key(changed_key)
@@ -90,7 +96,10 @@ class Config(ContextAware):
         if len(changed_keys) > 0:
             if "__ready" not in changed_key_list:
                 change("__ready", "0")
-            change("__changed", "1")
+            for key in changed_key_list:
+                if not key.startswith("__implicit_"):
+                    change("__changed", "1")
+                    break
             for priority, key in sorted(changed_keys):
                 # for listener in cls.config_listeners:
                 #     listener.on_config(key, cls.get(key))

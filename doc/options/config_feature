@@ -1,4 +1,0 @@
-Description: Enable experimental config visualization (requires restart)
-Default: 0
-Example: 1
-Type: boolean

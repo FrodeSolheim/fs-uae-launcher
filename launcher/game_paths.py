@@ -1,5 +1,5 @@
 import os
-import fsui as fsui
+import fsui
 from .ui.Constants import Constants
 from .launcher_config import LauncherConfig
 from fsbc.paths import Paths

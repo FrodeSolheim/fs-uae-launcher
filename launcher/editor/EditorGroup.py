@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 from ..launcher_config import LauncherConfig
 from ..launcher_settings import LauncherSettings
 from .XMLControl import XMLControl

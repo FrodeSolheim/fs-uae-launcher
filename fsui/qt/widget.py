@@ -3,10 +3,13 @@ from fsui.qt import QPoint
 from fsui.qt import Qt, QObject, QFontMetrics, QWidget, QPalette, QCursor
 from fsui.qt.Color import Color
 from fsui.qt.DrawingContext import Font
+from fsui.qt.signal import Signal
 
 
 # noinspection PyPep8Naming
 class Widget(QObject):
+
+    destroyed = Signal()
 
     def __init__(self, *_):
         super().__init__()
@@ -36,6 +39,10 @@ class Widget(QObject):
         widget.installEventFilter(self)
         widget.destroyed.connect(self.on_destroy)
 
+    def on_destroy(self):
+        print("Widget.on_destroy", self)
+        self.destroyed.emit()
+
     def set_visible(self, show=True):
         if show:
             self.widget().show()
@@ -47,9 +54,6 @@ class Widget(QObject):
 
     def hide(self):
         self.set_visible(False)
-
-    def on_destroy(self):
-        print("on_destroy")
 
     def eventFilter(self, obj, event):
         return False
@@ -176,6 +180,9 @@ class Widget(QObject):
     def enable(self, enable=True):
         widget = getattr(self, "_widget", self)
         widget.setEnabled(enable)
+
+    def set_enabled(self, enable=True):
+        self.enable(enable)
 
     def on_resize(self):
         if hasattr(self, "layout") and isinstance(self.layout, Layout):

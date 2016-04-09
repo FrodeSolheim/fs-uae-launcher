@@ -9,6 +9,8 @@ from .irc_broadcaster import IRCBroadcaster
 from .irc_color import IRCColor
 from ..launcher_settings import LauncherSettings
 
+LOBBY_CHANNEL = "#Lobby2.8"
+
 
 # noinspection PyUnusedLocal
 class IRC:
@@ -20,7 +22,7 @@ class IRC:
         self.my_nick = ""
         self.client = None
         # FIXME: should not be hardcoded here
-        self.default_channel = "#Lobby"
+        self.default_channel = LOBBY_CHANNEL
         self.active_channel_name = self.default_channel
         self.connection = None
 
@@ -33,7 +35,8 @@ class IRC:
     def info(self, message):
         self.message(message, IRCColor.INFO)
 
-    def is_channel(self, name):
+    @staticmethod
+    def is_channel(name):
         return len(name) > 0 and name[0] in "&#+!"
 
     def channel(self, name):
@@ -90,7 +93,8 @@ class IRC:
             traceback.print_exc()
         self.running = False
 
-    def nick(self, spec):
+    @staticmethod
+    def nick(spec):
         nick = spec.split("!")[0]
         nick = nick.strip("@+")
         return nick
@@ -99,7 +103,8 @@ class IRC:
         nick = spec.split("!")[0]
         return nick == self.my_nick
 
-    def get_irc_server_host(self):
+    @staticmethod
+    def get_irc_server_host():
         return LauncherSettings.get_irc_server()
 
     def irc_main(self):
@@ -334,8 +339,7 @@ class IRC:
         if password:
             self.privmsg("nickserv", "identify {0}".format(password))
 
-        # self.join("#support")
-        self.join("#lobby")
+        self.join(LOBBY_CHANNEL)
 
         # convenience for development...
         for arg in sys.argv:

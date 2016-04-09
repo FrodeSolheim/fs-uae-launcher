@@ -2,6 +2,8 @@ import traceback
 import queue
 
 from fsui.res import gettext
+from .qt import init_qt, QDesktopWidget, QEvent, QObject, QCoreApplication, \
+    QTimer, QMessageBox, QCursor
 from .qt import *
 from .helpers import QParent
 

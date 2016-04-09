@@ -1,9 +1,9 @@
 import fsui
-from launcher.launcher_config import LauncherConfig
+from fsbc.application import app
 from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.ui.settings.settings_page import SettingsPage
-from fsbc.application import app
 
 
 class AdvancedSettingsPage(SettingsPage):
@@ -56,22 +56,23 @@ class AdvancedSettingsPage(SettingsPage):
                 value = parts[1].strip()
                 app.settings[key] = value
 
-    def get_initial_text(self):
+    @staticmethod
+    def get_initial_text():
         text = ""
         # FIXME: accessing values directly here, not very nice
         keys = app.settings.values.keys()
         for key in sorted(keys):
             if key in LauncherSettings.default_settings:
                 continue
-            # #print("(settings) ignoring key", key)
-            #    text += "# key {0} will be ignored\n".format(key)
-            # if key in Config.config_keys:
-            #     print("(settings) ignoring key", key)
-            #     continue
-            if key in LauncherConfig.config_keys:
-                # print("(settings) ignoring key", key)
-                text += "\n# {0} is ignored here " \
-                        "(use config dialog instead)\n".format(key)
+            # if key in LauncherConfig.config_keys:
+            #     # print("(settings) ignoring key", key)
+            #     text += "\n# {0} is ignored here " \
+            #             "(use config dialog instead)\n".format(key)
+            if LauncherConfig.is_config_only_option(key):
+                text += ("\n# {0} will here function as a global config "
+                         "default and may cause\nunexpected problems. It is "
+                         "recommended to only use this as a per-config "
+                         "option.\n".format(key))
             value = app.settings[key]
             if LauncherConfig.get(key):
                 text += "\n# {0} is overridden by current " \

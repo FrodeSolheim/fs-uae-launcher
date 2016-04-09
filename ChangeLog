@@ -1,5 +1,27 @@
+Version 2.7.11dev:
+
+* Revert to HTTP due to certificate validation not working properly.
+
 Version 2.7.10dev:
 
+* It is now possible (but highly discouraged) to put config options in
+  advanced settings to function is global defaults. You will get a
+  warning message on the status bar if you do this.
+* If a required ROM is not find, be more specific about which one.
+* Launch dialog replaced with "inline" status information.
+* Disable start button while FS-UAE is running.
+* Notice on status bar when custom config options are in use.
+* Warning on status bar when custom uae_* config options are in use.
+* Config controls show auto-selected value.
+* GUI indicates what floppy/CD drives are currently enabled.
+* Removed uaegfx_card control, automatically change config to graphics_card.
+* Fixed recently introduced bug in memory override selectors.
+* Stop button in game database sync dialog with repeated errors works now.
+* Some minor UI adjustments to the configuration panels.
+* Added GUI selectors for JIT compiler, dongle type, save_disk, network_card,
+  freezer_cartridge and more.
+* Moved drive count selectors to the floppy/CD tabs.
+* Join IRC netplay lobby specific to the FS-UAE major/minor version.
 * Use https://fs-uae.net and https://openretro.org URLs.
 * Fixed a compatibility issue with Qt 5.2 (availableGeometryChanged).
 * Cached images can be read from pre-generated zip files to reduce the

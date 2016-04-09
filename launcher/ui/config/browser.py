@@ -1,25 +1,18 @@
-from launcher.ui.config.expand import expand_config, \
-    AbstractExpandFunctions
-from launcher.ui.config.model import ImplicitConfig, normalize, \
-    create_model
-from launcher.launcher_config import LauncherConfig
-from launcher.launcher_settings import LauncherSettings
-from fsbc.util import unused
+from launcher.ui.Skin import Skin
+from launcher.ui.config.model import create_model
 import fsui
+import traceback
 
 
 class ConfigBrowser(fsui.VerticalItemView):
 
     def __init__(self, parent):
-        fsui.VerticalItemView.__init__(self, parent)
-
+        # fsui.VerticalItemView.__init__(self, parent, border=(not Skin.fws()))
+        fsui.VerticalItemView.__init__(self, parent, border=False)
         self.items = []
         self.game_icon = fsui.Image("launcher:res/16/controller.png")
         self.config_icon = fsui.Image(
             "launcher:res/fsuae_config_16.png")
-        LauncherConfig.add_listener(self)
-        LauncherSettings.add_listener(self)
-        # self.update_search()
 
         self.manual_download_icon = fsui.Image(
             "launcher:res/16/arrow_down_yellow.png")
@@ -28,46 +21,67 @@ class ConfigBrowser(fsui.VerticalItemView):
         self.blank_icon = fsui.Image(
             "launcher:res/16/blank.png")
         self.missing_color = fsui.Color(0xa8, 0xa8, 0xa8)
-
         self.platform_icons = {}
-        self._need_update = True
-        self.update_items()
 
-    def update_items(self):
-        # FIXME: replace with a timer-scheduled function so this function does
-        # not run needlessly often
-        self._need_update = True
-        fsui.call_after(self.do_update_items)
+        if Skin.fws() or True:
+            from workspace.ui.theme import Theme
+            theme = Theme.instance()
+            self.set_row_height(28)
+            # self.list_view.set_background_color(fsui.Color(0xeb, 0xeb, 0xeb))
+            self.setStyleSheet("""
+            QListView {{
+                background-color: {0};
+                outline: none;
+            }}
+            QListView::item {{
+                padding-left: 10px;
+                border: 0px;
+            }}
+            QListView::item:selected {{
+                background-color: {1};
+            }}
+            """.format(theme.sidebar_background.to_hex(),
+                       theme.selection_background.to_hex()))
+        else:
+            pass
+            # self.setAutoFillBackground(False)
+            # self.setStyleSheet("""
+            # QListView {{
+            #     background-color: {0};
+            #     outline: none;
+            # }}
+            # QListView::item {{
+            #     padding-left: 10px;
+            #     border: 0px;
+            # }}
+            # QListView::item:selected {{
+            #     background-color: {1};
+            # }}
+            # """.format("#80ffff", "#ff0000"))
 
-    def do_update_items(self):
-        if not self._need_update:
-            return
-        print("do_update_items")
-        implicit = ImplicitConfig(ConfigProxy(), SettingsProxy())
-        expand_config(implicit, ExpandFunctions())
-        model = create_model(implicit, show_all=False)
-        # print_model(model)
-        items = []
+    def update_from_implicit(self, implicit):
 
         def flatten(item_list, level):
 
             for model_item in item_list:
                 if model_item.active:
-                    text = "    " * level + str(model_item.text)
+                    # text = "    " * level + str(model_item.text)
+                    text = str(model_item.text)
                     if model_item.extra:
                         text += " [" + model_item.extra + "]"
                     items.append(text)
                 if model_item.children:
                     flatten(model_item.children, level + 1)
 
-        flatten(model.items, 0)
-        print(items)
+        items = []
+        try:
+            model = create_model(implicit, show_all=False)
+        except Exception:
+            traceback.print_exc()
+            print("create_model failed")
+        else:
+            flatten(model.items, 0)
         self.set_items(items)
-        self._need_update = False
-
-    def on_destroy(self):
-        LauncherConfig.remove_listener(self)
-        LauncherSettings.remove_listener(self)
 
     def on_select_item(self, index):
         if index is None:
@@ -76,16 +90,6 @@ class ConfigBrowser(fsui.VerticalItemView):
 
     def on_activate_item(self, index):
         pass
-
-    def on_config(self, key, value):
-        unused(key)
-        unused(value)
-        self.update_items()
-
-    def on_setting(self, key, value):
-        unused(key)
-        unused(value)
-        self.update_items()
 
     def set_items(self, items):
         self.items = items
@@ -132,53 +136,3 @@ class ConfigBrowser(fsui.VerticalItemView):
 
     # def on_get_item_tooltip(self, row, column):
     #     return ""
-
-
-class SettingsProxy:
-
-    def get(self, key):  # , default=""):
-        return LauncherSettings.get(key)  # , default)
-
-    def __getitem__(self, item):
-        return self.get(item)
-
-    def __setitem__(self, key, value):
-        LauncherSettings.set(key, value)
-
-
-class ConfigProxy:
-
-    def get(self, key):
-        return LauncherConfig.get(key)
-
-    def __getitem__(self, item):
-        return self.get(item)
-
-    def __setitem__(self, key, value):
-        LauncherConfig.set(key, value)
-
-
-class ExpandFunctions(AbstractExpandFunctions):
-
-    @staticmethod
-    def matches(a, b):
-        a = normalize(a)
-        if isinstance(b, list):
-            for b_item in b:
-                if a == normalize(b_item):
-                    return True
-            return False
-        return a == normalize(b)
-
-    @staticmethod
-    def fail(message):
-        pass
-
-    @staticmethod
-    def warning(message):
-        # warnings.append(message)
-        pass
-
-    @staticmethod
-    def lower(s):
-        return s.lower()

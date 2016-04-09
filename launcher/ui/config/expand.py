@@ -58,6 +58,8 @@ def _accelerator(c, f):
 def _accelerator_memory(c, f):
     if c.accelerator_memory.explicit:
         value = c.accelerator_memory.explicit
+    elif c.accelerator == "":
+        value = "0"
     elif f.matches(c.accelerator, "blizzard-1230-iv"):
         value = str(32 * 1024)
     elif f.matches(c.accelerator, "blizzard-1240"):
@@ -68,7 +70,10 @@ def _accelerator_memory(c, f):
         value = str(256 * 1024)
     elif f.matches(c.accelerator, "cyberstorm-ppc"):
         value = str(128 * 1024)
+    elif f.matches(c.accelerator, "0"):
+        value = str(0 * 1024)
     else:
+        f.warning("accelerator_memory")
         value = "0"
     c.accelerator_memory = value
 
@@ -88,6 +93,33 @@ def _bsdsocket_library(c, f):
     else:
         value = "0"
     c.bsdsocket_library = value
+
+
+# noinspection PyUnusedLocal
+def _cdrom_drive_0(c, f):
+    pass
+
+
+# noinspection PyUnusedLocal
+def _cdrom_drive_count(c, f):
+    if c.cdrom_drive_count.explicit:
+        value = c.cdrom_drive_count.explicit
+    elif c.cdrom_drive_0:
+        value = "1"
+    elif c.cdrom_image_0:
+        value = "1"
+    elif c.int_model == "CD32":
+        value = "1"
+    elif c.int_model == "CDTV":
+        value = "1"
+    else:
+        value = "0"
+    c.cdrom_drive_count = value
+
+
+# noinspection PyUnusedLocal
+def _cdrom_image_0(c, f):
+    pass
 
 
 # noinspection PyUnusedLocal
@@ -145,6 +177,16 @@ def _chip_memory(c, f):
 def _cpu(c, f):
     if c.cpu.explicit:
         c.cpu = c.cpu.explicit
+    elif c.accelerator == "blizzard-1230-iv":
+        c.cpu = "68EC030"
+    elif c.accelerator == "blizzard-1240":
+        c.cpu = "68040-NOMMU"
+    elif c.accelerator == "blizzard-1260":
+        c.cpu = "68060-NOMMU"
+    elif c.accelerator == "blizzard-ppc":
+        c.cpu = "68060-NOMMU"
+    elif c.accelerator == "cyberstorm-ppc":
+        c.cpu = "68060-NOMMU"
     elif c.amiga_model == "A500":
         c.cpu = "68000"
     elif c.amiga_model == "A500/512K":
@@ -164,21 +206,21 @@ def _cpu(c, f):
     elif c.amiga_model == "A1200/1230":
         c.cpu = "68030"
     elif c.amiga_model == "A1200/1240":
-        c.cpu = "68040"
+        c.cpu = "68040-NOMMU"
     elif c.amiga_model == "A1200/1260":
-        c.cpu = "68060"
+        c.cpu = "68060-NOMMU"
     elif c.amiga_model == "A1200/PPC":
-        c.cpu = "68060"
+        c.cpu = "68060-NOMMU"
     elif c.amiga_model == "A3000":
         c.cpu = "68030"
     elif c.amiga_model == "A4000":
         c.cpu = "68EC030"
     elif c.amiga_model == "A4000/040":
-        c.cpu = "68040"
+        c.cpu = "68040-NOMMU"
     elif c.amiga_model == "A4000/OS4":
-        c.cpu = "68060"
+        c.cpu = "68060-NOMMU"
     elif c.amiga_model == "A4000/PPC":
-        c.cpu = "68060"
+        c.cpu = "68060-NOMMU"
     elif c.amiga_model == "CD32":
         c.cpu = "68EC020"
     elif c.amiga_model == "CD32/FMV":
@@ -188,6 +230,15 @@ def _cpu(c, f):
     else:
         f.fail("Unknown amiga_model")
         raise Exception("Failed")
+
+
+# noinspection PyUnusedLocal
+def _dongle_type(c, f):
+    # FIXME: uae_dongle_type
+    if c.dongle_type.explicit:
+        c.dongle_type = c.dongle_type.explicit
+    else:
+        c.dongle_type = "0"
 
 
 # noinspection PyUnusedLocal
@@ -237,9 +288,25 @@ def _floppy_drive_count(c, f):
         value = "0"
     elif c.int_model == "CDTV":
         value = "0"
-    else:
+    elif c.platform == "amiga":
         value = "1"
+    elif c.platform == "cd32":
+        value = "1"
+    elif c.platform == "cdtv":
+        value = "1"
+    elif c.platform == "":
+        value = "1"
+    else:
+        value = "0"
     c.floppy_drive_count = value
+
+
+# noinspection PyUnusedLocal
+def _floppy_drive_speed(c, f):
+    if c.floppy_drive_speed.explicit:
+        c.floppy_drive_speed = c.floppy_drive_speed.explicit
+    else:
+        c.floppy_drive_speed = "100"
 
 
 # noinspection PyUnusedLocal
@@ -285,6 +352,15 @@ def _fpu(c, f):
 
 
 # noinspection PyUnusedLocal
+def _freezer_cartridge(c, f):
+    if c.freezer_cartridge.explicit:
+        c.freezer_cartridge = c.freezer_cartridge.explicit
+        # FIXME: Check valid values
+    else:
+        c.freezer_cartridge = "0"
+
+
+# noinspection PyUnusedLocal
 def _graphics_card(c, f):
     if c.graphics_card.explicit:
         # FIXME: check supported
@@ -292,6 +368,17 @@ def _graphics_card(c, f):
     else:
         value = ""
     c.graphics_card = value
+
+
+# noinspection PyUnusedLocal
+def _graphics_memory(c, f):
+    if c.graphics_memory.explicit:
+        value = c.graphics_memory.explicit
+    elif c.uae_gfxcard_size == "0":
+        value = "0"
+    else:
+        value = int(c.uae_gfxcard_size) * 1024
+    c.graphics_memory = value
 
 
 # noinspection PyUnusedLocal
@@ -886,6 +973,14 @@ def _int_z3fastmem_size(c, f):
 
 
 # noinspection PyUnusedLocal
+def _jit_compiler(c, f):
+    if c.jit_compiler.explicit:
+        c.jit_compiler = c.jit_compiler.explicit
+    else:
+        c.jit_compiler = "0"
+
+
+# noinspection PyUnusedLocal
 def _joystick_port_0_mode(c, f):
     if c.joystick_port_0_mode.explicit:
         value = c.joystick_port_0_mode.explicit
@@ -951,9 +1046,34 @@ def _kickstart_file(c, f):
 def _motherboard_ram(c, f):
     if c.motherboard_ram.explicit:
         value = c.motherboard_ram.explicit
+    elif c.int_model == "A3000":
+        value = "8192"
+    elif c.int_model == "A4000":
+        # FIXME: should PPC / OS4 models be excluded?
+        value = "8192"
     else:
         value = "0"
     c.motherboard_ram = value
+
+
+# noinspection PyUnusedLocal
+def _network_card(c, f):
+    if c.network_card.explicit:
+        # FIXME: check supported
+        value = c.network_card.explicit
+        if f.matches(value, "a2065"):
+            value = "a2065"
+        else:
+            f.warning(value + ": invalid value")
+            value = "0"
+    else:
+        value = "0"
+    c.network_card = value
+
+
+# noinspection PyUnusedLocal
+def _platform(c, f):
+    pass
 
 
 # noinspection PyUnusedLocal
@@ -988,6 +1108,8 @@ def _uae_a2065(c, f):
         # FIXME: ok? keep already specified value
         value = c.uae_a2065.explicit
         # FIXME: check value
+    elif c.network_card == "a2065":
+        value = "slirp"
     else:
         value = ""
     c.uae_a2065 = value
@@ -997,11 +1119,13 @@ def _uae_a2065(c, f):
 def _uae_a3000mem_size(c, f):
     if c.uae_a3000mem_size.explicit:
         value = c.uae_a3000mem_size.explicit
-    elif c.int_model == "A3000":
-        value = "8"
-    elif c.int_model == "A4000":
-        # FIXME: should PPC / OS4 models be excluded?
-        value = "8"
+    elif c.motherboard_ram != "":
+        value = str(int(c.motherboard_ram) // 1024)
+    # elif c.int_model == "A3000":
+    #     value = "8"
+    # elif c.int_model == "A4000":
+    #     # FIXME: should PPC / OS4 models be excluded?
+    #     value = "8"
     else:
         value = "0"
     c.uae_a3000mem_size = value
@@ -1056,9 +1180,15 @@ def _uae_chipmem_size(c, f):
 # noinspection PyUnusedLocal
 def _uae_chipset(c, f):
     if c.uae_chipset.explicit:
-        value = c.uae_chipset.explicit
+        if int(c.int_chipmem_size) >= 1048576:
+            value = "ecs_agnus"
+        else:
+            value = "ocs"
     elif c.amiga_model == "A500":
-        value = "ocs"
+        if int(c.int_chipmem_size) >= 1048576:
+            value = "ecs_agnus"
+        else:
+            value = "ocs"
     elif c.amiga_model == "A500/512K":
         value = "ocs"
     elif c.amiga_model == "A500+":
@@ -1295,7 +1425,7 @@ def _uae_floppy0type(c, f):
 
 # noinspection PyUnusedLocal
 def _uae_floppy1(c, f):
-    if c.uae_floppy0.explicit:
+    if c.uae_floppy1.explicit:
         value = c.uae_floppy1.explicit
     else:
         value = c.floppy_drive_1
@@ -1315,7 +1445,7 @@ def _uae_floppy1type(c, f):
 
 # noinspection PyUnusedLocal
 def _uae_floppy2(c, f):
-    if c.uae_floppy0.explicit:
+    if c.uae_floppy2.explicit:
         value = c.uae_floppy2.explicit
     else:
         value = c.floppy_drive_2
@@ -1324,8 +1454,8 @@ def _uae_floppy2(c, f):
 
 # noinspection PyUnusedLocal
 def _uae_floppy2type(c, f):
-    if c.uae_floppy1type.explicit:
-        value = c.uae_floppy1type.explicit
+    if c.uae_floppy2type.explicit:
+        value = c.uae_floppy2type.explicit
     elif int(c.floppy_drive_count) > 2:
         value = c.int_default_floppy_type
     else:
@@ -1335,7 +1465,7 @@ def _uae_floppy2type(c, f):
 
 # noinspection PyUnusedLocal
 def _uae_floppy3(c, f):
-    if c.uae_floppy0.explicit:
+    if c.uae_floppy3.explicit:
         value = c.uae_floppy3.explicit
     else:
         value = c.floppy_drive_3
@@ -1344,8 +1474,8 @@ def _uae_floppy3(c, f):
 
 # noinspection PyUnusedLocal
 def _uae_floppy3type(c, f):
-    if c.uae_floppy1type.explicit:
-        value = c.uae_floppy1type.explicit
+    if c.uae_floppy3type.explicit:
+        value = c.uae_floppy3type.explicit
     elif int(c.floppy_drive_count) > 3:
         value = c.int_default_floppy_type
     else:
@@ -1403,8 +1533,6 @@ def _uae_gfxcard_type(c, f):
     t = c.graphics_card
     if c.uae_gfxcard_type.explicit:
         value = c.uae_gfxcard_type.explicit
-    elif t == "" and c.uaegfx_card == "1":
-        value = "ZorroIII"
     elif t == "":
         value = ""
     elif t == "uaegfx":
@@ -1689,17 +1817,28 @@ def expand_config(c, f):
     _accelerator(c, f)
     _accelerator_memory(c, f)
     _bsdsocket_library(c, f)
+    _cdrom_drive_0(c, f)
+    _cdrom_image_0(c, f)
+    _int_model(c, f)
+    _cdrom_drive_count(c, f)
     _chip_memory(c, f)
     _cpu(c, f)
+    _dongle_type(c, f)
     _fast_memory(c, f)
     _floppy_drive_0(c, f)
     _floppy_drive_1(c, f)
     _floppy_drive_2(c, f)
     _floppy_drive_3(c, f)
-    _int_model(c, f)
+    _platform(c, f)
     _floppy_drive_count(c, f)
+    _floppy_drive_speed(c, f)
     _fpu(c, f)
+    _freezer_cartridge(c, f)
     _graphics_card(c, f)
+    _uae_cpu_24bit_addressing(c, f)
+    _uae_gfxcard_type(c, f)
+    _uae_gfxcard_size(c, f)
+    _graphics_memory(c, f)
     _uae_cpuboard_type(c, f)
     _int_accelerator_name(c, f)
     _slow_memory(c, f)
@@ -1707,7 +1846,6 @@ def expand_config(c, f):
     _int_chipmem_size(c, f)
     _uae_chipset(c, f)
     _int_chipset_name(c, f)
-    _uae_cpu_24bit_addressing(c, f)
     _uae_cpu_model(c, f)
     _uae_fpu_model(c, f)
     _uae_mmu_model(c, f)
@@ -1715,14 +1853,13 @@ def expand_config(c, f):
     _int_cpuboardmem1_size(c, f)
     _int_default_floppy_type(c, f)
     _int_fastmem_size(c, f)
-    _uaegfx_card(c, f)
-    _uae_gfxcard_type(c, f)
     _int_graphics_card_bus(c, f)
     _int_graphics_card_name(c, f)
     _int_kickstart_ext_sha1(c, f)
     _int_kickstart_sha1(c, f)
     _int_kickstart_revision(c, f)
     _int_kickstart_version(c, f)
+    _motherboard_ram(c, f)
     _uae_a3000mem_size(c, f)
     _int_mbresmem_low_size(c, f)
     _int_model_name(c, f)
@@ -1732,19 +1869,19 @@ def expand_config(c, f):
     _int_z3fastmem_size(c, f)
     _uae_bsdsocket_emu(c, f)
     _uae_chipset_compatible(c, f)
-    _uae_gfxcard_size(c, f)
     _uae_rtc(c, f)
     _uae_sana2(c, f)
     _uae_z3chipmem_size(c, f)
     _int_uae_boot_rom(c, f)
     _int_z3chipmem_size(c, f)
+    _jit_compiler(c, f)
     _joystick_port_0_mode(c, f)
     _joystick_port_1_mode(c, f)
     _joystick_port_2_mode(c, f)
     _joystick_port_3_mode(c, f)
     _kickstart_file(c, f)
     _kickstart_ext_file(c, f)
-    _motherboard_ram(c, f)
+    _network_card(c, f)
     _sound_card(c, f)
     _uae_a2065(c, f)
     _uae_bogomem_size(c, f)
@@ -1769,3 +1906,4 @@ def expand_config(c, f):
     _uae_ppc_model(c, f)
     _uae_slirp_implementation(c, f)
     _uae_toccata(c, f)
+    _uaegfx_card(c, f)

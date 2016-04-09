@@ -1,4 +1,4 @@
-import fsui as fsui
+import fsui
 
 
 class ScanProgressGroup(fsui.Group):

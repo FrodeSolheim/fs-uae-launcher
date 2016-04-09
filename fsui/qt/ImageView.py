@@ -1,15 +1,15 @@
-import fsui.qt
-from .widget_mixin import WidgetMixin
+from fsui.qt.helpers import QParent
+from fsui.qt.qt import QLabel
+from fsui.qt.widget import Widget
 
 
-class ImageView(fsui.qt.QLabel, WidgetMixin):
-
+class ImageView(Widget):
     def __init__(self, parent, image, stretch=False):
-        fsui.qt.QLabel.__init__(self, parent.get_container())
-        self.init_widget(parent)
-        self.setPixmap(image.qpixmap)
+        super().__init__()
+        self.set_widget(QLabel(QParent(parent)))
+        self._widget.setPixmap(image.qpixmap)
         if stretch:
-            self.setScaledContents(True)
+            self._widget.setScaledContents(True)
 
     def set_image(self, image):
-        self.setPixmap(image.qpixmap)
+        self._widget.setPixmap(image.qpixmap)
