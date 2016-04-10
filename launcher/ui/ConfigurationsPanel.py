@@ -123,14 +123,14 @@ class RatingChoice(Choice):
     def __init__(self, parent):
         self.active_icon = 1
         super().__init__(parent, [])
-        self.add_item(
-            gettext("Unrated"))
-        self.add_item(
-            gettext("Best Variant"), Image("launcher:res/16/rating_fav_2.png"))
-        self.add_item(
-            gettext("Good Variant"), Image("launcher:res/16/thumb_up_2.png"))
-        self.add_item(
-            gettext("Bad Variant"), Image("launcher:res/16/thumb_down_2.png"))
+        self.add_item(gettext("Unrated"),
+                      Image("launcher:res/16/bullet.png"))
+        self.add_item(gettext("Best Variant"),
+                      Image("launcher:res/16/rating_fav_2.png"))
+        self.add_item(gettext("Good Variant"),
+                      Image("launcher:res/16/thumb_up_2.png"))
+        self.add_item(gettext("Bad Variant"),
+                      Image("launcher:res/16/thumb_down_2.png"))
         ConfigBehavior(self, ["variant_rating", "variant_uuid"])
 
     def on_changed(self):
@@ -167,7 +167,10 @@ class RatingChoice(Choice):
 
     def on_variant_rating_config(self, value):
         with self.changed.inhibit:
-            rating = int(value)
+            try:
+                rating = int(value)
+            except ValueError:
+                rating = 0
             self.set_index(self.rating_to_index(rating))
 
     def on_variant_uuid_config(self, value):
