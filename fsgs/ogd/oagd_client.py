@@ -49,7 +49,7 @@ class OAGDClient(OGDClient):
         request = Request(url)
         print("get_request:", url)
         request.add_header("Accept-Encoding", "gzip")
-        response = self.opener().opener.open(request)
+        response = self.opener().open(request)
         return self.handle_response(response)
 
     def rate_variant(self, variant_uuid, like=None, work=None):

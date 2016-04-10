@@ -1,3 +1,7 @@
+Version 2.7.12dev:
+
+* Fixed rating variants (broke in 2.7.10dev).
+
 Version 2.7.11dev:
 
 * Revert to HTTP due to certificate validation not working properly.
