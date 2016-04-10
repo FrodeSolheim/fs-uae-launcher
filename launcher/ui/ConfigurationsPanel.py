@@ -1,16 +1,20 @@
-from launcher.ui.ConfigGroup import ConfigGroup
-from launcher.ui.bottombar.RatingButton import RatingButton
-from launcher.ui.newbutton import NewButton
 import fsui
-from ..launcher_settings import LauncherSettings
-from .ConfigurationsBrowser import ConfigurationsBrowser
-from .GameListSelector import GameListSelector
-from .Skin import Skin
-from .VariantsBrowser import VariantsBrowser
+from fsgs.Database import Database
+from fsgs.ogd.oagd_client import OAGDClient
+from fsui import Image, Choice
+from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
+from launcher.launcher_settings import LauncherSettings
+from launcher.ui.ConfigGroup import ConfigGroup
+from launcher.ui.ConfigurationsBrowser import ConfigurationsBrowser
+from launcher.ui.GameListSelector import GameListSelector
+from launcher.ui.Skin import Skin
+from launcher.ui.VariantsBrowser import VariantsBrowser
+from launcher.ui.behaviors.configbehavior import ConfigBehavior
+from launcher.ui.newbutton import NewButton
 
 
 class ConfigurationsPanel(fsui.Panel):
-
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         Skin.set_background_color(self)
@@ -73,9 +77,12 @@ class ConfigurationsPanel(fsui.Panel):
         self.variants_panel.layout.add(
             self.variants_browser, fill=False, expand=True)
 
-        for rating in [1, 4, 5]:
-            button = RatingButton(self.variants_panel, rating)
-            self.variants_panel.layout.add(button, margin_left=5, fill=True)
+        # for rating in [1, 4, 5]:
+        #     button = RatingButton(self.variants_panel, rating)
+        #     self.variants_panel.layout.add(button, margin_left=5, fill=True)
+
+        self.variants_panel.layout.add(
+            RatingChoice(self.variants_panel), margin_left=5, fill=True)
 
         self.config_panel = fsui.Panel(self)
         vert_layout.add(self.config_panel, fill=True, expand=False,
@@ -110,3 +117,58 @@ class ConfigurationsPanel(fsui.Panel):
     def on_game_list_changed(self):
         print("ConfigurationsPanel.on_game_list_changed!")
         self.text_field.set_text("")
+
+
+class RatingChoice(Choice):
+    def __init__(self, parent):
+        self.active_icon = 1
+        super().__init__(parent, [])
+        self.add_item(
+            gettext("Unrated"))
+        self.add_item(
+            gettext("Best Variant"), Image("launcher:res/16/rating_fav_2.png"))
+        self.add_item(
+            gettext("Good Variant"), Image("launcher:res/16/thumb_up_2.png"))
+        self.add_item(
+            gettext("Bad Variant"), Image("launcher:res/16/thumb_down_2.png"))
+        ConfigBehavior(self, ["variant_rating", "variant_uuid"])
+
+    def on_changed(self):
+        variant_uuid = LauncherConfig.get("variant_uuid", "")
+        if not variant_uuid:
+            return
+        rating = self.index_to_rating(self.get_index())
+        self.set_rating_for_variant(variant_uuid, rating)
+
+    @staticmethod
+    def index_to_rating(index):
+        return [0, 5, 4, 1][index]
+
+    @staticmethod
+    def rating_to_index(rating):
+        return [0, 3, 3, 2, 2, 1][rating]
+
+    @staticmethod
+    def set_rating_for_variant(variant_uuid, rating):
+        # FIXME: Do asynchronously, add to queue
+        client = OAGDClient()
+        client.rate_variant(variant_uuid, like=rating)
+        like_rating = client.get("like", 0)
+        work_rating = client.get("work", 0)
+        database = Database.instance()
+        cursor = database.cursor()
+        cursor.execute(
+            "DELETE FROM rating WHERE game_uuid = ?", (variant_uuid,))
+        cursor.execute(
+            "INSERT INTO rating (game_uuid, work_rating, like_rating) "
+            "VALUES (?, ?, ?)", (variant_uuid, work_rating, like_rating))
+        database.commit()
+        LauncherConfig.set("variant_rating", str(like_rating))
+
+    def on_variant_rating_config(self, value):
+        with self.changed.inhibit:
+            rating = int(value)
+            self.set_index(self.rating_to_index(rating))
+
+    def on_variant_uuid_config(self, value):
+        self.set_enabled(value != "")

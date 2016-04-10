@@ -1,5 +1,6 @@
 Version 2.7.12dev:
 
+* Change variant rating buttons into a choice control.
 * Fixed rating variants (broke in 2.7.10dev).
 
 Version 2.7.11dev:

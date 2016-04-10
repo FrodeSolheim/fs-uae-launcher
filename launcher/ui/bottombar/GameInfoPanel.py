@@ -5,7 +5,6 @@ from ...game_paths import GamePaths
 from .BottomPanel import BottomPanel
 from ..Constants import Constants
 from ..ImageLoader import ImageLoader
-from .RatingButton import RatingButton
 from .EditButton import EditButton
 from .WebButton import WebButton
 from ..Skin import Skin
