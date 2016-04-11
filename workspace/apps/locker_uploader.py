@@ -178,7 +178,7 @@ class LockerUploaderTask(Task):
     def upload_check(self, prefix):
         self.progressed(
             gettext("Finding files eligible for OAGD.net Locker") +
-            " ({0:0.0f}%)".format((100.0 * prefix / 16.0)))
+            " ({:0.0%})".format((prefix / 16.0)))
         file_database = FileDatabase.instance()
         cursor = file_database.cursor()
         # FIXME: prefix
