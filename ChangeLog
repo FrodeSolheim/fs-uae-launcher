@@ -5,6 +5,7 @@ Version 2.7.12dev:
 * Fix for the xrandr refresh rate detector.
 * Change variant rating buttons into a choice control.
 * Fixed rating variants (broke in 2.7.10dev).
+* More code cleanup.
 
 Version 2.7.11dev:
 
