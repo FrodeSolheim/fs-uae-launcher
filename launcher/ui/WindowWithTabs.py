@@ -1,9 +1,8 @@
-from launcher.ui.titlebar import TitleBar
 import fsui
 from .TabPanel import TabPanel
 from .TabButton import TabButton
 from .Constants import Constants
-from .Skin import Skin
+from .skin import Skin
 
 
 class WindowWithTabs(fsui.Window):
@@ -64,7 +63,7 @@ class WindowWithTabs(fsui.Window):
         if not tooltip:
             tooltip = title
         button = TabButton(
-            self.tab_panel, icon, type=TabButton.TYPE_BUTTON,
+            self.tab_panel, icon, button_type=TabButton.TYPE_BUTTON,
             left_padding=left_padding, right_padding=right_padding)
         button.set_tooltip(tooltip)
         button.group_id = self.current_tab_group_id

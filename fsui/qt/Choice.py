@@ -1,4 +1,4 @@
-from fsui.qt import QComboBox
+from fsui.qt import QComboBox, Qt
 from fsui.qt.signal import Signal, SignalWrapper
 from .widget_mixin import WidgetMixin
 
@@ -9,13 +9,14 @@ class Choice(QComboBox, WidgetMixin):
     item_selected = Signal(int)
     ITEM_SEPARATOR = "---"
 
-    def __init__(self, parent, items=None):
+    def __init__(self, parent, items=None, cursor_keys=True):
         if items is None:
             items = []
         QComboBox.__init__(self, parent.get_container())
         # Widget.__init__(self, parent)
         self.init_widget(parent)
         self.inhibit_change_event = False
+        self.cursor_keys = cursor_keys
 
         for i, item in enumerate(items):
             self.insertItem(i, item)
@@ -26,6 +27,14 @@ class Choice(QComboBox, WidgetMixin):
 
         self.changed = SignalWrapper(self, "changed")
         # self.changed.inhibit = self.inhibit_signal
+
+    def keyPressEvent(self, event):
+        if not self.cursor_keys:
+            print("cursor keys is false", event.key(), Qt.Key_Up)
+            if event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:
+                print("ignoring")
+                return
+        super().keyPressEvent(event)
 
     # @contextmanager
     # def inhibit_signal(self, name):

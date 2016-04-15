@@ -28,7 +28,8 @@ def app_main():
     # print("* portable_dir =", FSGSDirectories.portable_dir())
     print("* save_states_dir =", FSGSDirectories.get_save_states_dir())
     print("* screenshots_dir =", FSGSDirectories.get_screenshots_dir())
-    print("* screenshots_output_dir =", FSGSDirectories.screenshots_output_dir())
+    print("* screenshots_output_dir =",
+          FSGSDirectories.screenshots_output_dir())
     print("* themes_dir =", FSGSDirectories.get_themes_dir())
     print("* titles_dir =", FSGSDirectories.get_titles_dir())
     print("* whdload_dir =", FSGSDirectories.get_whdload_dir())

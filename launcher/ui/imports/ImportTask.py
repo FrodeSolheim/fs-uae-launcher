@@ -15,10 +15,10 @@ class ImportTask(threading.Thread):
 
     AMIGA_FOREVER = 1
 
-    def __init__(self, path, type):
+    def __init__(self, path, import_type):
         threading.Thread.__init__(self, name="ImportTaskThread")
         self.path = path
-        self.type = type
+        self.type = import_type
         self.done = False
         self.log_lines = []
         self.log_lock = threading.Lock()

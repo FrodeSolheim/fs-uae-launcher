@@ -7,9 +7,9 @@ class ImportGroup(fsui.Group):
 
     AMIGA_FOREVER = 1
 
-    def __init__(self, parent, type=0):
+    def __init__(self, parent, import_type=0):
         fsui.Group.__init__(self, parent)
-        self.type = type
+        self.type = import_type
         self.path = ""
 
         self.layout = fsui.VerticalLayout()

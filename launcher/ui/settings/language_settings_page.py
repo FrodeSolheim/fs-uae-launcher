@@ -1,12 +1,10 @@
-import fsboot
 import fsui
-from launcher.res import gettext
 from launcher.launcher_settings import LauncherSettings
+from launcher.res import gettext
 from launcher.ui.settings.settings_page import SettingsPage
 
 
 class LanguageSettingsPage(SettingsPage):
-
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("language-settings", "pkg:workspace")
@@ -38,21 +36,8 @@ class LanguageSettingsPage(SettingsPage):
         self.layout.add(
             fsui.MultiLineLabel(self, information, 640))
 
-        # if fsboot.get("fws") == "1":
-        #     # We omit the appearance settings, since they have no effect
-        #     # when running under the workspace environment.
-        #     pass
-        # else:
-        #     self.add_section("FS-UAE Launcher")
-        #     self.add_option("launcher_theme")
-        #     self.add_option("launcher_font_size")
-
-    def __del__(self):
-        print("LanguageWindow.__del__")
-
 
 class LanguageSettingChoice(fsui.Choice):
-
     def __init__(self, parent):
         fsui.Choice.__init__(self, parent)
         # FIXME: include in () what language is currently the automatic one
@@ -69,9 +54,8 @@ class LanguageSettingChoice(fsui.Choice):
         if selected_index > 0:
             self.set_index(selected_index)
 
-        self.item_selected.connect(self.__item_changed)
-
-    def __item_changed(self, index):
+    def on_changed(self):
+        index = self.get_index()
         LauncherSettings.set("language", LANGUAGE_ITEMS[index][1])
 
 

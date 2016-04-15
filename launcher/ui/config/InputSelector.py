@@ -140,9 +140,6 @@ class InputSelector(fsui.Group):
         else:
             LauncherConfig.set(self.autofire_mode_option_key, "1")
 
-    def get_calculated_mode(self, port):
-        return DeviceManager.get_calculated_port_mode(LauncherConfig, port)
-
     def on_config(self, key, value):
         if key == "amiga_model":
             value = LauncherConfig.get(
@@ -150,7 +147,8 @@ class InputSelector(fsui.Group):
             self.set_value_or_default(value)
 
         if key == self.mode_option_key or key == "amiga_model":
-            value = self.get_calculated_mode(self.port)
+            value = DeviceManager.get_calculated_port_mode(
+                LauncherConfig, self.port)
             for i, config in enumerate(self.joystick_mode_values):
                 if config == value:
                     if self.mode_choice is not None:
@@ -201,7 +199,8 @@ class InputSelector(fsui.Group):
             else:
                 config[key] = LauncherConfig.get(key)
             key = "joystick_port_{0}_mode".format(port)
-            config[key] = self.get_calculated_mode(port)
+            config[key] = DeviceManager.get_calculated_port_mode(
+                LauncherConfig, port)
         device = DeviceManager.get_device_for_port(config, self.port)
         default_description = gettext("Default ({0})").format(
             fix_device_name(device.name))

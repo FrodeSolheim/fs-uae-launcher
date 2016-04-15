@@ -1,7 +1,7 @@
 from fsbc.util import unused
 from fsui import Panel, Color, VerticalLayout, HorizontalLayout, Image
 from ...launcher_config import LauncherConfig
-from ..Skin import Skin
+from ..skin import Skin
 from .LanguageElement import LanguageElement
 from .PlayersElement import PlayersElement
 from .ProtectionElement import ProtectionElement

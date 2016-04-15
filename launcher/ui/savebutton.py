@@ -37,7 +37,8 @@ class SaveButton(IconButton):
         #     # FIXME: notify user
         #     pass
 
-    def save_config(self):
+    @staticmethod
+    def save_config():
         print("SaveButton.save_config")
         database = Database.get_instance()
 

@@ -1,5 +1,5 @@
 import fsui
-from .Skin import Skin
+from .skin import Skin
 
 
 class CustomPanel(fsui.Panel):

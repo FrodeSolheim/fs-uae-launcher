@@ -1,6 +1,6 @@
 import fsui
 from .Constants import Constants
-from .Skin import Skin
+from .skin import Skin
 from .TabPanel import TabPanel
 
 
@@ -12,7 +12,7 @@ class TabButton(fsui.Panel):
     STATE_NORMAL = 0
     STATE_SELECTED = 1
 
-    def __init__(self, parent, icon, type=TYPE_TAB, left_padding=0,
+    def __init__(self, parent, icon, button_type=TYPE_TAB, left_padding=0,
                  right_padding=0):
         fsui.Panel.__init__(self, parent, paintable=True)
         Skin.set_background_color(self)
@@ -22,7 +22,7 @@ class TabButton(fsui.Panel):
         self.set_min_height(Constants.TAB_HEIGHT)
         self.group_id = 0
         self.icon = icon
-        self.type = type
+        self.type = button_type
         self.state = self.STATE_NORMAL
         self.hover = False
         self.left_padding = left_padding

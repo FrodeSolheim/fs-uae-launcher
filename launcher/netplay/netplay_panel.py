@@ -3,7 +3,7 @@ from launcher.i18n import gettext
 from launcher.netplay.irc import LOBBY_CHANNEL
 from launcher.netplay.irc_broadcaster import IRCBroadcaster
 from launcher.netplay.netplay import Netplay
-from launcher.ui.Skin import Skin
+from launcher.ui.skin import Skin
 
 
 class NetplayPanel(fsui.Panel):

@@ -35,7 +35,7 @@ class FloppyManager(object):
         LauncherConfig.set_multiple(values)
 
     @classmethod
-    def multiselect(cls, parent=None):
+    def multi_select(cls, parent=None):
         default_dir = FSGSDirectories.get_floppies_dir()
         dialog = LauncherFilePicker(
             parent, gettext("Select Multiple Floppies"),

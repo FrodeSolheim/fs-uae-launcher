@@ -7,7 +7,7 @@ from ..Constants import Constants
 from ..ImageLoader import ImageLoader
 from .EditButton import EditButton
 from .WebButton import WebButton
-from ..Skin import Skin
+from ..skin import Skin
 
 BORDER = 20
 

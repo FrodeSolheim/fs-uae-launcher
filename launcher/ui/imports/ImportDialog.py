@@ -10,8 +10,8 @@ class ImportDialog(fsui.Window):
 
     AMIGA_FOREVER = 1
 
-    def __init__(self, parent, path, type):
-        if type == self.AMIGA_FOREVER:
+    def __init__(self, parent, path, import_type):
+        if import_type == self.AMIGA_FOREVER:
             title = gettext("Import From Amiga Forever CD/DVD")
         else:
             title = gettext("Import Kickstarts and ROMs")
@@ -36,7 +36,7 @@ class ImportDialog(fsui.Window):
         hori_layout.add(self.close_button)
 
         self.line_count = 0
-        self.task = ImportTask(path, type)
+        self.task = ImportTask(path, import_type)
         self.task.start()
 
         self.set_size(self.layout.get_min_size())

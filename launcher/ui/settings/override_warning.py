@@ -6,7 +6,7 @@ from launcher.ui.behaviors.configbehavior import ConfigBehavior
 class OverrideWarning(fsui.ImageView):
 
     def __init__(self, parent, name):
-        fsui.ImageView.__init__(self, parent,fsui.Image(
+        fsui.ImageView.__init__(self, parent, fsui.Image(
             "launcher:res/16/warning_2.png"))
         setattr(self, "on_{0}_config".format(name), self.on_config)
         ConfigBehavior(self, [name])

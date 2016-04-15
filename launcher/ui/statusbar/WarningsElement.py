@@ -9,7 +9,7 @@ from launcher.launcher_settings import LauncherSettings
 from launcher.ui.config.ConfigDialog import ConfigDialog
 from launcher.ui.settings.settings_dialog import SettingsDialog
 from launcher.update_manager import UpdateManager
-from launcher.ui.SetupDialog import SetupDialog
+from launcher.ui.setup import SetupDialog
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 from launcher.ui.download import DownloadGameWindow

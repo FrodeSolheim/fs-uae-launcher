@@ -8,7 +8,7 @@ from launcher.launcher_settings import LauncherSettings
 from launcher.ui.ConfigGroup import ConfigGroup
 from launcher.ui.ConfigurationsBrowser import ConfigurationsBrowser
 from launcher.ui.GameListSelector import GameListSelector
-from launcher.ui.Skin import Skin
+from launcher.ui.skin import Skin
 from launcher.ui.VariantsBrowser import VariantsBrowser
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.newbutton import NewButton
@@ -120,10 +120,15 @@ class ConfigurationsPanel(fsui.Panel):
 
 
 class RatingChoice(Choice):
+    """Control allowing the user to set rating for a variant.
+
+    The control disallows the use of cursor keys for directly changing
+    the selected item, to avoid accidental ratings.
+    """
     def __init__(self, parent):
         self.active_icon = 1
-        super().__init__(parent, [])
-        self.add_item(gettext("Unrated"),
+        super().__init__(parent, [], cursor_keys=False)
+        self.add_item(gettext("Not Rated"),
                       Image("launcher:res/16/bullet.png"))
         self.add_item(gettext("Best Variant"),
                       Image("launcher:res/16/rating_fav_2.png"))

@@ -1,4 +1,3 @@
-from launcher.ui.Skin import Skin
 from launcher.ui.config.model import create_model
 import fsui
 import traceback
@@ -23,41 +22,24 @@ class ConfigBrowser(fsui.VerticalItemView):
         self.missing_color = fsui.Color(0xa8, 0xa8, 0xa8)
         self.platform_icons = {}
 
-        if Skin.fws() or True:
-            from workspace.ui.theme import Theme
-            theme = Theme.instance()
-            self.set_row_height(28)
-            # self.list_view.set_background_color(fsui.Color(0xeb, 0xeb, 0xeb))
-            self.setStyleSheet("""
-            QListView {{
-                background-color: {0};
-                outline: none;
-            }}
-            QListView::item {{
-                padding-left: 10px;
-                border: 0px;
-            }}
-            QListView::item:selected {{
-                background-color: {1};
-            }}
-            """.format(theme.sidebar_background.to_hex(),
-                       theme.selection_background.to_hex()))
-        else:
-            pass
-            # self.setAutoFillBackground(False)
-            # self.setStyleSheet("""
-            # QListView {{
-            #     background-color: {0};
-            #     outline: none;
-            # }}
-            # QListView::item {{
-            #     padding-left: 10px;
-            #     border: 0px;
-            # }}
-            # QListView::item:selected {{
-            #     background-color: {1};
-            # }}
-            # """.format("#80ffff", "#ff0000"))
+        from workspace.ui.theme import Theme
+        theme = Theme.instance()
+        self.set_row_height(28)
+        # self.list_view.set_background_color(fsui.Color(0xeb, 0xeb, 0xeb))
+        self.setStyleSheet("""
+        QListView {{
+            background-color: {0};
+            outline: none;
+        }}
+        QListView::item {{
+            padding-left: 6px;
+            border: 0px;
+        }}
+        QListView::item:selected {{
+            background-color: {1};
+        }}
+        """.format(theme.sidebar_background.to_hex(),
+                   theme.selection_background.to_hex()))
 
     def update_from_implicit(self, implicit):
 

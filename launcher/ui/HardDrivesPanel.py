@@ -1,7 +1,7 @@
 import fsui
 from .config.WHDLoadGroup import WHDLoadGroup
 from .config.HardDriveGroup import HardDriveGroup
-from .Skin import Skin
+from .skin import Skin
 
 
 class HardDrivesPanel(fsui.Panel):

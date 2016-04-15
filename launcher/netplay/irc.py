@@ -85,12 +85,16 @@ class IRC:
         try:
             self.irc_main()
         except Exception as e:
-            def func():
-                self.warning(repr(e))
-
-            call_after(func)
             import traceback
             traceback.print_exc()
+            # Bind exception to local variable, so the inline function below
+            # can access it.
+            exception = e
+
+            def func():
+                self.warning(repr(exception))
+
+            call_after(func)
         self.running = False
 
     @staticmethod

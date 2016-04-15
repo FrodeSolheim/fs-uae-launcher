@@ -2,16 +2,12 @@ import fsui
 from launcher.i18n import gettext
 from launcher.option import Option
 from launcher.ui.config.configpanel import ConfigPanel
-from launcher.ui.config.ExpansionsGroup import ExpansionsGroup
 
 
 class ExpansionsPanel(ConfigPanel):
 
     def __init__(self, parent):
         ConfigPanel.__init__(self, parent)
-
-        # self.expansions_group = ExpansionsGroup(self)
-        # self.layout.add(self.expansions_group, fill=True)
 
         heading_label = fsui.HeadingLabel(self, gettext("Expansions"))
         self.layout.add(heading_label, margin=10)

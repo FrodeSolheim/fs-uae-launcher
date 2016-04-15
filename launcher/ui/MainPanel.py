@@ -1,6 +1,6 @@
 import fsui
 from .RemovableMediaGroup import RemovableMediaGroup
-from .Skin import Skin
+from .skin import Skin
 from .config.InputGroup import InputGroup
 from .config.modelgroup import ModelGroup
 

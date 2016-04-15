@@ -15,12 +15,9 @@ def app_main():
 
     threading.Thread(target=http_server_thread).start()
 
-    # from fsgs.ui.mainwindow import FSGSMainWindow
-    # window = FSGSMainWindow()
-
     if sys.platform.startswith("linux"):
         # Must load OpenGL to work around crash with Qt Quick on
-        # nVidia / Linux (due to libgl.so from mesa being loaded).
+        # Nvidia / Linux (due to libgl.so from mesa being loaded).
         import ctypes
         ctypes.CDLL("libGL.so.1", ctypes.RTLD_GLOBAL)
 

@@ -3,7 +3,7 @@ from launcher.option import Option
 from launcher.ui.config.configpanel import ConfigPanel
 from .FloppiesGroup import FloppiesGroup
 from .MediaListGroup import MediaListGroup
-from .Skin import Skin
+from .skin import Skin
 
 
 class CDPanel(ConfigPanel):

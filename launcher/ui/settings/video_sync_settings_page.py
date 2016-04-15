@@ -81,7 +81,7 @@ class VideoSyncSettingsPage(SettingsPage):
     def on_destroy(self):
         LauncherSettings.remove_listener(self)
 
-    def on_setting(self, key, value):
+    def on_setting(self, key, _):
         if key == "video_sync":
             # value = value.lower()
             # self.vblank_checkbox.check(value in ["auto", "full", "vblank"])

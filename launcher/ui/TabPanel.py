@@ -2,7 +2,7 @@ from fsbc.util import unused
 import fsui
 import fsbc.system
 from .Constants import Constants
-from .Skin import Skin
+from .skin import Skin
 
 
 class TabPanel(fsui.Panel):

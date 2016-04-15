@@ -59,9 +59,9 @@ class FloppySelector(fsui.Group):
 
     def on_config(self, key, value):
         if key == self.config_key:
-            dir, name = os.path.split(value)
-            if dir:
-                path = "{0} ({1})".format(name, dir)
+            dir_path, name = os.path.split(value)
+            if dir_path:
+                path = "{0} ({1})".format(name, dir_path)
             else:
                 path = name
             self.text_field.set_text(path)
@@ -101,12 +101,12 @@ class FloppySelector(fsui.Group):
         if self.cd_mode:
             title = gettext("Choose CD-ROM Image")
             # default_dir = FSGSDirectories.get_cdroms_dir()
-            type = "cd"
+            media_type = "cd"
         else:
             title = gettext("Choose Floppy Image")
             # default_dir = FSGSDirectories.get_floppies_dir()
-            type = "floppy"
-        dialog = LauncherFilePicker(self.get_window(), title, type,
+            media_type = "floppy"
+        dialog = LauncherFilePicker(self.get_window(), title, media_type,
                                     LauncherConfig.get(self.config_key))
 
         if not dialog.show_modal():

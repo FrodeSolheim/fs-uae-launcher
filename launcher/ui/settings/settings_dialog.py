@@ -1,6 +1,7 @@
 import fsui
 from launcher.option import Option
 from launcher.ui.settings.launcher_settings_page import LauncherSettingsPage
+from launcher.ui.settings.arcade_settings_page import ArcadeSettingsPage
 from launcher.ui.settings.plugins_settings_page import PluginsSettingsPage
 from .advanced_settings_page import AdvancedSettingsPage
 from .advanced_video_settings import AdvancedVideoSettingsPage
@@ -96,6 +97,9 @@ class SettingsDialog(PagedDialog):
         self.add_page(
             gettext("Maintenance"), MaintenanceSettingsPage,
             fsui.Icon("maintenance", "pkg:workspace"))
+        self.add_page(
+            "FS-UAE Arcade", ArcadeSettingsPage,
+            fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
             gettext("Advanced Settings"), AdvancedSettingsPage,
             fsui.Icon("settings", "pkg:workspace"))

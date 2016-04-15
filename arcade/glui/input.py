@@ -351,10 +351,8 @@ class InputHandler(object):
 
         cls.key_table = {}
         for device in devices:
-            print("device")
-            if device.is_keyboard():
-                print("is keyboard device")
-            else:
+            print(device, "is keyboard device?", device.is_keyboard())
+            if not device.is_keyboard():
                 continue
             config = get_controller_config(
                 device.name, device.sdl_name,
@@ -367,6 +365,7 @@ class InputHandler(object):
                 if key.startswith("key_"):
                     cls.key_table["SDLK_" + key[4:].upper()] = \
                         (value.upper(), device.id)
+        print("[INPUT] Key table:", cls.key_table)
 
     @classmethod
     def _open_joysticks(cls):

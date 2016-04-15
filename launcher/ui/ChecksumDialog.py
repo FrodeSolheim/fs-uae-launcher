@@ -16,7 +16,8 @@ class ChecksumDialog(fsui.Window):
         self.layout.add_spacer(6)
         # self.center_on_parent()
 
-    def checksum(self, path):
+    @staticmethod
+    def checksum(path):
         s = hashlib.sha1()
         with open(path, "rb") as f:
             data = f.read()

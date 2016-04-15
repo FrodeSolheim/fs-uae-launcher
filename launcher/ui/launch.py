@@ -2,6 +2,7 @@ import fsui
 from fsbc.application import app
 from fsgs.runner import GameRunner
 from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
@@ -70,19 +71,18 @@ class StartButton(fsui.Button):
     def __init__(self, parent, gsc):
         super().__init__(parent, gettext("Start"))
         self.gsc = gsc
-#        gsc.signal.add_behavior(self, ["start_ready"])
+        #        gsc.signal.add_behavior(self, ["start_ready"])
         gsc.config.add_behavior(self, ["__running"])
 
     def on_activated(self):
-        self.set_enabled(False)
         from launcher.fs_uae_launcher import FSUAELauncher
         FSUAELauncher.start_game()
 
     def on___running_config(self, value):
         self.set_enabled(value != "1")
 
-    # def on_start_ready_signal(self):
-    #     pass
+        # def on_start_ready_signal(self):
+        #     pass
 
 
 class ScreenInfoLabel(fsui.Label):
@@ -149,7 +149,7 @@ class VideoSyncCheckBox(fsui.CheckBox):
     def __init__(self, parent):
         super().__init__(parent, gettext("V-Sync"))
         self.set_tooltip(gettext(
-            "When checked, enable video synchroniation whenever possible"))
+            "When checked, enable video synchronization whenever possible"))
         SettingsBehavior(self, ["video_sync"])
 
     def on_changed(self):
@@ -227,3 +227,108 @@ class FullscreenModeButton(fsui.ImageButton):
             app.settings["fullscreen_mode"] = ""
         else:
             app.settings["fullscreen_mode"] = "fullscreen"
+
+
+class LaunchDialog(fsui.Window):
+    def __init__(self, parent, title, task):
+        print("LaunchDialog parent =", parent)
+        super().__init__(parent, title, maximizable=False)
+        self.layout = fsui.VerticalLayout()
+
+        self.layout.add_spacer(400, 20)
+
+        hor_layout = fsui.HorizontalLayout()
+        self.layout.add(hor_layout, fill=True)
+
+        hor_layout.padding_right = 20
+        hor_layout.add_spacer(20)
+
+        image = fsui.Image("launcher:res/fs_uae_group.png")
+        self.image_view = fsui.ImageView(self, image)
+        hor_layout.add(self.image_view, valign=0.0)
+        hor_layout.add_spacer(20)
+
+        ver_layout = fsui.VerticalLayout()
+        hor_layout.add(ver_layout, fill=True, expand=True)
+        self.title_label = fsui.HeadingLabel(self, title)
+        ver_layout.add(self.title_label, fill=True)
+
+        ver_layout.add_spacer(6)
+        self.sub_title_label = fsui.Label(self, gettext("Preparing..."))
+        ver_layout.add(self.sub_title_label, fill=True)
+
+        self.layout.add_spacer(20)
+
+        hor_layout = fsui.HorizontalLayout()
+        self.layout.add(hor_layout, fill=True)
+
+        hor_layout.add_spacer(20, expand=True)
+        self.cancel_button = fsui.Button(self, gettext("Cancel"))
+        self.cancel_button.activated.connect(self.on_cancel_button)
+        hor_layout.add(self.cancel_button)
+        hor_layout.add_spacer(20)
+
+        self.layout.add_spacer(20)
+        self.set_size(self.layout.get_min_size())
+        self.center_on_parent()
+
+        self.was_closed = False
+        self.task = task
+        self.task.progressed.connect(self.on_progress)
+        self.task.finished.connect(self.on_complete)
+        self.task.failed.connect(self.on_error)
+
+        self.closed.connect(self.__closed)
+
+    def complete(self):
+        self.was_closed = True
+        self.close()
+
+    def __closed(self):
+        LauncherConfig.set("__running", "")
+        self.cancel()
+        return False
+
+    def on_progress(self, progress):
+
+        # def hide_function():
+        #     self.visible = False
+
+        def function():
+            if progress == "__run__":
+                self.cancel_button.disable()
+                # Hide dialog after 1.5 seconds. The reason for delaying it
+                # is to avoid "confusing" flickering if/when the dialog is
+                # only shown for a split second.
+                # fsui.call_later(1500, hide_function)
+                LauncherConfig.set(
+                    "__progress", gettext("Running: Emulator"))
+            else:
+                self.sub_title_label.set_text(progress)
+                LauncherConfig.set(
+                    "__progress", "Preparing: {}".format(progress))
+
+        fsui.call_after(function)
+
+    def show(self, *args, **kwargs):
+        # Hack to prevent it from being shown
+        pass
+
+    def on_complete(self):
+
+        def function():
+            self.complete()
+
+        fsui.call_after(function)
+
+    def on_error(self, message):
+        fsui.show_error(message)
+        self.close()
+
+    def on_cancel_button(self):
+        self.cancel()
+
+    def cancel(self):
+        print("LaunchDialog.cancel")
+        self.task.stop()
+        self.cancel_button.disable()

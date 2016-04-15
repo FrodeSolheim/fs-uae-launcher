@@ -53,7 +53,10 @@ class SynchronizerBase(object):
                 self.set_status(
                     gettext("Download failed (attempt {0}) - retrying in {0} "
                             "seconds").format(i + 1, int(sleep_time)))
-                time.sleep(sleep_time)
+                for _ in range(int(sleep_time) * 10):
+                    time.sleep(0.1)
+                    if self.stop_check():
+                        return
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
                         i + 1))
@@ -91,7 +94,10 @@ class SynchronizerBase(object):
                 self.set_status(
                     gettext("Download failed (attempt {0}) - retrying in {0} "
                             "seconds").format(i + 1, int(sleep_time)))
-                time.sleep(sleep_time)
+                for _ in range(int(sleep_time) * 10):
+                    time.sleep(0.1)
+                    if self.stop_check():
+                        return
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
                         i + 1))

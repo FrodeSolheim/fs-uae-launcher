@@ -5,6 +5,7 @@ class Option(object):
     """Constants for option names."""    
     ACCELERATOR = "accelerator"
     ACCELERATOR_MEMORY = "accelerator_memory"
+    ARCADE_FULLSCREEN = "arcade_fullscreen"
     AUDIO_BUFFER_TARGET_BYTES = "audio_buffer_target_bytes"
     AUDIO_BUFFER_TARGET_SIZE = "audio_buffer_target_size"
     AUDIO_FREQUENCY = "audio_frequency"
@@ -163,6 +164,11 @@ options = {
             ("131072", "128 MB"),
             ("262144", "256 MB"),
         ]
+    },
+    "arcade_fullscreen": {
+        "default": "0",
+        "description": N_("Arcade Fullscreen"),
+        "type": "boolean",
     },
     "audio_buffer_target_bytes": {
         "default": "8192",
@@ -527,9 +533,9 @@ options = {
         "type": "string",
     },
     "irc_server": {
-        "default": "irc.fengestad.no",
-        "description": N_("Custom IRC server address"),
-        "type": "string",
+        "default": "irc.fs-uae.net",
+        "description": N_("Custom IRC Server"),
+        "type": "String",
     },
     "jit_compiler": {
         "default": "0",
@@ -600,18 +606,18 @@ options = {
         "default": "0",
         "description": N_(
             "Experimental Config Visualization (Requires Restart)"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "launcher_font_size": {
         "default": "",
-        "description": N_("Font Size"),
+        "description": N_("Launcher Font Size"),
         "type": "Integer",
         "min": 6,
         "max": 18,
     },
     "launcher_theme": {
         "default": "fusion",
-        "description": N_("Theme"),
+        "description": N_("Launcher Theme"),
         "type": "Choice",
         "values": [
             ("standard", N_("Standard")),

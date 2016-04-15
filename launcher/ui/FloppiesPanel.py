@@ -1,7 +1,7 @@
 import fsui
 from .FloppiesGroup import FloppiesGroup
 from .MediaListGroup import MediaListGroup
-from .Skin import Skin
+from .skin import Skin
 
 
 class FloppiesPanel(fsui.Panel):

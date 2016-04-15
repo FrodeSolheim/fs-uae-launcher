@@ -1,6 +1,6 @@
 import fsui
 from fsui.qt import Signal
-from .Skin import Skin
+from .skin import Skin
 
 
 class PagedDialog(fsui.Window):

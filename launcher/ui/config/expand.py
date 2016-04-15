@@ -1,7 +1,7 @@
 # Automatically generated - do not edit by hand
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _accelerator(c, f):
     if c.accelerator.explicit:
         value = c.accelerator.explicit
@@ -54,7 +54,7 @@ def _accelerator(c, f):
     c.accelerator = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _accelerator_memory(c, f):
     if c.accelerator_memory.explicit:
         value = c.accelerator_memory.explicit
@@ -78,7 +78,7 @@ def _accelerator_memory(c, f):
     c.accelerator_memory = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _amiga_model(c, f):
     if c.amiga_model.explicit:
         c.amiga_model = c.amiga_model.explicit
@@ -86,7 +86,7 @@ def _amiga_model(c, f):
         c.amiga_model = "A500"
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _bsdsocket_library(c, f):
     if c.bsdsocket_library.explicit:
         value = c.bsdsocket_library.explicit
@@ -95,12 +95,12 @@ def _bsdsocket_library(c, f):
     c.bsdsocket_library = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _cdrom_drive_0(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _cdrom_drive_count(c, f):
     if c.cdrom_drive_count.explicit:
         value = c.cdrom_drive_count.explicit
@@ -117,12 +117,12 @@ def _cdrom_drive_count(c, f):
     c.cdrom_drive_count = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _cdrom_image_0(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _chip_memory(c, f):
     if c.chip_memory.explicit:
         value = c.chip_memory.explicit
@@ -173,7 +173,7 @@ def _chip_memory(c, f):
     c.chip_memory = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _cpu(c, f):
     if c.cpu.explicit:
         c.cpu = c.cpu.explicit
@@ -232,7 +232,7 @@ def _cpu(c, f):
         raise Exception("Failed")
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _dongle_type(c, f):
     # FIXME: uae_dongle_type
     if c.dongle_type.explicit:
@@ -241,7 +241,7 @@ def _dongle_type(c, f):
         c.dongle_type = "0"
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _fast_memory(c, f):
     if c.fast_memory.explicit:
         value = c.fast_memory.explicit
@@ -250,27 +250,27 @@ def _fast_memory(c, f):
     c.fast_memory = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _floppy_drive_0(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _floppy_drive_1(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _floppy_drive_2(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _floppy_drive_3(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _floppy_drive_count(c, f):
     if c.floppy_drive_count.explicit:
         value = c.floppy_drive_count.explicit
@@ -301,7 +301,7 @@ def _floppy_drive_count(c, f):
     c.floppy_drive_count = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _floppy_drive_speed(c, f):
     if c.floppy_drive_speed.explicit:
         c.floppy_drive_speed = c.floppy_drive_speed.explicit
@@ -309,7 +309,7 @@ def _floppy_drive_speed(c, f):
         c.floppy_drive_speed = "100"
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _fpu(c, f):
     if c.fpu.explicit:
         value = c.fpu.explicit
@@ -351,7 +351,7 @@ def _fpu(c, f):
     c.fpu = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _freezer_cartridge(c, f):
     if c.freezer_cartridge.explicit:
         c.freezer_cartridge = c.freezer_cartridge.explicit
@@ -360,7 +360,7 @@ def _freezer_cartridge(c, f):
         c.freezer_cartridge = "0"
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _graphics_card(c, f):
     if c.graphics_card.explicit:
         # FIXME: check supported
@@ -370,7 +370,7 @@ def _graphics_card(c, f):
     c.graphics_card = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _graphics_memory(c, f):
     if c.graphics_memory.explicit:
         value = c.graphics_memory.explicit
@@ -381,7 +381,7 @@ def _graphics_memory(c, f):
     c.graphics_memory = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_accelerator_name(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_accelerator_name.explicit:
@@ -414,7 +414,7 @@ def _int_accelerator_name(c, f):
     c.int_accelerator_name = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_bogomem_size(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_bogomem_size.explicit:
@@ -438,7 +438,7 @@ def _int_bogomem_size(c, f):
     c.int_bogomem_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_chipmem_size(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_chipmem_size.explicit:
@@ -468,7 +468,7 @@ def _int_chipmem_size(c, f):
     c.int_chipmem_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_chipset_name(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_chipset_name.explicit:
@@ -490,7 +490,7 @@ def _int_chipset_name(c, f):
     c.int_chipset_name = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_cpu_name(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_cpu_name.explicit:
@@ -529,7 +529,7 @@ def _int_cpu_name(c, f):
     c.int_cpu_name = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_cpuboardmem1_size(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_cpuboardmem1_size.explicit:
@@ -541,7 +541,7 @@ def _int_cpuboardmem1_size(c, f):
     c.int_cpuboardmem1_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_default_floppy_type(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_default_floppy_type.explicit:
@@ -555,7 +555,7 @@ def _int_default_floppy_type(c, f):
     c.int_default_floppy_type = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_fastmem_size(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_fastmem_size.explicit:
@@ -587,7 +587,7 @@ def _int_fastmem_size(c, f):
     c.int_fastmem_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_graphics_card_bus(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_graphics_card_bus.explicit:
@@ -615,7 +615,7 @@ def _int_graphics_card_bus(c, f):
     c.int_graphics_card_bus = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_graphics_card_name(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_graphics_card_name.explicit:
@@ -638,7 +638,7 @@ def _int_graphics_card_name(c, f):
     c.int_graphics_card_name = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_kickstart_ext_sha1(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_kickstart_ext_sha1.explicit:
@@ -690,7 +690,7 @@ def _int_kickstart_ext_sha1(c, f):
     c.int_kickstart_ext_sha1 = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_kickstart_revision(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_kickstart_revision.explicit:
@@ -728,7 +728,7 @@ def _int_kickstart_revision(c, f):
     c.int_kickstart_revision = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_kickstart_sha1(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_kickstart_sha1.explicit:
@@ -779,7 +779,7 @@ def _int_kickstart_sha1(c, f):
     c.int_kickstart_sha1 = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_kickstart_version(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_kickstart_version.explicit:
@@ -804,7 +804,7 @@ def _int_kickstart_version(c, f):
     c.int_kickstart_version = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_mbresmem_low_size(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_mbresmem_low_size.explicit:
@@ -816,7 +816,7 @@ def _int_mbresmem_low_size(c, f):
     c.int_mbresmem_low_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_model(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_model.explicit:
@@ -866,7 +866,7 @@ def _int_model(c, f):
         raise Exception("Failed")
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_model_name(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_model_name.explicit:
@@ -895,7 +895,7 @@ def _int_model_name(c, f):
     c.int_model_name = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_ppc_model(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_ppc_model.explicit:
@@ -909,7 +909,7 @@ def _int_ppc_model(c, f):
     c.int_ppc_model = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_uae_boot_rom(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_uae_boot_rom.explicit:
@@ -946,7 +946,7 @@ def _int_uae_boot_rom(c, f):
     c.int_uae_boot_rom = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_z3chipmem_size(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_z3chipmem_size.explicit:
@@ -958,7 +958,7 @@ def _int_z3chipmem_size(c, f):
     c.int_z3chipmem_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _int_z3fastmem_size(c, f):
     # noinspection PyUnresolvedReferences
     if c.int_z3fastmem_size.explicit:
@@ -972,7 +972,7 @@ def _int_z3fastmem_size(c, f):
     c.int_z3fastmem_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _jit_compiler(c, f):
     if c.jit_compiler.explicit:
         c.jit_compiler = c.jit_compiler.explicit
@@ -980,7 +980,7 @@ def _jit_compiler(c, f):
         c.jit_compiler = "0"
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _joystick_port_0_mode(c, f):
     if c.joystick_port_0_mode.explicit:
         value = c.joystick_port_0_mode.explicit
@@ -992,7 +992,7 @@ def _joystick_port_0_mode(c, f):
     c.joystick_port_0_mode = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _joystick_port_1_mode(c, f):
     if c.joystick_port_1_mode.explicit:
         value = c.joystick_port_1_mode.explicit
@@ -1004,7 +1004,7 @@ def _joystick_port_1_mode(c, f):
     c.joystick_port_1_mode = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _joystick_port_2_mode(c, f):
     if c.joystick_port_2_mode.explicit:
         value = c.joystick_port_2_mode.explicit
@@ -1014,7 +1014,7 @@ def _joystick_port_2_mode(c, f):
     c.joystick_port_2_mode = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _joystick_port_3_mode(c, f):
     if c.joystick_port_3_mode.explicit:
         value = c.joystick_port_3_mode.explicit
@@ -1024,7 +1024,7 @@ def _joystick_port_3_mode(c, f):
     c.joystick_port_3_mode = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _kickstart_ext_file(c, f):
     if c.kickstart_file.explicit:
         value = c.kickstart_file.explicit
@@ -1033,7 +1033,7 @@ def _kickstart_ext_file(c, f):
     c.kickstart_ext_file = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _kickstart_file(c, f):
     if c.kickstart_file.explicit:
         value = c.kickstart_file.explicit
@@ -1042,7 +1042,7 @@ def _kickstart_file(c, f):
     c.kickstart_file = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _motherboard_ram(c, f):
     if c.motherboard_ram.explicit:
         value = c.motherboard_ram.explicit
@@ -1056,7 +1056,7 @@ def _motherboard_ram(c, f):
     c.motherboard_ram = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _network_card(c, f):
     if c.network_card.explicit:
         # FIXME: check supported
@@ -1071,12 +1071,12 @@ def _network_card(c, f):
     c.network_card = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _platform(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _slow_memory(c, f):
     if c.slow_memory.explicit:
         value = c.slow_memory.explicit
@@ -1087,7 +1087,7 @@ def _slow_memory(c, f):
     c.slow_memory = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _sound_card(c, f):
     if c.sound_card.explicit:
         # FIXME: check supported
@@ -1102,7 +1102,7 @@ def _sound_card(c, f):
     c.sound_card = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_a2065(c, f):
     if c.uae_a2065.explicit:
         # FIXME: ok? keep already specified value
@@ -1115,7 +1115,7 @@ def _uae_a2065(c, f):
     c.uae_a2065 = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_a3000mem_size(c, f):
     if c.uae_a3000mem_size.explicit:
         value = c.uae_a3000mem_size.explicit
@@ -1131,12 +1131,12 @@ def _uae_a3000mem_size(c, f):
     c.uae_a3000mem_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_bogomem_size(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_bsdsocket_emu(c, f):
     if c.uae_bsdsocket_emu.explicit:
         value = c.uae_bsdsocket_emu.explicit
@@ -1148,7 +1148,7 @@ def _uae_bsdsocket_emu(c, f):
     c.uae_bsdsocket_emu = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_cd32cd(c, f):
     if c.uae_cd32cd.explicit:
         # FIXME: boolean
@@ -1160,7 +1160,7 @@ def _uae_cd32cd(c, f):
     c.uae_cd32cd = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_cd32fmv(c, f):
     if c.uae_cd32fmv.explicit:
         # FIXME: boolean
@@ -1172,12 +1172,12 @@ def _uae_cd32fmv(c, f):
     c.uae_cd32fmv = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_chipmem_size(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_chipset(c, f):
     if c.uae_chipset.explicit:
         if int(c.int_chipmem_size) >= 1048576:
@@ -1233,7 +1233,7 @@ def _uae_chipset(c, f):
     c.uae_chipset = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_chipset_compatible(c, f):
     if c.uae_chipset_compatible.explicit:
         value = c.uae_chipset_compatible.explicit
@@ -1283,7 +1283,7 @@ def _uae_chipset_compatible(c, f):
     c.uae_chipset_compatible = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_cpu_24bit_addressing(c, f):
     if c.uae_cpu_24bit_addressing.explicit:
         c.uae_cpu_24bit_addressing = c.uae_cpu_24bit_addressing.explicit
@@ -1320,7 +1320,7 @@ def _uae_cpu_24bit_addressing(c, f):
         raise Exception("Failed")
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_cpu_model(c, f):
     if c.uae_cpu_model.explicit:
         value = c.uae_cpu_model.explicit
@@ -1358,7 +1358,7 @@ def _uae_cpu_model(c, f):
     c.uae_cpu_model = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_cpuboard_type(c, f):
     if c.uae_cpuboard_type.explicit:
         value = c.uae_cpuboard_type.explicit
@@ -1398,12 +1398,12 @@ def _uae_cpuboard_type(c, f):
     c.uae_cpuboard_type = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_fastmem_size(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_floppy0(c, f):
     if c.uae_floppy0.explicit:
         value = c.uae_floppy0.explicit
@@ -1412,7 +1412,7 @@ def _uae_floppy0(c, f):
     c.uae_floppy0 = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_floppy0type(c, f):
     if c.uae_floppy0type.explicit:
         value = c.uae_floppy0type.explicit
@@ -1423,7 +1423,7 @@ def _uae_floppy0type(c, f):
     c.uae_floppy0type = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_floppy1(c, f):
     if c.uae_floppy1.explicit:
         value = c.uae_floppy1.explicit
@@ -1432,7 +1432,7 @@ def _uae_floppy1(c, f):
     c.uae_floppy1 = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_floppy1type(c, f):
     if c.uae_floppy1type.explicit:
         value = c.uae_floppy1type.explicit
@@ -1443,7 +1443,7 @@ def _uae_floppy1type(c, f):
     c.uae_floppy1type = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_floppy2(c, f):
     if c.uae_floppy2.explicit:
         value = c.uae_floppy2.explicit
@@ -1452,7 +1452,7 @@ def _uae_floppy2(c, f):
     c.uae_floppy2 = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_floppy2type(c, f):
     if c.uae_floppy2type.explicit:
         value = c.uae_floppy2type.explicit
@@ -1463,7 +1463,7 @@ def _uae_floppy2type(c, f):
     c.uae_floppy2type = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_floppy3(c, f):
     if c.uae_floppy3.explicit:
         value = c.uae_floppy3.explicit
@@ -1472,7 +1472,7 @@ def _uae_floppy3(c, f):
     c.uae_floppy3 = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_floppy3type(c, f):
     if c.uae_floppy3type.explicit:
         value = c.uae_floppy3type.explicit
@@ -1483,7 +1483,7 @@ def _uae_floppy3type(c, f):
     c.uae_floppy3type = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_fpu_model(c, f):
     if c.uae_fpu_model.explicit:
         value = c.uae_fpu_model.explicit
@@ -1503,7 +1503,7 @@ def _uae_fpu_model(c, f):
     c.uae_fpu_model = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_gfxcard_size(c, f):
     t = c.uae_gfxcard_type
     if c.uae_gfxcard_size.explicit:
@@ -1528,7 +1528,7 @@ def _uae_gfxcard_size(c, f):
     c.uae_gfxcard_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_gfxcard_type(c, f):
     t = c.graphics_card
     if c.uae_gfxcard_type.explicit:
@@ -1564,31 +1564,31 @@ def _uae_gfxcard_type(c, f):
     c.uae_gfxcard_type = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_joyport0(c, f):
     if c.uae_joyport0.explicit:
         f.warning("uae_joyport0 specified (use official options instead")
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_joyport0autofire(c, f):
     if c.uae_joyport0autofire.explicit:
         f.warning("uae_joyport0autofire: use official options instead")
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_joyport1(c, f):
     if c.uae_joyport1.explicit:
         f.warning("uae_joyport1 specified (use official options instead")
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_joyport1autofire(c, f):
     if c.uae_joyport1autofire.explicit:
         f.warning("uae_joyport1autofire: use official options instead")
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_mmu_model(c, f):
     if c.uae_mmu_model.explicit:
         value = c.uae_mmu_model.explicit
@@ -1626,7 +1626,7 @@ def _uae_mmu_model(c, f):
     c.uae_mmu_model = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_native_code(c, f):
     if c.uae_native_code.explicit:
         value = c.uae_native_code.explicit
@@ -1637,12 +1637,12 @@ def _uae_native_code(c, f):
     c.uae_native_code = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_ppc_model(c, f):
     pass
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_rtc(c, f):
     # FIXME: Blizzard expansions!
     if c.uae_chipset_compatible == "-":
@@ -1708,7 +1708,7 @@ def _uae_rtc(c, f):
     c.uae_rtc = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_sana2(c, f):
     if c.uae_sana2.explicit:
         # FIXME: ok? keep already specified value
@@ -1719,7 +1719,7 @@ def _uae_sana2(c, f):
     c.uae_sana2 = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_slirp_implementation(c, f):
     if c.uae_slirp_implementation.explicit:
         # FIXME: ok? keep already specified value
@@ -1730,7 +1730,7 @@ def _uae_slirp_implementation(c, f):
     c.uae_slirp_implementation = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_toccata(c, f):
     if c.uae_toccata.explicit:
         value = c.uae_toccata.explicit
@@ -1748,7 +1748,7 @@ def _uae_toccata(c, f):
     c.uae_toccata = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_z3chipmem_size(c, f):
     if c.uae_z3chipmem_size.explicit:
         value = c.uae_z3chipmem_size.explicit
@@ -1757,7 +1757,7 @@ def _uae_z3chipmem_size(c, f):
     c.uae_z3chipmem_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uae_z3mem_size(c, f):
     if c.uae_z3mem_size.explicit:
         value = c.uae_z3mem_size.explicit
@@ -1768,7 +1768,7 @@ def _uae_z3mem_size(c, f):
     c.uae_z3mem_size = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uaegfx_card(c, f):
     if c.uaegfx_card.explicit:
         # FIXME: check boolean
@@ -1778,7 +1778,7 @@ def _uaegfx_card(c, f):
     c.uaegfx_card = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _uaenative_library(c, f):
     if c.uaenative_library.explicit:
         value = c.uaenative_library.explicit
@@ -1787,7 +1787,7 @@ def _uaenative_library(c, f):
     c.uaenative_library = value
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,SpellCheckingInspection,PyUnresolvedReferences
 def _zorro_iii_memory(c, f):
     if c.zorro_iii_memory.explicit:
         value = c.zorro_iii_memory.explicit
@@ -1808,6 +1808,10 @@ class AbstractExpandFunctions:
 
     @staticmethod
     def warning(message):
+        pass
+
+    @staticmethod
+    def lower(s):
         pass
 
 

@@ -18,7 +18,7 @@ class CustomOptionsPage(fsui.Panel):
         self.text_area = fsui.TextArea(self, font_family="monospace")
         self.text_area.set_min_width(760)
         self.text_area.set_min_height(460)
-        self.text_area.set_text(self.get_initial_text())
+        self.text_area.set_text(initial_text())
         hor_layout.add(self.text_area, fill=True, expand=True)
         # hor_layout.add_spacer(20)
 
@@ -54,22 +54,24 @@ class CustomOptionsPage(fsui.Panel):
         # Finally, set everything at once
         LauncherConfig.set_multiple(update_config.items())
 
-    def get_initial_text(self):
-        text = DEFAULT_TEXT
-        keys = fsgs.config.values.keys()
-        for key in sorted(keys):
-            # FIXME: Move to LauncherConfig as a method, maybe use
-            # is_custom_option.
-            if key in LauncherConfig.no_custom_config:
-                continue
-            if key.startswith("__implicit_"):
-                continue
 
-            value = fsgs.config.values[key]
-            if not value:
-                continue
-            text += "{0} = {1}\n".format(key, value)
-        return text
+def initial_text():
+    text = DEFAULT_TEXT
+    keys = fsgs.config.values.keys()
+    for key in sorted(keys):
+        # FIXME: Move to LauncherConfig as a method, maybe use
+        # is_custom_option.
+        if key in LauncherConfig.no_custom_config:
+            continue
+        if key.startswith("__implicit_"):
+            continue
+
+        value = fsgs.config.values[key]
+        if not value:
+            continue
+        text += "{0} = {1}\n".format(key, value)
+    return text
+
 
 DEFAULT_TEXT = """\
 # You can write key = value pairs here to set FS-UAE options

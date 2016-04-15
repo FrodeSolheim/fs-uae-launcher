@@ -14,7 +14,8 @@ class PluginHelper(object):
             resource_dirs.append(resource_dir)
         return resource_dirs
 
-    def find_plugins(self):
+    @staticmethod
+    def find_plugins():
         plugins = []
         plugins_dir = FSGSDirectories.get_plugins_dir()
         if plugins_dir is None:

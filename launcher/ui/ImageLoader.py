@@ -74,7 +74,8 @@ class ImageLoader(object):
         except Exception:
             traceback.print_exc()
 
-    def get_cache_path_for_sha1(self, request, sha1):
+    @staticmethod
+    def get_cache_path_for_sha1(request, sha1):
         cover = request.args.get("is_cover", False)
         if cover:
             size_arg = "?w={0}&h={1}&t=lbcover".format(

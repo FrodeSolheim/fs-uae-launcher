@@ -165,6 +165,7 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
 
         self.set_items(items)
 
+    # noinspection PyMethodMayBeStatic
     def load_configuration(self, item):
         if item[str("uuid")]:
             LauncherSettings.set("parent_uuid", item[str("uuid")])

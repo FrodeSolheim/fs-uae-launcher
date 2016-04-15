@@ -63,9 +63,9 @@ class HardDriveGroup(fsui.Group):
     def on_config(self, key, value):
         if key != self.config_key:
             return
-        dir, name = os.path.split(value)
-        if dir:
-            path = "{0} ({1})".format(name, dir)
+        dir_path, name = os.path.split(value)
+        if dir_path:
+            path = "{0} ({1})".format(name, dir_path)
         else:
             path = name
         self.text_field.set_text(path)
@@ -106,9 +106,9 @@ class HardDriveGroup(fsui.Group):
         full_path = path
 
         # FIXME: use contract function
-        dir, file = os.path.split(path)
+        dir_path, file = os.path.split(path)
         self.text_field.set_text(file)
-        if os.path.normcase(os.path.normpath(dir)) == \
+        if os.path.normcase(os.path.normpath(dir_path)) == \
                 os.path.normcase(os.path.normpath(default_dir)):
             path = file
 

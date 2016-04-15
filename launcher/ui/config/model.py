@@ -263,10 +263,6 @@ def create_model(c, show_all=False):
         #     paula_item = Item("Paula")
         # chipset_item.add(paula_item)
 
-    if c.uae_cd32cd == "true":
-        akiko_item = Item("Akiko")
-        chipset_item.add(akiko_item)
-
     # if c.kickstart_file:
     #     kickstart_item = Item("Custom Kickstart [FIXME]")
     # else:
@@ -282,6 +278,11 @@ def create_model(c, show_all=False):
     else:
         kickstart_ext_item = InactiveItem("Extended ROM")
     model.add(kickstart_ext_item)
+
+    # if c.uae_cd32cd == "true":
+    #     akiko_item = Item("Akiko Chip")
+    #     # chipset_item.add(akiko_item)
+    #     model.add(akiko_item)
 
     jit_text = " [JIT]" if c.jit_compiler == "1" else ""
     cpu_item = Item("MC" + c.int_cpu_name + jit_text)

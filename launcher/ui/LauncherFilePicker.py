@@ -6,7 +6,7 @@ from ..launcher_settings import LauncherSettings
 
 class LauncherFilePicker(object):
 
-    def __init__(self, parent, title, type, last_path="",
+    def __init__(self, parent, title, media_type, last_path="",
                  multiple=False, dir_mode=False):
         self.multiple = multiple
         self.dir_mode = dir_mode
@@ -14,7 +14,7 @@ class LauncherFilePicker(object):
         self.title = title
         self.result = None
         self.dir_mode = dir_mode
-        self.settings_key = "last_{0}_dir".format(type)
+        self.settings_key = "last_{0}_dir".format(media_type)
         self.directory = ""
         if last_path and last_path not in ["internal"]:
             print("last_path", repr(last_path))
@@ -28,26 +28,27 @@ class LauncherFilePicker(object):
                     self.directory = last_path_dir
             else:
                 # file was relative to default directory
-                self.directory = self.get_default_directory(type)
+                self.directory = self.get_default_directory(media_type)
         if not self.directory:
             value = LauncherSettings.get(self.settings_key)
             print(self.settings_key, value)
             if value and os.path.exists(value):
                 self.directory = value
         if not self.directory:
-            self.directory = self.get_default_directory(type)
+            self.directory = self.get_default_directory(media_type)
         # fsui.FileDialog.__init__(
         #     self, parent, title, directory, dir_mode=dir_mode,
         #     multiple=multiple)
 
-    def get_default_directory(self, type):
-        if type == "floppy":
+    @staticmethod
+    def get_default_directory(media_type):
+        if media_type == "floppy":
             return FSGSDirectories.get_floppies_dir()
-        elif type == "cd":
+        elif media_type == "cd":
             return FSGSDirectories.get_cdroms_dir()
-        elif type == "hd":
+        elif media_type == "hd":
             return FSGSDirectories.get_hard_drives_dir()
-        elif type == "rom":
+        elif media_type == "rom":
             return FSGSDirectories.get_kickstarts_dir()
         raise Exception("unknown file dialog type")
 

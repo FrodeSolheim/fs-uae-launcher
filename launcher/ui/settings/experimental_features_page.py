@@ -12,5 +12,5 @@ class ExperimentalFeaturesPage(SettingsPage):
         subtitle = ""
         self.add_header(icon, title, subtitle)
 
-        # self.add_option(Option.NETPLAY_FATURE)
-        self.add_option(Option.CONFIG_FEATURE)
+        self.add_option(Option.NETPLAY_FEATURE)
+        self.add_option(Option.LAUNCHER_CONFIG_FEATURE)

@@ -3,6 +3,7 @@ import io
 from configparser import ConfigParser
 from fsbc.system import windows, linux, macosx
 from fsbc.util import memoize
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.context import fsgs
 from fsbc.resources import Resources
 
@@ -62,7 +63,7 @@ class InputDevice(object):
         self.platform = platform
         self.sdl_name = sdl_name
         if not self.sdl_name:
-            self.sdl_name = self.id.rsplit("#", 1)[0]
+            self.sdl_name = self.id.rsplit("#", 1)[0].strip()
         self.sdl_joystick_id = sdl_joystick_id
         self.index = -1
         self.version = version
@@ -162,6 +163,17 @@ class InputDevice(object):
                     path = os.path.join(controllers_dir, file_name)
                     print(" -", path)
                     configs[name] = path
+        keyboards_dir = os.path.join(
+            FSGSDirectories.get_data_dir(), "Devs", "Keyboards")
+        print("read configs from controllers_dir at", keyboards_dir)
+        if os.path.exists(keyboards_dir):
+            for file_name in os.listdir(keyboards_dir):
+                if file_name.endswith(".ini"):
+                    name, ext = os.path.splitext(file_name)
+                    path = os.path.join(keyboards_dir, file_name)
+                    print(" -", path)
+                    configs[name] = path
+
         # print("input config files:", configs)
         return configs
 
@@ -298,6 +310,12 @@ class InputDevice(object):
             host_platform)
 
         config = {}
+        try:
+            self.read_config(self.sdl_name, config, platform, multiple)
+        except Exception:
+            pass
+        else:
+            return config
         try:
             self.read_config(config_name, config, platform, multiple)
         except Exception:

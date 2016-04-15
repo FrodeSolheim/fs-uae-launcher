@@ -78,6 +78,7 @@ class VariantsBrowser(fsui.ItemChoice):
         self.load_variant(self.items[index])
         # self.last_variants.cache[self.parent_uuid] = variant_uuid
 
+    # noinspection PyMethodMayBeStatic
     def on_activate_item(self, _):
         from ..fs_uae_launcher import FSUAELauncher
         FSUAELauncher.start_game()

@@ -65,6 +65,7 @@ def create_game_password(value):
     value = value.encode("UTF-8")
     # print(repr(value))
     h = sha1()
+    # noinspection SpellCheckingInspection
     h.update(b"FSNP")
     val = b""
     for v in value:
@@ -100,8 +101,8 @@ MESSAGE_SESSION_KEY = 22
 # MESSAGE_RND_CHECK = 6
 # MESSAGE_PING = 7
 
-MESSAGE_MEMCHECK_MASK = (0x80000000 | (MESSAGE_MEM_CHECK << 24))
-MESSAGE_RNDCHECK_MASK = (0x80000000 | (MESSAGE_RND_CHECK << 24))
+MESSAGE_MEM_CHECK_MASK = (0x80000000 | (MESSAGE_MEM_CHECK << 24))
+MESSAGE_RND_CHECK_MASK = (0x80000000 | (MESSAGE_RND_CHECK << 24))
 
 ERROR_PROTOCOL_MISMATCH = 1
 ERROR_WRONG_PASSWORD = 2
@@ -136,8 +137,8 @@ class Client:
         self.frame_times = [0.0 for _ in range(100)]
         self.lag = 0.0
         self.out_seq = 0
-        self.memcheck = [(0, 0) for _ in range(100)]
-        self.rndcheck = [(0, 0) for _ in range(100)]
+        self.mem_check = [(0, 0) for _ in range(100)]
+        self.rnd_check = [(0, 0) for _ in range(100)]
         self.ping_sent_at = 0
         self.pings = deque([0 for _ in range(10)])
         self.pings_sum = 0
@@ -219,8 +220,10 @@ class Client:
             # connection check only
             self.__send_data(b"PONG")
             return False
+        # noinspection SpellCheckingInspection
         if data != b"FSNP":
             print(data)
+            # noinspection SpellCheckingInspection
             raise Exception("did not get expected FSNP header")
         # check protocol version
         data = self.socket.recv(1)
@@ -331,9 +334,9 @@ class Client:
             command = (message & 0x7f000000) >> 24
             data = message & 0x00ffffff
             if command == MESSAGE_MEM_CHECK:
-                self.memcheck[self.frame % 100] = (data, self.frame)
+                self.mem_check[self.frame % 100] = (data, self.frame)
             elif command == MESSAGE_RND_CHECK:
-                self.rndcheck[self.frame % 100] = (data, self.frame)
+                self.rnd_check[self.frame % 100] = (data, self.frame)
             elif command == MESSAGE_PING:
                 # print("{0:x}".format(message))
                 self.on_ping()
@@ -379,12 +382,11 @@ def create_session_key():
 
 class Game:
 
-    def __init__(self, num_clients):
+    def __init__(self):
         self.started = False
         self.frame = 0
         self.time = 0
         self.clients = []
-        self.num_clients = 0
         self.frame_times = [0.0 for _ in range(100)]
         self.lock = threading.Lock()
         self.stop = False
@@ -446,6 +448,7 @@ class Game:
             traceback.print_exc()
             self.stop = True
 
+    # noinspection PyMethodMayBeStatic
     def __send_player_tags(self, send_to_client):
         for i, client in enumerate(game.clients):
             data = bytes_to_int(b"\0" + client.tag)
@@ -593,13 +596,14 @@ class Game:
             if force_send:
                 client.send_queued_messages()
 
+    # noinspection PyMethodMayBeStatic
     def check_synchronization(self, check_frame):
         # FIXME: MOVE TO GAME CLASS
         # FIXME: ONLY RUN ONCE PER FRAME, not once per frame * clients
         # if self.frame == 0:
         #     return
         with game.lock:
-            # print("received memcheck", data)
+            # print("received mem_check", data)
             # check_frame = self.frame - 1
             if check_frame < 0:
                 return
@@ -610,13 +614,13 @@ class Game:
                 if client.frame <= check_frame:
                     # cannot check yet
                     return
-                # print(client, client.frame, client.memcheck)
-                mem_check_data.append((client, client.memcheck[index]))
-                rnd_check_data.append((client, client.rndcheck[index]))
+                # print(client, client.frame, client.mem_check)
+                mem_check_data.append((client, client.mem_check[index]))
+                rnd_check_data.append((client, client.rnd_check[index]))
             check = mem_check_data[0][1]
             for client, data in mem_check_data:
                 if check != data:
-                    print("memcheck failed for frame", check_frame)
+                    print("mem_check failed for frame", check_frame)
                     for c, d in mem_check_data:
                         print("* {0:08x}  f {1:05d} {2}".format(d[0], d[1], c))
                     for c in game.clients:
@@ -626,7 +630,7 @@ class Game:
             check = rnd_check_data[0][1]
             for client, data in rnd_check_data:
                 if check != data:
-                    print("rndcheck failed for frame", check_frame)
+                    print("rnd_check failed for frame", check_frame)
                     for c, d in rnd_check_data:
                         print("* {0:08x}  f {1:05d} {2}".format(d[0], d[1], c))
                     for c in game.clients:
@@ -640,7 +644,7 @@ address_map = {
 
 
 def accept_client(server_socket):
-    global last_keepalive_time
+    global last_keep_alive_time
 
     server_socket.settimeout(1)
     client_socket, client_address = server_socket.accept()
@@ -650,7 +654,7 @@ def accept_client(server_socket):
     client = Client(client_socket, client_address)
     # client.player = len(game.clients) + 1
     print("Client connected", client)
-    last_keepalive_time = time.time()
+    last_keep_alive_time = time.time()
 
     # game.add_client(client)
     # client.start()
@@ -674,8 +678,8 @@ def accept_thread(server_socket):
 
 def _run_server():
     global game
-    global last_keepalive_time
-    game = Game(num_clients)
+    global last_keep_alive_time
+    game = Game()
     address = (host, port)
     server_socket = socket.socket()
     server_socket.bind(address)
@@ -690,12 +694,12 @@ def _run_server():
     if num_clients > MAX_PLAYERS:
         print("ERROR: max clients are", MAX_PLAYERS)
     threading.Thread(target=accept_thread, args=(server_socket,)).start()
-    last_keepalive_time = time.time()
+    last_keep_alive_time = time.time()
     while not game.started:
         time.sleep(0.1)
         if launch_timeout:
             t2 = time.time()
-            if t2 - last_keepalive_time > launch_timeout:
+            if t2 - last_keep_alive_time > launch_timeout:
                 print("game not started yet, aborting (timeout)")
                 game.stop = True
                 return

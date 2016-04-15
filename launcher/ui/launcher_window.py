@@ -27,18 +27,18 @@ from workspace.apps.locker_uploader import LockerUploaderWindow
 from workspace.apps.login import LoginWindow
 from workspace.apps.logout import LogoutWindow
 from workspace.apps.refresh import RefreshWindow
-from .Book import Book
-from .CDPanel import CDPanel
+from .book import Book
+from .cd_panel import CDPanel
 from .ConfigurationsPanel import ConfigurationsPanel
 from .Constants import Constants
 from .FloppiesPanel import FloppiesPanel
 from .HardDrivesPanel import HardDrivesPanel
 from .InputPanel import InputPanel
 from .MainPanel import MainPanel
-from .SetupDialog import SetupDialog
-from .Skin import Skin
+from .setup import SetupDialog
+from .skin import Skin
 from .WindowWithTabs import WindowWithTabs
-from .about_dialog import AboutDialog
+from .about import AboutDialog
 from .config.additionalconfigpanel import AdditionalConfigPanel
 from .config.expansionspanel import ExpansionsPanel
 from .statusbar.StatusBar import StatusBar
@@ -368,12 +368,12 @@ class LauncherWindow(WindowWithTabs):
                     #                    margin_bottom=-10)
                     self.config_browser = ConfigBrowser(self)
                     self.config_browser.set_min_width(200)
-                    #if Skin.fws():
+                    # if Skin.fws():
                     hor_layout.add(self.config_browser, fill=True,
                                    expand=0.5, margin=-10, margin_left=0)
-                    #else:
-                    #    hor_layout.add(self.config_browser, fill=True,
-                    #                   expand=0.5, margin=10)
+                    # else:
+                    #     hor_layout.add(self.config_browser, fill=True,
+                    #                    expand=0.5, margin=10)
 
             if column == 2:
                 # if fs_uae_launcher.ui.get_screen_size()[1] >= 1024:
@@ -461,6 +461,7 @@ class LauncherWindow(WindowWithTabs):
                 column, CDPanel,
                 "32x32/media-optical",
                 gettext("CD-ROMs"), gettext("CD-ROM Drives"))
+            # noinspection SpellCheckingInspection
             self.add_page(
                 column, HardDrivesPanel,
                 "32x32/drive-harddisk",
@@ -627,7 +628,7 @@ class LauncherWindow(WindowWithTabs):
         fstd.desktop.open_url_in_browser("https://oagd.net/about")
 
     def on_scan_button(self):
-        from .ScanDialog import ScanDialog
+        from .scan import ScanDialog
         ScanDialog(self.get_window()).show()
 
     def on_settings_button(self):

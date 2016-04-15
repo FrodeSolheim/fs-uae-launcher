@@ -121,9 +121,9 @@ class MediaListGroup(fsui.Group):
         # items = []
         self.list_view.clear()
         for path, sha1 in self.create_list():
-            dir, name = os.path.split(path)
-            if dir:
-                label = "{0} ({1})".format(name, dir)
+            dir_path, name = os.path.split(path)
+            if dir_path:
+                label = "{0} ({1})".format(name, dir_path)
             else:
                 label = path
             self.list_view.add_item(label, self.default_icon)
@@ -167,8 +167,8 @@ class MediaListGroup(fsui.Group):
             sha1 = checksum_tool.checksum(path)
             path = Paths.contract_path(path, default_dir)
 
-            dir, file = os.path.split(path)
-            if os.path.normcase(os.path.normpath(dir)) == \
+            dir_path, file = os.path.split(path)
+            if os.path.normcase(os.path.normpath(dir_path)) == \
                     os.path.normcase(os.path.normpath(default_dir)):
                 path = file
 

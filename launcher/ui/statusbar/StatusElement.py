@@ -68,12 +68,12 @@ class StatusElement(Panel):
         if not self.active:
             dc.set_text_color(Color(0x80, 0x80, 0x80))
         operations = self.get_draw_operations()
-        for type, object, x, y in operations:
-            if type == "image":
-                dc.draw_image(object, x, y)
-            elif type == "text":
+        for draw_type, draw_object, x, y in operations:
+            if draw_type == "image":
+                dc.draw_image(draw_object, x, y)
+            elif draw_type == "text":
                 # if not self.active:
                 #     dc.set_text_color(Color(0x80, 0x80, 0x80))
-                dc.draw_text(object, x, y)
+                dc.draw_text(draw_object, x, y)
                 # if not self.active:
                 #     dc.set_text_color(orig_text_color)

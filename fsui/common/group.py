@@ -10,9 +10,8 @@ class Group(object):
             self._window = parent._window
         self.position = (0, 0)
         self.__visible = True
-
-    # def __on_destroy(self):
-    #     self.on_destroy()
+        # FIXME
+        # parent.destroyed.connect(self.on_destroy)
 
     @property
     def parent(self):
@@ -24,8 +23,8 @@ class Group(object):
     def is_visible(self):
         return self.__visible
 
-    # def on_destroy(self):
-    #     pass
+    def on_destroy(self):
+        pass
 
     def get_window(self):
         return self.parent.get_window()

@@ -1,10 +1,21 @@
 import fsui
-from .imports.ImportGroup import ImportGroup
-from .ScanKickstartGroup import ScanKickstartGroup
+from launcher.i18n import gettext
+from launcher.ui.imports.ImportGroup import ImportGroup
+from launcher.ui.scan import ScanKickstartGroup
+
+
+class SetupDialog(fsui.Window):
+    def __init__(self, parent):
+        super().__init__(parent, gettext("Import Kickstarts"))
+        self.layout = fsui.VerticalLayout(padding=20)
+        # buttons, layout = fsui.DialogButtons.create_with_layout(self)
+        # buttons.create_close_button()
+        self.panel = SetupPanel(self)
+        self.panel.set_min_width(620)
+        self.layout.add(self.panel)
 
 
 class SetupPanel(fsui.Panel):
-
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()

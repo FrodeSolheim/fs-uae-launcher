@@ -1,5 +1,5 @@
 import fsui
-from launcher.ui.Skin import Skin
+from launcher.ui.skin import Skin
 from launcher.ui.config.InputGroup import InputGroup
 
 

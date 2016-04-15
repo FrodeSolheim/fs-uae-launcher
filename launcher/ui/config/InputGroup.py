@@ -53,5 +53,6 @@ class InputGroup(fsui.Group):
             selector = InputSelector(self, i, autofire_button=autofire_button)
             self.layout.add(selector, fill=True, margin=10)
 
+    # noinspection PyMethodMayBeStatic
     def on_refresh_button(self):
         DeviceManager.refresh()

@@ -1,5 +1,7 @@
+from functools import lru_cache
+
 import fsgs.util.sdl2constants as sdl2
-from fsbc.util import memoize
+from fsbc.system import macosx
 from fsui.qt import Qt, QEvent
 
 
@@ -31,45 +33,90 @@ class Event:
             event["type"] = "key-up"
         else:
             raise Exception("Unexpected event type in create_key_event")
-        key_map = get_key_map()
+        # key_map = get_key_map()
+        # print(ev.key(), "vs", Qt.Key_Shift)
         # event.key.keysym.sym = key_map.get(ev.key(), 0)
-        event["key"] = key_map.get(ev.key(), 0)
+        # event["key"] = key_map.get(ev.key(), 0)
+        event["key"] = get_key(ev)
         return event
 
 
-@memoize
+def get_key(ev):
+    print("Qt key:", ev.key(), int(ev.modifiers()), Qt.KeypadModifier)
+    if macosx:
+        # FIXME: TODO: CHECK
+        # if ev.key() == Qt.Key_Meta:
+        #     print("Control key, native virtual code:", ev.nativeVirtualCode())
+        # elif ev.key() == Qt.Key_Shift:
+        pass
+    else:
+        if ev.key() == Qt.Key_Control:
+            print("Control key, native scan code:", ev.nativeScanCode())
+            if ev.nativeScanCode() == 105:  # Linux
+                return sdl2.SDLK_RCTRL
+            # FIXME: TODO: WINDOWS
+            return sdl2.SDLK_LCTRL
+        elif ev.key() == Qt.Key_Shift:
+            print("Shift key, native scan code:", ev.nativeScanCode())
+            if ev.nativeScanCode() == 62:  # Linux
+                return sdl2.SDLK_RSHIFT
+            # FIXME: TODO: WINDOWS
+            return sdl2.SDLK_LSHIFT
+    if int(ev.modifiers()) & Qt.KeypadModifier:
+        print("keypad!")
+        print(ev.key(), "vs", Qt.Key_4)
+        return {
+            Qt.Key_Insert: sdl2.SDLK_KP_0,
+            Qt.Key_End: sdl2.SDLK_KP_1,
+            Qt.Key_Down: sdl2.SDLK_KP_2,
+            Qt.Key_PageDown: sdl2.SDLK_KP_3,
+            Qt.Key_Left: sdl2.SDLK_KP_4,
+            Qt.Key_Clear: sdl2.SDLK_KP_5,
+            Qt.Key_Right: sdl2.SDLK_KP_6,
+            Qt.Key_Home: sdl2.SDLK_KP_7,
+            Qt.Key_Up: sdl2.SDLK_KP_8,
+            Qt.Key_PageUp: sdl2.SDLK_KP_9,
+            Qt.Key_Delete: sdl2.SDLK_KP_PERIOD,
+        }.get(ev.key(), 0)
+    key_map = get_key_map()
+    return key_map.get(ev.key(), 0)
+
+
+@lru_cache()
 def get_key_map():
     result = {
         Qt.Key_Escape: sdl2.SDLK_ESCAPE,
-        # Qt.Key_Tab	0x01000001
+        Qt.Key_Tab: sdl2.SDLK_TAB,
         # Qt.Key_Backtab	0x01000002
         Qt.Key_Backspace: sdl2.SDLK_BACKSPACE,
         Qt.Key_Return: sdl2.SDLK_RETURN,
 
         # Typically located on the keypad.
-        # Qt.Key_Enter	0x01000005
-
-        # Qt.Key_Insert	0x01000006
-        # Qt.Key_Delete	0x01000007
+        Qt.Key_Enter: sdl2.SDLK_KP_ENTER,
+        Qt.Key_Insert: sdl2.SDLK_INSERT,
+        Qt.Key_Delete: sdl2.SDLK_DELETE,
 
         # The Pause/Break key (Note: Not anything to do with pausing media).
-        # Qt.Key_Pause	0x01000008
+        Qt.Key_Pause: sdl2.SDLK_PAUSE,
 
         # Qt.Key_Print	0x01000009
         # Qt.Key_SysReq	0x0100000a
         # Qt.Key_Clear	0x0100000b
-        # Qt.Key_Home	0x01000010
-        # Qt.Key_End	0x01000011
+        Qt.Key_Home: sdl2.SDLK_HOME,
+        Qt.Key_End: sdl2.SDLK_END,
         Qt.Key_Left: sdl2.SDLK_LEFT,
         Qt.Key_Up: sdl2.SDLK_UP,
         Qt.Key_Right: sdl2.SDLK_RIGHT,
         Qt.Key_Down: sdl2.SDLK_DOWN,
         Qt.Key_PageUp: sdl2.SDLK_PAGEUP,
         Qt.Key_PageDown: sdl2.SDLK_PAGEDOWN,
-        # Qt.Key_Shift	0x01000020
+        # FIXME: LSHIFT vs RSHIFT
+        Qt.Key_Shift: sdl2.SDLK_LSHIFT,
 
         # On Mac OS X, this corresponds to the Command keys.
         # Qt.Key_Control	0x01000021
+        # FIXME: LCTRL vs RCTRL, OS X, etc
+        Qt.Key_Control: sdl2.SDLK_LCTRL,
 
         # On Mac OS X, this corresponds to the Control keys. On Windows
         # keyboards, this key is mapped to the Windows key.
@@ -84,16 +131,16 @@ def get_key_map():
         # Qt.Key_CapsLock	0x01000024
         # Qt.Key_NumLock	0x01000025
         # Qt.Key_ScrollLock	0x01000026
-        # Qt.Key_F1	0x01000030
-        # Qt.Key_F2	0x01000031
-        # Qt.Key_F3	0x01000032
-        # Qt.Key_F4	0x01000033
-        # Qt.Key_F5	0x01000034
-        # Qt.Key_F6	0x01000035
-        # Qt.Key_F7	0x01000036
-        # Qt.Key_F8	0x01000037
-        # Qt.Key_F9	0x01000038
-        # Qt.Key_F10	0x01000039
+        Qt.Key_F1: sdl2.SDLK_F1,
+        Qt.Key_F2: sdl2.SDLK_F2,
+        Qt.Key_F3: sdl2.SDLK_F3,
+        Qt.Key_F4: sdl2.SDLK_F4,
+        Qt.Key_F5: sdl2.SDLK_F5,
+        Qt.Key_F6: sdl2.SDLK_F6,
+        Qt.Key_F7: sdl2.SDLK_F7,
+        Qt.Key_F8: sdl2.SDLK_F8,
+        Qt.Key_F9: sdl2.SDLK_F9,
+        Qt.Key_F10: sdl2.SDLK_F10,
         # Qt.Key_F11	0x0100003a
         # Qt.Key_F12	0x0100003b
         # Qt.Key_F13	0x0100003c
@@ -127,7 +174,7 @@ def get_key_map():
         # Qt.Key_Help	0x01000058
         # Qt.Key_Direction_L	0x01000059
         # Qt.Key_Direction_R	0x01000060
-        # Qt.Key_Space	0x20
+        Qt.Key_Space: sdl2.SDLK_SPACE,
         # Qt.Key_Any	Key_Space
         # Qt.Key_Exclam	0x21
         # Qt.Key_QuoteDbl	0x22
@@ -161,34 +208,37 @@ def get_key_map():
         # Qt.Key_Greater	0x3e
         # Qt.Key_Question	0x3f
         # Qt.Key_At	0x40
-        # Qt.Key_A	0x41
-        # Qt.Key_B	0x42
-        # Qt.Key_C	0x43
-        # Qt.Key_D	0x44
-        # Qt.Key_E	0x45
-        # Qt.Key_F	0x46
-        # Qt.Key_G	0x47
-        # Qt.Key_H	0x48
-        # Qt.Key_I	0x49
-        # Qt.Key_J	0x4a
-        # Qt.Key_K	0x4b
-        # Qt.Key_L	0x4c
-        # Qt.Key_M	0x4d
-        # Qt.Key_N	0x4e
-        # Qt.Key_O	0x4f
-        # Qt.Key_P	0x50
-        # Qt.Key_Q	0x51
-        # Qt.Key_R	0x52
-        # Qt.Key_S	0x53
-        # Qt.Key_T	0x54
-        # Qt.Key_U	0x55
-        # Qt.Key_V	0x56
-        # Qt.Key_W	0x57
-        # Qt.Key_X	0x58
-        # Qt.Key_Y	0x59
-        # Qt.Key_Z	0x5a
-        # Qt.Key_BracketLeft	0x5b
+        Qt.Key_A: sdl2.SDLK_a,
+        Qt.Key_B: sdl2.SDLK_b,
+        Qt.Key_C: sdl2.SDLK_c,
+        Qt.Key_D: sdl2.SDLK_d,
+        Qt.Key_E: sdl2.SDLK_e,
+        Qt.Key_F: sdl2.SDLK_f,
+        Qt.Key_G: sdl2.SDLK_g,
+        Qt.Key_H: sdl2.SDLK_h,
+        Qt.Key_I: sdl2.SDLK_i,
+        Qt.Key_J: sdl2.SDLK_j,
+        Qt.Key_K: sdl2.SDLK_k,
+        Qt.Key_L: sdl2.SDLK_l,
+        Qt.Key_M: sdl2.SDLK_m,
+        Qt.Key_N: sdl2.SDLK_n,
+        Qt.Key_O: sdl2.SDLK_o,
+        Qt.Key_P: sdl2.SDLK_p,
+        Qt.Key_Q: sdl2.SDLK_q,
+        Qt.Key_R: sdl2.SDLK_r,
+        Qt.Key_S: sdl2.SDLK_s,
+        Qt.Key_T: sdl2.SDLK_t,
+        Qt.Key_U: sdl2.SDLK_u,
+        Qt.Key_V: sdl2.SDLK_v,
+        Qt.Key_W: sdl2.SDLK_w,
+        Qt.Key_X: sdl2.SDLK_x,
+        Qt.Key_Y: sdl2.SDLK_y,
+        Qt.Key_Z: sdl2.SDLK_z,
+        # FIXME: Depends on keymap?
+        Qt.Key_BracketLeft: sdl2.SDLK_LEFTBRACKET,
         # Qt.Key_Backslash	0x5c
+        # FIXME: Depends on keymap?
+        Qt.Key_BracketRight: sdl2.SDLK_RIGHTBRACKET,
         # Qt.Key_BracketRight	0x5d
         # Qt.Key_AsciiCircum	0x5e
         # Qt.Key_Underscore	0x5f

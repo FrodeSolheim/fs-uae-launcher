@@ -1,21 +1,18 @@
 import hashlib
 import os
 
-import fsbc.user
 from fsbc.paths import Paths
-from fsbc.system import windows
 from fsgs.Database import Database
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.FileDatabase import FileDatabase
 from fsgs.amiga.Amiga import Amiga
 from fsgs.amiga.ROMManager import ROMManager
 from fsgs.context import fsgs
-from .configuration_scanner import ConfigurationScanner
-from .launcher_settings import LauncherSettings
+from launcher.configuration_scanner import ConfigurationScanner
+from launcher.launcher_settings import LauncherSettings
 
 
 class StartupScan:
-
     _config_scanned = False
     _kickstart_scanned = False
 
@@ -61,22 +58,22 @@ class StartupScan:
                 file_database.add_file(path=path, sha1=sha1)
 
                 game_id = database.add_game(
-                        path=path, name=scanner.create_configuration_name(name))
+                    path=path, name=scanner.create_configuration_name(name))
                 database.update_game_search_terms(
-                        game_id, scanner.create_search_terms(name))
+                    game_id, scanner.create_search_terms(name))
 
-        for path, id in local_configs.items():
-            if id is not None:
+        for path, config_id in local_configs.items():
+            if config_id is not None:
                 print("[startup] removing configuration", path)
-                database.delete_game(id=id)
+                database.delete_game(id=config_id)
                 file_database.delete_file(path=path)
         print("... commit")
         database.commit()
 
         LauncherSettings.set(
-                "configurations_dir_mtime",
-                cls.get_dir_mtime_str(configs_dir) + "+" + str(
-                    Database.VERSION))
+            "configurations_dir_mtime",
+            cls.get_dir_mtime_str(configs_dir) + "+" + str(
+                Database.VERSION))
 
     @classmethod
     def kickstart_startup_scan(cls):
@@ -107,15 +104,15 @@ class StartupScan:
                     print("[startup] adding kickstart", path)
                     ROMManager.add_rom_to_database(path, file_database)
             print(local_roms)
-            for path, id in local_roms.items():
-                if id is not None:
+            for path, file_id in local_roms.items():
+                if file_id is not None:
                     print("[startup] removing kickstart", path)
-                    file_database.delete_file(id=id)
+                    file_database.delete_file(id=file_id)
             print("... commit")
             file_database.commit()
             LauncherSettings.set(
-                    "kickstarts_dir_mtime",
-                    cls.get_dir_mtime_str(kickstarts_dir))
+                "kickstarts_dir_mtime",
+                cls.get_dir_mtime_str(kickstarts_dir))
 
         amiga = Amiga.get_model_config("A500")
         for sha1 in amiga["kickstarts"]:

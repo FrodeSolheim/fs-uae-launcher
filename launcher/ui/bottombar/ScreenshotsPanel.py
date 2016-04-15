@@ -4,7 +4,7 @@ from ...launcher_settings import LauncherSettings
 from ...game_paths import GamePaths
 from ..Constants import Constants
 from ..ImageLoader import ImageLoader
-from ..Skin import Skin
+from ..skin import Skin
 from .BottomPanel import BottomPanel
 
 BORDER = 20

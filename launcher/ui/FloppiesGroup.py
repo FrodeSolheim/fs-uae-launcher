@@ -60,9 +60,9 @@ class FloppiesGroup(fsui.Group):
 
     def on_multi_select_button(self):
         if self.cd_mode:
-            CDManager.multiselect(self.get_window())
+            CDManager.multi_select(self.get_window())
         else:
-            FloppyManager.multiselect(self.get_window())
+            FloppyManager.multi_select(self.get_window())
 
     def update_heading_label(self):
         if self.cd_mode:

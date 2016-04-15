@@ -14,7 +14,7 @@ import fsui
 from fsgs.FSGSDirectories import FSGSDirectories
 # from workspace.shell import register_window, raise_window
 from launcher.i18n import gettext
-from launcher.ui.Skin import Skin
+from launcher.ui.skin import Skin
 
 
 class JoystickConfigWindow(fsui.Window):

@@ -1,5 +1,6 @@
 import fsui
-from launcher.ui.Skin import Skin
+from fsbc.util import unused
+from launcher.ui.skin import Skin
 
 
 class SettingsHeader(fsui.Group):
@@ -9,6 +10,7 @@ class SettingsHeader(fsui.Group):
 
     def __init__(self, parent, icon, title, subtitle="",
                  icon_position=ICON_RIGHT):
+        unused(subtitle)
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
 

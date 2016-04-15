@@ -1,5 +1,8 @@
 Version 2.7.12dev:
 
+* Added settings for for FS-UAE Arcade.
+* Minor fixes for scan/refresh dialogs.
+* Fix for the xrandr refresh rate detector.
 * Change variant rating buttons into a choice control.
 * Fixed rating variants (broke in 2.7.10dev).
 

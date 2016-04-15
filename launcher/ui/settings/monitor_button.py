@@ -1,7 +1,6 @@
 import fsui
 from fsbc.application import app
 from launcher.i18n import gettext
-from launcher.launcher_settings import LauncherSettings
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
 

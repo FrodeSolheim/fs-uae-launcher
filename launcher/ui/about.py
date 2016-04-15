@@ -7,7 +7,7 @@ from ..i18n import gettext
 class AboutDialog(fsui.Window):
 
     def __init__(self, parent):
-        title = gettext("About {name}").format(name="FS-UAE Launcher")
+        # title = gettext("About {name}").format(name="FS-UAE Launcher")
         title = "{} - FS-UAE Launcher".format(gettext("About"))
         super().__init__(parent, title, minimizable=False, maximizable=False)
         # buttons, layout = fsui.DialogButtons.create_with_layout(self)

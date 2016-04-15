@@ -1,34 +1,34 @@
+import hashlib
 import os
 import sys
-import hashlib
 import traceback
 from collections import defaultdict
+from configparser import ConfigParser, NoSectionError
 
+import fsbc.fs as fs
+import fsui
+from fsbc.application import app
+from fsbc.settings import Settings
+from fsbc.task import Task
+from fsbc.util import unused, is_uuid
+from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.amiga.Amiga import Amiga
+from fsgs.application import ApplicationMixin
+from fsgs.context import fsgs
+from fsgs.download import Downloader
+from fsgs.input.enumeratehelper import EnumerateHelper
+from fsgs.platform import PlatformHandler
+from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
+from launcher.launcher_settings import LauncherSettings
 from launcher.startup_scan import StartupScan
 from launcher.ui.config.HardDriveGroup import HardDriveGroup
 from launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
-from fsbc.settings import Settings
-from fsgs.download import Downloader
-from fsbc.application import app
-from configparser import ConfigParser, NoSectionError
-from fsbc.task import Task
-from fsbc.util import unused, is_uuid
-from fsgs.application import ApplicationMixin
-from fsgs.input.enumeratehelper import EnumerateHelper
-from fsgs.platform import PlatformHandler
-import fsbc.fs as fs
-import fsui
-from fsgs.context import fsgs
-from .ui.launcher_window import LauncherWindow
-from fsgs.amiga.Amiga import Amiga
-from .launcher_config import LauncherConfig
-from fsgs.FSGSDirectories import FSGSDirectories
-from .i18n import gettext
-from .launcher_settings import LauncherSettings
+from launcher.ui.launch import LaunchDialog
+from launcher.ui.launcher_window import LauncherWindow
 
 
 class FSUAELauncher(ApplicationMixin, fsui.Application):
-
     def __init__(self):
         fsui.Application.__init__(self, "fs-uae-launcher")
         self.set_icon(fsui.Icon("fs-uae-launcher", "pkg:launcher"))
@@ -244,8 +244,8 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             if LauncherConfig.get("download_file"):
                 if LauncherConfig.get("download_terms") and not \
                         Downloader.check_terms_accepted(
-                        LauncherConfig.get("download_file"),
-                        LauncherConfig.get("download_terms")):
+                            LauncherConfig.get("download_file"),
+                            LauncherConfig.get("download_terms")):
                     from .ui.launcher_window import LauncherWindow
                     dialog = DownloadTermsDialog(LauncherWindow.current(), fsgs)
                     if not dialog.show_modal():
@@ -280,7 +280,6 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         runner = platform_handler.get_runner(fsgs)
 
         task = RunnerTask(runner)
-        from .ui.LaunchDialog import LaunchDialog
         from .ui.launcher_window import LauncherWindow
         dialog = LaunchDialog(
             LauncherWindow.current(), gettext("Launching Game"), task)
@@ -303,7 +302,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         #                 "Kickstarts' function from the menu."))
         #     return
         cs = Amiga.get_model_config(
-                LauncherConfig.get("amiga_model"))["ext_roms"]
+            LauncherConfig.get("amiga_model"))["ext_roms"]
         if len(cs) > 0:
             # extended kickstart ROM is needed
             if not LauncherConfig.get("x_kickstart_ext_file"):
@@ -324,7 +323,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             platform = "Amiga"
         name = LauncherSettings.get("config_name")
         uuid = LauncherConfig.get("x_game_uuid")
-        
+
         from fsgs.SaveStateHandler import SaveStateHandler
         save_state_handler = SaveStateHandler(fsgs, name, platform, uuid)
 
@@ -332,7 +331,6 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         launch_handler = LaunchHandler(fsgs, name, prepared_config,
                                        save_state_handler)
 
-        from .ui.LaunchDialog import LaunchDialog
         from .ui.launcher_window import LauncherWindow
         task = AmigaLaunchTask(launch_handler)
         # dialog = LaunchDialog(MainWindow.instance, launch_handler)
@@ -353,6 +351,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             # return result == wx.ID_OK
             # FIXME
             return True
+
         fsgs.file.on_show_license_information = on_show_license_information
 
         LauncherConfig.set("__running", "1")
@@ -440,15 +439,6 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
         return config
 
-    # plugin_helper = PluginHelper()
-    # for res in plugin_helper.find_resource_dirs(
-    #         "fs-uae-launcher-theme"):
-    #     qt_css = os.path.join(res, "stylesheet.qss")
-    #     if os.path.exists(qt_css):
-    #         with open(qt_css, "rb") as f:
-    #             data = f.read()
-    #         qapplication.setStyleSheet(data)
-
 
 # FIXME: Files to clean up:
 # Documents/FS-UAE/Cache/File Database.sqlite
@@ -464,7 +454,6 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
 
 class AmigaLaunchTask(Task):
-
     def __init__(self, launch_handler):
         Task.__init__(self, "Amiga Launch Task")
         self.launch_handler = launch_handler
@@ -474,7 +463,6 @@ class AmigaLaunchTask(Task):
 
 
 class RunnerTask(Task):
-
     def __init__(self, runner):
         Task.__init__(self, "Runner Task")
         self.runner = runner

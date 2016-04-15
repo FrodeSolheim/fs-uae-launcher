@@ -6,7 +6,6 @@ from fsgs.Database import Database
 from fsgs.FileDatabase import FileDatabase
 from fsgs.LockerDatabase import LockerDatabase
 from fsgs.context import fsgs
-from fsgs.ogd.client import OGDClient
 from fsui.extra.taskdialog import TaskDialog
 
 

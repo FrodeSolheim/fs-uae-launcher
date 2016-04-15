@@ -28,7 +28,7 @@ class CDManager:
         LauncherConfig.set_multiple(values)
 
     @classmethod
-    def multiselect(cls, parent=None):
+    def multi_select(cls, parent=None):
         default_dir = FSGSDirectories.get_cdroms_dir()
         dialog = LauncherFilePicker(
             parent, gettext("Select Multiple CD-ROMs"), "cd", multiple=True)
