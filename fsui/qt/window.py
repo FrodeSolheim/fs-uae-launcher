@@ -6,7 +6,7 @@ from fsbc.system import macosx
 from fsui.qt import QMainWindow, QObject, QSignal, QWidget, Qt, QDesktopWidget
 from fsui.qt import QPainter, QPoint, QRect
 from fsui.qt.Image import Image
-from fsui.qt.qt import init_qt
+from fsui.qt.qt import init_qt, QEvent
 # noinspection PyProtectedMember
 from fsui.qt.helpers import QParent
 import fsboot
@@ -133,11 +133,13 @@ class RealWindow(QMainWindow):
         size = self.size()
         self.resize_to((size.width(), size.height()))
 
-    # def changeEvent(self, event):
-    #     print(event.type(), QEvent.WindowStateChange)
-    #     if event.type() == QEvent.WindowStateChange:
+    def changeEvent(self, event):
+        # print(event.type(), QEvent.WindowStateChange)
+        if event.type() == QEvent.WindowStateChange:
+            print("RealWindow.changeEvent(WindowStateChange)")
+            self.child.on_resize()
+        QMainWindow.changeEvent(self, event)
     #         size = self.size()
-    #         print("RealWindow.changeEvent(WindowStateChange)")
     #         self.resize_to((size.width(), size.height()))
 
     # def __on_destroyed(self, _):

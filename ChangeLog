@@ -1,5 +1,6 @@
 Version 2.7.13dev:
 
+* Store maximized = 0 state properly when window is unmaximized.
 * Imported updated translations from crowdin.com.
 
 Version 2.7.12dev:

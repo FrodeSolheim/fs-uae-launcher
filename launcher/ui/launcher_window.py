@@ -304,7 +304,7 @@ class LauncherWindow(WindowWithTabs):
             self.update_title()
 
     def on_resize(self):
-        print("on_resize, size =", self.get_size(), self.is_maximized())
+        print("on_resize, size =", self.get_size())
         if self.is_maximized():
             LauncherSettings.set("maximized", "1")
         else:
@@ -319,7 +319,7 @@ class LauncherWindow(WindowWithTabs):
             screenshots_panel_width = \
                 (Constants.SCREEN_SIZE[0] + 22) * num_screenshots - 22 + 22
             self.screenshots_panel.set_min_width(screenshots_panel_width)
-        fsui.Window.on_resize(self)
+        super().on_resize()
 
     def is_editor_enabled(self):
         return "--editor" in sys.argv
