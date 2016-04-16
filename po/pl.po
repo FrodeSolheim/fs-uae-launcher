@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-09-21 00:42+0200\n"
-"PO-Revision-Date: 2015-10-26 14:17-0400\n"
+"POT-Creation-Date: 2016-04-16 15:17+0200\n"
+"PO-Revision-Date: 2016-04-16 09:20-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: fs-uae\n"
 "X-Crowdin-Language: pl\n"
-"X-Crowdin-File: /fs-uae-launcher/messages.pot\n"
+"X-Crowdin-File: fs-uae-launcher.pot\n"
 
 msgid "16-bit"
 msgstr "16-bit"
@@ -46,12 +46,18 @@ msgstr "Kreator ADF"
 msgid "ADF Disk Image Creator"
 msgstr "Kreator obrazów dyskietek ADF"
 
-msgid "Abort"
-msgstr "Przerwij"
+msgid "About"
+msgstr ""
 
 #, python-brace-format
 msgid "About {name}"
 msgstr "O {name}"
+
+msgid "Accelerator Board"
+msgstr ""
+
+msgid "Accelerator RAM"
+msgstr ""
 
 msgid "Accept"
 msgstr "Akceptuj"
@@ -89,23 +95,17 @@ msgstr "Zaawansowane opcje audio"
 msgid "Advanced Settings"
 msgstr "Ustawienia zaawansowane"
 
+msgid "Advanced Video"
+msgstr ""
+
 msgid "Advanced Video Settings"
 msgstr "Zaawansowane ustawienia wideo"
 
 msgid "All"
 msgstr "Wszystko"
 
-msgid "All Configurations"
-msgstr "Wszystkie konfiguracje"
-
 msgid "All Games"
 msgstr "Wszystkie gry"
-
-msgid "All Games and Configurations"
-msgstr "Wszystkie gry i konfiguracje"
-
-msgid "Also synchronize emulation with display when possible (smooth scrolling)"
-msgstr "Ponadto synchronizuj emulację z ekranem, gdy to możliwe (płynne przewijanie)"
 
 msgid "Amiga Forever Import"
 msgstr "Importowanie z Amiga Forever"
@@ -113,14 +113,20 @@ msgstr "Importowanie z Amiga Forever"
 msgid "Amiga Forever import task started"
 msgstr "Importowanie z Amiga Forever rozpoczęte"
 
+msgid "Amiga Joystick"
+msgstr ""
+
 msgid "Amiga Model"
 msgstr "Model Amigi"
+
+msgid "Amiga Mouse"
+msgstr ""
 
 msgid "An Error Occurred"
 msgstr "Wystąpił błąd"
 
-msgid "Appearance"
-msgstr "Wygląd"
+msgid "Arcade Fullscreen"
+msgstr ""
 
 msgid "Audio"
 msgstr "Audio"
@@ -143,6 +149,12 @@ msgstr "Auto"
 msgid "Auto + Border"
 msgstr "Auto + ramka"
 
+msgid "Auto - {}"
+msgstr ""
+
+msgid "Auto-Download"
+msgstr ""
+
 msgid "Auto-Fire is Off"
 msgstr "Auto-Fire wyłączony"
 
@@ -151,9 +163,6 @@ msgstr "Auto-Fire włączony"
 
 msgid "Automatic"
 msgstr "Automatycznie"
-
-msgid "Automatic Download"
-msgstr "Automatyczne pobieranie"
 
 msgid "Available Games"
 msgstr "Dostępne gry"
@@ -167,6 +176,12 @@ msgstr "Gry dostępne i do auto pobrania"
 msgid "Available and Downloadable Games"
 msgstr "Gry dostępne i do pobrania"
 
+msgid "Bad Variant"
+msgstr ""
+
+msgid "Best Variant"
+msgstr ""
+
 msgid "Blizzard SCSI Kit"
 msgstr "Blizzard SCSI Kit"
 
@@ -178,9 +193,6 @@ msgstr "Wybierz plik"
 
 msgid "Browse for Folder"
 msgstr "Wybierz katalog"
-
-msgid "Buffer swap only"
-msgstr "Tylko zmiana bufora"
 
 msgid "CD-ROM Drive"
 msgstr "Napęd CD-ROM"
@@ -200,18 +212,15 @@ msgstr "Pad CD32"
 msgid "CPU"
 msgstr "CPU"
 
-msgid "CPU Accelerator Board"
-msgstr "Karta turbo (CPU)"
-
-msgid "CPU Accelerator Board RAM"
-msgstr "RAM karty turbo"
-
 msgid "Cancel"
 msgstr "Anuluj"
 
 #, python-brace-format
 msgid "Cannot find required ROM file: {name}"
 msgstr "Nie można znaleźć pliku ROM: {name}"
+
+msgid "Change fullscreen mode (desktop, fullscreen, window)"
+msgstr ""
 
 msgid "Checksumming"
 msgstr "Sprawdzanie sum kontrolnych"
@@ -255,11 +264,8 @@ msgstr "Kliknij przycisk 'Skanuj', aby ponownie przeskanować"
 msgid "Click 'Scan' button to start scan"
 msgstr "Kliknij przycisk 'Skanuj', aby przeskanować"
 
-msgid "Click to Download Game"
-msgstr "Kliknij, aby pobrać grę"
-
-msgid "Click to Import Kickstart ROMs"
-msgstr "Kliknij, aby importować pliki ROM Kickstart"
+msgid "Click to import Kickstart ROMs"
+msgstr ""
 
 msgid "Close"
 msgstr "Zamknij"
@@ -273,6 +279,19 @@ msgstr "Zatwierdzanie danych schowka..."
 msgid "Config"
 msgstr "Konfiguracja"
 
+msgid "Config Options in Settings"
+msgstr ""
+
+#, python-brace-format
+msgid "Config in Settings: {name}"
+msgstr ""
+
+msgid "Configs"
+msgstr ""
+
+msgid "Configs and Games"
+msgstr ""
+
 msgid "Configuration"
 msgstr "Konfiguracja"
 
@@ -284,6 +303,10 @@ msgstr "Konfiguracje"
 
 msgid "Configure joysticks and set preferred joystick devices"
 msgstr "Skonfiguruj joysticki, oraz ustaw preferowane joysticki"
+
+#, python-brace-format
+msgid "Configure {device_name}"
+msgstr ""
 
 msgid "Connect"
 msgstr "Połącz"
@@ -321,11 +344,21 @@ msgstr "Niestandardowy"
 msgid "Custom Configuration"
 msgstr "Opcje niestandardowe"
 
-msgid "Custom IRC server address"
-msgstr "Adres niestandardowego serwera IRC"
+msgid "Custom IRC Server"
+msgstr ""
 
 msgid "Custom Joystick Port"
 msgstr "Niestandardowy port joysticka"
+
+#, python-brace-format
+msgid "Custom Option: {name}"
+msgstr ""
+
+msgid "Custom Options"
+msgstr ""
+
+msgid "Custom uae_ Options"
+msgstr ""
 
 msgid "Database Games"
 msgstr "Baza danych gier"
@@ -351,17 +384,23 @@ msgstr "Defragmentacja baz danych poprawia wydajność, zapewniając ułożenie 
 msgid "Defragmenting {name}"
 msgstr "Defragmentowanie {name}"
 
+msgid "Delayed CD-ROM Insert"
+msgstr ""
+
 msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
 msgstr "W zależności od systemu i sterowników OpenGL, synchronizacja może pochłaniać dużo mocy CPU (dot. głównie linuksa). Wypróbuj różne metody synchronizacji, aby poprawić wydajność."
 
-msgid "Deprecated Options"
-msgstr "Przestarzałe opcje"
+msgid "Depending on your OS and OpenGL drivers, video synchronization can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
+msgstr ""
+
+msgid "Deprecated: uaegfx_card"
+msgstr ""
 
 msgid "Device ID used with OAGD.net authentication"
 msgstr "ID urządzenia dla uwierzytelniania w OAGD.net"
 
-msgid "Did not find required Kickstart or ROM"
-msgstr "Brak wymaganego pliku Kickstart lub ROM"
+msgid "Did not find required Kickstart or ROM for {}. Wanted one of these files: {}"
+msgstr ""
 
 msgid "Digital Joystick"
 msgstr "Joystick cyfrowy"
@@ -378,9 +417,6 @@ msgstr "Rozłącz"
 msgid "Disk image created"
 msgstr "Obraz dysku utworzony"
 
-msgid "Dislike This Game Variant"
-msgstr "Nie lubię tego wariantu gry"
-
 msgid "Don't have an account already?"
 msgstr "Nie masz jeszcze konta?"
 
@@ -390,6 +426,9 @@ msgstr "Klucz"
 msgid "Double-click a device entry to configure it (map joystick buttons)."
 msgstr "Dwukrotnie kliknij pozycję urządzenia, aby go skonfigurować (mapowanie przycisków joysticka)."
 
+msgid "Download Game"
+msgstr ""
+
 msgid "Download Game Manually"
 msgstr "Pobierz grę własnoręcznie"
 
@@ -398,12 +437,19 @@ msgid "Download failed (attempt {0}) - retrying in {0} seconds"
 msgstr "Pobieranie nieudane (próba {0}) - ponowienie za {0} sekund"
 
 #, python-brace-format
+msgid "Download failed (attempt {0}) - retrying in {1} seconds"
+msgstr ""
+
+#, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
 msgstr "Pobierz do następującego katalogu i kliknij '{0}':"
 
 #, python-brace-format
 msgid "Downloading {0}..."
 msgstr "Pobieranie {0}..."
+
+msgid "Drive Count"
+msgstr ""
 
 msgid "E-mail:"
 msgstr "E-mail:"
@@ -414,9 +460,6 @@ msgstr "Wysuń"
 msgid "Empty Floppy Drive Volume"
 msgstr "Głośność pustej stacji dyskietek"
 
-msgid "Enable experimental config visualization (requires restart)"
-msgstr "Eksperymentalna wizualizacja ustawień (wymaga restartu)"
-
 msgid "Enable experimental net play GUI (requires restart)"
 msgstr "Włącz eksperymentalny interfejs gry sieciowej (wymaga restartu)"
 
@@ -426,8 +469,17 @@ msgstr "Włącz obsługę bazy danych online (wymaga restartu)"
 msgid "Enable/disable use of OAGD.net locker"
 msgstr "Włącz/Wyłącz korzystanie ze schowka OAGD.net"
 
+msgid "Enable/disable use of the Amstrad CPC game database"
+msgstr ""
+
 msgid "Enable/disable use of the Arcade game database"
 msgstr "Włącz/wyłącz użycie bazy danych gier Arcade"
+
+msgid "Enable/disable use of the Atari ST game database"
+msgstr ""
+
+msgid "Enable/disable use of the Commodore 64 (C64) database"
+msgstr ""
 
 msgid "Enable/disable use of the DOS game database"
 msgstr "Włącz/Wyłącz korzystanie z bazy danych gier DOS"
@@ -444,8 +496,8 @@ msgstr "Włącz/Wyłącz korzystanie z bazy danych Super Nintendo"
 msgid "Enabled"
 msgstr "Włącz"
 
-msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
-msgstr "Włączenie tej opcji zapobiega występowaniu efektu tearingu, ale zużywa też więcej mocy CPU. Opóźnienia wejścia mogą być większe."
+msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches thescreen refresh rate."
+msgstr ""
 
 msgid "Error moving file into place"
 msgstr "Błąd przenoszenia pliku na miejsce"
@@ -456,20 +508,23 @@ msgstr "Błąd zapisu obrazu dysku"
 msgid "Expansions"
 msgstr "Rozszerzenia"
 
+msgid "Experimental Config Visualization (Requires Restart)"
+msgstr ""
+
 msgid "Experimental Features"
 msgstr "Funkcje eksperymentalne"
 
-msgid "Extended ROM:"
-msgstr "Rozszerzony ROM:"
+msgid "Extended ROM"
+msgstr ""
 
 msgid "FS-UAE   Arcade"
 msgstr "FS-UAE   Arcade"
 
-msgid "FS-UAE Launcher Settings"
-msgstr "Ustawienia FS-UAE Launcher"
-
 msgid "Fade-in Duration on Start"
 msgstr "Czas rozjaśniania obrazu przy starcie"
+
+msgid "Fast RAM"
+msgstr ""
 
 msgid "Favorites"
 msgstr "Ulubione"
@@ -507,9 +562,6 @@ msgstr "Nazwa pliku dla nowego obrazu dysku:"
 msgid "Files for this game are still missing. Did you download the game and put the file(s) in the Downloads directory?"
 msgstr "Nadal brak plików dla tej gry. Czy pobrałeś już grę i umieściłeś jej plik(i) w folderze 'Downloads'?"
 
-msgid "Filter Settings"
-msgstr "Ustawienia filtru"
-
 msgid "Filters"
 msgstr "Filtry"
 
@@ -540,11 +592,14 @@ msgstr "Głośność stacji dyskietek"
 msgid "Floppy Drives"
 msgstr "Stacje dyskietek"
 
-msgid "Font Size"
-msgstr "Rozmiar czcionki"
+msgid "Flush log after each log line"
+msgstr ""
 
 msgid "Forgot your password?"
 msgstr "Zapomniałeś hasła?"
+
+msgid "Freezer Cartridge"
+msgstr ""
 
 msgid "Full Frame"
 msgstr "Pełna ramka"
@@ -555,8 +610,14 @@ msgstr "Pełnoekranowy antyaliasing (FSAA)"
 msgid "Fullscreen"
 msgstr "Pełny ekran"
 
-msgid "Game   Center"
-msgstr "Centrum gier"
+msgid "Fullscreen Desktop"
+msgstr ""
+
+msgid "Fullscreen Mode"
+msgstr ""
+
+msgid "Fullscreen Window"
+msgstr ""
 
 msgid "Game Database"
 msgstr "Baza danych gier"
@@ -582,6 +643,12 @@ msgstr "Nazwa użytkownika bazy danych gier"
 msgid "Gamepad"
 msgstr "Gamepad"
 
+msgid "Games"
+msgstr ""
+
+msgid "Good Variant"
+msgstr ""
+
 msgid "Grab Input on Click"
 msgstr "Przechwyć po kliknięciu"
 
@@ -594,8 +661,8 @@ msgstr "Przechwyć klawiaturę, przy danych wejściowych"
 msgid "Graphics Card"
 msgstr "Karta graficzna"
 
-msgid "Graphics Card VRAM"
-msgstr "VRAM karty graficznej"
+msgid "Graphics Card RAM"
+msgstr ""
 
 msgid "HDF - Partitionable Hard Drive Image (RDB)"
 msgstr "HDF - Obraz dysku twardego z tablicą partycji (RDB)"
@@ -614,6 +681,9 @@ msgstr "Dyski twarde"
 
 msgid "Hardware"
 msgstr "Sprzęt"
+
+msgid "Hardware Dongle"
+msgstr ""
 
 msgid "High"
 msgstr "Wysoka"
@@ -658,8 +728,8 @@ msgstr "Importuj pliki kickstart i ROM"
 msgid "Import task is done"
 msgstr "Importowanie zakończone"
 
-msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
-msgstr "W celu uzyskania naprawdę płynnej emulacji grafiki Amigi, należy włączyć następującą opcje, ale także upewnić się że ekran pracuję z częstotliwością 50Hz (PAL) lub 60Hz (NTSC)."
+msgid "Include Save Disk"
+msgstr ""
 
 msgid "Include built-in configurations"
 msgstr "Dołącz konfiguracje wbudowane"
@@ -676,8 +746,11 @@ msgstr "Wbudowany"
 msgid "Invalid size specified"
 msgstr "Niepoprawnie podany rozmiar"
 
-msgid "Joystick"
-msgstr "Joystick"
+msgid "JIT Compiler"
+msgstr ""
+
+msgid "JIT compiler with a PPC-only OS is not recommended"
+msgstr ""
 
 msgid "Joystick & Mouse Port"
 msgstr "Port joysticka i myszki"
@@ -685,8 +758,8 @@ msgstr "Port joysticka i myszki"
 msgid "Joystick Ports"
 msgstr "Porty joysticka"
 
-msgid "Joystick Settings"
-msgstr "Ustawienia joysticka"
+msgid "Joysticks & Gamepads"
+msgstr ""
 
 msgid "Keep aspect ratio when scaling (do not stretch)"
 msgstr "Zachowaj proporcje przy skalowaniu (nie rozciągaj)"
@@ -709,14 +782,17 @@ msgstr "Kickstart ROM"
 msgid "Kickstart import task started"
 msgstr "Importowanie kickstartu uruchomione"
 
-msgid "Language Preference"
-msgstr "Ustawienia językowe"
+msgid "Language"
+msgstr ""
 
 msgid "Language:"
 msgstr "Język:"
 
-msgid "Launch FS-UAE"
-msgstr "Uruchom FS-UAE"
+msgid "Launcher Font Size"
+msgstr ""
+
+msgid "Launcher Theme"
+msgstr ""
 
 msgid "Launching FS-UAE"
 msgstr "Uruchamiam FS-UAE"
@@ -729,9 +805,6 @@ msgstr "Lewy"
 
 msgid "Letter"
 msgstr "Litera"
-
-msgid "Like This Game Variant"
-msgstr "Lubię ten wariant gry"
 
 msgid "List"
 msgstr "Lista"
@@ -796,20 +869,11 @@ msgstr "Konserwacja"
 msgid "Make:"
 msgstr "Marka:"
 
-msgid "Mark This Game Variant as Personal Favorite"
-msgstr "Oznacz ten wariant gry jako twój ulubiony"
-
 msgid "Media Swap List"
 msgstr "Lista zmiany obrazów"
 
 msgid "Medium"
 msgstr "Średnia"
-
-msgid "Memory"
-msgstr "Pamięć"
-
-msgid "Memory Configuration"
-msgstr "Konfiguracja pamięci"
 
 msgid "Middle Left"
 msgstr "Środkowy lewy"
@@ -833,8 +897,11 @@ msgstr "Model:"
 msgid "Monitor to display FS-UAE on (fullscreen)"
 msgstr "Monitor do wyświetlenia FS-UAE (pełny ekran)"
 
-msgid "Motherboard Fast RAM"
-msgstr "Fast RAM płyty głównej"
+msgid "Monitor to display FS-UAE on (left, middle-left, middle-right, right)"
+msgstr ""
+
+msgid "Motherboard RAM"
+msgstr ""
 
 msgid "Mouse"
 msgstr "Myszka"
@@ -844,6 +911,10 @@ msgstr "Ustawienia myszki"
 
 msgid "Mouse Speed (%)"
 msgstr "Prędkość myszki (%)"
+
+#, python-brace-format
+msgid "Mouse: {system} Mouse"
+msgstr ""
 
 msgid "Multi-Select..."
 msgstr "Wybór kilku..."
@@ -860,14 +931,17 @@ msgstr "Opcje gry sieciowej"
 msgid "Net play tag (max 3 characters)"
 msgstr "Oznaczenie gry sieciowej (maks 3 znaki)"
 
-msgid "Netplay Settings"
-msgstr "Ustawienia gry sieciowej"
+msgid "Network Card"
+msgstr ""
 
-msgid "New Configuration"
-msgstr "Nowa konfiguracja"
+msgid "New Config"
+msgstr ""
 
 msgid "Nick:"
 msgstr "Pseudonim:"
+
+msgid "No Amiga Device"
+msgstr ""
 
 msgid "No Device"
 msgstr "Brak urządzenia"
@@ -878,6 +952,9 @@ msgstr "Brak urządzenia"
 msgid "No Last Played"
 msgstr "Ostatnio niegrane"
 
+msgid "No Protection"
+msgstr ""
+
 msgid "No extended kickstart found for this model. Try 'scan' function."
 msgstr "Brak rozszerzonego kickstartu dla tego modelu. Użyj funkcji 'Skanuj'."
 
@@ -887,11 +964,11 @@ msgstr "Brak skanowania w toku"
 msgid "None"
 msgstr "Żaden"
 
+msgid "Not Rated"
+msgstr ""
+
 msgid "Not logged in"
 msgstr "Niezalogowany"
-
-msgid "Nothing"
-msgstr "Nic"
 
 msgid "OAGD.net Locker Uploader"
 msgstr "Uploader schowka OAGD.net"
@@ -901,9 +978,6 @@ msgstr "Schowek OAGD.net jest niedostępny dla tego użytkownika. Może być dos
 
 msgid "OAGD.net upload task completed successfully"
 msgstr "Przesyłanie do OAGD.net zakończone pomyślnie"
-
-msgid "OK"
-msgstr "Ok"
 
 msgid "Off"
 msgstr "Nie"
@@ -924,8 +998,9 @@ msgstr "Wsparcie dla opcji WHDLoad w FS-UAE Launcher"
 msgid "Other Device"
 msgstr "Inne urządzenie"
 
-msgid "Override Installed Memory"
-msgstr "Zastąp pamięć zainstalowaną"
+#, python-brace-format
+msgid "Outdated plugins: {0}"
+msgstr ""
 
 msgid "Parallel Port Joysticks"
 msgstr "Port równoległy joysticków"
@@ -941,6 +1016,9 @@ msgstr "Otwórz proszę następującą stronę i pobierz grę stąd:"
 
 msgid "Please wait..."
 msgstr "Proszę czekać..."
+
+msgid "Plugins"
+msgstr ""
 
 msgid "Preferred Joysticks"
 msgstr "Preferowane joysticki"
@@ -969,6 +1047,9 @@ msgstr "Usuwanie starych wpisów"
 msgid "Quit"
 msgstr "Wyjdź"
 
+msgid "ROM & RAM"
+msgstr ""
+
 msgid "ROM and RAM"
 msgstr "ROM i RAM"
 
@@ -984,6 +1065,9 @@ msgstr "Odśwież listę podłączonych joysticków"
 
 msgid "Reject"
 msgstr "Odrzuć"
+
+msgid "Relative paths"
+msgstr ""
 
 msgid "Relax host CPU usage when using fastest-possible CPU"
 msgstr "Odciążaj CPU gospodarza przy użyciu najszybszego trybu CPU"
@@ -1020,11 +1104,17 @@ msgstr "Ponawianie ostatniej operacji (próba {0})"
 msgid "Right"
 msgstr "Prawy"
 
+msgid "Running: Emulator"
+msgstr ""
+
 msgid "Save"
 msgstr "Zapisz"
 
-msgid "Save Configuration"
-msgstr "Zapisz konfigurację"
+msgid "Save Config"
+msgstr ""
+
+msgid "Save Disk"
+msgstr ""
 
 msgid "Save to directory:"
 msgstr "Zapisz do katalogu:"
@@ -1043,9 +1133,6 @@ msgstr "Skanuj"
 
 msgid "Scan Downloads"
 msgstr "Skanuj pobrane pliki"
-
-msgid "Scan Settings"
-msgstr "Ustawienia skanowania"
 
 msgid "Scan complete"
 msgstr "Skanowanie zakończone"
@@ -1114,8 +1201,8 @@ msgstr "Wybierz rok"
 msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
 msgstr "Wybierz folder zawierający pliki kickstart i kliknij \"{0}\""
 
-msgid "Set language and look for FS-UAE applications"
-msgstr "Ustaw język i wygląd FS-UAE"
+msgid "Set language for FS-UAE applications"
+msgstr ""
 
 msgid "Settings"
 msgstr "Ustawienia"
@@ -1153,6 +1240,9 @@ msgstr "Start"
 msgid "Start FS-UAE in fullscreen mode"
 msgstr "Startuj FS-UAE w trybie pełnoekranowym"
 
+msgid "Start with full keyboard emulation"
+msgstr ""
+
 msgid "Starting scan"
 msgstr "Uruchamianie skanowania"
 
@@ -1174,9 +1264,6 @@ msgstr "Synchronizacja"
 msgid "Synchronize FS-UAE with your display for smooth video"
 msgstr "Synchronizuj FS-UAE z ekranem aby uzyskać płynne wideo"
 
-msgid "Synchronize buffer swaps with display (prevents tearing)"
-msgstr "Synchronizuj zamianę bufforów z ekranem (zapobieganie efektowi tearingu)"
-
 msgid "Synchronizing game database..."
 msgstr "Synchronizowanie bazy danych gier..."
 
@@ -1185,6 +1272,9 @@ msgstr "Synchronizowanie ocen osobistych..."
 
 msgid "Synchronizing with the display can in some cases cause increased stuttering and low frame rates (esp. in some Linux desktop environments with compositing enabled)."
 msgstr "Synchronizacja z ekranem w niektórych przypadkach  może powodować zacinanie się obrazu, oraz obniżoną częstotliwość odświeżania (np. środowiska linuksa z włączoną kompozycją)."
+
+msgid "System"
+msgstr ""
 
 msgid "Terms of Download"
 msgstr "Warunki pobierania"
@@ -1201,9 +1291,6 @@ msgstr "Następujące opcje mogą wpłynąć na wydajność, więc należy je w�
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr "Poniższe opcje dotyczą tylko automatycznej obsługi WHDLoad w FS-UAE Launcher, na przykład w odniesieniu do bazy danych gier online."
 
-msgid "Theme"
-msgstr "Motyw"
-
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Ta gra może być pobrana automatycznie jeśli zaakceptujesz warunki pobierania"
 
@@ -1213,14 +1300,14 @@ msgstr "Tą grę należy pobrać zanim będzie można w nią zagrać"
 msgid "This game variant cannot be started because you don't have all required files."
 msgstr "Ten wariant gry nie można uruchomić, ponieważ brak wymaganych plików."
 
+msgid "This plugin is outdated"
+msgstr ""
+
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Przełącz między trybem okna a pełnym ekranem"
 
 msgid "Turbo"
 msgstr "Turbo"
-
-msgid "UAE Graphics Card (Picasso96 Support)"
-msgstr "Karta graficzna UAE (wsparcie dla Picasso96)"
 
 msgid "UAE bsdsocket.library"
 msgstr "UAE bsdsocket.library"
@@ -1228,18 +1315,15 @@ msgstr "UAE bsdsocket.library"
 msgid "Ungrab Input on Middle Mouse Button"
 msgstr "Zwolnij po kliknięciu środkowego przycisku"
 
-msgid "Unprotected"
-msgstr "Niezabezpieczone"
-
-#, python-brace-format
-msgid "Update Available: {version}"
-msgstr "Dostępna aktualizacja: {version}"
-
 msgid "Update File Database"
 msgstr "Aktualizacja bazy danych plików"
 
 msgid "Update Game Database"
 msgstr "Aktualizacja bazy danych gier"
+
+#, python-brace-format
+msgid "Update available: {version}"
+msgstr ""
 
 msgid "Updating Database"
 msgstr "Aktualizacja bazy danych"
@@ -1277,11 +1361,20 @@ msgstr "Użyj obrazów dysków RDB dla rozmiaru >= {0}"
 msgid "Using Kickstart ROM Replacement"
 msgstr "Użycie zamiennika Kickstart ROM"
 
+msgid "Using Kickstart ROM replacement"
+msgstr ""
+
+msgid "V-Sync"
+msgstr ""
+
 msgid "Video"
 msgstr "Wideo"
 
 msgid "Video Settings"
 msgstr "Opcje wideo"
+
+msgid "Video Synchronization"
+msgstr ""
 
 msgid "Video Synchronization Settings"
 msgstr "Ustawienia synchronizacji wideo"
@@ -1298,11 +1391,11 @@ msgstr "Metoda synchronizacji wideo"
 msgid "Video texture format (on the GPU)"
 msgstr "Format tekstur wideo (dla GPU)"
 
+msgid "WHDLoad"
+msgstr ""
+
 msgid "WHDLoad Arguments"
 msgstr "Argumenty WHDLoad"
-
-msgid "WHDLoad Settings"
-msgstr "Ustawienia WHDLoad"
 
 msgid "WHDLoad splash delay"
 msgstr "Opóźnienie zamknięcia okna powitalnego"
@@ -1310,11 +1403,20 @@ msgstr "Opóźnienie zamknięcia okna powitalnego"
 msgid "Warning"
 msgstr "Uwaga"
 
+msgid "Warning: No ROM files were found!"
+msgstr ""
+
 msgid "Web Links"
 msgstr "Linki do stron"
 
 msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
 msgstr "Jeśli wybrana opcja to 'Automatic', język zostanie ustawiony na podstawie informacji z systemu operacyjnego (lub na 'English', jeśli obsługiwany język nie zostanie wykryty)."
+
+msgid "When checked, enable video synchronization whenever possible"
+msgstr ""
+
+msgid "When checked, include a save disk in FS-UAE's floppy swap list"
+msgstr ""
 
 msgid "While logged out you will not get database updates"
 msgstr "Po wylogowaniu nie można  aktualizować bazy danych"
@@ -1331,6 +1433,162 @@ msgstr "Potrzebny jest kickstart dla każdego modelu Amigi jaki chesz emulować:
 msgid "Zoom Amiga display (crop)"
 msgstr "Zbliżenie obrazu Amigi (przycięcie)"
 
+msgid "Zorro III Fast Memory"
+msgstr ""
+
+#, python-brace-format
+msgid "{amiga_model} with < 2 MB chip memory"
+msgstr "{amiga_model} z < 2 MB pamięci chip"
+
+#, python-brace-format
+msgid "{system} Keyboard"
+msgstr ""
+
+msgid "{} ROM files were imported"
+msgstr ""
+
+msgid "Abort"
+msgstr "Przerwij"
+
+msgid "All Configurations"
+msgstr "Wszystkie konfiguracje"
+
+msgid "All Games and Configurations"
+msgstr "Wszystkie gry i konfiguracje"
+
+msgid "Also synchronize emulation with display when possible (smooth scrolling)"
+msgstr "Ponadto synchronizuj emulację z ekranem, gdy to możliwe (płynne przewijanie)"
+
+msgid "Appearance"
+msgstr "Wygląd"
+
+msgid "Automatic Download"
+msgstr "Automatyczne pobieranie"
+
+msgid "Buffer swap only"
+msgstr "Tylko zmiana bufora"
+
+msgid "CPU Accelerator Board"
+msgstr "Karta turbo (CPU)"
+
+msgid "CPU Accelerator Board RAM"
+msgstr "RAM karty turbo"
+
+msgid "Click to Download Game"
+msgstr "Kliknij, aby pobrać grę"
+
+msgid "Click to Import Kickstart ROMs"
+msgstr "Kliknij, aby importować pliki ROM Kickstart"
+
+msgid "Custom IRC server address"
+msgstr "Adres niestandardowego serwera IRC"
+
+msgid "Deprecated Options"
+msgstr "Przestarzałe opcje"
+
+msgid "Did not find required Kickstart or ROM"
+msgstr "Brak wymaganego pliku Kickstart lub ROM"
+
+msgid "Dislike This Game Variant"
+msgstr "Nie lubię tego wariantu gry"
+
+msgid "Enable experimental config visualization (requires restart)"
+msgstr "Eksperymentalna wizualizacja ustawień (wymaga restartu)"
+
+msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
+msgstr "Włączenie tej opcji zapobiega występowaniu efektu tearingu, ale zużywa też więcej mocy CPU. Opóźnienia wejścia mogą być większe."
+
+msgid "Extended ROM:"
+msgstr "Rozszerzony ROM:"
+
+msgid "FS-UAE Launcher Settings"
+msgstr "Ustawienia FS-UAE Launcher"
+
+msgid "Filter Settings"
+msgstr "Ustawienia filtru"
+
+msgid "Font Size"
+msgstr "Rozmiar czcionki"
+
+msgid "Game   Center"
+msgstr "Centrum gier"
+
+msgid "Graphics Card VRAM"
+msgstr "VRAM karty graficznej"
+
+msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
+msgstr "W celu uzyskania naprawdę płynnej emulacji grafiki Amigi, należy włączyć następującą opcje, ale także upewnić się że ekran pracuję z częstotliwością 50Hz (PAL) lub 60Hz (NTSC)."
+
+msgid "Joystick"
+msgstr "Joystick"
+
+msgid "Joystick Settings"
+msgstr "Ustawienia joysticka"
+
+msgid "Language Preference"
+msgstr "Ustawienia językowe"
+
+msgid "Launch FS-UAE"
+msgstr "Uruchom FS-UAE"
+
+msgid "Like This Game Variant"
+msgstr "Lubię ten wariant gry"
+
+msgid "Mark This Game Variant as Personal Favorite"
+msgstr "Oznacz ten wariant gry jako twój ulubiony"
+
+msgid "Memory"
+msgstr "Pamięć"
+
+msgid "Memory Configuration"
+msgstr "Konfiguracja pamięci"
+
+msgid "Motherboard Fast RAM"
+msgstr "Fast RAM płyty głównej"
+
+msgid "Netplay Settings"
+msgstr "Ustawienia gry sieciowej"
+
+msgid "New Configuration"
+msgstr "Nowa konfiguracja"
+
+msgid "Nothing"
+msgstr "Nic"
+
+msgid "OK"
+msgstr "Ok"
+
+msgid "Override Installed Memory"
+msgstr "Zastąp pamięć zainstalowaną"
+
+msgid "Save Configuration"
+msgstr "Zapisz konfigurację"
+
+msgid "Scan Settings"
+msgstr "Ustawienia skanowania"
+
+msgid "Set language and look for FS-UAE applications"
+msgstr "Ustaw język i wygląd FS-UAE"
+
+msgid "Synchronize buffer swaps with display (prevents tearing)"
+msgstr "Synchronizuj zamianę bufforów z ekranem (zapobieganie efektowi tearingu)"
+
+msgid "Theme"
+msgstr "Motyw"
+
+msgid "UAE Graphics Card (Picasso96 Support)"
+msgstr "Karta graficzna UAE (wsparcie dla Picasso96)"
+
+msgid "Unprotected"
+msgstr "Niezabezpieczone"
+
+#, python-brace-format
+msgid "Update Available: {version}"
+msgstr "Dostępna aktualizacja: {version}"
+
+msgid "WHDLoad Settings"
+msgstr "Ustawienia WHDLoad"
+
 msgid "Zorro II Fast RAM"
 msgstr "Fast RAM Zorro II"
 
@@ -1339,8 +1597,4 @@ msgstr "Fast RAM Zorro III"
 
 msgid "uaegfx_card"
 msgstr "uaegfx_card"
-
-#, python-brace-format
-msgid "{amiga_model} with < 2 MB chip memory"
-msgstr "{amiga_model} z < 2 MB pamięci chip"
 

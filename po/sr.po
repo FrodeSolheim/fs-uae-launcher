@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-09-21 00:42+0200\n"
-"PO-Revision-Date: 2015-10-26 14:17-0400\n"
+"POT-Creation-Date: 2016-04-16 15:17+0200\n"
+"PO-Revision-Date: 2016-04-16 09:20-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Serbian (Latin)\n"
 "Language: sr_CS\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: fs-uae\n"
 "X-Crowdin-Language: sr-CS\n"
-"X-Crowdin-File: /fs-uae-launcher/messages.pot\n"
+"X-Crowdin-File: fs-uae-launcher.pot\n"
 
 msgid "16-bit"
 msgstr "16 bitna"
@@ -46,12 +46,18 @@ msgstr "ADF kreator"
 msgid "ADF Disk Image Creator"
 msgstr "Kreator ADF slike diska"
 
-msgid "Abort"
-msgstr "Prekid"
+msgid "About"
+msgstr ""
 
 #, python-brace-format
 msgid "About {name}"
 msgstr "O {name}"
+
+msgid "Accelerator Board"
+msgstr ""
+
+msgid "Accelerator RAM"
+msgstr ""
 
 msgid "Accept"
 msgstr "Prihvati"
@@ -89,23 +95,17 @@ msgstr "Napredne audio opcije"
 msgid "Advanced Settings"
 msgstr "Napredna podešavanja"
 
+msgid "Advanced Video"
+msgstr ""
+
 msgid "Advanced Video Settings"
 msgstr "Napredna video podešavanja"
 
 msgid "All"
 msgstr ""
 
-msgid "All Configurations"
-msgstr ""
-
 msgid "All Games"
 msgstr ""
-
-msgid "All Games and Configurations"
-msgstr ""
-
-msgid "Also synchronize emulation with display when possible (smooth scrolling)"
-msgstr "Sinhronizuj emulaciju sa prikazom kada je moguće (glatko skrolovanje)"
 
 msgid "Amiga Forever Import"
 msgstr "Uvoženje iz Amiga Forever"
@@ -113,13 +113,19 @@ msgstr "Uvoženje iz Amiga Forever"
 msgid "Amiga Forever import task started"
 msgstr "Započet je uvoz iz Amiga Forever"
 
+msgid "Amiga Joystick"
+msgstr ""
+
 msgid "Amiga Model"
 msgstr "Amiga model"
+
+msgid "Amiga Mouse"
+msgstr ""
 
 msgid "An Error Occurred"
 msgstr "Došlo je do greške"
 
-msgid "Appearance"
+msgid "Arcade Fullscreen"
 msgstr ""
 
 msgid "Audio"
@@ -143,6 +149,12 @@ msgstr "Auto"
 msgid "Auto + Border"
 msgstr "Auto + okvir"
 
+msgid "Auto - {}"
+msgstr ""
+
+msgid "Auto-Download"
+msgstr ""
+
 msgid "Auto-Fire is Off"
 msgstr "Automatsko pucanje je isključeno"
 
@@ -150,9 +162,6 @@ msgid "Auto-Fire is On"
 msgstr "Automatsko pucanje je uključeno"
 
 msgid "Automatic"
-msgstr ""
-
-msgid "Automatic Download"
 msgstr ""
 
 msgid "Available Games"
@@ -167,6 +176,12 @@ msgstr ""
 msgid "Available and Downloadable Games"
 msgstr ""
 
+msgid "Bad Variant"
+msgstr ""
+
+msgid "Best Variant"
+msgstr ""
+
 msgid "Blizzard SCSI Kit"
 msgstr ""
 
@@ -178,9 +193,6 @@ msgstr "Pronaći fajl"
 
 msgid "Browse for Folder"
 msgstr "Pronaći folder"
-
-msgid "Buffer swap only"
-msgstr "Izmena bafera"
 
 msgid "CD-ROM Drive"
 msgstr "CD-ROM uređaj"
@@ -200,17 +212,14 @@ msgstr "CD32 "
 msgid "CPU"
 msgstr ""
 
-msgid "CPU Accelerator Board"
-msgstr ""
-
-msgid "CPU Accelerator Board RAM"
-msgstr ""
-
 msgid "Cancel"
 msgstr "Otkazati"
 
 #, python-brace-format
 msgid "Cannot find required ROM file: {name}"
+msgstr ""
+
+msgid "Change fullscreen mode (desktop, fullscreen, window)"
 msgstr ""
 
 msgid "Checksumming"
@@ -255,10 +264,7 @@ msgstr "Kliknite na dugme 'Skeniranje' ako želite da ponovo skenira"
 msgid "Click 'Scan' button to start scan"
 msgstr "Kliknite na dugme 'Skeniranje' da biste započeli skeniranje"
 
-msgid "Click to Download Game"
-msgstr ""
-
-msgid "Click to Import Kickstart ROMs"
+msgid "Click to import Kickstart ROMs"
 msgstr ""
 
 msgid "Close"
@@ -273,6 +279,19 @@ msgstr ""
 msgid "Config"
 msgstr "Konfiguracija"
 
+msgid "Config Options in Settings"
+msgstr ""
+
+#, python-brace-format
+msgid "Config in Settings: {name}"
+msgstr ""
+
+msgid "Configs"
+msgstr ""
+
+msgid "Configs and Games"
+msgstr ""
+
 msgid "Configuration"
 msgstr "Konfiguracija"
 
@@ -284,6 +303,10 @@ msgstr "Konfiguracije"
 
 msgid "Configure joysticks and set preferred joystick devices"
 msgstr "Konfigurisanje džojstika i postavljanje prioritetnih džojstika"
+
+#, python-brace-format
+msgid "Configure {device_name}"
+msgstr ""
 
 msgid "Connect"
 msgstr "Povezivanje"
@@ -321,11 +344,21 @@ msgstr "Prilagođeno"
 msgid "Custom Configuration"
 msgstr "Prilagođena konfiguracija"
 
-msgid "Custom IRC server address"
-msgstr "Prilagođena adresa IRC servera"
+msgid "Custom IRC Server"
+msgstr ""
 
 msgid "Custom Joystick Port"
 msgstr "Prilagođeni džojstik port"
+
+#, python-brace-format
+msgid "Custom Option: {name}"
+msgstr ""
+
+msgid "Custom Options"
+msgstr ""
+
+msgid "Custom uae_ Options"
+msgstr ""
 
 msgid "Database Games"
 msgstr ""
@@ -351,16 +384,22 @@ msgstr "Defragmentacije baze podataka će poboljšati performanse obezbeđivanj
 msgid "Defragmenting {name}"
 msgstr "Defragmentacija {name}"
 
+msgid "Delayed CD-ROM Insert"
+msgstr ""
+
 msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
 msgstr "U zavisnosti od vašeg operativnog sistema i OpenGL drajvera, sinhronizacija može koristiti nepotrebno mnogo procesorskog vremena (posebno se odnosi na Linux). Možete eksperimentisati sa različitim metodama za sinhronizaciju za poboljšanje performansi."
 
-msgid "Deprecated Options"
+msgid "Depending on your OS and OpenGL drivers, video synchronization can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
+msgstr ""
+
+msgid "Deprecated: uaegfx_card"
 msgstr ""
 
 msgid "Device ID used with OAGD.net authentication"
 msgstr "ID uređaja koristi sa OAGD.net autentifikacijom"
 
-msgid "Did not find required Kickstart or ROM"
+msgid "Did not find required Kickstart or ROM for {}. Wanted one of these files: {}"
 msgstr ""
 
 msgid "Digital Joystick"
@@ -378,9 +417,6 @@ msgstr "Prekid veze"
 msgid "Disk image created"
 msgstr "Slika diskete je kreirana"
 
-msgid "Dislike This Game Variant"
-msgstr "Ne sviđa mi se ova varijanta igre"
-
 msgid "Don't have an account already?"
 msgstr "Nemate već nalog?"
 
@@ -390,12 +426,19 @@ msgstr ""
 msgid "Double-click a device entry to configure it (map joystick buttons)."
 msgstr "Dvoklik na stavku uređaja da bi ga konfigurisali (mapiranje tastera džojstika)."
 
+msgid "Download Game"
+msgstr ""
+
 msgid "Download Game Manually"
 msgstr "Preuzimanje igre ručno"
 
 #, python-brace-format
 msgid "Download failed (attempt {0}) - retrying in {0} seconds"
 msgstr "Preuzimanje nije uspelo (pokušaj {0}) - ponovni pokušaj u {0} sekundi"
+
+#, python-brace-format
+msgid "Download failed (attempt {0}) - retrying in {1} seconds"
+msgstr ""
 
 #, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
@@ -405,6 +448,9 @@ msgstr "Preuzmite u sledeći direktorijum, a zatim kliknite na dugme '{0}':"
 msgid "Downloading {0}..."
 msgstr "Preuzimanje {0}..."
 
+msgid "Drive Count"
+msgstr ""
+
 msgid "E-mail:"
 msgstr "E-mail:"
 
@@ -412,9 +458,6 @@ msgid "Eject"
 msgstr "Izbaciti"
 
 msgid "Empty Floppy Drive Volume"
-msgstr ""
-
-msgid "Enable experimental config visualization (requires restart)"
 msgstr ""
 
 msgid "Enable experimental net play GUI (requires restart)"
@@ -426,7 +469,16 @@ msgstr "Omogućiti onlajn podršku baze podataka (zahteva restart)"
 msgid "Enable/disable use of OAGD.net locker"
 msgstr ""
 
+msgid "Enable/disable use of the Amstrad CPC game database"
+msgstr ""
+
 msgid "Enable/disable use of the Arcade game database"
+msgstr ""
+
+msgid "Enable/disable use of the Atari ST game database"
+msgstr ""
+
+msgid "Enable/disable use of the Commodore 64 (C64) database"
 msgstr ""
 
 msgid "Enable/disable use of the DOS game database"
@@ -444,8 +496,8 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
-msgstr "Omogućavanje sledeće opcije će sprečiti da se desi pucanje, ali će takođe koristiti više procesorskog vremena. Ulazna latencija može postati nešto veća."
+msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches thescreen refresh rate."
+msgstr ""
 
 msgid "Error moving file into place"
 msgstr "Greška pomeranja fajla u mestu"
@@ -456,19 +508,22 @@ msgstr "Greška prilikom upisa slike diskete"
 msgid "Expansions"
 msgstr "Proširenja"
 
+msgid "Experimental Config Visualization (Requires Restart)"
+msgstr ""
+
 msgid "Experimental Features"
 msgstr "Eksperimentalne funkcije"
 
-msgid "Extended ROM:"
-msgstr "Prošireni ROM:"
+msgid "Extended ROM"
+msgstr ""
 
 msgid "FS-UAE   Arcade"
 msgstr ""
 
-msgid "FS-UAE Launcher Settings"
-msgstr "Podešavanja FS-UAE Launcher-a"
-
 msgid "Fade-in Duration on Start"
+msgstr ""
+
+msgid "Fast RAM"
 msgstr ""
 
 msgid "Favorites"
@@ -507,9 +562,6 @@ msgstr "Ime datoteke za novu sliku diskete:"
 msgid "Files for this game are still missing. Did you download the game and put the file(s) in the Downloads directory?"
 msgstr "Fajlovi za ovu igru i dalje nedostaju. Da li ste preuzeli igru i stavili datoteke u Downloads direktorijum?"
 
-msgid "Filter Settings"
-msgstr "Podešavanja filtra"
-
 msgid "Filters"
 msgstr "Filteri"
 
@@ -540,11 +592,14 @@ msgstr ""
 msgid "Floppy Drives"
 msgstr "Disketni uređaji"
 
-msgid "Font Size"
+msgid "Flush log after each log line"
 msgstr ""
 
 msgid "Forgot your password?"
 msgstr "Zaboravili ste lozinku?"
+
+msgid "Freezer Cartridge"
+msgstr ""
 
 msgid "Full Frame"
 msgstr "Pun okvir"
@@ -555,7 +610,13 @@ msgstr "Full-scene anti-aliasing (FSAA)"
 msgid "Fullscreen"
 msgstr "Preko celog ekrana"
 
-msgid "Game   Center"
+msgid "Fullscreen Desktop"
+msgstr ""
+
+msgid "Fullscreen Mode"
+msgstr ""
+
+msgid "Fullscreen Window"
 msgstr ""
 
 msgid "Game Database"
@@ -582,6 +643,12 @@ msgstr "Korisničko ime baze igara"
 msgid "Gamepad"
 msgstr ""
 
+msgid "Games"
+msgstr ""
+
+msgid "Good Variant"
+msgstr ""
+
 msgid "Grab Input on Click"
 msgstr ""
 
@@ -594,7 +661,7 @@ msgstr ""
 msgid "Graphics Card"
 msgstr ""
 
-msgid "Graphics Card VRAM"
+msgid "Graphics Card RAM"
 msgstr ""
 
 msgid "HDF - Partitionable Hard Drive Image (RDB)"
@@ -614,6 +681,9 @@ msgstr "Hard disk uređaji"
 
 msgid "Hardware"
 msgstr "Hardver"
+
+msgid "Hardware Dongle"
+msgstr ""
 
 msgid "High"
 msgstr ""
@@ -658,8 +728,8 @@ msgstr "Uvoz kikstart-ova i ROM-ova"
 msgid "Import task is done"
 msgstr "Zadatak uvoženja je završen"
 
-msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
-msgstr "Da bi postigli zaista glatku amiga grafiku, morate omogućiti sledeću opciju, a takođe proverite da li vaš ekran radi na 50Hz (za PAL) ili 60Hz (za NTSC) ."
+msgid "Include Save Disk"
+msgstr ""
 
 msgid "Include built-in configurations"
 msgstr "Uključiti ugrađene konfiguracije"
@@ -676,8 +746,11 @@ msgstr "Interno"
 msgid "Invalid size specified"
 msgstr "Specificirana nevalidna veličina"
 
-msgid "Joystick"
-msgstr "Džojstik"
+msgid "JIT Compiler"
+msgstr ""
+
+msgid "JIT compiler with a PPC-only OS is not recommended"
+msgstr ""
 
 msgid "Joystick & Mouse Port"
 msgstr "Port džojstika i miša"
@@ -685,8 +758,8 @@ msgstr "Port džojstika i miša"
 msgid "Joystick Ports"
 msgstr "Džojstik portovi"
 
-msgid "Joystick Settings"
-msgstr "Postavke džojstika"
+msgid "Joysticks & Gamepads"
+msgstr ""
 
 msgid "Keep aspect ratio when scaling (do not stretch)"
 msgstr "Zadržati razmeru kada se skalira (bez rastezanja)"
@@ -709,13 +782,16 @@ msgstr "Kikstart ROM"
 msgid "Kickstart import task started"
 msgstr "Uvoženje kikstarta je započeto"
 
-msgid "Language Preference"
-msgstr "Podešavanja jezika"
+msgid "Language"
+msgstr ""
 
 msgid "Language:"
 msgstr ""
 
-msgid "Launch FS-UAE"
+msgid "Launcher Font Size"
+msgstr ""
+
+msgid "Launcher Theme"
 msgstr ""
 
 msgid "Launching FS-UAE"
@@ -729,9 +805,6 @@ msgstr ""
 
 msgid "Letter"
 msgstr ""
-
-msgid "Like This Game Variant"
-msgstr "Svidja mi se ova varijanta igre"
 
 msgid "List"
 msgstr ""
@@ -796,19 +869,10 @@ msgstr "Održavanje"
 msgid "Make:"
 msgstr ""
 
-msgid "Mark This Game Variant as Personal Favorite"
-msgstr "Označi ovu varijantu igre kao lični favorit"
-
 msgid "Media Swap List"
 msgstr "Lista izmena medija"
 
 msgid "Medium"
-msgstr ""
-
-msgid "Memory"
-msgstr "Memorija"
-
-msgid "Memory Configuration"
 msgstr ""
 
 msgid "Middle Left"
@@ -833,7 +897,10 @@ msgstr ""
 msgid "Monitor to display FS-UAE on (fullscreen)"
 msgstr ""
 
-msgid "Motherboard Fast RAM"
+msgid "Monitor to display FS-UAE on (left, middle-left, middle-right, right)"
+msgstr ""
+
+msgid "Motherboard RAM"
 msgstr ""
 
 msgid "Mouse"
@@ -843,6 +910,10 @@ msgid "Mouse Settings"
 msgstr "Podešavanje miša"
 
 msgid "Mouse Speed (%)"
+msgstr ""
+
+#, python-brace-format
+msgid "Mouse: {system} Mouse"
 msgstr ""
 
 msgid "Multi-Select..."
@@ -860,14 +931,17 @@ msgstr "Podešavanja igre preko mreže"
 msgid "Net play tag (max 3 characters)"
 msgstr "Oznaka igre preko mreže (maksimalno 3 slova)"
 
-msgid "Netplay Settings"
-msgstr "Podešavanja igranja preko mreže"
+msgid "Network Card"
+msgstr ""
 
-msgid "New Configuration"
-msgstr "Nova konfiguracija"
+msgid "New Config"
+msgstr ""
 
 msgid "Nick:"
 msgstr "Nadimak:"
+
+msgid "No Amiga Device"
+msgstr ""
 
 msgid "No Device"
 msgstr "Nema uređaja"
@@ -876,6 +950,9 @@ msgid "No Host Device"
 msgstr "Nema host uređaja"
 
 msgid "No Last Played"
+msgstr ""
+
+msgid "No Protection"
 msgstr ""
 
 msgid "No extended kickstart found for this model. Try 'scan' function."
@@ -887,11 +964,11 @@ msgstr "Skeniranje nije u toku"
 msgid "None"
 msgstr ""
 
+msgid "Not Rated"
+msgstr ""
+
 msgid "Not logged in"
 msgstr "Niste prijavljeni"
-
-msgid "Nothing"
-msgstr "Ništa"
 
 msgid "OAGD.net Locker Uploader"
 msgstr "Otpremanje u OAGD.net ormarić"
@@ -901,9 +978,6 @@ msgstr "OAGD.net ormarić nije omogućen za vašeg korisnika. Može biti dostup
 
 msgid "OAGD.net upload task completed successfully"
 msgstr "OAGD.net  zadatak otpremanja uspešno završen"
-
-msgid "OK"
-msgstr "OK"
 
 msgid "Off"
 msgstr "Isključeno"
@@ -924,8 +998,9 @@ msgstr ""
 msgid "Other Device"
 msgstr ""
 
-msgid "Override Installed Memory"
-msgstr "Zanemariti instaliranu memoriju"
+#, python-brace-format
+msgid "Outdated plugins: {0}"
+msgstr ""
 
 msgid "Parallel Port Joysticks"
 msgstr "Paralelni džojstik portovi"
@@ -941,6 +1016,9 @@ msgstr "Molimo vas da otvorite sledeću veb stranicu i preuzmete igru odatle:"
 
 msgid "Please wait..."
 msgstr "Molimo sačekajte..."
+
+msgid "Plugins"
+msgstr ""
 
 msgid "Preferred Joysticks"
 msgstr "Prioritetni džojstici"
@@ -969,6 +1047,9 @@ msgstr "Čišćenje starih zapisa..."
 msgid "Quit"
 msgstr ""
 
+msgid "ROM & RAM"
+msgstr ""
+
 msgid "ROM and RAM"
 msgstr ""
 
@@ -984,6 +1065,9 @@ msgstr "Osveži listu povezanih džojstika"
 
 msgid "Reject"
 msgstr "Odbaci"
+
+msgid "Relative paths"
+msgstr ""
 
 msgid "Relax host CPU usage when using fastest-possible CPU"
 msgstr ""
@@ -1020,11 +1104,17 @@ msgstr "Izvršavanje poslednje operacije (pokušaj {0})"
 msgid "Right"
 msgstr ""
 
+msgid "Running: Emulator"
+msgstr ""
+
 msgid "Save"
 msgstr ""
 
-msgid "Save Configuration"
-msgstr "Snimiti konfiguraciju"
+msgid "Save Config"
+msgstr ""
+
+msgid "Save Disk"
+msgstr ""
 
 msgid "Save to directory:"
 msgstr "Snimanje u direktorijum:"
@@ -1043,9 +1133,6 @@ msgstr "Skeniranje"
 
 msgid "Scan Downloads"
 msgstr "Skeniranje preuzetog"
-
-msgid "Scan Settings"
-msgstr "Podešavanja skeniranja"
 
 msgid "Scan complete"
 msgstr "Skeniranje završeno"
@@ -1114,7 +1201,7 @@ msgstr ""
 msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
 msgstr "Izabrati folder koji sadrži Amiga kikstart fajlove i kliknuti \"{0}\""
 
-msgid "Set language and look for FS-UAE applications"
+msgid "Set language for FS-UAE applications"
 msgstr ""
 
 msgid "Settings"
@@ -1153,6 +1240,9 @@ msgstr "Pokreni"
 msgid "Start FS-UAE in fullscreen mode"
 msgstr "Pokretanje FS-UAE preko celog ekrana"
 
+msgid "Start with full keyboard emulation"
+msgstr ""
+
 msgid "Starting scan"
 msgstr "Skeniranje započeto"
 
@@ -1174,9 +1264,6 @@ msgstr ""
 msgid "Synchronize FS-UAE with your display for smooth video"
 msgstr "Sinhronizuj FS-UAE sa vašim displejem za glatki video"
 
-msgid "Synchronize buffer swaps with display (prevents tearing)"
-msgstr "Sinhronizacija izmene bafera sa ekranom (sprečava pucanje)"
-
 msgid "Synchronizing game database..."
 msgstr "Sinhronizacija baze igara..."
 
@@ -1185,6 +1272,9 @@ msgstr "Sinhronizovanje ličnih ocena..."
 
 msgid "Synchronizing with the display can in some cases cause increased stuttering and low frame rates (esp. in some Linux desktop environments with compositing enabled)."
 msgstr "Sinhronizacija sa ekranom može u nekim slučajevima izazvati štucanje i malu brzinu frejmova (naročito u nekim Linux desktop okruženjima sa omogućenim kompozitnim ulazom)."
+
+msgid "System"
+msgstr ""
 
 msgid "Terms of Download"
 msgstr "Uslovi za preuzimanje"
@@ -1201,9 +1291,6 @@ msgstr ""
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr ""
 
-msgid "Theme"
-msgstr ""
-
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr ""
 
@@ -1213,13 +1300,13 @@ msgstr "Ova igra se mora prvo preuzeti da bi je mogli igrati"
 msgid "This game variant cannot be started because you don't have all required files."
 msgstr "Ovu varijantu igre ne možete pokrenuti zato što nemate sve potrebne fajlove."
 
+msgid "This plugin is outdated"
+msgstr ""
+
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Prelaženje između moda prozora i čitavog ekrana"
 
 msgid "Turbo"
-msgstr ""
-
-msgid "UAE Graphics Card (Picasso96 Support)"
 msgstr ""
 
 msgid "UAE bsdsocket.library"
@@ -1228,17 +1315,14 @@ msgstr ""
 msgid "Ungrab Input on Middle Mouse Button"
 msgstr ""
 
-msgid "Unprotected"
-msgstr ""
-
-#, python-brace-format
-msgid "Update Available: {version}"
-msgstr ""
-
 msgid "Update File Database"
 msgstr ""
 
 msgid "Update Game Database"
+msgstr ""
+
+#, python-brace-format
+msgid "Update available: {version}"
 msgstr ""
 
 msgid "Updating Database"
@@ -1277,11 +1361,20 @@ msgstr "Koristiti RDB sliku diska za veličinu >= {0}"
 msgid "Using Kickstart ROM Replacement"
 msgstr ""
 
+msgid "Using Kickstart ROM replacement"
+msgstr ""
+
+msgid "V-Sync"
+msgstr ""
+
 msgid "Video"
 msgstr "Video"
 
 msgid "Video Settings"
 msgstr "Podešavanje videa"
+
+msgid "Video Synchronization"
+msgstr ""
 
 msgid "Video Synchronization Settings"
 msgstr "Podešavanja video sinhronizacije"
@@ -1298,11 +1391,11 @@ msgstr "Metoda sinhronizacije videa"
 msgid "Video texture format (on the GPU)"
 msgstr "Video format teksture (na GPU)"
 
+msgid "WHDLoad"
+msgstr ""
+
 msgid "WHDLoad Arguments"
 msgstr "WHDLoad argumenti"
-
-msgid "WHDLoad Settings"
-msgstr ""
 
 msgid "WHDLoad splash delay"
 msgstr ""
@@ -1310,11 +1403,20 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
+msgid "Warning: No ROM files were found!"
+msgstr ""
+
 msgid "Web Links"
 msgstr "Veb linkovi"
 
 msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
 msgstr "Kada je Automatski režim naveden, željeni jezik je postavljen na osnovu informacija iz operativnog sistema (ili engleski jezik, ako se podržani jezik ne otkrije)."
+
+msgid "When checked, enable video synchronization whenever possible"
+msgstr ""
+
+msgid "When checked, include a save disk in FS-UAE's floppy swap list"
+msgstr ""
 
 msgid "While logged out you will not get database updates"
 msgstr "Dok ste odjavljeni nećete dobijati ažurnu bazu"
@@ -1331,6 +1433,162 @@ msgstr "Trebalo bi da posedujete kikstart fajlove za svaki Amiga model koji kori
 msgid "Zoom Amiga display (crop)"
 msgstr "Zumiranje Amiga prikaza (crop opcija)"
 
+msgid "Zorro III Fast Memory"
+msgstr ""
+
+#, python-brace-format
+msgid "{amiga_model} with < 2 MB chip memory"
+msgstr "{amiga_model} sa < 2 MB čip memorije"
+
+#, python-brace-format
+msgid "{system} Keyboard"
+msgstr ""
+
+msgid "{} ROM files were imported"
+msgstr ""
+
+msgid "Abort"
+msgstr "Prekid"
+
+msgid "All Configurations"
+msgstr ""
+
+msgid "All Games and Configurations"
+msgstr ""
+
+msgid "Also synchronize emulation with display when possible (smooth scrolling)"
+msgstr "Sinhronizuj emulaciju sa prikazom kada je moguće (glatko skrolovanje)"
+
+msgid "Appearance"
+msgstr ""
+
+msgid "Automatic Download"
+msgstr ""
+
+msgid "Buffer swap only"
+msgstr "Izmena bafera"
+
+msgid "CPU Accelerator Board"
+msgstr ""
+
+msgid "CPU Accelerator Board RAM"
+msgstr ""
+
+msgid "Click to Download Game"
+msgstr ""
+
+msgid "Click to Import Kickstart ROMs"
+msgstr ""
+
+msgid "Custom IRC server address"
+msgstr "Prilagođena adresa IRC servera"
+
+msgid "Deprecated Options"
+msgstr ""
+
+msgid "Did not find required Kickstart or ROM"
+msgstr ""
+
+msgid "Dislike This Game Variant"
+msgstr "Ne sviđa mi se ova varijanta igre"
+
+msgid "Enable experimental config visualization (requires restart)"
+msgstr ""
+
+msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
+msgstr "Omogućavanje sledeće opcije će sprečiti da se desi pucanje, ali će takođe koristiti više procesorskog vremena. Ulazna latencija može postati nešto veća."
+
+msgid "Extended ROM:"
+msgstr "Prošireni ROM:"
+
+msgid "FS-UAE Launcher Settings"
+msgstr "Podešavanja FS-UAE Launcher-a"
+
+msgid "Filter Settings"
+msgstr "Podešavanja filtra"
+
+msgid "Font Size"
+msgstr ""
+
+msgid "Game   Center"
+msgstr ""
+
+msgid "Graphics Card VRAM"
+msgstr ""
+
+msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
+msgstr "Da bi postigli zaista glatku amiga grafiku, morate omogućiti sledeću opciju, a takođe proverite da li vaš ekran radi na 50Hz (za PAL) ili 60Hz (za NTSC) ."
+
+msgid "Joystick"
+msgstr "Džojstik"
+
+msgid "Joystick Settings"
+msgstr "Postavke džojstika"
+
+msgid "Language Preference"
+msgstr "Podešavanja jezika"
+
+msgid "Launch FS-UAE"
+msgstr ""
+
+msgid "Like This Game Variant"
+msgstr "Svidja mi se ova varijanta igre"
+
+msgid "Mark This Game Variant as Personal Favorite"
+msgstr "Označi ovu varijantu igre kao lični favorit"
+
+msgid "Memory"
+msgstr "Memorija"
+
+msgid "Memory Configuration"
+msgstr ""
+
+msgid "Motherboard Fast RAM"
+msgstr ""
+
+msgid "Netplay Settings"
+msgstr "Podešavanja igranja preko mreže"
+
+msgid "New Configuration"
+msgstr "Nova konfiguracija"
+
+msgid "Nothing"
+msgstr "Ništa"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Override Installed Memory"
+msgstr "Zanemariti instaliranu memoriju"
+
+msgid "Save Configuration"
+msgstr "Snimiti konfiguraciju"
+
+msgid "Scan Settings"
+msgstr "Podešavanja skeniranja"
+
+msgid "Set language and look for FS-UAE applications"
+msgstr ""
+
+msgid "Synchronize buffer swaps with display (prevents tearing)"
+msgstr "Sinhronizacija izmene bafera sa ekranom (sprečava pucanje)"
+
+msgid "Theme"
+msgstr ""
+
+msgid "UAE Graphics Card (Picasso96 Support)"
+msgstr ""
+
+msgid "Unprotected"
+msgstr ""
+
+#, python-brace-format
+msgid "Update Available: {version}"
+msgstr ""
+
+msgid "WHDLoad Settings"
+msgstr ""
+
 msgid "Zorro II Fast RAM"
 msgstr ""
 
@@ -1339,8 +1597,4 @@ msgstr ""
 
 msgid "uaegfx_card"
 msgstr ""
-
-#, python-brace-format
-msgid "{amiga_model} with < 2 MB chip memory"
-msgstr "{amiga_model} sa < 2 MB čip memorije"
 
