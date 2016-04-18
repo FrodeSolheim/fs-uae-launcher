@@ -99,6 +99,6 @@ class SaveButton(IconButton):
         database.commit()
         file_database.commit()
 
-        LauncherSettings.set("config_refresh", str(time.time()))
+        LauncherSettings.set("__config_refresh", str(time.time()))
         # Settings.set("config_changed", "0")
         LauncherConfig.set("__changed", "0")

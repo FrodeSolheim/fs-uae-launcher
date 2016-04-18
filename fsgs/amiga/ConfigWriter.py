@@ -4,10 +4,8 @@ from fsgs.amiga.Amiga import Amiga
 CONFIG_KEY_BLACKLIST = [
     "_*",
     "amigamemo_url",
-    "config_base",
     "config_feature",
     "config_name",
-    "config_refresh",
     "config_search",
     "configurations_dir_mtime",
     "database_arcade",

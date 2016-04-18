@@ -10,9 +10,9 @@ class GameListSelector(fsui.Choice):
         fsui.Choice.__init__(self, parent)
         self.game_lists = []
         self.populate_list()
-        SettingsBehavior(self, ["config_refresh", "game_list_uuid"])
+        SettingsBehavior(self, ["__config_refresh", "game_list_uuid"])
 
-    def on_config_refresh_setting(self, _):
+    def on___config_refresh_setting(self, _):
         list_found = False
         with self.changed.inhibit:
             old_list_uuid = self.get_selected_list_uuid()

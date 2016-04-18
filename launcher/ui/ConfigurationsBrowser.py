@@ -53,7 +53,7 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
                 if LauncherSettings.get("parent_uuid"):
                     LauncherSettings.set("parent_uuid", "")
                     LauncherConfig.load_default_config()
-        elif key == "config_refresh":
+        elif key == "__config_refresh":
             self.update_search()
             self.select_item(None)
             old_parent_uuid = LauncherSettings.get("parent_uuid")

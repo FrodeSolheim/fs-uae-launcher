@@ -128,7 +128,7 @@ class RatingChoice(Choice):
     def __init__(self, parent):
         self.active_icon = 1
         super().__init__(parent, [], cursor_keys=False)
-        self.add_item(gettext("Not Rated"),
+        self.add_item(gettext("Rate Variant"),
                       Image("launcher:res/16/bullet.png"))
         self.add_item(gettext("Best Variant"),
                       Image("launcher:res/16/rating_fav_2.png"))

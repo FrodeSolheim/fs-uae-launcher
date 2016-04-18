@@ -1,5 +1,10 @@
 Version 2.7.13dev:
 
+* Properly load last config file (if applicable) when starting.
+* Unsaved config options will no longer be restored on startup (last
+  used game or config will be fully reloaded).
+* When using --config:key=value options, start with empty config (unless
+  a specific config is loaded via the command line).
 * Store maximized = 0 state properly when window is unmaximized.
 * Imported updated translations from crowdin.com.
 

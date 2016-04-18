@@ -6,21 +6,27 @@ from .launcher_signal import LauncherSignal
 class LauncherSettings(object):
     base_dir = ""
 
+    # These are not used any more, and should be removed from settings if
+    # found.
+    old_keys = {
+        "config_base",
+        "config_refresh",
+    }
+
     # The main use of default_settings is actually to hide the corresponding
     # options from advanced settings (because there is UI for them, or
     # because the settings are internal)
     default_settings = {
         "__netplay_ready": "",
         "automatic_input_grab": "",
+        "arcade_fullscreen": "",
         "audio_frequency": "",
         "audio_buffer_target_size": "",
         "builtin_configs": "",
-        "config_base": "",
         "config_changed": "0",
         "config_name": "Unnamed Configuration",
         "config_feature": "",
         "config_path": "",
-        "config_refresh": "",
         "config_search": "",
         "config_xml_path": "",
         "configurations_dir_mtime": "",

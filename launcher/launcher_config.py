@@ -338,8 +338,6 @@ class LauncherConfig(object):
     def load_default_config(cls):
         print("load_default_config")
         cls.load({})
-        # FIXME: remove use of config_base
-        LauncherSettings.set("config_base", "")
         LauncherSettings.set("config_name", "Unnamed Configuration")
         LauncherSettings.set("config_path", "")
         LauncherSettings.set("config_xml_path", "")
@@ -467,11 +465,12 @@ class LauncherConfig(object):
     @classmethod
     def load_file(cls, path):
         try:
-            cls._load_file(path, "")
+            return cls._load_file(path, "")
         except Exception:
             # FIXME: errors should be logged / displayed
             cls.load_default_config()
             traceback.print_exc()
+        return False
 
     @classmethod
     def load_data(cls, data):
@@ -508,16 +507,6 @@ class LauncherConfig(object):
                 print("config file does not exist")
         if data:
             raise Exception("_load_file (data) not implemented")
-        # if data:
-        #     config_xml_path = ""
-        #     loader = XMLConfigLoader()
-        #     loader.load_data(data)
-        #     config = loader.get_config()
-        # elif path.endswith(".xml"):
-        #     config_xml_path = path
-        #     loader = XMLConfigLoader()
-        #     loader.load_file(path)
-        #     config = loader.get_config()
         else:
             config_xml_path = ""
             cp = ConfigParser(interpolation=None, strict=False)
@@ -527,7 +516,7 @@ class LauncherConfig(object):
                 # cp.read([path])
             except Exception as e:
                 print(repr(e))
-                return
+                return False
             config = {}
             try:
                 keys = cp.options("config")
@@ -554,20 +543,10 @@ class LauncherConfig(object):
         else:
             config_name, ext = os.path.splitext(os.path.basename(path))
 
-        if "(" in config_name:
-            config_base = config_name.split("(")[0].strip()
-        else:
-            config_base = config_name
-        # game = name
-
-        # if not Config.get("title"):
-        #     Config.set("title", config_base)
-
-        LauncherSettings.set("config_base", config_base)
         LauncherSettings.set("config_name", config_name)
         LauncherSettings.set("config_xml_path", config_xml_path)
-        # Settings.set("config_changed", "0")
         cls.set("__changed", changed)
+        return True
 
     @classmethod
     def load_values(cls, values, uuid=""):
@@ -591,27 +570,11 @@ class LauncherConfig(object):
 
         LauncherSettings.set("config_path", "")
 
-        # print("config is", config)
-        # config["x_config_uuid"] = uuid
-
         if config_name:
             config_name = cls.create_fs_name(config_name)
-        # else:
-        #     config_name, ext = os.path.splitext(os.path.basename(path))
 
-        if "(" in config_name:
-            config_base = config_name.split("(")[0].strip()
-        else:
-            config_base = config_name
-        # game = name
-
-        # if not Config.get("title"):
-        #     Config.set("title", config_base)
-
-        LauncherSettings.set("config_base", config_base)
         LauncherSettings.set("config_name", config_name)
         LauncherSettings.set("config_xml_path", "")
-        # Settings.set("config_changed", "0")
         cls.set("__changed", "0")
 
     @staticmethod

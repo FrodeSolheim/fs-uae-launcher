@@ -34,17 +34,26 @@ class Config(ContextAware):
         #     del self.values[key]
 
     def add_from_argv(self):
+        """Adds config parameters from argv to currently loaded configuration.
+        :return: True if config parameters were used.
+        """
+        added = False
         for arg in sys.argv:
             if arg.startswith("--config:"):
                 arg = arg[9:]
                 key, value = arg.split("=", 1)
                 key = key.replace("-", "_")
                 self.set(key, value)
+                added = True
+        return added
 
     def load(self, values):
         self.clear()
         for key, value in list(values.items()):
             self.set(key, value)
+
+    def load_from_file(self):
+        pass
 
     def set(self, *values):
         if len(values) == 1:

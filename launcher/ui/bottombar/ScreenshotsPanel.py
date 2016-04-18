@@ -40,9 +40,7 @@ class ScreenshotsPanel(BottomPanel):
 
         self.x_offset = 0
 
-        if LauncherSettings.get("config_base"):
-            # self.load_images(Settings.get("config_base"))
-            self.load_images()
+        self.load_images()
         LauncherSettings.add_listener(self)
 
     def on_destroy(self):

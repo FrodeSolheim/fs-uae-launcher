@@ -47,7 +47,7 @@ class Scanner:
         def on_done():
             # FIXME: these should be removed soon
             LauncherSettings.set("last_scan", str(time.time()))
-            LauncherSettings.set("config_refresh", str(time.time()))
+            LauncherSettings.set("__config_refresh", str(time.time()))
 
             # this must be called from main, since callbacks are broadcast
             # when settings are changed

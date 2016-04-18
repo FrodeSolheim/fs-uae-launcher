@@ -202,20 +202,32 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             print(repr(e))
             return
 
-        config = {}
-        try:
-            keys = cp.options("config")
-        except NoSectionError:
-            keys = []
-        for key in keys:
-            config[key] = fs.from_utf8_str(cp.get("config", key))
-        for key, value in config.items():
-            print("loaded", key, value)
-            fsgs.config.values[key] = value
-        # FIXME: When the last loaded config was a game database config, any
-        # options loaded via argv will be overwritten when the game config
-        # is loaded from the database. We should be able to prevent this...
-        fsgs.config.add_from_argv()
+        for key in LauncherSettings.old_keys:
+            if app.settings.get(key):
+                print("[SETTINGS] Removing old key", key)
+                app.settings.set(key, "")
+
+        if fsgs.config.add_from_argv():
+            print("[CONFIG] Configuration specified via command line")
+            # Prevent the launcher from loading the last used game
+            LauncherSettings.set("parent_uuid", "")
+        elif LauncherSettings.get("config_path"):
+            if LauncherConfig.load_file(LauncherSettings.get("config_path")):
+                print("[CONFIG] Loaded last configuration file")
+            else:
+                print("[CONFIG] Failed to load last configuration file")
+                LauncherConfig.load_default_config()
+
+            # config = {}
+            # try:
+            #     keys = cp.options("config")
+            # except NoSectionError:
+            #     keys = []
+            # for key in keys:
+            #     config[key] = fs.from_utf8_str(cp.get("config", key))
+            # for key, value in config.items():
+            #     print("loaded", key, value)
+            #     fsgs.config.values[key] = value
 
     @staticmethod
     def save_settings():
