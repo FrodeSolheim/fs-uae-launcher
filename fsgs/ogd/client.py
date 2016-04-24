@@ -3,8 +3,11 @@ import json
 import platform
 import time
 from functools import wraps
+from gzip import GzipFile
+from io import StringIO
 from urllib.error import HTTPError
 from urllib.parse import urlencode
+from urllib.request import Request
 from uuid import uuid4
 
 from fsbc.application import app
@@ -60,7 +63,8 @@ class OGDClient(object):
     NonRetryableHTTPError = NonRetryableHTTPError
 
     def __init__(self):
-        pass
+        self._json = None
+        self.data = b""
 
     @staticmethod
     def is_logged_in():
@@ -91,23 +95,24 @@ class OGDClient(object):
             auth=False)
         return result
 
-    def url_prefix(self):
+    @staticmethod
+    def url_prefix():
         return openretro_url_prefix()
 
     def opener(self):
-        username, password = self.get_credentials()
+        username, password = self.credentials()
         # FIXME: use cache dict?
         return opener_for_url_prefix(self.url_prefix(), username, password)
 
     @staticmethod
-    def get_credentials():
+    def credentials():
         auth_token = app.settings["database_auth"]
         return "auth_token", auth_token
 
     def post(self, path, params=None, data=None, auth=True):
         headers = {}
         if auth:
-            credentials = self.get_credentials()
+            credentials = self.credentials()
             headers[str("Authorization")] = str("Basic " + base64.b64encode(
                 "{0}:{1}".format(*credentials).encode("UTF-8")).decode("UTF-8"))
         connection = openretro_http_connection()
@@ -143,6 +148,50 @@ class OGDClient(object):
             doc = json.loads(data.decode("UTF-8"))
             return doc
         return data
+
+    def build_url(self, path, **kwargs):
+        url = "{0}{1}".format(self.url_prefix(), path)
+        if kwargs:
+            url += "?" + urlencode(kwargs)
+        return url
+
+    def get_request(self, url):
+        request = Request(url)
+        print("get_request:", url)
+        request.add_header("Accept-Encoding", "gzip")
+        response = self.opener().open(request)
+        return self.handle_response(response)
+
+    def handle_response(self, response):
+        self._json = None
+        self.data = response.read()
+        # print(dir(response.headers))
+        try:
+            getheader = response.headers.getheader
+        except AttributeError:
+            getheader = response.getheader
+        content_encoding = getheader("content-encoding", "").lower()
+        if content_encoding == "gzip":
+            # data = zlib.decompress(data)
+            fake_stream = StringIO(self.data)
+            self.data = GzipFile(fileobj=fake_stream).read()
+
+    def json_response(self):
+        if self._json is None:
+            self._json = json.loads(self.data.decode("UTF-8"))
+        return self._json
+
+    def rate_variant(self, variant_uuid, like=None, work=None):
+        params = {
+            "game": variant_uuid,
+        }
+        if like is not None:
+            params["like"] = like
+        if work is not None:
+            params["work"] = work
+        url = self.build_url("/api/1/rate_game", **params)
+        self.get_request(url)
+        return self.json_response()
 
 
 def get_device_name():

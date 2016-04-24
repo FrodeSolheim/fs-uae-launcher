@@ -1,6 +1,6 @@
 import fsui
 from fsgs.Database import Database
-from fsgs.ogd.oagd_client import OAGDClient
+from fsgs.ogd.client import OGDClient
 from fsui import Image, Choice
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
@@ -156,10 +156,10 @@ class RatingChoice(Choice):
     @staticmethod
     def set_rating_for_variant(variant_uuid, rating):
         # FIXME: Do asynchronously, add to queue
-        client = OAGDClient()
-        client.rate_variant(variant_uuid, like=rating)
-        like_rating = client.get("like", 0)
-        work_rating = client.get("work", 0)
+        client = OGDClient()
+        result = client.rate_variant(variant_uuid, like=rating)
+        like_rating = result.get("like", 0)
+        work_rating = result.get("work", 0)
         database = Database.instance()
         cursor = database.cursor()
         cursor.execute(
