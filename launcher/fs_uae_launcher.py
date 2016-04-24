@@ -13,6 +13,7 @@ from fsbc.task import Task
 from fsbc.util import unused, is_uuid
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.Amiga import Amiga
+from fsgs.Archive import Archive
 from fsgs.application import ApplicationMixin
 from fsgs.context import fsgs
 from fsgs.download import Downloader
@@ -65,23 +66,24 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
     def run_config_or_game(cls):
         config_path = None
         archive_path = None
-        floppy_image_path = None
+        floppy_image_paths = None
         config_uuid = None
-
+        floppy_exts = (".adf", ".ipf", ".dms", ".adz")
+        archive_exts = (".zip", ".lha")
+        
         # FIXME: replace argument "parsing" with use of argparse module
         # at some point
-
-        if sys.argv[-1].endswith(".fs-uae"):
-            config_path = sys.argv[-1]
-        elif sys.argv[-1].endswith(".zip"):
-            archive_path = sys.argv[-1]
-        elif sys.argv[-1].endswith(".lha"):
-            archive_path = sys.argv[-1]
-        elif sys.argv[-1].endswith(".adf"):
-            # FIXME: support / check for other disk images as well
-            floppy_image_path = sys.argv[-1]
-        elif is_uuid(sys.argv[-1]):
-            config_uuid = sys.argv[-1].lower()
+        
+        last_arg = sys.argv[-1]
+        file_ext = os.path.splitext(last_arg)[-1].lower()
+        if file_ext == ".fs-uae":
+            config_path = last_arg
+        elif file_ext in archive_exts:
+            archive_path = last_arg
+        elif file_ext in floppy_exts:
+            floppy_image_paths = [last_arg]
+        elif is_uuid(last_arg):
+            config_uuid = last_arg.lower()
 
         if config_path:
             print("config path given:", config_path)
@@ -94,32 +96,41 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
             cls.start_game()
             return True
 
-        elif archive_path:
+        if archive_path:
             print("archive path given:", archive_path)
             if not os.path.exists(archive_path):
                 print("archive path does not exist", file=sys.stderr)
                 return True
-            # FIXME: if archive is determined to contain (only) floppy disk
-            # images, load those into floppy drives instead
-            values = HardDriveGroup.generate_config_for_archive(archive_path)
-            values["hard_drive_0"] = archive_path
-            LauncherConfig.load(values)
-            fsgs.config.add_from_argv()
-            LauncherSettings.set("parent_uuid", "")
-            cls.start_game()
-            return True
+            archive = Archive(os.path.realpath(archive_path))
+            arc_files = archive.list_files()
+            if all(map(lambda f: f.lower().endswith(floppy_exts), arc_files)):
+                print("archive contains floppy disk images only")
+                floppy_image_paths = arc_files
+            else:
+                values = HardDriveGroup.generate_config_for_archive(
+                         archive_path)
+                values["hard_drive_0"] = archive_path
+                LauncherConfig.load(values)
+                fsgs.config.add_from_argv()
+                LauncherSettings.set("parent_uuid", "")
+                cls.start_game()
+                return True
 
-        elif floppy_image_path:
+        if floppy_image_paths:
+            enum_paths = tuple(enumerate(floppy_image_paths))
             values = {
-                "floppy_drive_0": floppy_image_path,
+                'floppy_drive_{0}'.format(k):v for k,v in enum_paths[:4]
             }
+            values.update(
+                {'floppy_image_{0}'.format(k):v for k,v in enum_paths[:19]}
+            )
             LauncherConfig.load(values)
             fsgs.config.add_from_argv()
             LauncherSettings.set("parent_uuid", "")
             cls.start_game()
             return True
 
-        elif config_uuid:
+        if config_uuid:
             print("config uuid given:", config_uuid)
             variant_uuid = config_uuid
             # values = fsgs.game.set_from_variant_uuid(variant_uuid)
