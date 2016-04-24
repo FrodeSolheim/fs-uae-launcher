@@ -3,17 +3,16 @@ import os
 import sys
 import traceback
 from collections import defaultdict
-from configparser import ConfigParser, NoSectionError
+from configparser import ConfigParser
 
-import fsbc.fs as fs
 import fsui
 from fsbc.application import app
 from fsbc.settings import Settings
 from fsbc.task import Task
 from fsbc.util import unused, is_uuid
+from fsgs.Archive import Archive
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.Amiga import Amiga
-from fsgs.Archive import Archive
 from fsgs.application import ApplicationMixin
 from fsgs.context import fsgs
 from fsgs.download import Downloader
@@ -66,24 +65,33 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
     def run_config_or_game(cls):
         config_path = None
         archive_path = None
-        floppy_image_paths = None
+        floppy_image_paths = []
+        cdrom_image_paths = []
         config_uuid = None
         floppy_exts = (".adf", ".ipf", ".dms", ".adz")
+        cdrom_exts = (".cue", ".iso")
         archive_exts = (".zip", ".lha")
-        
+
         # FIXME: replace argument "parsing" with use of argparse module
         # at some point
-        
+
         last_arg = sys.argv[-1]
         file_ext = os.path.splitext(last_arg)[-1].lower()
         if file_ext == ".fs-uae":
             config_path = last_arg
         elif file_ext in archive_exts:
             archive_path = last_arg
-        elif file_ext in floppy_exts:
-            floppy_image_paths = [last_arg]
+        # elif file_ext in floppy_exts:
+        #     floppy_image_paths = [last_arg]
         elif is_uuid(last_arg):
             config_uuid = last_arg.lower()
+        for arg in sys.argv[1:]:
+            if not arg.startswith("--"):
+                _, ext = os.path.splitext(arg)
+                if ext in floppy_exts:
+                    floppy_image_paths.append(arg)
+                elif ext in cdrom_exts:
+                    cdrom_image_paths.append(arg)
 
         if config_path:
             print("config path given:", config_path)
@@ -102,13 +110,15 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 print("archive path does not exist", file=sys.stderr)
                 return True
             archive = Archive(os.path.realpath(archive_path))
-            arc_files = archive.list_files()
+            # We want to exclude pure directory entries when checking for
+            # archives with only floppies.
+            arc_files = [x for x in archive.list_files() if not x.endswith("/")]
             if all(map(lambda f: f.lower().endswith(floppy_exts), arc_files)):
                 print("archive contains floppy disk images only")
                 floppy_image_paths = arc_files
             else:
                 values = HardDriveGroup.generate_config_for_archive(
-                         archive_path)
+                    archive_path)
                 values["hard_drive_0"] = archive_path
                 LauncherConfig.load(values)
                 fsgs.config.add_from_argv()
@@ -118,14 +128,28 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
         if floppy_image_paths:
             enum_paths = tuple(enumerate(floppy_image_paths))
-            values = {
-                'floppy_drive_{0}'.format(k):v for k,v in enum_paths[:4]
-            }
-            values.update(
-                {'floppy_image_{0}'.format(k):v for k,v in enum_paths[:19]}
-            )
+            values = {}
+            values.update(fsgs.config.config_from_argv())
+            max_drives = int(values.get("floppy_drive_count", "4"))
+            values.update({"floppy_drive_{0}".format(k): v
+                           for k, v in enum_paths[:max_drives]})
+            values.update({"floppy_image_{0}".format(k): v
+                           for k, v in enum_paths[:20]})
             LauncherConfig.load(values)
-            fsgs.config.add_from_argv()
+            LauncherSettings.set("parent_uuid", "")
+            cls.start_game()
+            return True
+
+        if cdrom_image_paths:
+            enum_paths = tuple(enumerate(cdrom_image_paths))
+            values = {"amiga_model": "CD32"}
+            values.update(fsgs.config.config_from_argv())
+            max_drives = int(values.get("cdrom_drive_count", "1"))
+            values.update({"cdrom_drive_{0}".format(k): v
+                           for k, v in enum_paths[:max_drives]})
+            values.update({"cdrom_image_{0}".format(k): v
+                           for k, v in enum_paths[:20]})
+            LauncherConfig.load(values)
             LauncherSettings.set("parent_uuid", "")
             cls.start_game()
             return True
@@ -229,6 +253,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 print("[CONFIG] Failed to load last configuration file")
                 LauncherConfig.load_default_config()
 
+            pass
             # config = {}
             # try:
             #     keys = cp.options("config")

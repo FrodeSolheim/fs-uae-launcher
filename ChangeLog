@@ -1,5 +1,10 @@
 Version 2.7.13dev:
 
+* Launcher can be started with a zip/lha file containing disk images [jbl007].
+* Launcher can be started with more than one floppy image path as
+  command line arguments.
+* Launcher can be started with more than one CD-ROM image path as
+  command line arguments (will default to CD32 model in this case).
 * Properly load last config file (if applicable) when starting.
 * Unsaved config options will no longer be restored on startup (last
   used game or config will be fully reloaded).

@@ -33,19 +33,25 @@ class Config(ContextAware):
         # for key in self.values.keys():
         #     del self.values[key]
 
-    def add_from_argv(self):
-        """Adds config parameters from argv to currently loaded configuration.
-        :return: True if config parameters were used.
-        """
-        added = False
+    @staticmethod
+    def config_from_argv():
+        config = []
         for arg in sys.argv:
             if arg.startswith("--config:"):
                 arg = arg[9:]
                 key, value = arg.split("=", 1)
                 key = key.replace("-", "_")
-                self.set(key, value)
-                added = True
-        return added
+                config.append((key, value))
+        return config
+
+    def add_from_argv(self):
+        """Adds config parameters from argv to currently loaded configuration.
+        :return: True if config parameters were used.
+        """
+        config_items = self.config_from_argv()
+        for key, value in config_items:
+            self.set(key, value)
+        return len(config_items) > 0
 
     def load(self, values):
         self.clear()
