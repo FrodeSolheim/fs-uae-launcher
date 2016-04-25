@@ -21,11 +21,13 @@ from fsgs.platform import PlatformHandler
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
+from launcher.option import Option
 from launcher.startup_scan import StartupScan
 from launcher.ui.config.HardDriveGroup import HardDriveGroup
 from launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
 from launcher.ui.launch import LaunchDialog
 from launcher.ui.launcher_window import LauncherWindow
+from launcher.version import VERSION
 
 
 class FSUAELauncher(ApplicationMixin, fsui.Application):
@@ -478,6 +480,9 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
         # make sure FS-UAE does not load other config files (Host.fs-uae)
         config["end_config"] = "1"
+        # Make FS-UAE check that version matches (except for development)
+        if VERSION != "9.8.7dummy":
+            config[Option.EXPECT_VERSION] = VERSION
 
         if config.get("__netplay_game", ""):
             print("\nfixing config for netplay game")

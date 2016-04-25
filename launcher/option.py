@@ -37,6 +37,7 @@ class Option(object):
     DATABASE_USERNAME = "database_username"
     DEVICE_ID = "device_id"
     DONGLE_TYPE = "dongle_type"
+    EXPECT_VERSION = "expect_version"
     FADE_IN_DURATION = "fade_in_duration"
     FAST_MEMORY = "fast_memory"
     FLOPPY_DRIVE_COUNT = "floppy_drive_count"
@@ -386,6 +387,11 @@ options = {
             ("cricket captain", "Cricket Captain"),
             ("leviathan", "Leviathan"),
         ]
+    },
+    "expect_version": {
+        "default": "",
+        "description": N_("Expect Specific FS-UAE Version"),
+        "type": "",
     },
     "fade_in_duration": {
         "default": "0",

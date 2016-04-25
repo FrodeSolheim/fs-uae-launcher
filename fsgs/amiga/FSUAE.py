@@ -1,9 +1,10 @@
 import os
+import subprocess
 import tempfile
 import traceback
-import subprocess
-from fsbc.system import windows, macosx
+
 from fsbc.application import Application, app
+from fsbc.system import windows, macosx
 
 try:
     getcwd = os.getcwdu
@@ -12,7 +13,6 @@ except AttributeError:
 
 
 class FSUAE(object):
-
     @classmethod
     def start_with_config(cls, config):
         print("FSUAE.start_with_config:")
@@ -80,8 +80,10 @@ class FSUAE(object):
         # FIXME: does not really belong here (dependency loop)
         from launcher.launcher_config import LauncherConfig
         from launcher.launcher_settings import LauncherSettings
-        width = LauncherConfig.get("window_width") or LauncherSettings.get("window_width")
-        height = LauncherConfig.get("window_height") or LauncherSettings.get("window_height")
+        width = (LauncherConfig.get("window_width") or
+                 LauncherSettings.get("window_width"))
+        height = (LauncherConfig.get("window_height") or
+                  LauncherSettings.get("window_height"))
         try:
             width = int(width)
         except:
@@ -148,7 +150,8 @@ class FSUAE(object):
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
-                    "../../../Programs/Mac OS X/FS-UAE.app/Contents/MacOS/" + executable)
+                    "../../../Programs/Mac OS X/FS-UAE.app/Contents/MacOS/" +
+                    executable)
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
