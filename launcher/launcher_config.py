@@ -1,4 +1,3 @@
-import io
 import os
 import hashlib
 import traceback
@@ -348,9 +347,6 @@ class LauncherConfig(object):
         for key, value in cls.default_config.items():
             update_config[key] = value
         for key in list(fsgs.config.values.keys()):
-            # if key not in cls.default_config:
-            #     # this is not a recognized key, so we remove it
-            #     del fsgs.config.values[key]
             if key not in cls.default_config:
                 # We need to broadcast changed for all config keys, also
                 # the ones this class does not know about
@@ -358,6 +354,9 @@ class LauncherConfig(object):
                     # Unless it is an implicit config key, in which case
                     # it should be properly updated by another component, and
                     # we don't want to have the options flip-flop too much.
+                    pass
+                elif key in ["__changed"]:
+                    # We handle this key explicitly, below.
                     pass
                 else:
                     update_config[key] = ""
@@ -376,7 +375,7 @@ class LauncherConfig(object):
         # Settings.set("config_changed", "0")
         if "__changed" in update_config:
             # We specifically loaded __changed, probably in fix_loaded_config.
-            pass
+            print("__changed was explicitly set:", update_config["__changed"])
         else:
             # Mark config as unchanged (i.e. does not need to be saved).
             cls.set("__changed", "0")
@@ -511,9 +510,8 @@ class LauncherConfig(object):
             config_xml_path = ""
             cp = ConfigParser(interpolation=None, strict=False)
             try:
-                with io.open(path, "r", encoding="UTF-8") as f:
-                    cp.readfp(f)
-                # cp.read([path])
+                with open(path, "r", encoding="UTF-8") as f:
+                    cp.read_file(f)
             except Exception as e:
                 print(repr(e))
                 return False
@@ -533,7 +531,9 @@ class LauncherConfig(object):
 
         LauncherSettings.set("config_path", path)
 
+        print("__changed before load:", cls.get("__changed"))
         cls.load(config)
+        print("__changed after load:", cls.get("__changed"))
         # Changed may have been set by fix_loaded_config
         changed = cls.get("__changed", "0")
 

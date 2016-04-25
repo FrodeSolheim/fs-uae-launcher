@@ -1,4 +1,5 @@
 import sys
+import traceback
 from collections import defaultdict
 
 from .ContextAware import ContextAware
@@ -92,6 +93,9 @@ class Config(ContextAware):
                 #         changed_key, changed_value))
                 return
             print("config set {0} to {1}".format(changed_key, changed_value))
+            if changed_key == "__changed" and changed_value == "1":
+                print("Stack trace for event causing __changed = 1:")
+                traceback.print_stack()
             add_changed_key(changed_key)
             self.values[changed_key] = changed_value
 
