@@ -7,8 +7,8 @@ def app_main():
     from launcher.fs_uae_launcher import FSUAELauncher
     application = FSUAELauncher()
 
-    if application.start():
-        application.run()
+    application.start()
+    application.run()
     application.save_settings()
 
     # from fs_uae_launcher.netplay.IRC import IRC

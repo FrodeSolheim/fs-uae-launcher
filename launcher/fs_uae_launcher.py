@@ -102,9 +102,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 return True
             LauncherConfig.load_file(config_path)
             fsgs.config.add_from_argv()
-            LauncherSettings.set("parent_uuid", "")
-            cls.start_game()
-            return True
+            return cls.run_config_directly()
 
         if archive_path:
             print("archive path given:", archive_path)
@@ -122,11 +120,8 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 values = HardDriveGroup.generate_config_for_archive(
                     archive_path)
                 values["hard_drive_0"] = archive_path
-                LauncherConfig.load(values)
-                fsgs.config.add_from_argv()
-                LauncherSettings.set("parent_uuid", "")
-                cls.start_game()
-                return True
+                values.update(fsgs.config.config_from_argv())
+                return cls.run_config_directly_with_values(values)
 
         if floppy_image_paths:
             enum_paths = tuple(enumerate(floppy_image_paths))
@@ -137,10 +132,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                            for k, v in enum_paths[:max_drives]})
             values.update({"floppy_image_{0}".format(k): v
                            for k, v in enum_paths[:20]})
-            LauncherConfig.load(values)
-            LauncherSettings.set("parent_uuid", "")
-            cls.start_game()
-            return True
+            return cls.run_config_directly_with_values(values)
 
         if cdrom_image_paths:
             enum_paths = tuple(enumerate(cdrom_image_paths))
@@ -151,10 +143,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                            for k, v in enum_paths[:max_drives]})
             values.update({"cdrom_image_{0}".format(k): v
                            for k, v in enum_paths[:20]})
-            LauncherConfig.load(values)
-            LauncherSettings.set("parent_uuid", "")
-            cls.start_game()
-            return True
+            return cls.run_config_directly_with_values(values)
 
         if config_uuid:
             print("config uuid given:", config_uuid)
@@ -169,8 +158,18 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 print("preferred variant:", variant_uuid)
                 fsgs.load_game_variant(variant_uuid)
             fsgs.config.add_from_argv()
-            cls.start_game()
-            return True
+            return cls.run_config_directly()
+
+    @classmethod
+    def run_config_directly(cls):
+        # LauncherSettings.set("parent_uuid", "")
+        cls.start_game()
+        return True
+
+    @classmethod
+    def run_config_directly_with_values(cls, values):
+        LauncherConfig.load(values)
+        return cls.run_config_directly()
 
     _plugins_loaded = False
 

@@ -232,6 +232,7 @@ class FullscreenModeButton(fsui.ImageButton):
 class LaunchDialog(fsui.Window):
     def __init__(self, parent, title, task):
         print("LaunchDialog parent =", parent)
+        self.has_parent = parent is not None
         super().__init__(parent, title, maximizable=False)
         self.layout = fsui.VerticalLayout()
 
@@ -291,8 +292,8 @@ class LaunchDialog(fsui.Window):
 
     def on_progress(self, progress):
 
-        # def hide_function():
-        #     self.visible = False
+        def hide_function():
+            self.visible = False
 
         def function():
             if progress == "__run__":
@@ -300,7 +301,8 @@ class LaunchDialog(fsui.Window):
                 # Hide dialog after 1.5 seconds. The reason for delaying it
                 # is to avoid "confusing" flickering if/when the dialog is
                 # only shown for a split second.
-                # fsui.call_later(1500, hide_function)
+                if self.is_shown():
+                    fsui.call_later(1500, hide_function)
                 LauncherConfig.set(
                     "__progress", gettext("Running: Emulator"))
             else:
@@ -311,8 +313,12 @@ class LaunchDialog(fsui.Window):
         fsui.call_after(function)
 
     def show(self, *args, **kwargs):
-        # Hack to prevent it from being shown
-        pass
+        if self.has_parent:
+            # Hack to prevent it from being shown
+            pass
+        else:
+            self.center_on_screen()
+            super().show()
 
     def on_complete(self):
 

@@ -1,5 +1,7 @@
 Version 2.7.13dev:
 
+* Show launch dialog when running configs directly from command line.
+* Show launch errors (if any) in error message box when running from cmdline.
 * Use expect_version option to verify that FS-UAE version matches.
 * Launcher can be started with a zip/lha file containing disk images [jbl007].
 * Launcher can be started with more than one floppy image path as
