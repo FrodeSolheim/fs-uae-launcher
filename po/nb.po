@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-04-16 15:17+0200\n"
-"PO-Revision-Date: 2016-04-16 09:20-0400\n"
+"POT-Creation-Date: 2016-04-26 00:40+0200\n"
+"PO-Revision-Date: 2016-05-01 06:23-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Norwegian Bokmal\n"
 "Language: nb_NO\n"
@@ -508,6 +508,9 @@ msgstr "Feil under skriving av diskfil"
 msgid "Expansions"
 msgstr "Utvidelser"
 
+msgid "Expect Specific FS-UAE Version"
+msgstr ""
+
 msgid "Experimental Config Visualization (Requires Restart)"
 msgstr ""
 
@@ -964,9 +967,6 @@ msgstr "Ingen søk pågår"
 msgid "None"
 msgstr "Ingen"
 
-msgid "Not Rated"
-msgstr ""
-
 msgid "Not logged in"
 msgstr "Ikke logget inn"
 
@@ -1052,6 +1052,9 @@ msgstr ""
 
 msgid "ROM and RAM"
 msgstr "ROM og RAM"
+
+msgid "Rate Variant"
+msgstr ""
 
 #, python-brace-format
 msgid "Re-trying in {0} seconds..."
@@ -1446,155 +1449,4 @@ msgstr ""
 
 msgid "{} ROM files were imported"
 msgstr ""
-
-msgid "Abort"
-msgstr "Avbryt"
-
-msgid "All Configurations"
-msgstr "Alle konfigurasjoner"
-
-msgid "All Games and Configurations"
-msgstr "Alle spill og konfigurasjoner"
-
-msgid "Also synchronize emulation with display when possible (smooth scrolling)"
-msgstr "Synkroniser også emulering med skjerm når det er mulig (jevn scrolling)"
-
-msgid "Appearance"
-msgstr "Utseende"
-
-msgid "Automatic Download"
-msgstr "Automatisk nedlasting"
-
-msgid "Buffer swap only"
-msgstr "Kun bufferbytte"
-
-msgid "CPU Accelerator Board"
-msgstr "CPU Accelerator-kort"
-
-msgid "CPU Accelerator Board RAM"
-msgstr "CPU Accelerator-kort RAM"
-
-msgid "Click to Download Game"
-msgstr "Klikk for å laste ned spillet"
-
-msgid "Click to Import Kickstart ROMs"
-msgstr "Klikk for å importere Kickstart ROM-filer"
-
-msgid "Custom IRC server address"
-msgstr "Egendefinert adresse for IRC-server"
-
-msgid "Deprecated Options"
-msgstr "Utdaterte alternativer"
-
-msgid "Did not find required Kickstart or ROM"
-msgstr "Fant ikke nødvendig Kickstart eller ROM"
-
-msgid "Dislike This Game Variant"
-msgstr "Mislik denne spillvarianten"
-
-msgid "Enable experimental config visualization (requires restart)"
-msgstr "Aktiver eksp. visualisering av konfigurasjon (krever omstart)"
-
-msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
-msgstr "Slår du på følgende funksjon vil dette hindre sømmer i grafikken, men vil også bruke mer CPU. Det kan også bli litt mer forsinkelse på input."
-
-msgid "Extended ROM:"
-msgstr "Utvidet ROM:"
-
-msgid "FS-UAE Launcher Settings"
-msgstr "Innstillinger for FS-UAE Launcher"
-
-msgid "Filter Settings"
-msgstr "Innstillinger for filtre"
-
-msgid "Font Size"
-msgstr "Skriftstørrelse"
-
-msgid "Game   Center"
-msgstr ""
-
-msgid "Graphics Card VRAM"
-msgstr "Grafikkort VRAM"
-
-msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
-msgstr "For å få virkelig jevn flyt på Amiga-grafikken må du slå på følgende funksjon, og også sørge for at skjermen din oppdaterer seg med 50Hz (for PAL) eller 60Hz (for NTSC)."
-
-msgid "Joystick"
-msgstr "Joystick"
-
-msgid "Joystick Settings"
-msgstr "Joystick-innstillinger"
-
-msgid "Language Preference"
-msgstr "Språkpreferanse"
-
-msgid "Launch FS-UAE"
-msgstr "Start FS-UAE"
-
-msgid "Like This Game Variant"
-msgstr "Lik denne spillvarianten"
-
-msgid "Mark This Game Variant as Personal Favorite"
-msgstr "Merk denne spillvarianten som personlig favoritt"
-
-msgid "Memory"
-msgstr "Minne"
-
-msgid "Memory Configuration"
-msgstr "Minnekonfigurasjon"
-
-msgid "Motherboard Fast RAM"
-msgstr "Hovedkort Fast RAM"
-
-msgid "Netplay Settings"
-msgstr "Innstillinger for online-spilling"
-
-msgid "New Configuration"
-msgstr "Ny konfigurasjon"
-
-msgid "Nothing"
-msgstr "Ingenting"
-
-msgid "OK"
-msgstr "OK"
-
-msgid "Override Installed Memory"
-msgstr "Overstyr installert minne"
-
-msgid "Save Configuration"
-msgstr "Lagre konfigurasjon"
-
-msgid "Scan Settings"
-msgstr "Innstillinger for gjennomsøk"
-
-msgid "Set language and look for FS-UAE applications"
-msgstr "Angi språk og utseende for FS-UAE-programmer"
-
-msgid "Synchronize buffer swaps with display (prevents tearing)"
-msgstr "Synkroniser bufferbytte med skjerm (forhindrer sømmer)"
-
-msgid "Theme"
-msgstr "Tema"
-
-msgid "UAE Graphics Card (Picasso96 Support)"
-msgstr "UAE grafikkort (Picasso96-støtte)"
-
-msgid "Unprotected"
-msgstr "Ubeskyttet"
-
-#, python-brace-format
-msgid "Update Available: {version}"
-msgstr "Oppdatering tilgjengelig: {version}"
-
-msgid "WHDLoad Settings"
-msgstr "WHDLoad-innstillinger"
-
-msgid "Zorro II Fast RAM"
-msgstr "Zorro II Fast RAM"
-
-msgid "Zorro III Fast RAM"
-msgstr "Zorro III Fast RAM"
-
-msgid "uaegfx_card"
-msgstr "uaegfx_card"
 

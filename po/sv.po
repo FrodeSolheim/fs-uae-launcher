@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-04-16 15:17+0200\n"
-"PO-Revision-Date: 2016-04-16 09:20-0400\n"
+"POT-Creation-Date: 2016-04-26 00:40+0200\n"
+"PO-Revision-Date: 2016-05-01 06:24-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Swedish\n"
 "Language: sv_SE\n"
@@ -507,6 +507,9 @@ msgstr ""
 msgid "Expansions"
 msgstr ""
 
+msgid "Expect Specific FS-UAE Version"
+msgstr ""
+
 msgid "Experimental Config Visualization (Requires Restart)"
 msgstr ""
 
@@ -963,9 +966,6 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-msgid "Not Rated"
-msgstr ""
-
 msgid "Not logged in"
 msgstr ""
 
@@ -1050,6 +1050,9 @@ msgid "ROM & RAM"
 msgstr ""
 
 msgid "ROM and RAM"
+msgstr ""
+
+msgid "Rate Variant"
 msgstr ""
 
 #, python-brace-format
@@ -1444,156 +1447,5 @@ msgid "{system} Keyboard"
 msgstr ""
 
 msgid "{} ROM files were imported"
-msgstr ""
-
-msgid "Abort"
-msgstr ""
-
-msgid "All Configurations"
-msgstr ""
-
-msgid "All Games and Configurations"
-msgstr ""
-
-msgid "Also synchronize emulation with display when possible (smooth scrolling)"
-msgstr ""
-
-msgid "Appearance"
-msgstr ""
-
-msgid "Automatic Download"
-msgstr ""
-
-msgid "Buffer swap only"
-msgstr ""
-
-msgid "CPU Accelerator Board"
-msgstr ""
-
-msgid "CPU Accelerator Board RAM"
-msgstr ""
-
-msgid "Click to Download Game"
-msgstr ""
-
-msgid "Click to Import Kickstart ROMs"
-msgstr ""
-
-msgid "Custom IRC server address"
-msgstr ""
-
-msgid "Deprecated Options"
-msgstr ""
-
-msgid "Did not find required Kickstart or ROM"
-msgstr ""
-
-msgid "Dislike This Game Variant"
-msgstr ""
-
-msgid "Enable experimental config visualization (requires restart)"
-msgstr ""
-
-msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
-msgstr ""
-
-msgid "Extended ROM:"
-msgstr ""
-
-msgid "FS-UAE Launcher Settings"
-msgstr ""
-
-msgid "Filter Settings"
-msgstr ""
-
-msgid "Font Size"
-msgstr ""
-
-msgid "Game   Center"
-msgstr ""
-
-msgid "Graphics Card VRAM"
-msgstr ""
-
-msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
-msgstr ""
-
-msgid "Joystick"
-msgstr ""
-
-msgid "Joystick Settings"
-msgstr ""
-
-msgid "Language Preference"
-msgstr ""
-
-msgid "Launch FS-UAE"
-msgstr ""
-
-msgid "Like This Game Variant"
-msgstr ""
-
-msgid "Mark This Game Variant as Personal Favorite"
-msgstr ""
-
-msgid "Memory"
-msgstr ""
-
-msgid "Memory Configuration"
-msgstr ""
-
-msgid "Motherboard Fast RAM"
-msgstr ""
-
-msgid "Netplay Settings"
-msgstr ""
-
-msgid "New Configuration"
-msgstr ""
-
-msgid "Nothing"
-msgstr ""
-
-msgid "OK"
-msgstr ""
-
-msgid "Override Installed Memory"
-msgstr ""
-
-msgid "Save Configuration"
-msgstr ""
-
-msgid "Scan Settings"
-msgstr ""
-
-msgid "Set language and look for FS-UAE applications"
-msgstr ""
-
-msgid "Synchronize buffer swaps with display (prevents tearing)"
-msgstr ""
-
-msgid "Theme"
-msgstr ""
-
-msgid "UAE Graphics Card (Picasso96 Support)"
-msgstr ""
-
-msgid "Unprotected"
-msgstr ""
-
-#, python-brace-format
-msgid "Update Available: {version}"
-msgstr ""
-
-msgid "WHDLoad Settings"
-msgstr ""
-
-msgid "Zorro II Fast RAM"
-msgstr ""
-
-msgid "Zorro III Fast RAM"
-msgstr ""
-
-msgid "uaegfx_card"
 msgstr ""
 

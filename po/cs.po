@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-04-16 15:17+0200\n"
-"PO-Revision-Date: 2016-04-16 09:19-0400\n"
+"POT-Creation-Date: 2016-04-26 00:40+0200\n"
+"PO-Revision-Date: 2016-05-01 06:23-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -508,6 +508,9 @@ msgstr "Chybu při zápisu do obrazu disku"
 msgid "Expansions"
 msgstr "Rozšíření"
 
+msgid "Expect Specific FS-UAE Version"
+msgstr ""
+
 msgid "Experimental Config Visualization (Requires Restart)"
 msgstr ""
 
@@ -964,9 +967,6 @@ msgstr "Žádné skenování neprobíhá"
 msgid "None"
 msgstr "Žádný"
 
-msgid "Not Rated"
-msgstr ""
-
 msgid "Not logged in"
 msgstr "Nepřihlášen"
 
@@ -1052,6 +1052,9 @@ msgstr ""
 
 msgid "ROM and RAM"
 msgstr "ROM a RAM"
+
+msgid "Rate Variant"
+msgstr ""
 
 #, python-brace-format
 msgid "Re-trying in {0} seconds..."
@@ -1446,155 +1449,4 @@ msgstr ""
 
 msgid "{} ROM files were imported"
 msgstr ""
-
-msgid "Abort"
-msgstr "Zrušit"
-
-msgid "All Configurations"
-msgstr "Všechny konfigurace"
-
-msgid "All Games and Configurations"
-msgstr "Všechny hry a konfigurace"
-
-msgid "Also synchronize emulation with display when possible (smooth scrolling)"
-msgstr "Pokud možno, synchronizovat emulaci s displayem (jemnější posuv)"
-
-msgid "Appearance"
-msgstr "Vzhled"
-
-msgid "Automatic Download"
-msgstr "Automatické stahování"
-
-msgid "Buffer swap only"
-msgstr "Pouze prohodit vyrovnávací paměti"
-
-msgid "CPU Accelerator Board"
-msgstr "CPU akcelerátor"
-
-msgid "CPU Accelerator Board RAM"
-msgstr "RAM CPU akcelerátoru"
-
-msgid "Click to Download Game"
-msgstr "Kliknutím stáhnout hru"
-
-msgid "Click to Import Kickstart ROMs"
-msgstr "Kliknutím importovat Kickstart ROM"
-
-msgid "Custom IRC server address"
-msgstr "Vlastní IRC server adresa"
-
-msgid "Deprecated Options"
-msgstr "Neaktuální možnosti"
-
-msgid "Did not find required Kickstart or ROM"
-msgstr ""
-
-msgid "Dislike This Game Variant"
-msgstr "Neoblíbená varianta této hry"
-
-msgid "Enable experimental config visualization (requires restart)"
-msgstr ""
-
-msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
-msgstr ""
-
-msgid "Extended ROM:"
-msgstr "Rozšířená ROM:"
-
-msgid "FS-UAE Launcher Settings"
-msgstr "FS-UAE nastavení spouštění"
-
-msgid "Filter Settings"
-msgstr "Nastavení filtrů"
-
-msgid "Font Size"
-msgstr "Velikost písma"
-
-msgid "Game   Center"
-msgstr ""
-
-msgid "Graphics Card VRAM"
-msgstr "VRAM grafické karty"
-
-msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
-msgstr ""
-
-msgid "Joystick"
-msgstr "Pákový ovladač"
-
-msgid "Joystick Settings"
-msgstr "Joystick nastavení"
-
-msgid "Language Preference"
-msgstr "Jazykové předvolby"
-
-msgid "Launch FS-UAE"
-msgstr "Spustit FS-UAE"
-
-msgid "Like This Game Variant"
-msgstr "Jako je tato varianta hry"
-
-msgid "Mark This Game Variant as Personal Favorite"
-msgstr ""
-
-msgid "Memory"
-msgstr "Paměť"
-
-msgid "Memory Configuration"
-msgstr "Konfigurace paměti"
-
-msgid "Motherboard Fast RAM"
-msgstr "Fast RAM základní desky"
-
-msgid "Netplay Settings"
-msgstr "Nastavení Netplay"
-
-msgid "New Configuration"
-msgstr "Nová konfigurace"
-
-msgid "Nothing"
-msgstr "Nic"
-
-msgid "OK"
-msgstr "OK"
-
-msgid "Override Installed Memory"
-msgstr "Nastavit instalovanou paměť na:"
-
-msgid "Save Configuration"
-msgstr "Uložení konfigurace"
-
-msgid "Scan Settings"
-msgstr ""
-
-msgid "Set language and look for FS-UAE applications"
-msgstr ""
-
-msgid "Synchronize buffer swaps with display (prevents tearing)"
-msgstr ""
-
-msgid "Theme"
-msgstr "Téma"
-
-msgid "UAE Graphics Card (Picasso96 Support)"
-msgstr ""
-
-msgid "Unprotected"
-msgstr "Nechráněné"
-
-#, python-brace-format
-msgid "Update Available: {version}"
-msgstr ""
-
-msgid "WHDLoad Settings"
-msgstr "Nastavení WHDload"
-
-msgid "Zorro II Fast RAM"
-msgstr "Zorro II Fast RAM"
-
-msgid "Zorro III Fast RAM"
-msgstr "Zorro III Fast RAM"
-
-msgid "uaegfx_card"
-msgstr "uaegfx_card"
 
