@@ -377,7 +377,7 @@ options = {
         "description": N_("Hardware Dongle"),
         "type": "Choice",
         "values": [
-            ("0", "None"),
+            ("0", N_("None")),
             ("robocop 3", "RoboCop 3"),
             ("leaderboard", "Leader Board"),
             ("b.a.t. ii", "B.A.T. II"),
@@ -458,8 +458,8 @@ options = {
         "description": N_("Freezer Cartridge"),
         "type": "Choice",
         "values": [
-            ("0", "None"),
-            ("hrtmon", "HRTMon v2.36 (Built-in)"),
+            ("0", N_("None")),
+            ("hrtmon", N_("HRTMon v2.36 (Built-in)")),
             ("action-replay-2", "Action Replay Mk II v2.14"),
             ("action-replay-3", "Action Replay Mk III v3.17"),
         ]

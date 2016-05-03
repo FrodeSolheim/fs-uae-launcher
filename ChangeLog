@@ -1,3 +1,7 @@
+Version 2.7.14dev:
+
+* A3000 chip RAM was erroneously set to 1 MB.
+
 Version 2.7.13dev:
 
 * Show launch dialog when running configs directly from command line.

@@ -21,7 +21,6 @@ class Amiga(object):
             "kickstarts": A1000_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "512",
             }
         },
         {
@@ -33,7 +32,6 @@ class Amiga(object):
             "kickstarts": A500_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "512",
             }
         },
         {
@@ -46,11 +44,8 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A500_KICKSTARTS,
             # "kickstarts": ["0123456789012345678901234567890123456789"],
-
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "512",
-                "slow_memory": "512",
             }
         },
         {
@@ -61,7 +56,6 @@ class Amiga(object):
             "kickstarts": A500P_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "1024",
             }
         },
         {
@@ -72,7 +66,6 @@ class Amiga(object):
             "kickstarts": A600_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "1024",
             }
         },
         {
@@ -83,7 +76,6 @@ class Amiga(object):
             "kickstarts": A1200_3_0_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
             }
         },
         {
@@ -94,7 +86,6 @@ class Amiga(object):
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
             }
         },
         {
@@ -105,7 +96,6 @@ class Amiga(object):
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
             }
         },
         {
@@ -116,7 +106,6 @@ class Amiga(object):
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
             }
         },
         {
@@ -127,7 +116,6 @@ class Amiga(object):
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
             }
         },
         {
@@ -138,7 +126,6 @@ class Amiga(object):
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
             }
         },
         {
@@ -149,7 +136,6 @@ class Amiga(object):
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
             }
         },
         {
@@ -160,8 +146,6 @@ class Amiga(object):
             "kickstarts": A3000_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "1024",
-                "motherboard_ram": "8192",
             }
         },
         {
@@ -172,8 +156,6 @@ class Amiga(object):
             "kickstarts": A4000_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
-                "motherboard_ram": "8192",
             }
         },
         {
@@ -184,8 +166,6 @@ class Amiga(object):
             "kickstarts": A4000_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
-                "motherboard_ram": "8192",
             }
         },
         {
@@ -196,8 +176,6 @@ class Amiga(object):
             "kickstarts": A4000_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
-                "motherboard_ram": "8192",
                 "accelerator": "cyberstorm-ppc",
             }
         },
@@ -209,8 +187,6 @@ class Amiga(object):
             "kickstarts": A4000_KICKSTARTS,
             "ext_roms": [],
             "defaults": {
-                "chip_memory": "2048",
-                "motherboard_ram": "8192",
                 "accelerator": "cyberstorm-ppc",
                 "graphics_card": "picasso-iv-z3"
             }
@@ -223,7 +199,6 @@ class Amiga(object):
             "kickstarts": CD32_KICKSTARTS,
             "ext_roms": CD32_EXT_ROMS,
             "defaults": {
-                "chip_memory": "2048",
             }
         },
         {
@@ -234,7 +209,6 @@ class Amiga(object):
             "kickstarts": CD32_KICKSTARTS,
             "ext_roms": CD32_EXT_ROMS,
             "defaults": {
-                "chip_memory": "2048",
             }
         },
         {
@@ -245,7 +219,6 @@ class Amiga(object):
             "kickstarts": CDTV_KICKSTARTS,
             "ext_roms": CDTV_EXT_ROMS,
             "defaults": {
-                "chip_memory": "1024",
             }
         }
     ]
@@ -259,23 +232,6 @@ class Amiga(object):
     @classmethod
     def get_current_config(cls, config):
         return cls.get_model_config(config.get("amiga_model"))
-
-    @classmethod
-    def get_default_option_value(cls, model, key):
-        model = model.upper()
-        if not model:
-            model = "A500"
-        value = cls.get_model_config(model)["defaults"].get(key, "")
-        if not value:
-            if key == "motherboard_ram":
-                return "0"
-            if key == "zorro_iii_memory":
-                return "0"
-            if key == "fast_memory":
-                return "0"
-            if key == "slow_memory":
-                return "0"
-        return value
 
     @classmethod
     def get_model_config(cls, model):

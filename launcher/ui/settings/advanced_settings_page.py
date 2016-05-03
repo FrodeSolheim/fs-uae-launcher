@@ -16,14 +16,14 @@ class AdvancedSettingsPage(SettingsPage):
                            "not have UI controls")
         self.add_header(icon, title, subtitle)
 
-        label = fsui.MultiLineLabel(self, (
+        label = fsui.MultiLineLabel(self, gettext(
             "You can write key = value pairs here to set FS-UAE options "
             "not currently supported by the user interface. This is only a "
             "temporary feature until the GUI supports all options "
             "directly. "), 640)
         self.layout.add(label, fill=True, margin_bottom=10)
 
-        label = fsui.MultiLineLabel(self, (
+        label = fsui.MultiLineLabel(self, gettext(
             "The options specified here are global and will apply to all "
             "configurations. Config options such as hardware and memory "
             "options will be ignored. Options suitable here are options "
@@ -46,8 +46,6 @@ class AdvancedSettingsPage(SettingsPage):
 
         for line in text.split("\n"):
             line = line.strip()
-            if line.startswith("# You can write key = value pairs here"):
-                continue
             parts = line.split("=", 1)
             if len(parts) == 2:
                 key = parts[0].strip()

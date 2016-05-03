@@ -1,15 +1,24 @@
 import fsui
 from fsgs.context import fsgs
-from ...launcher_config import LauncherConfig
+from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
 
 
 class CustomOptionsPage(fsui.Panel):
-
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
-        # self.layout.add_spacer(20)
+        label = fsui.MultiLineLabel(self, gettext(
+            "You can write key = value pairs here to set FS-UAE options "
+            "not currently supported by the user interface. This is only a "
+            "temporary feature until the GUI supports all options "
+            "directly."), 760)
+        self.layout.add(label, fill=True, margin_bottom=10)
+        label = fsui.MultiLineLabel(self, gettext(
+            "The options specified here will apply to this configuration "
+            "only."), 760)
+        self.layout.add(label, fill=True, margin_bottom=10)
 
         hor_layout = fsui.HorizontalLayout()
         self.layout.add(hor_layout, fill=True, expand=True)
@@ -17,7 +26,7 @@ class CustomOptionsPage(fsui.Panel):
         # hor_layout.add_spacer(20)
         self.text_area = fsui.TextArea(self, font_family="monospace")
         self.text_area.set_min_width(760)
-        self.text_area.set_min_height(460)
+        self.text_area.set_min_height(400)
         self.text_area.set_text(initial_text())
         hor_layout.add(self.text_area, fill=True, expand=True)
         # hor_layout.add_spacer(20)
@@ -42,8 +51,6 @@ class CustomOptionsPage(fsui.Panel):
         # Then we overwrite with specific values
         for line in text.split("\n"):
             line = line.strip()
-            if line.startswith("# You can write key = value pairs here"):
-                continue
             parts = line.split("=", 1)
             if len(parts) == 2:
                 key = parts[0].strip()
@@ -56,7 +63,7 @@ class CustomOptionsPage(fsui.Panel):
 
 
 def initial_text():
-    text = DEFAULT_TEXT
+    text = []
     keys = fsgs.config.values.keys()
     for key in sorted(keys):
         # FIXME: Move to LauncherConfig as a method, maybe use
@@ -69,15 +76,5 @@ def initial_text():
         value = fsgs.config.values[key]
         if not value:
             continue
-        text += "{0} = {1}\n".format(key, value)
-    return text
-
-
-DEFAULT_TEXT = """\
-# You can write key = value pairs here to set FS-UAE options
-# not currently supported by the user interface. This is only a
-# temporary feature until the GUI supports all options directly.
-#
-# The options specified here will apply to this configuration only.
-
-"""
+        text.append("{0} = {1}\n".format(key, value))
+    return "".join(text)
