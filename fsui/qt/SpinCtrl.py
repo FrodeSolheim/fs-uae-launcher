@@ -8,7 +8,7 @@ class SpinCtrl(Widget):
     changed_signal = Signal()
 
     def __init__(self, parent, min_value, max_value, initial_value):
-        super().__init__()
+        super().__init__(parent)
         self.set_widget(QSpinBox(QParent(parent)))
         self._widget.setRange(min_value, max_value)
         self._widget.setValue(initial_value)

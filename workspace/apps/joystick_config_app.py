@@ -1,24 +1,23 @@
 import os
+import subprocess
 import threading
 import traceback
 import weakref
-import subprocess
-from io import TextIOWrapper
-from fsbc.application import Application
 from configparser import ConfigParser
+from io import TextIOWrapper
+
+import fsui
+from fsbc.application import Application
 from fsbc.system import platform
-from launcher.device_manager import DeviceManager
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.FSUAEDeviceHelper import FSUAEDeviceHelper
 from fsgs.input.inputdevice import InputDevice
-import fsui
-from fsgs.FSGSDirectories import FSGSDirectories
-# from workspace.shell import register_window, raise_window
+from launcher.device_manager import DeviceManager
 from launcher.i18n import gettext
 from launcher.ui.skin import Skin
 
 
 class JoystickConfigWindow(fsui.Window):
-
     def __init__(self, parent, device_name):
         title = gettext("Configure {device_name}").format(
             device_name=device_name)
@@ -250,7 +249,8 @@ class JoystickConfigWindow(fsui.Window):
             return path
         return None
 
-    def get_save_path(self, file_name):
+    @staticmethod
+    def get_save_path(file_name):
         dest = FSGSDirectories.get_controllers_dir()
         if not os.path.exists(dest):
             os.makedirs(dest)
@@ -308,9 +308,8 @@ class JoystickConfigWindow(fsui.Window):
 
 
 class MappingButton(fsui.Panel):
-
     def __init__(self, parent, position, direction, name):
-        fsui.Panel.__init__(self, parent)
+        super().__init__(parent)
 
         size = (120, 22)
         self.set_size(size)
@@ -369,22 +368,22 @@ def event_thread(device_name, window_ref):
         parts = line.split(" ")
         if len(parts) < 2:
             continue
-        type = parts[1]
+        type_ = parts[1]
         states = parts[2:]
         update = window.current_state
 
-        if type == "buttons":
+        if type_ == "buttons":
             for i, state in enumerate(states):
                 state = int(state)
                 update["button_{0}".format(i)] = state
 
-        elif type == "axes":
+        elif type_ == "axes":
             for i, state in enumerate(states):
                 state = int(state)
                 update["axis_" + str(i) + "_pos"] = state > 20000
                 update["axis_" + str(i) + "_neg"] = state < -20000
 
-        elif type == "hats":
+        elif type_ == "hats":
             for i, state in enumerate(states):
                 state = int(state)
                 update["hat_" + str(i) + "_left"] = state & HAT_LEFT

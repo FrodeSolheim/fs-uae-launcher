@@ -10,7 +10,7 @@ class Panel(Widget):
 
     def __init__(self, parent, paintable=False):
         unused(paintable)
-        super().__init__()
+        super().__init__(parent)
         self.set_widget(WidgetWithEventHandlers(QParent(parent), self))
         self._widget.move(0, 2000)
         self._widget.setAutoFillBackground(True)
@@ -20,8 +20,6 @@ class Panel(Widget):
         # self.init_widget(parent)
         self.layout = None
         self._painter = None
-        # noinspection PyProtectedMember
-        self._window = parent._window
 
         # QWidget.__init__(self)
         # self.setParent(parent.get_container())

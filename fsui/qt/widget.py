@@ -11,10 +11,11 @@ class Widget(QObject):
 
     destroyed = Signal()
 
-    def __init__(self, *_):
+    def __init__(self, parent, *_):
         super().__init__()
         self._parent = None
-        self._window = None
+        # noinspection PyProtectedMember
+        self._window = parent._window
         self._widget = None
 
     def widget(self):

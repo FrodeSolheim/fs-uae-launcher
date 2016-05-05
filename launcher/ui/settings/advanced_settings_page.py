@@ -20,7 +20,7 @@ class AdvancedSettingsPage(SettingsPage):
             "You can write key = value pairs here to set FS-UAE options "
             "not currently supported by the user interface. This is only a "
             "temporary feature until the GUI supports all options "
-            "directly. "), 640)
+            "directly."), 640)
         self.layout.add(label, fill=True, margin_bottom=10)
 
         label = fsui.MultiLineLabel(self, gettext(

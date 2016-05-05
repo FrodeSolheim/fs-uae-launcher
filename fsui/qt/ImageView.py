@@ -5,7 +5,7 @@ from fsui.qt.widget import Widget
 
 class ImageView(Widget):
     def __init__(self, parent, image, stretch=False):
-        super().__init__()
+        super().__init__(parent)
         self.set_widget(QLabel(QParent(parent)))
         self._widget.setPixmap(image.qpixmap)
         if stretch:
