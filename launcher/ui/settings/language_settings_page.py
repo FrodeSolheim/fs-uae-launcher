@@ -66,10 +66,13 @@ LANGUAGE_ITEMS = [
     ("Dansk", "da", "dk"),
     ("Deutsch", "de", "de"),
     ("English", "en", "gb"),
+    ("Esperanto", "eo", "eo"),
     ("Español", "es", "es"),
     ("Français", "fr", "fr"),
     ("Eλληνικά", "el", "gr"),  # greek
     ("Italiano", "it", "it"),
+    ("Magyar", "hu", "hu"),  # hungarian
+    ("Nederlands", "nl", "nl"),
     ("Norsk (bokmål)", "nb", "no"),
     ("Polski", "pl", "pl"),
     ("Português", "pt", "pt"),

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-04-26 00:40+0200\n"
-"PO-Revision-Date: 2016-05-01 06:23-0400\n"
+"POT-Creation-Date: 2016-05-03 22:34+0200\n"
+"PO-Revision-Date: 2016-05-14 05:19-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -496,6 +496,9 @@ msgstr "Activer/désactiver l'utilisation de la base de données de la Super Nin
 msgid "Enabled"
 msgstr "Activé"
 
+msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches the screen refresh rate."
+msgstr "Activer l'option suivante synchronise l'émulation à l'écran lorsque le taux de rafraîchissement d'émulation correspond à la fréquence de rafraîchissement du moniteur."
+
 msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches thescreen refresh rate."
 msgstr "Activer l'option suivante synchronise l'émulation à l'écran lorsque le taux de rafraîchissement d'émulation correspond à la fréquence de rafraîchissement du moniteur."
 
@@ -678,6 +681,9 @@ msgstr "Créateur HDF"
 
 msgid "HDF Disk Image Creator"
 msgstr "Créateur d'Image Disque HDF"
+
+msgid "HRTMon v2.36 (Built-in)"
+msgstr "HRTMon v2.36 (Intégré)"
 
 msgid "Hard Drives"
 msgstr "Disques Durs"
@@ -1294,6 +1300,12 @@ msgstr "Les options suivantes peuvent affecter les performances, aussi activez l
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr "Les options suivantes s'appliquent uniquement lorsque vous utilisez la prise en charge automatique du support WHDLoad dans le Lanceur FS-UAE, par exemple en relation avec la base de données de jeu en ligne."
 
+msgid "The options specified here are global and will apply to all configurations. Config options such as hardware and memory options will be ignored. Options suitable here are options like theme options."
+msgstr "Les options spécifiées ici sont globales et s'appliqueront à toutes les configurations. Les options de configuration telles que les options matérielles et de la mémoire seront ignorées. Les options valides ici sont les options comme les options de thème."
+
+msgid "The options specified here will apply to this configuration only."
+msgstr "Les options spécifiées ici s'appliqueront à cette configuration uniquement."
+
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Ce jeu peut peut être téléchargé automatiquement si vous en acceptez les termes"
 
@@ -1429,6 +1441,9 @@ msgstr "Écrire les fichiers de métadonnées .uaem"
 
 msgid "Year"
 msgstr "Année "
+
+msgid "You can write key = value pairs here to set FS-UAE options not currently supported by the user interface. This is only a temporary feature until the GUI supports all options directly."
+msgstr "Vous pouvez écrire clé = paires de valeur ici pour définir les option de FS-UAE qui ne sont pas actuellement pris en charge par l'interface utilisateur. C'est seulement une fonction temporaire jusqu'à ce que l'interface graphique prenne en charge toutes les options directement."
 
 msgid "You should have kickstart files for each Amiga model you want to use:"
 msgstr "Kickstart original recommandé pour chaque modèle d'Amiga que vous souhaitez utiliser :"

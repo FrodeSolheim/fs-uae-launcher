@@ -2,6 +2,8 @@ Version 2.7.14dev:
 
 * Fixed recently introduced problem using joystick configuration tool.
 * A3000 chip RAM was erroneously set to 1 MB.
+* Added new languages to language selector: Esperanto, Dutch and Hungarian.
+* Imported updated translations from crowdin.com.
 
 Version 2.7.13dev:
 

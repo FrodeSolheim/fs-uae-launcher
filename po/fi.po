@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-04-26 00:40+0200\n"
-"PO-Revision-Date: 2016-05-01 06:23-0400\n"
+"POT-Creation-Date: 2016-05-03 22:34+0200\n"
+"PO-Revision-Date: 2016-05-14 05:19-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -496,6 +496,9 @@ msgstr "Super Nintendo tietokanta käytössä / pois käytöstä"
 msgid "Enabled"
 msgstr "Käytössä"
 
+msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches the screen refresh rate."
+msgstr "Tämän valinnan aktivointi synkronoi emulaation näytön kanssa jos emulaation virkistystaajuus on sama näytön virkistystaajuuden kanssa."
+
 msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches thescreen refresh rate."
 msgstr "Tämän valinnan aktivointi synkronoi emulaation näytön kanssa jos emulaation virkistystaajuus on sama näytön virkistystaajuuden kanssa."
 
@@ -678,6 +681,9 @@ msgstr "HDF levykuvaluoja"
 
 msgid "HDF Disk Image Creator"
 msgstr "HDF kovalevykuvan luoja"
+
+msgid "HRTMon v2.36 (Built-in)"
+msgstr "HRTMon v2.36 (sisäänrakennettu)"
 
 msgid "Hard Drives"
 msgstr "Kovalevyt"
@@ -1294,6 +1300,12 @@ msgstr "Seuraavat valinnat voivat vaikuttaa suorituskykyyn, joten aktivoi ne ain
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
 msgstr "Seuraavat valinnat vaikuttavat vain kun käytät automaattista FS-UAE Launcherin WHDLoad tukea, esimerkiksi Online-pelitietokannan kanssa."
 
+msgid "The options specified here are global and will apply to all configurations. Config options such as hardware and memory options will be ignored. Options suitable here are options like theme options."
+msgstr "Täällä määritellyt valinnat ovat kokonaisvaltaisia ja vaikuttavat kaikkiin kokoonpanoihin. Asetusmääritykset kuten rauta- ja muistivalinnat jätetään huomioimatta. Sopivia valintoja ovat teemavalinnan kaltaiset valinnat."
+
+msgid "The options specified here will apply to this configuration only."
+msgstr "Täällä määritellyt valinnat vaikuttavat vain tähän kokoonpanoon."
+
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Peli voidaan ladata automaattisesti jos hyväksyt käyttöehdot"
 
@@ -1429,6 +1441,9 @@ msgstr "Tallenna .uaem metatieto-tiedostot"
 
 msgid "Year"
 msgstr "Vuosi"
+
+msgid "You can write key = value pairs here to set FS-UAE options not currently supported by the user interface. This is only a temporary feature until the GUI supports all options directly."
+msgstr "Voit määritellä avain = arvopareja asettaaksesi FS-UAE valintoja joita ei tällä hetkellä tueta käyttöliittymässä. Tämä on vain väliaikainen ominaisuus kunnes käyttöliittymä tukee kaikki valintoja suoraan."
 
 msgid "You should have kickstart files for each Amiga model you want to use:"
 msgstr "Sinulla täytyy olla Kickstart tiedosto jokaiselle Amiga-mallille mitä haluat käyttää:"
