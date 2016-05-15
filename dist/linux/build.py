@@ -42,13 +42,16 @@ def s(command):
 
 
 def wrap(name, target, args=None):
+    if target is None:
+        target = name + ".bin"
+        os.rename(name, target)
     if args is None:
         args = ["$@"]
     path = os.path.join(package_dir, name)
     with open(path, "w") as f:
         f.write("#!/bin/sh\n")
         f.write("MYDIR=$(dirname \"$0\")\n")
-        f.write("export LD_LIBRARY_PATH=\"$MYDIR:$LD_LIBRARY_PATH\"\n")
+        # f.write("export LD_LIBRARY_PATH=\"$MYDIR:$LD_LIBRARY_PATH\"\n")
         command = "\"$MYDIR/{0}\"".format(target)
         for arg in args:
             command += " \"{0}\"".format(arg)
@@ -90,9 +93,10 @@ s("rm -f {package_dir}/platforms/libqdirectfb.so")
 s("rm -f {package_dir}/platforms/libqlinuxfb.so")
 s("rm -f {package_dir}/platforms/libqminimal.so")
 s("rm -f {package_dir}/platforms/libqoffscreen.so")
-s("./standalone.py {package_dir}/platforms")
+s("./standalone-linux.py {package_dir}/platforms")
 s("mv {package_dir}/platforms/*.so.* {package_dir}")
-s("strip {package_dir}/platforms/*.so")
+s("./standalone-linux.py --no-copy --strip --rpath='$ORIGIN/..' {package_dir}/platforms")
+# s("rm {package_dir}/platforms/*.so.*")
 
 s("rm -f {package_dir}/imageformats/libqdds.so")
 s("rm -f {package_dir}/imageformats/libqicns.so")
@@ -103,9 +107,10 @@ s("rm -f {package_dir}/imageformats/libqtga.so")
 s("rm -f {package_dir}/imageformats/libqtiff.so")
 s("rm -f {package_dir}/imageformats/libqwbmp.so")
 s("rm -f {package_dir}/imageformats/libqwebp.so")
-s("./standalone.py {package_dir}/imageformats")
+s("./standalone-linux.py {package_dir}/imageformats")
 s("mv {package_dir}/imageformats/*.so.* {package_dir}")
-s("strip {package_dir}/imageformats/*.so")
+s("./standalone-linux.py --no-copy --strip --rpath='$ORIGIN/..' {package_dir}/imageformats")
+# s("rm {package_dir}/imageformats/*.so.*")
 
 from PyQt5 import QtCore
 dir0 = os.path.join(os.path.dirname(QtCore.__file__), "plugins")
@@ -114,9 +119,10 @@ for libpath in QtCore.QCoreApplication.libraryPaths() + [dir0]:
     p = os.path.join(libpath, "xcbglintegrations")
     if os.path.exists(p):
         s("cp -a \"{0}\" {{package_dir}}/".format(p))
-s("./standalone.py {package_dir}/xcbglintegrations")
+s("./standalone-linux.py {package_dir}/xcbglintegrations")
 s("mv {package_dir}/xcbglintegrations/*.so.* {package_dir}")
-s("strip {package_dir}/xcbglintegrations/*.so")
+s("./standalone-linux.py --no-copy --strip --rpath='$ORIGIN/..' {package_dir}/xcbglintegrations")
+# s("rm {package_dir}/xcbglintegrations/*.so.*")
 
 # s("mv {package_dir}/platforms/* {package_dir}")
 # s("mv {package_dir}/imageformats/* {package_dir}")
@@ -125,10 +131,16 @@ s("strip {package_dir}/xcbglintegrations/*.so")
 # s("rm -Rf {package_dir}/imageformats")
 # s("rm -Rf {package_dir}/xcbglintegrations")
 
-s("./standalone.py {package_dir}")
+# s("./standalone-linux.py {package_dir}")
+# s("strip {package_dir}/*.so.*")
+# s("strip {package_dir}/*.so")
 
-s("strip {package_dir}/*.so.*")
-s("strip {package_dir}/*.so")
+# Must remove .standalone files to force processing the ones copied
+# from the Qt plugin dirs
+s("find {package_dir} -name '*.standalone' -delete")
+s("./standalone-linux.py --strip --rpath='$ORIGIN' {package_dir}")
+s("find {package_dir} -name '*.standalone' -delete")
+
 s("chmod a-x {package_dir}/*.so")
 s("cd ../.. && make")
 s("cp -a ../../share {package_dir}")
@@ -161,9 +173,10 @@ s("zip -d {package_dir}/library.zip workspace/\*")
 
 s("cp -a ../python/*.zip {package_dir}")
 
-s("mv {package_dir}/fs-uae-launcher {package_dir}/fs-uae-launcher.bin")
-wrap("fs-uae-launcher", "fs-uae-launcher.bin")
-wrap("fs-uae-arcade", "fs-uae-launcher.bin", ["--fs-uae-arcade", "$@"])
+if os_name == "steamos":
+    # s("mv {package_dir}/fs-uae-launcher {package_dir}/fs-uae-launcher.bin")
+    wrap("fs-uae-launcher")
+    wrap("fs-uae-arcade", "fs-uae-launcher.bin", ["--fs-uae-arcade", "$@"])
 
 s("cd {package_dir} && tar Jcfv ../../../{full_package_name}.tar.xz *")
 

@@ -297,7 +297,7 @@ copy_files = [
     "dist/arch.py",
     "dist/linux/build.py",
     "dist/linux/Makefile",
-    "dist/linux/standalone.py",
+    "dist/linux/standalone-linux.py",
     "dist/macosx/Makefile",
     "dist/macosx/fs-make-standalone-app.py",
     "dist/macosx/Info.plist",
