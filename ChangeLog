@@ -1,3 +1,7 @@
+Version 2.7.15dev:
+
+* Imported updated translations from crowdin.com.
+
 Version 2.7.14dev:
 
 * Fixed recently introduced problem using joystick configuration tool.
@@ -39,7 +43,7 @@ Version 2.7.11dev:
 Version 2.7.10dev:
 
 * It is now possible (but highly discouraged) to put config options in
-  advanced settings to function is global defaults. You will get a
+  advanced settings to function as global defaults. You will get a
   warning message on the status bar if you do this.
 * If a required ROM is not find, be more specific about which one.
 * Launch dialog replaced with "inline" status information.

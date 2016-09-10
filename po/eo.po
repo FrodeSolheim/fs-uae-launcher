@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
 "POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-05-14 05:19-0400\n"
+"PO-Revision-Date: 2016-09-10 15:11-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Esperanto\n"
 "Language: eo_UY\n"
@@ -44,7 +44,7 @@ msgid "ADF Creator"
 msgstr "ADF Kreilo"
 
 msgid "ADF Disk Image Creator"
-msgstr ""
+msgstr "Kreilo de ADF disketbildojn"
 
 msgid "About"
 msgstr "Pri"
@@ -63,7 +63,7 @@ msgid "Accept"
 msgstr "Akcepti"
 
 msgid "Accuracy:"
-msgstr ""
+msgstr "Ekzakto:"
 
 msgid "Add"
 msgstr "Aldoni"
@@ -72,28 +72,28 @@ msgid "Add Directory to Search Path"
 msgstr ""
 
 msgid "Add Files to List"
-msgstr ""
+msgstr "Aldoni dosierojn al listo"
 
 msgid "Add Multiple CD-ROMs at Once"
-msgstr ""
+msgstr "Aldoni plurajn KD-ojn samtempe"
 
 msgid "Add Multiple Floppies at Once"
-msgstr ""
+msgstr "Aldoni plurajn disketojn samtempe"
 
 msgid "Additional Configuration"
-msgstr ""
+msgstr "Kroma agordo"
 
 msgid "Adult-Themed Games"
-msgstr ""
+msgstr "Adoltaj ludoj"
 
 msgid "Advanced"
-msgstr ""
+msgstr "Speciala"
 
 msgid "Advanced Audio Options"
 msgstr ""
 
 msgid "Advanced Settings"
-msgstr ""
+msgstr "Specialaj agordoj"
 
 msgid "Advanced Video"
 msgstr ""
@@ -102,25 +102,25 @@ msgid "Advanced Video Settings"
 msgstr ""
 
 msgid "All"
-msgstr ""
+msgstr "Ĉio"
 
 msgid "All Games"
-msgstr ""
+msgstr "Ĉiuj ludoj"
 
 msgid "Amiga Forever Import"
-msgstr ""
+msgstr "Importi el Amiga Forever"
 
 msgid "Amiga Forever import task started"
 msgstr ""
 
 msgid "Amiga Joystick"
-msgstr ""
+msgstr "Amiga stirstango"
 
 msgid "Amiga Model"
 msgstr "Modelo de Amiga"
 
 msgid "Amiga Mouse"
-msgstr ""
+msgstr "Amiga muzo"
 
 msgid "An Error Occurred"
 msgstr "Okazis eraron"
@@ -177,13 +177,13 @@ msgid "Available and Downloadable Games"
 msgstr "Disponeblaj kaj elŝuteblaj ludoj"
 
 msgid "Bad Variant"
-msgstr ""
+msgstr "Malbona variaĵo"
 
 msgid "Best Variant"
-msgstr ""
+msgstr "Plej bona variaĵo"
 
 msgid "Blizzard SCSI Kit"
-msgstr ""
+msgstr "Blizzard SCSI ilaro"
 
 msgid "Browse"
 msgstr "Foliumi"
@@ -198,7 +198,7 @@ msgid "CD-ROM Drive"
 msgstr "KD-Legilo"
 
 msgid "CD-ROM Drive Count"
-msgstr ""
+msgstr "Nombro de KD-legiloj"
 
 msgid "CD-ROM Drives"
 msgstr "KD-Legiloj"
@@ -220,7 +220,7 @@ msgid "Cannot find required ROM file: {name}"
 msgstr ""
 
 msgid "Change fullscreen mode (desktop, fullscreen, window)"
-msgstr ""
+msgstr "Ŝanĝi plenekranan reĝimon (labortablo, plenekrano, fenestro)"
 
 msgid "Checksumming"
 msgstr "Kontrolsumas"
@@ -232,22 +232,22 @@ msgid "Chip RAM"
 msgstr ""
 
 msgid "Choose CD-ROM Image"
-msgstr "Elektu diskbildon"
+msgstr "Elekti diskbildon"
 
 msgid "Choose Extended ROM"
 msgstr ""
 
 msgid "Choose Floppy Image"
-msgstr ""
+msgstr "Elekti disketbildon"
 
 msgid "Choose Hard Drive"
 msgstr "Elekti Durdiskon"
 
 msgid "Choose Kickstart ROM"
-msgstr "Elektu memoron de Kickstart"
+msgstr "Elekti memoron de Kickstart"
 
 msgid "Choose Type"
-msgstr ""
+msgstr "Elekti specon"
 
 msgid "Choose what folders you want to scan for Amiga files"
 msgstr ""
@@ -259,7 +259,7 @@ msgid "Clear List"
 msgstr "Malplenigi Liston"
 
 msgid "Click 'Scan' button if you want to re-scan"
-msgstr ""
+msgstr "Klaku \"Skani\" se vi volas reskani"
 
 msgid "Click 'Scan' button to start scan"
 msgstr "Klaku \"Skani\" por ekskani"
@@ -271,7 +271,7 @@ msgid "Close"
 msgstr "Fermi"
 
 msgid "Committing data..."
-msgstr ""
+msgstr "Enmetas datumojn..."
 
 msgid "Committing locker data..."
 msgstr ""
@@ -306,7 +306,7 @@ msgstr ""
 
 #, python-brace-format
 msgid "Configure {device_name}"
-msgstr ""
+msgstr "Agordi {device_name}"
 
 msgid "Connect"
 msgstr "Konekti"
@@ -330,7 +330,7 @@ msgid "Create a single-partition or partitionable hard drive image"
 msgstr ""
 
 msgid "Create an account now"
-msgstr ""
+msgstr "Krei konton nun"
 
 msgid "Create disk image of type:"
 msgstr ""
@@ -345,10 +345,10 @@ msgid "Custom Configuration"
 msgstr "Laŭmenda agordo"
 
 msgid "Custom IRC Server"
-msgstr ""
+msgstr "Laŭmenda IRC servilo"
 
 msgid "Custom Joystick Port"
-msgstr ""
+msgstr "Laŭmenda stirstangpordo"
 
 #, python-brace-format
 msgid "Custom Option: {name}"
@@ -358,10 +358,10 @@ msgid "Custom Options"
 msgstr "Laŭmendaj agordoj"
 
 msgid "Custom uae_ Options"
-msgstr ""
+msgstr "Laŭmendaj uae_ agordoj"
 
 msgid "Database Games"
-msgstr ""
+msgstr "Datumbazludoj"
 
 msgid "Default"
 msgstr "Defaŭta"
@@ -375,14 +375,14 @@ msgid "Default - {0}"
 msgstr "Defaŭta - {0}"
 
 msgid "Defragment Databases"
-msgstr ""
+msgstr "Malfragmenti datumbazojn"
 
 msgid "Defragmenting the databases will improve performance by ensuring that tables and indices are stored contiguously on disk. It will also reclaim some storage space."
 msgstr ""
 
 #, python-brace-format
 msgid "Defragmenting {name}"
-msgstr ""
+msgstr "{name} malfragmentiĝas"
 
 msgid "Delayed CD-ROM Insert"
 msgstr ""
@@ -394,7 +394,7 @@ msgid "Depending on your OS and OpenGL drivers, video synchronization can use ne
 msgstr ""
 
 msgid "Deprecated: uaegfx_card"
-msgstr ""
+msgstr "Evitinda: uaegfx_card"
 
 msgid "Device ID used with OAGD.net authentication"
 msgstr ""
@@ -430,15 +430,15 @@ msgid "Download Game"
 msgstr "Elŝuti ludon"
 
 msgid "Download Game Manually"
-msgstr ""
+msgstr "Elŝuti ludon permane"
 
 #, python-brace-format
 msgid "Download failed (attempt {0}) - retrying in {0} seconds"
-msgstr ""
+msgstr "La elŝuto fiaskis ({0} a provo) - reprovos en {0} sekundoj"
 
 #, python-brace-format
 msgid "Download failed (attempt {0}) - retrying in {1} seconds"
-msgstr ""
+msgstr "La elŝuto fiaskis ({0} a provo) - reprovos en {1} sekundoj"
 
 #, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
@@ -449,7 +449,7 @@ msgid "Downloading {0}..."
 msgstr "Elŝutas {0}..."
 
 msgid "Drive Count"
-msgstr ""
+msgstr "Nombro de diskoj"
 
 msgid "E-mail:"
 msgstr "Retadreso:"
@@ -470,28 +470,28 @@ msgid "Enable/disable use of OAGD.net locker"
 msgstr ""
 
 msgid "Enable/disable use of the Amstrad CPC game database"
-msgstr ""
+msgstr "Ŝalti/malŝalti la uzon del Amstrad CPC luddatumbazon"
 
 msgid "Enable/disable use of the Arcade game database"
 msgstr ""
 
 msgid "Enable/disable use of the Atari ST game database"
-msgstr ""
+msgstr "Ŝalti/malŝalti la uzon del Atari ST luddatumbazon"
 
 msgid "Enable/disable use of the Commodore 64 (C64) database"
-msgstr ""
+msgstr "Ŝalti/malŝalti la uzon del Commodore 64 (C64) luddatumbazon"
 
 msgid "Enable/disable use of the DOS game database"
-msgstr ""
+msgstr "Ŝalti/malŝalti la uzon del DOS luddatumbazon"
 
 msgid "Enable/disable use of the Game Boy Advance database"
-msgstr ""
+msgstr "Ŝalti/malŝalti la uzon del Game Boy Advance luddatumbazon"
 
 msgid "Enable/disable use of the Nintendo (NES) database"
-msgstr ""
+msgstr "Ŝalti/malŝalti la uzon del Nintendo (NES) luddatumbazon"
 
 msgid "Enable/disable use of the Super Nintendo database"
-msgstr ""
+msgstr "Ŝalti/malŝalti la uzon del Super Nintendo luddatumbazon"
 
 msgid "Enabled"
 msgstr "Ŝaltita"
@@ -518,7 +518,7 @@ msgid "Experimental Config Visualization (Requires Restart)"
 msgstr ""
 
 msgid "Experimental Features"
-msgstr ""
+msgstr "Eksperimentaj funkcioj"
 
 msgid "Extended ROM"
 msgstr ""
@@ -533,7 +533,7 @@ msgid "Fast RAM"
 msgstr "Rapida RAM"
 
 msgid "Favorites"
-msgstr ""
+msgstr "Preferataj"
 
 #, python-brace-format
 msgid "Fetching database entries ({0})"
@@ -554,7 +554,7 @@ msgid "Fetching user game ratings ({0})"
 msgstr ""
 
 msgid "File Database"
-msgstr ""
+msgstr "Dosierdatumbazo"
 
 msgid "File Database Settings"
 msgstr ""
@@ -584,13 +584,13 @@ msgid "Floppies"
 msgstr "Moldaj diskoj"
 
 msgid "Floppy Drive Count"
-msgstr ""
+msgstr "Nombro de disketlegiloj"
 
 msgid "Floppy Drive Sound Emulation"
 msgstr ""
 
 msgid "Floppy Drive Speed"
-msgstr ""
+msgstr "Disketlegilrapido"
 
 msgid "Floppy Drive Volume"
 msgstr ""
@@ -632,28 +632,28 @@ msgid "Game Database Server"
 msgstr ""
 
 msgid "Game Database Settings"
-msgstr ""
+msgstr "Agordoj de luddatumbazo"
 
 msgid "Game database authentication"
 msgstr ""
 
 msgid "Game database email"
-msgstr ""
+msgstr "Retpoŝtadreso de luddatumbazo"
 
 msgid "Game database password"
-msgstr ""
+msgstr "Pasvorto de luddatumbazo"
 
 msgid "Game database user name"
 msgstr ""
 
 msgid "Gamepad"
-msgstr ""
+msgstr "Ludregilo"
 
 msgid "Games"
 msgstr "Ludoj"
 
 msgid "Good Variant"
-msgstr ""
+msgstr "Bona variaĵo"
 
 msgid "Grab Input on Click"
 msgstr ""
@@ -716,20 +716,20 @@ msgid "How to achieve perfectly smooth scrolling"
 msgstr ""
 
 msgid "IRC nickname"
-msgstr ""
+msgstr "IRC kaŝnomo"
 
 #, python-brace-format
 msgid "If you own Amiga Forever, select the drive/folder and click \"{0}\""
-msgstr ""
+msgstr "Se vi posedas Amiga Forever, elektu la diskon/dosieron kaj klaku \"{0}\""
 
 msgid "Import"
-msgstr "Enporti"
+msgstr "Importi"
 
 msgid "Import From Amiga Forever CD/DVD"
-msgstr "Enporti el KD/DVD de Amiga Forever"
+msgstr "Importi el KD/DVD de Amiga Forever"
 
 msgid "Import Kickstarts"
-msgstr ""
+msgstr "Importi Kickstart-ojn"
 
 msgid "Import Kickstarts and ROMs"
 msgstr ""
@@ -756,19 +756,19 @@ msgid "Invalid size specified"
 msgstr ""
 
 msgid "JIT Compiler"
-msgstr ""
+msgstr "Ĝustatempa programtradukilo"
 
 msgid "JIT compiler with a PPC-only OS is not recommended"
-msgstr ""
+msgstr "Uzi ĝustatempan programtradukilon kun PPC-operaciumo ne estas rekomendita"
 
 msgid "Joystick & Mouse Port"
-msgstr ""
+msgstr "Pordo de stirstango kaj muso"
 
 msgid "Joystick Ports"
 msgstr "Stirstangaj Pordoj"
 
 msgid "Joysticks & Gamepads"
-msgstr ""
+msgstr "Stirstangoj kaj ludregiloj"
 
 msgid "Keep aspect ratio when scaling (do not stretch)"
 msgstr ""
@@ -783,13 +783,13 @@ msgid "Keyboard Settings"
 msgstr "Agordoj de klavaro"
 
 msgid "Keyword"
-msgstr ""
+msgstr "Ŝlosilvorto"
 
 msgid "Kickstart ROM"
 msgstr "Kickstart ROM"
 
 msgid "Kickstart import task started"
-msgstr ""
+msgstr "La importo de Kickstart komencis"
 
 msgid "Language"
 msgstr "Lingvo"
@@ -801,7 +801,7 @@ msgid "Launcher Font Size"
 msgstr ""
 
 msgid "Launcher Theme"
-msgstr ""
+msgstr "Etoso del lanĉilo"
 
 msgid "Launching FS-UAE"
 msgstr "Lanĉas FS-UAE"
@@ -843,13 +843,13 @@ msgid "Log Out"
 msgstr "Elsaluti"
 
 msgid "Log Out from Your OAGD.net Account"
-msgstr ""
+msgstr "Elsaluti el via OAGD.net konto"
 
 msgid "Log database query plans"
 msgstr ""
 
 msgid "Logging"
-msgstr ""
+msgstr "Ensalutas"
 
 msgid "Logging in will enable the online game database and more"
 msgstr ""
@@ -882,7 +882,7 @@ msgid "Media Swap List"
 msgstr ""
 
 msgid "Medium"
-msgstr ""
+msgstr "Datumportilo"
 
 msgid "Middle Left"
 msgstr "Mezmaldekstra"
@@ -895,10 +895,10 @@ msgid "Miscellaneous functions to optimize {name}"
 msgstr ""
 
 msgid "Missing Files"
-msgstr ""
+msgstr "Mankantaj dosierojn"
 
 msgid "Missing Game Files"
-msgstr ""
+msgstr "Mankantaj dosieroj de ludo"
 
 msgid "Model:"
 msgstr "Modelo:"
@@ -913,20 +913,20 @@ msgid "Motherboard RAM"
 msgstr ""
 
 msgid "Mouse"
-msgstr "Muzo"
+msgstr "Muso"
 
 msgid "Mouse Settings"
-msgstr "Agordoj de Muzo"
+msgstr "Musagordoj"
 
 msgid "Mouse Speed (%)"
-msgstr ""
+msgstr "Musrapido (%)"
 
 #, python-brace-format
 msgid "Mouse: {system} Mouse"
-msgstr ""
+msgstr "Muso: {system} Muso"
 
 msgid "Multi-Select..."
-msgstr ""
+msgstr "Pluropa elekto..."
 
 msgid "N/A"
 msgstr "Nedisponebla"
@@ -941,7 +941,7 @@ msgid "Net play tag (max 3 characters)"
 msgstr ""
 
 msgid "Network Card"
-msgstr ""
+msgstr "Retkarto"
 
 msgid "New Config"
 msgstr "Nova agordo"
@@ -950,7 +950,7 @@ msgid "Nick:"
 msgstr "Kromnomo:"
 
 msgid "No Amiga Device"
-msgstr ""
+msgstr "Neniu Amiga aparato"
 
 msgid "No Device"
 msgstr "Neniu aparato"
@@ -962,7 +962,7 @@ msgid "No Last Played"
 msgstr ""
 
 msgid "No Protection"
-msgstr ""
+msgstr "Senprotekta"
 
 msgid "No extended kickstart found for this model. Try 'scan' function."
 msgstr ""
@@ -974,7 +974,7 @@ msgid "None"
 msgstr "Neniu"
 
 msgid "Not logged in"
-msgstr ""
+msgstr "Ne estas ensaluta"
 
 msgid "OAGD.net Locker Uploader"
 msgstr ""
@@ -1002,14 +1002,14 @@ msgid "Options for WHDLoad support in FS-UAE Launcher"
 msgstr ""
 
 msgid "Other Device"
-msgstr ""
+msgstr "Alia aparato"
 
 #, python-brace-format
 msgid "Outdated plugins: {0}"
 msgstr ""
 
 msgid "Parallel Port Joysticks"
-msgstr ""
+msgstr "Paralelaj stirstangpordoj"
 
 msgid "Password:"
 msgstr "Pasvorto:"
@@ -1030,13 +1030,13 @@ msgid "Preferred Joysticks"
 msgstr "Preferataj stirstangoj"
 
 msgid "Preferred device for secondary joystick:"
-msgstr ""
+msgstr "Preferata aparato por duaranga stirstango:"
 
 msgid "Preparing WHDLoad..."
 msgstr "Pretigas WHDLoad..."
 
 msgid "Preparing floppy images..."
-msgstr ""
+msgstr "Pretigas disketbildojn..."
 
 msgid "Preparing hard drives..."
 msgstr "Pretigas fiksitajn diskojn..."
@@ -1048,7 +1048,7 @@ msgid "Preparing..."
 msgstr "Pretigas..."
 
 msgid "Purging old entries..."
-msgstr ""
+msgstr "Viŝas malnovajn enigojn..."
 
 msgid "Quit"
 msgstr "Eliri"
@@ -1064,7 +1064,7 @@ msgstr ""
 
 #, python-brace-format
 msgid "Re-trying in {0} seconds..."
-msgstr ""
+msgstr "Reprovos en {0} sekundoj..."
 
 msgid "Read more"
 msgstr "Legi pli"
@@ -1076,7 +1076,7 @@ msgid "Reject"
 msgstr "Malakcepti"
 
 msgid "Relative paths"
-msgstr ""
+msgstr "Relativaj dosierindikoj"
 
 msgid "Relax host CPU usage when using fastest-possible CPU"
 msgstr ""
@@ -1098,7 +1098,7 @@ msgid "Render scan lines in RTG graphics mode"
 msgstr ""
 
 msgid "Reset password via e-mail"
-msgstr ""
+msgstr "Reŝanĝi pasvorton per retpoŝto"
 
 msgid "Resetting game database..."
 msgstr "Reŝargas datumbazon de ludojn..."
@@ -1114,7 +1114,7 @@ msgid "Right"
 msgstr "Dekstra"
 
 msgid "Running: Emulator"
-msgstr ""
+msgstr "Plenumas: Imitilo"
 
 msgid "Save"
 msgstr "Konservi"
@@ -1144,16 +1144,16 @@ msgid "Scan Downloads"
 msgstr "Skani elŝutojn"
 
 msgid "Scan complete"
-msgstr ""
+msgstr "La skano kompletiĝis"
 
 msgid "Scan error"
-msgstr ""
+msgstr "La skano fiaskis"
 
 msgid "Scan for Kickstarts, Files and Configurations"
 msgstr ""
 
 msgid "Scanning .fs-uae files..."
-msgstr ""
+msgstr "Skanas dosierojn .fs-uae..."
 
 msgid "Scanning configurations"
 msgstr ""
@@ -1177,16 +1177,16 @@ msgstr "Skanas ludojn"
 
 #, python-brace-format
 msgid "Scanning games ({count} scanned)"
-msgstr ""
+msgstr "Skanas ludojn ({count} skanitaj)"
 
 msgid "Select Destination Directory"
 msgstr ""
 
 msgid "Select First Letter"
-msgstr ""
+msgstr "Elekti unuan literon"
 
 msgid "Select Keyword"
-msgstr ""
+msgstr "Elekti ŝlosilvorton"
 
 msgid "Select List"
 msgstr "Elekti liston"
@@ -1223,7 +1223,7 @@ msgid "Show window border and decorations"
 msgstr ""
 
 msgid "Shuffle"
-msgstr ""
+msgstr "Miksi"
 
 msgid "Size:"
 msgstr "Grando:"
@@ -1232,7 +1232,7 @@ msgid "Slow RAM"
 msgstr "Malrapida RAM"
 
 msgid "Sound Card"
-msgstr ""
+msgstr "Sonkarto"
 
 msgid "Specified directory does not exist"
 msgstr ""
@@ -1241,19 +1241,19 @@ msgid "Specify global options and settings which does not have UI controls"
 msgstr ""
 
 msgid "Standard"
-msgstr ""
+msgstr "Norma"
 
 msgid "Start"
 msgstr "Komenci"
 
 msgid "Start FS-UAE in fullscreen mode"
-msgstr ""
+msgstr "Startigi FS-UAE plenekrane"
 
 msgid "Start with full keyboard emulation"
 msgstr ""
 
 msgid "Starting scan"
-msgstr ""
+msgstr "Ekskani"
 
 msgid "Stereo Separation"
 msgstr ""
@@ -1262,13 +1262,13 @@ msgid "Stop"
 msgstr "Halti"
 
 msgid "Stopped by user"
-msgstr ""
+msgstr "Haltita per uzanto"
 
 msgid "Swap left and right CTRL keys"
 msgstr ""
 
 msgid "Synchronization"
-msgstr ""
+msgstr "Sinkronigo"
 
 msgid "Synchronize FS-UAE with your display for smooth video"
 msgstr ""
@@ -1286,10 +1286,10 @@ msgid "System"
 msgstr "Sistemo"
 
 msgid "Terms of Download"
-msgstr ""
+msgstr "Elŝutaj terminoj"
 
 msgid "Texture filter"
-msgstr ""
+msgstr "Teksturfiltrilo"
 
 msgid "The following joystick will be preferred, if present:"
 msgstr ""
@@ -1331,27 +1331,27 @@ msgid "Ungrab Input on Middle Mouse Button"
 msgstr ""
 
 msgid "Update File Database"
-msgstr ""
+msgstr "Ĝisdatigi dosierdatumbazon"
 
 msgid "Update Game Database"
-msgstr ""
+msgstr "Ĝisdatigas luddatumbazon"
 
 #, python-brace-format
 msgid "Update available: {version}"
 msgstr ""
 
 msgid "Updating Database"
-msgstr ""
+msgstr "Ĝisdatigas datumbazon"
 
 msgid "Updating database"
-msgstr ""
+msgstr "Ĝisdatigas datumbazon"
 
 msgid "Updating game lists..."
-msgstr ""
+msgstr "Ĝisdatigas listojn de ludojn..."
 
 #, python-brace-format
 msgid "Updating list '{0}'..."
-msgstr ""
+msgstr "Ĝisdatigas liston '{0}'..."
 
 msgid "Updating locker data..."
 msgstr ""
@@ -1380,7 +1380,7 @@ msgid "Using Kickstart ROM replacement"
 msgstr ""
 
 msgid "V-Sync"
-msgstr ""
+msgstr "Vertikala sinkronigo"
 
 msgid "Video"
 msgstr ""
@@ -1410,7 +1410,7 @@ msgid "WHDLoad"
 msgstr "WHDLoad"
 
 msgid "WHDLoad Arguments"
-msgstr ""
+msgstr "Argumentoj de WHDLoad"
 
 msgid "WHDLoad splash delay"
 msgstr ""
@@ -1460,7 +1460,7 @@ msgstr ""
 
 #, python-brace-format
 msgid "{system} Keyboard"
-msgstr ""
+msgstr "{system} Klavaro"
 
 msgid "{} ROM files were imported"
 msgstr ""

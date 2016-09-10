@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
 "POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-05-14 05:19-0400\n"
+"PO-Revision-Date: 2016-09-10 15:10-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Danish\n"
 "Language: da_DK\n"
@@ -35,16 +35,16 @@ msgid "640x512 + Border"
 msgstr "640x512 + skærmkant"
 
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
-msgstr "ADF - Udviddet Floppydisk image (MFM format)"
+msgstr "ADF - Udvidet disketteaftryk (MFM-format)"
 
 msgid "ADF - Standard Floppy Disk Image"
-msgstr "ADF - Standard Floppydisk image"
+msgstr "ADF - Standard disketteaftryk"
 
 msgid "ADF Creator"
-msgstr "ADF opretter"
+msgstr "ADF-opretter"
 
 msgid "ADF Disk Image Creator"
-msgstr "ADF Disk image opretter"
+msgstr "ADF diskaftrykopretter"
 
 msgid "About"
 msgstr "Om"
@@ -54,13 +54,13 @@ msgid "About {name}"
 msgstr "Om {name}"
 
 msgid "Accelerator Board"
-msgstr "Accelerator kort"
+msgstr "Acceleratorkort"
 
 msgid "Accelerator RAM"
-msgstr "Accelerator RAM"
+msgstr "Accelerator-RAM"
 
 msgid "Accept"
-msgstr "Accepter"
+msgstr "Acceptér"
 
 msgid "Accuracy:"
 msgstr "Nøjagtighed:"
@@ -69,37 +69,37 @@ msgid "Add"
 msgstr "Tilføj"
 
 msgid "Add Directory to Search Path"
-msgstr "Tilføj bibliotek til søge stien"
+msgstr "Tilføj mappe til søgestien"
 
 msgid "Add Files to List"
 msgstr "Tilføj filer til listen"
 
 msgid "Add Multiple CD-ROMs at Once"
-msgstr "Tilføj flere CD-ROMmer på éen gang"
+msgstr "Tilføj flere cd-rommer på én gang"
 
 msgid "Add Multiple Floppies at Once"
-msgstr "Tilføj flere disketter på éen gang"
+msgstr "Tilføj flere disketter på én gang"
 
 msgid "Additional Configuration"
 msgstr "Yderligere konfiguration"
 
 msgid "Adult-Themed Games"
-msgstr "Voksen-tema spil"
+msgstr "Voksenspil"
 
 msgid "Advanced"
 msgstr "Avanceret"
 
 msgid "Advanced Audio Options"
-msgstr "Avancerede lyd indstillinger"
+msgstr "Avancerede lydindstillinger"
 
 msgid "Advanced Settings"
 msgstr "Avancerede indstillinger"
 
 msgid "Advanced Video"
-msgstr "Avanceret Video"
+msgstr "Avanceret billede"
 
 msgid "Advanced Video Settings"
-msgstr "Avancerede video indstillinger"
+msgstr "Avancerede billedindstillinger"
 
 msgid "All"
 msgstr "Alle"
@@ -108,40 +108,40 @@ msgid "All Games"
 msgstr "Alle spil"
 
 msgid "Amiga Forever Import"
-msgstr "Amiga Forever import"
+msgstr "Importer Amiga Forever,,,"
 
 msgid "Amiga Forever import task started"
-msgstr "Amiga Forever importen er startet"
+msgstr "Importen af Amiga Forever er startet"
 
 msgid "Amiga Joystick"
-msgstr "Amiga Joystick"
+msgstr "Amiga-joystick"
 
 msgid "Amiga Model"
-msgstr "Amiga model"
+msgstr "Amiga-model"
 
 msgid "Amiga Mouse"
-msgstr "Amiga mus"
+msgstr "Amiga-mus"
 
 msgid "An Error Occurred"
 msgstr "Der opstod en fejl"
 
 msgid "Arcade Fullscreen"
-msgstr "Arcade fuldskærm"
+msgstr "Arkadefuldskærm"
 
 msgid "Audio"
 msgstr "Lyd"
 
 msgid "Audio Settings"
-msgstr "Lyd indstillinger"
+msgstr "Lydindstillinger"
 
 msgid "Audio buffer target size (bytes)"
-msgstr "Lyd buffer størrelse (bytes)"
+msgstr "Lydbufferstørrelse (byte)"
 
 msgid "Audio buffer target size (ms)"
-msgstr "Lyd buffer størrelse (ms)"
+msgstr "Lydbufferstørrelse (ms)"
 
 msgid "Audio output frequency"
-msgstr "Lydudgang frekvens"
+msgstr "Lydudgangsfrekvens"
 
 msgid "Auto"
 msgstr "Auto"
@@ -153,7 +153,7 @@ msgid "Auto - {}"
 msgstr "Auto - {}"
 
 msgid "Auto-Download"
-msgstr "Auto-Download"
+msgstr "Auto-hentning"
 
 msgid "Auto-Fire is Off"
 msgstr "Auto-Fire er deaktiveret"
@@ -168,13 +168,13 @@ msgid "Available Games"
 msgstr "Tilgængelige spil"
 
 msgid "Available Kickstart Versions"
-msgstr "Tilgængelige kickstart versioner"
+msgstr "Tilgængelige Kickstart-versioner"
 
 msgid "Available and Auto-Downloadable Games"
-msgstr "Tilgængelige og automatisk-hentede spil"
+msgstr "Tilgængelige spil der kan hentes automatisk"
 
 msgid "Available and Downloadable Games"
-msgstr "Tilgængelige- og kan hentes spil"
+msgstr "Tilgængelige spil der kan hentes"
 
 msgid "Bad Variant"
 msgstr "Dårlig variant"
@@ -183,7 +183,7 @@ msgid "Best Variant"
 msgstr "Bedste variant"
 
 msgid "Blizzard SCSI Kit"
-msgstr "Blizzard SCSI-Kit"
+msgstr "Blizzard SCSI-sæt"
 
 msgid "Browse"
 msgstr "Gennemse"
@@ -244,13 +244,13 @@ msgid "Choose Hard Drive"
 msgstr "Vælg harddisk"
 
 msgid "Choose Kickstart ROM"
-msgstr "Vælg Kickstart rom"
+msgstr "Vælg Kickstart-ROM"
 
 msgid "Choose Type"
 msgstr "Vælg type"
 
 msgid "Choose what folders you want to scan for Amiga files"
-msgstr "Vælg hvilke mapper du fil scanne for Amiga filer"
+msgstr "Vælg hvilke mapper, du vil scanne for Amiga-filer"
 
 msgid "Cleaning up..."
 msgstr "Rydder op..."
@@ -259,13 +259,13 @@ msgid "Clear List"
 msgstr "Ryd listen"
 
 msgid "Click 'Scan' button if you want to re-scan"
-msgstr "Klick 'Scan' knappen hvis du vil gen-scanne"
+msgstr "Klik \"Skan\"-knappen hvis du vil skanne igen"
 
 msgid "Click 'Scan' button to start scan"
-msgstr "Klik 'Scan' knappen for at starte scanning"
+msgstr "Klik \"Skan\"-knappen for at starte skanning"
 
 msgid "Click to import Kickstart ROMs"
-msgstr "Klik her for at importere Kickstart rom'er"
+msgstr "Klik her for at importere Kickstart-ROM'er"
 
 msgid "Close"
 msgstr "Luk"
@@ -280,11 +280,11 @@ msgid "Config"
 msgstr "Konfig"
 
 msgid "Config Options in Settings"
-msgstr "Konfigurations ændringer i indstillingerne"
+msgstr "Konfigurering i opsætningen"
 
 #, python-brace-format
 msgid "Config in Settings: {name}"
-msgstr "Konfiguration i indstillinger: {name}"
+msgstr "Konfigurering i opsætningen: {name}"
 
 msgid "Configs"
 msgstr "Konfigurationer"
@@ -296,17 +296,17 @@ msgid "Configuration"
 msgstr "Konfiguration"
 
 msgid "Configuration Browser"
-msgstr "Gennemse konfiguration"
+msgstr "Gennemse konfigurationer"
 
 msgid "Configurations"
 msgstr "Konfigurationer"
 
 msgid "Configure joysticks and set preferred joystick devices"
-msgstr "Konfigurer joystick og sæt foretrukne joystick enheder"
+msgstr "Konfigurér joystick og sæt foretrukne joystick-enheder"
 
 #, python-brace-format
 msgid "Configure {device_name}"
-msgstr "Konfigurer {device_name}"
+msgstr "Konfigurér {device_name}"
 
 msgid "Connect"
 msgstr "Forbind"
@@ -314,7 +314,7 @@ msgstr "Forbind"
 #, python-brace-format
 msgid "Copy {0}\n"
 "to {1}"
-msgstr "Kopier {0}\n"
+msgstr "Kopiér {0}\n"
 "til {1}"
 
 msgid "Could not open file for writing"
@@ -324,44 +324,44 @@ msgid "Create"
 msgstr "Opret"
 
 msgid "Create a blank or formatted ADF floppy disk image"
-msgstr "Opret et tomt eller formateret ADF floppy diskette image"
+msgstr "Opret et tomt eller formateret ADF-disketteaftryk"
 
 msgid "Create a single-partition or partitionable hard drive image"
-msgstr "Opret en enkelt partition, eller partitionerbart harddisk image"
+msgstr "Opret et harddiskaftryk med en enkelt partition eller som kan partitioneres"
 
 msgid "Create an account now"
 msgstr "Opret en konto nu"
 
 msgid "Create disk image of type:"
-msgstr "Opret diskette image af typen:"
+msgstr "Opret disketteaftryk af typen:"
 
 msgid "Cursor Keys and Right Ctrl/Alt"
 msgstr "Piletasterne og højre Ctrl/Alt"
 
 msgid "Custom"
-msgstr "Egendefineret"
+msgstr "Tilpasset"
 
 msgid "Custom Configuration"
-msgstr "Egendefineret konfiguration"
+msgstr "Tilpasset konfiguration"
 
 msgid "Custom IRC Server"
-msgstr "Brugerdefineret IRC Server"
+msgstr "Tilpasset IRC-server"
 
 msgid "Custom Joystick Port"
-msgstr "Egendefineret joystick port"
+msgstr "Tilpasset joystick-port"
 
 #, python-brace-format
 msgid "Custom Option: {name}"
-msgstr "Brugerdefineret indstilling: {name}"
+msgstr "Tilpasset indstilling: {name}"
 
 msgid "Custom Options"
-msgstr "Brugerdefinerede indstillinger"
+msgstr "Tilpassede indstillinger"
 
 msgid "Custom uae_ Options"
-msgstr "Brugerdefinerede uae_ indstillinger"
+msgstr "Tilpassede uae_-indstillinger"
 
 msgid "Database Games"
-msgstr "Database spil"
+msgstr "Databasespil"
 
 msgid "Default"
 msgstr "Standard"
@@ -375,17 +375,17 @@ msgid "Default - {0}"
 msgstr "Standard - {0}"
 
 msgid "Defragment Databases"
-msgstr "Defragmenter databaser"
+msgstr "Defragmentér databaser"
 
 msgid "Defragmenting the databases will improve performance by ensuring that tables and indices are stored contiguously on disk. It will also reclaim some storage space."
-msgstr "Defragmenter databaser vil forbedre ydeevnen, ved at sikre at tabeller og indekser er gemt fortløbende på disken. Det vil også frigøre noget disk plads."
+msgstr "Defragmentering af databaserne vil forbedre ydeevnen ved at sikre, at tabeller og indekser er gemt sammenhængende på disken. Det vil også frigøre noget diskplads."
 
 #, python-brace-format
 msgid "Defragmenting {name}"
 msgstr "Defragmenterer {navn}"
 
 msgid "Delayed CD-ROM Insert"
-msgstr "Forsinket indsættelse af CD-ROM"
+msgstr "Forsinket indsættelse af cd-rom"
 
 msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
 msgstr "Afhængigt af dit operativsystem og OpenGL drivere, kan synkronisering bruge overflødigt meget CPU tid (specielt på Linux). Du kan ekperimentere med forskellige sync metoder for at forbedre ydeevnen."
@@ -494,7 +494,7 @@ msgid "Enable/disable use of the Super Nintendo database"
 msgstr "Aktiver/deaktiver brugen af Super Nintendo-database"
 
 msgid "Enabled"
-msgstr "Slået til"
+msgstr "Aktiveret"
 
 msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches the screen refresh rate."
 msgstr "Aktiveringen af følgende indstilling vil synkronisere emulationen til skærmen så opdateringshastigheden passer med skærmens opdaterings frekvens."
@@ -659,7 +659,7 @@ msgid "Grab Input on Click"
 msgstr "Grib Input ved klik"
 
 msgid "Grab Input on FS-UAE Startup"
-msgstr "Grib Input ved FS-UAE start"
+msgstr "Grib input ved FS-UAE start"
 
 msgid "Grab keyboard when input is grabbed"
 msgstr "Grib tastaturet når input er grebet"
@@ -732,7 +732,7 @@ msgid "Import Kickstarts"
 msgstr "Importer Kickstarter"
 
 msgid "Import Kickstarts and ROMs"
-msgstr "Importer Kickstarter og ROMmer"
+msgstr "Importer kickstart- og ROM filer"
 
 msgid "Import task is done"
 msgstr "Importen er færdig"
@@ -852,7 +852,7 @@ msgid "Logging"
 msgstr "Logning"
 
 msgid "Logging in will enable the online game database and more"
-msgstr "Log ind vil aktivere den online spil database og mere"
+msgstr "Ved at logge på vil du få adgang til den online spil database m.m."
 
 msgid "Low"
 msgstr "Lav"
@@ -919,7 +919,7 @@ msgid "Mouse Settings"
 msgstr "Muse indstillinger"
 
 msgid "Mouse Speed (%)"
-msgstr "Mus hastighed (%)"
+msgstr "Muse hastighed (%)"
 
 #, python-brace-format
 msgid "Mouse: {system} Mouse"
@@ -1208,7 +1208,7 @@ msgstr "Vælg år"
 
 #, python-brace-format
 msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
-msgstr "Vælg en mappe der indeholder Amiga Kickstart filer og click \"{0}\""
+msgstr "Vælg en mappe der indeholder Amiga kickstart filer og klik \"{0}\""
 
 msgid "Set language for FS-UAE applications"
 msgstr "Angiv sprog for FS-UAE programmer"
