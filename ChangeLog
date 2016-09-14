@@ -1,7 +1,130 @@
-Version 2.6.2:
+Version 2.7.15dev:
+
+* Imported updated translations from crowdin.com.
+
+Version 2.7.14dev:
+
+* Fixed recently introduced problem using joystick configuration tool.
+* A3000 chip RAM was erroneously set to 1 MB.
+* Added new languages to language selector: Esperanto, Dutch and Hungarian.
+* Imported updated translations from crowdin.com.
+
+Version 2.7.13dev:
+
+* Show launch dialog when running configs directly from command line.
+* Show launch errors (if any) in error message box when running from cmdline.
+* Use expect_version option to verify that FS-UAE version matches.
+* Launcher can be started with a zip/lha file containing disk images [jbl007].
+* Launcher can be started with more than one floppy image path as
+  command line arguments.
+* Launcher can be started with more than one CD-ROM image path as
+  command line arguments (will default to CD32 model in this case).
+* Properly load last config file (if applicable) when starting.
+* Unsaved config options will no longer be restored on startup (last
+  used game or config will be fully reloaded).
+* When using --config:key=value options, start with empty config (unless
+  a specific config is loaded via the command line).
+* Store maximized = 0 state properly when window is unmaximized.
+* Imported updated translations from crowdin.com.
+
+Version 2.7.12dev:
+
+* Added settings for for FS-UAE Arcade.
+* Minor fixes for scan/refresh dialogs.
+* Fix for the xrandr refresh rate detector.
+* Change variant rating buttons into a choice control.
+* Fixed rating variants (broke in 2.7.10dev).
+* More code cleanup.
+
+Version 2.7.11dev:
+
+* Revert to HTTP due to certificate validation not working properly.
+
+Version 2.7.10dev:
+
+* It is now possible (but highly discouraged) to put config options in
+  advanced settings to function as global defaults. You will get a
+  warning message on the status bar if you do this.
+* If a required ROM is not find, be more specific about which one.
+* Launch dialog replaced with "inline" status information.
+* Disable start button while FS-UAE is running.
+* Notice on status bar when custom config options are in use.
+* Warning on status bar when custom uae_* config options are in use.
+* Config controls show auto-selected value.
+* GUI indicates what floppy/CD drives are currently enabled.
+* Removed uaegfx_card control, automatically change config to graphics_card.
+* Fixed recently introduced bug in memory override selectors.
+* Stop button in game database sync dialog with repeated errors works now.
+* Some minor UI adjustments to the configuration panels.
+* Added GUI selectors for JIT compiler, dongle type, save_disk, network_card,
+  freezer_cartridge and more.
+* Moved drive count selectors to the floppy/CD tabs.
+* Join IRC netplay lobby specific to the FS-UAE major/minor version.
+* Use https://fs-uae.net and https://openretro.org URLs.
+* Fixed a compatibility issue with Qt 5.2 (availableGeometryChanged).
+* Cached images can be read from pre-generated zip files to reduce the
+  amount of small files.
+* Force the kickstarts directory to be included in file scanner.
+* Game list selector entry was not respected after updating the game db.
+
+Version 2.7.9dev:
+
+* Warn about old plugin versions, if detected.
+* Detect ~/.wine/users/Public/Documents/Amiga Files, if present.
+* Some changes to the settings dialog, video pages merged from 3 to 2.
+* Scanned files were not stored with proper relative paths on Windows.
+* New GUI controls for monitor, fullscreen mode, video sync and monitor info.
+* New settings control for starting FS-UAE with full keyboard emulation.
+* Fixed issue when you have a mouse with the same device name as a joystick.
+* More compact binary distributions, far fewer data files.
+* OS X: New skeleton .app launchers for portable suite.
+* Windows: Proxy executables passes on arguments.
+* CD-based games are now downloadable from OAGD.net locker (if the user has
+  them stored there).
+* Recognize .ccd CD variants from the online game database.
+
+Version 2.7.8dev:
+
+* You can add custom config on startup (--config:key=value). Especially
+  useful when auto-launching games and you want to override config.
+* You can start with custom settings (--settings:key=value). Note that the
+  changed settings will be permanent / saved.
+* Make distinction between Amiga device type and host device more explicit.
+* Made launch dialog non-modal.
+* Net play feature is enabled by default.
+* Moved net play UI into a separate window.
+* Clear search field when changing game/config list in dropdown.
+* All .sqlite databases moved into Data/Databases.
+* Some user interface adjustments.
+* Quite a bit of code cleanup and some restructuring.
+
+Version 2.7.7dev:
+
+* Always sort variant list in rated order from oagd.net, but prefer
+  locally available variants.
+* Automatically scan $BASE/AmigaForever/Amiga Files/Shared/rom for Kickstarts.
+* Automatically add $BASE/AmigaForever/Amiga Files to file scanner.
+* Kickstart import: Show how many ROM files were imported (or warn if none).
+* Blacklist mouse_integration from advanced settings (use per-config instead).
+* Added support for WHDLoad 18.2, set as default version.
+
+Version 2.7.6dev:
+
+* Most dialogs are non-modal again.
+* Misc user interface updates.
+
+Version 2.7.5dev:
+
+* Remember maximized state.
+
+Version 2.7.4dev:
+
+* Fixed bug when base-dir in config file had a trailing slash.
+* Imported updated translations from crowdin.com.
+
+Version 2.7.2dev:
 
 * Fixed /hostgame netplay command (server was started on wrong port).
-* Imported updated translations from crowdin.com.
 
 Version 2.5.41dev:
 

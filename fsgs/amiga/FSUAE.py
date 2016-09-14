@@ -1,9 +1,10 @@
 import os
+import subprocess
 import tempfile
 import traceback
-import subprocess
+
+from fsbc.application import Application, app
 from fsbc.system import windows, macosx
-from fsbc.Application import Application, app
 
 try:
     getcwd = os.getcwdu
@@ -12,7 +13,6 @@ except AttributeError:
 
 
 class FSUAE(object):
-
     @classmethod
     def start_with_config(cls, config):
         print("FSUAE.start_with_config:")
@@ -60,10 +60,11 @@ class FSUAE(object):
 
     @classmethod
     def add_environment_from_settings(cls, env):
-        for key, value in app.settings.values.items():
-            # if not key.startswith("environment_"):
-            #     continue
-            # key = key[12:].upper()
+        try:
+            values = app.settings.values
+        except AttributeError:
+            values = {}
+        for key, value in values.items():
             if not key.isupper():
                 continue
             # Check if it looks like a valid environment variable
@@ -77,10 +78,12 @@ class FSUAE(object):
     @classmethod
     def center_window(cls, args, env):
         # FIXME: does not really belong here (dependency loop)
-        from fs_uae_launcher.Config import Config
-        from fs_uae_launcher.Settings import Settings
-        width = Config.get("window_width") or Settings.get("window_width")
-        height = Config.get("window_height") or Settings.get("window_height")
+        from launcher.launcher_config import LauncherConfig
+        from launcher.launcher_settings import LauncherSettings
+        width = (LauncherConfig.get("window_width") or
+                 LauncherSettings.get("window_width"))
+        height = (LauncherConfig.get("window_height") or
+                  LauncherSettings.get("window_height"))
         try:
             width = int(width)
         except:
@@ -89,12 +92,12 @@ class FSUAE(object):
             height = int(height)
         except:
             height = 540
-        from fs_uae_launcher.ui.MainWindow import MainWindow
-        if MainWindow.instance is None:
+        from launcher.ui.launcher_window import LauncherWindow
+        if LauncherWindow.current() is None:
             return
 
-        main_w, main_h = MainWindow.instance.get_size()
-        main_x, main_y = MainWindow.instance.get_position()
+        main_w, main_h = LauncherWindow.current().get_size()
+        main_x, main_y = LauncherWindow.current().get_position()
 
         x = main_x + (main_w - width) // 2
         y = main_y + (main_h - height) // 2
@@ -147,7 +150,8 @@ class FSUAE(object):
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
-                    "../../../Programs/Mac OS X/FS-UAE.app/Contents/MacOS/" + executable)
+                    "../../../Programs/Mac OS X/FS-UAE.app/Contents/MacOS/" +
+                    executable)
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),

@@ -47,7 +47,8 @@ class InputMapper(object):
         raise NotImplementedError()
 
     def mouse(self, button, axis, positive):
-        raise NotImplementedError()
+        # raise NotImplementedError()
+        return None
 
     def calc_input(self, value):
         parts = value.lower().split('_')

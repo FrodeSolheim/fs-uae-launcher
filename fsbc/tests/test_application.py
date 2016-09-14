@@ -1,4 +1,4 @@
-import fsbc.Application
+import fsbc.application
 import nose.tools
 
 
@@ -11,5 +11,5 @@ def test_mypy():
 
 def test_doctest():
     import doctest
-    failure_count, test_count = doctest.testmod(fsbc.Application)
+    failure_count, test_count = doctest.testmod(fsbc.application)
     nose.tools.assert_equals(failure_count, 0)

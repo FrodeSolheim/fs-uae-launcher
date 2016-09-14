@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2015-09-21 00:42+0200\n"
-"PO-Revision-Date: 2015-10-26 14:17-0400\n"
+"POT-Creation-Date: 2016-05-03 22:34+0200\n"
+"PO-Revision-Date: 2016-09-10 15:11-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Greek\n"
 "Language: el_GR\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: fs-uae\n"
 "X-Crowdin-Language: el\n"
-"X-Crowdin-File: /fs-uae-launcher/messages.pot\n"
+"X-Crowdin-File: fs-uae-launcher.pot\n"
 
 msgid "16-bit"
 msgstr "16-bit"
@@ -29,104 +29,110 @@ msgid "640x400 + Border"
 msgstr "640 x 400 + Περιθώριο"
 
 msgid "640x480 + Border"
-msgstr "640 x 400 + Περιθώριο"
+msgstr "640 x 480 + Περιθώριο"
 
 msgid "640x512 + Border"
 msgstr "640 x 512 + Περιθώριο"
 
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
-msgstr "ADF - Εμπλουτισμένη εικόνα δισκέτας (κωδικοποίηση MFM )"
+msgstr "ADF - Extended Εικόνα Δισκέτας (κωδικοποίηση MFM)"
 
 msgid "ADF - Standard Floppy Disk Image"
-msgstr "ADF - Πρότυπη εικόνας δισκέτας"
+msgstr "ADF - Standard Εικόνα Δισκέτας"
 
 msgid "ADF Creator"
-msgstr "Δημιουργός του ADF"
+msgstr "Δημιουργία ADF"
 
 msgid "ADF Disk Image Creator"
-msgstr "ADF Δημιουργός εικόνας δίσκου"
+msgstr "Δημιουργός Εικόνας Δισκέτας ADF"
 
-msgid "Abort"
-msgstr "Ματαίωση"
+msgid "About"
+msgstr "Πληροφορίες"
 
 #, python-brace-format
 msgid "About {name}"
 msgstr "Σχετικά με {name}"
 
+msgid "Accelerator Board"
+msgstr "Κάρτα Επιταχυντή"
+
+msgid "Accelerator RAM"
+msgstr "Μνήμη Επιταχυντή"
+
 msgid "Accept"
 msgstr "Αποδοχή"
 
 msgid "Accuracy:"
-msgstr ""
+msgstr "Ακρίβεια:"
 
 msgid "Add"
-msgstr ""
+msgstr "Προσθήκη"
 
 msgid "Add Directory to Search Path"
-msgstr "Προσθήκη καταλόγου στην διαδρομή αναζήτησης"
+msgstr "Προσθήκη Φακέλου στην Διαδρομή Αναζήτησης"
 
 msgid "Add Files to List"
-msgstr "Προσθήκη αρχείων στη λίστα"
+msgstr "Προσθήκη Αρχείων στη Λίστα"
 
 msgid "Add Multiple CD-ROMs at Once"
-msgstr "Προσθέστε πολλαπλά CD-ROM ταυτόχρονα"
+msgstr "Προσθήκη Πολλαπλών CD-ROM Ταυτόχρονα"
 
 msgid "Add Multiple Floppies at Once"
-msgstr "Προσθέσετε πολλαπλές δισκέτες ταυτόχρονα"
+msgstr "Προσθήκη Πολλαπλών Δισκετών Ταυτόχρονα"
 
 msgid "Additional Configuration"
-msgstr ""
+msgstr "Επιπλέον Ρυθμίσεις"
 
 msgid "Adult-Themed Games"
-msgstr ""
+msgstr "Παιχνίδια με θέμα για Ενήλικους"
 
 msgid "Advanced"
-msgstr "Για προχωρημένους"
+msgstr "Ειδικευμένο"
 
 msgid "Advanced Audio Options"
-msgstr "Επιλογές ήχου για προχωρημένους"
+msgstr "Ειδικευμένες Ρυθμίσεις Ήχου"
 
 msgid "Advanced Settings"
-msgstr "Ρυθμίσεις για προχωρημένους"
+msgstr "Ειδικευμένες Ρυθμίσεις"
+
+msgid "Advanced Video"
+msgstr "Ειδικευμένο Video"
 
 msgid "Advanced Video Settings"
-msgstr "Ρυθμίσεις εικόνας για προχωρημένους"
+msgstr "Ειδικευμένες Ρυθμίσεις Βίντεο"
 
 msgid "All"
-msgstr ""
-
-msgid "All Configurations"
-msgstr ""
+msgstr "Όλα"
 
 msgid "All Games"
-msgstr ""
-
-msgid "All Games and Configurations"
-msgstr ""
-
-msgid "Also synchronize emulation with display when possible (smooth scrolling)"
-msgstr "Συγχρονισμός εξομοίωσης με εικόνα όταν είναι δυνατόν (ομαλή κύλιση)"
+msgstr "Όλα τα Παιχνίδια"
 
 msgid "Amiga Forever Import"
 msgstr "Εισαγωγή Amiga Forever"
 
 msgid "Amiga Forever import task started"
-msgstr "Εισαγωγής εργασίας Amiga Forever ξεκίνησε"
+msgstr "Έναρξη εργασίας εισαγωγής Amiga Forever"
+
+msgid "Amiga Joystick"
+msgstr "Amiga Joystick"
 
 msgid "Amiga Model"
 msgstr "Μοντέλο Amiga"
 
-msgid "An Error Occurred"
-msgstr "Παρουσιάστηκε ένα σφάλμα"
+msgid "Amiga Mouse"
+msgstr "Amiga Mouse"
 
-msgid "Appearance"
-msgstr ""
+msgid "An Error Occurred"
+msgstr "Παρουσιάστηκε ένα Σφάλμα"
+
+msgid "Arcade Fullscreen"
+msgstr "Arcade  Πλήρους Οθόνης"
 
 msgid "Audio"
 msgstr "Ήχος"
 
 msgid "Audio Settings"
-msgstr "Ρυθμίσεις ήχου"
+msgstr "Ρυθμίσεις Ήχου"
 
 msgid "Audio buffer target size (bytes)"
 msgstr "Μέγεθος επιθυμητής προσωρινής μνήμης ήχου (byte)"
@@ -135,7 +141,7 @@ msgid "Audio buffer target size (ms)"
 msgstr "Μέγεθος επιθυμητής προσωρινής μνήμης ήχου (ms)"
 
 msgid "Audio output frequency"
-msgstr ""
+msgstr "Συχνότητα εξόδου ήχου"
 
 msgid "Auto"
 msgstr "Αυτόματο"
@@ -143,50 +149,56 @@ msgstr "Αυτόματο"
 msgid "Auto + Border"
 msgstr "Αυτόματο + Περιθώριο"
 
+msgid "Auto - {}"
+msgstr "Αυτόματο - {}"
+
+msgid "Auto-Download"
+msgstr "Αυτόματη-Λήψη"
+
 msgid "Auto-Fire is Off"
-msgstr "Auto-Fire είναι απενεργοποιημένο"
+msgstr "Auto-Fire είναι Ανενεργό"
 
 msgid "Auto-Fire is On"
-msgstr "Auto-fire είναι ενεργοποιημένο"
+msgstr "Auto-Fire είναι Ενεργό"
 
 msgid "Automatic"
 msgstr "Αυτόματο"
 
-msgid "Automatic Download"
-msgstr ""
-
 msgid "Available Games"
-msgstr ""
+msgstr "Διαθέσιμα Παιχνίδια"
 
 msgid "Available Kickstart Versions"
-msgstr "Διαθέσιμες εκδόσεις Kickstart"
+msgstr "Διαθέσιμες Εκδόσεις Kickstart"
 
 msgid "Available and Auto-Downloadable Games"
-msgstr ""
+msgstr "Παιχνίδια Διαθέσιμα και Αυτόματης Λήψης"
 
 msgid "Available and Downloadable Games"
-msgstr ""
+msgstr "Παιχνίδια Διαθέσιμα και για Λήψη"
+
+msgid "Bad Variant"
+msgstr "Κακή Παραλλαγή"
+
+msgid "Best Variant"
+msgstr "Καλύτερη Παραλλαγή"
 
 msgid "Blizzard SCSI Kit"
-msgstr ""
+msgstr "Blizzard SCSI Kit"
 
 msgid "Browse"
-msgstr "Εξερεύνηση"
+msgstr "Αναζήτηση"
 
 msgid "Browse for File"
-msgstr "Αναζήτηση αρχείου"
+msgstr "Εισαγωγή Αρχείου"
 
 msgid "Browse for Folder"
-msgstr "Αναζήτηση φακέλου"
-
-msgid "Buffer swap only"
-msgstr "Προσωρινή μνήμη ανταλλαγής μόνο"
+msgstr "Εισαγωγή Φακέλου"
 
 msgid "CD-ROM Drive"
 msgstr "Μονάδα CD-ROM"
 
 msgid "CD-ROM Drive Count"
-msgstr ""
+msgstr "Μονάδες CD-ROM"
 
 msgid "CD-ROM Drives"
 msgstr "Μονάδες CD-ROM"
@@ -195,23 +207,20 @@ msgid "CD-ROMs"
 msgstr "CD-ROM"
 
 msgid "CD32 Pad"
-msgstr "Χειριστήριο CD32"
+msgstr "CD32 Pad"
 
 msgid "CPU"
-msgstr ""
-
-msgid "CPU Accelerator Board"
-msgstr ""
-
-msgid "CPU Accelerator Board RAM"
-msgstr ""
+msgstr "CPU"
 
 msgid "Cancel"
 msgstr "Ακύρωση"
 
 #, python-brace-format
 msgid "Cannot find required ROM file: {name}"
-msgstr ""
+msgstr "Δεν βρέθηκε κατάλληλο ROM αρχείο: {name}"
+
+msgid "Change fullscreen mode (desktop, fullscreen, window)"
+msgstr "Αλλαγή απεικόνισης (επιφάνεια εργασίας, πλήρους οθόνη, παράθυρο)"
 
 msgid "Checksumming"
 msgstr "Έλεγχος αθροίσματος"
@@ -220,7 +229,7 @@ msgid "Checksumming file..."
 msgstr "Έλεγχος αθροίσματος αρχείου..."
 
 msgid "Chip RAM"
-msgstr "Μνήμη RAM"
+msgstr "Chip RAM"
 
 msgid "Choose CD-ROM Image"
 msgstr "Επιλέξτε εικόνα CD-ROM"
@@ -238,7 +247,7 @@ msgid "Choose Kickstart ROM"
 msgstr "Επιλέξτε Kickstart ROM"
 
 msgid "Choose Type"
-msgstr ""
+msgstr "Επιλογή Τύπου"
 
 msgid "Choose what folders you want to scan for Amiga files"
 msgstr "Επιλέξτε τους φακέλλους που θέλετε να σαρώσετε για αναζήτηση αρχείων Amiga"
@@ -247,19 +256,16 @@ msgid "Cleaning up..."
 msgstr "Εκκαθάριση..."
 
 msgid "Clear List"
-msgstr "Εκκαθάριση λίστας"
+msgstr "Εκκαθάριση Λίστας"
 
 msgid "Click 'Scan' button if you want to re-scan"
 msgstr "Πατήστε το κουμπί \"Σάρωση\" εάν θέλετε να επαναλάβετε τη σάρωση"
 
 msgid "Click 'Scan' button to start scan"
-msgstr "Πατήστε το κουμπί \"Scan\" για να ξεκινήσει η σάρωση"
+msgstr "Πατήστε το κουμπί \"Σάρωση\" για να ξεκινήσει η σάρωση"
 
-msgid "Click to Download Game"
-msgstr ""
-
-msgid "Click to Import Kickstart ROMs"
-msgstr ""
+msgid "Click to import Kickstart ROMs"
+msgstr "Εισαγωγή Kickstart ROMs"
 
 msgid "Close"
 msgstr "Κλείσιμο"
@@ -271,7 +277,20 @@ msgid "Committing locker data..."
 msgstr "Επεξεργασία δεδομένων ερμαριού..."
 
 msgid "Config"
-msgstr "Παραμετροποίηση"
+msgstr "Config"
+
+msgid "Config Options in Settings"
+msgstr "Config Eπιλογές στις Ρυθμίσεις"
+
+#, python-brace-format
+msgid "Config in Settings: {name}"
+msgstr "Config στις Ρυθμίσεις: {name}"
+
+msgid "Configs"
+msgstr "Configs"
+
+msgid "Configs and Games"
+msgstr "Configs και Παχνίδια"
 
 msgid "Configuration"
 msgstr "Ρύθμιση παραμέτρων"
@@ -283,7 +302,11 @@ msgid "Configurations"
 msgstr "Διαμορφώσεις παραμέτρων"
 
 msgid "Configure joysticks and set preferred joystick devices"
-msgstr "Ρύθμιση χειριστηρίων παιχνιδιού και προτιμώμενης συσκευής χειριστηρίου"
+msgstr "Ρυθμίσεις joystick και προτιμώμενες συσκευές joystick"
+
+#, python-brace-format
+msgid "Configure {device_name}"
+msgstr "Ρυθμίσεις {device_name}"
 
 msgid "Connect"
 msgstr "Σύνδεση"
@@ -321,14 +344,24 @@ msgstr "Προσαρμοσμένο"
 msgid "Custom Configuration"
 msgstr "Προσαρμοσμένη ρύθμιση παραμέτρων"
 
-msgid "Custom IRC server address"
-msgstr "Προσαρμοσμένη διεύθυνση διακομιστή IRC"
+msgid "Custom IRC Server"
+msgstr "Προσαρμοσμένος IRC Server"
 
 msgid "Custom Joystick Port"
 msgstr "Προσαρμοσμένη θύρα χειριστηρίου παιχνιδιών"
 
+#, python-brace-format
+msgid "Custom Option: {name}"
+msgstr "Προσαρμοσμένη Επιλογή: {name}"
+
+msgid "Custom Options"
+msgstr "Προσαρμοσμένες Επιλογές"
+
+msgid "Custom uae_ Options"
+msgstr "Προσαρμοσμένη uae_ Επιλογές"
+
 msgid "Database Games"
-msgstr ""
+msgstr "Βάση Δεδομένων Παιχνιδιών"
 
 msgid "Default"
 msgstr "Προεπιλογή"
@@ -339,7 +372,7 @@ msgstr "Προεπιλογή ({0})"
 
 #, python-brace-format
 msgid "Default - {0}"
-msgstr ""
+msgstr "Προεπιλογή - {0}"
 
 msgid "Defragment Databases"
 msgstr "Ανασυγκρότηση βάσεων δεδομένων"
@@ -351,26 +384,32 @@ msgstr "Ανασυγκρότηση των βάσεων δεδομένων θα �
 msgid "Defragmenting {name}"
 msgstr "Ανασυγκρότηση {name}"
 
+msgid "Delayed CD-ROM Insert"
+msgstr "Καθυστέρηση Εισαγωγής CD-ROM"
+
 msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
 msgstr "Ανάλογα την έκδοση του OpenGL του λειτουργικού σας συστήματος , ο συγχρονισμός μπορεί να χρησιμοποιήσει άσκοπα πολύ υπολογιστική ισχύ του επεξεργαστή σας (αυτό ισχύει  ειδικά για  LINUX). Μπορείτε να πειραματιστείτε με διαφορετικές τιμές για να πετύχετε τη βέλτιστη απόδοση."
 
-msgid "Deprecated Options"
-msgstr ""
+msgid "Depending on your OS and OpenGL drivers, video synchronization can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
+msgstr "Ανάλογα την έκδοση του λειτουργικού σας συστήματος και του οδηγού OpenGL, ο συγχρονισμός του βίντεο μπορεί να χρησιμοποιήσει άσκοπα αρκετή υπολογιστική ισχύ απο τον επεξεργαστή σας (αυτό ισχύει κυρίως για LINUX). Μπορείτε να πειραματιστείτε με διαφορετικές τιμές για να πετύχετε τη βέλτιστη απόδοση."
+
+msgid "Deprecated: uaegfx_card"
+msgstr "Ξεπερασμένο: uaegfx_card"
 
 msgid "Device ID used with OAGD.net authentication"
 msgstr "Αναγνωριστικό συσκευής χρησιμοποιείται με OAGD.net για τον ελέγχο ταυτότητας"
 
-msgid "Did not find required Kickstart or ROM"
-msgstr ""
+msgid "Did not find required Kickstart or ROM for {}. Wanted one of these files: {}"
+msgstr "Δεν βρέθηκε κατάλληλο Kickstart ή ROM για {}. Ζητείται ένα από αυτά τα αρχεία: {}"
 
 msgid "Digital Joystick"
-msgstr ""
+msgstr "Digital Joystick"
 
 msgid "Directory for WHDLoad.key file (if you have it):"
-msgstr ""
+msgstr "Φάκελος για το αρχείο WHDLoad.key (αν υπάρχει):"
 
 msgid "Disabled"
-msgstr ""
+msgstr "Ανενεργό"
 
 msgid "Disconnect"
 msgstr "Αποσύνδεση"
@@ -378,17 +417,17 @@ msgstr "Αποσύνδεση"
 msgid "Disk image created"
 msgstr "Εικόνα δίσκου που δημιουργήθηκε"
 
-msgid "Dislike This Game Variant"
-msgstr "Δεν μου αρέσει αυτή η παραλλαγή του παιχνιδιού"
-
 msgid "Don't have an account already?"
 msgstr "Δεν έχετε λογαριασμό ακόμα;"
 
 msgid "Dongle"
-msgstr ""
+msgstr "Dongle"
 
 msgid "Double-click a device entry to configure it (map joystick buttons)."
 msgstr "Κάντε διπλό κλικ σε μια συσκευή εισόδου για να την ρυθμίσετε (καθορισμός κουμπιών χειριστηρίου παιχνιδιού)."
+
+msgid "Download Game"
+msgstr "Λήψη Παιχνιδιού"
 
 msgid "Download Game Manually"
 msgstr "Χειροκίνητη λήψη του παιχνιδιού"
@@ -398,12 +437,19 @@ msgid "Download failed (attempt {0}) - retrying in {0} seconds"
 msgstr "Αποτυχία λήψης  (προσπάθεια {0}) - επανάληψη σε {0} δευτερόλεπτα"
 
 #, python-brace-format
+msgid "Download failed (attempt {0}) - retrying in {1} seconds"
+msgstr "Αποτυχία λήψης (προσπάθεια {0}) - επανάληψη σε {1} δευτερόλεπτα"
+
+#, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
 msgstr "Λήψη στον ακόλουθο κατάλογο, και στη συνέχεια κάντε κλικ στην επιλογή '{0}':"
 
 #, python-brace-format
 msgid "Downloading {0}..."
 msgstr "Λήψη {0}..."
+
+msgid "Drive Count"
+msgstr "Μονάδες Δισκέτας"
 
 msgid "E-mail:"
 msgstr "E-mail:"
@@ -412,10 +458,7 @@ msgid "Eject"
 msgstr "Αποβολή"
 
 msgid "Empty Floppy Drive Volume"
-msgstr ""
-
-msgid "Enable experimental config visualization (requires restart)"
-msgstr ""
+msgstr "Ήχος Άδειας Μονάδας Δισκέτας"
 
 msgid "Enable experimental net play GUI (requires restart)"
 msgstr "Ενεργοποίηση πειραματικής διεπαφής net play (απαιτεί επανεκκίνηση)"
@@ -424,28 +467,40 @@ msgid "Enable online database support (requires restart)"
 msgstr "Ενεργοποίηση υποστήριξης της απευθείας σύνδεσης στην βάση δεδομένων (απαιτεί επανεκκίνηση)"
 
 msgid "Enable/disable use of OAGD.net locker"
-msgstr ""
+msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης OAGD.net locker"
+
+msgid "Enable/disable use of the Amstrad CPC game database"
+msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων Amstrad CPC"
 
 msgid "Enable/disable use of the Arcade game database"
-msgstr ""
+msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων Arcade"
+
+msgid "Enable/disable use of the Atari ST game database"
+msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων Atari ST"
+
+msgid "Enable/disable use of the Commodore 64 (C64) database"
+msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων Commodore 64 (C64)"
 
 msgid "Enable/disable use of the DOS game database"
-msgstr ""
+msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων παιχνιδιών DOS"
 
 msgid "Enable/disable use of the Game Boy Advance database"
-msgstr ""
+msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων Game Boy Advance"
 
 msgid "Enable/disable use of the Nintendo (NES) database"
-msgstr ""
+msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων της Nintendo (NES)"
 
 msgid "Enable/disable use of the Super Nintendo database"
-msgstr ""
+msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων Super Nintendo"
 
 msgid "Enabled"
-msgstr ""
+msgstr "Ενεργό"
 
-msgid "Enabling the following option will prevent tearing from occurring, but will also use more CPU. Input latency may become slightly higher."
-msgstr "Η ενεργοποίηση αυτής της επιλογής θα βελτιώσει την ποιότητα της εικόνας παράλληλα όμως θα χρησιμοποιήσει περισσότερη υπολογιστική ισχύ του επεξεργαστή σας. Ενδεχομένως να αυξηθεί η καθυστέρηση εισόδου - input latency."
+msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches the screen refresh rate."
+msgstr "Ενεργοποιώντας την παρακάτω επιλογή η εξομοίωση θα συγχρονίστει με την οθόνη έφοσον η συχνότητα ανανέωσης του εξομοιωτή ταιριάζει με την συχνότητα ανανέωσης της οθόνης."
+
+msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches thescreen refresh rate."
+msgstr "Ενεργοποιώντας την παρακάτω επιλογή η εξομοίωση θα συγχρονίστει με την οθόνη έφοσον η συχνότητα ανανέωσης του εξομοιωτή ταιριάζει με την συχνότητα ανανέωσης της οθόνης."
 
 msgid "Error moving file into place"
 msgstr "Σφάλμα κατά την μετακίνηση του αρχείου"
@@ -456,23 +511,29 @@ msgstr "Σφάλμα κατά την εγγραφή του αρχείου στο
 msgid "Expansions"
 msgstr "Επεκτάσεις"
 
+msgid "Expect Specific FS-UAE Version"
+msgstr "Απαιτέιται Συγκεκριμένη Έκδοση FS-UAE"
+
+msgid "Experimental Config Visualization (Requires Restart)"
+msgstr "Πειραματική Απεικόνιση Config (Απαιτεί Επανεκκίνηση)"
+
 msgid "Experimental Features"
 msgstr "Πειραματικά χαρακτηριστικά"
 
-msgid "Extended ROM:"
-msgstr "Εκτεταμένη ROM:"
+msgid "Extended ROM"
+msgstr "Extended ROM"
 
 msgid "FS-UAE   Arcade"
-msgstr ""
-
-msgid "FS-UAE Launcher Settings"
-msgstr "Διαχειριστής ρυθμίσεων FS-UAE"
+msgstr "FS-UAE Arcade"
 
 msgid "Fade-in Duration on Start"
-msgstr ""
+msgstr "Fade-in Διάρκεια κατά την Έναρξη"
+
+msgid "Fast RAM"
+msgstr "Fast RAM"
 
 msgid "Favorites"
-msgstr ""
+msgstr "Αγαπημένα"
 
 #, python-brace-format
 msgid "Fetching database entries ({0})"
@@ -493,10 +554,10 @@ msgid "Fetching user game ratings ({0})"
 msgstr "Φόρτωση κριτικών παιχνιδιών χρηστών ({0})"
 
 msgid "File Database"
-msgstr ""
+msgstr "Βάση Δεδομένων Αρχείων"
 
 msgid "File Database Settings"
-msgstr ""
+msgstr "Ρυθμίσεις Βάσης Δεδομένων Αρχείων"
 
 msgid "File already exists"
 msgstr "Το αρχείο υπάρχει ήδη"
@@ -506,9 +567,6 @@ msgstr "Όνομα αρχείου για την νέα εικόνα δίσκου
 
 msgid "Files for this game are still missing. Did you download the game and put the file(s) in the Downloads directory?"
 msgstr "Δεν βρέθηκαν αρχεία για αυτό το παιχνίδι. Είστε σίγουρος ότι έχετε κατεβάσει το παιχνίδι και ότι έχετε τοποθετήσετε τα αρχείο(α) του στον κατάλογο Λήψεις;"
-
-msgid "Filter Settings"
-msgstr "Ρυθμίσεις φίλτρου"
 
 msgid "Filters"
 msgstr "Φίλτρα"
@@ -526,25 +584,28 @@ msgid "Floppies"
 msgstr "Δισκέτες"
 
 msgid "Floppy Drive Count"
-msgstr ""
+msgstr "Μονάδες Οδηγών Δισκέτας"
 
 msgid "Floppy Drive Sound Emulation"
 msgstr "Εξομοίωση αυθεντικού ήχου Floppy Drive της AMIGA"
 
 msgid "Floppy Drive Speed"
-msgstr ""
+msgstr "Ταχύτητα Οδηγού Δισκέτας"
 
 msgid "Floppy Drive Volume"
-msgstr ""
+msgstr "Ένταση Ήχου Ανάγνωσης Δισκέτας"
 
 msgid "Floppy Drives"
 msgstr "Μονάδες δισκέτας"
 
-msgid "Font Size"
-msgstr ""
+msgid "Flush log after each log line"
+msgstr "Εκκαθάριση αρχείου καταγραφής μετά από κάθε γραμμή"
 
 msgid "Forgot your password?"
 msgstr "Ξεχάσατε τον κωδικό πρόσβασης;"
+
+msgid "Freezer Cartridge"
+msgstr "Freezer Cartridge"
 
 msgid "Full Frame"
 msgstr "Πλήρες πλαίσιο"
@@ -555,14 +616,20 @@ msgstr "Εξομάλυνση ορίων πλήρους οθόνης (FSAA)"
 msgid "Fullscreen"
 msgstr "Πλήρης οθόνη"
 
-msgid "Game   Center"
-msgstr ""
+msgid "Fullscreen Desktop"
+msgstr "Επιφάνεια Εργασίας Πλήρους Οθόνης"
+
+msgid "Fullscreen Mode"
+msgstr "Λειτουργία Πλήρους Οθόνης"
+
+msgid "Fullscreen Window"
+msgstr "Παράθυρο Πλήρους Οθόνης"
 
 msgid "Game Database"
 msgstr "Βάση δεδομένων παιχνιδιών"
 
 msgid "Game Database Server"
-msgstr ""
+msgstr "Βάση Δεδομένων Παιχνιδιών"
 
 msgid "Game Database Settings"
 msgstr "Ρυθμίσεις βάσης δεδομένων παιχνιδιών"
@@ -580,22 +647,28 @@ msgid "Game database user name"
 msgstr "Βάση δεδομένων ονομάτων χρηστών παιχνιδιών"
 
 msgid "Gamepad"
-msgstr ""
+msgstr "GamePad"
+
+msgid "Games"
+msgstr "Παιχνίδια"
+
+msgid "Good Variant"
+msgstr "Καλή Παραλλαγή"
 
 msgid "Grab Input on Click"
-msgstr ""
+msgstr "Κλείδωμα Εισαγωγής ύστερα από Click"
 
 msgid "Grab Input on FS-UAE Startup"
-msgstr ""
+msgstr "Κλείδωμα Εισαγωγής κατά την Εκκίνηση"
 
 msgid "Grab keyboard when input is grabbed"
 msgstr "Δέσμευση πληκτρολογίου όταν ξεκινά η πληκτρολόγηση"
 
 msgid "Graphics Card"
-msgstr ""
+msgstr "Κάρτα Γραφικών"
 
-msgid "Graphics Card VRAM"
-msgstr ""
+msgid "Graphics Card RAM"
+msgstr "Μνήμη Κάρτας Γραφικών"
 
 msgid "HDF - Partitionable Hard Drive Image (RDB)"
 msgstr "HDF - Εικόνας σκληρού δίσκου με δυνατότητας διαμέρισης  (RDB)"
@@ -609,29 +682,35 @@ msgstr "Δημιουργός του HDF"
 msgid "HDF Disk Image Creator"
 msgstr "Δημιουργός εικόνας δίσκου ΗDF"
 
+msgid "HRTMon v2.36 (Built-in)"
+msgstr "HRTMon v2.36 (Ενσωματωμένο)"
+
 msgid "Hard Drives"
 msgstr "Σκληροί δίσκοι"
 
 msgid "Hardware"
 msgstr "Υλικό"
 
+msgid "Hardware Dongle"
+msgstr "Dongle Υλικού"
+
 msgid "High"
-msgstr ""
+msgstr "Υψηλή"
 
 msgid "Home"
-msgstr ""
+msgstr "Κεντρική"
 
 msgid "Host Key BACKSLASH"
-msgstr ""
+msgstr "Host Key BACKSLASH"
 
 msgid "Host Key EQUALS"
-msgstr ""
+msgstr "Host Key EQUALS"
 
 msgid "Host Key INSERT"
-msgstr ""
+msgstr "Host Key INSERT"
 
 msgid "Host Key LESS"
-msgstr ""
+msgstr "Host Key LESS"
 
 msgid "How to achieve perfectly smooth scrolling"
 msgstr "Πώς μπορεί να επιτευχθεί απόλυτα ομαλή κύλιση"
@@ -658,8 +737,8 @@ msgstr "Εισαγωγή Kickstarts και ROMs"
 msgid "Import task is done"
 msgstr "Εργασία της εισαγωγής έχει ολοκληρωθεί"
 
-msgid "In order to get really smooth Amiga graphics, you need to enable the following option, and also make sure your display is running at 50Hz (for PAL) or 60Hz (for NTSC)."
-msgstr "Για να δείτε ομαλά γραφικά στον εξομοιωτή Amiga, θα πρέπει να ενεργοποιηθεί η παρακάτω επιλογή καθώς και να ρυθμιστεί ο χρονισμός της εικόνας σε 50 Hz (για PAL) ή 60 Hz (για NTSC)."
+msgid "Include Save Disk"
+msgstr "Να Περιλαμβάνει Δισκέτα Αποθήκευσης"
 
 msgid "Include built-in configurations"
 msgstr "Να συμπεριληφθούν οι ενσωματωμένες διαμορφώσεις"
@@ -676,8 +755,11 @@ msgstr "Εσωτερική"
 msgid "Invalid size specified"
 msgstr "Καθορίσατε μη έγκυρο μέγεθος"
 
-msgid "Joystick"
-msgstr "Χειριστήριο παιχνιδιού"
+msgid "JIT Compiler"
+msgstr "JIT Compiler"
+
+msgid "JIT compiler with a PPC-only OS is not recommended"
+msgstr "Δεν Συνιστάται JIT compiler με PPC-only Λειτουργικό"
 
 msgid "Joystick & Mouse Port"
 msgstr "Θύρα χειριστηρίου παιχνιδιού & ποντικιού"
@@ -685,14 +767,14 @@ msgstr "Θύρα χειριστηρίου παιχνιδιού & ποντικι�
 msgid "Joystick Ports"
 msgstr "Θύρες χειριστηρίου παιχνιδιού"
 
-msgid "Joystick Settings"
-msgstr "Ρυθμίσεις χειριστηρίου παιχνιδιού"
+msgid "Joysticks & Gamepads"
+msgstr "Joystick και Gamepad"
 
 msgid "Keep aspect ratio when scaling (do not stretch)"
 msgstr "Κράτησε την αναλογία της οθόνης κατά την κλιμάκωση (όχι παραμόρφωση)"
 
 msgid "Key Mapping"
-msgstr ""
+msgstr "Καταγραφή Πλήκτρων"
 
 msgid "Keyboard"
 msgstr "Πληκτρολόγιο"
@@ -701,7 +783,7 @@ msgid "Keyboard Settings"
 msgstr "Ρυθμίσεις του πληκτρολογίου"
 
 msgid "Keyword"
-msgstr ""
+msgstr "Λέξη Κλειδί"
 
 msgid "Kickstart ROM"
 msgstr "Kickstart ROM"
@@ -709,14 +791,17 @@ msgstr "Kickstart ROM"
 msgid "Kickstart import task started"
 msgstr "Η διεργασία εισαγωγής Kickstart ξεκίνησε"
 
-msgid "Language Preference"
-msgstr "Προτιμήσεις γλώσσας"
+msgid "Language"
+msgstr "Γλώσσα"
 
 msgid "Language:"
-msgstr ""
+msgstr "Γλώσσα:"
 
-msgid "Launch FS-UAE"
-msgstr ""
+msgid "Launcher Font Size"
+msgstr "Μέγεθος Γραμματοσειράς Launcher"
+
+msgid "Launcher Theme"
+msgstr "Γραφικό Περιβάλλον Launcher"
 
 msgid "Launching FS-UAE"
 msgstr "Έναρξη FS-UAE"
@@ -725,16 +810,13 @@ msgid "Launching Game"
 msgstr "Έναρξη παιχνιδιού"
 
 msgid "Left"
-msgstr ""
+msgstr "Αριστερά"
 
 msgid "Letter"
-msgstr ""
-
-msgid "Like This Game Variant"
-msgstr "Μου αρέσει αυτή η παραλλαγή του παιχνιδιού"
+msgstr "Letter"
 
 msgid "List"
-msgstr ""
+msgstr "Λίστα"
 
 msgid "Load state by number"
 msgstr "Φόρτωση κατάστασης με βάση τον αριθμό"
@@ -743,7 +825,7 @@ msgid "Loading..."
 msgstr "Φόρτωση..."
 
 msgid "Log Autoscale Changes"
-msgstr ""
+msgstr "Καταγραφή Αλλαγών Autoscale"
 
 msgid "Log In"
 msgstr "Σύνδεση"
@@ -755,7 +837,7 @@ msgid "Log In to Your OAGD.net Account"
 msgstr "Συνδεθείτε στο λογαριασμό σας OAGD.net"
 
 msgid "Log Input Events"
-msgstr ""
+msgstr "Καταγραφή Ενεργειών Εισαγωγής"
 
 msgid "Log Out"
 msgstr "Αποσύνδεση"
@@ -764,16 +846,16 @@ msgid "Log Out from Your OAGD.net Account"
 msgstr "Αποσύνδεση από το λογαριασμό σας OAGD.net"
 
 msgid "Log database query plans"
-msgstr ""
+msgstr "Καταγραφή αναζητήσεων βάσης δεδομένων"
 
 msgid "Logging"
-msgstr ""
+msgstr "Καταγραφή"
 
 msgid "Logging in will enable the online game database and more"
 msgstr "Με την σύνδεση σας  θα σας επιτραπεί η πρόσβαση στην ηλεκτρονική βάση δεδομένων παιχνιδιών"
 
 msgid "Low"
-msgstr ""
+msgstr "Χαμηλή"
 
 msgid "Low latency video sync"
 msgstr "Συγχρονισμός βίντεο με χαμηλή καθυστέρηση"
@@ -788,34 +870,25 @@ msgid "Main Menu"
 msgstr "Κεντρικό Μενού"
 
 msgid "Main Volume"
-msgstr ""
+msgstr "Ένταση Ήχου"
 
 msgid "Maintenance"
 msgstr "Συντήρηση"
 
 msgid "Make:"
-msgstr ""
-
-msgid "Mark This Game Variant as Personal Favorite"
-msgstr "Σήμανση αυτής της παραλλαγής του παιχνιδιού ως Αγαπημένη"
+msgstr "Δημιουργός:"
 
 msgid "Media Swap List"
 msgstr "Λίστα ανταλλαγών μέσων"
 
 msgid "Medium"
-msgstr ""
-
-msgid "Memory"
-msgstr "Μνήμη"
-
-msgid "Memory Configuration"
-msgstr ""
+msgstr "Μέτρια"
 
 msgid "Middle Left"
-msgstr ""
+msgstr "Μέση Αριστερά"
 
 msgid "Middle Right"
-msgstr ""
+msgstr "Μέση Δεξιά"
 
 #, python-brace-format
 msgid "Miscellaneous functions to optimize {name}"
@@ -825,16 +898,19 @@ msgid "Missing Files"
 msgstr "Αρχεία που λείπουν"
 
 msgid "Missing Game Files"
-msgstr ""
+msgstr "Λείπουν Αρχεία Παιχνιδιών"
 
 msgid "Model:"
-msgstr ""
+msgstr "Μοντέλο:"
 
 msgid "Monitor to display FS-UAE on (fullscreen)"
-msgstr ""
+msgstr "Οθόνη για απεικόνιση του FS-UAE (πλήρους οθόνης)"
 
-msgid "Motherboard Fast RAM"
-msgstr ""
+msgid "Monitor to display FS-UAE on (left, middle-left, middle-right, right)"
+msgstr "Οθόνη για απεικόνιση του FS-UAE (αριστερά, μέση αριστερά, μέση δεξιά, δεξιά)"
+
+msgid "Motherboard RAM"
+msgstr "Motherboard RAM"
 
 msgid "Mouse"
 msgstr "Ποντίκι"
@@ -843,10 +919,14 @@ msgid "Mouse Settings"
 msgstr "Ρύθμιση ποντικιού"
 
 msgid "Mouse Speed (%)"
-msgstr ""
+msgstr "Ταχύτητα Mouse (%)"
+
+#, python-brace-format
+msgid "Mouse: {system} Mouse"
+msgstr "Mouse: {system} Mouse"
 
 msgid "Multi-Select..."
-msgstr ""
+msgstr "Πολλαπλή-Επιλογή..."
 
 msgid "N/A"
 msgstr "Δεν είναι διαθέσιμο"
@@ -860,14 +940,17 @@ msgstr "Επιλογές Net Play"
 msgid "Net play tag (max 3 characters)"
 msgstr "NET Play tag (μέγιστο 3 χαρακτήρες)"
 
-msgid "Netplay Settings"
-msgstr "Επιλογές Netplay"
+msgid "Network Card"
+msgstr "Κάρτα Δικτύου"
 
-msgid "New Configuration"
-msgstr "Νέα ρύθμιση"
+msgid "New Config"
+msgstr "Νέο Config"
 
 msgid "Nick:"
 msgstr "Ψευδόνυμο:"
+
+msgid "No Amiga Device"
+msgstr "Καμμία Συσκευή Amiga"
 
 msgid "No Device"
 msgstr "Καμία συσκευή"
@@ -876,7 +959,10 @@ msgid "No Host Device"
 msgstr "Δεν υπάρχει συσκευή φιλοξενητή"
 
 msgid "No Last Played"
-msgstr ""
+msgstr "Κανένα Τελευταίο Παίξιμο"
+
+msgid "No Protection"
+msgstr "Καμία Προστασία"
 
 msgid "No extended kickstart found for this model. Try 'scan' function."
 msgstr "Δεν βρέθηκε εκτεταμένη Kickstart για αυτό το μοντέλο. Δοκιμάστε λειτουργία «σάρωσης»."
@@ -885,13 +971,10 @@ msgid "No scan in progress"
 msgstr "Δεν υπάρχει εργασία σάρωσης σε εξέλιξη"
 
 msgid "None"
-msgstr ""
+msgstr "Κανένα"
 
 msgid "Not logged in"
 msgstr "Δεν έχετε συνδεθεί"
-
-msgid "Nothing"
-msgstr "Τίποτα"
 
 msgid "OAGD.net Locker Uploader"
 msgstr "Μεταφορτωτής ερμαριού OAGD.net"
@@ -901,9 +984,6 @@ msgstr "Η κλειδοθήκη OAGD.net δεν είναι ενεργοποιη�
 
 msgid "OAGD.net upload task completed successfully"
 msgstr "Η εργασία μεταφόρτωσης στο OAGD.net ολοκληρώθηκε με επιτυχία"
-
-msgid "OK"
-msgstr "Εντάξει"
 
 msgid "Off"
 msgstr "Απενεργοποιημένο"
@@ -916,16 +996,17 @@ msgstr "Ρυθμίσεις OpenGL"
 
 #, python-brace-format
 msgid "Option {name} is overridden by current configuration"
-msgstr ""
+msgstr "Η επιλογή {name} αντικαθίσταται από τις παραμέτρους του configuration"
 
 msgid "Options for WHDLoad support in FS-UAE Launcher"
-msgstr ""
+msgstr "Επιλογές για την υποστήριξη του WHDLoad μέσα στο FS-UAE Launcher"
 
 msgid "Other Device"
-msgstr ""
+msgstr "Άλλη Συσκευή"
 
-msgid "Override Installed Memory"
-msgstr "Παράκαμψη της εγκατεστημένης μνήμης"
+#, python-brace-format
+msgid "Outdated plugins: {0}"
+msgstr "Απαρχαιωμένα plugins: {0}"
 
 msgid "Parallel Port Joysticks"
 msgstr "Παράλληλες θύρες χειριστηρίων παιχνιδιού"
@@ -934,13 +1015,16 @@ msgid "Password:"
 msgstr "Κωδικός πρόσβασης:"
 
 msgid "Platform"
-msgstr ""
+msgstr "Πλατφόρμα"
 
 msgid "Please open the following web page and download the game from there:"
 msgstr "Παρακαλώ ανοίξτε την παρακάτω ιστοσελίδα και να κάνετε λήψη του παιχνιδιού από εκεί:"
 
 msgid "Please wait..."
 msgstr "Παρακαλώ περιμένετε..."
+
+msgid "Plugins"
+msgstr "Plugins"
 
 msgid "Preferred Joysticks"
 msgstr "Προτιμώμενα χειριστήρια παιχνιδιού"
@@ -967,10 +1051,16 @@ msgid "Purging old entries..."
 msgstr "Εκκαθάριση των παλαιών καταχωρήσεων..."
 
 msgid "Quit"
-msgstr ""
+msgstr "Έξοδος"
+
+msgid "ROM & RAM"
+msgstr "ROM & RAM"
 
 msgid "ROM and RAM"
-msgstr ""
+msgstr "ROM και RAM"
+
+msgid "Rate Variant"
+msgstr "Βαθμός Παραλλαγής"
 
 #, python-brace-format
 msgid "Re-trying in {0} seconds..."
@@ -985,8 +1075,11 @@ msgstr "Ανανεώσετε τη λίστα των συνδεδεμένων σ�
 msgid "Reject"
 msgstr "Απόρριψη"
 
+msgid "Relative paths"
+msgstr "Διαδρομές σχετικών αρχέιων"
+
 msgid "Relax host CPU usage when using fastest-possible CPU"
-msgstr ""
+msgstr "Ανάπαυση της CPU όταν χρησιμοποιείτε την γρηγορότερη-δυνατή CPU"
 
 msgid "Remove Directory from Search Path"
 msgstr "Κατάργηση του καταλόγου από την διαδρομή αναζήτησης"
@@ -1018,13 +1111,19 @@ msgid "Retrying last operation (attempt {0})"
 msgstr "Επανάληψη της τελευταίας εργασίας (προσπάθεια {0})"
 
 msgid "Right"
-msgstr ""
+msgstr "Δεξιά"
+
+msgid "Running: Emulator"
+msgstr "Εκτέλεση: Εξομοιωτή"
 
 msgid "Save"
-msgstr ""
+msgstr "Αποθήκευση"
 
-msgid "Save Configuration"
-msgstr "Αποθήκευση των ρυθμίσων"
+msgid "Save Config"
+msgstr "Αποθήκευση Config"
+
+msgid "Save Disk"
+msgstr "Αποθήκευση Δισκέτας"
 
 msgid "Save to directory:"
 msgstr "Αποθήκευση στον κατάλογο:"
@@ -1042,19 +1141,16 @@ msgid "Scan"
 msgstr "Σάρωση"
 
 msgid "Scan Downloads"
-msgstr "Σάρωση λήψεων"
-
-msgid "Scan Settings"
-msgstr "Σάρωση ρυθμίσεων"
+msgstr "Σάρωση Ληφθέντων Αρχείων"
 
 msgid "Scan complete"
-msgstr "Σάρωση ολοκληρώθηκε"
+msgstr "Η Σάρωση ολοκληρώθηκε"
 
 msgid "Scan error"
 msgstr "Σφάλμα σάρωσης"
 
 msgid "Scan for Kickstarts, Files and Configurations"
-msgstr "Σάρωση για Kickstarts, αρχείων και διαμορφώσεων"
+msgstr "Σάρωση για Kickstart, αρχείων και διαμορφώσεων"
 
 msgid "Scanning .fs-uae files..."
 msgstr "Σάρωση αρχείων .fs-uae..."
@@ -1087,35 +1183,35 @@ msgid "Select Destination Directory"
 msgstr "Επιλέξτε κατάλογο προορισμού"
 
 msgid "Select First Letter"
-msgstr ""
+msgstr "Επιλογή Πρώτο Γράμμα"
 
 msgid "Select Keyword"
-msgstr ""
+msgstr "Επιλογή Λέξης-Κλειδί"
 
 msgid "Select List"
-msgstr ""
+msgstr "Επιλογή Λίστας"
 
 msgid "Select Multiple CD-ROMs"
-msgstr "Επιλογή πολλαπλών μονάδων CD-ROM"
+msgstr "Επιλογή Πολλαπλών Μονάδων CD-ROM"
 
 msgid "Select Multiple Floppies"
-msgstr "Επιλογή πολλαπλών μονάδων δισκέτας"
+msgstr "Επιλογή Πολλαπλών Μονάδων Δισκέτας"
 
 msgid "Select Platform"
-msgstr ""
+msgstr "Επιλογή Πλατφόρμας"
 
 msgid "Select Source Directory"
-msgstr "Επιλογή καταλόγου προέλευσης"
+msgstr "Επιλογή Φακέλου Προέλευσης"
 
 msgid "Select Year"
-msgstr ""
+msgstr "Επιλογή Έτους"
 
 #, python-brace-format
 msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
 msgstr "Επιλέξτε ένα φάκελο που περιέχει αρχεία Kickstart Amiga και κάντε κλικ στο κουμπί \"{0}\""
 
-msgid "Set language and look for FS-UAE applications"
-msgstr ""
+msgid "Set language for FS-UAE applications"
+msgstr "Επιλογή γλώσσας για εφαρμογές FS-UAE"
 
 msgid "Settings"
 msgstr "Ρυθμίσεις"
@@ -1124,10 +1220,10 @@ msgid "Show kickstart setup page on startup when all ROMs are missing"
 msgstr "Εμφάνιση ρυθμίσεων Κickstart κατά την εκκίνηση, όταν λείπουν αρχεία ROM"
 
 msgid "Show window border and decorations"
-msgstr ""
+msgstr "Απεικόνιση πλαίσιο παραθύρου και διακοσμήσεις"
 
 msgid "Shuffle"
-msgstr ""
+msgstr "Ανάμιξη"
 
 msgid "Size:"
 msgstr "Μέγεθος:"
@@ -1136,7 +1232,7 @@ msgid "Slow RAM"
 msgstr "Slow RAM"
 
 msgid "Sound Card"
-msgstr ""
+msgstr "Κάρτα Ήχου"
 
 msgid "Specified directory does not exist"
 msgstr "Ο καθορισμένος κατάλογο δεν υπάρχει"
@@ -1145,7 +1241,7 @@ msgid "Specify global options and settings which does not have UI controls"
 msgstr "Προσδιορίσετε τις καθολικές επιλογές και ρυθμίσεις οι οποίες δεν έχουν στοιχεία ελέγχου διεπαφής"
 
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 msgid "Start"
 msgstr "Eκκίνηση"
@@ -1153,11 +1249,14 @@ msgstr "Eκκίνηση"
 msgid "Start FS-UAE in fullscreen mode"
 msgstr "Εκκίνηση FS-UAE σε πλήρη οθόνη"
 
+msgid "Start with full keyboard emulation"
+msgstr "Εκκίνηση με πλήρες εξομοίωση πληκτρολογίου"
+
 msgid "Starting scan"
 msgstr "Έναρξη σάρωσης"
 
 msgid "Stereo Separation"
-msgstr ""
+msgstr "Στερεοφωνικός Διαχωρισμός"
 
 msgid "Stop"
 msgstr "Σταμάτα"
@@ -1174,9 +1273,6 @@ msgstr "Συγχρονισμός"
 msgid "Synchronize FS-UAE with your display for smooth video"
 msgstr "Συγχρονισμός FS-UAE με την συχνότητα της οθόνης σας για ομαλό βίντεο"
 
-msgid "Synchronize buffer swaps with display (prevents tearing)"
-msgstr "Συγχρονισμός της προσωρινή μνήμη ανταλλαγής με την συχνότητα της οθόνης (αποτρέπει παραμορφώσεις)"
-
 msgid "Synchronizing game database..."
 msgstr "Συγχρονισμός βάσης δεδομένων  παιχνιδιών..."
 
@@ -1185,6 +1281,9 @@ msgstr "Συγχρονισμός προσωπικών αξιολογήσεων..
 
 msgid "Synchronizing with the display can in some cases cause increased stuttering and low frame rates (esp. in some Linux desktop environments with compositing enabled)."
 msgstr "Ο συγχρονισμός εικόνας σε ορισμένες περιπτώσεις μπορεί να οδηγήσει σε μείωση των καρέ και στην συνολική υποβάθμιση της εμπειρίας χρήστη (ειδικά σε ορισμένες διανομές LINUX με ενεργοποιημένο το compositing)."
+
+msgid "System"
+msgstr "Σύστημα"
 
 msgid "Terms of Download"
 msgstr "Όροι λήψεων"
@@ -1196,13 +1295,16 @@ msgid "The following joystick will be preferred, if present:"
 msgstr "Θα προτιμηθεί η ακόλουθη συσκευή χειριστηρίου παιχνιδιού:"
 
 msgid "The following options may affect performance, so only enable them when needed for testing or debugging purposes."
-msgstr ""
+msgstr "Οι παρακάτω επιλογές μπορεί να επηρεάσουν την απόδοση, γιαυτό κάντε τις αλλαγές μόνο όταν χρειάζεται έλεγχος ή με σκοπό τον debugger."
 
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
-msgstr ""
+msgstr "Οι παρακάτω επιλογές ισχύουν μόνο όταν χρησιμοποιείτε την αυτόματη υποστήριξη WHDLoad στο FS-UAE Launcher, για παράδειγμα όσον αφορά την βάση δεδομένων παιχνιδιών."
 
-msgid "Theme"
-msgstr ""
+msgid "The options specified here are global and will apply to all configurations. Config options such as hardware and memory options will be ignored. Options suitable here are options like theme options."
+msgstr "Οι επιλογές που καθορίζονται εδώ είναι κύριες και θα ισχύουν για όλα τα configuration. Οι Config επιλογές όπως ρυθμίσεις υλικού και μνήμης θα αγνοηθούν. Οι επιλογές που είναι κατάλληλες για εδώ είναι οι επιλογές όπου αφορούν το γραφικό περιβάλλων."
+
+msgid "The options specified here will apply to this configuration only."
+msgstr "Οι επιλογές που καθορίζονται εδώ θα ισχύουν μόνο για αυτό το configuration."
 
 msgid "This game can be automatically downloaded if you accept the terms"
 msgstr "Μπορείτε να το κάνετε αυτόματη λήψη αυτού του παιχνιδιού, εάν αποδεχθείτε τους όρους χρήσης"
@@ -1213,33 +1315,30 @@ msgstr "Για να μπορείτε να παίξετε το παιχνίδι �
 msgid "This game variant cannot be started because you don't have all required files."
 msgstr "Αυτή η έκδοση του παιχνιδιού δεν μπορεί να ξεκινήσει επειδή δεν έχετε όλα τα απαιτούμενα αρχεία."
 
+msgid "This plugin is outdated"
+msgstr "Αυτό το plugin είναι ξεπερασμένο"
+
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Εναλλαγή μεταξύ της λειτουργίας παραθύρου και πλήρους οθόνης"
 
 msgid "Turbo"
-msgstr ""
-
-msgid "UAE Graphics Card (Picasso96 Support)"
-msgstr ""
+msgstr "Turbo"
 
 msgid "UAE bsdsocket.library"
-msgstr ""
+msgstr "UAE bsdsocket.library"
 
 msgid "Ungrab Input on Middle Mouse Button"
-msgstr ""
-
-msgid "Unprotected"
-msgstr ""
-
-#, python-brace-format
-msgid "Update Available: {version}"
-msgstr ""
+msgstr "Eλευθέρωση input με Μεσαίο Πλήκτρο του Mouse"
 
 msgid "Update File Database"
-msgstr ""
+msgstr "Ενημέρωση Βάσης Δεδομένων αρχείου"
 
 msgid "Update Game Database"
-msgstr ""
+msgstr "Ενημέρωση Βάσης Δεδομένων Παιχνιδιών"
+
+#, python-brace-format
+msgid "Update available: {version}"
+msgstr "Διαθέσιμη ενημέρωση: {version}"
 
 msgid "Updating Database"
 msgstr "Ενημέρωση βάσης δεδομένων"
@@ -1275,13 +1374,22 @@ msgid "Use RDB disk images for size >= {0}"
 msgstr "Χρησιμοποιήστε εικόνες δισκετών RDB  για μέγεθος > = {0}"
 
 msgid "Using Kickstart ROM Replacement"
-msgstr ""
+msgstr "Χρήση Αναπληρωματικού Kickstart ROM"
+
+msgid "Using Kickstart ROM replacement"
+msgstr "Χρήση Αναπληρωματικού Kickstart ROM"
+
+msgid "V-Sync"
+msgstr "V-Sync"
 
 msgid "Video"
 msgstr "Βίντεο"
 
 msgid "Video Settings"
 msgstr "Ρυθμίσεις βίντεο"
+
+msgid "Video Synchronization"
+msgstr "Συγχρονισμός Βίντεο"
 
 msgid "Video Synchronization Settings"
 msgstr "Ρυθμίσεις συγχρονισμού βίντεο"
@@ -1298,17 +1406,20 @@ msgstr "Μέθοδος συγχρονισμού βίντεο"
 msgid "Video texture format (on the GPU)"
 msgstr "Μορφή υφής βίντεο (για την GPU)"
 
+msgid "WHDLoad"
+msgstr "WHDLoad"
+
 msgid "WHDLoad Arguments"
 msgstr "Παράμετροι WHDLoad"
 
-msgid "WHDLoad Settings"
-msgstr ""
-
 msgid "WHDLoad splash delay"
-msgstr ""
+msgstr "WHDLoad εικόνας αναμονής"
 
 msgid "Warning"
-msgstr ""
+msgstr "Προσοχή"
+
+msgid "Warning: No ROM files were found!"
+msgstr "Προσοχή: Δεν βρέθηκαν ROM αρχεία!"
 
 msgid "Web Links"
 msgstr "Σύνδεσμοι"
@@ -1316,14 +1427,23 @@ msgstr "Σύνδεσμοι"
 msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
 msgstr "Όταν έχει καθοριστεί αυτόματη επιλογή γλώσσας, αυτή επιλέγεται βάση των πληροφοριών από το λειτουργικό σας σύστημα (ή τα αγγλικά, εάν δεν εντοπίζεται μια υποστηριγμένη γλώσσα)."
 
+msgid "When checked, enable video synchronization whenever possible"
+msgstr "Όταν Επιλεχθεί, ενεργοποίηση συγχρονισμού βίντεο, όποτε αυτό είναι δυνατό"
+
+msgid "When checked, include a save disk in FS-UAE's floppy swap list"
+msgstr "Όταν Επιλεχθεί, να περιλαμβάνει μια δίσκέτα αποθήκευσης στη λίστα αλλαγής δισκέτας του FS-UAE"
+
 msgid "While logged out you will not get database updates"
 msgstr "Για το διάστημα που είστε αποσυνδεδεμένος δεν θα είναι δυνατές η ενημερώσεις της βάσης δεδομένων"
 
 msgid "Write .uaem metadata files"
-msgstr ""
+msgstr "Εγγραφή .uaem metadata αρχείων"
 
 msgid "Year"
-msgstr ""
+msgstr "Έτος"
+
+msgid "You can write key = value pairs here to set FS-UAE options not currently supported by the user interface. This is only a temporary feature until the GUI supports all options directly."
+msgstr "Εδώ μπορείτε να γράψετε συνδυασμούς επιλογής=αξίας (key = value) για να ορίσετε παραμέτρους στο FS-UAE που δεν υποστηρίζονται από το περιβάλλον εργασίας του προγράμματος. Αυτή η δυνατότητα είναι προς το παρόν προσωρινή μέχρι το GUI να υποστηρίζει άμεσα όλες τις επιλογές."
 
 msgid "You should have kickstart files for each Amiga model you want to use:"
 msgstr "Θα πρέπει να έχετε αρχεία Kickstart για κάθε μοντέλο Amiga που θέλετε να χρησιμοποιήσετε:"
@@ -1331,16 +1451,17 @@ msgstr "Θα πρέπει να έχετε αρχεία Kickstart για κάθε
 msgid "Zoom Amiga display (crop)"
 msgstr "Μεγέθυνση οθόνης Amiga (περικοπή)"
 
-msgid "Zorro II Fast RAM"
-msgstr ""
-
-msgid "Zorro III Fast RAM"
-msgstr ""
-
-msgid "uaegfx_card"
-msgstr ""
+msgid "Zorro III Fast Memory"
+msgstr "Zorro III Fast Memory"
 
 #, python-brace-format
 msgid "{amiga_model} with < 2 MB chip memory"
 msgstr "{amiga_model} με < 2 MB chip memor"
+
+#, python-brace-format
+msgid "{system} Keyboard"
+msgstr "{system} Keyboard"
+
+msgid "{} ROM files were imported"
+msgstr "{} ROM αρχεία προστέθηκαν"
 

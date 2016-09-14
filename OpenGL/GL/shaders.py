@@ -103,7 +103,7 @@ class ShaderProgram( int ):
         validation = glGetProgramiv( self, GL_VALIDATE_STATUS )
         if validation == GL_FALSE:
             raise RuntimeError(
-                """Validation failure (%s): %s"""%(
+                """Validation failure (%r): %s"""%(
                 validation,
                 glGetProgramInfoLog( self ),
             ))
@@ -147,7 +147,7 @@ class ShaderProgram( int ):
         See notes in retrieve
         """
         get_program_binary.glProgramBinary( self, format, binary, len(binary))
-        self.check_validate()
+        self.check_validate() # On AMD Linux we see this fail, despite logging "validation successful"
         self.check_linked()
         return self
 

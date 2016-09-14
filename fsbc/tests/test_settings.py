@@ -1,6 +1,6 @@
 import os
 import tempfile
-import fsbc.Settings
+import fsbc.settings
 import nose.tools
 
 
@@ -23,28 +23,28 @@ import nose.tools
 def test_load_save():
     fd, path = tempfile.mkstemp()
     os.close(fd)
-    fsbc.Settings.set_path(path)
-    fsbc.Settings.load()
+    fsbc.settings.set_path(path)
+    fsbc.settings.load()
 
-    fsbc.Settings.set("Key-å", "Value-å")
-    fsbc.Settings.save()
-    fsbc.Settings.unload()
+    fsbc.settings.set("Key-å", "Value-å")
+    fsbc.settings.save()
+    fsbc.settings.unload()
 
-    fsbc.Settings.load()
+    fsbc.settings.load()
 
-    value = fsbc.Settings.get("key-å")
+    value = fsbc.settings.get("key-å")
     nose.tools.assert_equals(value, "Value-å")
-    fsbc.Settings.unload()
+    fsbc.settings.unload()
 
 
 def test_mypy():
     # from nose.plugins.skip import SkipTest
     # raise SkipTest()
     import fstd.mypy
-    fstd.mypy.check_module(fsbc.Settings.__name__)
+    fstd.mypy.check_module(fsbc.settings.__name__)
 
 
 def test_doctest():
     import doctest
-    failure_count, test_count = doctest.testmod(fsbc.Settings)
+    failure_count, test_count = doctest.testmod(fsbc.settings)
     nose.tools.assert_equals(failure_count, 0)

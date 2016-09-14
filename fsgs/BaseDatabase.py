@@ -1,14 +1,14 @@
 import os
 import sqlite3
 import threading
-import fsbc.Settings
+import fsbc.settings
 
 
 global_database_lock = threading.Lock()
 
 
 def log_query_plans():
-    return fsbc.Settings.get("log_query_plans") == "1"
+    return fsbc.settings.get("log_query_plans") == "1"
 
 
 def use_debug_cursor():

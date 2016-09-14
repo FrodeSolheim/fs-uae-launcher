@@ -1,4 +1,7 @@
+import sys
+# import traceback
 from collections import defaultdict
+
 from .ContextAware import ContextAware
 
 
@@ -7,6 +10,11 @@ class Config(ContextAware):
     def __init__(self, context):
         ContextAware.__init__(self, context)
         self.values = {}
+
+    def add_behavior(self, instance, options):
+        # FIXME: Move to fsgs
+        from launcher.ui.behaviors.configbehavior import ConfigBehavior
+        ConfigBehavior(instance, options)
 
     def copy(self):
         # return a defaultdict so lookups for unset keys return an empty string
@@ -26,10 +34,33 @@ class Config(ContextAware):
         # for key in self.values.keys():
         #     del self.values[key]
 
+    @staticmethod
+    def config_from_argv():
+        config = []
+        for arg in sys.argv:
+            if arg.startswith("--config:"):
+                arg = arg[9:]
+                key, value = arg.split("=", 1)
+                key = key.replace("-", "_")
+                config.append((key, value))
+        return config
+
+    def add_from_argv(self):
+        """Adds config parameters from argv to currently loaded configuration.
+        :return: True if config parameters were used.
+        """
+        config_items = self.config_from_argv()
+        for key, value in config_items:
+            self.set(key, value)
+        return len(config_items) > 0
+
     def load(self, values):
         self.clear()
         for key, value in list(values.items()):
             self.set(key, value)
+
+    def load_from_file(self):
+        pass
 
     def set(self, *values):
         if len(values) == 1:
@@ -57,11 +88,14 @@ class Config(ContextAware):
             # if key == "joystick_port_1_mode":
             #     pass
             if old_config.get(changed_key, None) == changed_value:
-                if changed_value:
-                    print("config set {0} to {1} (no change)".format(
-                        changed_key, changed_value))
+                # if changed_value:
+                #     print("config set {0} to {1} (no change)".format(
+                #         changed_key, changed_value))
                 return
             print("config set {0} to {1}".format(changed_key, changed_value))
+            # if changed_key == "__changed" and changed_value == "1":
+            #     print("Stack trace for event causing __changed = 1:")
+            #     traceback.print_stack()
             add_changed_key(changed_key)
             self.values[changed_key] = changed_value
 
@@ -81,7 +115,10 @@ class Config(ContextAware):
         if len(changed_keys) > 0:
             if "__ready" not in changed_key_list:
                 change("__ready", "0")
-            change("__changed", "1")
+            for key in changed_key_list:
+                if not key.startswith("__implicit_"):
+                    change("__changed", "1")
+                    break
             for priority, key in sorted(changed_keys):
                 # for listener in cls.config_listeners:
                 #     listener.on_config(key, cls.get(key))

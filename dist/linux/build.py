@@ -41,14 +41,18 @@ def s(command):
     assert os.system(c) == 0
 
 
-def wrap(name, target, args=None):
+def wrap(name, target=None, args=None):
+    if target is None:
+        target = name + ".bin"
+        os.rename(os.path.join(package_dir, name),
+                  os.path.join(package_dir, target))
     if args is None:
         args = ["$@"]
     path = os.path.join(package_dir, name)
     with open(path, "w") as f:
         f.write("#!/bin/sh\n")
         f.write("MYDIR=$(dirname \"$0\")\n")
-        f.write("export LD_LIBRARY_PATH=\"$MYDIR:$LD_LIBRARY_PATH\"\n")
+        # f.write("export LD_LIBRARY_PATH=\"$MYDIR:$LD_LIBRARY_PATH\"\n")
         command = "\"$MYDIR/{0}\"".format(target)
         for arg in args:
             command += " \"{0}\"".format(arg)
@@ -58,7 +62,7 @@ def wrap(name, target, args=None):
                 bin_dir = "bin32"
             # elif arch == "amd64":
             elif arch == "x86-64":
-                bin_dir = "bin64"
+                bin_dir = "bin32"
             else:
                 raise Exception("unsupported steamos arch?")
             f.write("if [ -e \"$HOME/.steam/{0}/steam-runtime/"
@@ -86,21 +90,94 @@ s("mv ../../build/exe.linux-*-3.4 {package_dir}")
 s("rm -f {package_dir}/*.so.*")
 s("rm -f {package_dir}/imageformats/*.so.*")
 
-s("./standalone.py {package_dir}/platforms")
+s("rm -f {package_dir}/platforms/libqdirectfb.so")
+s("rm -f {package_dir}/platforms/libqlinuxfb.so")
+s("rm -f {package_dir}/platforms/libqminimal.so")
+s("rm -f {package_dir}/platforms/libqoffscreen.so")
+s("./standalone-linux.py {package_dir}/platforms")
 s("mv {package_dir}/platforms/*.so.* {package_dir}")
-s("./standalone.py {package_dir}/imageformats")
+s("./standalone-linux.py --no-copy --strip --rpath='$ORIGIN/..' {package_dir}/platforms")
+# s("rm {package_dir}/platforms/*.so.*")
+
+s("rm -f {package_dir}/imageformats/libqdds.so")
+s("rm -f {package_dir}/imageformats/libqicns.so")
+s("rm -f {package_dir}/imageformats/libqjp2.so")
+s("rm -f {package_dir}/imageformats/libqmng.so")
+s("rm -f {package_dir}/imageformats/libqsvg.so")
+s("rm -f {package_dir}/imageformats/libqtga.so")
+s("rm -f {package_dir}/imageformats/libqtiff.so")
+s("rm -f {package_dir}/imageformats/libqwbmp.so")
+s("rm -f {package_dir}/imageformats/libqwebp.so")
+s("./standalone-linux.py {package_dir}/imageformats")
 s("mv {package_dir}/imageformats/*.so.* {package_dir}")
-s("./standalone.py {package_dir}")
-s("strip {package_dir}/*.so.*")
-s("strip {package_dir}/*.so")
-s("strip {package_dir}/imageformats/*.so")
+s("./standalone-linux.py --no-copy --strip --rpath='$ORIGIN/..' {package_dir}/imageformats")
+# s("rm {package_dir}/imageformats/*.so.*")
+
+from PyQt5 import QtCore
+dir0 = os.path.join(os.path.dirname(QtCore.__file__), "plugins")
+for libpath in QtCore.QCoreApplication.libraryPaths() + [dir0]:
+    print(libpath)
+    p = os.path.join(libpath, "xcbglintegrations")
+    if os.path.exists(p):
+        s("cp -a \"{0}\" {{package_dir}}/".format(p))
+s("./standalone-linux.py {package_dir}/xcbglintegrations")
+s("mv {package_dir}/xcbglintegrations/*.so.* {package_dir}")
+s("./standalone-linux.py --no-copy --strip --rpath='$ORIGIN/..' {package_dir}/xcbglintegrations")
+# s("rm {package_dir}/xcbglintegrations/*.so.*")
+
+# s("mv {package_dir}/platforms/* {package_dir}")
+# s("mv {package_dir}/imageformats/* {package_dir}")
+# s("mv {package_dir}/xcbglintegrations/* {package_dir}")
+# s("rm -Rf {package_dir}/platforms")
+# s("rm -Rf {package_dir}/imageformats")
+# s("rm -Rf {package_dir}/xcbglintegrations")
+
+# s("./standalone-linux.py {package_dir}")
+# s("strip {package_dir}/*.so.*")
+# s("strip {package_dir}/*.so")
+
+# Must remove .standalone files to force processing the ones copied
+# from the Qt plugin dirs
+s("find {package_dir} -name '*.standalone' -delete")
+s("./standalone-linux.py --strip --rpath='$ORIGIN' {package_dir}")
+s("find {package_dir} -name '*.standalone' -delete")
+
 s("chmod a-x {package_dir}/*.so")
 s("cd ../.. && make")
 s("cp -a ../../share {package_dir}")
+s("rm -Rf {package_dir}/share/applications")
+s("rm -Rf {package_dir}/share/icons")
 
-s("mv {package_dir}/fs-uae-launcher {package_dir}/fs-uae-launcher.bin")
-wrap("fs-uae-launcher", "fs-uae-launcher.bin")
-wrap("fs-uae-arcade", "fs-uae-launcher.bin", ["--fs-uae-arcade", "$@"])
+s("rm -Rf {package_dir}/OpenGL")
+s("rm -Rf {package_dir}/arcade")
+s("rm -Rf {package_dir}/fsbc")
+# s("rm -Rf {package_dir}/fsboot")
+s("rm -Rf {package_dir}/fsgs")
+s("rm -Rf {package_dir}/fstd")
+s("rm -Rf {package_dir}/fsui")
+s("rm -Rf {package_dir}/launcher")
+s("rm -Rf {package_dir}/oyoyo")
+s("rm -Rf {package_dir}/six")
+s("rm -Rf {package_dir}/workspace")
+
+s("zip -d {package_dir}/library.zip OpenGL/\*")
+s("zip -d {package_dir}/library.zip arcade/\*")
+s("zip -d {package_dir}/library.zip fsbc/\*")
+# s("zip -d {package_dir}/library.zip fsboot/\*")
+s("zip -d {package_dir}/library.zip fsgs/\*")
+s("zip -d {package_dir}/library.zip fstd/\*")
+s("zip -d {package_dir}/library.zip fsui/\*")
+s("zip -d {package_dir}/library.zip launcher/\*")
+s("zip -d {package_dir}/library.zip oyoyo/\*")
+s("zip -d {package_dir}/library.zip six/\*")
+s("zip -d {package_dir}/library.zip workspace/\*")
+
+s("cp -a ../python/*.zip {package_dir}")
+
+if os_name == "steamos":
+    # s("mv {package_dir}/fs-uae-launcher {package_dir}/fs-uae-launcher.bin")
+    wrap("fs-uae-launcher")
+    wrap("fs-uae-arcade", "fs-uae-launcher.bin", ["--fs-uae-arcade", "$@"])
 
 s("cd {package_dir} && tar Jcfv ../../../{full_package_name}.tar.xz *")
 

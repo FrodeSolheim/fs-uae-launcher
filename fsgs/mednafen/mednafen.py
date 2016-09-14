@@ -1,9 +1,9 @@
 import os
 import struct
 import hashlib
+from functools import lru_cache
 
 from fsbc.system import windows
-from fsbc.util import memoize
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.input.mapper import InputMapper
 from fsgs.runner import GameRunner
@@ -14,35 +14,12 @@ class MednafenRunner(GameRunner):
 
     def __init__(self, fsgs):
         super().__init__(fsgs)
+        self.emulator = "mednafen-fs"
 
     def prepare(self):
         # self.temp_home = self.create_temp_dir("mednafen-home")
         with open(self.mednafen_cfg_path(), "w", encoding="UTF-8") as f:
             self.mednafen_configure(f)
-
-    def run(self):
-        # self.env["HOME"] = self.temp_home.path
-
-        # executable = None
-        # if windows:
-        #     found_executable = self.find_emulator_executable(
-        #         "fs-mednafen/mednafen")
-        #     if not found_executable:
-        #         raise Exception("could not find mednafen.exe")
-        #     dir_path = os.path.dirname(found_executable)
-        #     for name in os.listdir(dir_path):
-        #         src = os.path.join(dir_path, name)
-        #         dst = os.path.join(self.temp_home.path, name)
-        #         shutil.copyfile(src, dst)
-        #     executable = os.path.join(
-        #         self.temp_home.path, "mednafen.exe")
-        #
-        # return self.start_emulator(
-        #     "fs-mednafen/mednafen", args=self.args, env_vars=self.env,
-        #     executable=executable)
-
-        return self.start_emulator_from_plugin_resource(
-            "fs-mednafen", args=self.args, env_vars=self.env)
 
     def finish(self):
         pass
@@ -86,15 +63,13 @@ class MednafenRunner(GameRunner):
         return None, None
 
     def mednafen_configure(self, f):
-        self.args = []
-        self.env = {}
         pfx = self.mednafen_system_prefix()
 
         screen_w, screen_h = self.screen_size()
 
         dest_w, dest_h = screen_w, screen_h
         # a_ratio = self.force_aspect_ratio()
-        a_ratio = None
+        a_ratio = 0
         # game_w, game_h = self.mednafen_video_size()
         src, dst = self.mednafen_viewport()
         if src is None:
@@ -189,10 +164,12 @@ class MednafenRunner(GameRunner):
             self.args.extend(["-glvsync", "0"])
 
         if self.config.get("audio_driver", "") in ["sdl", "pulseaudio"]:
-            # Mednafen does not support pulseaudio directly, but using the
-            # sdl driver will "often" result in pulseaudio being used
-            # indirectly
+            # Mednafen does not support PulseAudio directly, but using the
+            # sdl driver will "often" result in PulseAudio being used
+            # indirectly.
             self.args.extend(["-sound.driver", "sdl"])
+
+        self.args.extend(["-video.driver", "opengl"])
 
         print("\n" + "-" * 79 + "\n" + "CONFIGURE PORTS")
 
@@ -238,14 +215,14 @@ class MednafenRunner(GameRunner):
         return []
 
     def mednafen_post_configure(self):
-        # can be overriden by subclasses
+        # can be overridden by subclasses
         pass
 
     # def mednafen_refresh_rate(self):
     #     return 0.0
     #
     # def get_game_refresh_rate(self):
-    #     # can be overriden by subclasses
+    #     # can be overridden by subclasses
     #     return self.mednafen_refresh_rate()
 
     def mednafen_cfg_path(self):
@@ -315,11 +292,12 @@ class MednafenInputMapper(InputMapper):
         seen_ids = set()
         self.id_map = {}
         for device in helper.devices:
-            uid = self._get_unique_id(device)
+            uid = self.calculate_unique_id(device)
             while uid in seen_ids:
                 uid += 1
             seen_ids.add(uid)
             self.id_map[device.id] = uid
+            # self.id_map[device.id.upper()] = uid
         print("MednafenInputMapper device map")
         for id, uid in self.id_map.items():
             print(uid, id)
@@ -329,7 +307,7 @@ class MednafenInputMapper(InputMapper):
             offset = 0x8000
         else:
             offset = 0xc000
-        joystick_id = self.get_unique_id(self.device, self.device.id)
+        joystick_id = self.unique_id(self.device, self.device.id)
         return "joystick {0:x} {1:08x}".format(
             joystick_id, axis + offset)
 
@@ -340,12 +318,12 @@ class MednafenInputMapper(InputMapper):
             "up": 1,
             "down": 4,
         }[direction]
-        joystick_id = self.get_unique_id(self.device, self.device.id)
+        joystick_id = self.unique_id(self.device, self.device.id)
         return "joystick {0:x} {1:08x}".format(
             joystick_id, 0x2000 + offset)
 
     def button(self, button):
-        joystick_id = self.get_unique_id(self.device, self.device.id)
+        joystick_id = self.unique_id(self.device, self.device.id)
         return "joystick {0:x} {1:08x}".format(
             joystick_id, int(button))
 
@@ -353,26 +331,26 @@ class MednafenInputMapper(InputMapper):
         # FIXME: Need other key codes on Windows ... ?
         return "keyboard {0}".format(key.sdl_code)
 
-    @memoize
-    def get_unique_id(self, device, device_id):
-        # unique_id = self._get_unique_id(device)
-        # print("joystick unique id:", unique_id)
-        # return unique_id
-        return self.id_map[device.id]
+    @lru_cache()
+    def unique_id(self, device, _):
+        try:
+            return self.id_map[device.id]
+        except KeyError:
+            print("id_map:", self.id_map)
+            raise
 
-    @memoize
-    def _get_unique_id(self, device):
+    @lru_cache()
+    def calculate_unique_id(self, device):
+        """Implements the joystick ID algorithm in mednafen.
+        Was src/drivers/joystick.cpp:GetJoystickUniqueID
+        Now src/drivers/Joystick.cpp:CalcOldStyleID.
+        """
         print("get_unique_id for", device.id)
-
-        # Implemented the algorithm in mednafen
-        # was src/drivers/joystick.cpp:GetJoystickUniqueID
-        # now src/drivers/Joystick.cpp:CalcOldStyleID
-
         m = hashlib.md5()
         print(device.axes, device.balls, device.hats, device.buttons)
+        # noinspection SpellCheckingInspection
         buffer = struct.pack("iiii", device.axes, device.balls,
                              device.hats, device.buttons)
-
         m.update(buffer)
         digest = m.digest()
         ret = 0

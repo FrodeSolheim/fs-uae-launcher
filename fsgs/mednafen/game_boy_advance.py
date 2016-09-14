@@ -1,4 +1,5 @@
 import os
+import hashlib
 from fsgs.mednafen.mednafen import MednafenRunner
 
 
@@ -51,18 +52,28 @@ class GameBoyAdvanceRunner(MednafenRunner):
     def mednafen_post_configure(self):
         rom_file = self.get_game_file()
         cfg_file = os.path.splitext(rom_file)[0] + ".cfg"
+        m = hashlib.md5()
+        with open(rom_file, "rb") as f:
+            while True:
+                data = f.read(16384)
+                if not data:
+                    break
+                m.update(data)
+        rom_md5 = str(m.hexdigest())
 
-        print("FIXME: temporarily removed support for custom SRAM type")
-        # if os.path.exists(cfg_file):
-        #     config = ConfigParser.ConfigParser()
-        #     config.read(cfg_file)
-        #     if config.has_option("game", "sram type"):
-        #         type_file = os.path.join(
-        #             self.context.game.state_dir,
-        #             os.path.splitext(os.path.basename(rom_file))[0] + u".type")
-        #         with open(type_file, "wb") as f:
-        #             f.write(config.get("game", "sram type"))
-        #             f.write("\n")
+        # save_name = os.path.splitext(
+        #     os.path.basename(rom_file))[0] + u"." + md5sum + u".sav"
+
+        if self.config["sram_type"]:
+            state_dir = self.emulator_state_dir("mednafen")
+            # type_file = os.path.join(
+            #     state_dir,
+            #     os.path.splitext(os.path.basename(rom_file))[0] + u".type")
+            type_file = os.path.join(
+                state_dir, rom_md5 + u".type")
+            with open(type_file, "wb") as f:
+                for line in self.config["sram_type"].split(";"):
+                    f.write((line.strip() + "\n").encode("UTF-8"))
 
         print("FIXME: temporarily removed support for custom sav file")
         # sav_file = os.path.splitext(rom_file)[0] + u".sav"

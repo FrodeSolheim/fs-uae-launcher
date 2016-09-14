@@ -1,6 +1,6 @@
 import json
 import sqlite3
-from binascii import unhexlify
+from binascii import hexlify, unhexlify
 import zlib
 from .BaseDatabase import BaseDatabase
 
@@ -81,6 +81,24 @@ class GameDatabase(BaseDatabase):
             "INSERT INTO game (id, uuid, data) VALUES (?, ?, ?)",
             (game_id, sqlite3.Binary(DUMMY_UUID), ""))
 
+    def binary_uuid_to_str(self, data):
+        s = hexlify(data).decode("ASCII")
+        return "{}-{}-{}-{}-{}".format(
+            s[0:8], s[8:12], s[12:16], s[16:20], s[20:32])
+
+    def get_all_uuids(self):
+        cursor = self.internal_cursor()
+        cursor.execute("SELECT uuid FROM game WHERE data IS NOT NULL")
+        result = set()
+        for row in cursor:
+            data = row[0]
+            if len(data) != 16:
+                print("WARNING: Invalid UUID ({} bytes) found: {}".format(
+                      len(data), repr(data)))
+                continue
+            result.add(self.binary_uuid_to_str(data))
+        return result
+
     def get_game_values_for_uuid(self, game_uuid, recursive=True):
         print("get_game_values_for_uuid", game_uuid)
         assert game_uuid
@@ -97,12 +115,22 @@ class GameDatabase(BaseDatabase):
         cursor = self.internal_cursor()
         if game_uuid is not None:
             cursor.execute(
-                "SELECT data FROM game WHERE uuid = ?",
+                "SELECT uuid, data FROM game WHERE uuid = ?",
                 (sqlite3.Binary(unhexlify(game_uuid.replace("-", ""))),))
+            row = cursor.fetchone()
+            if not row:
+                raise LookupError("Cannot find game uuid {}".format(game_uuid))
         else:
             cursor.execute(
-                "SELECT data FROM game WHERE id = ?", (game_id,))
-        data = zlib.decompress(cursor.fetchone()[0])
+                "SELECT uuid, data FROM game WHERE id = ?", (game_id,))
+            row = cursor.fetchone()
+            if not row:
+                raise LookupError("Cannot find game id {}".format(game_id))
+        if game_uuid is None:
+            game_uuid = self.binary_uuid_to_str(row[0])
+        else:
+            assert self.binary_uuid_to_str(row[0]) == game_uuid
+        data = zlib.decompress(row[1])
         data = data.decode("UTF-8")
         doc = json.loads(data)
         next_parent_uuid = doc.get("parent_uuid", "")
@@ -116,8 +144,9 @@ class GameDatabase(BaseDatabase):
                     unhexlify(next_parent_uuid.replace("-", ""))),))
             row = cursor.fetchone()
             if not row:
-                raise Exception("could not find parent {0}".format(
-                    next_parent_uuid))
+                raise Exception(
+                    "could not find parent {0} of game {1}".format(
+                        next_parent_uuid, game_uuid))
             data = zlib.decompress(row[0])
             data = data.decode("UTF-8")
             next_doc = json.loads(data)

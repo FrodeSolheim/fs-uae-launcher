@@ -1,6 +1,6 @@
 """Exceptional cases that need some extra wrapping"""
 from OpenGL import arrays
-from OpenGL.arrays.arraydatatype import GLfloatArray
+from OpenGL.arrays.arraydatatype import GLfloatArray, GLdoubleArray
 from OpenGL.lazywrapper import lazy as _lazy
 from OpenGL.GL.VERSION import GL_1_1 as full
 from OpenGL.raw.GL import _types, _errors
@@ -14,23 +14,14 @@ __all__ = [
     'glColor',
     #'glColorTableParameterfv',
     'glDeleteTextures',
-    'glEdgeFlagv',
     'glEnd',
     'glGenTextures',
-    'glIndexdv',
-    'glIndexfv',
-    'glIndexsv',
-    'glIndexubv',
     'glMap1d',
     'glMap1f',
     'glMap2d',
     'glMap2f',
     'glMaterial',
     'glRasterPos',
-    'glRectfv',
-    'glRectiv',
-    'glRectsv',
-    'glTexGenfv',
     'glTexParameter',
     'glVertex',
     'glAreTexturesResident',
@@ -122,7 +113,8 @@ def glRasterPos( *args ):
     if len(args) == 1:
         # v form...
         args = args[0]
-    return glRasterPosDispatch[ len(args) ]( *args )
+    function = glRasterPosDispatch[ len(args) ]
+    return function( *args )
 
 glVertexDispatch = {
     2: full.glVertex2d,
@@ -233,79 +225,6 @@ def glColor( *args ):
 
 
 # Rectagle coordinates,
-glRectfv = arrays.setInputArraySizeType(
-    arrays.setInputArraySizeType(
-        full.glRectfv,
-        2,
-        arrays.GLfloatArray,
-        'v1',
-    ),
-    2,
-    arrays.GLfloatArray,
-    'v2',
-)
-glRectiv = arrays.setInputArraySizeType(
-    arrays.setInputArraySizeType(
-        full.glRectiv,
-        2,
-        arrays.GLintArray,
-        'v1',
-    ),
-    2,
-    arrays.GLintArray,
-    'v2',
-)
-glRectsv = arrays.setInputArraySizeType(
-    arrays.setInputArraySizeType(
-        full.glRectsv,
-        2,
-        arrays.GLshortArray,
-        'v1',
-    ),
-    2,
-    arrays.GLshortArray,
-    'v2',
-)
-
-
-glIndexsv = arrays.setInputArraySizeType(
-    full.glIndexsv,
-    1,
-    arrays.GLshortArray,
-    'c',
-)
-glIndexdv = arrays.setInputArraySizeType(
-    full.glIndexdv,
-    1,
-    arrays.GLdoubleArray,
-    'c',
-)
-glIndexfv = arrays.setInputArraySizeType(
-    full.glIndexfv,
-    1,
-    arrays.GLfloatArray,
-    'c',
-)
-glIndexubv = arrays.setInputArraySizeType(
-    full.glIndexubv,
-    1,
-    arrays.GLbyteArray,
-    'c',
-)
-glEdgeFlagv = arrays.setInputArraySizeType(
-    full.glEdgeFlagv,
-    1,
-    arrays.GLubyteArray,
-    'flag',
-)
-glTexGenfv = arrays.setInputArraySizeType(
-    full.glTexGenfv,
-    None,
-    arrays.GLfloatArray,
-    'params',
-)
-
-#'glAreTexturesResident',
 @_lazy( full.glAreTexturesResident )
 def glAreTexturesResident( baseFunction, *args ):
     """Allow both Pythonic and C-style calls to glAreTexturesResident
@@ -357,34 +276,3 @@ def glAreTexturesResident( baseFunction, *args ):
         for i in range(len(output)):
             output[i] = 1
     return output
-
-#glMap2f
-#glMap2d
-#glMap1f
-#glMap1d
-#glPixelMapusv
-#glTexGenfv
-#glLightfv
-#glFeedbackBuffer
-#glDrawRangeElements
-#glSelectBuffer
-#glAreTexturesResident
-#glPixelMapfv
-#glTexGeniv
-#glClipPlane
-#glTexParameterfv
-#glTexParameteriv
-#glReadPixels
-#glConvolutionParameterfv
-#glPolygonStipple
-#glFogiv
-#glTexEnviv
-#glRectdv
-#glMaterialiv
-#glColorTable
-#glColorTableParameteriv
-#glIndexiv
-#glLightModeliv
-#glDrawElements
-#glConvolutionFilter1D
-#glCallLists

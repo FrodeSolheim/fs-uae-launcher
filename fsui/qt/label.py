@@ -1,27 +1,36 @@
 import fsui.qt
-from .Widget import Widget
+from fsui.qt import Qt
+from .widget_mixin import WidgetMixin
 from urllib.parse import unquote_plus
 
 
-class Label(fsui.qt.QLabel, Widget):
+class Label(fsui.qt.QLabel, WidgetMixin):
 
     def __init__(self, parent, label):
         fsui.qt.QLabel.__init__(self, label, parent.get_container())
         self.init_widget(parent)
 
         self.setTextFormat(fsui.qt.Qt.RichText)
-        self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
+        # self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
+        self.setTextInteractionFlags(
+                Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
         self.setOpenExternalLinks(True)
+        # self.setFocusPolicy(Qt.NoFocus)
 
         # FIXME: focusPolicy()
         # FIXME: make Label more plain, and rather make a InteractiveLabel
         # descendant or something like that
 
+    def set_text_color(self, color):
+        palette = self.palette()
+        palette.setColor(self.foregroundRole(), color)
+        self.setPalette(palette)
+
     def set_text(self, label):
         self.setText(label)
 
 
-class PlainLabel(fsui.qt.QLabel, Widget):
+class PlainLabel(fsui.qt.QLabel, WidgetMixin):
 
     def __init__(self, parent, label):
         fsui.qt.QLabel.__init__(self, label, parent.get_container())
@@ -37,6 +46,7 @@ class URLLabel(Label):
         self._label = label
         self._url = url
         Label.__init__(self, parent, self._fix_label())
+        # self.setFocusPolicy(Qt.StrongFocus)
 
     def set_text(self, label):
         self._label = label
@@ -55,7 +65,7 @@ class URLLabel(Label):
         return Label.get_min_height(self) + 1
 
 
-class MultiLineLabel(Widget):
+class MultiLineLabel(WidgetMixin):
 
     def __init__(self, parent, label, min_width=None):
         self._widget = fsui.qt.QLabel(label, parent.get_container())
@@ -88,4 +98,4 @@ class MultiLineLabel(Widget):
                 if hasattr(self, "min_height"):
                     return max(self.min_height, height)
                 return height
-        return Widget.get_min_height(self) + 1
+        return WidgetMixin.get_min_height(self) + 1

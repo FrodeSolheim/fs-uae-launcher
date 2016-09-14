@@ -4,6 +4,7 @@
 import ctypes,sys
 if sys.version_info[:2] < (2,6):
     raise ImportError( 'Buffer interface only usable on Python 2.6+' )
+from ._arrayconstants import *
 
 PyBUF_SIMPLE = 0
 PyBUF_WRITABLE = PyBUF_WRITEABLE = 0x0001
@@ -13,24 +14,28 @@ PyBUF_CONTIG = (PyBUF_ND | PyBUF_WRITABLE)
 PyBUF_CONTIG_RO = (PyBUF_ND)
 PyBUF_C_CONTIGUOUS = (0x0020 | PyBUF_STRIDES)
 PyBUF_FORMAT = 0x0004
+
+# Python 2.6 doesn't define this...
+c_ssize_t = getattr( ctypes, 'c_ssize_t',ctypes.c_ulong)
     
 _fields_ = [
     ('buf',ctypes.c_void_p),
     ('obj',ctypes.c_void_p),
-    ('len',ctypes.c_size_t),
-    ('itemsize',ctypes.c_size_t),
+    ('len',c_ssize_t),
+    ('itemsize',c_ssize_t),
 
     ('readonly',ctypes.c_int),
     ('ndim',ctypes.c_int),
     ('format',ctypes.c_char_p),
-    ('shape',ctypes.POINTER(ctypes.c_size_t)),
-    ('strides',ctypes.POINTER(ctypes.c_size_t)),
-    ('suboffsets',ctypes.POINTER(ctypes.c_size_t)),
+    ('shape',ctypes.POINTER(c_ssize_t)),
+    ('strides',ctypes.POINTER(c_ssize_t)),
+    ('suboffsets',ctypes.POINTER(c_ssize_t)),
 ]
-if sys.version_info[:2] < (2,7):
-    # 2.7.5 documentation is incorrect about the structure, it is actually 
-    # the Python 3.x version of the struct, so only 2.6 needs the different 
-    # form
+
+
+if sys.version_info[:2] <= (2,6) or sys.version_info[:2] >= (3,3):
+    # Original structure was eventually restored in 3.3, so just 
+    # 2.7 through 3.2 uses the "enhanced" structure below
     _fields_.extend( [
         ('internal',ctypes.c_void_p),
     ] )
@@ -67,12 +72,15 @@ class Py_buffer(ctypes.Structure):
         if self.strides:
             return self.strides[:self.ndim]
         return None
-    
     def __enter__(self):
         pass 
-    def __exit__( self, exc_type=None, exc_value=None, traceback=None):
-        ReleaseBuffer( self )
-
+    def __exit__( self, exc_type=None, exc_value=None, traceback=None):    
+        if self.obj:
+            ReleaseBuffer( self )
+    def __del__( self ):
+        if self.obj:
+            ReleaseBuffer( self )
+    
 BUFFER_POINTER = ctypes.POINTER( Py_buffer )
 
 
@@ -94,3 +102,4 @@ GetBuffer.restype = ctypes.c_int
 ReleaseBuffer = ctypes.pythonapi.PyBuffer_Release
 ReleaseBuffer.argtypes = [ BUFFER_POINTER ]
 ReleaseBuffer.restype = None
+

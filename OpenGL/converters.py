@@ -200,7 +200,10 @@ if CallFuncPyConverter is None:
         def oldStyleReturn( self, result, baseOperation, pyArgs, cArgs ):
             """Retrieve cArgs[ self.index ]"""
             result = cArgs[ self.outIndex ]
-            thisSize = self.getSize(pyArgs)
+            try:
+                thisSize = self.getSize(pyArgs)
+            except KeyError as err:
+                return result 
             if thisSize == (1,):
                 try:
                     return result[0]
@@ -211,10 +214,10 @@ if CallFuncPyConverter is None:
     class OutputOrInput( Output ):
         DO_OUTPUT = (None,NULL)
         def __call__( self, pyArgs, index, baseOperation ):
-            if pyArgs[index] in self.DO_OUTPUT:
-                return super( OutputOrInput,self ).__call__( pyArgs, index, baseOperation )
-            else:
-                return self.arrayType.asArray( pyArgs[index] )
+            for do_output in self.DO_OUTPUT:
+                if pyArgs[index] is do_output:
+                    return super( OutputOrInput,self ).__call__( pyArgs, index, baseOperation )
+            return self.arrayType.asArray( pyArgs[index] )
 
     class SizedOutput( Output ):
         """Output generating dynamically-sized typed output arrays
@@ -243,10 +246,10 @@ if CallFuncPyConverter is None:
     class SizedOutputOrInput( SizedOutput ):
         DO_OUTPUT = (None,NULL)
         def __call__( self, pyArgs, index, baseOperation ):
-            if pyArgs[index] in self.DO_OUTPUT:
-                return super( SizedOutputOrInput,self ).__call__( pyArgs, index, baseOperation )
-            else:
-                return self.arrayType.asArray( pyArgs[index] )
+            for do_output in self.DO_OUTPUT:
+                if pyArgs[index] is do_output:
+                    return super( SizedOutputOrInput,self ).__call__( pyArgs, index, baseOperation )
+            return self.arrayType.asArray( pyArgs[index] )
     class returnCArgument( ReturnValues ):
         """ReturnValues returning the named cArgs value"""
         argNames = ('name',)

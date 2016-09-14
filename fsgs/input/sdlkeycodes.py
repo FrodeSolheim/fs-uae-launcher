@@ -1,6 +1,8 @@
 
 """Values from SDL_keysyms.h"""
 
+SDLK_LAST = 323
+
 sdl_key_codes = {
     'BACKSPACE': 8,
     'TAB': 9,

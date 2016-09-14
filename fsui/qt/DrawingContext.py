@@ -1,14 +1,35 @@
 from fsui.qt import Qt, QPoint, QRect, QPen, QBrush, QLinearGradient, QColor
+from fsui.qt import QFont
 from .Color import Color
 
 
 class Font(object):
 
-    def __init__(self, font):
-        self.font = font
+    def __init__(self, name=None, size=None, font=None):
+        if font is not None:
+            self.font = font
+        else:
+            assert name
+            self.font = QFont(name)
+            if size:
+                self.font.setPixelSize(size)
 
-    def set_bold(self, bold):
+    def qfont(self):
+        return self.font
+
+    def set_bold(self, bold=True):
         self.font.setBold(bold)
+
+    # def size(self):
+    #     return self.font.pixelSize()
+    #
+    # def set_size(self, size):
+    #     self.font.setPixelSize(size)
+
+    def adjust_size(self, increment=1):
+        size = self.font.pointSize()
+        print("pontSize is", size)
+        self.font.setPointSize(size + increment)
 
     def increase_size(self, increment=1):
         size = self.font.pointSize()
@@ -46,8 +67,8 @@ class DrawingContext(object):
     def measure_text(self, text):
         # return self.dc.GetTextExtent(text)
         # return (10, 10)
-        rect = self.qpainter.boundingRect(0, 0, 10000, 1000,
-                Qt.AlignLeft | Qt.AlignTop, text)
+        rect = self.qpainter.boundingRect(
+            0, 0, 10000, 1000, Qt.AlignLeft | Qt.AlignTop, text)
         return rect.width(), rect.height()
 
     # def set_color(self, color):
@@ -95,3 +116,12 @@ class DrawingContext(object):
         self.qpainter.setPen(QPen(QColor(0, 0, 0, 0)))
         self.qpainter.setBrush(QBrush(c))
         self.qpainter.drawRect(x, y, w, h)
+
+    def rounded_rectangle(
+            self, x, y, w, h, c, radius, border_color=None, border_width=1.0):
+        if border_color is not None:
+            self.qpainter.setPen(QPen(border_color, border_width))
+        else:
+            self.qpainter.setPen(QPen(QColor(0, 0, 0, 0)))
+        self.qpainter.setBrush(QBrush(c))
+        self.qpainter.drawRoundedRect(x, y, w, h, radius, radius)

@@ -1,5 +1,5 @@
+from fsgs.drivers.dos import DOSDriver
 from fsgs.platform import PlatformHandler
-from fsgs.dosbox.dos import DOSRunner
 from .loader import SimpleLoader
 
 
@@ -14,7 +14,7 @@ class DOSPlatformHandler(PlatformHandler):
         return DOSLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return DOSRunner(fsgs)
+        return DOSDriver(fsgs)
 
 
 class DOSLoader(SimpleLoader):
@@ -24,3 +24,4 @@ class DOSLoader(SimpleLoader):
 
     def load_extra(self, values):
         self.config["hd_startup"] = values["hd_startup"]
+        self.config["dosbox_cpu_cycles"] = values["dosbox_cpu_cycles"]

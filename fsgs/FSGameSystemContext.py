@@ -7,16 +7,18 @@ import threading
 import traceback
 # import hashlib
 # from fsbc.task import current_task
+
 from fsgs.Archive import Archive
 from fsbc.util import unused
-from .BaseContext import BaseContext
-from .Downloader import Downloader
-from .FileDatabase import FileDatabase
-from .GameDatabase import GameDatabase
-from .LockerDatabase import LockerDatabase
+from fsgs.BaseContext import BaseContext
+from fsgs.download import Downloader
+from fsgs.FileDatabase import FileDatabase
+from fsgs.GameDatabase import GameDatabase
+from fsgs.LockerDatabase import LockerDatabase
 from fsgs.Database import Database
-from fsgs.ogd.locker import is_locker_enabled
-from .plugins.pluginmanager import PluginManager
+from fsgs.network import is_http_url
+from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
+from fsgs.plugins.plugin_manager import PluginManager
 
 
 class NotFoundError(RuntimeError):
@@ -33,6 +35,10 @@ class FileContext(BaseContext):
 
     def __init__(self, main_context):
         BaseContext.__init__(self, main_context)
+        # FIXME: When using cache dict, should close/delete openers
+        # when we are done for the time being
+        # self.opener_cache_dict = {}
+        self.opener_cache_dict = None
 
     def find_by_sha1(self, sha1):
         database = FileDatabase.instance()
@@ -72,12 +78,11 @@ class FileContext(BaseContext):
         elif uri.startswith("db://"):
             # old name for sha1://
             return self.open_sha1_uri(uri)
-        elif uri.startswith("http://"):
-            return self.open_url(uri)
-        elif uri.startswith("https://"):
+        elif is_http_url(uri):
             return self.open_url(uri)
         elif uri.startswith("locker://"):
-            return self.open_locker_uri(uri)
+            return open_locker_uri(
+                uri, opener_cache_dict=self.opener_cache_dict)
         else:
             if prefer_path and os.path.exists(uri):
                 # return helper object so isinstance does not match with str
@@ -102,23 +107,6 @@ class FileContext(BaseContext):
         sha1 = uri.split("/")[2]
         assert len(sha1) == 40
         return self.find_by_sha1(sha1)
-
-    def open_locker_uri(self, uri):
-        sha1 = uri[9:]
-        assert len(sha1) == 40
-
-        # very ugly dependencies here...
-        from .ogd.context import SynchronizerContext
-        from .ogd.base import SynchronizerBase
-        context = SynchronizerContext()
-
-        fixme = SynchronizerBase(context)
-        server = fixme.get_server()
-        opener = fixme.get_opener()
-
-        url = "http://{0}/api/locker/{1}".format(server, sha1)
-        path = Downloader.cache_file_from_url(url, opener=opener)
-        return path
 
     def open_url(self, url):
         original_url = url
@@ -306,12 +294,12 @@ class FSGameSystemContext(object):
         return Database.instance()
 
     def get_game_database(self):
-        return self.game_database("openretro.org/amiga")
+        return self.game_database("Amiga")
 
     def game_database(self, database_name):
-        if database_name == "openretro.org/amiga":
-            # use legacy name for now
-            database_name = "oagd.net"
+        # if database_name == "Amiga":
+        #     # use legacy name for now
+        #     database_name = "oagd.net"
         attr_name = "game_database_" + database_name.replace("/", "_")
         if not hasattr(self.thread_local, attr_name):
             # FIXME
@@ -319,7 +307,7 @@ class FSGameSystemContext(object):
             # FIXME
             # path = os.path.join(
             #     FSGSDirectories.get_cache_dir(), "openretro.org")
-            path = os.path.join(FSGSDirectories.get_cache_dir(),
+            path = os.path.join(FSGSDirectories.databases_dir(),
                                 database_name + ".sqlite")
             if not os.path.exists(os.path.dirname(path)):
                 os.makedirs(os.path.dirname(path))
@@ -399,6 +387,20 @@ class FSGameSystemContext(object):
         loader = platform_handler.get_loader(self)
         self.config.load(loader.load_values(values))
         return True
+
+    def run_game(self):
+        from fsgs.platform import PlatformHandler
+        platform_handler = PlatformHandler.create(self.game.platform.id)
+        runner = platform_handler.get_runner(self)
+
+        from fsgs.input.enumeratehelper import EnumerateHelper
+        device_helper = EnumerateHelper()
+        device_helper.default_port_selection(runner.ports)
+
+        runner.prepare()
+        process = runner.run()
+        process.wait()
+        runner.finish()
 
 
 class TemporaryDirectory(object):

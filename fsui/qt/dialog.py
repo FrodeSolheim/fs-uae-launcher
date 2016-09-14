@@ -1,14 +1,18 @@
-from .qt import Qt, QDialog
-from .windowbase import WindowBase
+from fsui.qt import Qt, QDialog
+from fsui.qt.helpers import QParent
+from fsui.qt.windowbase import WindowBase
 
 
 class Dialog(WindowBase(QDialog)):
 
     def __init__(self, parent=None, title=""):
-        super().__init__(parent, title=title)
+        super().__init__(QParent(parent), title=title)
 
     def __del__(self):
         print("fsui.Dialog.__del__", self)
+
+    def real_window(self):
+        return self
 
     def show_modal(self):
         self.center_on_initial_show()

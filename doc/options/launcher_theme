@@ -1,4 +1,4 @@
-Summary: Theme
+Summary: Launcher Theme
 Type: Choice
 Default: fusion
 Example: native
@@ -10,3 +10,4 @@ Value: fusion (Fusion Auto)
 Value: fusion-plain (Fusion Plain)
 Value: fusion-adwaita (Fusion Adwaita)
 Value: fusion-dark (Fusion Dark)
+# Value: fws (FWS (Experimental))

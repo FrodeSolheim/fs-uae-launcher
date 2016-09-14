@@ -9,7 +9,7 @@ class NetplayContext(BaseContext):
     @property
     def enabled(self):
         try:
-            from fs_uae_launcher.netplay.Netplay import Netplay
+            from launcher.netplay.netplay import Netplay
         except ImportError:
             # FIXME: a bit ugly hack, but fs_uae_launcher.netplay.Netplay is not
             # imported from FS-UAE Game Center
@@ -18,4 +18,4 @@ class NetplayContext(BaseContext):
             assert Netplay is None
             return False
         else:
-            return Netplay.enabled
+            return Netplay.current()

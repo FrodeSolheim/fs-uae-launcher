@@ -36,12 +36,22 @@ if not BufferHandler:
         """Buffer-protocol data-type handler for OpenGL"""
         isOutput=False
         ERROR_ON_COPY = _configflags.ERROR_ON_COPY
-        @classmethod
-        def from_param( cls, value, typeCode=None ):
-            if not isinstance( value, _buffers.Py_buffer ):
-                value = cls.asArray( value )
-                #raise TypeError( """Can't convert value to py-buffer in from_param""" )
-            return value.buf
+        if sys.version_info[:2] >= (3,0):
+            @classmethod
+            def from_param( cls, value, typeCode=None ):
+                if not isinstance( value, _buffers.Py_buffer ):
+                    value = cls.asArray( value )
+                    #raise TypeError( """Can't convert value to py-buffer in from_param""" )
+                return value
+        else:
+            # Not sure *why* 2.7 segfaults with the "use a buffer as the buffer"
+            # version above, but it works fine with the value.buf here
+            @classmethod
+            def from_param( cls, value, typeCode=None ):
+                if not isinstance( value, _buffers.Py_buffer ):
+                    value = cls.asArray( value )
+                    #raise TypeError( """Can't convert value to py-buffer in from_param""" )
+                return value.buf
         def dataPointer( value ):
             if not isinstance( value, _buffers.Py_buffer ):
                 value = _buffers.Py_buffer.from_object( value )
@@ -84,30 +94,5 @@ if not BufferHandler:
             """Determine dimensions of the passed array value (if possible)"""
             return value.dims
 
-BYTE_SIZES = {
-    GL_1_1.GL_DOUBLE: ctypes.sizeof( _types.GLdouble ),
-    GL_1_1.GL_FLOAT: ctypes.sizeof( _types.GLfloat ),
-    GL_1_1.GL_INT: ctypes.sizeof( _types.GLint ),
-    GL_1_1.GL_SHORT: ctypes.sizeof( _types.GLshort ),
-    GL_1_1.GL_UNSIGNED_BYTE: ctypes.sizeof( _types.GLubyte ),
-    GL_1_1.GL_UNSIGNED_SHORT: ctypes.sizeof( _types.GLshort ),
-    GL_1_1.GL_BYTE: ctypes.sizeof( _types.GLbyte ),
-    GL_1_1.GL_UNSIGNED_INT: ctypes.sizeof( _types.GLuint ),
-}
-
-ARRAY_TO_GL_TYPE_MAPPING = {
-    'h': GL_1_1.GL_SHORT,
-    'H': GL_1_1.GL_UNSIGNED_SHORT,
-    'B': GL_1_1.GL_UNSIGNED_BYTE,
-    'c': GL_1_1.GL_UNSIGNED_BYTE,
-    'b': GL_1_1.GL_BYTE,
-    'i': GL_1_1.GL_INT,
-    'I': GL_1_1.GL_UNSIGNED_INT,
-    'l': GL_1_1.GL_INT,
-    'L': GL_1_1.GL_UNSIGNED_INT,
-    '?': GL_1_1.GL_INT, # Boolean
-    'f': GL_1_1.GL_FLOAT,
-    'd': GL_1_1.GL_DOUBLE,
-    
-    None: None,
-}
+ARRAY_TO_GL_TYPE_MAPPING = _buffers.ARRAY_TO_GL_TYPE_MAPPING
+BYTE_SIZES = _buffers.BYTE_SIZES

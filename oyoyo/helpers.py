@@ -20,6 +20,21 @@
 import random
 
 
+def join(client, channel):
+    # Dummy function - replaced later
+    pass
+
+
+def part(client, channel):
+    # Dummy function - replaced later
+    pass
+
+
+def nick(client, nick):
+    # Dummy function - replaced later
+    pass
+
+
 def msg(cli, user, msg):
     for line in msg.split('\n'):
         cli.send("PRIVMSG", user, ":%s" % line)

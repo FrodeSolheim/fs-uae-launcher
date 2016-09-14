@@ -1,20 +1,23 @@
 from fsui.qt import Qt, QSize, Signal
 from fsui.qt import QListView, QStandardItemModel, QStandardItem
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class ListView(QListView, Widget):
+class ListView(QListView, WidgetMixin):
 
     item_selected = Signal(int)
     item_activated = Signal(int)
 
-    def __init__(self, parent):
+    def __init__(self, parent, border=True):
         # self = QListView(parent.get_container())
         QListView.__init__(self, parent.get_container())
         # Widget.__init__(self, parent)
+        # self.setAutoFillBackground(True)
         self.init_widget(parent)
         self.viewport().installEventFilter(self.get_window())
         self.verticalScrollBar().installEventFilter(self.get_window())
+        if not border:
+            self.setFrameStyle(0)
 
         # self.setSelectionModel()
         self._model = QStandardItemModel(self)
@@ -28,10 +31,16 @@ class ListView(QListView, Widget):
         self.doubleClicked.connect(self.__double_clicked)
         # self.returnPressed.connect(self.__double_clicked)
         # self.activated.connect(self.__double_clicked)
+        self._row_height = 26
+
+    def set_row_height(self, height):
+        self._row_height = height
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
             self.__double_clicked()
+        else:
+            super().keyPressEvent(event)
 
     def __double_clicked(self):
         index = self.get_index()
@@ -69,7 +78,7 @@ class ListView(QListView, Widget):
                 item.setIcon(icon.qicon(16))
             except TypeError:
                 item.setIcon(icon.qicon)
-        item.setSizeHint(QSize(-1, 24))
+        item.setSizeHint(QSize(-1, self._row_height))
         self._model.appendRow(item)
 
     def get_item(self, index):

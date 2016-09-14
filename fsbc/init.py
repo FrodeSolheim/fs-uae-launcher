@@ -3,7 +3,7 @@ import platform
 import fsbc.debug
 import fsbc.logging
 # import fsbc.unicode
-from fsbc.Application import Application
+from fsbc.application import Application
 
 init_called = False
 unicode_patched = False

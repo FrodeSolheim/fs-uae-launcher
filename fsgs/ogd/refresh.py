@@ -1,5 +1,6 @@
 import time
-from fsbc.Application import app
+
+from fsbc.application import app
 from fsbc.signal import Signal
 from fsbc.task import Task
 from fsgs.Database import Database
@@ -9,7 +10,6 @@ from fsgs.ogd.meta import MetaSynchronizer
 
 
 class DatabaseRefreshTask(Task):
-
     def __init__(self):
         Task.__init__(self, "DatabaseRefreshTask")
 
@@ -27,9 +27,9 @@ class DatabaseRefreshTask(Task):
         # FIXME, dependency on fs_uae_launcher
         # from fs_uae_launcher.Scanner import Scanner
         # Scanner.start([], scan_for_files=False, update_game_database=True)
-        from fs_uae_launcher.GameRatingSynchronizer \
+        from fsgs.ogd.game_rating_synchronizer \
             import GameRatingSynchronizer
-        from fs_uae_launcher.GameScanner import GameScanner
+        from launcher.game_scanner import GameScanner
 
         context = SynchronizerContext()
 
@@ -57,7 +57,7 @@ class DatabaseRefreshTask(Task):
         # FIXME: review what signals should be sent when a scan is performed
         # FIXME: these should be removed soon
         app.settings["last_scan"] = str(time.time())
-        app.settings["config_refresh"] = str(time.time())
+        app.settings["__config_refresh"] = str(time.time())
         # this must be called from main, since callbacks are broadcast
         # when settings are changed
         Signal("scan_done").notify()

@@ -1,8 +1,8 @@
 from fsui.qt import QComboBox
-from .Widget import Widget
+from .widget_mixin import WidgetMixin
 
 
-class ComboBox(QComboBox, Widget):
+class ComboBox(QComboBox, WidgetMixin):
 
     def __init__(self, parent, items=[], read_only=False):
         QComboBox.__init__(self, parent.get_container())
@@ -22,7 +22,7 @@ class ComboBox(QComboBox, Widget):
         self.currentIndexChanged.connect(self.__current_index_changed)
 
     def __current_index_changed(self):
-        self.on_change()
+        self.on_changed()
 
     def get_min_width(self):
         # We don't want min width to be decided by the contents of the
@@ -50,5 +50,5 @@ class ComboBox(QComboBox, Widget):
     def set_text(self, text):
         self.lineEdit().setText(text)
 
-    def on_change(self):
+    def on_changed(self):
         pass

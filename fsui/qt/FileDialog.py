@@ -1,5 +1,5 @@
 from fsui.qt import QFileDialog
-
+from fsui.qt.helpers import QParent
 
 FILE = 0
 FILES = 1
@@ -12,7 +12,7 @@ class FileDialog(QFileDialog):
     def __init__(
             self, parent=None, message="", directory="", file="",
             pattern="*.*", multiple=False, dir_mode=False):
-        QFileDialog.__init__(self, parent, message)
+        QFileDialog.__init__(self, QParent(parent), message)
         if directory:
             self.setDirectory(directory)
         if dir_mode:
@@ -48,15 +48,15 @@ def pick_file(parent=None, message="", directory="", what=FILE):
     if NATIVE_DIALOGS:
         if what == DIRECTORY:
             result = QFileDialog.getExistingDirectory(
-                parent, message, directory)
+                QParent(parent), message, directory)
         elif what == FILES:
             # return value is filenames, selected_filter
             result = QFileDialog.getOpenFileNames(
-                parent, message, directory)
+                QParent(parent), message, directory)
         else:
             # return value is filename, selected_filter
             result = QFileDialog.getOpenFileName(
-                parent, message, directory)
+                QParent(parent), message, directory)
         if isinstance(result, tuple):
             # PySide returns a tuple, path is first param
             result = result[0]

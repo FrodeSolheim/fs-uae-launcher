@@ -1,6 +1,7 @@
 import json
 from collections import defaultdict
-from fsgs.ogd.client import OGDClient
+
+from fsgs.network import openretro_url_prefix
 
 
 class SimpleLoader:
@@ -28,7 +29,7 @@ class SimpleLoader:
 
         self.config["platform"] = values["platform"]
         self.config["model"] = values["model"]
-
+        self.config["protection"] = values["protection"]
         self.config["viewport"] = values["viewport"]
         self.config["video_standard"] = values["video_standard"]
 
@@ -44,8 +45,8 @@ class SimpleLoader:
         self.config["x_variant_warning"] = values["variant_warning"]
         self.config["x_variant_error"] = values["variant_error"]
 
-        self.config["database_url"] = "http://{0}/game/{1}".format(
-            OGDClient.get_server(), values["parent_uuid"])
+        self.config["database_url"] = "{0}/game/{1}".format(
+            openretro_url_prefix(), values["parent_uuid"])
         for key in ["mobygames_url"]:
             self.config[key] = values[key]
 

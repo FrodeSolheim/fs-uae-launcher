@@ -6,6 +6,7 @@ from OpenGL import converters
 from OpenGL.converters import DefaultCConverter
 from OpenGL.converters import returnCArgument,returnPyArgument
 from OpenGL.latebind import LateBind
+from OpenGL.arrays import arrayhelpers, arraydatatype
 from OpenGL._null import NULL
 _log = logging.getLogger( 'OpenGL.wrapper' )
 
@@ -131,7 +132,7 @@ class Wrapper( LateBind ):
             a function taking pname to produce such a value.
         arrayType -- array data-type used to generate the output
             array using the zeros class method...
-        pname -- optional argument passed into size function, that
+        pnameArg -- optional argument passed into size function, that
             is, the name of the argument whose *value* will be passed
             to the size function, often the name of an input argument
             to be "sized" to match the output argument.
@@ -140,6 +141,12 @@ class Wrapper( LateBind ):
             # figure out from self.wrappedOperation's argtypes
             index = self.cArgIndex( outArg )
             arrayType = self.wrappedOperation.argtypes[ index ]
+            if not hasattr( arrayType, 'asArray' ):
+                if arrayType == ctypes.c_void_p:
+                    from OpenGL.arrays import GLubyteArray
+                    arrayType = GLubyteArray
+                else:   
+                    raise TypeError( "Should only have array types for output parameters" )
         if pnameArg is None:
             assert not hasattr(size,'__call__' )
             if orPassIn:
@@ -183,6 +190,67 @@ class Wrapper( LateBind ):
         ).setReturnValues(
             returnObject
         )
+    def typeOfArg( self, outArg ):
+        """Retrieve the defined data-type for the given outArg (name)"""
+        index = self.cArgIndex( outArg )
+        return self.wrappedOperation.argtypes[ index ]
+        
+    if not ERROR_ON_COPY:
+        def setInputArraySize( self, argName, size=None ):
+            """Decorate function with vector-handling code for a single argument
+            
+            if OpenGL.ERROR_ON_COPY is False, then we return the 
+            named argument, converting to the passed array type,
+            optionally checking that the array matches size.
+            
+            if OpenGL.ERROR_ON_COPY is True, then we will dramatically 
+            simplify this function, only wrapping if size is True, i.e.
+            only wrapping if we intend to do a size check on the array.
+            """
+            arrayType = self.typeOfArg( argName )
+            if not hasattr( arrayType, 'asArray' ):
+                if arrayType == ctypes.c_void_p:
+                    # special case, we will convert to a void * array...
+                    self.setPyConverter( 
+                        argName,
+                        converters.CallFuncPyConverter( arraydatatype.ArrayDatatype.asArray )
+                    )
+                    self.setCConverter( argName, converters.getPyArgsName( argName ) )
+                    return self
+                elif hasattr( arrayType, '_type_' ) and hasattr(arrayType._type_, '_type_' ):
+                    # is a ctypes array-of-pointers data-type...
+                    # requires special handling no matter what...
+                    return self
+                else:   
+                    raise TypeError( "Should only have array types for output parameters: got %s"%(arrayType,) )
+            if size is not None:
+                self.setPyConverter( argName, arrayhelpers.asArrayTypeSize(arrayType, size) )
+            else:
+                self.setPyConverter( argName, arrayhelpers.asArrayType(arrayType) )
+            self.setCConverter( argName, converters.getPyArgsName( argName ) )
+            return self
+    else:
+        def setInputArraySize( self, argName, size=None ):
+            """Decorate function with vector-handling code for a single argument
+            
+            if OpenGL.ERROR_ON_COPY is False, then we return the 
+            named argument, converting to the passed array type,
+            optionally checking that the array matches size.
+            
+            if OpenGL.ERROR_ON_COPY is True, then we will dramatically 
+            simplify this function, only wrapping if size is True, i.e.
+            only wrapping if we intend to do a size check on the array.
+            """
+            if size is not None:
+                arrayType = self.typeOfArg( argName )
+                # return value is always the source array...
+                if hasattr( arrayType, 'asArray' ):
+                    self.setPyConverter( argName, arrayhelpers.asArrayTypeSize(arrayType, size) )
+                    self.setCConverter( argName, 
+                        converters.getPyArgsName( argName ) 
+                    )
+            return self
+    
     def setPyConverter( self, argName, function = NULL ):
         """Set Python-argument converter for given argument
 
@@ -286,6 +354,7 @@ class Wrapper( LateBind ):
         else:
             self.returnValues = function
         return self
+    
     def finalise( self ):
         """Finalise our various elements into simple index-based operations"""
         for attribute in ('pyConverters','cConverters','cResolvers' ):

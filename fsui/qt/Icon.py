@@ -1,5 +1,5 @@
 from fsui.qt import QPixmap, QImage, QIcon
-from fsbc.Resources import Resources
+from fsbc.resources import Resources
 from .Image import Image
 
 

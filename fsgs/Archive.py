@@ -15,7 +15,7 @@ else:
     archive_extensions.append(".lha")
 
 try:
-    from fsbc.SevenZipFile import SevenZipFile
+    from fsbc.seven_zip_file import SevenZipFile
 except ImportError:
     traceback.print_exc()
     print("SevenZipFile module import problem")

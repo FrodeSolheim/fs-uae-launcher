@@ -1,5 +1,7 @@
 import re
 import subprocess
+import traceback
+
 from fsbc.system import windows, macosx
 
 if windows:
@@ -345,13 +347,14 @@ class RefreshRateTool(object):
             line = line.strip()
             line = line.replace("+", "")
             # collapse multiple spaces
-            line = re.sub(' +', ' ', line)
+            line = re.sub(' +', ' ', line).strip()
             parts = line.split(' ')
             resolution = parts[0]
             rates = parts[1:]
             width, height = resolution.split('x')
             width = int(width)
             height = int(height)
+            print(rates)
             for rate in rates:
                 if rate[-1] == '*':
                     refresh = float(rate[:-1])
@@ -366,3 +369,112 @@ class RefreshRateTool(object):
                                   'refresh': float(rate), 'bpp': 0,
                                   'flags': 0})
         return mode
+
+    def screens_xrandr(self):
+        try:
+            return self._screens_xrandr()
+        except Exception:
+            traceback.print_exc()
+            return {}
+
+    @staticmethod
+    def _screens_xrandr():
+        screens = {}
+        screen = {
+            "modes": []
+        }
+        args = ["/usr/bin/env", "xrandr", "-q"]
+        p = subprocess.Popen(args, stdout=subprocess.PIPE)
+        data = p.stdout.read().decode("ISO-8859-1")
+        # data = XRANDR_TEST_DATA
+        for line in data.split("\n"):
+            last_refresh_rate = 0.0
+            if line.startswith(" "):
+                line = line.replace("*", " * ")
+                line = line.replace("+", " + ")
+                line = re.sub(" +", " ", line).strip()
+                parts = line.split(" ")
+                # May not always have a resolution here, could be
+                # a named mode instead
+                # resolution_str = parts[0]
+                # w, h = resolution_str.split("x")
+                # w = int(w)
+                # h = int(h)
+                for part in parts[1:]:
+                    if part == "*":
+                        screen["refresh_rate"] = last_refresh_rate
+                    elif part == "+":
+                        pass
+                    else:
+                        last_refresh_rate = float(part)
+                        # screen["modes"].append({
+                        #     "width": w,
+                        #     "height": h,
+                        #     "refresh_rate": last_refresh_rate
+                        # })
+                        pass
+            else:
+                line = re.sub(" +", " ", line).strip()
+                parts = line.split(" ")
+                for part in parts:
+                    if "x" not in part or "+" not in part:
+                        continue
+                    geom = part.replace("x", " ").replace("+", " ")
+                    print(geom)
+                    w, h, x, y = geom.split(" ")
+                    w = int(w)
+                    h = int(h)
+                    x = int(x)
+                    y = int(y)
+                    screen = {
+                        "x": x,
+                        "y": x,
+                        "width": x,
+                        "height": x,
+                        "modes": [],
+                        "refresh_rate": 0.0,
+                    }
+                    screens[(x, y, w, h)] = screen
+        print(screens)
+        return screens
+
+
+# noinspection SpellCheckingInspection
+XRANDR_TEST_DATA = """\
+Screen 0: minimum 8 x 8, current 1920 x 1080, maximum 32767 x 32767
+DP1 disconnected (normal left inverted right x axis y axis)
+DP2 disconnected (normal left inverted right x axis y axis)
+DP3 disconnected (normal left inverted right x axis y axis)
+HDMI1 connected primary 1920x1080+0+0 (normal left inverted right x \
+axis y axis)\ 531mm x 298mm
+   1920x1080     60.00*+
+   Amiga         50.02
+   1680x1050     59.88
+   1600x900      60.00
+   1280x1024     75.02    60.02
+   1280x800      59.91
+   1152x864      75.00
+   1280x720      60.00
+   1024x768      75.08    60.00
+   832x624       74.55
+   800x600       75.00    60.32
+   640x480       75.00    60.00
+   720x400       70.08
+HDMI2 disconnected (normal left inverted right x axis y axis)
+HDMI3 disconnected (normal left inverted right x axis y axis)
+VGA1 connected (normal left inverted right x axis y axis)
+   1680x1050     59.95 +
+   AmigaVGA      49.97
+   1600x1000     60.01
+   1280x1024     75.02
+   1440x900      59.89
+   1280x960      60.00
+   1152x864      75.00
+   1152x720      59.97
+   1024x768      75.08    60.00
+   832x624       74.55
+   800x600       75.00    60.32
+   640x480       75.00    60.00
+   720x400       70.08
+VIRTUAL1 disconnected (normal left inverted right x axis y axis)
+"""

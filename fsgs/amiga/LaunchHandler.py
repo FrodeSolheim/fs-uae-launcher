@@ -7,11 +7,11 @@ import tempfile
 import unittest
 import traceback
 import zlib
-from fsbc.Paths import Paths
+from fsbc.paths import Paths
 from fsbc.task import current_task, TaskFailure
-from fsbc.Resources import Resources
+from fsbc.resources import Resources
 from fsgs.Archive import Archive
-from fsgs.Downloader import Downloader
+from fsgs.download import Downloader
 from fsgs.GameChangeHandler import GameChangeHandler
 from fsgs.GameNameUtil import GameNameUtil
 from fsgs.amiga.ADFFileExtractor import ADFFileExtractor
@@ -22,6 +22,10 @@ from fsgs.amiga.ROMManager import ROMManager
 from fsgs.amiga.whdload import DEFAULT_WHDLOAD_VERSION, whdload_files, \
     whdload_support_files, default_whdload_prefs
 from fsgs.amiga.workbench import WorkbenchExtractor
+from fsgs.knownfiles import ACTION_REPLAY_MK_III_3_17_ROM, \
+    ACTION_REPLAY_MK_III_3_17_MOD_ROM, ACTION_REPLAY_MK_II_2_14_ROM, \
+    ACTION_REPLAY_MK_II_2_14_MOD_ROM
+from fsgs.network import is_http_url
 from fsgs.res import gettext
 from .roms import PICASSO_IV_74_ROM, CD32_FMV_ROM
 
@@ -137,6 +141,19 @@ class LaunchHandler(object):
         if self.config["accelerator"].lower() == "cyberstorm-ppc":
             roms.append(("accelerator_rom", ["cyberstormppc.rom"]))
 
+        if self.config["freezer_cartridge"] == "action-replay-2":
+            # Ideally, we would want to recognize ROMs based on zeroing the
+            # first four bytes, but right now we simply recognize a common
+            # additional version. freezer_cartridge_rom isn't a real option,
+            # we just want to copy the rom file and let FS-UAE find it
+            roms.append(("[freezer_cartridge]",
+                         [ACTION_REPLAY_MK_II_2_14_ROM.sha1,
+                          ACTION_REPLAY_MK_II_2_14_MOD_ROM.sha1]))
+        elif self.config["freezer_cartridge"] == "action-replay-3":
+            roms.append(("[freezer_cartridge]",
+                         [ACTION_REPLAY_MK_III_3_17_ROM.sha1,
+                          ACTION_REPLAY_MK_III_3_17_MOD_ROM.sha1]))
+
         for config_key, default_roms in roms:
             print("ROM:", config_key, default_roms)
             src = self.config[config_key]
@@ -156,11 +173,13 @@ class LaunchHandler(object):
                         src = sha1
             elif src == "internal":
                 continue
-            else:
+            elif src:
                 src = Paths.expand_path(src)
             if not src:
                 raise TaskFailure(
-                    gettext("Did not find required Kickstart or ROM"))
+                    gettext("Did not find required Kickstart or "
+                            "ROM for {}. Wanted one of these files: {}".format(
+                                config_key, repr(default_roms))))
 
             use_temp_kickstarts_dir = False
 
@@ -279,28 +298,6 @@ class LaunchHandler(object):
             key = "floppy_image_{0}".format(save_image)
             self.config[key] = "Save Disk.adf"
 
-    def prepare_cdrom(key):
-        src = self.config.get(key, "").strip()
-        if not src:
-            return
-
-        src, archive = self.expand_default_path(
-            src, self.fsgs.amiga.get_floppies_dir())
-        dst_name = os.path.basename(src)
-        current_task.set_progress(dst_name)
-
-        if self.config["writable_floppy_images"] == "1" and \
-                os.path.isfile(src):
-            # the config value directly refers to a local file, and the config
-            # value already refers to the file, but since we may have
-            # changed floppy_dir and the path may be relative, we set the
-            # resolved path directly
-            self.config[key] = src
-        else:
-            dst = os.path.join(self.temp_dir, dst_name)
-            self.fsgs.file.copy_game_file(src, dst)
-            self.config[key] = os.path.basename(dst)
-
     def prepare_cdroms(self):
         print("LaunchHandler.prepare_cdroms")
         if not self.config.get("cdrom_drive_count", ""):
@@ -323,17 +320,25 @@ class LaunchHandler(object):
                 dst = os.path.join(self.temp_dir, dst_name)
                 self.fsgs.file.copy_game_file(src, dst)
 
+            cue_sheets = self.get_cue_sheets_for_game_uuid(game_uuid)
+            for cue_sheet in cue_sheets:
+                with open(os.path.join(self.temp_dir,
+                                       cue_sheet["name"]), "wb") as f:
+                    f.write(cue_sheet["data"].encode("UTF-8"))
+
             for i in range(Amiga.MAX_CDROM_DRIVES):
                 key = "cdrom_drive_{0}".format(i)
                 value = self.config.get(key, "")
-                self.config[key] = os.path.join(
-                    self.temp_dir, os.path.basename(value))
+                if value:
+                    self.config[key] = os.path.join(
+                        self.temp_dir, os.path.basename(value))
 
             for i in range(Amiga.MAX_CDROM_IMAGES):
                 key = "cdrom_image_{0}".format(i)
                 value = self.config.get(key, "")
-                self.config[key] = os.path.join(
-                    self.temp_dir, os.path.basename(value))
+                if value:
+                    self.config[key] = os.path.join(
+                        self.temp_dir, os.path.basename(value))
 
         cdroms = []
         for i in range(Amiga.MAX_CDROM_DRIVES):
@@ -361,7 +366,7 @@ class LaunchHandler(object):
             dummy, ext = os.path.splitext(src)
             ext = ext.lower()
 
-            if src.startswith("http://") or src.startswith("https://"):
+            if is_http_url(src):
                 name = src.rsplit("/", 1)[-1]
                 name = urllib.parse.unquote(name)
                 self.on_progress(gettext("Downloading {0}...".format(name)))
@@ -443,10 +448,38 @@ class LaunchHandler(object):
         self.config["hard_drive_{0}".format(i)] = dir_path
 
     def get_file_list_for_game_uuid(self, game_uuid):
-        game_database = self.fsgs.get_game_database()
-        values = game_database.get_game_values_for_uuid(game_uuid)
+        # FIXME: This is an ugly hack, we should already be told what
+        # database to use.
+        try:
+            game_database = self.fsgs.get_game_database()
+            values = game_database.get_game_values_for_uuid(game_uuid)
+        except LookupError:
+            try:
+                game_database = self.fsgs.game_database("CD32")
+                values = game_database.get_game_values_for_uuid(game_uuid)
+            except LookupError:
+                game_database = self.fsgs.game_database("CDTV")
+                values = game_database.get_game_values_for_uuid(game_uuid)
         file_list = json.loads(values["file_list"])
         return file_list
+
+    def get_cue_sheets_for_game_uuid(self, game_uuid):
+        # FIXME: This is an ugly hack, we should already be told what
+        # database to use.
+        try:
+            game_database = self.fsgs.get_game_database()
+            values = game_database.get_game_values_for_uuid(game_uuid)
+        except LookupError:
+            try:
+                game_database = self.fsgs.game_database("CD32")
+                values = game_database.get_game_values_for_uuid(game_uuid)
+            except LookupError:
+                game_database = self.fsgs.game_database("CDTV")
+                values = game_database.get_game_values_for_uuid(game_uuid)
+        if not values.get("cue_sheets", ""):
+            return []
+        cue_sheets = json.loads(values["cue_sheets"])
+        return cue_sheets
 
     def unpack_game_hard_drive(self, drive_index, src):
         print("unpack_game_hard_drive", drive_index, src)
@@ -704,8 +737,7 @@ class LaunchHandler(object):
                 print("WHDLoad base dir exists, copying resources...")
                 self.copy_folder_tree(src_dir, dest_dir)
 
-        # FIXME: currently disabled
-        # icon = self.config.get("x_whdload_icon", "")
+        # icon = self.config.get("__whdload_icon", "")
         icon = ""
         if icon:
             shutil.copy(os.path.expanduser("~/kgiconload"), 
@@ -917,7 +949,7 @@ class LaunchHandler(object):
         print("LaunchHandler.run")
         # self.on_progress(gettext("Starting FS-UAE..."))
         # current_task.set_progress(gettext("Starting FS-UAE..."))
-        current_task.set_progress("")
+        current_task.set_progress("__run__")
         config = self.create_config()
         process, config_file = FSUAE.start_with_config(config)
         process.wait()
@@ -1031,19 +1063,20 @@ def amiga_filename_to_host_filename(amiga_name, ascii=False):
 
 EVIL_CHARS = '%\\*?\"/|<>'
 
-system_configuration = b"\x08\x00\x00\x05\x00\x00\x00\x00\x00\x00" \
-    b"\xc3P\x00\x00\x00\x00\x00\t'\xc0\x00\x00\x00\x01\x00\x00N \x00\x00\x00\x00" \
-    b"\xc0\x00@\x00p\x00\xb0\x00<\x00L\x00?\x00C\x00\x1f\xc0 \xc0\x1f\xc0 \x00" \
-    b"\x0f\x00\x11\x00\r\x80\x12\x80\x04\xc0\t@\x04`\x08\xa0\x00 \x00@\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\xff\x00\x0eD\x00\x00\x0e\xec\x00\x01\n\xaa\x00\x00\x0f" \
-    b"\xff\x06\x8b\x00\x00\x00\x81\x00,\x00\x00\x00\x00generic\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x05\x00K\x00\x00\x00\x00\x00\x00\x00\x07" \
-    b"\x00 \x00B\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" \
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00"
-
+system_configuration = (
+    b"\x08\x00\x00\x05\x00\x00\x00\x00\x00\x00\xc3"
+    b"P\x00\x00\x00\x00\x00\t'\xc0\x00\x00\x00\x01\x00\x00N \x00\x00\x00\x00"
+    b"\xc0\x00@\x00p\x00\xb0\x00<\x00L\x00?\x00C\x00\x1f\xc0 \xc0\x1f\xc0 \x00"
+    b"\x0f\x00\x11\x00\r\x80\x12\x80\x04\xc0\t@\x04`\x08\xa0\x00 \x00@\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\xff\x00\x0eD\x00\x00\x0e\xec\x00\x01\n\xaa\x00\x00\x0f"
+    b"\xff\x06\x8b\x00\x00\x00\x81\x00,\x00\x00\x00\x00generic\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x05\x00K\x00\x00\x00\x00\x00\x00\x00\x07"
+    b"\x00 \x00B\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00"
+    b"\x00")
 
 workbench_disks_with_setpatch_39_6 = [
     # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)

@@ -1,5 +1,6 @@
 import os
-from fsbc.Application import app
+
+from fsbc.settings import Settings
 from fsgs.runner import GameRunner
 from fsgs.amiga.FSUAE import FSUAE
 from fsgs.amiga.LaunchHandler import LaunchHandler
@@ -110,8 +111,10 @@ class AmigaRunner(GameRunner):
         if self.use_fullscreen():
             self.launch_handler.config["fullscreen"] = "1"
             if not self.launch_handler.config.get("fullscreen_mode", ""):
-                if app.settings["fs-uae:fullscreen-mode::default"]:
-                    self.launch_handler.config["fullscreen_mode"] = "window"
+                # Check if fullscreen mode is overridden by temporary setting.
+                if Settings.instance()["__fullscreen_mode"]:
+                    self.launch_handler.config["fullscreen_mode"] = \
+                        Settings.instance()["__fullscreen_mode"]
         else:
             self.launch_handler.config["fullscreen"] = "0"
 
@@ -220,13 +223,7 @@ class AmigaRunner(GameRunner):
                 "down": "JOY1_DOWN",
             }]
 
-        # f.write("input.config=1\n")
-
         f.write("\n[input]\n")
-        # f.write("joyport0=none\n")
-        # f.write("joyport1=none\n")
-        # f.write("input.1.keyboard.0.empty=false\n")
-        # f.write("input.1.keyboard.0.disabled=false\n")
 
         for i, input in enumerate(self.inputs):
             if not input.device:

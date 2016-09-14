@@ -37,7 +37,7 @@ class MESSRunner(MAMERunner):
         #     self.mess_firmware_dir = None
 
     def mame_configure(self):
-        self.add_arg(self.mess_romset()[0])
+        # self.add_arg(self.mess_romset()[0])
         # self.configure_mame()
         # with open(self.mednafen_cfg_path(), 'wb') as f:
         #     self._configure_emulator(f)
@@ -60,10 +60,6 @@ class MESSRunner(MAMERunner):
     def mess_configure(self):
         """override in subclasses to provide custom configuration"""
         pass
-
-    def run(self):
-        # return self.start_emulator("fs-mess/mess")
-        return self.start_emulator_from_plugin_resource("mess")
 
     def mame_input_mapping(self, port):
         return self.mess_input_mapping(port)
@@ -111,18 +107,24 @@ class MESSRunner(MAMERunner):
         s = []
         for c in inject_string:
             if c == '"':
-                s.append("1304105000500304")
+                # s.append("1304" + "1050" + "0050" + "0304")
+                s.append("1225" + "1031" + "0031" + "0225")
             elif c in " ":
-                inject(32)
+                # inject(32)
+                inject(44)
             elif c in "\n":
-                inject(13)
+                # inject(13)
+                inject(40)
             elif c == '-':
+                # inject(45)
                 inject(45)
             elif c in "0123456789":
-                code = 48 + "0123456789".index(c)
+                # code = 48 + "0123456789".index(c)
+                code = 30 + "1234567890".index(c)
                 inject(code)
             elif c in "abcdefghijklmnopqrstuvwxyz":
-                code = 97 + "abcdefghijklmnopqrstuvwxyz".index(c)
+                # code = 97 + "abcdefghijklmnopqrstuvwxyz".index(c)
+                code = 4 + "abcdefghijklmnopqrstuvwxyz".index(c)
                 inject(code)
             else:
                 raise Exception("inject_fake_input_string cannot "

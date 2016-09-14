@@ -1,14 +1,21 @@
 import os
 import sys
 import io
-import subprocess
+import tempfile
+import warnings
 from collections import defaultdict
-from fsbc.Application import app
+
+from fsgs.amiga.FSUAE import FSUAE
+
+import fsboot
+from fsbc.application import Application
 from fsbc.system import windows, macosx
 from fsbc.task import current_task
+from fsgs.plugins.plugin_manager import PluginManager
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.util.gamenameutil import GameNameUtil
+from fsbc.settings import Settings
 
 
 class Port(object):
@@ -36,17 +43,68 @@ class Port(object):
         return self.types[self.index]["description"]
 
 
+class TemporaryItem:
+
+    def __init__(self, root, prefix="tmp", suffix="", dir=False):
+        self.root = root
+        self.prefix = prefix
+        self.suffix = suffix
+        self._path = None
+        self.dir = dir
+
+    @property
+    def path(self):
+        if self._path is None:
+            if hasattr(self.root, "path"):
+                # We want to delay temp dir creation as long as possible,
+                # so we only call root.path when we have to.
+                root = self.root.path
+            else:
+                root = self.root
+            if self.dir:
+                self._path = tempfile.mkdtemp(
+                    prefix=self.prefix, suffix=self.suffix, dir=root)
+            else:
+                fd, self._path = tempfile.mkstemp(
+                    prefix=self.prefix, suffix=self.suffix, dir=root)
+                os.close(fd)
+        return self._path
+
+
+class TemporaryNamedItem:
+
+    def __init__(self, root, name, dir=False):
+        self.root = root
+        self.name = name
+        self._path = None
+        self.dir = dir
+
+    @property
+    def path(self):
+        if self._path is None:
+            root = self.root.path
+            self._path = os.path.join(root, self.name)
+            if not os.path.exists(self._path):
+                if self.dir:
+                    os.makedirs(self._path)
+                else:
+                    with open(self.path, "wb"):
+                        pass
+        return self._path
+
+
 class GameRunner(object):
 
     PORTS = []
 
     def __init__(self, fsgs):
         self.fsgs = fsgs
-        self.__env = {}
-        self.__args = []
+        self.args = []
+        self.env = {}
+        self.emulator = "no-emulator"
 
         self.config = defaultdict(str)
-        for key, value in app.settings.values.items():
+        for key, value in Settings.instance().values.items():
             # FIXME: re-enable this check?
             # if key in Config.config_keys:
             #     print("... ignoring config key from settings:", key)
@@ -64,10 +122,27 @@ class GameRunner(object):
 
         self.__vsync = False
         self.__game_temp_file = None
+        self.temp_root = TemporaryItem(
+            root=None, prefix="fsgs-", suffix="tmp", dir=True)
 
-        # default current working directory for emulator
-        self.cwd = self.create_temp_dir("cwd")
-        self.home = self.cwd
+        # self.cwd = self.create_temp_dir("cwd")
+        # self.home = self.cwd
+
+        # Default current working directory for the emulator.
+        self.cwd = self.temp_dir("cwd")
+        # Fake home directory for the emulator.
+        self.home = self.temp_dir("home")
+
+    def set_env(self, name, value):
+        warnings.warn("set_env is deprecated", DeprecationWarning)
+        self.env[name] = value
+
+    def add_arg(self, *args):
+        warnings.warn("add_arg is deprecated", DeprecationWarning)
+        self.args.extend(args)
+
+    # def set_emulator(self, emulator):
+    #     self._emulator = emulator
 
     # self.inputs.append(self.create_input(
     #         name='Controller {0}'.format(i + 1),
@@ -76,9 +151,10 @@ class GameRunner(object):
 
     def use_fullscreen(self):
         # FIXME: not a very nice hack to hard-code application name here...
-        if app.name == "fs-uae-arcade":
-            return True
-        if app.settings["fullscreen"] == "0":
+        if Application.instance():
+            if Application.instance().name == "fs-uae-arcade":
+                return True
+        if Settings.instance()["fullscreen"] == "0":
             return False
         return True
 
@@ -86,7 +162,7 @@ class GameRunner(object):
         # if "--no-vsync" in sys.argv:
         #     return False
         # return True
-        return self.config.get("video_sync") == "1"
+        return self.config.get("video_sync") in ["1", "auto"]
 
     def use_doubling(self):
         return True
@@ -97,14 +173,14 @@ class GameRunner(object):
     def use_stretching(self):
         if "--no-stretch" in sys.argv:
             return False
-        if app.settings["stretch"] == "0":
+        if Settings.instance()["stretch"] == "0":
             return False
         return True
 
     def use_audio_frequency(self):
-        if app.settings["audio_frequency"]:
+        if Settings.instance()["audio_frequency"]:
             try:
-                return int(app.settings["audio_frequency"])
+                return int(Settings.instance()["audio_frequency"])
             except ValueError:
                 pass
         return 48000
@@ -135,28 +211,76 @@ class GameRunner(object):
         raise Exception("Unrecognized platform")
 
     def screen_size(self):
-        refresh_rate_tool = RefreshRateTool()
-        # FIXME: screen size monitor size
-        width = refresh_rate_tool.get_current_mode()["width"]
-        height = refresh_rate_tool.get_current_mode()["height"]
-        # if width > 2 * height:
-        #     print("width > 2 * height, assuming dual-monitor setup...")
-        #     return width // 2, height
-        return width, height
+        rect = self.screen_rect()
+        return rect[2], rect[3]
 
-    def screen_rect(self):
+    @classmethod
+    def _screens(cls):
+        screens = []
         try:
-            desktop = app.qapplication.desktop()
+            from fsui.qt import init_qt
+            qapplication = init_qt()
+            desktop = qapplication.desktop()
         except AttributeError:
             # no QApplication, probably not running via QT
             # FIXME: log warning
-            return 0, 0, 640, 480
-        screens = []
-        for i in range(desktop.screenCount()):
-            geometry = desktop.screenGeometry(i)
-            screens.append([geometry.x(), i, geometry])
-        screens.sort()
+            pass
+        else:
+            for i in range(desktop.screenCount()):
+                geometry = desktop.screenGeometry(i)
+                screens.append([geometry.x(), i, geometry])
+        return screens
+
+    @classmethod
+    def screen_refresh_rate_for_monitor(cls, monitor):
+        try:
+            from fsui.qt import init_qt
+            qapplication = init_qt()
+        except AttributeError:
+            return 0
+        else:
+            for i, screen in enumerate(qapplication.screens()):
+                print("Screen {0} refresh rate (Qt) = {1}".format(
+                    i, screen.refreshRate()))
+            index = cls.screen_index_for_monitor(monitor)
+            screen = qapplication.screens()[index]
+
+            if windows or macosx:
+                return int(round(screen.refreshRate()))
+
+            refresh_rate_tool = RefreshRateTool()
+            screens = refresh_rate_tool.screens_xrandr()
+            rect = cls.screen_rect_for_monitor(monitor)
+            # from pprint import pprint
+            # pprint(screens)
+            for screen in screens:
+                print("Screen {} refresh rate (Xrandr) = {}".format(
+                    screen, screens[screen]["refresh_rate"]))
+            for screen in screens:
+                if rect == screen:
+                    return screens[screen]["refresh_rate"]
+            return 0
+
+    def screen_refresh_rate(self):
         monitor = self.config.get("monitor", "")
+        return self.screen_refresh_rate_for_monitor(monitor)
+
+    @classmethod
+    def screen_index_for_monitor(cls, monitor):
+        rect = cls.screen_rect_for_monitor(monitor)
+        for i, s in enumerate(cls._screens()):
+            if rect == (s[2].x(), s[2].y(), s[2].width(), s[2].height()):
+                return i
+        raise Exception("Could not find screen at position {}".format(rect))
+
+    def screen_index(self):
+        monitor = self.config.get("monitor", "")
+        return self.screen_index_for_monitor(monitor)
+
+    @classmethod
+    def screen_rect_for_monitor(cls, monitor):
+        screens = cls._screens()
+        screens.sort()
         if monitor == "left":
             mon = 0
         elif monitor == "middle-right":
@@ -169,13 +293,9 @@ class GameRunner(object):
         geometry = screens[display][2]
         return geometry.x(), geometry.y(), geometry.width(), geometry.height()
 
-    def get_screen_width(self):
-        """deprecated"""
-        return self.screen_size()[0]
-
-    def get_screen_height(self):
-        """deprecated"""
-        return self.screen_size()[1]
+    def screen_rect(self):
+        monitor = self.config.get("monitor", "")
+        return self.screen_rect_for_monitor(monitor)
 
     def get_name(self):
         # return "{0} ({1}, {2})".format(
@@ -224,51 +344,68 @@ class GameRunner(object):
         return self.__game_temp_file.path
 
     def create_temp_dir(self, suffix):
-        return self.fsgs.temp_dir(suffix)
+        warnings.warn("create_temp_dir is deprecated", DeprecationWarning)
+        return self.temp_dir(suffix)
 
     def create_temp_file(self, suffix):
-        return self.fsgs.temp_file(suffix)
+        warnings.warn("create_temp_file is deprecated", DeprecationWarning)
+        return self.temp_file(suffix)
 
-    def set_env(self, name, value):
-        self.__env[name] = value
+    def temp_dir(self, name):
+        return TemporaryNamedItem(root=self.temp_root, name=name, dir=True)
 
-    def add_arg(self, *args):
-        self.__args.extend(args)
+    def temp_file(self, name):
+        return TemporaryNamedItem(root=self.temp_root, name=name, dir=False)
+
+    def run(self):
+        executable = PluginManager.instance().find_executable(self.emulator)
+        if executable is None:
+            raise LookupError("Could not find emulator " + repr(self.emulator))
+        return self.start_emulator(executable)
 
     def start_emulator_from_plugin_resource(
             self, provide_name, args=None, env_vars=None):
         resource = self.fsgs.plugins.find_executable(provide_name)
+        if resource is None:
+            raise Exception("Could not find emulator " + repr(provide_name))
+        if env_vars is None:
+            env_vars = os.environ.copy()
+        # Set LD_LIBRARY_PATH for Linux plugins with bundled libraries
+        env_vars["LD_LIBRARY_PATH"] = os.path.dirname(resource.path)
         return self.start_emulator("", args=args, env_vars=env_vars,
                                    executable=resource.path)
 
     def start_emulator(
             self, emulator, args=None, env_vars=None, executable=None,
             cwd=None):
-        if "/" in emulator:
-            if not executable:
-                executable = self.find_emulator_executable(emulator)
-            if not executable:
-                emulator = emulator.split("/")[-1]
+        # if "/" in emulator:
+        #     if not executable:
+        #         executable = self.find_emulator_executable(emulator)
+        #     if not executable:
+        #         emulator = emulator.split("/")[-1]
+        #
+        # if not executable:
+        #     executable = self.find_emulator_executable("fs-" + emulator)
+        # if not executable:
+        #     executable = self.find_emulator_executable(emulator)
+        #
+        # if not executable:
+        #     raise Exception("could not find executable for " + emulator)
 
-        if not executable:
-            executable = self.find_emulator_executable("fs-" + emulator)
-        if not executable:
-            executable = self.find_emulator_executable(emulator)
-
-        if not executable:
-            raise Exception("could not find executable for " + emulator)
-        process_args = [executable]
-        process_args.extend(self.__args)
-        if args is not None:
-            process_args.extend(args)
-        print(repr(process_args))
+        args = []
+        args.extend(self.args)
+        print(repr(args))
 
         if "SDL_VIDEODRIVER" in os.environ:
             print("SDL_VIDEODRIVER was present in environment, removing!")
             del os.environ["SDL_VIDEODRIVER"]
 
         env = os.environ.copy()
+        FSUAE.add_environment_from_settings(env)
         if self.use_fullscreen():
+            fullscreen_mode = self.config.get("fullscreen_mode", "")
+
+            x, y, w, h = self.screen_rect()
             for key in ["FSGS_GEOMETRY", "FSGS_WINDOW"]:
                 if env.get(key, ""):
                     # Already specified externally, so we just use
@@ -276,31 +413,37 @@ class GameRunner(object):
                     pass
                     print("using existing fullscreen window rect")
                 else:
-                    x, y, w, h = self.screen_rect()
                     env[key] = "{0},{1},{2},{3}".format(x, y, w, h)
             print("fullscreen rect:", env.get("FSGS_GEOMETRY", ""))
+            # SDL 1.2 multi-display support. Hopefully, SDL's display
+            # enumeration is the same as QT's.
+            env["SDL_VIDEO_FULLSCREEN_DISPLAY"] = str(self.screen_index())
 
-            if self.config.get("fullscreen_mode", "") == "window":
+            if fullscreen_mode == "window":
                 print("using fullscreen window mode")
-                env["FSGS_FULLSCREEN"] = "window"
-            elif self.config.get("fullscreen_mode", "") == "fullscreen":
-                print("using fullscreen (legacy) mode")
-                env["FSGS_FULLSCREEN"] = "fullscreen"
+                # env["FSGS_FULLSCREEN"] = "window"
+                env["FSGS_FULLSCREEN"] = "1"
             else:
-                print("using fullscreen desktop mode")
-                env["FSGS_FULLSCREEN"] = "desktop"
+                del env["FSGS_WINDOW"]
+                if fullscreen_mode == "fullscreen":
+                    print("using fullscreen (legacy) mode")
+                    # env["FSGS_FULLSCREEN"] = "fullscreen"
+                    env["FSGS_FULLSCREEN"] = "2"
+                else:
+                    print("using fullscreen desktop mode")
+                    # env["FSGS_FULLSCREEN"] = "desktop"
+                    env["FSGS_FULLSCREEN"] = "3"
         else:
             print("using window mode (no fullscreen)")
-            env["FSGS_FULLSCREEN"] = ""
+            env["FSGS_FULLSCREEN"] = "0"
 
-        env.update(self.__env)
+        env.update(self.env)
         env["HOME"] = self.home.path
 
         if env_vars:
             env.update(env_vars)
         print(env)
 
-        args = [process_args]
         kwargs = {}
         if env is not None:
             kwargs["env"] = env
@@ -310,11 +453,12 @@ class GameRunner(object):
             kwargs["cwd"] = self.cwd.path
         if windows:
             kwargs["close_fds"] = True
-        print(" ".join(process_args))
+        print(" ".join(args))
         current_task.set_progress(
             "Starting {emulator}".format(emulator=emulator))
-        process = subprocess.Popen(*args, **kwargs)
-        return process
+        # process = subprocess.Popen(*args, **kwargs)
+        return emulator.popen(args, **kwargs)
+        # return process
 
     def find_emulator_executable(self, name):
         # if os.path.isdir("../fs-uae/src"):
@@ -336,27 +480,27 @@ class GameRunner(object):
             # first we check if the emulator is bundled inside the launcher
             # directory
             exe = os.path.join(
-                app.executable_dir(), package, name + ".exe")
+                fsboot.executable_dir(), package, name + ".exe")
             if not os.path.exists(exe):
                 # for when the emulators are placed alongside the launcher /
                 # game center directory
                 exe = os.path.join(
-                    app.executable_dir(), "..", package, name + ".exe")
+                    fsboot.executable_dir(), "..", package, name + ".exe")
             if not os.path.exists(exe):
                 # when the emulators are placed alongside the fs-uae/ directory
                 # containing launcher/, for FS-UAE Launcher & FS-UAE Arcade
                 exe = os.path.join(
-                    app.executable_dir(), "..", "..", package, name + ".exe")
+                    fsboot.executable_dir(), "..", "..", package, name + ".exe")
             if not os.path.exists(exe):
                 return None
             return exe
         elif macosx:
             exe = os.path.join(
-                app.executable_dir(), "..",
+                fsboot.executable_dir(), "..",
                 package + ".app", "Contents", "MacOS", name)
             if not os.path.exists(exe):
                 exe = os.path.join(
-                    app.executable_dir(), "..", "..", "..",
+                    fsboot.executable_dir(), "..", "..", "..",
                     package + ".app", "Contents", "MacOS", name)
             if not os.path.exists(exe):
                 exe = os.path.join(
@@ -408,14 +552,30 @@ class GameRunner(object):
             #     game_refresh = 60.0
             # else:
             #     game_refresh = 50.0
-            refresh_rate_tool = RefreshRateTool(
-                game_platform=self.fsgs.game.platform.id,
-                game_refresh=round(game_refresh))
-            refresh_rate_tool.set_best_mode()
-            if refresh_rate_tool.allow_vsync():
+
+            # refresh_rate_tool = RefreshRateTool(
+            #     game_platform=self.fsgs.game.platform.id,
+            #     game_refresh=round(game_refresh))
+            # refresh_rate_tool.set_best_mode()
+            # if refresh_rate_tool.allow_vsync():
+            #     print("setting vsync to true")
+            #     self.set_vsync(True)
+            #     return refresh_rate_tool.get_display_refresh()
+            screen_refresh = self.screen_refresh_rate()
+            if self.config["assume_refresh_rate"]:
+                try:
+                    screen_refresh = float(self.config["assume_refresh_rate"])
+                except ValueError:
+                    print("Could not parse 'assume_refresh_rate' value")
+                else:
+                    print("Assuming screen refresh rate:", screen_refresh)
+
+            print("Game refresh rate:", game_refresh)
+            print("Screen refresh rate:", screen_refresh)
+            if int(round(screen_refresh)) == int(round(game_refresh)):
                 print("setting vsync to true")
                 self.set_vsync(True)
-                return refresh_rate_tool.get_display_refresh()
+                return True
         else:
             print("vsync is not enabled")
         print("setting vsync to false")
@@ -428,3 +588,6 @@ class GameRunner(object):
 
     def abort(self):
         print("GameRunner.abort - WARNING: not implemented")
+
+    def finish(self):
+        pass

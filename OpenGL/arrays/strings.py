@@ -4,7 +4,7 @@ from OpenGL.raw.GL import _types
 from OpenGL.raw.GL.VERSION import GL_1_1
 from OpenGL.arrays import formathandler
 import ctypes
-from OpenGL import _bytes
+from OpenGL import _bytes, error
 from OpenGL._configflags import ERROR_ON_COPY
 
 def dataPointer( value, typeCode=None ):
@@ -55,10 +55,10 @@ class StringHandler( formathandler.FormatHandler ):
 class UnicodeHandler( StringHandler ):
     HANDLED_TYPES = (_bytes.unicode,)
     @classmethod
-    def from_param( cls, value ):
+    def from_param( cls, value, typeCode=None ):
         # TODO: raise CopyError if the flag is set!
         converted = _bytes.as_8_bit( value )
-        result = StringHandler.from_param(  )
+        result = StringHandler.from_param( converted )
         if converted is not value:
             if ERROR_ON_COPY:
                 raise error.CopyError(

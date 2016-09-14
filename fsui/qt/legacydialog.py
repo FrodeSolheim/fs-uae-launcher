@@ -1,5 +1,6 @@
 import weakref
 from fsui.qt import QDialog, Signal
+from fsui.qt.helpers import QParent
 
 
 class LegacyDialog(QDialog):
@@ -7,7 +8,7 @@ class LegacyDialog(QDialog):
     closed = Signal()
 
     def __init__(self, parent=None, title=""):
-        QDialog.__init__(self, parent)
+        QDialog.__init__(self, QParent(parent))
         self._window = weakref.ref(self)
 
         self.layout = None

@@ -1,4 +1,4 @@
-Description: Custom IRC server address
-Default: irc.fengestad.no
-Example: someircserver.com
-Type: string
+Description: Custom IRC Server
+Type: String
+Default: irc.fs-uae.net
+Example: irc.acme.com

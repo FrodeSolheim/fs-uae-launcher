@@ -1,9 +1,7 @@
-# from fsbc.Application import app
 from .client import OGDClient
 
 
 class SynchronizerContext(object):
-
     meta = {}
 
     def __init__(self):
@@ -11,8 +9,8 @@ class SynchronizerContext(object):
 
     @property
     def username(self):
-        return OGDClient.get_credentials()[0]
+        return OGDClient.credentials()[0]
 
     @property
     def password(self):
-        return OGDClient.get_credentials()[1]
+        return OGDClient.credentials()[1]
