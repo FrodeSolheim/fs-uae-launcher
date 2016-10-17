@@ -14,7 +14,7 @@ except AttributeError:
 
 class FSUAE(object):
     @classmethod
-    def start_with_config(cls, config):
+    def start_with_config(cls, config, cwd=None):
         print("FSUAE.start_with_config:")
         tf = tempfile.NamedTemporaryFile(suffix=".fs-uae", delete=False)
         config_file = tf.name
@@ -24,13 +24,15 @@ class FSUAE(object):
                 tf.write(line.encode("UTF-8"))
                 tf.write(b"\n")
         args = [config_file]
-        return cls.start_with_args(args), config_file
+        return cls.start_with_args(args, cwd=cwd), config_file
 
     @classmethod
-    def start_with_args(cls, args, **kwargs):
+    def start_with_args(cls, args, cwd=None, **kwargs):
         print("FSUAE.start_with_args:", args)
         exe = cls.find_executable()
         print("current dir (cwd): ", getcwd())
+        if cwd is not None:
+            print("cwd override:", cwd)
         print("using fs-uae executable:", exe)
         args = [exe] + args
 
@@ -53,9 +55,10 @@ class FSUAE(object):
         # env[str("SDL_VIDEO_WINDOW_POS")] = "0,0"
         # args += ["--fullscreen-mode", "desktop"]
         if windows:
-            p = subprocess.Popen(args, env=env, close_fds=True, **kwargs)
+            p = subprocess.Popen(
+                args, cwd=cwd, env=env, close_fds=True, **kwargs)
         else:
-            p = subprocess.Popen(args, env=env, **kwargs)
+            p = subprocess.Popen(args, cwd=cwd, env=env, **kwargs)
         return p
 
     @classmethod
@@ -102,7 +105,7 @@ class FSUAE(object):
         x = main_x + (main_w - width) // 2
         y = main_y + (main_h - height) // 2
 
-        # FIXME: reimplement without wx
+        # FIXME: re-implement without wx
         # if windows:
         #     import wx
         #    y += wx.SystemSettings_GetMetric(wx.SYS_CAPTION_Y)
@@ -124,7 +127,7 @@ class FSUAE(object):
             if windows:
                 path += ".exe"
             if os.path.isfile(path):
-                return path
+                return os.path.abspath(path)
             raise Exception("Could not find development FS-UAE executable")
 
         if windows:

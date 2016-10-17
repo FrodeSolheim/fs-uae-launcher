@@ -332,34 +332,62 @@ class FSGameSystemContext(object):
         variant_uuid = self.find_preferred_game_variant(game_uuid)
         self.load_game_variant(variant_uuid)
 
+    # noinspection PyMethodMayBeStatic
     def find_preferred_game_variant(self, game_uuid):
         print("find_preferred_game_variant game_uuid =", game_uuid)
         from .Database import Database
         database = Database.instance()
         variants = database.find_game_variants_new(game_uuid=game_uuid)
         print(variants)
-        ordered_list = []
-        for variant in variants:
+        # ordered_list = []
+        # FIXME: Merge code with VariantsBrowser.py
+        sortable_items = []
+        for i, variant in enumerate(variants):
+            game_database = self.game_database(variant["database"])
             variant["like_rating"], variant["work_rating"] = \
-                database.get_ratings_for_game(variant["uuid"])
+                game_database.get_ratings_for_game(variant["uuid"])
             variant["personal_rating"], ignored = \
                 database.get_ratings_for_game(variant["uuid"])
-            variant_uuid = variant["uuid"]
-            variant_name = variant["name"]
-            variant_name = variant_name.replace("\n", " (")
-            variant_name = variant_name.replace(" \u00b7 ", ", ")
-            variant_name += ")"
-            ordered_list.append(
-                ((1 - bool(variant["have"]),
-                  1000 - variant["personal_rating"],
-                  1000 - variant["like_rating"]),
-                 (variant_uuid, variant_name)))
-        ordered_list.sort()
+            # variant_uuid = variant["uuid"]
+            name = variant["name"]
+            name = name.replace("\n", " (")
+            name = name.replace(" \u00b7 ", ", ")
+            name += ")"
+            # ordered_list.append(
+            #     ((1 - bool(variant["have"]),
+            #       1000 - variant["personal_rating"],
+            #       1000 - variant["like_rating"]),
+            #      (variant_uuid, variant_name)))
+            sort_key = (0, 1000000 - variant["like_rating"],
+                        1000000 - variant["work_rating"], name)
+            sortable_items.append(
+                (sort_key, i, variant))
+        ordered_list = [x[2] for x in sorted(sortable_items)]
         print("ordered variant list:")
         for variant in ordered_list:
-            print("-", variant[1][1])
+            print("-", variant["name"])
         # item.configurations = [x[1] for x in ordered_list]
-        return ordered_list[0][1][0]
+        select_index = None
+        if select_index is None:
+            # default index selection
+            for i, variant in enumerate(ordered_list):
+                if variant["personal_rating"] == 5:
+                    select_index = i
+                    break
+            else:
+                for i, variant in enumerate(ordered_list):
+                    if variant["have"] >= 3:
+                        select_index = i
+                        break
+                else:
+                    for i, variant in enumerate(ordered_list):
+                        if variant["have"] >= 1:
+                            select_index = i
+                            break
+                    else:
+                        if len(ordered_list) > 0:
+                            select_index = 0
+        return ordered_list[select_index]["uuid"]
 
     def load_game_variant(self, variant_uuid):
         # game_database = fsgs.get_game_database()

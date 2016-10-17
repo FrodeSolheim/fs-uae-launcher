@@ -83,6 +83,7 @@ class Option(object):
     NETWORK_CARD = "network_card"
     PLATFORM = "platform"
     RELATIVE_PATHS = "relative_paths"
+    RELATIVE_TEMP_FEATURE = "relative_temp_feature"
     RTG_SCANLINES = "rtg_scanlines"
     SAVE_DISK = "save_disk"
     SCANLINES = "scanlines"
@@ -747,6 +748,11 @@ options = {
         "default": "",
         "description": N_("Relative paths"),
         "type": "",
+    },
+    "relative_temp_feature": {
+        "default": "0",
+        "description": N_("Relative Temporary Directories"),
+        "type": "Boolean",
     },
     "rtg_scanlines": {
         "default": "0",

@@ -98,7 +98,8 @@ class AmigaRunner(GameRunner):
         self.config["joystick_port_1"] = self.ports[0].device_id or ""
 
         self.launch_handler = LaunchHandler(
-            self.fsgs, self.get_name(), self.config, save_state_handler)
+            self.fsgs, self.get_name(), self.config, save_state_handler,
+            temp_dir=self.cwd.path)
 
         # self.change_handler.init(self.fsgs.get_game_state_dir(),
         #         ignore=["*.uss", "*.sdf"])
@@ -146,10 +147,11 @@ class AmigaRunner(GameRunner):
     #         f.write("fsaa = {0}\n".format(str(self.get_option("fsaa"))))
 
     def run(self):
-        print("AmigaGameHandler.run")
+        print("AmigaGameHandler.run, cwd =", self.cwd.path)
         # self.on_progress(_("Starting FS-UAE..."))
         config = self.launch_handler.create_config()
-        process, self.temp_config_file = FSUAE.start_with_config(config)
+        process, self.temp_config_file = FSUAE.start_with_config(
+            config, cwd=self.cwd.path)
         # process.wait()
         # print("LaunchHandler.start is done")
         # print("removing", config_file)

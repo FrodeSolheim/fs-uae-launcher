@@ -165,7 +165,7 @@ C:LoadWB
 EndCLI >NIL:
 """
 
-
+# noinspection SpellCheckingInspection
 wb_133_files = {
     "c/": "",
     "c/AddBuffers": "b4935ca3f55fbf53db41a61d32cee48d93d1c431",
@@ -334,7 +334,7 @@ wb_133_files = {
     "Utilities/Say": "3f845bf4d06c680c960847115449adb4819cd8b7",
 }
 
-
+# noinspection SpellCheckingInspection
 wb_204_files = {
     "C/": "",
     "C/AddBuffers": "6ed1a3f24a1f605aa7234410faebbfbb3fda3ee6",
@@ -477,7 +477,7 @@ wb_204_files = {
     "WBStartup/": "",
 }
 
-
+# noinspection SpellCheckingInspection
 wb_300_files = {
     "C/": "",
     "C/AddBuffers": "6ed1a3f24a1f605aa7234410faebbfbb3fda3ee6",
@@ -636,7 +636,7 @@ wb_300_files = {
     "WBStartup/": "",
 }
 
-
+# noinspection SpellCheckingInspection
 wb_133_floppies = [
     # Workbench v1.3.3 rev 34.34 (1990)(Commodore)(A500-A2000)
     # (Disk 1 of 2)(Workbench).adf
@@ -648,7 +648,7 @@ wb_133_floppies = [
     "42c5af6554212e9d381f7535c3951ee284e127b2",
 ]
 
-
+# noinspection SpellCheckingInspection
 wb_204_floppies = [
     # Workbench v2.04 rev 37.67 (1991)(Commodore)
     # (Disk 1 of 4)(Workbench).adf
@@ -669,7 +669,7 @@ wb_204_floppies = [
     "898c0c372c476d8410890388b81ca642cc0b381d",
 ]
 
-
+# noinspection SpellCheckingInspection
 wb_300_floppies = [
     # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
     # (Disk 2 of 6)(Workbench)[!].adf

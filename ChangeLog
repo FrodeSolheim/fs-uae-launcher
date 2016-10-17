@@ -1,3 +1,7 @@
+Version 2.8.1:
+
+* New experimental option: relative_temp_feature.
+
 Version 2.7.15dev:
 
 * Imported updated translations from crowdin.com.

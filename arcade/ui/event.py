@@ -62,7 +62,12 @@ def get_key(ev):
                 return sdl2.SDLK_RSHIFT
             # FIXME: TODO: WINDOWS
             return sdl2.SDLK_LSHIFT
-    if int(ev.modifiers()) & Qt.KeypadModifier:
+    # On OS X, the KeypadModifier value will also be set when an arrow
+    # key is pressed as the arrow keys are considered part of the keypad.
+    # http://doc.qt.io/qt-5/qt.html#KeyboardModifier-enum
+    macos_arrow_key = (macosx and ev.key() in
+                        [Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down])
+    if int(ev.modifiers()) & Qt.KeypadModifier and not macos_arrow_key:
         print("keypad!")
         print(ev.key(), "vs", Qt.Key_4)
         return {
