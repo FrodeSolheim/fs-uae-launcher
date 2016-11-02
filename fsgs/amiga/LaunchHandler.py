@@ -78,7 +78,8 @@ class LaunchHandler(object):
 
     def prepare(self):
         print("LaunchHandler.prepare")
-        self.temp_dir = tempfile.mkdtemp(prefix="fs-uae-")
+        if not self.temp_dir:
+            self.temp_dir = tempfile.mkdtemp(prefix="fs-uae-")
         print("temp dir", self.temp_dir)
         self.config["floppies_dir"] = self.temp_dir
         print("state dir", self.get_state_dir())

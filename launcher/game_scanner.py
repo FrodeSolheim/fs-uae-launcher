@@ -56,8 +56,12 @@ class GameScanner(object):
             yield "CPC", self.fsgs.game_database("CPC")
         if LauncherSettings.get(Option.DATABASE_DOS) == "1":
             yield "DOS", self.fsgs.game_database("DOS")
+        if LauncherSettings.get(Option.DATABASE_GB) == "1":
+            yield "GB", self.fsgs.game_database("GB")
         if LauncherSettings.get(Option.DATABASE_GBA) == "1":
             yield "GBA", self.fsgs.game_database("GBA")
+        if LauncherSettings.get(Option.DATABASE_GBC) == "1":
+            yield "GBC", self.fsgs.game_database("GBC")
         if LauncherSettings.get(Option.DATABASE_NES) == "1":
             yield "NES", self.fsgs.game_database("NES")
         if LauncherSettings.get(Option.DATABASE_SNES) == "1":

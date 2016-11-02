@@ -1,5 +1,6 @@
 Version 2.8.1:
 
+* Fixed problem where rating could be reset for first loaded game/variant.
 * New experimental option: relative_temp_feature.
 
 Version 2.7.15dev:

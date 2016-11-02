@@ -111,13 +111,13 @@ def render_bottom_bar_text(item):
         Render.get().text(title, Font.title_font, x, y, 1920 - x - 170,
                           shadow=True, color=(1.0, 1.0, 1.0, 1.0 * strength))
 
+    color = (0xc4 / 0xff, 0xd7 / 0xff, 0xde / 0xff, 1.0)
     year_text = str(getattr(State.get().current_menu.selected_item,
                             "year", "") or "").upper()
     if year_text:
         tw, th = Render.get().measure_text(year_text, Font.title_font)
         Render.get().text(year_text, Font.title_font, 1920 - 30 - tw, y, 0,
-                          shadow=True, color=(1.0, 1.0, 1.0, 1.0 * strength))
-
+                          shadow=True, color=color)
     color = (0x6e / 0xff, 0x8b / 0xff, 0x96 / 0xff, 1.0)
     y = 258
     text_str = ""
@@ -140,7 +140,8 @@ def render_bottom_bar_text(item):
                 companies.add(text)
     if len(text_str) > 3:
         text_str = text_str[3:]  # remove initial middle dot
-        Render.get().text(text_str, Font.subtitle_font, x, y, 0,
+        tw, th = Render.get().measure_text(text_str, Font.subtitle_font)
+        Render.get().text(text_str, Font.subtitle_font, 1920 - 30 - tw, y, 0,
                           shadow=True, color=color)
 
     platform_str = str(
@@ -148,8 +149,7 @@ def render_bottom_bar_text(item):
     if platform_str:
         platform_str = PlatformHandler.get_platform_name(platform_str).upper()
     if len(platform_str) >= 3:
-        tw, th = Render.get().measure_text(platform_str, Font.subtitle_font)
-        Render.get().text(platform_str, Font.subtitle_font, 1920 - 30 - tw, y,
-                          0,
-                          shadow=True, color=color)
+        # tw, th = Render.get().measure_text(platform_str, Font.subtitle_font)
+        Render.get().text(platform_str, Font.subtitle_font, x, y,
+                          0, shadow=True, color=color)
     return

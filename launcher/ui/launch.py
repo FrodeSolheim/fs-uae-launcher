@@ -282,8 +282,12 @@ class LaunchDialog(fsui.Window):
         self.closed.connect(self.__closed)
 
     def complete(self):
+        print("TaskRunner.complete")
+        # Setting task to None so destructors are run now
+        self.task = None
         self.was_closed = True
         self.close()
+        self.deleteLater()
 
     def __closed(self):
         LauncherConfig.set("__running", "")
@@ -336,5 +340,6 @@ class LaunchDialog(fsui.Window):
 
     def cancel(self):
         print("LaunchDialog.cancel")
-        self.task.stop()
+        if self.task is not None:
+            self.task.stop()
         self.cancel_button.disable()

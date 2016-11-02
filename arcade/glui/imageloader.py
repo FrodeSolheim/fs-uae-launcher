@@ -61,8 +61,8 @@ def get_file_for_sha1(sha1):
         cache_ext = "_1x.png"
     elif size_arg == "s=512&f=jpg":
         cache_ext = "_512.jpg"
-    elif size_arg == "w=480&h=640&t=lbcover&f=jpg":
-        cache_ext = "_480x640_lbcover.jpg"
+    elif size_arg == "w=480&h=640&t=cc&f=jpg":
+        cache_ext = "_480x640_cc.jpg"
     else:
         raise Exception("unrecognized size")
     size_arg = "?" + size_arg

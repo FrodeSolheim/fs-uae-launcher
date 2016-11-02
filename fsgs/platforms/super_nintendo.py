@@ -5,7 +5,7 @@ from .loader import SimpleLoader
 
 class SuperNintendoPlatformHandler(PlatformHandler):
 
-    PLATFORM_NAME = "Super Nintendo"
+    PLATFORM_NAME = "Super Nintendo E.S."
 
     def __init__(self):
         PlatformHandler.__init__(self)

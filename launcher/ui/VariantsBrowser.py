@@ -34,7 +34,7 @@ class VariantsBrowser(fsui.ItemChoice):
         fsui.ItemChoice.__init__(self, parent)
 
         self.parent_uuid = ""
-        self.items = []
+        self.items = []  # type: list [dict]
         # self.last_variants = LastVariants()
 
         self.icon = fsui.Image("launcher:res/fsuae_config_16.png")

@@ -322,11 +322,11 @@ class FSGameSystemContext(object):
         from fsgs.FSGSDirectories import FSGSDirectories
         return FSGSDirectories.get_cache_dir()
 
-    def temp_dir(self, suffix):
-        return TemporaryDirectory(suffix)
+    # def temp_dir(self, suffix):
+    #     return TemporaryDirectory(suffix)
 
-    def temp_file(self, suffix):
-        return TemporaryFile(suffix)
+    # def temp_file(self, suffix):
+    #     return TemporaryFile(suffix)
 
     def load_game_by_uuid(self, game_uuid):
         variant_uuid = self.find_preferred_game_variant(game_uuid)
@@ -335,6 +335,11 @@ class FSGameSystemContext(object):
     # noinspection PyMethodMayBeStatic
     def find_preferred_game_variant(self, game_uuid):
         print("find_preferred_game_variant game_uuid =", game_uuid)
+        return self.get_ordered_game_variants(game_uuid)[0]["uuid"]
+
+    # noinspection PyMethodMayBeStatic
+    def get_ordered_game_variants(self, game_uuid):
+        print("get_ordered_game_variants game_uuid =", game_uuid)
         from .Database import Database
         database = Database.instance()
         variants = database.find_game_variants_new(game_uuid=game_uuid)
@@ -387,7 +392,10 @@ class FSGameSystemContext(object):
                     else:
                         if len(ordered_list) > 0:
                             select_index = 0
-        return ordered_list[select_index]["uuid"]
+        # return ordered_list[select_index]["uuid"]
+        if select_index and select_index > 0:
+            ordered_list.insert(0, ordered_list.pop(select_index))
+        return ordered_list
 
     def load_game_variant(self, variant_uuid):
         # game_database = fsgs.get_game_database()
@@ -431,43 +439,43 @@ class FSGameSystemContext(object):
         runner.finish()
 
 
-class TemporaryDirectory(object):
+# class TemporaryDirectory(object):
+#
+#     def __init__(self, suffix):
+#         self.path = tempfile.mkdtemp(suffix="-fsgs-" + suffix)
+#
+#     def __del__(self):
+#         self.delete()
+#
+#     def delete(self):
+#         if os.environ.get("FSGS_CLEANUP", "") == "0":
+#             print("NOTICE: keeping temp files around...")
+#             return
+#         if self.path:
+#             shutil.rmtree(self.path)
+#             self.path = ""
 
-    def __init__(self, suffix):
-        self.path = tempfile.mkdtemp(suffix="-fsgs-" + suffix)
 
-    def __del__(self):
-        self.delete()
-
-    def delete(self):
-        if os.environ.get("FSGS_CLEANUP", "") == "0":
-            print("NOTICE: keeping temp files around...")
-            return
-        if self.path:
-            shutil.rmtree(self.path)
-            self.path = ""
-
-
-class TemporaryFile(object):
-
-    def __init__(self, suffix):
-        # self.path = tempfile.mkstemp(suffix=suffix)
-        self.dir_path = tempfile.mkdtemp(suffix="-fsgs-" + suffix)
-        self.path = os.path.join(self.dir_path, suffix)
-
-    def __del__(self):
-        self.delete()
-
-    def delete(self):
-        if os.environ.get("FSGS_CLEANUP", "") == "0":
-            print("NOTICE: keeping temp files around...")
-            return
-        if self.path:
-            os.unlink(self.path)
-            self.path = ""
-        if self.dir_path:
-            shutil.rmtree(self.dir_path)
-            self.dir_path = ""
+# class TemporaryFile(object):
+#
+#     def __init__(self, suffix):
+#         # self.path = tempfile.mkstemp(suffix=suffix)
+#         self.dir_path = tempfile.mkdtemp(suffix="-fsgs-" + suffix)
+#         self.path = os.path.join(self.dir_path, suffix)
+#
+#     def __del__(self):
+#         self.delete()
+#
+#     def delete(self):
+#         if os.environ.get("FSGS_CLEANUP", "") == "0":
+#             print("NOTICE: keeping temp files around...")
+#             return
+#         if self.path:
+#             os.unlink(self.path)
+#             self.path = ""
+#         if self.dir_path:
+#             shutil.rmtree(self.dir_path)
+#             self.dir_path = ""
 
 
 class GameContext(object):

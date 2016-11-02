@@ -128,14 +128,15 @@ class RatingChoice(Choice):
     def __init__(self, parent):
         self.active_icon = 1
         super().__init__(parent, [], cursor_keys=False)
-        self.add_item(gettext("Rate Variant"),
-                      Image("launcher:res/16/bullet.png"))
-        self.add_item(gettext("Best Variant"),
-                      Image("launcher:res/16/rating_fav_2.png"))
-        self.add_item(gettext("Good Variant"),
-                      Image("launcher:res/16/thumb_up_2.png"))
-        self.add_item(gettext("Bad Variant"),
-                      Image("launcher:res/16/thumb_down_2.png"))
+        with self.changed.inhibit:
+            self.add_item(gettext("Rate Variant"),
+                          Image("launcher:res/16/bullet.png"))
+            self.add_item(gettext("Best Variant"),
+                          Image("launcher:res/16/rating_fav_2.png"))
+            self.add_item(gettext("Good Variant"),
+                          Image("launcher:res/16/thumb_up_2.png"))
+            self.add_item(gettext("Bad Variant"),
+                          Image("launcher:res/16/thumb_down_2.png"))
         ConfigBehavior(self, ["variant_rating", "variant_uuid"])
 
     def on_changed(self):
@@ -155,6 +156,13 @@ class RatingChoice(Choice):
 
     @staticmethod
     def set_rating_for_variant(variant_uuid, rating):
+        import traceback
+        print("")
+        print("")
+        print("")
+        traceback.print_stack()
+        while True:
+            pass
         # FIXME: Do asynchronously, add to queue
         client = OGDClient()
         result = client.rate_variant(variant_uuid, like=rating)

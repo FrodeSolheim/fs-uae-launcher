@@ -26,7 +26,9 @@ class Option(object):
     DATABASE_DOS = "database_dos"
     DATABASE_EMAIL = "database_email"
     DATABASE_FEATURE = "database_feature"
+    DATABASE_GB = "database_gb"
     DATABASE_GBA = "database_gba"
+    DATABASE_GBC = "database_gbc"
     DATABASE_LOCKER = "database_locker"
     DATABASE_NES = "database_nes"
     DATABASE_PASSWORD = "database_password"
@@ -316,10 +318,20 @@ options = {
         "description": N_("Enable online database support (requires restart)"),
         "type": "boolean",
     },
+    "database_gb": {
+        "default": "",
+        "description": N_("Enable/disable use of the Game Boy database"),
+        "type": "boolean",
+    },
     "database_gba": {
         "default": "",
         "description": N_(
             "Enable/disable use of the Game Boy Advance database"),
+        "type": "boolean",
+    },
+    "database_gbc": {
+        "default": "",
+        "description": N_("Enable/disable use of the Game Boy Color database"),
         "type": "boolean",
     },
     "database_locker": {

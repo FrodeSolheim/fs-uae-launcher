@@ -33,14 +33,14 @@ def render_wall():  # brightness=1.0):
     # glTranslate(0.0, 0.0, 1.0)
 
     # transition y-coordinate between floor and wall
-    splt = 361
+    split = 361
     fs_emu_blending(False)
     fs_emu_texturing(False)
     gl.glBegin(gl.GL_QUADS)
 
     gl.glColor3f(39.0 / 255.0, 44.0 / 255.0, 51.0 / 255.0)
-    gl.glVertex3f(0, splt, z)
-    gl.glVertex3f(1920, splt, z)
+    gl.glVertex3f(0, split, z)
+    gl.glVertex3f(1920, split, z)
     color = 0
     gl.glColor3f(color, color, color)
     gl.glVertex3f(1920, 1020, z)
@@ -56,8 +56,8 @@ def render_wall():  # brightness=1.0):
     gl.glVertex3f(0, 0, z)
     gl.glVertex3f(1920, 0, z)
     gl.glColor3f(20.0 / 255.0, 22.0 / 255.0, 26.0 / 255.0)
-    gl.glVertex3f(1920, splt, z)
-    gl.glVertex3f(0, splt, z)
+    gl.glVertex3f(1920, split, z)
+    gl.glVertex3f(0, split, z)
 
     gl.glEnd()
     # fs_emu_texturing(True)
@@ -108,43 +108,49 @@ class GameMenu(Menu):
         # reset transition
         Transition.start = 0
 
+    # noinspection PyMethodMayBeStatic
     def temp_fix_configs(self, item):
-        from fsgs.Database import Database
-        local_game_database = Database.get_instance()
-        game_database = fsgs.get_game_database()
-
-        variants = local_game_database.find_game_variants_new(
-            game_uuid=item.uuid)
-        print(variants)
-
-        ordered_list = []
+        # from fsgs.Database import Database
+        # local_game_database = Database.get_instance()
+        # game_database = fsgs.get_game_database()
+        #
+        # variants = local_game_database.find_game_variants_new(
+        #     game_uuid=item.uuid)
+        # print(variants)
+        #
+        # ordered_list = []
+        # for variant in variants:
+        #
+        #     variant["like_rating"], variant["work_rating"] = \
+        #         game_database.get_ratings_for_game(variant["uuid"])
+        #     variant["personal_rating"], ignored = \
+        #         local_game_database.get_ratings_for_game(variant["uuid"])
+        #
+        #     # user_rating = variant[5] or 0
+        #     # global_rating = variant[3] or 0
+        #     # user_rating = 0
+        #     # global_rating = 0
+        #
+        #     variant_uuid = variant["uuid"]  # variant[2]
+        #     variant_name = variant["name"]  # variant[1]
+        #     variant_name = variant_name.replace("\n", " (")
+        #     variant_name = variant_name.replace(" \u00b7 ", ", ")
+        #     variant_name += ")"
+        #     ordered_list.append(
+        #         ((1 - bool(variant["have"]),
+        #           1000 - variant["personal_rating"],
+        #           1000 - variant["like_rating"]),
+        #          (variant_uuid, variant_name, variant["database"])))
+        # ordered_list.sort()
+        # print("ordered variant list:")
+        # for variant in ordered_list:
+        #     print("-", variant[1][1])
+        # item.configurations = [co[1] for co in ordered_list]
+        variants = fsgs.get_ordered_game_variants(item.uuid)
+        item.configurations = []
         for variant in variants:
-
-            variant["like_rating"], variant["work_rating"] = \
-                game_database.get_ratings_for_game(variant["uuid"])
-            variant["personal_rating"], ignored = \
-                local_game_database.get_ratings_for_game(variant["uuid"])
-
-            # user_rating = variant[5] or 0
-            # global_rating = variant[3] or 0
-            # user_rating = 0
-            # global_rating = 0
-
-            variant_uuid = variant["uuid"]  # variant[2]
-            variant_name = variant["name"]  # variant[1]
-            variant_name = variant_name.replace("\n", " (")
-            variant_name = variant_name.replace(" \u00b7 ", ", ")
-            variant_name += ")"
-            ordered_list.append(
-                ((1 - bool(variant["have"]),
-                  1000 - variant["personal_rating"],
-                  1000 - variant["like_rating"]),
-                 (variant_uuid, variant_name, variant["database"])))
-        ordered_list.sort()
-        print("ordered variant list:")
-        for variant in ordered_list:
-            print("-", variant[1][1])
-        item.configurations = [co[1] for co in ordered_list]
+            item.configurations.append(
+                (variant["uuid"], variant["name"], variant["database"]))
 
     def create_context(self):
         item = self.items[0]
@@ -154,7 +160,6 @@ class GameMenu(Menu):
         print("\nitem[0]:\n", item.configurations[0])
         print("\n\nvariant_uuid =", variant_uuid, "\n\n")
 
-        # print("\n\ncreate_context")
         # print("configurations: ", item.configurations)
         # configs = sort_configurations(item.configurations)
 
@@ -185,8 +190,6 @@ class GameMenu(Menu):
 
     def recreate_controller(self):
         # self.create_controller()
-        # print("***** recreate_controller, new controller is",
-        #         id(self.controlleGame Controlr))
         # self.config_list.set_controller(self.controller)
         print("recreate_controller, actually, just recreating game context")
         self.create_context()
@@ -246,6 +249,31 @@ class GameMenu(Menu):
             gl.glVertex2f(0.0, 1020.0)
             gl.glEnd()
             gl.glEnable(gl.GL_DEPTH_TEST)
+
+        Render.get().hd_perspective()
+        gl.glDisable(gl.GL_DEPTH_TEST)
+        fs_emu_texturing(False)
+        fs_emu_blending(True)
+        gl.glBegin(gl.GL_QUADS)
+        gl.glColor4f(0.0, 0.0, 0.0, 0.75)
+        # Covers, left
+        gl.glVertex2f(0.0, 366.0)
+        gl.glVertex2f(746.0, 366.0)
+        gl.glVertex2f(746.0, 1020.0)
+        gl.glVertex2f(0.0, 1020.0)
+        # Covers, right
+        gl.glVertex2f(1920.0 - 746.0, 366.0)
+        gl.glVertex2f(1920.0, 366.0)
+        gl.glVertex2f(1920.0, 1020.0)
+        gl.glVertex2f(1920.0 - 746.0, 1020.0)
+        # Bottom
+        gl.glColor4f(0.0, 0.0, 0.0, 0.50)
+        gl.glVertex2f(0.0, 0.0)
+        gl.glVertex2f(1920.0, 0.0)
+        gl.glVertex2f(1920.0, 366.0)
+        gl.glVertex2f(0.0, 366.0)
+        gl.glEnd()
+        gl.glEnable(gl.GL_DEPTH_TEST)
 
         self.config_list.render(Transition.value)
 
@@ -458,6 +486,7 @@ class GameInfoPanel(Navigatable):
     def __init__(self):
         self.index = 0
         self.position = 0
+        self.config_list = []
 
     def go_up(self):
         print("GameInfoPanel.go_up")

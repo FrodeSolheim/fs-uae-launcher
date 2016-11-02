@@ -1297,7 +1297,7 @@ class GameItem(MenuItem):
         # return self.game_info[5] + "?s=512&t=jpg"
         if not self.game_info[5]:
             return None
-        return self.game_info[5] + "?w=480&h=640&t=lbcover&f=jpg"
+        return self.game_info[5] + "?w=480&h=640&t=cc&f=jpg"
 
     # @memoize
     # def get_image_files(self):
