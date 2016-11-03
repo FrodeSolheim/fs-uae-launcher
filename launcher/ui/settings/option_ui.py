@@ -9,11 +9,13 @@ from ...launcher_settings import LauncherSettings
 
 class OptionUI(object):
     @classmethod
-    def create_group(cls, parent, name):
+    def create_group(cls, parent, name, description=""):
         group = fsui.Group(parent)
         group.layout = fsui.HorizontalLayout()
         option = Option.get(name)
-        group.label = fsui.Label(group, gettext(option["description"]) + ":")
+        if not description:
+            description = gettext(option["description"])
+        group.label = fsui.Label(group, description + ":")
         group.layout.add(group.label, margin_right=10)
         group.layout.add(OverrideWarning(group, name), margin_right=10)
         choice_values = []

@@ -1,3 +1,3 @@
 Description: Enable/disable use of the DOS game database
-Type: boolean
-
+Type: Boolean
+Default: 0

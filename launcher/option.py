@@ -2,7 +2,7 @@
 
 
 class Option(object):
-    """Constants for option names."""    
+    """Constants for option names."""
     ACCELERATOR = "accelerator"
     ACCELERATOR_MEMORY = "accelerator_memory"
     ARCADE_FULLSCREEN = "arcade_fullscreen"
@@ -84,6 +84,7 @@ class Option(object):
     NETPLAY_TAG = "netplay_tag"
     NETWORK_CARD = "network_card"
     PLATFORM = "platform"
+    RAW_INPUT = "raw_input"
     RELATIVE_PATHS = "relative_paths"
     RELATIVE_TEMP_FEATURE = "relative_temp_feature"
     RTG_SCANLINES = "rtg_scanlines"
@@ -277,14 +278,14 @@ options = {
         "max": 10,
     },
     "database_arcade": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Arcade game database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_atari": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Atari ST game database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_auth": {
         "default": "",
@@ -292,21 +293,21 @@ options = {
         "type": "string",
     },
     "database_c64": {
-        "default": "",
+        "default": "0",
         "description": N_(
             "Enable/disable use of the Commodore 64 (C64) database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_cpc": {
-        "default": "",
+        "default": "0",
         "description": N_(
             "Enable/disable use of the Amstrad CPC game database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_dos": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the DOS game database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_email": {
         "default": "",
@@ -319,20 +320,20 @@ options = {
         "type": "boolean",
     },
     "database_gb": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Game Boy database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_gba": {
-        "default": "",
+        "default": "0",
         "description": N_(
             "Enable/disable use of the Game Boy Advance database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_gbc": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Game Boy Color database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_locker": {
         "default": "",
@@ -340,9 +341,9 @@ options = {
         "type": "boolean",
     },
     "database_nes": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Nintendo (NES) database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_password": {
         "default": "",
@@ -371,9 +372,9 @@ options = {
         ]
     },
     "database_snes": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Super Nintendo database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_username": {
         "default": "",
@@ -755,6 +756,11 @@ options = {
         "default": "",
         "description": N_("Platform"),
         "type": "choice",
+    },
+    "raw_input": {
+        "default": "1",
+        "description": N_("Use raw input (on Windows) for keyboard"),
+        "type": "Boolean",
     },
     "relative_paths": {
         "default": "",

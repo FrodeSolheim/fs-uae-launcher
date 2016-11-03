@@ -1,2 +1,3 @@
 Description: Enable/disable use of the Amstrad CPC game database
-Type: boolean
+Type: Boolean
+Default: 0
