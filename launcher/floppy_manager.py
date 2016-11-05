@@ -1,17 +1,17 @@
 import os
-from fsgs.context import fsgs
-from fsgs.ChecksumTool import ChecksumTool
-from .ui.LauncherFilePicker import LauncherFilePicker
-from fsgs.amiga.Amiga import Amiga
-from fsgs.Archive import Archive
-from .launcher_config import LauncherConfig
-from .i18n import gettext
+
 from fsbc.paths import Paths
+from fsgs.Archive import Archive
+from fsgs.ChecksumTool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.amiga.Amiga import Amiga
+from fsgs.context import fsgs
+from .i18n import gettext
+from .launcher_config import LauncherConfig
+from .ui.LauncherFilePicker import LauncherFilePicker
 
 
 class FloppyManager(object):
-
     @classmethod
     def clear_all(cls):
         for i in range(4):
@@ -90,4 +90,4 @@ class FloppyManager(object):
             LauncherConfig.set_multiple([
                 ("floppy_image_{0}".format(i), ""),
                 ("x_floppy_image_{0}_sha1".format(i), "")])
-        # dialog.destroy()
+            # dialog.destroy()

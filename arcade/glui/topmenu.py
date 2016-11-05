@@ -4,13 +4,16 @@ import time
 from arcade.gamecentersettings import GameCenterSettings
 from arcade.glui.constants import TOP_ITEM_LEFT
 from arcade.glui.constants import TOP_ITEM_NOBORDER
+from arcade.glui.font import BitmapFont
+from arcade.glui.items import MenuItem, create_item_menu
 from arcade.glui.navigatable import Navigatable
+from arcade.glui.opengl import gl, fs_emu_blending
 from arcade.glui.sdl import *
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
+from arcade.resources import gettext
 from fsbc.application import app
-from .items import MenuItem
-from .opengl import fs_emu_blending
+from fsbc.settings import Settings
 
 
 def post_quit_event():
@@ -33,7 +36,10 @@ class TopMenuItem(MenuItem):
             texture = self.selected_texture
         else:
             texture = self.normal_texture
-        texture.render(self.x, self.y, self.w, self.h)
+        # texture.render(self.x, self.y, self.w, self.h)
+        texture.render(
+            self.x + (self.w - texture.w) / 2,
+            self.y + (self.h - texture.h) / 2, texture.w, texture.h)
 
 
 class CloseItem(TopMenuItem):
@@ -85,11 +91,7 @@ class ClockItem(MenuItem):
         self.enabled = False
 
     def update_size(self, text):
-        # w, h = BitmappedFont.title_font.measure(text)
-        # self.w = w + 40 # + 8
-        # self.w = 134
         self.w = 148
-        # print(self.w)
 
     def render_top_right(self, selected=False):
         self.render_top_background(selected, style=TOP_ITEM_NOBORDER)
@@ -102,10 +104,68 @@ class ClockItem(MenuItem):
         pass
 
 
+class AspectItem(TopMenuItem):
+    def __init__(self):
+        super().__init__()
+        self.normal_texture = Texture.stretch
+        self.selected_texture = Texture.stretch
+        self.update_texture()
+
+    def update_texture(self):
+        # TODO: Ideally, this class should listen for settings changes.
+        if Settings.instance()["keep_aspect"] == "0":
+            texture = Texture.stretch
+        else:
+            texture = Texture.aspect
+        self.normal_texture = texture
+        self.selected_texture = texture
+
+    def activate(self, menu):
+        if Settings.instance()["keep_aspect"] == "0":
+            Settings.instance()["keep_aspect"] = ""
+        else:
+            Settings.instance()["keep_aspect"] = "0"
+        self.update_texture()
+
+
+class VideoSyncItem(MenuItem):
+    def __init__(self):
+        super().__init__()
+        self.title = "V-SYNC"
+
+    def activate(self, menu):
+        if Settings.instance()["video_sync"] == "1":
+            Settings.instance()["video_sync"] = ""
+        else:
+            Settings.instance()["video_sync"] = "1"
+
+    def render_top_right(self, selected=False):
+        self.render_top_background(selected, style=TOP_ITEM_LEFT)
+        gl.glDisable(gl.GL_DEPTH_TEST)
+        fs_emu_blending(True)
+        if Settings.instance()["video_sync"] == "1":
+            r = 1.0
+            g = 1.0
+            b = 1.0
+            alpha = 1.0
+        else:
+            r = 1.0
+            g = 1.0
+            b = 1.0
+            alpha = 0.33
+        x = self.x + 20
+        BitmapFont.title_font.render(self.title, x, self.y + 14,
+                                     r=r, g=g, b=b, alpha=alpha)
+        gl.glEnable(gl.GL_DEPTH_TEST)
+
+
 class TopMenu(Navigatable):
     def __init__(self):
+        super().__init__()
         self.left = []
         self.right = []
+        self.right.append(VideoSyncItem())
+        self.right.append(AspectItem())
         if self.use_clock_item():
             self.right.append(ClockItem())
         # if Render.get().allow_minimize:
@@ -118,7 +178,8 @@ class TopMenu(Navigatable):
             self.right.append(CloseItem())
         self._selected_index = 0
 
-    def use_clock_item(self):
+    @staticmethod
+    def use_clock_item():
         return app.settings["game-center:top-clock"] != "0"
 
     def append_left(self, item):
@@ -173,3 +234,123 @@ class TopMenu(Navigatable):
 
     def __len__(self):
         return len(self.left) + len(self.right)
+
+
+class OldGameCenterItem(MenuItem):
+    def __init__(self):
+        super().__init__()
+        # if app.name == "fs-uae-arcade":
+        self.title = gettext("FS-UAE   Arcade")
+        # else:
+        #     self.title = gettext("Game   Center")
+        self.path_title = self.title
+        self.enabled = False
+
+    def activate(self, menu):
+        pass
+
+    # def update_size(self, text):
+    #     MenuItem.update_size(text)
+    #     #self.w = Texture.top_logo.w + 83
+
+    def render_top_left(self, selected=False):
+        # self.render_top_background(selected, style=TOP_ITEM_ARROW)
+        MenuItem.render_top_left(self, selected=selected)
+        gl.glDisable(gl.GL_DEPTH_TEST)
+        fs_emu_blending(True)
+        # if app.name == "fs-uae-arcade":
+        x = 161
+        # else:
+        #     x = 138
+        y = 14
+        # if selected:
+        # texture = Texture.top_logo_selected
+        # else:
+        texture = Texture.top_logo
+        texture.render(x, 1080 - y - texture.h, texture.w, texture.h)
+        # fs_emu_blending(False)
+        gl.glEnable(gl.GL_DEPTH_TEST)
+
+
+class GameCenterItem(MenuItem):
+    def __init__(self):
+        super().__init__()
+        self.title = gettext("FS-UAE Arcade")
+        self.path_title = self.title
+        self.enabled = False
+
+    def activate(self, menu):
+        pass
+
+    def update_size(self, text):
+        tw, _ = BitmapFont.title_font.measure("FS-UAE")
+        tw2, _ = BitmapFont.title_font.measure("Arcade")
+        self.w = 20 + 32 + 20 + tw + 20 + tw2 + 20
+
+    def render_top_left(self, selected=False):
+        gl.glDisable(gl.GL_DEPTH_TEST)
+        fs_emu_blending(True)
+        x = 20
+        y = 14
+        texture = Texture.logo_32
+        texture.render(x, 1080 - y - texture.h, texture.w, texture.h)
+        x += 32 + 20
+        BitmapFont.title_font.render("FS-UAE", x, self.y + 14)
+        tw, _ = BitmapFont.title_font.measure("FS-UAE")
+        x += tw + 20
+        BitmapFont.title_font.render("Arcade", x, self.y + 14, alpha=0.5)
+        gl.glEnable(gl.GL_DEPTH_TEST)
+
+
+class HomeItem(MenuItem):
+    def __init__(self):
+        super().__init__()
+        self.title = gettext("Home")
+        self.path_title = self.title
+
+    def activate(self, menu):
+        from arcade.glui.window import create_main_menu
+        new_menu = create_main_menu()
+        # State.get().history = [new_menu]
+        State.get().history.append(new_menu)
+        from arcade.glui.window import set_current_menu
+        set_current_menu(new_menu)
+
+    def update_size_left(self):
+        self.w = 80
+
+    def render_top_left(self, selected=False):
+        self.render_top_background(selected)
+        # fs_emu_blending(True)
+        if selected:
+            texture = Texture.home_selected
+        else:
+            texture = Texture.home
+        texture.render(self.x, self.y, texture.w, texture.h)
+
+
+class AddItem(MenuItem):
+    def __init__(self):
+        super().__init__()
+        self.title = gettext("Add")
+        self.path_title = self.title
+
+    def update_size_left(self):
+        self.w = 80
+
+    def render_top_left(self, selected=False):
+        self.render_top_background(selected)
+        # fs_emu_blending(True)
+        if selected:
+            texture = Texture.add_selected
+        else:
+            texture = Texture.add
+        texture.render(self.x, self.y, texture.w, texture.h)
+
+    def activate(self, menu):
+        new_menu = create_item_menu(self.title)
+        menu_path = self.create_menu_path(menu)
+        new_menu.update_path(menu_path)
+        for item in self.generate_category_items(menu_path):
+            new_menu.append(item)
+        return new_menu

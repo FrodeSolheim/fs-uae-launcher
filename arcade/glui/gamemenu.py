@@ -1,6 +1,6 @@
 from arcade.glui.font import BitmapFont
 from arcade.glui.inputmenu import InputMenu
-from arcade.glui.items import GameCenterItem, HomeItem, MenuItem
+from arcade.glui.topmenu import GameCenterItem
 from arcade.glui.menu import Menu
 from arcade.glui.navigatable import Navigatable
 from arcade.glui.opengl import gl, fs_emu_blending, fs_emu_texturing
@@ -11,13 +11,23 @@ from arcade.option import Option
 from fsgs.context import fsgs
 from fsgs.platform import PlatformHandler
 
+GROUP_SPACING = 26
+HEADING_TEXT_LEFT = (1920 - 560 + 40 + 20 - 28)
+ITEM_TEXT_LEFT = (1920 - 560 + 40 + 20)
+SIDEBAR_START_Y = (1080 - 90 - 50)
+
 
 # FIXME: REMOVE?
 class Transition(object):
-    value = 0.0
-    start = 0
-    end = 0
-    on_finish = None
+    def __init__(self):
+        self.value = 0.0
+        self.start = 0
+        self.end = 0
+        self.on_finish = None
+
+
+enter_transition = Transition()
+exit_transition = Transition()
 
 
 def render_wall():  # brightness=1.0):
@@ -86,8 +96,10 @@ class GameMenu(Menu):
         self.items.append(item)
         if self.use_game_center_item():
             self.top.left.append(GameCenterItem())
-        self.top.left.append(HomeItem())
-        self.top.left.append(MenuItem(item.title))
+        # self.top.left.append(HomeItem())
+        # self.top.left.append(MenuItem(item.title))
+        self.top.set_selected_index(
+            len(self.top.left) + len(self.top.right) - 1)
 
         self.context = None
         self.controller = None
@@ -105,8 +117,10 @@ class GameMenu(Menu):
 
         self.navigatable = self.config_list
 
-        # reset transition
-        Transition.start = 0
+        # reset transitions
+        enter_transition.start = State.get().time
+        enter_transition.end = enter_transition.start + 0.2
+        exit_transition.start = 0
 
     # noinspection PyMethodMayBeStatic
     def temp_fix_configs(self, item):
@@ -150,7 +164,8 @@ class GameMenu(Menu):
         item.configurations = []
         for variant in variants:
             item.configurations.append(
-                (variant["uuid"], variant["name"], variant["database"]))
+                (variant["uuid"], variant["name"], variant["database"],
+                 variant["have"]))
 
     def create_context(self):
         item = self.items[0]
@@ -196,21 +211,40 @@ class GameMenu(Menu):
         self.controller.context = self.context
 
     def render(self):
-        Transition.value = 0.0
-        if Transition.start > 0:
-            Transition.value = (State.get().time - Transition.start) / \
-                               (Transition.end - Transition.start)
+        # print("GameMenu.render")
+        enter_transition.value = 1.0
+        if enter_transition.start > 0:
+            enter_transition.value = (
+                (State.get().time - enter_transition.start) /
+                (enter_transition.end - enter_transition.start))
             # prevent render from stopping when animating
             Render.get().dirty = True
         # transition goes from 1.0 ... 0.0
-        Transition.value = 1.0 - Transition.value
+        # enter_transition.value = 1.0 - enter_transition.value
         # finished = 0
-        if Transition.value <= 0.0:
-            Transition.value = 0.0
+        if enter_transition.value >= 1.0:
+            enter_transition.value = 1.0
             # finished = 1.0
-            Transition.start = 0
-            Transition.on_finish()
-            return
+            enter_transition.start = 0
+            # enter_transition.on_finish()
+            # return
+
+        exit_transition.value = 0.0
+        if exit_transition.start > 0:
+            exit_transition.value = (
+                (State.get().time - exit_transition.start) /
+                (exit_transition.end - exit_transition.start))
+            # prevent render from stopping when animating
+            Render.get().dirty = True
+        # transition goes from 1.0 ... 0.0
+        exit_transition.value = 1.0 - exit_transition.value
+        # finished = 0
+        # if exit_transition.value <= 0.0:
+        #     exit_transition.value = 0.0
+        #     # finished = 1.0
+        #     exit_transition.start = 0
+        #     exit_transition.on_finish()
+        #     return
 
         last_menu = State.get().history[-2]
         self.last_menu_data = last_menu.render()
@@ -229,11 +263,12 @@ class GameMenu(Menu):
         return None
 
     def render_transparent(self, data):
+        # print("GameMenu.render_transparent")
         last_menu = State.get().history[-2]
         last_menu.render_transparent(self.last_menu_data)
 
-        if Transition.value < 1.0:
-            opacity = 1.0 - Transition.value
+        if exit_transition.value < 1.0:
+            opacity = 1.0 - exit_transition.value
             opacity *= 1.25
             if opacity > 1.0:
                 opacity = 1.0
@@ -250,12 +285,14 @@ class GameMenu(Menu):
             gl.glEnd()
             gl.glEnable(gl.GL_DEPTH_TEST)
 
+        alpha = enter_transition.value * 0.75
+
         Render.get().hd_perspective()
         gl.glDisable(gl.GL_DEPTH_TEST)
         fs_emu_texturing(False)
         fs_emu_blending(True)
         gl.glBegin(gl.GL_QUADS)
-        gl.glColor4f(0.0, 0.0, 0.0, 0.75)
+        gl.glColor4f(0.0, 0.0, 0.0, alpha)
         # Covers, left
         gl.glVertex2f(0.0, 366.0)
         gl.glVertex2f(746.0, 366.0)
@@ -275,7 +312,18 @@ class GameMenu(Menu):
         gl.glEnd()
         gl.glEnable(gl.GL_DEPTH_TEST)
 
-        self.config_list.render(Transition.value)
+        transition = enter_transition.value
+        if exit_transition.value < 1.0:
+            # transition = exit_transition.value
+            transition = 1.0 + 3.0 - exit_transition.value * 3.0
+        # print("render, transition = ", transition)
+        self.config_list.render(transition)
+
+        if exit_transition.value <= 0.0:
+            exit_transition.value = 0.0
+            # finished = 1.0
+            exit_transition.start = 0
+            exit_transition.on_finish()
 
     def go_up(self):
         print("GameMenu.go_up")
@@ -307,6 +355,18 @@ class GameConfigList(Navigatable):
         self.items.append(Option.create_group("Game Control", -2.5))
         play_option = Option.create_play_option()
         self.items.append(play_option)
+
+        self.items.append(Option.create_group("Variant", -2.5))
+        config_option = Option.create_config_option()
+        config_option.title = self.game_item.configurations[0][1]
+        self.items.append(config_option)
+
+        if len(self.game_item.configurations) > 1:
+            self.items.append(Option.create_group("Other Variants", -2.5))
+            for config in self.game_item.configurations[1:]:
+                config_option = Option.create_config_option()
+                config_option.title = config[1]
+                self.items.append(config_option)
 
         # self.items = controller.options
         self.index = 0
@@ -352,11 +412,31 @@ class GameConfigList(Navigatable):
         pass
 
     def activate(self):
+        # Hack for variants
+        if self.index > 4:
+            # Put chosen configuration at the top
+            temp_config = self.game_item.configurations[0]
+            # temp_config = self.game_item.configurations[self.index - 4 + 1]
+            self.game_item.configurations[0] = (
+                self.game_item.configurations[self.index - 4])
+            self.game_item.configurations[self.index - 4] = temp_config
+            # Put chosen variant item at the top
+            temp = self.items[3]
+            self.items[3] = self.items[self.index]
+            self.items[self.index] = temp
+            # Select play game option
+            self.index = 1
+            # Hackish, please clean up...
+            print("ACTIVE CONFIGURATION:", self.game_item.configurations[0])
+            State.get().current_menu.create_context()
+            State.get().current_menu.create_controller()
+            self.runner = State.get().current_menu.runner
+            return
         result = self.items[self.index].activate()
         if result == "PLAY":
 
             # noinspection PyDecorator
-            @staticmethod
+            # @staticmethod
             def show_input():
                 # print("Create input menu, controller = ", id(self.controller))
                 # new_menu = InputMenu(self.game_item, self.controller)
@@ -372,9 +452,9 @@ class GameConfigList(Navigatable):
                 from arcade.glui.window import set_current_menu
                 set_current_menu(new_menu)
 
-            Transition.start = State.get().time
-            Transition.end = Transition.start + 0.4
-            Transition.on_finish = show_input
+            exit_transition.start = State.get().time
+            exit_transition.end = exit_transition.start + 0.5
+            exit_transition.on_finish = show_input
 
     def render(self, transition=1.0):
         Render.get().hd_perspective()
@@ -386,11 +466,10 @@ class GameConfigList(Navigatable):
         # y = 1080 - 60 - h - 44
         # z = -0.9
 
-        item_top = 1080 - 90
-        item_left = 1920 - 560 + 40
+        # item_top = 1080 - 90 - 50
+        # item_left = 1920 - 560 + 40
 
-        item_left += Texture.sidebar_background_shadow.w * (
-            1.0 - transition)
+        dx = Texture.sidebar_background_shadow.w * (1.0 - transition)
 
         gl.glPushMatrix()
         gl.glTranslate(0.0, 0.0, 0.7)
@@ -409,40 +488,45 @@ class GameConfigList(Navigatable):
             1920 - Texture.sidebar_background_shadow.w * transition,
             0, Texture.sidebar_background_shadow.w,
             Texture.sidebar_background_shadow.h)
+        if transition > 1.0:
+            padding = 1920
+            Texture.sidebar_background.render(
+                1920 - Texture.sidebar_background_shadow.w * transition +
+                Texture.sidebar_background_shadow.w, 0, 1920 + padding,
+                Texture.sidebar_background.h)
         gl.glDepthMask(True)
         gl.glPopMatrix()
 
-        # x = x + 70
-        # w = w - 70
-        x = item_left
-        y = item_top - 60
-        w = 560 - 40 - 40
-        h = 60
-
+        y = SIDEBAR_START_Y
         for i, item in enumerate(self.items):
             if item.group:
                 if i > 0:
-                    # skip one half row before group heading
-                    y -= h / 2
+                    y -= GROUP_SPACING
             selected = i == self.index and State.get().navigatable == self
-            z = 0.71
+            # z = 0.71
             fs_emu_texturing(False)
+            gl.glDisable(gl.GL_DEPTH_TEST)
 
             if selected:
                 fg_color = [1.0, 1.0, 1.0, 1.0]
-                gl.glBegin(gl.GL_QUADS)
-
-                gl.glColor3f(0.00, 0x99 / 0xff, 0xcc / 0xff)
-                gl.glVertex3f(x, y + 4, z)
-                gl.glVertex3f(x + w, y + 4, z)
-                gl.glVertex3f(x + w, y + h - 4, z)
-                gl.glVertex3f(x, y + h - 4, z)
-                # glColor3f(0.6, 0.6, 0.6)
-                # glVertex3f(x, y + 4, z)
-                # glVertex3f(x + w, y + 4, z)
-                # glVertex3f(x + w, y + h, z)
-                # glVertex3f(x, y + h, z)
-                gl.glEnd()
+                # gl.glBegin(gl.GL_QUADS)
+                #
+                # gl.glColor3f(0.00, 0x99 / 0xff, 0xcc / 0xff)
+                # gl.glVertex3f(x, y - 18, z)
+                # gl.glVertex3f(x + w, y - 18, z)
+                # gl.glVertex3f(x + w, y + h - 4, z)
+                # gl.glVertex3f(x, y + h - 4, z)
+                # # glColor3f(0.6, 0.6, 0.6)
+                # # glVertex3f(x, y + 4, z)
+                # # glVertex3f(x + w, y + 4, z)
+                # # glVertex3f(x + w, y + h, z)
+                # # glVertex3f(x, y + h, z)
+                # gl.glEnd()
+                fs_emu_blending(True)
+                fs_emu_texturing(True)
+                gl.glDepthMask(False)
+                Texture.item_background.render(1920 - 540 + 13 + dx, y - 18)
+                gl.glDepthMask(True)
             else:
                 fg_color = [1.0, 1.0, 1.0, 1.0]
 
@@ -464,12 +548,18 @@ class GameConfigList(Navigatable):
             # fs_emu_blending(False)
             # fs_emu_blending(True)
 
-            gl.glDisable(gl.GL_DEPTH_TEST)
             if item.group:
                 BitmapFont.menu_font.render(
-                    text, x + 20, y + 14, r=0.0, g=0x99 / 0xff, b=0xcc / 0xff)
+                    text, HEADING_TEXT_LEFT + dx, y + 14,
+                    r=0.0, g=0x99 / 0xff, b=0xcc / 0xff)
+                x, _ = BitmapFont.menu_font.measure(text)
+                x += HEADING_TEXT_LEFT + 12
+                fs_emu_blending(True)
+                fs_emu_texturing(True)
+                # gl.glDepthMask(False)
+                Texture.heading_strip.render(x + dx, y + 14, 1920 - x, 32)
             else:
-                BitmapFont.menu_font.render(text, x + 20, y + 14)
+                BitmapFont.menu_font.render(text, ITEM_TEXT_LEFT + dx, y + 14)
             gl.glEnable(gl.GL_DEPTH_TEST)
             # text = item.title.upper()
             # tw, th = Render.get().text(text, Font.main_path_font,
@@ -479,7 +569,17 @@ class GameConfigList(Navigatable):
             # text = item.title.upper()
             # tw, th = Render.get().text(text, Font.list_subtitle_font,
             #         x + 40, y + 18, color=fg_color)
-            y -= h
+            y -= 54
+
+        # Gradually erase menu items when transitioning
+        if transition > 1.0:
+            gl.glDisable(gl.GL_DEPTH_TEST)
+            # tr = (transition - 1.0) / 3.0
+            alpha = max(0.0, (transition - 1.0) / 2.0)
+            Texture.sidebar_background.render(
+                1920 - Texture.sidebar_background_shadow.w * transition + 200,
+                0, 1920, Texture.sidebar_background.h, opacity=alpha)
+            gl.glEnable(gl.GL_DEPTH_TEST)
 
 
 class GameInfoPanel(Navigatable):

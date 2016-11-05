@@ -53,7 +53,14 @@ class Texture(object):
     glow_top_left = None
     glow_left = None
 
+    sidebar_background = None
     sidebar_background_shadow = None
+    heading_strip = None
+    item_background = None
+    top_item_background = None
+    logo_32 = None
+    stretch = None
+    aspect = None
 
     def __init__(self, name, target=gl.GL_TEXTURE_2D, **kwargs):
         # print(repr(type(name)))
@@ -76,7 +83,11 @@ class Texture(object):
     def bind(self):
         gl.glBindTexture(self.target, self.texture)
 
-    def render(self, x, y, w, h, z=0.0, opacity=1.0):
+    def render(self, x, y, w=None, h=None, z=0.0, opacity=1.0):
+        if w is None:
+            w = self.w
+        if h is None:
+            h = self.h
         self.bind()
         fs_emu_texturing(True)
         if self.gl_type == gl.GL_RGBA or opacity < 1.0:

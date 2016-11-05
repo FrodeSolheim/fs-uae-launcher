@@ -365,15 +365,18 @@ class MenuItem(object):
         x, y, w, h = self.x, self.y, self.w, self.h
         z = -0.01 - 0.01 * x / 1920
         if selected:
-            fs_emu_texturing(False)
-            fs_emu_blending(False)
-            gl.glBegin(gl.GL_QUADS)
-            gl.glColor3f(0.00, 0x99 / 0xff, 0xcc / 0xff)
-            gl.glVertex3f(x + 4, y + 4, z)
-            gl.glVertex3f(x + w - 4, y + 4, z)
-            gl.glVertex3f(x + w - 4, y + h - 4, z)
-            gl.glVertex3f(x + 4, y + h - 4, z)
-            gl.glEnd()
+            fs_emu_texturing(True)
+            fs_emu_blending(True)
+            Texture.top_item_background.render(x, y, w, h, z)
+            # fs_emu_texturing(False)
+            # fs_emu_blending(False)
+            # gl.glBegin(gl.GL_QUADS)
+            # gl.glColor3f(0.00, 0x99 / 0xff, 0xcc / 0xff)
+            # gl.glVertex3f(x + 4, y + 4, z)
+            # gl.glVertex3f(x + w - 4, y + 4, z)
+            # gl.glVertex3f(x + w - 4, y + h - 4, z)
+            # gl.glVertex3f(x + 4, y + h - 4, z)
+            # gl.glEnd()
 
             # fs_emu_blending(True)
             # glColor3f(1.0, 1.0, 1.0)
@@ -514,68 +517,6 @@ class NoLastPlayedItem(MenuItem):
     def __init__(self):
         MenuItem.__init__(self)
         self.title = gettext("No Last Played")
-
-
-class GameCenterItem(MenuItem):
-    def __init__(self):
-        MenuItem.__init__(self)
-        # if app.name == "fs-uae-arcade":
-        self.title = gettext("FS-UAE   Arcade")
-        # else:
-        #     self.title = gettext("Game   Center")
-        self.path_title = self.title
-
-    def activate(self, menu):
-        pass
-
-    # def update_size(self, text):
-    #     MenuItem.update_size(text)
-    #     #self.w = Texture.top_logo.w + 83
-
-    def render_top_left(self, selected=False):
-        # self.render_top_background(selected, style=TOP_ITEM_ARROW)
-        MenuItem.render_top_left(self, selected=selected)
-        gl.glDisable(gl.GL_DEPTH_TEST)
-        fs_emu_blending(True)
-        # if app.name == "fs-uae-arcade":
-        x = 170
-        # else:
-        #     x = 138
-        y = 14
-        # if selected:
-        # texture = Texture.top_logo_selected
-        # else:
-        texture = Texture.top_logo
-        texture.render(x, 1080 - y - texture.h, texture.w, texture.h)
-        # fs_emu_blending(False)
-        gl.glEnable(gl.GL_DEPTH_TEST)
-
-
-class HomeItem(MenuItem):
-    def __init__(self):
-        MenuItem.__init__(self)
-        self.title = gettext("Home")
-        self.path_title = self.title
-
-    def activate(self, menu):
-        from arcade.glui.window import create_main_menu
-        new_menu = create_main_menu()
-        # State.get().history = [new_menu]
-        State.get().history.append(new_menu)
-        from arcade.glui.window import set_current_menu
-        set_current_menu(new_menu)
-
-    def update_size_left(self):
-        self.w = 80
-
-    def render_top_left(self, selected=False):
-        self.render_top_background(selected)
-        # fs_emu_blending(True)
-        if selected:
-            texture = Texture.home_selected
-        else:
-            texture = Texture.home
-        texture.render(self.x, self.y, texture.w, texture.h)
 
 
 def get_game_lists_dirs():
@@ -923,33 +864,6 @@ class AllMenuItem(AutoExpandItem):
         #     def game_filter(game_info):
         #         return True
         #     return game_filter
-
-
-class AddItem(MenuItem):
-    def __init__(self):
-        MenuItem.__init__(self)
-        self.title = gettext("Add")
-        self.path_title = self.title
-
-    def update_size_left(self):
-        self.w = 80
-
-    def render_top_left(self, selected=False):
-        self.render_top_background(selected)
-        # fs_emu_blending(True)
-        if selected:
-            texture = Texture.add_selected
-        else:
-            texture = Texture.add
-        texture.render(self.x, self.y, texture.w, texture.h)
-
-    def activate(self, menu):
-        new_menu = create_item_menu(self.title)
-        menu_path = self.create_menu_path(menu)
-        new_menu.update_path(menu_path)
-        for item in self.generate_category_items(menu_path):
-            new_menu.append(item)
-        return new_menu
 
 
 class ShuffleMenuItem(MenuItem):

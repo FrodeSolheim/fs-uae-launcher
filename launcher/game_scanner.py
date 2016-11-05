@@ -9,22 +9,17 @@ from fsgs.FileDatabase import FileDatabase
 from fsgs.GameDatabaseClient import GameDatabaseClient
 from fsgs.context import fsgs
 from fsgs.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
+from fsgs.ogd.locker import LockerSynchronizer
 from fsgs.util.gamenameutil import GameNameUtil
+from launcher.option import Option
 from .i18n import gettext
 from .launcher_settings import LauncherSettings
-
-# from fsgs.ogd.context import SynchronizerContext
-# from fsgs.ogd.meta import MetaSynchronizer
-from fsgs.ogd.locker import LockerSynchronizer
-
-from launcher.option import Option
 
 GAME_ENTRY_TYPE_GAME = 1 << 0
 GAME_ENTRY_TYPE_VARIANT = 1 << 1
 
 
 class GameScanner(object):
-
     def __init__(self, context, _, on_status=None, stop_check=None):
         self.fsgs = fsgs
         self.context = context
@@ -135,6 +130,7 @@ class GameScanner(object):
     def scan_game_database(self, helper, database_name, game_database):
         """
         :type helper: ScanHelper
+        :type database_name: str
         :type game_database: fsgs.GameDatabase.GameDatabase
         """
         database_cursor = helper.database.cursor()
@@ -413,7 +409,6 @@ class GameScanner(object):
 
 
 class ScanHelper(object):
-
     def __init__(self, database):
         self.database = database
         database_cursor = self.database.cursor()
@@ -433,9 +428,9 @@ class ScanHelper(object):
         self.file_stamps = FileDatabase.get_instance().get_last_event_stamps()
         cached_file_stamps = self.database.get_last_file_event_stamps()
         self.added_files = self.file_stamps["last_file_insert"] != \
-            cached_file_stamps["last_file_insert"]
+                           cached_file_stamps["last_file_insert"]
         self.deleted_files = self.file_stamps["last_file_delete"] != \
-            cached_file_stamps["last_file_delete"]
+                             cached_file_stamps["last_file_delete"]
 
     def game_seen(self, seen_game_uuid):
         # after the loop has run its course, games to be removed

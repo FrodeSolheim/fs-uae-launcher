@@ -45,15 +45,15 @@ def initialize_locale(language=None):
     ]
     if sys.platform == "darwin":
         dirs.insert(
-                0, os.path.join(fsboot.executable_dir(), "..", "Resources"))
+            0, os.path.join(fsboot.executable_dir(), "..", "Resources"))
 
     locale_base = None
-    for dir in dirs:
-        check = os.path.join(dir, "fs-uae-launcher", "share-dir")
+    for dir_ in dirs:
+        check = os.path.join(dir_, "fs-uae-launcher", "share-dir")
         print("[I18N] Checking", check)
         if not os.path.exists(check):
             continue
-        locale_base = os.path.join(dir, "locale")
+        locale_base = os.path.join(dir_, "locale")
         break
     if not locale_base and getattr(sys, "frozen", False):
         locale_base = os.path.abspath(
@@ -70,7 +70,7 @@ def initialize_locale(language=None):
               "in local directory", locale_base)
         try:
             mo_path = gettext_module.find(
-                    "fs-uae-launcher", locale_base, [loc])
+                "fs-uae-launcher", locale_base, [loc])
         except Exception as e:
             # a bug in openSUSE 12.2's gettext.py can cause an exception
             # in gettext.find (checking len of None).
@@ -80,7 +80,7 @@ def initialize_locale(language=None):
     print("[I18N] Path to mo file:", mo_path)
 
     translations = gettext_module.translation(
-            "fs-uae-launcher", locale_base, [loc], fallback=True)
+        "fs-uae-launcher", locale_base, [loc], fallback=True)
     print("[I18N] Translations object:", translations)
 
 

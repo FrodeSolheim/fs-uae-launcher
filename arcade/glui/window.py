@@ -334,7 +334,7 @@ def show():
     State.get().history.append(new_menu)
 
     for platform_id in PlatformHandler.get_platform_ids():
-        if "--" + platform_id in sys.argv:
+        if "--platform=" + platform_id in sys.argv:
             platform_menu = ItemMenu()
             platform_menu.parent_menu = new_menu
 
@@ -523,6 +523,9 @@ def create_search_results_menu(text):
     # print "Creating search results for", words
     new_menu.top.append_left(
         SearchTextItem("Search: {0}_".format(text)))
+    new_menu.top.set_selected_index(
+        len(new_menu.top.left) + len(new_menu.top.right) - 1)
+
     # clause = []
     # args = []
     # for word in words:
@@ -1221,11 +1224,19 @@ def init_textures():
     Texture.top_item_arrow = Texture("top_item_arrow.png")
     Texture.top_item_arrow_selected = Texture("top_item_arrow_selected.png")
 
+    Texture.sidebar_background = Texture("sidebar_background.png")
     Texture.sidebar_background_shadow = Texture(
         "sidebar_background_shadow.png")
     Texture.glow_top = Texture("glow_top.png")
     Texture.glow_top_left = Texture("glow_top_left.png")
     Texture.glow_left = Texture("glow_left.png")
+
+    Texture.heading_strip = Texture("heading_strip.png")
+    Texture.item_background = Texture("item_background.png")
+    Texture.top_item_background = Texture("top_item_background.png")
+    Texture.logo_32 = Texture("logo-32.png")
+    Texture.stretch = Texture("stretch.png")
+    Texture.aspect = Texture("aspect.png")
 
     # # FIXME: TEMPORARY - FOR TESTING, ONLY
     # path = "c:\\git\\fs-game-database\\Backdrops\\ffx.png"

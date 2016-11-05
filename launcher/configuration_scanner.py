@@ -1,11 +1,11 @@
 import os
+
 from fsgs.FileDatabase import FileDatabase
-from .i18n import gettext
 from fsgs.util.gamenameutil import GameNameUtil
+from .i18n import gettext
 
 
 class ConfigurationScanner:
-
     def __init__(self, paths=None, on_status=None, stop_check=None):
         if paths is None:
             paths = []
@@ -56,9 +56,9 @@ class ConfigurationScanner:
             except KeyError:
                 pass
 
-            # FIXME: try splitting name into name, variant pair, and
-            # actually add game_variant for config files as well, where
-            # possible
+                # FIXME: try splitting name into name, variant pair, and
+                # actually add game_variant for config files as well, where
+                # possible
 
         for id in config_path_ids.values():
             database.delete_game(id=id)
@@ -76,16 +76,17 @@ class ConfigurationScanner:
             # database.rollback()
             return
 
-        # database.remove_unscanned_configurations(self.scan_version)
-        # print("remove unscanned games")
-        # self.set_status(_("Scanning configurations"),
-        #                 _("Purging old entries..."))
-        # database.remove_unscanned_games_new(self.scan_version)
-        # print("remove unscanned configurations")
-        # database.remove_unscanned_configurations(self.scan_version)
+            # database.remove_unscanned_configurations(self.scan_version)
+            # print("remove unscanned games")
+            # self.set_status(_("Scanning configurations"),
+            #                 _("Purging old entries..."))
+            # database.remove_unscanned_games_new(self.scan_version)
+            # print("remove unscanned configurations")
+            # database.remove_unscanned_configurations(self.scan_version)
 
-        # self.set_status(_("Scanning configurations"), _("Committing data..."))
-        # database.commit()
+            # self.set_status(_("Scanning configurations"), _("Committing
+            # data..."))
+            # database.commit()
 
     # @classmethod
     # def create_configuration_search(cls, name):

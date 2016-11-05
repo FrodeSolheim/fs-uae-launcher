@@ -2,9 +2,10 @@ import traceback
 
 from arcade.glui.font import Font
 from arcade.glui.input import InputHandler
-from arcade.glui.items import GameCenterItem, HomeItem, MenuItem
+from arcade.glui.texture import Texture
+from arcade.glui.topmenu import GameCenterItem
 from arcade.glui.menu import Menu
-from arcade.glui.opengl import gl, fs_emu_blending, fs_emu_texturing
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.render import Render
 from arcade.glui.state import State
 from fsgs.input.inputdevice import InputDevice
@@ -19,10 +20,10 @@ class InputDevices(object):
 
 class DeviceDataDict(dict):
     def __getitem__(self, item):
-        return dict.__getitem__(self, item.upper())
+        return super().__getitem__(item.upper())
 
     def __setitem__(self, key, value):
-        return dict.__setitem__(self, key.upper(), value)
+        return super().__setitem__(key.upper(), value)
 
 
 class InputMenu(Menu):
@@ -32,8 +33,10 @@ class InputMenu(Menu):
         self.items.append(item)
         if self.use_game_center_item():
             self.top.left.append(GameCenterItem())
-        self.top.left.append(HomeItem())
-        self.top.left.append(MenuItem(item.title))
+        # self.top.left.append(HomeItem())
+        # self.top.left.append(MenuItem(item.title))
+        self.top.set_selected_index(
+            len(self.top.left) + len(self.top.right) - 1)
 
         self.controller = controller
         assert isinstance(self.controller, GameRunner)
@@ -78,18 +81,18 @@ class InputMenu(Menu):
             devices.append([score, device])
         devices = [x[1] for x in sorted(devices)]
         print("- devices:", devices)
-        for i, input in enumerate(self.controller.ports):
+        for i, input_ in enumerate(self.controller.ports):
             print("- input port {0}:".format(i))
             for device in devices:
                 try:
-                    device.configure(input.mapping_name)
+                    device.configure(input_.mapping_name)
                 except Exception:
                     traceback.print_exc()
                     pass
                 else:
                     print("  -> device id", device.id)
-                    input.device_id = device.id
-                    input.device = device
+                    input_.device_id = device.id
+                    input_.device = device
                     devices.remove(device)
                     self.device_data[device.id]["ok"] = True
                     self.device_data[device.id]["port"] = i
@@ -134,6 +137,7 @@ class InputMenu(Menu):
             #         self.check_device(device)
             #     break
 
+    # noinspection PyMethodMayBeStatic
     def on_status(self, status):
         print("received status", status)
 
@@ -220,6 +224,11 @@ class InputMenu(Menu):
         # render_screen()
 
         Render.get().hd_perspective()
+        fs_emu_texturing(True)
+        fs_emu_blending(False)
+        Texture.sidebar_background.render(
+            0, 0, 1920, Texture.sidebar_background.h)
+
         if len(self.controller.ports) == 0:
             color = (1.0, 0.0, 0.0, 1.0)
             text = "No input configuration needed"
@@ -248,29 +257,29 @@ class InputMenu(Menu):
                         "port": 0, "device": device}
                     self.check_device(self.device_data[device.id])
             for data_key in self.device_data.keys():
-                if not data_key in device_ids:
+                if data_key not in device_ids:
                     print(" -- removing device_data for", data_key)
                     del self.device_data[data_key]
-            for input in self.controller.ports:
-                if not input["device_id"] in device_ids:
-                    print(" -- removing device from input", input.device_id)
-                    input["device_id"] = None
+            for input_ in self.controller.ports:
+                if not input_["device_id"] in device_ids:
+                    print(" -- removing device from input", input_.device_id)
+                    input_["device_id"] = None
 
-        for port, input in enumerate(self.controller.ports):
+        for port, input_ in enumerate(self.controller.ports):
             center_x = 400 + 400 * port
 
-            text = input.name.upper()
+            text = input_.name.upper()
             color = (1.0, 0.0, 0.0, 1.0)
             Render.get().text(text, Font.main_path_font, center_x - 200, 760,
                               400,
                               color=color, halign=0)
-            text = input.description.upper()
+            text = input_.description.upper()
             color = (1.0, 0.0, 0.0, 1.0)
             Render.get().text(text, Font.main_path_font, center_x - 200, 730,
                               400,
                               color=color, halign=0)
-            if input.device_id:
-                device = self.device_data[input.device_id]["device"]
+            if input_.device_id:
+                device = self.device_data[input_.device_id]["device"]
                 color = (1.0, 0.5, 0.5, 1.0)
                 text = device.name.upper()
                 Render.get().text(text, Font.main_path_font, center_x - 200,
@@ -293,15 +302,20 @@ class InputMenu(Menu):
         fade = 1.0 - (State.get().time - self.first_shown_at) * 3.0
         if fade > 0.0:
             Render.get().dirty = True
-            fs_emu_blending(True)
-            fs_emu_texturing(False)
+            # fs_emu_blending(True)
+            # fs_emu_texturing(False)
             gl.glDisable(gl.GL_DEPTH_TEST)
             Render.get().hd_perspective()
-            gl.glBegin(gl.GL_QUADS)
-            gl.glColor4f(0.0, 0.0, 0.0, fade)
-            gl.glVertex2f(0, 0)
-            gl.glVertex2f(1920, 0)
-            gl.glVertex2f(1920, 1080)
-            gl.glVertex2f(0, 1080)
-            gl.glEnd()
+            # gl.glBegin(gl.GL_QUADS)
+            # gl.glColor4f(0.0, 0.0, 0.0, fade)
+            # gl.glVertex2f(0, 0)
+            # gl.glVertex2f(1920, 0)
+            # gl.glVertex2f(1920, 1080)
+            # gl.glVertex2f(0, 1080)
+            # gl.glEnd()
+            Render.get().hd_perspective()
+            fs_emu_texturing(True)
+            fs_emu_blending(False)
+            Texture.sidebar_background.render(
+                0, 0, 1920, Texture.sidebar_background.h, opacity=fade)
             gl.glEnable(gl.GL_DEPTH_TEST)

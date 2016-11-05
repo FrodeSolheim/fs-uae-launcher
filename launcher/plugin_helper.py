@@ -1,9 +1,9 @@
 import os
+
 from fsgs.FSGSDirectories import FSGSDirectories
 
 
 class PluginHelper(object):
-
     def __init__(self):
         pass
 

@@ -47,10 +47,10 @@ def main():
                     print("adding", path)
                     sys.path.insert(0, path)
 
-    if "--help" in sys.argv:
-        print_help()
-        sys.exit(0)
-    elif "--version" in sys.argv:
+    # if "--help" in sys.argv:
+    #     print_help()
+    #     sys.exit(0)
+    if "--version" in sys.argv:
         print_version()
         sys.exit(0)
 

@@ -1,11 +1,11 @@
 import threading
+
 from fsbc.signal import Signal as BaseSignal
 
 main_thread_id = threading.current_thread().ident
 
 
 class LauncherSignal(object):
-
     listeners = {}
 
     @classmethod

@@ -1,6 +1,5 @@
 import os
 import shutil
-import sys
 import io
 import tempfile
 import warnings
@@ -192,10 +191,12 @@ class GameRunner(object):
         return True
 
     def use_stretching(self):
-        if "--no-stretch" in sys.argv:
-            return False
-        if Settings.instance()["stretch"] == "0":
-            return False
+        # if "--no-stretch" in sys.argv:
+        #     return False
+        if Settings.instance()["keep_aspect"] == "1":
+            return
+        # if Settings.instance()["stretch"] == "0":
+        #     return False
         return True
 
     def use_audio_frequency(self):

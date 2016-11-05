@@ -1,9 +1,9 @@
 import traceback
+
 from .launcher_config import LauncherConfig
 
 
 class ConfigChecker:
-
     def __init__(self):
         LauncherConfig.add_listener(self)
 

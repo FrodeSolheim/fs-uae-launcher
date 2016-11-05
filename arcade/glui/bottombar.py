@@ -107,9 +107,24 @@ def render_bottom_bar_text(item):
     y = 290
 
     title = item.title.upper()
+    title = title.strip()
+    if "[" in title:
+        title, subtitle = title.rsplit("[", 1)
+        title = title.strip()
+        subtitle = subtitle.strip()
+        if subtitle.endswith("]"):
+            subtitle = subtitle[:-1]
+    else:
+        subtitle = ""
     if title:
         Render.get().text(title, Font.title_font, x, y, 1920 - x - 170,
                           shadow=True, color=(1.0, 1.0, 1.0, 1.0 * strength))
+        if subtitle:
+            color = (0x6e / 0xff, 0x8b / 0xff, 0x96 / 0xff, 0.75)
+            tw, th = Render.get().measure_text(title, Font.title_font)
+            Render.get().text(subtitle, Font.title_font, x + tw + 20,
+                              y, 1920 - x - 170, shadow=True,
+                              color=color)
 
     color = (0xc4 / 0xff, 0xd7 / 0xff, 0xde / 0xff, 1.0)
     year_text = str(getattr(State.get().current_menu.selected_item,
