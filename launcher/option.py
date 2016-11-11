@@ -124,6 +124,7 @@ class Option(object):
     VIDEO_SYNC = "video_sync"
     VIDEO_SYNC_METHOD = "video_sync_method"
     VOLUME = "volume"
+    WHDLOAD_BOOT_DIR = "whdload_boot_dir"
     WHDLOAD_SPLASH_DELAY = "whdload_splash_delay"
     WINDOW_BORDER = "window_border"
     ZOOM = "zoom"
@@ -1096,6 +1097,12 @@ options = {
         "type": "integer",
         "min": 0,
         "max": 100,
+    },
+    "whdload_boot_dir": {
+        "default": "",
+        "description": N_(
+            "Custom boot directory for automatic WHDLoad support"),
+        "type": "",
     },
     "whdload_splash_delay": {
         "default": "200",

@@ -749,7 +749,7 @@ class LaunchHandler(object):
         if self.config.get("__netplay_game", ""):
             print("WHDLoad base dir is not copied in net play mode")
         else:
-            src_dir = self.fsgs.amiga.get_whdload_dir()
+            src_dir = self.get_whdload_dir()
             if src_dir and os.path.exists(src_dir):
                 print("WHDLoad base dir exists, copying resources...")
                 self.copy_folder_tree(src_dir, dest_dir)
@@ -771,6 +771,10 @@ class LaunchHandler(object):
         else:
             self.write_startup_sequence(
                 s_dir, whdload_sequence.format(whdload_dir, whdload_args))
+
+    def get_whdload_dir(self):
+        path = self.config.get(Option.WHDLOAD_BOOT_DIR)
+        return path
 
     def write_startup_sequence(self, s_dir, command):
         # FIXME: semi-colon is used in WHDLoad CONFIG options...

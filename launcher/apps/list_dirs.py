@@ -32,5 +32,4 @@ def app_main():
           FSGSDirectories.screenshots_output_dir())
     print("* themes_dir =", FSGSDirectories.get_themes_dir())
     print("* titles_dir =", FSGSDirectories.get_titles_dir())
-    print("* whdload_dir =", FSGSDirectories.get_whdload_dir())
     print("")
