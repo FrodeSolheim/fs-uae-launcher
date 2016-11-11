@@ -51,6 +51,15 @@ class MednafenRunner(GameRunner):
     def mednafen_video_size(self):
         return 0, 0
 
+    def mednafen_rom_extensions(self):
+        raise NotImplementedError()
+
+    def mednafen_scanlines_setting(self):
+        return None
+
+    def mednafen_special_filter(self):
+        return None
+
     def mednafen_viewport(self):
         viewport = self.config["viewport"]
         if viewport:

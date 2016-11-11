@@ -1,11 +1,13 @@
-import os
 import hashlib
+import os
+
 from fsgs.mednafen.mednafen import MednafenRunner
 
+# [BIOS] Game Boy Advance (World).gba
+WORLD_BIOS = "300c20df6731a33952ded8c436f7f186d25d3492"
 
-# noinspection PyAttributeOutsideInit
+
 class GameBoyAdvanceRunner(MednafenRunner):
-
     CONTROLLER = {
         "type": "gamepad",
         "description": "Built-in Controller",
@@ -50,8 +52,45 @@ class GameBoyAdvanceRunner(MednafenRunner):
         }
 
     def mednafen_post_configure(self):
+        self.configure_gba_sram()
+        self.configure_gba_colormap()
+        self.configure_gba_bios()
+
+        print("[FIXME: temporarily removed support for custom sav file")
+        # sav_file = os.path.splitext(rom_file)[0] + u".sav"
+        # if os.path.exists(sav_file):
+        #     m = hashlib.md5()
+        #     with open(rom_file, "rb") as f:
+        #         while True:
+        #             data = f.read(16384)
+        #             if not data:
+        #                 break
+        #             m.update(data)
+        #         md5sum = str(m.hexdigest())
+        #     save_name = os.path.splitext(
+        #         os.path.basename(rom_file))[0] + u"." + md5sum + u".sav"
+        #     dest_path = os.path.join(self.get_state_dir(), save_name)
+        #     if not os.path.exists(dest_path):
+        #         shutil.copy(sav_file, dest_path)
+
+    def mednafen_rom_extensions(self):
+        return [".gba"]
+
+    def mednafen_scanlines_setting(self):
+        return 33
+
+    def mednafen_special_filter(self):
+        return "nn2x"
+
+    def mednafen_system_prefix(self):
+        return "gba"
+
+    # def mednafen_video_size(self):
+    #     return 240, 160
+
+    def configure_gba_sram(self):
         rom_file = self.get_game_file()
-        cfg_file = os.path.splitext(rom_file)[0] + ".cfg"
+        # cfg_file = os.path.splitext(rom_file)[0] + ".cfg"
         m = hashlib.md5()
         with open(rom_file, "rb") as f:
             while True:
@@ -75,23 +114,7 @@ class GameBoyAdvanceRunner(MednafenRunner):
                 for line in self.config["sram_type"].split(";"):
                     f.write((line.strip() + "\n").encode("UTF-8"))
 
-        print("FIXME: temporarily removed support for custom sav file")
-        # sav_file = os.path.splitext(rom_file)[0] + u".sav"
-        # if os.path.exists(sav_file):
-        #     m = hashlib.md5()
-        #     with open(rom_file, "rb") as f:
-        #         while True:
-        #             data = f.read(16384)
-        #             if not data:
-        #                 break
-        #             m.update(data)
-        #         md5sum = str(m.hexdigest())
-        #     save_name = os.path.splitext(
-        #         os.path.basename(rom_file))[0] + u"." + md5sum + u".sav"
-        #     dest_path = os.path.join(self.get_state_dir(), save_name)
-        #     if not os.path.exists(dest_path):
-        #         shutil.copy(sav_file, dest_path)
-
+    def configure_gba_colormap(self):
         print("FIXME: temporarily removed supported for custom colormap")
         # self.colormap_temp = self.create_temp_file("color.map")
         # self.create_colormap(self.colormap_temp.path, 1.3)
@@ -100,22 +123,19 @@ class GameBoyAdvanceRunner(MednafenRunner):
         # self.args.insert(0, self.colormap_temp.path)
         # self.args.insert(0, "-gba.colormap")
 
-    def mednafen_rom_extensions(self):
-        return [".gba"]
+    def configure_gba_bios(self):
+        uri = self.fsgs.file.find_by_sha1(WORLD_BIOS)
+        stream = self.fsgs.file.open(uri)
+        if stream is not None:
+            bios_temp = self.temp_file("gba_bios.bin")
+            with open(bios_temp.path, "wb") as f:
+                f.write(stream.read())
+            self.args.extend(["-gba.bios", bios_temp.path])
+        else:
+            print("[WARNING] GBA BIOS not found, using high-level emulation")
 
-    def mednafen_scanlines_setting(self):
-        return 33
-
-    def mednafen_special_filter(self):
-        return "nn2x"
-
-    def mednafen_system_prefix(self):
-        return "gba"
-
-    # def mednafen_video_size(self):
-    #     return 240, 160
-
-    def create_colormap(self, path, gamma):
+    @staticmethod
+    def create_colormap(path, gamma):
         with open(path, "wb") as f:
             for x in range(32768):
                 r = (x & 0x1f) << 3

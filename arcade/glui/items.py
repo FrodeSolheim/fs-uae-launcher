@@ -361,13 +361,20 @@ class MenuItem(object):
     def get_top_right_text(self):
         return self.title.upper()
 
-    def render_top_background(self, selected, style=TOP_ITEM_ARROW):
+    def render_top_background(
+            self, selected, style=TOP_ITEM_ARROW, mouse_state=False,
+            mouse_pressed_state=False):
         x, y, w, h = self.x, self.y, self.w, self.h
         z = -0.01 - 0.01 * x / 1920
+        selected = selected or mouse_state
         if selected:
             fs_emu_texturing(True)
             fs_emu_blending(True)
-            Texture.top_item_background.render(x, y, w, h, z)
+            if mouse_pressed_state:
+                alpha = 0.75
+            else:
+                alpha = 1.0
+            Texture.top_item_background.render(x, y, w, h, z, opacity=alpha)
             # fs_emu_texturing(False)
             # fs_emu_blending(False)
             # gl.glBegin(gl.GL_QUADS)

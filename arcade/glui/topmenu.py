@@ -30,7 +30,12 @@ class TopMenuItem(MenuItem):
         self.w = 80
 
     def render_top_right(self, selected=False):
-        self.render_top_background(selected, style=TOP_ITEM_LEFT)
+        state = State.get()
+        mouse_state = state.mouse_item == self
+        mouse_pressed_state = mouse_state and state.mouse_press_item == self
+        self.render_top_background(
+            selected, style=TOP_ITEM_LEFT, mouse_state=mouse_state,
+            mouse_pressed_state=mouse_pressed_state)
         fs_emu_blending(True)
         if selected:
             texture = self.selected_texture

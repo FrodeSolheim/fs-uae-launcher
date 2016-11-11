@@ -759,7 +759,7 @@ options = {
     },
     "raw_input": {
         "default": "1",
-        "description": N_("Use raw input (on Windows) for keyboard"),
+        "description": N_("Use keyboard raw input (Windows)"),
         "type": "Boolean",
     },
     "relative_paths": {

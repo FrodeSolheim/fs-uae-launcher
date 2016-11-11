@@ -6,6 +6,7 @@ from functools import lru_cache
 
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.FileDatabase import FileDatabase
+from fsgs.GameDatabase import IncompleteGameException
 from fsgs.GameDatabaseClient import GameDatabaseClient
 from fsgs.context import fsgs
 from fsgs.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
@@ -185,7 +186,12 @@ class GameScanner(object):
                 gettext("Scanning game variants ({count} scanned)").format(
                     count=self.scan_count), variant_uuid)
 
-            doc = game_database.get_game_values(variant_id)
+            try:
+                doc = game_database.get_game_values(variant_id)
+            except IncompleteGameException:
+                # FIXME: Log warning
+                print("[WARNING] Variant", variant_uuid, "is not complete")
+                continue
 
             file_list_json = doc.get("file_list", "")
             if not file_list_json:

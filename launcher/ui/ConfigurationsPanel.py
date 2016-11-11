@@ -156,13 +156,6 @@ class RatingChoice(Choice):
 
     @staticmethod
     def set_rating_for_variant(variant_uuid, rating):
-        import traceback
-        print("")
-        print("")
-        print("")
-        traceback.print_stack()
-        while True:
-            pass
         # FIXME: Do asynchronously, add to queue
         client = OGDClient()
         result = client.rate_variant(variant_uuid, like=rating)

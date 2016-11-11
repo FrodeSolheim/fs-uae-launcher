@@ -1,3 +1,8 @@
+Version 2.8.1u2:
+
+* Removed some debug code left by accident (causing rating variants to fail).
+* Make game scanner more forgiving if parent game uuid is not found.
+
 Version 2.8.1:
 
 * Fixed problem where rating could be reset for first loaded game/variant.

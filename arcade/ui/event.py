@@ -40,6 +40,34 @@ class Event:
         event["key"] = get_key(ev)
         return event
 
+    @classmethod
+    def create_mouse_event(cls, ev, window_size):
+        event = {}
+        if ev.type() == QEvent.MouseMove:
+            event["type"] = "mouse-motion"
+        elif ev.type() == QEvent.MouseButtonPress:
+            event["type"] = "mouse-press"
+        elif ev.type() == QEvent.MouseButtonRelease:
+            event["type"] = "mouse-release"
+        elif ev.type() == QEvent.MouseButtonDblClick:
+            event["type"] = "mouse-press"
+        else:
+            raise Exception("Unexpected event type in create_mouse_event")
+        # Normalize coordinates to a 1920x1080 OpenGL-like coordinate system
+        x, y = ev.x(), ev.y()
+        x = (x * 1920) // window_size[0]
+        y = 1080 - (y * 1080) // window_size[1]
+        event["pos"] = x, y
+        return event
+
+    @classmethod
+    def create_fake_mouse_event(cls, type_, x, y, window_size):
+        event = {"type": type_}
+        x = (x * 1920) // window_size[0]
+        y = 1080 - (y * 1080) // window_size[1]
+        event["pos"] = x, y
+        return event
+
 
 def get_key(ev):
     print("Qt key:", ev.key(), int(ev.modifiers()), Qt.KeypadModifier)

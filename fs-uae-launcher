@@ -61,9 +61,9 @@ def main():
 main()
 
 # Dummy imports for cx_Freeze
-# sys.exit(0)
-#import pkg_resources._vendor.packaging.requirements
-#import pkg_resources._vendor.packaging.specifiers
-#import pkg_resources._vendor.packaging.version
-#import pkg_resources._vendor.pyparsing
-#import pkg_resources._vendor.six
+sys.exit(0)
+import pkg_resources._vendor.packaging.requirements
+import pkg_resources._vendor.packaging.specifiers
+import pkg_resources._vendor.packaging.version
+import pkg_resources._vendor.pyparsing
+import pkg_resources._vendor.six

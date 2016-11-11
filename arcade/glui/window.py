@@ -1448,6 +1448,35 @@ def default_render_func():
     swap_buffers()
 
 
+def find_item_at_coordinate(pos):
+    menu = current_menu
+    # Just checking top right items for now
+    for item in menu.top.right:
+        if (item.x <= pos[0] <= item.x + item.w and
+                item.y <= pos[1] <= item.y + item.h):
+            return item
+    return None
+
+
+def handle_mouse_event(event):
+    if event["type"] == "mouse-motion":
+        item = find_item_at_coordinate(event["pos"])
+        # print("mouse over item", item)
+        state = State.get()
+        state.mouse_item = item
+    elif event["type"] == "mouse-press":
+        item = find_item_at_coordinate(event["pos"])
+        state = State.get()
+        state.mouse_press_item = item
+    elif event["type"] == "mouse-release":
+        item = find_item_at_coordinate(event["pos"])
+        state = State.get()
+        # state.mouse_press_item = item
+        if item is not None and item == state.mouse_press_item:
+            item.activate(current_menu)
+        state.mouse_press_item = None
+
+
 def main_loop_iteration(
         input_func=default_input_func, render_func=default_render_func):
     state = State.get()
@@ -1498,6 +1527,7 @@ def main_loop_iteration(
             state.hide_mouse_time = 0
             Mouse.set_visible(False)
 
+    had_mouse_event = False
     for event in InputHandler.pop_all_text_events():
         if event["type"] == "text":
             # if key was handled as a virtual button, only allow this
@@ -1512,6 +1542,11 @@ def main_loop_iteration(
                     InputHandler.get_button()
             else:
                 character_press(event["text"])
+        elif event["type"] in ["mouse-motion", "mouse-press", "mouse-release"]:
+            had_mouse_event = True
+            handle_mouse_event(event)
+        else:
+            print("[WARNING] Unhandled event", event)
 
     AnimationSystem.update()
     NotificationRender.update()
@@ -1558,6 +1593,8 @@ def main_loop_iteration(
     #     print "KeyboardInterrupt"
     #     return
     # return stop_loop
+    if had_mouse_event:
+        Render.get().dirty = True
 
     if not Render.get().display_sync:
         t = time.time()
