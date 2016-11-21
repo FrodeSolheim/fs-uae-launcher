@@ -1,11 +1,12 @@
-import sys
 import re
-import traceback
 import subprocess
+import sys
+import traceback
+
+from fsgs.amiga.FSUAEDeviceHelper import FSUAEDeviceHelper
 from .i18n import gettext
 from .launcher_settings import LauncherSettings
 from .launcher_signal import LauncherSignal
-from fsgs.amiga.FSUAEDeviceHelper import FSUAEDeviceHelper
 
 
 def create_cmp_id(id):
@@ -13,7 +14,6 @@ def create_cmp_id(id):
 
 
 class Device:
-
     def __init__(self, id, name, type):
         self.id = id
         self.name = name
@@ -23,7 +23,6 @@ class Device:
 
 
 class DeviceManager:
-
     initialized = False
     devices = []
     device_ids = []
@@ -209,6 +208,7 @@ class DeviceManager:
                 if device.id == value:
                     device.port = p
                     break
+
         # print("-")
         # for device in cls.devices:
         #     print(device.port, device.id)

@@ -32,10 +32,10 @@ class Menu(Navigatable):
         # return
         print("update_path", menu_path)
         if self.use_game_center_item():
-            from arcade.glui.items import GameCenterItem
+            from arcade.glui.topmenu import GameCenterItem
             self.top.append_left(GameCenterItem())
         # if len(menu_path) > 0:
-        from arcade.glui.items import HomeItem
+        from arcade.glui.topmenu import HomeItem
         self.top.append_left(HomeItem())
         last_index = len(menu_path) - 1
         for i, item in enumerate(menu_path):
@@ -52,13 +52,15 @@ class Menu(Navigatable):
         self.set_default_top_selected()
 
     def set_default_top_selected(self):
-        for i in range(len(self.top.left) - 1, -1, -1):
-            if self.top.left[i].enabled:
-                self.top.set_selected_index(i)
-                break
+        # for i in range(len(self.top.left) - 1, -1, -1):
+        #     if self.top.left[i].enabled:
+        #         self.top.set_selected_index(i)
+        #         break
+        i = len(self.top.left) + len(self.top.right) - 1
+        self.top.set_selected_index(i)
 
     def add_add_item(self):
-        from .items import AddItem
+        from arcade.glui.topmenu import AddItem
         self.top.append_left(AddItem())
         self.set_default_top_selected()
         # print("FIXME: add_add_item temporarily disabled")

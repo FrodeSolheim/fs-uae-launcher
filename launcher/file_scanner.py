@@ -1,18 +1,15 @@
-import os
 import hashlib
+import os
 import traceback
 
 from fsbc.paths import Paths
-
-from fsgs.FileDatabase import FileDatabase
 from fsgs.Archive import Archive
+from fsgs.FileDatabase import FileDatabase
 from fsgs.amiga.ROMManager import ROMManager
-from fsgs.ogd.client import OGDClient
 from .i18n import gettext
 
 
 class FileScanner(object):
-
     def __init__(self, paths, purge_other_dirs,
                  on_status=None, on_rom_found=None, stop_check=None):
         self.paths = paths
@@ -117,26 +114,26 @@ class FileScanner(object):
         database = FileDatabase.get_instance()
         # database.clear()
         scan_dirs = self.get_scan_dirs()
-        
+
         if self.purge_other_dirs:
             all_database_file_ids = database.get_file_ids()
         else:
             all_database_file_ids = None
 
-        for dir in scan_dirs:
-            if not os.path.exists(dir):
-                print("[SCANNER] Directory does not exist:", dir)
+        for dir_ in scan_dirs:
+            if not os.path.exists(dir_):
+                print("[SCANNER] Directory does not exist:", dir_)
                 continue
             # this is important to make sure the database is portable across
             # operating systems
-            dir = Paths.get_real_case(dir)
+            dir_ = Paths.get_real_case(dir_)
 
-            self.database_file_ids = database.get_file_hierarchy_ids(dir)
+            self.database_file_ids = database.get_file_hierarchy_ids(dir_)
             if self.purge_other_dirs:
                 all_database_file_ids.difference_update(
                     self.database_file_ids)
 
-            self.scan_dir(database, dir)
+            self.scan_dir(database, dir_)
 
             # print("Remaining files:", self.database_file_ids)
             self.purge_file_ids(self.database_file_ids)
@@ -159,16 +156,16 @@ class FileScanner(object):
             print("FileScanner.scan - committing data")
             database.commit()
 
-    def scan_dir(self, database, dir, all_files=False):
-        if not os.path.exists(dir):
+    def scan_dir(self, database, dir_, all_files=False):
+        if not os.path.exists(dir_):
             return
-        dir_content = os.listdir(dir)
+        dir_content = os.listdir(dir_)
         if not all_files:
             for name in dir_content:
                 if not check_valid_name(name):
                     continue
                 l_name = name.lower()
-                if l_name.endswith(".slave") or l_name.endswith(".slave"):
+                if l_name.endswith(".slave") or l_name.endswith(".slav"):
                     all_files = True
                     break
 
@@ -180,7 +177,7 @@ class FileScanner(object):
             if name in [".git", "Cache", "Save States"]:
                 continue
 
-            path = os.path.join(dir, name)
+            path = os.path.join(dir_, name)
             if os.path.isdir(path):
                 self.scan_dir(database, path, all_files=all_files)
                 continue
@@ -219,7 +216,7 @@ class FileScanner(object):
                 self.database_file_ids.remove(result["id"])
                 # self.database_file_ids.difference_update(
                 #         database.get_file_hierarchy_ids(path + "#"))
-                
+
                 # self.database_file_ids.difference_update(
                 #         database.get_child_ids(id=result["id"]))
                 return

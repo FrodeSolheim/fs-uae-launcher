@@ -361,19 +361,29 @@ class MenuItem(object):
     def get_top_right_text(self):
         return self.title.upper()
 
-    def render_top_background(self, selected, style=TOP_ITEM_ARROW):
+    def render_top_background(
+            self, selected, style=TOP_ITEM_ARROW, mouse_state=False,
+            mouse_pressed_state=False):
         x, y, w, h = self.x, self.y, self.w, self.h
         z = -0.01 - 0.01 * x / 1920
+        selected = selected or mouse_state
         if selected:
-            fs_emu_texturing(False)
-            fs_emu_blending(False)
-            gl.glBegin(gl.GL_QUADS)
-            gl.glColor3f(0.00, 0x99 / 0xff, 0xcc / 0xff)
-            gl.glVertex3f(x + 4, y + 4, z)
-            gl.glVertex3f(x + w - 4, y + 4, z)
-            gl.glVertex3f(x + w - 4, y + h - 4, z)
-            gl.glVertex3f(x + 4, y + h - 4, z)
-            gl.glEnd()
+            fs_emu_texturing(True)
+            fs_emu_blending(True)
+            if mouse_pressed_state:
+                alpha = 0.75
+            else:
+                alpha = 1.0
+            Texture.top_item_background.render(x, y, w, h, z, opacity=alpha)
+            # fs_emu_texturing(False)
+            # fs_emu_blending(False)
+            # gl.glBegin(gl.GL_QUADS)
+            # gl.glColor3f(0.00, 0x99 / 0xff, 0xcc / 0xff)
+            # gl.glVertex3f(x + 4, y + 4, z)
+            # gl.glVertex3f(x + w - 4, y + 4, z)
+            # gl.glVertex3f(x + w - 4, y + h - 4, z)
+            # gl.glVertex3f(x + 4, y + h - 4, z)
+            # gl.glEnd()
 
             # fs_emu_blending(True)
             # glColor3f(1.0, 1.0, 1.0)
@@ -450,12 +460,22 @@ class MenuItem(object):
             # fs_emu_blending(False)
 
     def render_top_left(self, selected=False):
-        self.render_top_background(selected)
+        state = State.get()
+        mouse_state = state.mouse_item == self
+        mouse_pressed_state = mouse_state and state.mouse_press_item == self
+        self.render_top_background(
+            selected, style=TOP_ITEM_LEFT,
+            mouse_state=mouse_state, mouse_pressed_state=mouse_pressed_state)
         text = self.get_top_left_text()
         self.render_top(text, selected)
 
     def render_top_right(self, selected=False):
-        self.render_top_background(selected, style=TOP_ITEM_LEFT)
+        state = State.get()
+        mouse_state = state.mouse_item == self
+        mouse_pressed_state = mouse_state and state.mouse_press_item == self
+        self.render_top_background(
+            selected, style=TOP_ITEM_LEFT,
+            mouse_state=mouse_state, mouse_pressed_state=mouse_pressed_state)
         self.render_top(self.get_top_right_text(), selected)
 
     def render_top(self, text="", selected=False, right_align=False):
@@ -514,68 +534,6 @@ class NoLastPlayedItem(MenuItem):
     def __init__(self):
         MenuItem.__init__(self)
         self.title = gettext("No Last Played")
-
-
-class GameCenterItem(MenuItem):
-    def __init__(self):
-        MenuItem.__init__(self)
-        # if app.name == "fs-uae-arcade":
-        self.title = gettext("FS-UAE   Arcade")
-        # else:
-        #     self.title = gettext("Game   Center")
-        self.path_title = self.title
-
-    def activate(self, menu):
-        pass
-
-    # def update_size(self, text):
-    #     MenuItem.update_size(text)
-    #     #self.w = Texture.top_logo.w + 83
-
-    def render_top_left(self, selected=False):
-        # self.render_top_background(selected, style=TOP_ITEM_ARROW)
-        MenuItem.render_top_left(self, selected=selected)
-        gl.glDisable(gl.GL_DEPTH_TEST)
-        fs_emu_blending(True)
-        # if app.name == "fs-uae-arcade":
-        x = 170
-        # else:
-        #     x = 138
-        y = 14
-        # if selected:
-        # texture = Texture.top_logo_selected
-        # else:
-        texture = Texture.top_logo
-        texture.render(x, 1080 - y - texture.h, texture.w, texture.h)
-        # fs_emu_blending(False)
-        gl.glEnable(gl.GL_DEPTH_TEST)
-
-
-class HomeItem(MenuItem):
-    def __init__(self):
-        MenuItem.__init__(self)
-        self.title = gettext("Home")
-        self.path_title = self.title
-
-    def activate(self, menu):
-        from arcade.glui.window import create_main_menu
-        new_menu = create_main_menu()
-        # State.get().history = [new_menu]
-        State.get().history.append(new_menu)
-        from arcade.glui.window import set_current_menu
-        set_current_menu(new_menu)
-
-    def update_size_left(self):
-        self.w = 80
-
-    def render_top_left(self, selected=False):
-        self.render_top_background(selected)
-        # fs_emu_blending(True)
-        if selected:
-            texture = Texture.home_selected
-        else:
-            texture = Texture.home
-        texture.render(self.x, self.y, texture.w, texture.h)
 
 
 def get_game_lists_dirs():
@@ -925,33 +883,6 @@ class AllMenuItem(AutoExpandItem):
         #     return game_filter
 
 
-class AddItem(MenuItem):
-    def __init__(self):
-        MenuItem.__init__(self)
-        self.title = gettext("Add")
-        self.path_title = self.title
-
-    def update_size_left(self):
-        self.w = 80
-
-    def render_top_left(self, selected=False):
-        self.render_top_background(selected)
-        # fs_emu_blending(True)
-        if selected:
-            texture = Texture.add_selected
-        else:
-            texture = Texture.add
-        texture.render(self.x, self.y, texture.w, texture.h)
-
-    def activate(self, menu):
-        new_menu = create_item_menu(self.title)
-        menu_path = self.create_menu_path(menu)
-        new_menu.update_path(menu_path)
-        for item in self.generate_category_items(menu_path):
-            new_menu.append(item)
-        return new_menu
-
-
 class ShuffleMenuItem(MenuItem):
     def __init__(self):
         MenuItem.__init__(self)
@@ -1297,7 +1228,7 @@ class GameItem(MenuItem):
         # return self.game_info[5] + "?s=512&t=jpg"
         if not self.game_info[5]:
             return None
-        return self.game_info[5] + "?w=480&h=640&t=lbcover&f=jpg"
+        return self.game_info[5] + "?w=480&h=640&t=cc&f=jpg"
 
     # @memoize
     # def get_image_files(self):

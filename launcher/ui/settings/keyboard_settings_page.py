@@ -16,6 +16,7 @@ class KeyboardSettingsPage(SettingsPage):
         self.add_option("keyboard_input_grab")
         self.add_option("full_keyboard")
         self.add_option("swap_ctrl_keys")
+        self.add_option("raw_input")
 
         self.add_section(gettext("Key Mapping"))
 

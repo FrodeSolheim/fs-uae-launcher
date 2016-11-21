@@ -1,14 +1,14 @@
 import os
+
 import fsui
-from .ui.Constants import Constants
-from .launcher_config import LauncherConfig
 from fsbc.paths import Paths
 from fsgs.FSGSDirectories import FSGSDirectories
+from .launcher_config import LauncherConfig
 from .launcher_settings import LauncherSettings
+from .ui.Constants import Constants
 
 
 class GamePaths(object):
-
     @staticmethod
     def current():
         model = LauncherConfig.get("amiga_model")
@@ -46,7 +46,8 @@ class GamePaths(object):
     def get_variant(self):
         return self.variant
 
-    def get_override_path(self, name):
+    @staticmethod
+    def get_override_path(name):
         path = LauncherConfig.get(name)
         if not path:
             return ""
@@ -73,12 +74,12 @@ class GamePaths(object):
             else:
                 name = "screen{0}.png".format(number)
             paths = FSGSDirectories.get_images_dirs()
-            for dir in paths:
-                p = os.path.join(dir, self.platform, "Images",
+            for dir_ in paths:
+                p = os.path.join(dir_, self.platform, "Images",
                                  self.uuid[:2], self.uuid, name)
                 if os.path.exists(p):
                     return p
-                p = os.path.join(dir, self.platform, "Thumbnails",
+                p = os.path.join(dir_, self.platform, "Thumbnails",
                                  self.uuid[:2], self.uuid, name)
                 if os.path.exists(p):
                     return p
@@ -100,17 +101,17 @@ class GamePaths(object):
                 paths = FSGSDirectories.get_screenshots_dirs()
         if number >= 2:
             name = "{0}_{1}".format(name, number)
-        for dir in paths:
-            path = os.path.join(dir, letter, name + ".png")
+        for dir_ in paths:
+            path = os.path.join(dir_, letter, name + ".png")
             if os.path.exists(path):
                 return path
-            path = os.path.join(dir, letter, name + ".gif")
+            path = os.path.join(dir_, letter, name + ".gif")
             if os.path.exists(path):
                 return path
-            path = os.path.join(dir, name + ".png")
+            path = os.path.join(dir_, name + ".png")
             if os.path.exists(path):
                 return path
-            path = os.path.join(dir, letter, name + ".gif")
+            path = os.path.join(dir_, letter, name + ".gif")
             if os.path.exists(path):
                 return path
         return None
@@ -142,12 +143,12 @@ class GamePaths(object):
             return path
         if self.uuid:
             paths = FSGSDirectories.get_images_dirs()
-            for dir in paths:
-                p = os.path.join(dir, self.platform, "Images",
+            for dir_ in paths:
+                p = os.path.join(dir_, self.platform, "Images",
                                  self.uuid[:2], self.uuid, "front.png")
                 if os.path.exists(p):
                     return p
-                p = os.path.join(dir, self.platform, "Thumbnails",
+                p = os.path.join(dir_, self.platform, "Thumbnails",
                                  self.uuid[:2], self.uuid, "front.png")
                 if os.path.exists(p):
                     return p
@@ -160,17 +161,17 @@ class GamePaths(object):
             paths = [Paths.expand_path(override_dir)]
         else:
             paths = FSGSDirectories.get_covers_dirs()
-        for dir in paths:
-            path = os.path.join(dir, letter, name + ".jpg")
+        for dir_ in paths:
+            path = os.path.join(dir_, letter, name + ".jpg")
             if os.path.exists(path):
                 return path
-            path = os.path.join(dir, letter, name + ".png")
+            path = os.path.join(dir_, letter, name + ".png")
             if os.path.exists(path):
                 return path
-            path = os.path.join(dir, name + ".jpg")
+            path = os.path.join(dir_, name + ".jpg")
             if os.path.exists(path):
                 return path
-            path = os.path.join(dir, name + ".png")
+            path = os.path.join(dir_, name + ".png")
             if os.path.exists(path):
                 return path
         return None
@@ -193,8 +194,8 @@ class GamePaths(object):
         if not letter:
             return None
         paths = FSGSDirectories.get_themes_dirs()
-        for dir in paths:
-            path = os.path.join(dir, letter, self.name)
+        for dir_ in paths:
+            path = os.path.join(dir_, letter, self.name)
             if os.path.exists(path):
                 return path
         return None
@@ -227,7 +228,7 @@ class GamePaths(object):
                             config_name)
         if os.path.exists(path):
             return path
-        # if not, we use a direct subfolder of save states dir
+        # if not, we use a direct sub-folder of save states dir
         path = os.path.join(FSGSDirectories.get_save_states_dir(),
                             config_name)
         return path

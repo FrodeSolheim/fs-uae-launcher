@@ -12,6 +12,8 @@ from fsbc.settings import Settings
 from fsbc.system import macosx
 from fsui.qt import init_qt, Qt, QWidget, QKeyEvent
 
+CURSOR_SHOW_DURATION = 5.0
+
 
 def check_argument(name):
     name = name.replace("_", "-")
@@ -160,8 +162,27 @@ class QtWindow(QWidget):
         self.interval = interval
         self.quit_flag = False
         self.first_time = None
-        self.setCursor(Qt.BlankCursor)
+        # self.setCursor(Qt.BlankCursor)
         self._window = weakref.ref(window)
+        self.set_blank_cursor()
+        self.show_cursor_until = None
+        self.setMouseTracking(True)
+        # self.window_created_at = time.time()
+        self.first_motion_event = True
+
+    def set_blank_cursor(self, blank=True):
+        if blank:
+            cursor = Qt.BlankCursor
+        else:
+            cursor = Qt.ArrowCursor
+        self.setCursor(cursor)
+        if self.gl_widget is not None:
+            self.gl_widget.setCursor(cursor)
+        if blank:
+            # Fool app to think mouse has moved to neutral position,
+            # in order to "de-focus" focused item.
+            InputHandler.add_event(Event.create_fake_mouse_event(
+                "mouse-motion", 960, 540, (self.width(), self.height())))
 
     def window(self) -> ArcadeWindow:
         # return self.parent().window()
@@ -180,8 +201,10 @@ class QtWindow(QWidget):
         # will block a short while (while resources are loaded).
         if time.time() - self.first_time > 0.5:
             self.gl_widget = GLWidget(self, self.callbacks)
+            self.gl_widget.setMouseTracking(True)
             # if "--show-cursor" not in sys.argv:
-            self.gl_widget.setCursor(Qt.BlankCursor)
+            # self.gl_widget.setCursor(Qt.BlankCursor)
+            self.set_blank_cursor()
             self.gl_widget.setGeometry(
                 0, 0, self.size().width(), self.size().height())
             self.gl_widget.show()
@@ -210,6 +233,43 @@ class QtWindow(QWidget):
             return
         if self.callbacks.active():
             self.gl_widget.updateGL()
+        if self.show_cursor_until is not None:
+            if self.show_cursor_until < time.time():
+                print("hide cursor again")
+                self.set_blank_cursor()
+                self.show_cursor_until = None
+
+    def ensure_cursor_visible(self):
+        if self.show_cursor_until is None:
+            print("show cursor until", time.time() + CURSOR_SHOW_DURATION)
+            self.set_blank_cursor(False)
+        self.show_cursor_until = time.time() + CURSOR_SHOW_DURATION
+
+    def mouseMoveEvent(self, event):
+        if self.first_motion_event:
+            # Ignore initial motion event, so the cursor is not visible
+            # at startup.
+            self.first_motion_event = False
+            return
+        InputHandler.add_event(Event.create_mouse_event(
+            event, (self.width(), self.height())))
+        self.ensure_cursor_visible()
+
+    def mousePressEvent(self, event):
+        if self.show_cursor_until is None:
+            # Ignore clicks when cursor is hidden
+            return
+        InputHandler.add_event(Event.create_mouse_event(
+            event, (self.width(), self.height())))
+        self.ensure_cursor_visible()
+
+    def mouseReleaseEvent(self, event):
+        if self.show_cursor_until is None:
+            # Ignore clicks when cursor is hidden
+            return
+        InputHandler.add_event(Event.create_mouse_event(
+            event, (self.width(), self.height())))
+        self.ensure_cursor_visible()
 
     def keyPressEvent(self, event):
 

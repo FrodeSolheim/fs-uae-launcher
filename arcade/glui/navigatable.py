@@ -19,3 +19,6 @@ class Navigatable(object):
 
     def activate(self):
         pass
+
+    def render(self):
+        pass

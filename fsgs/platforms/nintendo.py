@@ -1,11 +1,10 @@
-from fsgs.platform import PlatformHandler
 from fsgs.mednafen.nintendo import NintendoRunner
-from .loader import SimpleLoader
+from fsgs.platform import PlatformHandler
+from fsgs.platforms.loader import SimpleLoader
 
 
 class NintendoPlatformHandler(PlatformHandler):
-
-    PLATFORM_NAME = "Nintendo"
+    PLATFORM_NAME = "Nintendo E.S."
 
     def __init__(self):
         PlatformHandler.__init__(self)

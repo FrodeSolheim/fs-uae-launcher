@@ -334,7 +334,7 @@ def show():
     State.get().history.append(new_menu)
 
     for platform_id in PlatformHandler.get_platform_ids():
-        if "--" + platform_id in sys.argv:
+        if "--platform=" + platform_id in sys.argv:
             platform_menu = ItemMenu()
             platform_menu.parent_menu = new_menu
 
@@ -523,6 +523,9 @@ def create_search_results_menu(text):
     # print "Creating search results for", words
     new_menu.top.append_left(
         SearchTextItem("Search: {0}_".format(text)))
+    new_menu.top.set_selected_index(
+        len(new_menu.top.left) + len(new_menu.top.right) - 1)
+
     # clause = []
     # args = []
     # for word in words:
@@ -1221,11 +1224,19 @@ def init_textures():
     Texture.top_item_arrow = Texture("top_item_arrow.png")
     Texture.top_item_arrow_selected = Texture("top_item_arrow_selected.png")
 
+    Texture.sidebar_background = Texture("sidebar_background.png")
     Texture.sidebar_background_shadow = Texture(
         "sidebar_background_shadow.png")
     Texture.glow_top = Texture("glow_top.png")
     Texture.glow_top_left = Texture("glow_top_left.png")
     Texture.glow_left = Texture("glow_left.png")
+
+    Texture.heading_strip = Texture("heading_strip.png")
+    Texture.item_background = Texture("item_background.png")
+    Texture.top_item_background = Texture("top_item_background.png")
+    Texture.logo_32 = Texture("logo-32.png")
+    Texture.stretch = Texture("stretch.png")
+    Texture.aspect = Texture("aspect.png")
 
     # # FIXME: TEMPORARY - FOR TESTING, ONLY
     # path = "c:\\git\\fs-game-database\\Backdrops\\ffx.png"
@@ -1437,6 +1448,39 @@ def default_render_func():
     swap_buffers()
 
 
+def find_item_at_coordinate(pos):
+    menu = current_menu
+    # Just checking top items for now
+    for item in menu.top.left:
+        if (item.x <= pos[0] <= item.x + item.w and
+                item.y <= pos[1] <= item.y + item.h):
+            return item
+    for item in menu.top.right:
+        if (item.x <= pos[0] <= item.x + item.w and
+                item.y <= pos[1] <= item.y + item.h):
+            return item
+    return None
+
+
+def handle_mouse_event(event):
+    if event["type"] == "mouse-motion":
+        item = find_item_at_coordinate(event["pos"])
+        # print("mouse over item", item)
+        state = State.get()
+        state.mouse_item = item
+    elif event["type"] == "mouse-press":
+        item = find_item_at_coordinate(event["pos"])
+        state = State.get()
+        state.mouse_press_item = item
+    elif event["type"] == "mouse-release":
+        item = find_item_at_coordinate(event["pos"])
+        state = State.get()
+        # state.mouse_press_item = item
+        if item is not None and item == state.mouse_press_item:
+            item.activate(current_menu)
+        state.mouse_press_item = None
+
+
 def main_loop_iteration(
         input_func=default_input_func, render_func=default_render_func):
     state = State.get()
@@ -1487,6 +1531,7 @@ def main_loop_iteration(
             state.hide_mouse_time = 0
             Mouse.set_visible(False)
 
+    had_mouse_event = False
     for event in InputHandler.pop_all_text_events():
         if event["type"] == "text":
             # if key was handled as a virtual button, only allow this
@@ -1501,6 +1546,11 @@ def main_loop_iteration(
                     InputHandler.get_button()
             else:
                 character_press(event["text"])
+        elif event["type"] in ["mouse-motion", "mouse-press", "mouse-release"]:
+            had_mouse_event = True
+            handle_mouse_event(event)
+        else:
+            print("[WARNING] Unhandled event", event)
 
     AnimationSystem.update()
     NotificationRender.update()
@@ -1547,6 +1597,8 @@ def main_loop_iteration(
     #     print "KeyboardInterrupt"
     #     return
     # return stop_loop
+    if had_mouse_event:
+        Render.get().dirty = True
 
     if not Render.get().display_sync:
         t = time.time()

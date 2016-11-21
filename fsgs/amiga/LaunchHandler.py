@@ -27,12 +27,14 @@ from fsgs.knownfiles import ACTION_REPLAY_MK_III_3_17_ROM, \
     ACTION_REPLAY_MK_II_2_14_MOD_ROM
 from fsgs.network import is_http_url
 from fsgs.res import gettext
-from .roms import PICASSO_IV_74_ROM, CD32_FMV_ROM
+from fsgs.amiga.roms import PICASSO_IV_74_ROM, CD32_FMV_ROM
+from launcher.option import Option
+from typing import List, Dict
 
 
 class LaunchHandler(object):
 
-    def __init__(self, fsgs, config_name, config, game_paths):
+    def __init__(self, fsgs, config_name, config, game_paths, temp_dir=""):
         self.fsgs = fsgs
         self.config_name = config_name
         self.config = config.copy()
@@ -56,8 +58,11 @@ class LaunchHandler(object):
         self.setpatch_installed = False
         # self.stop_flag = False
 
-        self.temp_dir = ""
+        self.temp_dir = temp_dir
         self.change_handler = None
+
+        self.use_relative_paths = self.config.get(
+            Option.RELATIVE_TEMP_FEATURE, "") == "1"
 
     @property
     def stop_flag(self):
@@ -73,7 +78,8 @@ class LaunchHandler(object):
 
     def prepare(self):
         print("LaunchHandler.prepare")
-        self.temp_dir = tempfile.mkdtemp(prefix="fs-uae-")
+        if not self.temp_dir:
+            self.temp_dir = tempfile.mkdtemp(prefix="fs-uae-")
         print("temp dir", self.temp_dir)
         self.config["floppies_dir"] = self.temp_dir
         print("state dir", self.get_state_dir())
@@ -188,8 +194,8 @@ class LaunchHandler(object):
             stream = None
             if not archive.exists(src):
                 dirs = [self.fsgs.amiga.get_kickstarts_dir()]
-                for dir in dirs:
-                    path = os.path.join(dir, src)
+                for dir_ in dirs:
+                    path = os.path.join(dir_, src)
                     print("checking", repr(path))
                     archive = Archive(path)
                     if archive.exists(path):
@@ -217,7 +223,8 @@ class LaunchHandler(object):
             if use_temp_kickstarts_dir:
                 self.config["kickstarts_dir"] = self.temp_dir
 
-    def expand_default_path(self, src, default_dir):
+    @staticmethod
+    def expand_default_path(src, default_dir):
         if "://" in src:
             return src, None
         src = Paths.expand_path(src, default_dir)
@@ -322,8 +329,11 @@ class LaunchHandler(object):
 
             cue_sheets = self.get_cue_sheets_for_game_uuid(game_uuid)
             for cue_sheet in cue_sheets:
+                # FIXME: Try to get this to work with the PyCharm type checker
+                # noinspection PyTypeChecker
                 with open(os.path.join(self.temp_dir,
                                        cue_sheet["name"]), "wb") as f:
+                    # noinspection PyTypeChecker
                     f.write(cue_sheet["data"].encode("UTF-8"))
 
             for i in range(Amiga.MAX_CDROM_DRIVES):
@@ -359,45 +369,47 @@ class LaunchHandler(object):
         print("LaunchHandler.prepare_hard_drives")
         current_task.set_progress(gettext("Preparing hard drives..."))
         # self.on_progress(gettext("Preparing hard drives..."))
-
         for i in range(0, 10):
-            key = "hard_drive_{0}".format(i)
-            src = self.config.get(key, "")
-            dummy, ext = os.path.splitext(src)
-            ext = ext.lower()
+            self.prepare_hard_drive(i)
 
-            if is_http_url(src):
-                name = src.rsplit("/", 1)[-1]
-                name = urllib.parse.unquote(name)
-                self.on_progress(gettext("Downloading {0}...".format(name)))
-                dest = os.path.join(self.temp_dir, name)
-                Downloader.install_file_from_url(src, dest)
-                src = dest
-            elif src.startswith("hd://game/"):
-                self.unpack_game_hard_drive(i, src)
-                self.disable_save_states()
-                return
-            elif src.startswith("hd://template/workbench/"):
-                self.prepare_workbench_hard_drive(i, src)
-                self.disable_save_states()
-                return
-            elif src.startswith("hd://template/empty/"):
-                self.prepare_empty_hard_drive(i, src)
-                self.disable_save_states()
-                return
+    def prepare_hard_drive(self, index):
+        key = "hard_drive_{}".format(index)
+        src = self.config.get(key, "")
+        dummy, ext = os.path.splitext(src)
+        ext = ext.lower()
 
-            if ext in Archive.extensions:
-                print("zipped hard drive", src)
-                self.unpack_hard_drive(i, src)
-                self.disable_save_states()
+        if is_http_url(src):
+            name = src.rsplit("/", 1)[-1]
+            name = urllib.parse.unquote(name)
+            self.on_progress(gettext("Downloading {0}...".format(name)))
+            dest = os.path.join(self.temp_dir, name)
+            Downloader.install_file_from_url(src, dest)
+            src = dest
+        elif src.startswith("hd://game/"):
+            self.unpack_game_hard_drive(index, src)
+            self.disable_save_states()
+            return
+        elif src.startswith("hd://template/workbench/"):
+            self.prepare_workbench_hard_drive(index, src)
+            self.disable_save_states()
+            return
+        elif src.startswith("hd://template/empty/"):
+            self.prepare_empty_hard_drive(index, src)
+            self.disable_save_states()
+            return
 
-            elif src.endswith("HardDrive"):
-                print("XML-described hard drive", src)
-                self.unpack_hard_drive(i, src)
-                self.disable_save_states()
-            else:
-                src = Paths.expand_path(src)
-                self.config[key] = src
+        if ext in Archive.extensions:
+            print("zipped hard drive", src)
+            self.unpack_hard_drive(index, src)
+            self.disable_save_states()
+
+        elif src.endswith("HardDrive"):
+            print("XML-described hard drive", src)
+            self.unpack_hard_drive(index, src)
+            self.disable_save_states()
+        else:
+            src = Paths.expand_path(src)
+            self.config[key] = src
 
     def disable_save_states(self):
         # Save states cannot currently be used with temporarily created
@@ -463,7 +475,7 @@ class LaunchHandler(object):
         file_list = json.loads(values["file_list"])
         return file_list
 
-    def get_cue_sheets_for_game_uuid(self, game_uuid):
+    def get_cue_sheets_for_game_uuid(self, game_uuid) -> List[Dict]:
         # FIXME: This is an ugly hack, we should already be told what
         # database to use.
         try:
@@ -478,8 +490,7 @@ class LaunchHandler(object):
                 values = game_database.get_game_values_for_uuid(game_uuid)
         if not values.get("cue_sheets", ""):
             return []
-        cue_sheets = json.loads(values["cue_sheets"])
-        return cue_sheets
+        return json.loads(values["cue_sheets"])
 
     def unpack_game_hard_drive(self, drive_index, src):
         print("unpack_game_hard_drive", drive_index, src)
@@ -533,16 +544,21 @@ class LaunchHandler(object):
             # with open(dst_file, "wb") as out_file:
             #     out_file.write(data)
 
-            metadata = ["----rwed", " ", "2000-01-01 00:00:00.00", " ", "",
-                        "\n"]
+            # noinspection SpellCheckingInspection
+            metadata = [
+                "----rwed", " ", "2000-01-01 00:00:00.00", " ", "", "\n"]
             if "comment" in file_entry:
                 metadata[4] = self.encode_file_comment(file_entry["comment"])
             with open(dst_file + ".uaem", "wb") as out_file:
                 out_file.write("".join(metadata).encode("UTF-8"))
-            
-        self.config["hard_drive_{0}".format(drive_index)] = dir_path
 
-    def encode_file_comment(self, comment):
+        if self.use_relative_paths:
+            self.config["hard_drive_{0}".format(drive_index)] = dir_name
+        else:
+            self.config["hard_drive_{0}".format(drive_index)] = dir_path
+
+    @staticmethod
+    def encode_file_comment(comment):
         result = []
         # raw = 0
         for c in comment:
@@ -637,7 +653,8 @@ class LaunchHandler(object):
                 # assume a specific workbench file
                 extractor = WorkbenchExtractor(self.fsgs)
                 extractor.install_version(
-                    workbench_version, dest_dir, [req], startup_sequence=False)
+                    workbench_version, dest_dir, [req],
+                    install_startup_sequence=False)
 
         if whdload_args:
             self.copy_whdload_files(dest_dir, s_dir)
@@ -732,7 +749,7 @@ class LaunchHandler(object):
         if self.config.get("__netplay_game", ""):
             print("WHDLoad base dir is not copied in net play mode")
         else:
-            src_dir = self.fsgs.amiga.get_whdload_dir()
+            src_dir = self.get_whdload_dir()
             if src_dir and os.path.exists(src_dir):
                 print("WHDLoad base dir exists, copying resources...")
                 self.copy_folder_tree(src_dir, dest_dir)
@@ -754,6 +771,10 @@ class LaunchHandler(object):
         else:
             self.write_startup_sequence(
                 s_dir, whdload_sequence.format(whdload_dir, whdload_args))
+
+    def get_whdload_dir(self):
+        path = self.config.get(Option.WHDLOAD_BOOT_DIR)
+        return path
 
     def write_startup_sequence(self, s_dir, command):
         # FIXME: semi-colon is used in WHDLoad CONFIG options...
@@ -834,7 +855,8 @@ class LaunchHandler(object):
         else:
             print("WARNING: did not find SetPatch 39.6")
 
-    def extract_setpatch_39_6(self, wb_data, dest):
+    @staticmethod
+    def extract_setpatch_39_6(wb_data, dest):
         extractor = ADFFileExtractor(wb_data)
         try:
             setpatch_data = extractor.extract_file("C/SetPatch")
@@ -843,6 +865,7 @@ class LaunchHandler(object):
         s = hashlib.sha1()
         s.update(setpatch_data)
         print(s.hexdigest())
+        # noinspection SpellCheckingInspection
         if s.hexdigest() != "4d4aae988310b07726329e436b2250c0f769ddff":
             return False
         with open(dest, "wb") as f:
@@ -951,7 +974,11 @@ class LaunchHandler(object):
         # current_task.set_progress(gettext("Starting FS-UAE..."))
         current_task.set_progress("__run__")
         config = self.create_config()
-        process, config_file = FSUAE.start_with_config(config)
+        if self.use_relative_paths:
+            process, config_file = FSUAE.start_with_config(
+                config, cwd=self.temp_dir)
+        else:
+            process, config_file = FSUAE.start_with_config(config)
         process.wait()
         print("LaunchHandler.start is done")
         print("removing", config_file)
@@ -987,27 +1014,27 @@ class LaunchHandler(object):
                             break
                         out_f.write(data)
 
-    def copy_folder_tree(self, sourcepath, destpath, overwrite=False):
-        for item in os.listdir(sourcepath):
+    def copy_folder_tree(self, source_path, dest_path, overwrite=False):
+        for item in os.listdir(source_path):
             if self.stop_flag:
                 return
             if item[0] == ".":
                 continue
-            itempath = os.path.join(sourcepath, item)
-            destitempath = os.path.join(destpath, item)
-            if os.path.isdir(itempath):
-                if not os.path.exists(destitempath):
-                    os.makedirs(destitempath)
-                self.copy_folder_tree(itempath, destitempath)
+            item_path = os.path.join(source_path, item)
+            dest_item_path = os.path.join(dest_path, item)
+            if os.path.isdir(item_path):
+                if not os.path.exists(dest_item_path):
+                    os.makedirs(dest_item_path)
+                self.copy_folder_tree(item_path, dest_item_path)
                 if self.stop_flag:
                     return
             else:
-                if overwrite or not os.path.exists(destitempath):
-                    print("copy", repr(itempath), "to", repr(destitempath))
-                    shutil.copy(itempath, destitempath)
+                if overwrite or not os.path.exists(dest_item_path):
+                    print("copy", repr(item_path), "to", repr(dest_item_path))
+                    shutil.copy(item_path, dest_item_path)
 
 
-def amiga_filename_to_host_filename(amiga_name, ascii=False):
+def amiga_filename_to_host_filename(amiga_name, ascii_only=False):
     """
     Converted from FS-UAE C code (src/od-fs/fsdb-host.py)
     @author: TheCyberDruid
@@ -1041,7 +1068,7 @@ def amiga_filename_to_host_filename(amiga_name, ascii=False):
             replace = True
         elif x < 32:
             replace = True
-        elif ascii and x > 127:
+        elif ascii_only and x > 127:
             replace = True
 
         if not replace:
@@ -1078,6 +1105,7 @@ system_configuration = (
     b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00"
     b"\x00")
 
+# noinspection SpellCheckingInspection
 workbench_disks_with_setpatch_39_6 = [
     # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
     # (Disk 1 of 6)(Install).adf
@@ -1138,6 +1166,7 @@ WHDLoad {1}
 uae-configuration SPC_QUIT 1
 """
 
+# noinspection SpellCheckingInspection
 base_icon = \
     b"\xe3\x10\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x006\x00" \
     b"\x17\x00\x04\x00\x01\x00\x01\x00\x02\x1a\x98\x00\x00\x00\x00\x00" \
@@ -1210,10 +1239,12 @@ def is_sha1(s):
 
 class TestCase(unittest.TestCase):
 
+    # noinspection SpellCheckingInspection
     def test_convert_amiga_file_name(self):
         result = amiga_filename_to_host_filename("pro.i*riska")
         self.assertEquals(result, "pro.i%2ariska")
 
+    # noinspection SpellCheckingInspection
     def test_convert_amiga_file_name_2(self):
         result = amiga_filename_to_host_filename("mypony.uaem")
         self.assertEquals(result, "mypony.uae%6d")

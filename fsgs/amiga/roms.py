@@ -29,6 +29,7 @@ A600_KICKSTARTS = [
     # "87508de834dc7eb47359cede72d2e3c8a2e5d8db",
 ]
 
+# noinspection SpellCheckingInspection
 A1200_3_0_KICKSTARTS = [
     # Kickstart v3.0 rev 39.106 (1992)(Commodore)(A1200)[!]
     "70033828182fffc7ed106e5373a8b89dda76faa5",
@@ -76,5 +77,6 @@ CDTV_EXT_ROMS = [
     "7ba40ffa17e500ed9fed041f3424bd81d9c907be",
 ]
 
+# noinspection SpellCheckingInspection
 PICASSO_IV_74_ROM = "cafafb916f16b9f3ec9b49aa4b40eb4eeceb5b5b"
 CD32_FMV_ROM = "03ca81c7a7b259cf64bc9582863eca0f6529f435"

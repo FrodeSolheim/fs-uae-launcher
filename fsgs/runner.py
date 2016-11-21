@@ -1,5 +1,5 @@
 import os
-import sys
+import shutil
 import io
 import tempfile
 import warnings
@@ -45,12 +45,28 @@ class Port(object):
 
 class TemporaryItem:
 
-    def __init__(self, root, prefix="tmp", suffix="", dir=False):
+    def __init__(self, root, prefix="tmp", suffix="", directory=False):
         self.root = root
         self.prefix = prefix
         self.suffix = suffix
         self._path = None
-        self.dir = dir
+        self.directory = directory
+
+    def __del__(self):
+        self.delete()
+
+    def delete(self):
+        print("TemporaryItem.delete")
+        assert self.root is None
+        if self._path is None:
+            return
+        if os.environ.get("FSGS_CLEANUP", "") == "0":
+            print("NOTICE: keeping temp files around...")
+            return
+        if self._path:
+            print("Removing", self._path)
+            shutil.rmtree(self._path)
+            self._path = None
 
     @property
     def path(self):
@@ -61,7 +77,7 @@ class TemporaryItem:
                 root = self.root.path
             else:
                 root = self.root
-            if self.dir:
+            if self.directory:
                 self._path = tempfile.mkdtemp(
                     prefix=self.prefix, suffix=self.suffix, dir=root)
             else:
@@ -73,11 +89,11 @@ class TemporaryItem:
 
 class TemporaryNamedItem:
 
-    def __init__(self, root, name, dir=False):
+    def __init__(self, root, name, directory=False):
         self.root = root
         self.name = name
         self._path = None
-        self.dir = dir
+        self.directory = directory
 
     @property
     def path(self):
@@ -85,7 +101,7 @@ class TemporaryNamedItem:
             root = self.root.path
             self._path = os.path.join(root, self.name)
             if not os.path.exists(self._path):
-                if self.dir:
+                if self.directory:
                     os.makedirs(self._path)
                 else:
                     with open(self.path, "wb"):
@@ -93,6 +109,7 @@ class TemporaryNamedItem:
         return self._path
 
 
+# noinspection PyMethodMayBeStatic
 class GameRunner(object):
 
     PORTS = []
@@ -123,7 +140,7 @@ class GameRunner(object):
         self.__vsync = False
         self.__game_temp_file = None
         self.temp_root = TemporaryItem(
-            root=None, prefix="fsgs-", suffix="tmp", dir=True)
+            root=None, prefix="fsgs-", suffix="tmp", directory=True)
 
         # self.cwd = self.create_temp_dir("cwd")
         # self.home = self.cwd
@@ -132,6 +149,9 @@ class GameRunner(object):
         self.cwd = self.temp_dir("cwd")
         # Fake home directory for the emulator.
         self.home = self.temp_dir("home")
+
+    def __del__(self):
+        print("GameRunner.__del__")
 
     def set_env(self, name, value):
         warnings.warn("set_env is deprecated", DeprecationWarning)
@@ -171,10 +191,12 @@ class GameRunner(object):
         return True
 
     def use_stretching(self):
-        if "--no-stretch" in sys.argv:
-            return False
-        if Settings.instance()["stretch"] == "0":
-            return False
+        # if "--no-stretch" in sys.argv:
+        #     return False
+        if Settings.instance()["keep_aspect"] == "1":
+            return
+        # if Settings.instance()["stretch"] == "0":
+        #     return False
         return True
 
     def use_audio_frequency(self):
@@ -337,7 +359,9 @@ class GameRunner(object):
         # (and creates temp file if necessary)
         input_stream = self.fsgs.file.open(file_uri)
 
-        self.__game_temp_file = self.fsgs.temp_file(file_uri.split("/")[-1])
+        # self.__game_temp_file = self.fsgs.temp_file(file_uri.split("/")[-1])
+        self.__game_temp_file = TemporaryNamedItem(
+            self.temp_root, file_uri.split("/")[-1])
 
         with open(self.__game_temp_file.path, "wb") as f:
             f.write(input_stream.read())
@@ -352,10 +376,12 @@ class GameRunner(object):
         return self.temp_file(suffix)
 
     def temp_dir(self, name):
-        return TemporaryNamedItem(root=self.temp_root, name=name, dir=True)
+        return TemporaryNamedItem(
+            root=self.temp_root, name=name, directory=True)
 
     def temp_file(self, name):
-        return TemporaryNamedItem(root=self.temp_root, name=name, dir=False)
+        return TemporaryNamedItem(
+            root=self.temp_root, name=name, directory=False)
 
     def run(self):
         executable = PluginManager.instance().find_executable(self.emulator)
@@ -514,9 +540,8 @@ class GameRunner(object):
             return "/opt/{0}/bin/{1}".format(package, name)
 
         if package == name:
-            for dir in os.environ["PATH"].split(":"):
-                # dir = unicode_path(dir)
-                path = os.path.join(dir, name)
+            for directory in os.environ["PATH"].split(":"):
+                path = os.path.join(directory, name)
                 if os.path.exists(path):
                     return path
         return None

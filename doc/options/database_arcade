@@ -1,3 +1,3 @@
 Description: Enable/disable use of the Arcade game database
-Type: boolean
-
+Type: Boolean
+Default: 0

@@ -1,126 +1,118 @@
-import os
 import hashlib
+import os
 import traceback
 from configparser import ConfigParser, NoSectionError
 
 from fsbc.paths import Paths
-
-from fsgs.context import fsgs
+from fsbc.signal import Signal
 from fsgs.ChecksumTool import ChecksumTool
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.Amiga import Amiga
 from fsgs.amiga.ValueConfigLoader import ValueConfigLoader
-from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.context import fsgs
+from fsgs.platform import PlatformHandler
 from launcher.option import Option
 from .launcher_settings import LauncherSettings
-from fsbc.signal import Signal
-
-
-# the order of the following keys is significant (for some keys).
-# multiple options should be set in this order since some options will
-# implicitly change other options. examples:
-# - amiga model can change kickstart and joystick modes
-# - file options should be set before corresponding sha1 options
-from fsgs.platform import PlatformHandler
 
 cfg = [
-    ("amiga_model",           "",     "checksum", "sync"),
-    ("ntsc_mode",             "",         "checksum", "sync"),
-    ("accuracy",              "",         "checksum", "sync"),
-    ("chip_memory",           "",         "checksum", "sync"),
-    ("slow_memory",           "",         "checksum", "sync"),
-    ("fast_memory",           "",         "checksum", "sync"),
-    ("zorro_iii_memory",      "",         "checksum", "sync"),
-    ("bsdsocket_library",     "",         "checksum", "sync"),
-    ("uaegfx_card",           "",         "checksum", "sync"),
-    ("joystick_port_0",       ""),
-    ("joystick_port_0_mode",  "",         "checksum", "sync"),
-    ("joystick_port_0_autofire",  "",     "checksum", "sync"),
-    ("joystick_port_1",       ""),
-    ("joystick_port_1_mode",  "",         "checksum", "sync"),
-    ("joystick_port_1_autofire",  "",     "checksum", "sync"),
-    ("joystick_port_2",       ""),
-    ("joystick_port_2_mode",  "",         "checksum", "sync"),
-    ("joystick_port_2_autofire",  "",     "checksum", "sync"),
-    ("joystick_port_3",       ""),
-    ("joystick_port_3_mode",  "",         "checksum", "sync"),
-    ("joystick_port_3_autofire",  "",     "checksum", "sync"),
+    ("amiga_model", "", "checksum", "sync"),
+    ("ntsc_mode", "", "checksum", "sync"),
+    ("accuracy", "", "checksum", "sync"),
+    ("chip_memory", "", "checksum", "sync"),
+    ("slow_memory", "", "checksum", "sync"),
+    ("fast_memory", "", "checksum", "sync"),
+    ("zorro_iii_memory", "", "checksum", "sync"),
+    ("bsdsocket_library", "", "checksum", "sync"),
+    ("uaegfx_card", "", "checksum", "sync"),
+    ("joystick_port_0", ""),
+    ("joystick_port_0_mode", "", "checksum", "sync"),
+    ("joystick_port_0_autofire", "", "checksum", "sync"),
+    ("joystick_port_1", ""),
+    ("joystick_port_1_mode", "", "checksum", "sync"),
+    ("joystick_port_1_autofire", "", "checksum", "sync"),
+    ("joystick_port_2", ""),
+    ("joystick_port_2_mode", "", "checksum", "sync"),
+    ("joystick_port_2_autofire", "", "checksum", "sync"),
+    ("joystick_port_3", ""),
+    ("joystick_port_3_mode", "", "checksum", "sync"),
+    ("joystick_port_3_autofire", "", "checksum", "sync"),
 
-    ("floppy_drive_count",    "",         "checksum", "sync"),
-    ("cdrom_drive_count",     "",         "checksum", "sync"),
+    ("floppy_drive_count", "", "checksum", "sync"),
+    ("cdrom_drive_count", "", "checksum", "sync"),
 
     # this is not an Amiga device, so no need to checksum / sync
-    ("joystick_port_4_mode",  "",         "custom"),
+    ("joystick_port_4_mode", "", "custom"),
 
-    ("kickstart_file",        ""),
-    ("x_kickstart_file",      "",                             "no_save"),
-    ("x_kickstart_file_sha1", "",         "checksum", "sync", "no_save"),
-    ("kickstart_ext_file",    ""),
-    ("x_kickstart_ext_file",  "",                             "no_save"),
-    ("x_kickstart_ext_file_sha1", "",     "checksum", "sync", "no_save"),
+    ("kickstart_file", ""),
+    ("x_kickstart_file", "", "no_save"),
+    ("x_kickstart_file_sha1", "", "checksum", "sync", "no_save"),
+    ("kickstart_ext_file", ""),
+    ("x_kickstart_ext_file", "", "no_save"),
+    ("x_kickstart_ext_file_sha1", "", "checksum", "sync", "no_save"),
 
-    ("x_whdload_args",        "",         "checksum", "sync"),
-    ("x_whdload_version",     "",     "checksum", "sync"),
-    ("floppy_drive_count",    "",         "checksum", "sync"),
-    ("floppy_drive_speed",    "",         "checksum", "sync"),
-    ("cdrom_drive_count",     "",         "checksum", "sync"),
-    ("dongle_type",           "",         "checksum", "sync"),
+    ("x_whdload_args", "", "checksum", "sync"),
+    ("x_whdload_version", "", "checksum", "sync"),
+    ("floppy_drive_count", "", "checksum", "sync"),
+    ("floppy_drive_speed", "", "checksum", "sync"),
+    ("cdrom_drive_count", "", "checksum", "sync"),
+    ("dongle_type", "", "checksum", "sync"),
 
-    ("__netplay_game",        "",         "checksum", "sync"),
-    ("__netplay_password",    "",         "checksum", "sync"),
-    ("__netplay_players",     "",         "checksum", "sync"),
-    ("__netplay_port",        "",                     "sync"),
-    ("__netplay_addresses",   "",         "checksum", "sync"),
-    ("__netplay_host",        ""),
-    ("__netplay_ready",       ""),
-    ("__netplay_state_dir_name",  "",     "checksum", "sync"),
-    ("__version",             "FIXME"),
-    ("__error",               ""),
-    ("x_game_uuid",           ""),
-    ("x_game_xml_path",       ""),
-    ("title",                 "",                             "custom"),
-    ("sub_title",             "",                             "custom"),
-    ("viewport",              "",                             "custom"),
+    ("__netplay_game", "", "checksum", "sync"),
+    ("__netplay_password", "", "checksum", "sync"),
+    ("__netplay_players", "", "checksum", "sync"),
+    ("__netplay_port", "", "sync"),
+    ("__netplay_addresses", "", "checksum", "sync"),
+    ("__netplay_host", ""),
+    ("__netplay_ready", ""),
+    ("__netplay_state_dir_name", "", "checksum", "sync"),
+    ("__version", "FIXME"),
+    ("__error", ""),
+    ("x_game_uuid", ""),
+    ("x_game_xml_path", ""),
+    ("title", "", "custom"),
+    ("sub_title", "", "custom"),
+    ("viewport", "", "custom"),
 
-    ("year",                  ""),
-    ("developer",             ""),
-    ("publisher",             ""),
-    ("languages",             ""),
-    ("players",               ""),
-    ("protection",            ""),
-    ("hol_url",               ""),
-    ("wikipedia_url",         ""),
-    ("database_url",          ""),
-    ("lemon_url",             ""),
-    ("mobygames_url",         ""),
-    ("amigamemo_url",         ""),
-    ("whdload_url",           ""),
-    ("mobygames_url",         ""),
-    ("thelegacy_url",         ""),
-    ("homepage_url",         ""),
-    ("longplay_url",          ""),
-    ("__variant_rating",      ""),
-    ("variant_rating",        ""),
-    ("variant_uuid",          ""),
-    
-    ("download_file",         ""),
-    ("download_page",         ""),
-    ("download_terms",        ""),
-    ("download_notice",       ""),
+    ("year", ""),
+    ("developer", ""),
+    ("publisher", ""),
+    ("languages", ""),
+    ("players", ""),
+    ("protection", ""),
+    ("hol_url", ""),
+    ("wikipedia_url", ""),
+    ("database_url", ""),
+    ("lemon_url", ""),
+    ("mobygames_url", ""),
+    ("amigamemo_url", ""),
+    ("whdload_url", ""),
+    ("mobygames_url", ""),
+    ("thelegacy_url", ""),
+    ("homepage_url", ""),
+    ("longplay_url", ""),
+    ("__variant_rating", ""),
+    ("variant_rating", ""),
+    ("variant_uuid", ""),
 
-    ("x_missing_files",       ""),
-    ("x_game_notice",         ""),
-    ("x_variant_notice",      ""),
-    ("x_variant_warning",      ""),
-    ("x_variant_error",      ""),
-    ("x_joy_emu_conflict",    ""),
+    ("download_file", ""),
+    ("download_page", ""),
+    ("download_terms", ""),
+    ("download_notice", ""),
 
-    ("screen1_sha1",          ""),
-    ("screen2_sha1",          ""),
-    ("screen3_sha1",          ""),
-    ("screen4_sha1",          ""),
-    ("screen5_sha1",          ""),
-    ("front_sha1",            ""),
-    ("title_sha1",            ""),
+    ("x_missing_files", ""),
+    ("x_game_notice", ""),
+    ("x_variant_notice", ""),
+    ("x_variant_warning", ""),
+    ("x_variant_error", ""),
+    ("x_joy_emu_conflict", ""),
+
+    ("screen1_sha1", ""),
+    ("screen2_sha1", ""),
+    ("screen3_sha1", ""),
+    ("screen4_sha1", ""),
+    ("screen5_sha1", ""),
+    ("front_sha1", ""),
+    ("title_sha1", ""),
 
     ("mouse_integration", "", "checksum", "sync"),
     ("cdrom_drive_0_delay", "", "checksum", "sync"),
@@ -168,7 +160,6 @@ for _i in range(Amiga.MAX_HARD_DRIVES):
 
 
 class LauncherConfig(object):
-
     config_keys = [x[0] for x in cfg]
 
     default_config = {}
@@ -380,7 +371,7 @@ class LauncherConfig(object):
             # Mark config as unchanged (i.e. does not need to be saved).
             cls.set("__changed", "0")
 
-        # cls.update_kickstart()
+            # cls.update_kickstart()
 
     @classmethod
     def fix_joystick_ports(cls, config):

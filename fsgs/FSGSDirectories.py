@@ -57,16 +57,6 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_whdload_dir(cls):
-        cls._initialize()
-        path = os.path.join(cls.get_hard_drives_dir(), "WHDLoad")
-        if os.path.exists(path):
-            path = Paths.get_real_case(path)
-            return path
-        return None
-
-    @classmethod
-    @functools.lru_cache()
     def get_configurations_dir(cls):
         path = cls.portable_dir("configurations_dir")
         if not path:

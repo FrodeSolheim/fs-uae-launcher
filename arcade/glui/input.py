@@ -278,6 +278,10 @@ class InputHandler(object):
     def add_event(cls, event):
         if event["type"] == "text":
             cls.text_event_queue.append(event)
+        elif event["type"] in ["mouse-motion", "mouse-press", "mouse-release"]:
+            # text events basically now means events handled by the main
+            # gui loop
+            cls.text_event_queue.append(event)
         else:
             cls.event_queue.append(event)
 

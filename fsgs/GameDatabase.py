@@ -10,6 +10,10 @@ RESET_VERSION = 18
 DUMMY_UUID = b"'\\x8b\\xbb\\x00Y\\x8bqM\\x15\\x972\\xa8-t_\\xb2\\xfd'"
 
 
+class IncompleteGameException(Exception):
+    pass
+
+
 class GameDatabase(BaseDatabase):
 
     def __init__(self, path):
@@ -48,6 +52,7 @@ class GameDatabase(BaseDatabase):
         else:
             return 0, 0
 
+    # noinspection PyMethodMayBeStatic,PyUnusedLocal
     def get_license_code_for_url(self, url):
         # cursor = self.internal_cursor()
         # cursor.execute(
@@ -81,7 +86,8 @@ class GameDatabase(BaseDatabase):
             "INSERT INTO game (id, uuid, data) VALUES (?, ?, ?)",
             (game_id, sqlite3.Binary(DUMMY_UUID), ""))
 
-    def binary_uuid_to_str(self, data):
+    @staticmethod
+    def binary_uuid_to_str(data):
         s = hexlify(data).decode("ASCII")
         return "{}-{}-{}-{}-{}".format(
             s[0:8], s[8:12], s[12:16], s[16:20], s[20:32])
@@ -144,8 +150,8 @@ class GameDatabase(BaseDatabase):
                     unhexlify(next_parent_uuid.replace("-", ""))),))
             row = cursor.fetchone()
             if not row:
-                raise Exception(
-                    "could not find parent {0} of game {1}".format(
+                raise IncompleteGameException(
+                    "Could not find parent {0} of game {1}".format(
                         next_parent_uuid, game_uuid))
             data = zlib.decompress(row[0])
             data = data.decode("UTF-8")

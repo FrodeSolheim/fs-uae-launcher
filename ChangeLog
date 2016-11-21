@@ -1,3 +1,12 @@
+Version 2.9.0dev:
+
+* New option whdload_boot_dir must be used to enable an old feature,
+  previously it was enabled by the presence of Hard Drives/WHDLoad.
+* Removed some debug code left by accident (causing rating variants to fail).
+* Make game scanner more forgiving if parent game uuid is not found.
+* Fixed problem where rating could be reset for first loaded game/variant.
+* New experimental option: relative_temp_feature.
+
 Version 2.7.15dev:
 
 * Imported updated translations from crowdin.com.

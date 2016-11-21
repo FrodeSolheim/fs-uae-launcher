@@ -123,10 +123,6 @@ class AmigaContext(BaseContext):
         # FIXME: dependency loop
         return FSGSDirectories.get_hard_drives_dir()
 
-    def get_whdload_dir(self):
-        # FIXME: dependency loop
-        return FSGSDirectories.get_whdload_dir()
-
     def get_kickstarts_dir(self):
         # FIXME: dependency loop
         return FSGSDirectories.get_kickstarts_dir()

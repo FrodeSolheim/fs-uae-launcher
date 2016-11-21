@@ -47,10 +47,10 @@ def main():
                     print("adding", path)
                     sys.path.insert(0, path)
 
-    if "--help" in sys.argv:
-        print_help()
-        sys.exit(0)
-    elif "--version" in sys.argv:
+    # if "--help" in sys.argv:
+    #     print_help()
+    #     sys.exit(0)
+    if "--version" in sys.argv:
         print_version()
         sys.exit(0)
 
@@ -59,3 +59,11 @@ def main():
 
 
 main()
+
+# Dummy imports for cx_Freeze
+sys.exit(0)
+import pkg_resources._vendor.packaging.requirements
+import pkg_resources._vendor.packaging.specifiers
+import pkg_resources._vendor.packaging.version
+import pkg_resources._vendor.pyparsing
+import pkg_resources._vendor.six

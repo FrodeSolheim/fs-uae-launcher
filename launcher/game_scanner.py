@@ -6,25 +6,21 @@ from functools import lru_cache
 
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.FileDatabase import FileDatabase
+from fsgs.GameDatabase import IncompleteGameException
 from fsgs.GameDatabaseClient import GameDatabaseClient
 from fsgs.context import fsgs
 from fsgs.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
+from fsgs.ogd.locker import LockerSynchronizer
 from fsgs.util.gamenameutil import GameNameUtil
+from launcher.option import Option
 from .i18n import gettext
 from .launcher_settings import LauncherSettings
-
-# from fsgs.ogd.context import SynchronizerContext
-# from fsgs.ogd.meta import MetaSynchronizer
-from fsgs.ogd.locker import LockerSynchronizer
-
-from launcher.option import Option
 
 GAME_ENTRY_TYPE_GAME = 1 << 0
 GAME_ENTRY_TYPE_VARIANT = 1 << 1
 
 
 class GameScanner(object):
-
     def __init__(self, context, _, on_status=None, stop_check=None):
         self.fsgs = fsgs
         self.context = context
@@ -56,8 +52,12 @@ class GameScanner(object):
             yield "CPC", self.fsgs.game_database("CPC")
         if LauncherSettings.get(Option.DATABASE_DOS) == "1":
             yield "DOS", self.fsgs.game_database("DOS")
+        if LauncherSettings.get(Option.DATABASE_GB) == "1":
+            yield "GB", self.fsgs.game_database("GB")
         if LauncherSettings.get(Option.DATABASE_GBA) == "1":
             yield "GBA", self.fsgs.game_database("GBA")
+        if LauncherSettings.get(Option.DATABASE_GBC) == "1":
+            yield "GBC", self.fsgs.game_database("GBC")
         if LauncherSettings.get(Option.DATABASE_NES) == "1":
             yield "NES", self.fsgs.game_database("NES")
         if LauncherSettings.get(Option.DATABASE_SNES) == "1":
@@ -131,6 +131,7 @@ class GameScanner(object):
     def scan_game_database(self, helper, database_name, game_database):
         """
         :type helper: ScanHelper
+        :type database_name: str
         :type game_database: fsgs.GameDatabase.GameDatabase
         """
         database_cursor = helper.database.cursor()
@@ -185,7 +186,12 @@ class GameScanner(object):
                 gettext("Scanning game variants ({count} scanned)").format(
                     count=self.scan_count), variant_uuid)
 
-            doc = game_database.get_game_values(variant_id)
+            try:
+                doc = game_database.get_game_values(variant_id)
+            except IncompleteGameException:
+                # FIXME: Log warning
+                print("[WARNING] Variant", variant_uuid, "is not complete")
+                continue
 
             file_list_json = doc.get("file_list", "")
             if not file_list_json:
@@ -409,7 +415,6 @@ class GameScanner(object):
 
 
 class ScanHelper(object):
-
     def __init__(self, database):
         self.database = database
         database_cursor = self.database.cursor()
@@ -429,9 +434,9 @@ class ScanHelper(object):
         self.file_stamps = FileDatabase.get_instance().get_last_event_stamps()
         cached_file_stamps = self.database.get_last_file_event_stamps()
         self.added_files = self.file_stamps["last_file_insert"] != \
-            cached_file_stamps["last_file_insert"]
+                           cached_file_stamps["last_file_insert"]
         self.deleted_files = self.file_stamps["last_file_delete"] != \
-            cached_file_stamps["last_file_delete"]
+                             cached_file_stamps["last_file_delete"]
 
     def game_seen(self, seen_game_uuid):
         # after the loop has run its course, games to be removed

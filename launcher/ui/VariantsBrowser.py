@@ -34,7 +34,7 @@ class VariantsBrowser(fsui.ItemChoice):
         fsui.ItemChoice.__init__(self, parent)
 
         self.parent_uuid = ""
-        self.items = []
+        self.items = []  # type: list [dict]
         # self.last_variants = LastVariants()
 
         self.icon = fsui.Image("launcher:res/fsuae_config_16.png")
@@ -176,28 +176,29 @@ class VariantsBrowser(fsui.ItemChoice):
         items = database.find_game_variants_new(game_uuid, have=0)
 
         # items = database.search_configurations(self.search)
+        # FIXME: Merge code with FSGameSystemContext.py
         sortable_items = []
-        for i, item in enumerate(items):
-            name = item["name"]
+        for i, variant in enumerate(items):
+            name = variant["name"]
 
             name = name.replace("\nAmiga \u00b7 ", "\n")
-            # print(name, item[3])
+            # print(name, variant[3])
             # name = name.replace("\nCD32 \u00b7 ", "\n")
-            # name = item[1].replace("\n", " \u00b7 ")
+            # name = variant[1].replace("\n", " \u00b7 ")
 
             # only show variant name (without game name)
             name = name.split("\n", 1)[-1]
 
-            game_database = fsgs.game_database(item["database"])
-            item["like_rating"], item["work_rating"] = game_database\
-                .get_ratings_for_game(item["uuid"])
-            item["personal_rating"], ignored = database.get_ratings_for_game(
-                item["uuid"])
+            game_database = fsgs.game_database(variant["database"])
+            variant["like_rating"], variant["work_rating"] = \
+                game_database.get_ratings_for_game(variant["uuid"])
+            variant["personal_rating"], ignored = \
+                database.get_ratings_for_game(variant["uuid"])
 
-            sort_key = (0, 1000000 - item["like_rating"],
-                        1000000 - item["work_rating"], name)
+            sort_key = (0, 1000000 - variant["like_rating"],
+                        1000000 - variant["work_rating"], name)
             sortable_items.append(
-                (sort_key, i, item))
+                (sort_key, i, variant))
         # print(sortable_items)
         self.items = [x[2] for x in sorted(sortable_items)]
         self.update()
@@ -217,26 +218,26 @@ class VariantsBrowser(fsui.ItemChoice):
             list_variant_uuid = None
         if list_variant_uuid:
             # override variant selection from list if possible
-            for i, item in enumerate(self.items):
-                print(item["uuid"], item["name"], list_variant_uuid)
-                if item["uuid"] == list_variant_uuid:
+            for i, variant in enumerate(self.items):
+                print(variant["uuid"], variant["name"], list_variant_uuid)
+                if variant["uuid"] == list_variant_uuid:
                     select_index = i
                     print("override select index", select_index)
                     break
         if select_index is None:
             # default index selection
-            for i, item in enumerate(self.items):
-                if item["personal_rating"] == 5:
+            for i, variant in enumerate(self.items):
+                if variant["personal_rating"] == 5:
                     select_index = i
                     break
             else:
-                for i, item in enumerate(self.items):
-                    if item["have"] >= 3:
+                for i, variant in enumerate(self.items):
+                    if variant["have"] >= 3:
                         select_index = i
                         break
                 else:
-                    for i, item in enumerate(self.items):
-                        if item["have"] >= 1:
+                    for i, variant in enumerate(self.items):
+                        if variant["have"] >= 1:
                             select_index = i
                             break
                     else:
@@ -244,8 +245,8 @@ class VariantsBrowser(fsui.ItemChoice):
                             select_index = 0
 
         # self.clear()
-        # for i, item in enumerate(self.items):
-        #     self.add_item(item["name"], icon=self.get_item_icon(i))
+        # for i, variant in enumerate(self.items):
+        #     self.add_item(variant["name"], icon=self.get_item_icon(i))
 
         self.enable(len(self.items) > 0)
         if select_index is not None:
@@ -259,8 +260,8 @@ class VariantsBrowser(fsui.ItemChoice):
         # except KeyError:
         #     variant_uuid = database.get_last_game_variant(game_uuid)
         # if len(self.items) > 0:
-        #     for i, item in enumerate(self.items):
-        #         if item[3] == variant_uuid:
+        #     for i, variant in enumerate(self.items):
+        #         if variant[3] == variant_uuid:
         #             self.select_item(i)
         #             break
         #     else:

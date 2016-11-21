@@ -519,6 +519,9 @@ class RunnerTask(Task):
         Task.__init__(self, "Runner Task")
         self.runner = runner
 
+    def __del__(self):
+        print("RunnerTask.__del__")
+
     def run(self):
         device_helper = EnumerateHelper()
         device_helper.default_port_selection(self.runner.ports)

@@ -109,6 +109,9 @@ class Render(object):
         self.text_cache_history = []
         self.text_cache = {}
 
+        self.mouse_item = None
+        self.mouse_press_item = None
+
     def create_texture(self):
         if len(self.unused_texture_list) == 0:
             self.unused_texture_list.extend(gl.glGenTextures(50))

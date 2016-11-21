@@ -8,16 +8,15 @@ from fsgs.ogd.context import SynchronizerContext
 from fsgs.ogd.game_rating_synchronizer import GameRatingSynchronizer
 from fsgs.ogd.lists import ListsSynchronizer
 from fsgs.ogd.meta import MetaSynchronizer
-from .configuration_scanner import ConfigurationScanner
-from .file_scanner import FileScanner
-from .game_scanner import GameScanner
-from .launcher_config import LauncherConfig
-from .launcher_settings import LauncherSettings
-from .launcher_signal import LauncherSignal
+from launcher.configuration_scanner import ConfigurationScanner
+from launcher.file_scanner import FileScanner
+from launcher.game_scanner import GameScanner
+from launcher.launcher_config import LauncherConfig
+from launcher.launcher_settings import LauncherSettings
+from launcher.launcher_signal import LauncherSignal
 
 
 class Scanner:
-
     running = False
     stop_flag = False
     status = ("", "")
@@ -39,6 +38,7 @@ class Scanner:
         except Exception as e:
             cls.error = str(e)
             traceback.print_exc()
+
         # else:
         #     if cls.on_status:
         #         cls.on_status(("", _("Committing data...")))
@@ -54,6 +54,7 @@ class Scanner:
 
             LauncherSignal.broadcast("scan_done")
             LauncherConfig.update_kickstart()
+
         # call on_done from main thread
         fsui.call_after(on_done)
         cls.running = False

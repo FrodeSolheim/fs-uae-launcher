@@ -2,7 +2,7 @@
 
 
 class Option(object):
-    """Constants for option names."""    
+    """Constants for option names."""
     ACCELERATOR = "accelerator"
     ACCELERATOR_MEMORY = "accelerator_memory"
     ARCADE_FULLSCREEN = "arcade_fullscreen"
@@ -26,7 +26,9 @@ class Option(object):
     DATABASE_DOS = "database_dos"
     DATABASE_EMAIL = "database_email"
     DATABASE_FEATURE = "database_feature"
+    DATABASE_GB = "database_gb"
     DATABASE_GBA = "database_gba"
+    DATABASE_GBC = "database_gbc"
     DATABASE_LOCKER = "database_locker"
     DATABASE_NES = "database_nes"
     DATABASE_PASSWORD = "database_password"
@@ -82,7 +84,9 @@ class Option(object):
     NETPLAY_TAG = "netplay_tag"
     NETWORK_CARD = "network_card"
     PLATFORM = "platform"
+    RAW_INPUT = "raw_input"
     RELATIVE_PATHS = "relative_paths"
+    RELATIVE_TEMP_FEATURE = "relative_temp_feature"
     RTG_SCANLINES = "rtg_scanlines"
     SAVE_DISK = "save_disk"
     SCANLINES = "scanlines"
@@ -120,6 +124,7 @@ class Option(object):
     VIDEO_SYNC = "video_sync"
     VIDEO_SYNC_METHOD = "video_sync_method"
     VOLUME = "volume"
+    WHDLOAD_BOOT_DIR = "whdload_boot_dir"
     WHDLOAD_SPLASH_DELAY = "whdload_splash_delay"
     WINDOW_BORDER = "window_border"
     ZOOM = "zoom"
@@ -274,14 +279,14 @@ options = {
         "max": 10,
     },
     "database_arcade": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Arcade game database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_atari": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Atari ST game database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_auth": {
         "default": "",
@@ -289,21 +294,21 @@ options = {
         "type": "string",
     },
     "database_c64": {
-        "default": "",
+        "default": "0",
         "description": N_(
             "Enable/disable use of the Commodore 64 (C64) database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_cpc": {
-        "default": "",
+        "default": "0",
         "description": N_(
             "Enable/disable use of the Amstrad CPC game database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_dos": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the DOS game database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_email": {
         "default": "",
@@ -315,11 +320,21 @@ options = {
         "description": N_("Enable online database support (requires restart)"),
         "type": "boolean",
     },
+    "database_gb": {
+        "default": "0",
+        "description": N_("Enable/disable use of the Game Boy database"),
+        "type": "Boolean",
+    },
     "database_gba": {
-        "default": "",
+        "default": "0",
         "description": N_(
             "Enable/disable use of the Game Boy Advance database"),
-        "type": "boolean",
+        "type": "Boolean",
+    },
+    "database_gbc": {
+        "default": "0",
+        "description": N_("Enable/disable use of the Game Boy Color database"),
+        "type": "Boolean",
     },
     "database_locker": {
         "default": "",
@@ -327,9 +342,9 @@ options = {
         "type": "boolean",
     },
     "database_nes": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Nintendo (NES) database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_password": {
         "default": "",
@@ -358,9 +373,9 @@ options = {
         ]
     },
     "database_snes": {
-        "default": "",
+        "default": "0",
         "description": N_("Enable/disable use of the Super Nintendo database"),
-        "type": "boolean",
+        "type": "Boolean",
     },
     "database_username": {
         "default": "",
@@ -743,10 +758,20 @@ options = {
         "description": N_("Platform"),
         "type": "choice",
     },
+    "raw_input": {
+        "default": "1",
+        "description": N_("Use keyboard raw input (Windows)"),
+        "type": "Boolean",
+    },
     "relative_paths": {
         "default": "",
         "description": N_("Relative paths"),
         "type": "",
+    },
+    "relative_temp_feature": {
+        "default": "0",
+        "description": N_("Relative Temporary Directories"),
+        "type": "Boolean",
     },
     "rtg_scanlines": {
         "default": "0",
@@ -1072,6 +1097,12 @@ options = {
         "type": "integer",
         "min": 0,
         "max": 100,
+    },
+    "whdload_boot_dir": {
+        "default": "",
+        "description": N_(
+            "Custom boot directory for automatic WHDLoad support"),
+        "type": "",
     },
     "whdload_splash_delay": {
         "default": "200",

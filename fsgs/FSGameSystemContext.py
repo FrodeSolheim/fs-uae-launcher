@@ -322,44 +322,80 @@ class FSGameSystemContext(object):
         from fsgs.FSGSDirectories import FSGSDirectories
         return FSGSDirectories.get_cache_dir()
 
-    def temp_dir(self, suffix):
-        return TemporaryDirectory(suffix)
+    # def temp_dir(self, suffix):
+    #     return TemporaryDirectory(suffix)
 
-    def temp_file(self, suffix):
-        return TemporaryFile(suffix)
+    # def temp_file(self, suffix):
+    #     return TemporaryFile(suffix)
 
     def load_game_by_uuid(self, game_uuid):
         variant_uuid = self.find_preferred_game_variant(game_uuid)
         self.load_game_variant(variant_uuid)
 
+    # noinspection PyMethodMayBeStatic
     def find_preferred_game_variant(self, game_uuid):
         print("find_preferred_game_variant game_uuid =", game_uuid)
+        return self.get_ordered_game_variants(game_uuid)[0]["uuid"]
+
+    # noinspection PyMethodMayBeStatic
+    def get_ordered_game_variants(self, game_uuid):
+        print("get_ordered_game_variants game_uuid =", game_uuid)
         from .Database import Database
         database = Database.instance()
         variants = database.find_game_variants_new(game_uuid=game_uuid)
         print(variants)
-        ordered_list = []
-        for variant in variants:
+        # ordered_list = []
+        # FIXME: Merge code with VariantsBrowser.py
+        sortable_items = []
+        for i, variant in enumerate(variants):
+            game_database = self.game_database(variant["database"])
             variant["like_rating"], variant["work_rating"] = \
-                database.get_ratings_for_game(variant["uuid"])
+                game_database.get_ratings_for_game(variant["uuid"])
             variant["personal_rating"], ignored = \
                 database.get_ratings_for_game(variant["uuid"])
-            variant_uuid = variant["uuid"]
-            variant_name = variant["name"]
-            variant_name = variant_name.replace("\n", " (")
-            variant_name = variant_name.replace(" \u00b7 ", ", ")
-            variant_name += ")"
-            ordered_list.append(
-                ((1 - bool(variant["have"]),
-                  1000 - variant["personal_rating"],
-                  1000 - variant["like_rating"]),
-                 (variant_uuid, variant_name)))
-        ordered_list.sort()
+            # variant_uuid = variant["uuid"]
+            name = variant["name"]
+            name = name.replace("\n", " (")
+            name = name.replace(" \u00b7 ", ", ")
+            name += ")"
+            # ordered_list.append(
+            #     ((1 - bool(variant["have"]),
+            #       1000 - variant["personal_rating"],
+            #       1000 - variant["like_rating"]),
+            #      (variant_uuid, variant_name)))
+            sort_key = (0, 1000000 - variant["like_rating"],
+                        1000000 - variant["work_rating"], name)
+            sortable_items.append(
+                (sort_key, i, variant))
+        ordered_list = [x[2] for x in sorted(sortable_items)]
         print("ordered variant list:")
         for variant in ordered_list:
-            print("-", variant[1][1])
+            print("-", variant["name"])
         # item.configurations = [x[1] for x in ordered_list]
-        return ordered_list[0][1][0]
+        select_index = None
+        if select_index is None:
+            # default index selection
+            for i, variant in enumerate(ordered_list):
+                if variant["personal_rating"] == 5:
+                    select_index = i
+                    break
+            else:
+                for i, variant in enumerate(ordered_list):
+                    if variant["have"] >= 3:
+                        select_index = i
+                        break
+                else:
+                    for i, variant in enumerate(ordered_list):
+                        if variant["have"] >= 1:
+                            select_index = i
+                            break
+                    else:
+                        if len(ordered_list) > 0:
+                            select_index = 0
+        # return ordered_list[select_index]["uuid"]
+        if select_index and select_index > 0:
+            ordered_list.insert(0, ordered_list.pop(select_index))
+        return ordered_list
 
     def load_game_variant(self, variant_uuid):
         # game_database = fsgs.get_game_database()
@@ -403,43 +439,43 @@ class FSGameSystemContext(object):
         runner.finish()
 
 
-class TemporaryDirectory(object):
+# class TemporaryDirectory(object):
+#
+#     def __init__(self, suffix):
+#         self.path = tempfile.mkdtemp(suffix="-fsgs-" + suffix)
+#
+#     def __del__(self):
+#         self.delete()
+#
+#     def delete(self):
+#         if os.environ.get("FSGS_CLEANUP", "") == "0":
+#             print("NOTICE: keeping temp files around...")
+#             return
+#         if self.path:
+#             shutil.rmtree(self.path)
+#             self.path = ""
 
-    def __init__(self, suffix):
-        self.path = tempfile.mkdtemp(suffix="-fsgs-" + suffix)
 
-    def __del__(self):
-        self.delete()
-
-    def delete(self):
-        if os.environ.get("FSGS_CLEANUP", "") == "0":
-            print("NOTICE: keeping temp files around...")
-            return
-        if self.path:
-            shutil.rmtree(self.path)
-            self.path = ""
-
-
-class TemporaryFile(object):
-
-    def __init__(self, suffix):
-        # self.path = tempfile.mkstemp(suffix=suffix)
-        self.dir_path = tempfile.mkdtemp(suffix="-fsgs-" + suffix)
-        self.path = os.path.join(self.dir_path, suffix)
-
-    def __del__(self):
-        self.delete()
-
-    def delete(self):
-        if os.environ.get("FSGS_CLEANUP", "") == "0":
-            print("NOTICE: keeping temp files around...")
-            return
-        if self.path:
-            os.unlink(self.path)
-            self.path = ""
-        if self.dir_path:
-            shutil.rmtree(self.dir_path)
-            self.dir_path = ""
+# class TemporaryFile(object):
+#
+#     def __init__(self, suffix):
+#         # self.path = tempfile.mkstemp(suffix=suffix)
+#         self.dir_path = tempfile.mkdtemp(suffix="-fsgs-" + suffix)
+#         self.path = os.path.join(self.dir_path, suffix)
+#
+#     def __del__(self):
+#         self.delete()
+#
+#     def delete(self):
+#         if os.environ.get("FSGS_CLEANUP", "") == "0":
+#             print("NOTICE: keeping temp files around...")
+#             return
+#         if self.path:
+#             os.unlink(self.path)
+#             self.path = ""
+#         if self.dir_path:
+#             shutil.rmtree(self.dir_path)
+#             self.dir_path = ""
 
 
 class GameContext(object):

@@ -115,9 +115,9 @@ platforms = {
     "cdtv": CDTVPlatformHandler,
     "cpc": AmstradCPCPlatformHandler,
     "dos": DOSPlatformHandler,
-    "game-boy": GameBoyPlatformHandler,
+    "gb": GameBoyPlatformHandler,
     "gba": GameBoyAdvancePlatformHandler,
-    "game-boy-color": GameBoyColorPlatformHandler,
+    "gbc": GameBoyColorPlatformHandler,
     "game-gear": GameGearPlatformHandler,
     "lynx": LynxPlatformHandler,
     "master-system": MasterSystemPlatformHandler,
@@ -142,8 +142,12 @@ def normalize_platform_id(platform_id):
         return "cpc"
     elif platform_id in ["msdos"]:
         return "dos"
+    elif platform_id in ["gameboy"]:
+        return "gb"
     elif platform_id in ["gameboyadvance"]:
         return "gba"
+    elif platform_id in ["gameboycolor"]:
+        return "gbc"
     elif platform_id in ["nintendo", "famicom"]:
         return "nes"
     elif platform_id in ["supernintendo", "supernes", "superfamicom"]:

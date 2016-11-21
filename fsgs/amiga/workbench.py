@@ -16,7 +16,7 @@ class WorkbenchExtractor(object):
         self.cached_adf_sha1 = None
 
     def install_version(self, version, dest_dir, file_names=None,
-                        startup_sequence=True):
+                        install_startup_sequence=True):
         if version == "2.04":
             startup_sequence = wb_204_startup_sequence
             files = wb_204_files
@@ -39,7 +39,7 @@ class WorkbenchExtractor(object):
                 continue
             self.copy_workbench_file(name, sha1, dest_path, floppies)
 
-        if startup_sequence:
+        if install_startup_sequence:
             with open(os.path.join(dest_dir, "S", "Startup-Sequence"),
                       "wb") as f:
                 f.write(startup_sequence.replace("\r\n", "\n").encode(

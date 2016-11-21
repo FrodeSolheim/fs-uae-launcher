@@ -34,6 +34,9 @@ class DOSDriver(GameRunner):
         super().__init__(fsgs)
         self.emulator = "dosbox-fs"
 
+    def __del__(self):
+        print("DOSDriver.__del__")
+
     def prepare(self):
         self.drives_dir = self.temp_dir("drives")
         config_file = self.temp_file("dosbox.cfg").path
@@ -129,6 +132,10 @@ class DOSDriver(GameRunner):
             if cpu_cycles not in ["auto", "max"]:
                 cpu_cycles = "fixed " + cpu_cycles
         f.write("cycles={0}\n".format(cpu_cycles))
+
+        f.write("\n[sblaster]\n")
+        if self.config["sblaster_irq"]:
+            f.write("irq={}\n".format(self.config["sblaster_irq"]))
 
         f.write("\n[autoexec]\n")
         f.write("@echo off\n")
