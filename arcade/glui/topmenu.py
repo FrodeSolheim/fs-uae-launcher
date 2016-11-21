@@ -145,7 +145,12 @@ class VideoSyncItem(MenuItem):
             Settings.instance()["video_sync"] = "1"
 
     def render_top_right(self, selected=False):
-        self.render_top_background(selected, style=TOP_ITEM_LEFT)
+        state = State.get()
+        mouse_state = state.mouse_item == self
+        mouse_pressed_state = mouse_state and state.mouse_press_item == self
+        self.render_top_background(
+            selected, style=TOP_ITEM_LEFT, mouse_state=mouse_state,
+            mouse_pressed_state=mouse_pressed_state)
         gl.glDisable(gl.GL_DEPTH_TEST)
         fs_emu_blending(True)
         if Settings.instance()["video_sync"] == "1":
@@ -325,7 +330,11 @@ class HomeItem(MenuItem):
         self.w = 80
 
     def render_top_left(self, selected=False):
-        self.render_top_background(selected)
+        state = State.get()
+        mouse_state = state.mouse_item == self
+        mouse_pressed_state = mouse_state and state.mouse_press_item == self
+        self.render_top_background(selected, mouse_state=mouse_state,
+                                   mouse_pressed_state=mouse_pressed_state)
         # fs_emu_blending(True)
         if selected:
             texture = Texture.home_selected
@@ -344,7 +353,11 @@ class AddItem(MenuItem):
         self.w = 80
 
     def render_top_left(self, selected=False):
-        self.render_top_background(selected)
+        state = State.get()
+        mouse_state = state.mouse_item == self
+        mouse_pressed_state = mouse_state and state.mouse_press_item == self
+        self.render_top_background(selected, mouse_state=mouse_state,
+                                   mouse_pressed_state=mouse_pressed_state)
         # fs_emu_blending(True)
         if selected:
             texture = Texture.add_selected

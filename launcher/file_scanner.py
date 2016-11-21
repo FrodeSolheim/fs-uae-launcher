@@ -165,7 +165,7 @@ class FileScanner(object):
                 if not check_valid_name(name):
                     continue
                 l_name = name.lower()
-                if l_name.endswith(".slave") or l_name.endswith(".slave"):
+                if l_name.endswith(".slave") or l_name.endswith(".slav"):
                     all_files = True
                     break
 

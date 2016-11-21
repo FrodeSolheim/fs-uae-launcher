@@ -1450,7 +1450,11 @@ def default_render_func():
 
 def find_item_at_coordinate(pos):
     menu = current_menu
-    # Just checking top right items for now
+    # Just checking top items for now
+    for item in menu.top.left:
+        if (item.x <= pos[0] <= item.x + item.w and
+                item.y <= pos[1] <= item.y + item.h):
+            return item
     for item in menu.top.right:
         if (item.x <= pos[0] <= item.x + item.w and
                 item.y <= pos[1] <= item.y + item.h):
