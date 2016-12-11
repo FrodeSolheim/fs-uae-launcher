@@ -2,7 +2,7 @@ Version 2.8.2:
 
 * New option whdload_boot_dir must be used to enable an old feature,
   previously it was enabled by the presence of Hard Drives/WHDLoad.
-n
+
 Version 2.8.1u2:
 
 * Removed some debug code left by accident (causing rating variants to fail).

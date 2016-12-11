@@ -14,12 +14,12 @@ from fsgs.FSGSDirectories import FSGSDirectories
 logger = logging.getLogger("PLUGINS")
 
 known_plugin_versions = {
-    "CAPSImg": "5.1fs2",
+    "CAPSImg": "5.1fs3",
     "DOSBox-FS": "0.74.3969fs3",
     "Hatari-FS": "1.9.0fs2",
     "Mednafen-FS": "0.9.38.7fs2",
     "MultiEmu-FS": "0.168fs0",
-    "QEMU-UAE": "3.8.1qemu2.2.0",
+    "QEMU-UAE": "3.8.2qemu2.2.0",
     "Regina-FS": "3.9.1fs0",
     "UADE-FS": "2.13fs1",
     "Vice-FS": "2.4.25fs3",
