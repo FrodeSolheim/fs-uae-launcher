@@ -367,7 +367,7 @@ windows-dist: distdir
 
 macosx-dist: distdir
     cd $(dist_dir)/dist/macosx && make
-    mv $(dist_dir)/{project}_*macosx* .
+    mv $(dist_dir)/{project}_*macos* .
     rm -Rf $(dist_dir)
 
 clean-dist:
