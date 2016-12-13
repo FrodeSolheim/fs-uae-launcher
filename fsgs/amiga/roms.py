@@ -13,6 +13,12 @@ A500_KICKSTARTS = [
     "891e9a547772fe0c6c19b610baf8bc4ea7fcb785",
 ]
 
+A500_1_2_KICKSTARTS = [
+    # amiga-os-120.rom (decrypted)
+    # Kickstart v1.2 rev 33.180 (1986)(Commodore)(A500-A2000)[!].rom
+    "11f9e62cf299f72184835b7b2a70a16333fc0d88",
+]
+
 A500P_KICKSTARTS = [
     # amiga-os-204.rom (decrypted)
     # Kickstart v2.04 r37.175 (1991)(Commodore)(A500+)[!]

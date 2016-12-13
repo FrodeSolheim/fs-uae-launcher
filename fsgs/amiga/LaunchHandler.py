@@ -706,6 +706,9 @@ class LaunchHandler(object):
         print("WHDLoad args:", whdload_args)
 
         self.copy_whdload_kickstart(
+            dest_dir, "kick33180.A500",
+            ["11f9e62cf299f72184835b7b2a70a16333fc0d88"])
+        self.copy_whdload_kickstart(
             dest_dir, "kick34005.A500",
             ["891e9a547772fe0c6c19b610baf8bc4ea7fcb785"])
         self.copy_whdload_kickstart(

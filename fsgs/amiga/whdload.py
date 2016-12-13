@@ -1,6 +1,9 @@
 DEFAULT_WHDLOAD_VERSION = "18.2"
 
+# noinspection SpellCheckingInspection
 whdload_support_files = {
+    "1d1c557f4a0f5ea88aeb96d68b09f41990340f70":
+        "Devs/Kickstarts/kick33180.A500.RTB",
     "1ad1b55e7226bd5cd66def8370a69f19244da796":
         "Devs/Kickstarts/kick40068.A1200.RTB",
     "209c109855f94c935439b60950d049527d2f2484":
@@ -13,6 +16,7 @@ whdload_support_files = {
         "C/OSEmu.400",
 }
 
+# noinspection SpellCheckingInspection
 whdload_files = {
     "10.0": {
         "3096b2f41dfebf490aac015bdf0e91a80045c2c0": "C/WHDLoad",
