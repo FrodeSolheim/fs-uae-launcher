@@ -158,6 +158,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 print("preferred variant:", variant_uuid)
                 fsgs.load_game_variant(variant_uuid)
             fsgs.config.add_from_argv()
+            LauncherConfig.post_load_values(fsgs.config)
             return cls.run_config_directly()
 
     @classmethod

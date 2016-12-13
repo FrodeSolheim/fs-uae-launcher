@@ -549,21 +549,27 @@ class LauncherConfig(object):
             value_config_loader.load_values(values)
             config = value_config_loader.get_config()
             cls.load(config)
-            config_name = config.get("__config_name", "")
-
+            values["__config_name"] = config.get("__config_name")
         else:
             print("Warning: Non-Amiga game loaded")
             platform_handler = PlatformHandler.create(platform_id)
             loader = platform_handler.get_loader(fsgs)
             fsgs.config.load(loader.load_values(values))
+        cls.post_load_values(values)
+
+    @classmethod
+    def post_load_values(cls, values):
+        print("POST_LOAD_VALUES")
+        if values.get("__config_name", ""):
+            print("__config_name was set")
+            config_name = values.get("__config_name", "")
+        else:
             config_name = "{0} ({1})".format(
-                values.get("game_name"), values.get("platform_name"))
-
+                values.get("game_name"),
+                values.get("platform_name"))
         LauncherSettings.set("config_path", "")
-
         if config_name:
             config_name = cls.create_fs_name(config_name)
-
         LauncherSettings.set("config_name", config_name)
         LauncherSettings.set("config_xml_path", "")
         cls.set("__changed", "0")
