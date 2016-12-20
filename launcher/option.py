@@ -57,6 +57,7 @@ class Option(object):
     IRC_NICK = "irc_nick"
     IRC_SERVER = "irc_server"
     JIT_COMPILER = "jit_compiler"
+    JOYSTICK_PORT_0_AUTOSWITCH = "joystick_port_0_autoswitch"
     KEEP_ASPECT = "keep_aspect"
     KEYBOARD_INPUT_GRAB = "keyboard_input_grab"
     KEYBOARD_KEY_BACKSLASH = "keyboard_key_backslash"
@@ -562,6 +563,11 @@ options = {
         "default": "0",
         "description": N_("JIT Compiler"),
         "type": "Boolean",
+    },
+    "joystick_port_0_autoswitch": {
+        "default": "1",
+        "description": N_("Automatic mouse/joystick mode for mouse port"),
+        "type": "boolean",
     },
     "keep_aspect": {
         "default": "0",

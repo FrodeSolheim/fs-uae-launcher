@@ -17,3 +17,4 @@ class MouseSettingsPage(SettingsPage):
         self.add_option("initial_input_grab")
         self.add_option("middle_click_ungrab")
         self.add_option("mouse_speed")
+        self.add_option("joystick_port_0_autoswitch")

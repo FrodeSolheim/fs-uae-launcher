@@ -1,5 +1,6 @@
 Version 2.9.1dev:
 
+* Added UI control for joystick_port_0_autoswitch.
 * Can install kick33180.A500 / kick33180.A500.RTB for WHDLoad.
 * Fixed save state dir when starting with UUID parameter.
 
