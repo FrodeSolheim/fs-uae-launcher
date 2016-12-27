@@ -78,6 +78,7 @@
 6d041ec2000000000000504944564944.fs-uae-controller
 6d041fc2000000000000504944564944.fs-uae-controller
 6d04d2ca000000000000504944564944.fs-uae-controller
+78696e70757401000000000000000000.fs-uae-controller
 8117000000000000990a000000000000.fs-uae-controller
 8117990a000000000000504944564944.fs-uae-controller
 83050000000000006020000000000000.fs-uae-controller
@@ -206,5 +207,6 @@ xbox_360_wireless_receiver_17_4_1_0_linux.conf
 xbox_one_wired_controller_15_6_0_0_macos.conf
 xeox_gamepad_sl_6556_bk_12_4_1_0_linux.conf
 xeox_gamepad_sl_6556_bk_12_4_1_0_windows.conf
+xinput_controller_11_6_1_0_windows.conf
 xinput_controller_15_6_0_0_windows.conf
 zeemote/steelseries_free.ini
