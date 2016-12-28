@@ -25,6 +25,7 @@ launcher:
 	mkdir -p $(macos)
 	mkdir -p $(resources)
 	cp -pPR ../../share/* $(resources)/
+	cp ../../requests/cacert.pem $(macos)
 	rm -Rf $(resources)/applications
 	rm -Rf $(resources)/icons
 	mv ../../build/*/* $(macos)

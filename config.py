@@ -15,6 +15,7 @@ package_map = {
     "launcher": ".",
     "OpenGL": ".",
     "oyoyo": ".",
+    "requests": ".",
     "six": ".",
     "workspace": ".",
 }

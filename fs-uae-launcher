@@ -20,32 +20,63 @@ def print_version():
     print(launcher.version.VERSION)
 
 
-def main():
-    if getattr(sys, "frozen", False):
-        print("frozen")
-        import fsboot
-        # os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = fsboot.executable_dir()
-        os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
-            fsboot.executable_dir(), "platforms")
-        libs_dirs = [fsboot.executable_dir()]
+def frozen_qpa_platform_plugin_path():
+    import fsboot
+    os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
+        fsboot.executable_dir(), "platforms")
+
+
+def frozen_python_libs():
+    import fsboot
+    libs_dirs = [fsboot.executable_dir()]
+    libs_dir = os.path.abspath(
+        os.path.join(fsboot.executable_dir(), "..", "..", "Python"))
+    print(libs_dir, os.path.exists(libs_dir))
+    if os.path.exists(libs_dir):
+        libs_dirs.append(libs_dir)
+    else:
         libs_dir = os.path.abspath(
-            os.path.join(fsboot.executable_dir(), "..", "..", "Python"))
+            os.path.join(fsboot.executable_dir(), "..", "..", "..",
+                         "..", "..", "Python"))
         print(libs_dir, os.path.exists(libs_dir))
         if os.path.exists(libs_dir):
             libs_dirs.append(libs_dir)
-        else:
-            libs_dir = os.path.abspath(
-                os.path.join(fsboot.executable_dir(), "..", "..", "..",
-                             "..", "..", "Python"))
-            print(libs_dir, os.path.exists(libs_dir))
-            if os.path.exists(libs_dir):
-                libs_dirs.append(libs_dir)
-        for libs_dir in libs_dirs:
-            for item in os.listdir(libs_dir):
-                if item.endswith(".zip"):
-                    path = os.path.join(libs_dir, item)
-                    print("adding", path)
-                    sys.path.insert(0, path)
+    for libs_dir in libs_dirs:
+        for item in os.listdir(libs_dir):
+            if item.endswith(".zip"):
+                path = os.path.join(libs_dir, item)
+                print("adding", path)
+                sys.path.insert(0, path)
+
+
+def frozen_requests_ca_cert():
+    import fsboot
+    data_dirs = [fsboot.executable_dir()]
+    data_dir = os.path.abspath(
+        os.path.join(fsboot.executable_dir(), "..", "..", "Data"))
+    print(data_dir, os.path.exists(data_dir))
+    if os.path.exists(data_dir):
+        data_dirs.append(data_dir)
+    else:
+        data_dir = os.path.abspath(
+            os.path.join(fsboot.executable_dir(), "..", "..", "..",
+                         "..", "..", "Data"))
+        print(data_dir, os.path.exists(data_dir))
+        if os.path.exists(data_dir):
+            data_dirs.append(data_dir)
+    for data_dir in data_dirs:
+        path = os.path.join(data_dir, "cacert.pem")
+        if os.path.exists(path):
+            print("[HTTP] Using {}".format(path))
+            os.environ["REQUESTS_CA_BUNDLE"] = path
+            break
+
+
+def main():
+    if getattr(sys, "frozen", False):
+        frozen_qpa_platform_plugin_path()
+        frozen_python_libs()
+        frozen_requests_ca_cert()
 
     # if "--help" in sys.argv:
     #     print_help()

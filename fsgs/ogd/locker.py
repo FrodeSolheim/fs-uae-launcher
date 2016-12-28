@@ -63,7 +63,7 @@ class LockerSynchronizer(SynchronizerBase):
             database.add_sha1_binary(sha1_bytes)
             k += 20
 
-        database.set_sync_version(self.context.meta["locker-sync"])
+        database.set_sync_version(self.context.meta["locker"]["sync"])
         self.set_status(gettext("Committing locker data..."))
         self.update_file_database_timestamps()
         database.commit()

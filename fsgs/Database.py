@@ -554,7 +554,7 @@ class Database(BaseDatabase):
         elif not include_unpublished:
             query += " AND published = 1"
         if not include_adult:
-            query += " AND adult IS NULL"
+            query += " AND adult = 0"
         for clause in additional_clauses:
             query += clause
         if list_uuid:

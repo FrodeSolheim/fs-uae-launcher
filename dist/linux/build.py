@@ -144,6 +144,7 @@ s("find {package_dir} -name '*.standalone' -delete")
 
 s("chmod a-x {package_dir}/*.so")
 s("cd ../.. && make")
+s("cp ../../requests/cacert.pem {package_dir}")
 s("cp -a ../../share {package_dir}")
 s("rm -Rf {package_dir}/share/applications")
 s("rm -Rf {package_dir}/share/icons")

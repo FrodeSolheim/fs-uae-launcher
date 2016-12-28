@@ -41,6 +41,7 @@ progdir:
 	python3 clib.py libjpeg-8.dll $(launcher_dir)
 
 	cp -a ../../share $(launcher_dir)
+	cp ../../requests/cacert.pem $(launcher_dir)
 	rm -Rf $(launcher_dir)/share/applications
 	rm -Rf $(launcher_dir)/share/icons
 
