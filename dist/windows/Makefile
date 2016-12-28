@@ -53,7 +53,6 @@ progdir:
 	rm -Rf $(launcher_dir)/fsui
 	rm -Rf $(launcher_dir)/launcher
 	rm -Rf $(launcher_dir)/oyoyo
-	rm -Rf $(launcher_dir)/six
 	rm -Rf $(launcher_dir)/workspace
 
 	zip -d $(launcher_dir)/library.zip OpenGL/\*
@@ -64,7 +63,6 @@ progdir:
 	zip -d $(launcher_dir)/library.zip fsui/\*
 	zip -d $(launcher_dir)/library.zip launcher/\*
 	zip -d $(launcher_dir)/library.zip oyoyo/\*
-	zip -d $(launcher_dir)/library.zip six/\*
 	zip -d $(launcher_dir)/library.zip workspace/\*
 
 	make -C ../python

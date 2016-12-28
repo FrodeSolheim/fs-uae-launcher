@@ -68,7 +68,6 @@ launcher:
 	rm -Rf $(macos)/fsui
 	rm -Rf $(macos)/launcher
 	rm -Rf $(macos)/oyoyo
-	rm -Rf $(macos)/six
 	rm -Rf $(macos)/workspace
 
 	zip -d $(macos)/library.zip OpenGL/\*
@@ -79,7 +78,6 @@ launcher:
 	zip -d $(macos)/library.zip fsui/\*
 	zip -d $(macos)/library.zip launcher/\*
 	zip -d $(macos)/library.zip oyoyo/\*
-	zip -d $(macos)/library.zip six/\*
 	zip -d $(macos)/library.zip workspace/\*
 
 	cp -a ../python/*.zip $(macos)

@@ -35,38 +35,6 @@ class AmigaRunner(GameRunner):
         self.temp_config_file = None
         self.launch_handler = None
 
-    # def init(self):
-    #     print("AmigaGameHandler.init")
-    #
-    #     loader = ValueConfigLoader(self.fsgs.game.variant_uuid)
-    #     loader.load_values(self.fsgs.game.config)
-    #
-    #     config = defaultdict(six.text_type)
-    #
-    #     for key, value in six.iteritems(app.settings.values):
-    #         # FIXME: re-enable this check?
-    #         # if key in Config.config_keys:
-    #         #     print("... ignoring config key from settings:", key)
-    #         #     continue
-    #         config[key] = value
-    #
-    #     original_config = loader.get_config()
-    #     for key, value in six.iteritems(original_config):
-    #         config[key] = value
-    #
-    #     # make sure FS-UAE does not load other config files (Host.fs-uae)
-    #     config["end_config"] = "1"
-    #
-    #     self.port1_option = InputOption(
-    #         1, self.fsgs.game.config.get("port1", "joystick"))
-    #     #self.options.append(self.port1_option)
-    #
-    #     self.port0_option = InputOption(
-    #         0, self.fsgs.game.config.get("port0", "mouse"))
-    #     #self.options.append(self.port0_option)
-    #
-    #     self.amiga_config = config
-
     def prepare(self):
         print("AmigaRunner.prepare")
 

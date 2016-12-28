@@ -1,6 +1,7 @@
 Version 2.9.1dev:
 
 * Added requests python library, start using for HTTPS support.
+* Removed six python library.
 * Sync "unpublished" games from the online game database, option to show.
 * Added UI control for joystick_port_0_autoswitch.
 * Can install kick33180.A500 / kick33180.A500.RTB for WHDLoad.

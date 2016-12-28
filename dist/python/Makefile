@@ -28,8 +28,6 @@ build:
 	mv $(lib)/OpenGL.zip .
 	cd $(lib) && zip -r oyoyo.zip oyoyo
 	mv $(lib)/oyoyo.zip .
-	cd $(lib) && zip -r six.zip six
-	mv $(lib)/six.zip .
 	# cd $(lib) && zip -r --exclude="*.ttf" workspace.zip workspace
 	cd $(lib) && zip -r workspace.zip workspace
 	mv $(lib)/workspace.zip .

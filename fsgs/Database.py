@@ -309,16 +309,6 @@ class Database(BaseDatabase):
                 "WHERE name = ? COLLATE NOCASE LIMIT 1", (name.lower(),))
         else:
             path = self.encode_path(path)
-            # print(path)
-            # path = six.text_type(path)
-            # print("SELECT path, sha1, mtime, size FROM file "
-            #         "WHERE path = '{0}' LIMIT 1".format(path))
-            # self._cursor.execute("SELECT count(*) FROM file "
-            #         "WHERE lower(path) = ?", (path.lower(),))
-
-            # self._cursor.execute("SELECT * FROM file LIMIT 1 OFFSET 100")
-            # print(self._cursor.fetchall())
-
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size FROM file "
                 "WHERE path = ? LIMIT 1", (path,))
