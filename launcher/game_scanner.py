@@ -237,6 +237,7 @@ class GameScanner(object):
 
             parent_uuid = doc.get("parent_uuid", "")
             variant_name = doc.get("variant_name", "")
+            published_variant = doc.get("publish", "")
 
             # the following is used by the FS Game Center frontend
 
@@ -250,9 +251,9 @@ class GameScanner(object):
 
             database_cursor.execute(
                 "UPDATE game_variant SET name = ?, game_uuid = ?, have = ?, "
-                "update_stamp = ?, database = ? WHERE id = ?",
+                "update_stamp = ?, database = ?, published = ? WHERE id = ?",
                 (variant_name, parent_uuid, have_variant, update_stamp,
-                 database_name, game_variant_id))
+                 database_name, 1 if published_variant == "1" else 0, game_variant_id))
 
             # ensure_updated_games.add(parent_uuid)
 
@@ -307,7 +308,7 @@ class GameScanner(object):
             screen5_sha1 = doc.get("screen5_sha1", "")
             thumb_sha1 = doc.get("thumb_sha1", "")
             backdrop_sha1 = doc.get("backdrop_sha1", "")
-
+            published = doc.get("publish", "")
             sort_key = doc.get("sort_key", "")
             if not sort_key:
                 # FIXME: handle the/a (etc)
@@ -358,6 +359,11 @@ class GameScanner(object):
                     doc.get("backdrop_valign", "0.5"))
             else:
                 backdrop_image = ""
+            # if published:
+            #     # search_terms.add("t:published")
+            #     pass
+            # else:
+            #     search_terms.add("t:unpublished")
 
             min_players = 0
             max_players = 0
@@ -395,7 +401,7 @@ class GameScanner(object):
                 "screen1_image = ?, screen2_image = ?, screen3_image = ?, "
                 "screen4_image = ?, screen5_image = ?, "
                 "thumb_image = ?, backdrop_image = ?, "
-                "adult = ?, subtitle = ? WHERE id = ?",
+                "adult = ?, published = ?, subtitle = ? WHERE id = ?",
                 (game_name, update_stamp, sort_key, platform,
                  publisher or "", year or 0,
                  "sha1:" + front_sha1 if front_sha1 else "",
@@ -407,7 +413,8 @@ class GameScanner(object):
                  "sha1:" + screen5_sha1 if screen5_sha1 else "",
                  "sha1:" + thumb_sha1 if thumb_sha1 else "",
                  backdrop_image,
-                 1 if "t:adult" in search_terms else None,
+                 1 if "t:adult" in search_terms else 0,
+                 1 if published == "1" else 0,
                  game_subtitle,
                  game_id))
 
@@ -433,10 +440,10 @@ class ScanHelper(object):
 
         self.file_stamps = FileDatabase.get_instance().get_last_event_stamps()
         cached_file_stamps = self.database.get_last_file_event_stamps()
-        self.added_files = self.file_stamps["last_file_insert"] != \
-                           cached_file_stamps["last_file_insert"]
-        self.deleted_files = self.file_stamps["last_file_delete"] != \
-                             cached_file_stamps["last_file_delete"]
+        self.added_files = (self.file_stamps["last_file_insert"] !=
+                            cached_file_stamps["last_file_insert"])
+        self.deleted_files = (self.file_stamps["last_file_delete"] !=
+                              cached_file_stamps["last_file_delete"])
 
     def game_seen(self, seen_game_uuid):
         # after the loop has run its course, games to be removed

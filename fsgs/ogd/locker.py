@@ -39,7 +39,7 @@ class LockerSynchronizer(SynchronizerBase):
     def synchronize(self):
         if not is_locker_enabled():
             return
-        if "locker-sync" not in self.context.meta:
+        if "locker" not in self.context.meta:
             # We haven't looked up synchronization information from the server,
             # that probably means we didn't want to synchronize with the
             # server now, therefore we just return.
@@ -48,8 +48,8 @@ class LockerSynchronizer(SynchronizerBase):
             return
         database = LockerDatabase.instance()
         sync_version = database.get_sync_version()
-        if sync_version == self.context.meta["locker-sync"]:
-            print("locker already up to date")
+        if sync_version == self.context.meta["locker"]["sync"]:
+            print("[SYNC] Locker data already up to date")
             return
 
         self.set_status(gettext("Fetching locker data..."))

@@ -24,6 +24,7 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
         self.blank_icon = fsui.Image(
             "launcher:res/16/blank.png")
         self.missing_color = fsui.Color(0xa8, 0xa8, 0xa8)
+        self.unpublished_color = fsui.Color(0xcc, 0x00, 0x00)
 
         self.platform_icons = {}
 
@@ -42,7 +43,7 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
 
     def on_setting(self, key, _):
         if key in ["config_search", "game_list_uuid", "database_show_games",
-                   "database_show_adult"]:
+                   "database_show_adult", "database_show_unpublished"]:
             # if key == "game_list_uuid":
             self.update_search()
             if len(self.items) > 0:
@@ -110,6 +111,9 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
         have = self.items[index][str("have")]
         if not have:
             return self.missing_color
+        published = self.items[index]["published"]
+        if not published:
+            return self.unpublished_color
 
     def get_item_icon(self, index):
         item = self.items[index]

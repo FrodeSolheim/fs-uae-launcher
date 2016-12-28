@@ -35,6 +35,7 @@ class Option(object):
     DATABASE_SERVER = "database_server"
     DATABASE_SHOW_ADULT = "database_show_adult"
     DATABASE_SHOW_GAMES = "database_show_games"
+    DATABASE_SHOW_UNPUBLISHED = "database_show_unpublished"
     DATABASE_SNES = "database_snes"
     DATABASE_USERNAME = "database_username"
     DEVICE_ID = "device_id"
@@ -372,6 +373,11 @@ options = {
             ("2", N_("Available and Auto-Downloadable Games")),
             ("3", N_("Available Games")),
         ]
+    },
+    "database_show_unpublished": {
+        "default": "0",
+        "description": N_("Unpublished Games"),
+        "type": "boolean",
     },
     "database_snes": {
         "default": "0",

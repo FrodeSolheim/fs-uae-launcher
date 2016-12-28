@@ -10,10 +10,8 @@ class MetaSynchronizer(SynchronizerBase):
     def synchronize(self):
         if self.stop_check():
             return
-
         if not app.settings["database_auth"]:
             # not logged in
             return
-
         self.set_status(gettext("Fetching synchronization information..."))
-        self.context.meta = self.fetch_json("/api/sync/1")
+        self.context.meta = self.fetch_json("/api/sync")

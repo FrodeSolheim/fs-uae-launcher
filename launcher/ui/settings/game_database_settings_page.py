@@ -15,6 +15,7 @@ class GameDatabaseSettingsPage(SettingsPage):
 
         self.add_option(Option.DATABASE_SHOW_GAMES)
         self.add_option(Option.DATABASE_SHOW_ADULT)
+        self.add_option(Option.DATABASE_SHOW_UNPUBLISHED)
 
         self.add_section(gettext("Additional Databases"))
         self.add_option(Option.DATABASE_GB, "Game Boy")

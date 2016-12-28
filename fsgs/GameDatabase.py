@@ -5,8 +5,8 @@ import zlib
 from .BaseDatabase import BaseDatabase
 
 
-VERSION = 18
-RESET_VERSION = 18
+VERSION = 19
+RESET_VERSION = 19
 DUMMY_UUID = b"'\\x8b\\xbb\\x00Y\\x8bqM\\x15\\x972\\xa8-t_\\xb2\\xfd'"
 
 
@@ -19,8 +19,6 @@ class GameDatabase(BaseDatabase):
     def __init__(self, path):
         BaseDatabase.__init__(self, BaseDatabase.SENTINEL)
         self._path = path
-        # self._connection = None
-        # self._cursor = None
 
     def get_path(self):
         return self._path
@@ -65,7 +63,6 @@ class GameDatabase(BaseDatabase):
         return None
 
     def add_game(self, game_id, game_uuid, game_data):
-        # print("add game", repr(game_id), repr(game_uuid), repr(game_data))
         cursor = self.internal_cursor()
         cursor.execute(
             "DELETE FROM game WHERE uuid = ?",
@@ -109,12 +106,6 @@ class GameDatabase(BaseDatabase):
         print("get_game_values_for_uuid", game_uuid)
         assert game_uuid
         assert isinstance(game_uuid, str)
-        # cursor = self.internal_cursor()
-        # query = "SELECT id FROM game WHERE uuid = ?"
-        # args = (sqlite3.Binary(unhexlify(game_uuid.replace("-", ""))),)
-        # cursor.execute(query, args)
-        # game_id = cursor.fetchone()[0]
-        # return self.get_game_values(game_id, recursive)
         return self.get_game_values(game_uuid=game_uuid, recursive=recursive)
 
     def get_game_values(self, game_id=None, *, game_uuid=None, recursive=True):
@@ -141,8 +132,8 @@ class GameDatabase(BaseDatabase):
         doc = json.loads(data)
         next_parent_uuid = doc.get("parent_uuid", "")
         while next_parent_uuid and recursive:
-            # treat game_uuid special, it will be the first parent_uuid
-            # in the chain
+            # Treat game_uuid special, it will be the first parent_uuid
+            # in the chain.
             doc["game_uuid"] = next_parent_uuid
             cursor.execute(
                 "SELECT data FROM game WHERE uuid = ?",
@@ -157,7 +148,7 @@ class GameDatabase(BaseDatabase):
             data = data.decode("UTF-8")
             next_doc = json.loads(data)
             next_parent_uuid = next_doc.get("parent_uuid", "")
-            # let child doc overwrite and append values to parent doc
+            # Let child doc overwrite and append values to parent doc.
             next_doc.update(doc)
             doc = next_doc
         return doc
@@ -176,7 +167,7 @@ class GameDatabase(BaseDatabase):
         cursor.execute("DELETE FROM rating")
         cursor.execute("DELETE FROM game")
 
-    def update_database_to_version_18(self):
+    def update_database_to_version_19(self):
         cursor = self.internal_cursor()
         cursor.execute("""
             ALTER TABLE metadata ADD COLUMN games_version

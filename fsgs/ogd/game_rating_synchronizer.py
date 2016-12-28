@@ -15,7 +15,7 @@ class GameRatingSynchronizer(GameDatabaseSynchronizer):
         self.database = database
 
     def synchronize(self):
-        if "game-database-version" not in self.context.meta:
+        if "database" not in self.context.meta:
             # we haven't looked up synchronization information from the server,
             # that probably means we didn't want to synchronize with the
             # server now, therefore we just return

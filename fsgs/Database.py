@@ -6,8 +6,8 @@ from fsgs.FSGSDirectories import FSGSDirectories
 import threading
 
 thread_local = threading.local()
-VERSION = 30
-RESET_VERSION = 30
+VERSION = 35
+RESET_VERSION = 35
 QUOTED_TERMS_RE = re.compile("[\"].*?[\"]")
 
 
@@ -199,18 +199,18 @@ class Database(BaseDatabase):
     #     cursor.execute(query, args)
     #     return cursor.fetchall()
 
-    def find_game_variants(self, game_uuid):
-        self.init()
-        query = "SELECT id, name, uuid, configuration.like_rating, " \
-                "configuration.work_rating, game_rating.like_rating, " \
-                "have FROM configuration LEFT JOIN " \
-                "game_rating ON game_rating.game = uuid WHERE " \
-                "reference = ? AND have >= ?"
-        query += " ORDER BY name"
-        print(query, game_uuid)
-        cursor = self.internal_cursor()
-        cursor.execute(query, (game_uuid,))
-        return cursor.fetchall()
+    # def find_game_variants(self, game_uuid):
+    #     self.init()
+    #     query = "SELECT id, name, uuid, configuration.like_rating, " \
+    #             "configuration.work_rating, game_rating.like_rating, " \
+    #             "have FROM configuration LEFT JOIN " \
+    #             "game_rating ON game_rating.game = uuid WHERE " \
+    #             "reference = ? AND have >= ?"
+    #     query += " ORDER BY name"
+    #     print(query, game_uuid)
+    #     cursor = self.internal_cursor()
+    #     cursor.execute(query, (game_uuid,))
+    #     return cursor.fetchall()
 
     def find_game_database_for_game_variant(self, uuid):
         cursor = self.internal_cursor()
@@ -223,14 +223,19 @@ class Database(BaseDatabase):
         return row[0]
 
     def find_game_variants_new(self, game_uuid="", have=3):
+        include_unpublished = False
+        if app.settings["database_show_unpublished"] == "1":
+            include_unpublished = True
         cursor = self.internal_cursor()
         print("FIXME: not looking up ratings yet!")
+        query = ("SELECT uuid, name, game_uuid, 0 as like_rating, "
+                 "0 as work_rating, have, database FROM game_variant WHERE "
+                 "game_uuid = ? AND have >= ?")
+        if not include_unpublished:
+            query += " AND published = 1"
+        query += " ORDER BY like_rating DESC, work_rating DESC, name"
         cursor.execute(
-            "SELECT uuid, name, game_uuid, 0 as like_rating, "
-            "0 as work_rating, have, database FROM game_variant WHERE "
-            "game_uuid = ? AND have >= ? ORDER BY like_rating DESC, "
-            "work_rating DESC, name", (game_uuid, have))
-
+            query, (game_uuid, have))
         result = []
         for row in cursor:
             result.append(dict(row))
@@ -456,7 +461,8 @@ class Database(BaseDatabase):
         query = "SELECT DISTINCT uuid, name, platform, year, publisher, " \
                 "front_image, title_image, screen1_image, screen2_image, " \
                 "screen3_image, screen4_image, screen5_image, have, path, " \
-                "sort_key, subtitle, thumb_image, backdrop_image FROM game"
+                "sort_key, subtitle, thumb_image, backdrop_image, " \
+                "published FROM game"
 
         args = []
         if list_uuid:
@@ -464,11 +470,15 @@ class Database(BaseDatabase):
                       "ON game.uuid = game_list_game.game_uuid ")
 
         have_false = False
+        published_false = False
         additional_clauses = []
         additional_args = []
         include_adult = False
         if app.settings["database_show_adult"] == "1":
             include_adult = True
+        include_unpublished = False
+        if app.settings["database_show_unpublished"] == "1":
+            include_unpublished = True
 
         terms = []
 
@@ -503,11 +513,16 @@ class Database(BaseDatabase):
                 exact_term = True
                 if term == "t:adult":
                     include_adult = True
+                # if term == "t:unpublished":
+                #     include_unpublished = True
             elif term.startswith("letter:"):
                 exact_term = True
                 term = term.replace("letter:", "l:")
             elif term == "have:false":
                 have_false = True
+                continue
+            elif term == "published:false":
+                published_false = True
                 continue
 
             if term.startswith("s:"):
@@ -534,6 +549,10 @@ class Database(BaseDatabase):
             query += " WHERE have = 0"
         else:
             query += " WHERE have >= {0}".format(int(have))
+        if published_false:
+            query += " AND published = 0"
+        elif not include_unpublished:
+            query += " AND published = 1"
         if not include_adult:
             query += " AND adult IS NULL"
         for clause in additional_clauses:
@@ -632,7 +651,7 @@ class Database(BaseDatabase):
         cursor.execute("SELECT uuid, name FROM game_list")
         return cursor.fetchall()
 
-    def update_database_to_version_30(self):
+    def update_database_to_version_35(self):
         cursor = self.internal_cursor()
         cursor.execute("""CREATE TABLE game (
                 id INTEGER PRIMARY KEY,
@@ -654,7 +673,8 @@ class Database(BaseDatabase):
                 sort_key TEXT,
                 have INTEGER,
                 path TEXT,
-                adult INT,
+                adult INTEGER,
+                published INTEGER,
                 update_stamp INTEGER
         )""")
         cursor.execute("CREATE INDEX game_uuid ON game(uuid)")
@@ -668,6 +688,7 @@ class Database(BaseDatabase):
                 work_rating INTEGER,
                 like_rating INTEGER,
                 have INTEGER,
+                published INTEGER,
                 update_stamp INTEGER
         )""")
         cursor.execute(

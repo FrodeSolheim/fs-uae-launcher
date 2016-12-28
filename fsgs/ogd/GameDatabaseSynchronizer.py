@@ -29,9 +29,6 @@ class GameDatabaseSynchronizer(object):
         self._stop_check = stop_check
         if "/" in platform_id:
             self.host, self.platform_id = platform_id.split("/")
-            if self.platform_id == "amiga":
-                # use legacy name for now
-                self.host = "oagd.net"
         else:
             self.host = ""
             self.platform_id = platform_id.lower()
@@ -46,7 +43,7 @@ class GameDatabaseSynchronizer(object):
             self.on_status((title, status))
 
     def synchronize(self):
-        if "game-database-version" not in self.context.meta:
+        if "database" not in self.context.meta:
             # we haven't looked up synchronization information from the server,
             # that probably means we didn't want to synchronize with the
             # server now, therefore we just return
@@ -63,12 +60,12 @@ class GameDatabaseSynchronizer(object):
             print("done")
 
     def _synchronize(self):
-        if self.context.meta["game-database-version"] != \
+        if self.context.meta["database"]["version"] != \
                 self.database.get_game_database_version():
             self.set_status(gettext("Resetting game database..."))
             self.database.clear()
             self.database.set_game_database_version(
-                self.context.meta["game-database-version"])
+                self.context.meta["database"]["version"])
 
         self.set_status(gettext("Synchronizing game database..."))
 
@@ -155,9 +152,12 @@ class GameDatabaseSynchronizer(object):
 
     def fetch_game_sync_data(self):
         last_id = self.database.get_last_game_id()
+        if self.context.meta["games"][self.platform_id]["sync"] == last_id:
+            print("[SYNC] Platform {} already synced".format(self.platform_id))
+            return b""
         self.set_status(
             gettext("Fetching database entries ({0})").format(last_id + 1))
-        url = "{0}/api/sync/{1}/games?v=2&last={2}".format(
+        url = "{0}/api/sync/{1}/games?v=3&sync={2}".format(
             self.url_prefix(), self.platform_id, last_id)
         print(url)
         data = self.fetch_data(url)

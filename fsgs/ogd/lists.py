@@ -37,8 +37,8 @@ class ListsSynchronizer(SynchronizerBase):
         if self.stop_check():
             return
 
-        if "game-lists" not in self.context.meta:
-            # haven't looked up synchronization information from the server
+        if "lists" not in self.context.meta:
+            # Haven't looked up synchronization information from the server.
             return
 
         self.set_status(gettext("Updating game lists..."))
@@ -57,14 +57,16 @@ class ListsSynchronizer(SynchronizerBase):
             existing_syncs[uuid] = sync
         # existing_syncs.sort()
 
-        for list_uuid, list_info in self.context.meta["game-lists"].items():
-            if list_info["sync"] != existing_syncs.get(list_uuid, None):
+        for list_uuid, list_info in self.context.meta["lists"].items():
+            if list_info["sync"] == existing_syncs.get(list_uuid, None):
+                print("[SYNC] List {} already synced".format(list_uuid))
+            else:
                 self.set_status(
                     gettext("Updating list '{0}'...".format(list_info["name"])))
                 self.synchronize_list(database, list_uuid, list_info)
 
         for existing_list_uuid in existing_syncs:
-            for list_uuid in self.context.meta["game-lists"]:
+            for list_uuid in self.context.meta["lists"]:
                 if list_uuid == existing_list_uuid:
                     break
             else:

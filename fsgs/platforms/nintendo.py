@@ -4,7 +4,7 @@ from fsgs.platforms.loader import SimpleLoader
 
 
 class NintendoPlatformHandler(PlatformHandler):
-    PLATFORM_NAME = "Nintendo E.S."
+    PLATFORM_NAME = "Nintendo"
 
     def __init__(self):
         PlatformHandler.__init__(self)
