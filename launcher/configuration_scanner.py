@@ -45,7 +45,7 @@ class ConfigurationScanner:
             # search = self.create_configuration_search(name)
             name = self.create_configuration_name(name)
 
-            game_id = database.add_game(path=path, name=name,
+            game_id = database.add_configuration(path=path, name=name,
                                         sort_key=sort_key)
             database.update_game_search_terms(
                 game_id, self.create_search_terms(name))

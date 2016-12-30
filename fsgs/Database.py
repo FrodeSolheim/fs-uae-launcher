@@ -6,8 +6,8 @@ from fsgs.FSGSDirectories import FSGSDirectories
 import threading
 
 thread_local = threading.local()
-VERSION = 35
-RESET_VERSION = 35
+VERSION = 37
+RESET_VERSION = 37
 QUOTED_TERMS_RE = re.compile("[\"].*?[\"]")
 
 
@@ -229,7 +229,8 @@ class Database(BaseDatabase):
         cursor = self.internal_cursor()
         print("FIXME: not looking up ratings yet!")
         query = ("SELECT uuid, name, game_uuid, 0 as like_rating, "
-                 "0 as work_rating, have, database FROM game_variant WHERE "
+                 "0 as work_rating, have, database, published "
+                 "FROM game_variant WHERE "
                  "game_uuid = ? AND have >= ?")
         if not include_unpublished:
             query += " AND published = 1"
@@ -346,20 +347,21 @@ class Database(BaseDatabase):
             "md5, crc32, name, scan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             (path, sha1, mtime, size, md5, crc32, name, scan))
 
-    def add_configuration(
-            self, path="", uuid="", data="", name="", search="", scan=0,
-            type=0, reference=None, like_rating=0, work_rating=0, sort_key=""):
-        cursor = self.internal_cursor()
-        if not sort_key:
-            sort_key = name.lower()
-        path = self.encode_path(path)
-        cursor.execute(
-            "INSERT INTO configuration (path, name, scan, "
-            "search, uuid, data, type, reference, like_rating, "
-            "work_rating, sort_key) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "
-            "?, ?)",
-            (path, name, scan, search, uuid, data, type, reference,
-             like_rating, work_rating, sort_key))
+    # def add_configuration(
+    #         self, path="", uuid="", data="", name="", search="", scan=0,
+    #         type=0, reference=None, like_rating=0, work_rating=0,
+    #         sort_key=""):
+    #     cursor = self.internal_cursor()
+    #     if not sort_key:
+    #         sort_key = name.lower()
+    #     path = self.encode_path(path)
+    #     cursor.execute(
+    #         "INSERT INTO configuration (path, name, scan, "
+    #         "search, uuid, data, type, reference, like_rating, "
+    #         "work_rating, sort_key) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "
+    #         "?, ?)",
+    #         (path, name, scan, search, uuid, data, type, reference,
+    #          like_rating, work_rating, sort_key))
 
     # def ensure_game_configuration(self, uuid, name, sort_key, scan=0, type=1):
     #     cursor = self.internal_cursor()
@@ -376,7 +378,7 @@ class Database(BaseDatabase):
     #             uuid=uuid, name=name, search=search, scan=scan, type=type,
     #             sort_key=sort_key)
 
-    def add_game(self, path="", name="", sort_key=""):
+    def add_configuration(self, path="", name="", sort_key=""):
         cursor = self.internal_cursor()
         path = self.encode_path(path)
         if not sort_key:
@@ -393,8 +395,9 @@ class Database(BaseDatabase):
         else:
             cursor.execute("INSERT INTO game (path) VALUES (?)", (path,))
             game_id = cursor.lastrowid
-        cursor.execute("UPDATE game SET have = 5, name = ?, sort_key = ? "
-                       "WHERE id = ?", (name, sort_key, game_id))
+        cursor.execute("UPDATE game SET have = 5, name = ?, sort_key = ?, "
+                       "published = 1, adult = 0 WHERE id = ?",
+                       (name, sort_key, game_id))
         return game_id
 
     def delete_game(self, id):
@@ -641,7 +644,7 @@ class Database(BaseDatabase):
         cursor.execute("SELECT uuid, name FROM game_list")
         return cursor.fetchall()
 
-    def update_database_to_version_35(self):
+    def update_database_to_version_37(self):
         cursor = self.internal_cursor()
         cursor.execute("""CREATE TABLE game (
                 id INTEGER PRIMARY KEY,

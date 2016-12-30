@@ -158,6 +158,13 @@ class GameScanner(object):
             existing_variant = helper.existing_variants.get(
                 variant_uuid, (None, None, None))
 
+            existing_game = helper.existing_games.get(
+                variant_uuid, (None, None, None))
+            if update_stamp == existing_game[0]:
+                # Game entry, not updated.
+                game_rows.append(row)
+                continue
+
             if update_stamp == existing_variant[0]:
                 # entry was already updated and has not changed
                 if existing_variant[1] and not helper.deleted_files:
@@ -179,6 +186,7 @@ class GameScanner(object):
                 # regardless of file database status, since file_list may
                 # have been changed, or download status... (or other info
                 # needs to be corrected)
+                # print("[SCANNER] Changed: {}".format(variant_uuid))
                 pass
 
             self.scan_count += 1
@@ -188,9 +196,8 @@ class GameScanner(object):
 
             try:
                 doc = game_database.get_game_values(variant_id)
-            except IncompleteGameException:
-                # FIXME: Log warning
-                print("[WARNING] Variant", variant_uuid, "is not complete")
+            except IncompleteGameException as e:
+                print("[SCANNER]", repr(e))
                 continue
 
             file_list_json = doc.get("file_list", "")
@@ -239,8 +246,6 @@ class GameScanner(object):
             variant_name = doc.get("variant_name", "")
             published_variant = doc.get("publish", "")
 
-            # the following is used by the FS Game Center frontend
-
             game_variant_id = existing_variant[2]
             if not game_variant_id:
                 # variant is not in database
@@ -253,7 +258,8 @@ class GameScanner(object):
                 "UPDATE game_variant SET name = ?, game_uuid = ?, have = ?, "
                 "update_stamp = ?, database = ?, published = ? WHERE id = ?",
                 (variant_name, parent_uuid, have_variant, update_stamp,
-                 database_name, 1 if published_variant == "1" else 0, game_variant_id))
+                 database_name,
+                 1 if published_variant == "1" else 0, game_variant_id))
 
             # ensure_updated_games.add(parent_uuid)
 

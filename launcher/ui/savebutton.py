@@ -91,7 +91,7 @@ class SaveButton(IconButton):
             sha1 = hashlib.sha1(f.read()).hexdigest()
         file_database.add_file(path=path, sha1=sha1)
 
-        game_id = database.add_game(
+        game_id = database.add_configuration(
             path=path, name=scanner.create_configuration_name(name))
         database.update_game_search_terms(
             game_id, scanner.create_search_terms(name))

@@ -354,16 +354,19 @@ class FSGameSystemContext(object):
             variant["personal_rating"], ignored = \
                 database.get_ratings_for_game(variant["uuid"])
             # variant_uuid = variant["uuid"]
+
             name = variant["name"]
+            # FIXME: name replacement needed any more?
             name = name.replace("\n", " (")
             name = name.replace(" \u00b7 ", ", ")
             name += ")"
-            # ordered_list.append(
-            #     ((1 - bool(variant["have"]),
-            #       1000 - variant["personal_rating"],
-            #       1000 - variant["like_rating"]),
-            #      (variant_uuid, variant_name)))
-            sort_key = (0, 1000000 - variant["like_rating"],
+
+            if not variant["published"]:
+                primary_sort = 1
+                variant["name"] = "[UNPUBLISHED] " + variant["name"]
+            else:
+                primary_sort = 0
+            sort_key = (primary_sort, 1000000 - variant["like_rating"],
                         1000000 - variant["work_rating"], name)
             sortable_items.append(
                 (sort_key, i, variant))

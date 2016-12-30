@@ -176,18 +176,14 @@ class VariantsBrowser(fsui.ItemChoice):
         items = database.find_game_variants_new(game_uuid, have=0)
 
         # items = database.search_configurations(self.search)
-        # FIXME: Merge code with FSGameSystemContext.py
+        # FIXME: Merge code with
+        # FSGameSystemContext.py:get_ordered_game_variants
         sortable_items = []
         for i, variant in enumerate(items):
             name = variant["name"]
-
-            name = name.replace("\nAmiga \u00b7 ", "\n")
-            # print(name, variant[3])
-            # name = name.replace("\nCD32 \u00b7 ", "\n")
-            # name = variant[1].replace("\n", " \u00b7 ")
-
+            # assert "\n" not in name
             # only show variant name (without game name)
-            name = name.split("\n", 1)[-1]
+            # name = name.split("\n", 1)[-1]
 
             game_database = fsgs.game_database(variant["database"])
             variant["like_rating"], variant["work_rating"] = \
@@ -195,7 +191,12 @@ class VariantsBrowser(fsui.ItemChoice):
             variant["personal_rating"], ignored = \
                 database.get_ratings_for_game(variant["uuid"])
 
-            sort_key = (0, 1000000 - variant["like_rating"],
+            if not variant["published"]:
+                primary_sort = 1
+                variant["name"] = "[UNPUBLISHED] " + variant["name"]
+            else:
+                primary_sort = 0
+            sort_key = (primary_sort, 1000000 - variant["like_rating"],
                         1000000 - variant["work_rating"], name)
             sortable_items.append(
                 (sort_key, i, variant))
