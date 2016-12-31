@@ -161,14 +161,16 @@ class LaunchHandler(object):
                           ACTION_REPLAY_MK_III_3_17_MOD_ROM.sha1]))
 
         for config_key, default_roms in roms:
-            print("ROM:", config_key, default_roms)
+            print("[ROM]", config_key, default_roms)
             src = self.config[config_key]
             if not src:
                 for sha1 in default_roms:
+                    print("[ROM] Trying", sha1)
                     if is_sha1(sha1):
                         rom_src = self.fsgs.file.find_by_sha1(sha1)
                         if rom_src:
                             src = rom_src
+                            print("[ROM] Found", rom_src)
                             break
                     else:
                         # roms_dir = FSGSDirectories.get_kickstarts_dir()
@@ -190,31 +192,41 @@ class LaunchHandler(object):
             use_temp_kickstarts_dir = False
 
             dest = os.path.join(self.temp_dir, os.path.basename(src))
-            archive = Archive(src)
-            stream = None
-            if not archive.exists(src):
+
+            def lookup_rom_from_src(src):
+                archive = Archive(src)
+                if archive.exists(src):
+                    return src
                 dirs = [self.fsgs.amiga.get_kickstarts_dir()]
                 for dir_ in dirs:
                     path = os.path.join(dir_, src)
-                    print("checking", repr(path))
+                    print("[ROM] Checking", repr(path))
                     archive = Archive(path)
                     if archive.exists(path):
-                        src = path
-                        break
-                else:
-                    try:
-                        stream = self.fsgs.file.open(src)
-                        if stream is None:
-                            raise FileNotFoundError(src)
-                    except FileNotFoundError:
-                        raise TaskFailure(gettext(
-                            "Cannot find required ROM "
-                            "file: {name}".format(name=repr(src))))
+                        return path
+                return None
 
+            org_src = src
+            src = lookup_rom_from_src(src)
+            if src is None and org_src == "cyberstormppc.rom":
+                src = lookup_rom_from_src(
+                    "ralphschmidt-cyberstorm-ppc-4471.rom")
+                # FIXME: TODO: Also try to find ROM in Amiga Forever roms dir.
+
+            stream = None
+            try:
+                stream = self.fsgs.file.open(src)
+                if stream is None:
+                    raise FileNotFoundError(src)
+            except FileNotFoundError:
+                raise TaskFailure(gettext(
+                    "Cannot find required ROM "
+                    "file: {name}".format(name=repr(org_src))))
             with open(dest, "wb") as f:
                 if stream:
                     f.write(stream.read())
                 else:
+                    archive = Archive(src)
                     ROMManager.decrypt_archive_rom(archive, src, file=f)
                 if use_temp_kickstarts_dir:
                     self.config[config_key] = os.path.basename(src)
