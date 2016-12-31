@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-09-10 15:11-0400\n"
+"POT-Creation-Date: 2016-12-11 15:16+0100\n"
+"PO-Revision-Date: 2016-12-11 12:01-0500\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Esperanto\n"
 "Language: eo_UY\n"
@@ -82,6 +82,9 @@ msgstr "Aldoni plurajn disketojn samtempe"
 
 msgid "Additional Configuration"
 msgstr "Kroma agordo"
+
+msgid "Additional Databases"
+msgstr ""
 
 msgid "Adult-Themed Games"
 msgstr "Adoltaj ludoj"
@@ -357,6 +360,9 @@ msgstr "Laŭmenda agordo: {name}"
 msgid "Custom Options"
 msgstr "Laŭmendaj agordoj"
 
+msgid "Custom boot directory for automatic WHDLoad support"
+msgstr ""
+
 msgid "Custom uae_ Options"
 msgstr "Laŭmendaj uae_ agordoj"
 
@@ -487,6 +493,12 @@ msgstr "Ŝalti/malŝalti la uzon del DOS luddatumbazon"
 msgid "Enable/disable use of the Game Boy Advance database"
 msgstr "Ŝalti/malŝalti la uzon del Game Boy Advance luddatumbazon"
 
+msgid "Enable/disable use of the Game Boy Color database"
+msgstr ""
+
+msgid "Enable/disable use of the Game Boy database"
+msgstr ""
+
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr "Ŝalti/malŝalti la uzon del Nintendo (NES) luddatumbazon"
 
@@ -524,6 +536,9 @@ msgid "Extended ROM"
 msgstr ""
 
 msgid "FS-UAE   Arcade"
+msgstr ""
+
+msgid "FS-UAE Arcade"
 msgstr ""
 
 msgid "Fade-in Duration on Start"
@@ -976,6 +991,9 @@ msgstr "Neniu"
 msgid "Not logged in"
 msgstr "Ne estas ensaluta"
 
+msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgstr ""
+
 msgid "OAGD.net Locker Uploader"
 msgstr ""
 
@@ -1074,6 +1092,9 @@ msgstr ""
 
 msgid "Reject"
 msgstr "Malakcepti"
+
+msgid "Relative Temporary Directories"
+msgstr ""
 
 msgid "Relative paths"
 msgstr "Relativaj dosierindikoj"
@@ -1371,6 +1392,9 @@ msgstr "Alŝutas {name}"
 
 #, python-brace-format
 msgid "Use RDB disk images for size >= {0}"
+msgstr ""
+
+msgid "Use keyboard raw input (Windows)"
 msgstr ""
 
 msgid "Using Kickstart ROM Replacement"

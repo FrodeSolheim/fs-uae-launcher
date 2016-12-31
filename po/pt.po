@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-05-14 05:19-0400\n"
+"POT-Creation-Date: 2016-12-11 15:16+0100\n"
+"PO-Revision-Date: 2016-12-11 12:01-0500\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Portuguese\n"
 "Language: pt_PT\n"
@@ -17,13 +17,13 @@ msgstr ""
 "X-Crowdin-File: fs-uae-launcher.pot\n"
 
 msgid "16-bit"
-msgstr ""
+msgstr "16-bit"
 
 msgid "32-bit BGRA"
-msgstr ""
+msgstr "32-bit BGRA"
 
 msgid "32-bit RGBA"
-msgstr ""
+msgstr "32-bit RGBA"
 
 msgid "640x400 + Border"
 msgstr "640x400 + Margem"
@@ -35,38 +35,38 @@ msgid "640x512 + Border"
 msgstr "640x512 + Margem"
 
 msgid "ADF - Extended Floppy Disk Image (MFM Encoded)"
-msgstr ""
+msgstr "ADF - Imagem de Disco Estendida (Codificado MFM)"
 
 msgid "ADF - Standard Floppy Disk Image"
 msgstr "ADF - Formato Standard de Disquete"
 
 msgid "ADF Creator"
-msgstr ""
+msgstr "Criador ADF"
 
 msgid "ADF Disk Image Creator"
-msgstr ""
+msgstr "Criador de Imagem de Disco ADF"
 
 msgid "About"
-msgstr ""
+msgstr "Sobre"
 
 #, python-brace-format
 msgid "About {name}"
 msgstr "Acerca "
 
 msgid "Accelerator Board"
-msgstr ""
+msgstr "Placa Aceleradora"
 
 msgid "Accelerator RAM"
-msgstr ""
+msgstr "Acelerador RAM"
 
 msgid "Accept"
-msgstr ""
+msgstr "Aceitar"
 
 msgid "Accuracy:"
-msgstr ""
+msgstr "Precisão:"
 
 msgid "Add"
-msgstr ""
+msgstr "Adicionar"
 
 msgid "Add Directory to Search Path"
 msgstr "Adicionar pasta para ao caminho da procura"
@@ -81,31 +81,34 @@ msgid "Add Multiple Floppies at Once"
 msgstr "Adicionar Várias Disquetes de Uma  Vez"
 
 msgid "Additional Configuration"
+msgstr "Configuração Adicional"
+
+msgid "Additional Databases"
 msgstr ""
 
 msgid "Adult-Themed Games"
-msgstr ""
+msgstr "Jogos com Temática para Adultos"
 
 msgid "Advanced"
-msgstr ""
+msgstr "Avançado"
 
 msgid "Advanced Audio Options"
-msgstr ""
+msgstr "Opções de Áudio Avançadas"
 
 msgid "Advanced Settings"
-msgstr ""
+msgstr "Definições Avançadas"
 
 msgid "Advanced Video"
-msgstr ""
+msgstr "Video Avançado"
 
 msgid "Advanced Video Settings"
-msgstr ""
+msgstr "Definições de Video Avançadas"
 
 msgid "All"
-msgstr ""
+msgstr "Tudo"
 
 msgid "All Games"
-msgstr ""
+msgstr "Todos os Jogos"
 
 msgid "Amiga Forever Import"
 msgstr "Importação de Amiga Forever"
@@ -114,46 +117,46 @@ msgid "Amiga Forever import task started"
 msgstr "A Acção de  Importar Amiga Forever Começou "
 
 msgid "Amiga Joystick"
-msgstr ""
+msgstr "Joystick Amiga"
 
 msgid "Amiga Model"
 msgstr "Modelo do Amiga"
 
 msgid "Amiga Mouse"
-msgstr ""
+msgstr "Rato Amiga"
 
 msgid "An Error Occurred"
-msgstr ""
+msgstr "Ocorreu Um Erro"
 
 msgid "Arcade Fullscreen"
-msgstr ""
+msgstr "Ecrã Inteiro Arcade"
 
 msgid "Audio"
-msgstr ""
+msgstr "Áudio"
 
 msgid "Audio Settings"
 msgstr "Opções de Som"
 
 msgid "Audio buffer target size (bytes)"
-msgstr ""
+msgstr "Tamanho (bytes) alvo do buffer de áudio"
 
 msgid "Audio buffer target size (ms)"
-msgstr ""
+msgstr "Tamanho (ms) alvo do buffer de áudio"
 
 msgid "Audio output frequency"
-msgstr ""
+msgstr "Frequência de saída áudio"
 
 msgid "Auto"
-msgstr ""
+msgstr "Automático"
 
 msgid "Auto + Border"
 msgstr "Auto + Margem"
 
 msgid "Auto - {}"
-msgstr ""
+msgstr "Automático - {}"
 
 msgid "Auto-Download"
-msgstr ""
+msgstr "Auto-Transferir"
 
 msgid "Auto-Fire is Off"
 msgstr "Auto-Fire está desligado"
@@ -162,28 +165,28 @@ msgid "Auto-Fire is On"
 msgstr "Auto-Fire está ligado"
 
 msgid "Automatic"
-msgstr ""
+msgstr "Automático"
 
 msgid "Available Games"
-msgstr ""
+msgstr "Jogos Disponíveis"
 
 msgid "Available Kickstart Versions"
 msgstr "Versões do Kickstart Disponiveis"
 
 msgid "Available and Auto-Downloadable Games"
-msgstr ""
+msgstr "Jogos Disponíveis e Auto-Transferíveis"
 
 msgid "Available and Downloadable Games"
-msgstr ""
+msgstr "Jogos Disponíveis e Transferíveis"
 
 msgid "Bad Variant"
-msgstr ""
+msgstr "Variante Má"
 
 msgid "Best Variant"
-msgstr ""
+msgstr "Melhor Variante"
 
 msgid "Blizzard SCSI Kit"
-msgstr ""
+msgstr "Kit Blizzard SCSI"
 
 msgid "Browse"
 msgstr "Procurar"
@@ -198,38 +201,38 @@ msgid "CD-ROM Drive"
 msgstr "Leitor de CD-ROM"
 
 msgid "CD-ROM Drive Count"
-msgstr ""
+msgstr "Contagem de Drives CD-ROM"
 
 msgid "CD-ROM Drives"
 msgstr "Leitores de CD-ROM"
 
 msgid "CD-ROMs"
-msgstr ""
+msgstr "CD-ROMs"
 
 msgid "CD32 Pad"
 msgstr "CD32 Joypad"
 
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 msgid "Cancel"
 msgstr "Cancelar"
 
 #, python-brace-format
 msgid "Cannot find required ROM file: {name}"
-msgstr ""
+msgstr "Não é possível encontrar o ficheiro ROM necessário: {name}"
 
 msgid "Change fullscreen mode (desktop, fullscreen, window)"
-msgstr ""
+msgstr "Alterar modo de ecrã inteiro (ambiente de trabalho, ecrã inteiro, janela)"
 
 msgid "Checksumming"
-msgstr ""
+msgstr "A verificar checksum"
 
 msgid "Checksumming file..."
-msgstr ""
+msgstr "A verificar checksum do ficheiro..."
 
 msgid "Chip RAM"
-msgstr ""
+msgstr "Chip RAM"
 
 msgid "Choose CD-ROM Image"
 msgstr "Escolha uma Imagem de CD-ROM"
@@ -247,10 +250,10 @@ msgid "Choose Kickstart ROM"
 msgstr "Escolher uma ROM Kickstart"
 
 msgid "Choose Type"
-msgstr ""
+msgstr "Escolher Tipo"
 
 msgid "Choose what folders you want to scan for Amiga files"
-msgstr ""
+msgstr "Escolha quais as pastas que quer para procurar por ficheiros Amiga"
 
 msgid "Cleaning up..."
 msgstr "Limpando..."
@@ -265,7 +268,7 @@ msgid "Click 'Scan' button to start scan"
 msgstr "Clica no butão 'Procurar' para começar"
 
 msgid "Click to import Kickstart ROMs"
-msgstr ""
+msgstr "Clique para importar ROMs Kickstart"
 
 msgid "Close"
 msgstr "Fechar"
@@ -355,6 +358,9 @@ msgid "Custom Option: {name}"
 msgstr ""
 
 msgid "Custom Options"
+msgstr ""
+
+msgid "Custom boot directory for automatic WHDLoad support"
 msgstr ""
 
 msgid "Custom uae_ Options"
@@ -487,6 +493,12 @@ msgstr ""
 msgid "Enable/disable use of the Game Boy Advance database"
 msgstr ""
 
+msgid "Enable/disable use of the Game Boy Color database"
+msgstr ""
+
+msgid "Enable/disable use of the Game Boy database"
+msgstr ""
+
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr ""
 
@@ -524,6 +536,9 @@ msgid "Extended ROM"
 msgstr ""
 
 msgid "FS-UAE   Arcade"
+msgstr ""
+
+msgid "FS-UAE Arcade"
 msgstr ""
 
 msgid "Fade-in Duration on Start"
@@ -976,6 +991,9 @@ msgstr ""
 msgid "Not logged in"
 msgstr ""
 
+msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgstr ""
+
 msgid "OAGD.net Locker Uploader"
 msgstr ""
 
@@ -1073,6 +1091,9 @@ msgid "Refresh List of Connected Joystick Devices"
 msgstr ""
 
 msgid "Reject"
+msgstr ""
+
+msgid "Relative Temporary Directories"
 msgstr ""
 
 msgid "Relative paths"
@@ -1372,6 +1393,9 @@ msgstr ""
 #, python-brace-format
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Usar RDB de imagens de disco para tamanho >= {0}"
+
+msgid "Use keyboard raw input (Windows)"
+msgstr ""
 
 msgid "Using Kickstart ROM Replacement"
 msgstr ""

@@ -6,6 +6,7 @@ Version 2.9.2dev:
 * Fix configurations not showing up since 2.9.1dev.
 * Indicate unpublished variants in variants list.
 * When enabling "unpublished" entries, list unpublished variants last.
+* Imported updated translations from crowdin.com.
 
 Version 2.9.1dev:
 

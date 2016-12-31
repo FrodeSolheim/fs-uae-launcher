@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-05-14 05:19-0400\n"
+"POT-Creation-Date: 2016-12-11 15:16+0100\n"
+"PO-Revision-Date: 2016-12-11 12:01-0500\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -69,7 +69,7 @@ msgid "Add"
 msgstr "Dodaj"
 
 msgid "Add Directory to Search Path"
-msgstr "Dodaj katalog do ścieżki wyszukiwania"
+msgstr "Dodaj folder do ścieżki wyszukiwania"
 
 msgid "Add Files to List"
 msgstr "Dodaj pliki do listy"
@@ -82,6 +82,9 @@ msgstr "Dodaj kilka obrazów dyskietek"
 
 msgid "Additional Configuration"
 msgstr "Dodatkowa konfiguracja"
+
+msgid "Additional Databases"
+msgstr "Dodatkowe bazy danych"
 
 msgid "Adult-Themed Games"
 msgstr "Gry dla dorosłych"
@@ -192,7 +195,7 @@ msgid "Browse for File"
 msgstr "Wybierz plik"
 
 msgid "Browse for Folder"
-msgstr "Wybierz katalog"
+msgstr "Wybierz folder"
 
 msgid "CD-ROM Drive"
 msgstr "Napęd CD-ROM"
@@ -250,7 +253,7 @@ msgid "Choose Type"
 msgstr "Wybierz typ"
 
 msgid "Choose what folders you want to scan for Amiga files"
-msgstr "Wybierz katalogi, które chcesz skanować pod kątem plików Amigi"
+msgstr "Wybierz foldery, które chcesz skanować pod kątem plików Amigi"
 
 msgid "Cleaning up..."
 msgstr "Sprzątanie..."
@@ -357,6 +360,9 @@ msgstr "Niestandardowa opcja: {name}"
 msgid "Custom Options"
 msgstr "Opcje niestandardowe"
 
+msgid "Custom boot directory for automatic WHDLoad support"
+msgstr "Własny folder boot, dla automatycznej obsługi WHDLoad"
+
 msgid "Custom uae_ Options"
 msgstr "Niestandardowe opcje uae_"
 
@@ -406,7 +412,7 @@ msgid "Digital Joystick"
 msgstr "Joystick cyfrowy"
 
 msgid "Directory for WHDLoad.key file (if you have it):"
-msgstr "Katalog dla pliku WHDLoad.key (jeśli taki masz):"
+msgstr "Folder dla pliku WHDLoad.key (jeśli taki masz):"
 
 msgid "Disabled"
 msgstr "Wyłącz"
@@ -442,7 +448,7 @@ msgstr "Pobieranie nieudane (próba {0}) - ponowienie za {1} sekund"
 
 #, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
-msgstr "Pobierz do następującego katalogu i kliknij '{0}':"
+msgstr "Pobierz do następującego folderu i kliknij '{0}':"
 
 #, python-brace-format
 msgid "Downloading {0}..."
@@ -487,6 +493,12 @@ msgstr "Włącz/Wyłącz korzystanie z bazy danych gier DOS"
 msgid "Enable/disable use of the Game Boy Advance database"
 msgstr "Włącz/wyłącz użycie bazy danych Game Boy Advance"
 
+msgid "Enable/disable use of the Game Boy Color database"
+msgstr "Włącz/wyłącz użycie bazy danych Game Boy Color"
+
+msgid "Enable/disable use of the Game Boy database"
+msgstr "Włącz/wyłącz użycie bazy danych Game Boy"
+
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr "Włącz/Wyłącz korzystanie z bazy danych Nintendo (NES)"
 
@@ -525,6 +537,9 @@ msgstr "Rozszerzony ROM"
 
 msgid "FS-UAE   Arcade"
 msgstr "FS-UAE   Arcade"
+
+msgid "FS-UAE Arcade"
+msgstr "FS-UAE Arcade"
 
 msgid "Fade-in Duration on Start"
 msgstr "Czas rozjaśniania obrazu przy starcie"
@@ -976,6 +991,9 @@ msgstr "Żaden"
 msgid "Not logged in"
 msgstr "Niezalogowany"
 
+msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgstr "Uwaga: Wsparcie dla dodatkowych baz danych, jest funkcją eksperymentalną i nie zapewnia tego samego poziomu dojrzałości jak bazy Amiga/CDTV/CD32. Potrzebne są również dodatkowe wtyczki, aby grać w odpowiednie gry."
+
 msgid "OAGD.net Locker Uploader"
 msgstr "Uploader schowka OAGD.net"
 
@@ -1075,6 +1093,9 @@ msgstr "Odśwież listę podłączonych joysticków"
 msgid "Reject"
 msgstr "Odrzuć"
 
+msgid "Relative Temporary Directories"
+msgstr "Względne foldery tymczasowe"
+
 msgid "Relative paths"
 msgstr "Ścieżki względne"
 
@@ -1082,7 +1103,7 @@ msgid "Relax host CPU usage when using fastest-possible CPU"
 msgstr "Odciążaj CPU gospodarza przy użyciu najszybszego trybu CPU"
 
 msgid "Remove Directory from Search Path"
-msgstr "Usuń katalog ze ścieżki wyszukiwania"
+msgstr "Usuń folder ze ścieżki wyszukiwania"
 
 msgid "Remove Selected Files"
 msgstr "Usuń wybrane pliki"
@@ -1126,7 +1147,7 @@ msgid "Save Disk"
 msgstr "Zapisz dysk"
 
 msgid "Save to directory:"
-msgstr "Zapisz do katalogu:"
+msgstr "Zapisz do folderu:"
 
 msgid "Saving changes..."
 msgstr "Zapisywanie zmian..."
@@ -1180,7 +1201,7 @@ msgid "Scanning games ({count} scanned)"
 msgstr "Skanowanie gier ({count} ukończono)"
 
 msgid "Select Destination Directory"
-msgstr "Wybierz katalog docelowy"
+msgstr "Wybierz folder docelowy"
 
 msgid "Select First Letter"
 msgstr "Wybierz pierwszą literę"
@@ -1201,7 +1222,7 @@ msgid "Select Platform"
 msgstr "Wybierz platformę"
 
 msgid "Select Source Directory"
-msgstr "Wybierz katalog źródłowy"
+msgstr "Wybierz folder źródłowy"
 
 msgid "Select Year"
 msgstr "Wybierz rok"
@@ -1235,7 +1256,7 @@ msgid "Sound Card"
 msgstr "Karta dźwiękowa"
 
 msgid "Specified directory does not exist"
-msgstr "Podany katalog nie istnieje"
+msgstr "Podany folder nie istnieje"
 
 msgid "Specify global options and settings which does not have UI controls"
 msgstr "Określ opcje globalne i ustawienia, których nie posiada interfejs użytkownika"
@@ -1372,6 +1393,9 @@ msgstr "Przesyłam {name}"
 #, python-brace-format
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Użyj obrazów dysków RDB dla rozmiaru >= {0}"
+
+msgid "Use keyboard raw input (Windows)"
+msgstr "Użyj wejścia raw klawiatury (Windows)"
 
 msgid "Using Kickstart ROM Replacement"
 msgstr "Użycie zamiennika Kickstart ROM"
