@@ -145,6 +145,10 @@ def documents_dir(create=False):
     return path
 
 
+def is_portable():
+    return portable_dir() is not None
+
+
 @functools.lru_cache()
 def portable_dir():
     path = executable_dir()

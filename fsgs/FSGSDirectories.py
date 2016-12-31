@@ -326,16 +326,21 @@ class FSGSDirectories(object):
     @classmethod
     def get_amiga_forever_directories(cls):
         paths = []
-        if windows:
-            path = get_common_documents_dir()
-            path = os.path.join(path, "Amiga Files")
-            if os.path.exists(path):
-                paths.append(path)
+        if fsboot.is_portable():
+            # Portable version, don't try to find ROM files outside the
+            # portable directory by default.
+            pass
         else:
-            path = os.path.expanduser(
-                "~/.wine/drive_c/users/Public/Documents/Amiga Files")
-            if os.path.exists(path):
-                paths.append(path)
+            if windows:
+                path = get_common_documents_dir()
+                path = os.path.join(path, "Amiga Files")
+                if os.path.exists(path):
+                    paths.append(path)
+            else:
+                path = os.path.expanduser(
+                    "~/.wine/drive_c/users/Public/Documents/Amiga Files")
+                if os.path.exists(path):
+                    paths.append(path)
         path = cls.get_base_dir()
         path = os.path.join(path, "AmigaForever", "Amiga Files")
         if os.path.exists(path):

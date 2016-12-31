@@ -1,6 +1,7 @@
 Version 2.9.2dev:
 
 * Try ralphschmidt-cyberstorm-ppc-4471.rom if cyberstormppc.rom is not found.
+* Also look for ralphschmidt-cyberstorm-ppc-4471.rom in Amiga Forever dir.
 * Fix file name when saving controller configs on macOS.
 * Fix configurations not showing up since 2.9.1dev.
 * Indicate unpublished variants in variants list.

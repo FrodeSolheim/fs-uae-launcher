@@ -11,6 +11,7 @@ from fsbc.paths import Paths
 from fsbc.task import current_task, TaskFailure
 from fsbc.resources import Resources
 from fsgs.Archive import Archive
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.download import Downloader
 from fsgs.GameChangeHandler import GameChangeHandler
 from fsgs.GameNameUtil import GameNameUtil
@@ -194,6 +195,11 @@ class LaunchHandler(object):
             dest = os.path.join(self.temp_dir, os.path.basename(src))
 
             def lookup_rom_from_src(src):
+                parts = src.split(":", 1)
+                if len(parts) == 2 and len(parts[0]) > 1:
+                    # src has a scheme (not a Windows drive letter). Assume
+                    # we can find this file.
+                    return src
                 archive = Archive(src)
                 if archive.exists(src):
                     return src
@@ -208,11 +214,20 @@ class LaunchHandler(object):
 
             org_src = src
             src = lookup_rom_from_src(src)
-            if src is None and org_src == "cyberstormppc.rom":
+            if not src and org_src == "cyberstormppc.rom":
                 src = lookup_rom_from_src(
                     "ralphschmidt-cyberstorm-ppc-4471.rom")
-                # FIXME: TODO: Also try to find ROM in Amiga Forever roms dir.
-
+                if not src:
+                    for dir_ in FSGSDirectories.get_amiga_forever_directories():
+                        path = os.path.join(
+                            dir_, "Shared", "rom",
+                            "ralphschmidt-cyberstorm-ppc-4471.rom")
+                        if os.path.exists(path):
+                            src = path
+                            print("[ROM] Found", path)
+                            break
+                        else:
+                            print("[ROM] Trying", path)
             stream = None
             try:
                 stream = self.fsgs.file.open(src)
