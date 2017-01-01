@@ -220,7 +220,7 @@ class MenuItem(object):
         if name:
             try:
                 return resources.resource_filename(
-                    os.path.join(u"item", name + u".png"))
+                    os.path.join(u"items", name + u".png"))
             except Exception:
                 pass
         return None
