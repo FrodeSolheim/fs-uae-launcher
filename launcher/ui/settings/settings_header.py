@@ -24,7 +24,7 @@ class SettingsHeader(fsui.Group):
         # self.layout.add(
         #     vert_layout, expand=True, fill=False, valign=0.5)
         self.title_label = fsui.HeadingLabel(self, title)
-        if Skin.fws():
+        if Skin.fws() or True:
             font = fsui.Font("Roboto", 26)
             self.title_label.set_font(font)
             self.layout.add(

@@ -39,6 +39,8 @@ default_window_parent = []
 default_window_center = []
 toolkit = "qt"
 use_qt = True
+theme = ""
+theme_variant = ""
 
 
 # noinspection PyProtectedMember

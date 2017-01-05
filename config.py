@@ -6,6 +6,7 @@ version = "9.8.7dummy"
 author = "Frode Solheim"
 author_email = "frode@fs-uae.net"
 package_map = {
+    "amitools": ".",
     "arcade": ".",
     "fsbc": ".",
     "fsboot": ".",

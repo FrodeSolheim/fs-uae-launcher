@@ -45,23 +45,25 @@ progdir:
 	rm -Rf $(launcher_dir)/share/applications
 	rm -Rf $(launcher_dir)/share/icons
 
-	rm -Rf $(launcher_dir)/OpenGL
+	rm -Rf $(launcher_dir)/amitools
 	rm -Rf $(launcher_dir)/arcade
 	rm -Rf $(launcher_dir)/fsbc
 	rm -Rf $(launcher_dir)/fsgs
 	rm -Rf $(launcher_dir)/fstd
 	rm -Rf $(launcher_dir)/fsui
 	rm -Rf $(launcher_dir)/launcher
+	rm -Rf $(launcher_dir)/OpenGL
 	rm -Rf $(launcher_dir)/oyoyo
 	rm -Rf $(launcher_dir)/workspace
 
-	zip -d $(launcher_dir)/library.zip OpenGL/\*
+	zip -d $(launcher_dir)/library.zip amitools/\*
 	zip -d $(launcher_dir)/library.zip arcade/\*
 	zip -d $(launcher_dir)/library.zip fsbc/\*
 	zip -d $(launcher_dir)/library.zip fsgs/\*
 	zip -d $(launcher_dir)/library.zip fstd/\*
 	zip -d $(launcher_dir)/library.zip fsui/\*
 	zip -d $(launcher_dir)/library.zip launcher/\*
+	zip -d $(launcher_dir)/library.zip OpenGL/\*
 	zip -d $(launcher_dir)/library.zip oyoyo/\*
 	zip -d $(launcher_dir)/library.zip workspace/\*
 

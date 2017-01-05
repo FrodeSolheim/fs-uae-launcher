@@ -116,8 +116,10 @@ class OptionUI(object):
             group.layout.add(choice)
             group.widget = choice
 
+        option_url = (
+            "https://fs-uae.net/docs/options/" + name.replace("_", "-"))
         group.help_button = HelpButton(
-            parent, "https://fs-uae.net/options/" + name)
+            parent, option_url)
         group.layout.add(group.help_button, margin_left=10)
 
         return group

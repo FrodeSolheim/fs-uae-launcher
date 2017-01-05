@@ -35,8 +35,18 @@ def main():
             if key == "fake_version":
                 launcher.version.VERSION = value
 
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "xdftool":
+            sys.argv[0] = "xdftool"
+            app = "xdftool"
+            del sys.argv[1]
+
     import socket
     socket.setdefaulttimeout(30.0)
+
+    if app == "xdftool":
+        import amitools.tools.xdftool
+        sys.exit(amitools.tools.xdftool.main())
 
     from fsbc.init import initialize_application
     initialize_application(app, version=launcher.version.VERSION)

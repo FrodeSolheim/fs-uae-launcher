@@ -34,6 +34,7 @@ class Skin(object):
     @classmethod
     @memoize
     def _get_background_color(cls):
+        # FIXME: Rename to launcher_bg/background_color and document.
         value = LauncherSettings.get("ui_background_color")
         if len(value) == 7 and value[0] == "#":
             def convert(s):
@@ -42,7 +43,13 @@ class Skin(object):
             g = convert(value[3:5])
             b = convert(value[5:7])
             return fsui.Color(r, g, b)
-        if fsbc.system.windows:
+        if cls.windows_10():
+            return None
+        elif cls.fws():
+            return None
+        elif fsbc.system.windows:
+            # FIXME: Should really just check for Windows XP here, or maybe
+            # just remove it altogether.
             return fsui.Color(LEVEL, LEVEL, LEVEL)
         elif fsbc.system.macosx:
             return fsui.Color(237, 237, 237)
@@ -74,6 +81,10 @@ class Skin(object):
     def get_bottom_panel_height(cls):
         return (Constants.SCREEN_SIZE[1] + 20 + 2 + 1 + 1 +
                 cls.get_bottom_margin())
+
+    @classmethod
+    def windows_10(cls):
+        return fsui.theme == "fusion" and fsui.theme_variant == "windows10"
 
     @classmethod
     def fws(cls):

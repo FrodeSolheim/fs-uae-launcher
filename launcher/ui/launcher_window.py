@@ -262,19 +262,23 @@ class LauncherWindow(WindowWithTabs):
             icon = check_icon("share/fs-uae-launcher")
         if not icon:
             icon = check_icon("launcher/share/fs-uae-launcher")
+
         # FIXME: should check data directories (XDG_DATA_DIRS) properly
         # instead
         if not icon:
-            # this encoding / decoding is a bit ridiculous, but, this is
+            # FIXME: this encoding / decoding is a bit ridiculous, but, this is
             # for Python 2.x..
             icon = check_icon(os.path.expanduser(
                 "~/.local/share/fs-uae-launcher".encode(
                     sys.getfilesystemencoding())).decode(
                 sys.getfilesystemencoding()))
+
+        # FIXME: Check relative to executable instead
         if not icon:
             icon = check_icon("/usr/local/share/fs-uae-launcher")
         if not icon:
             icon = check_icon("/usr/share/fs-uae-launcher")
+
         if sys.platform == "darwin":
             # Icons come from the app bundles
             icon = None

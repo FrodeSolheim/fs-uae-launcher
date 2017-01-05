@@ -60,23 +60,25 @@ launcher:
 
 	make -C ../python
 
-	rm -Rf $(macos)/OpenGL
+	rm -Rf $(macos)/amitools
 	rm -Rf $(macos)/arcade
 	rm -Rf $(macos)/fsbc
 	rm -Rf $(macos)/fsgs
 	rm -Rf $(macos)/fstd
 	rm -Rf $(macos)/fsui
 	rm -Rf $(macos)/launcher
+	rm -Rf $(macos)/OpenGL
 	rm -Rf $(macos)/oyoyo
 	rm -Rf $(macos)/workspace
 
-	zip -d $(macos)/library.zip OpenGL/\*
+	zip -d $(macos)/library.zip amitools/\*
 	zip -d $(macos)/library.zip arcade/\*
 	zip -d $(macos)/library.zip fsbc/\*
 	zip -d $(macos)/library.zip fsgs/\*
 	zip -d $(macos)/library.zip fstd/\*
 	zip -d $(macos)/library.zip fsui/\*
 	zip -d $(macos)/library.zip launcher/\*
+	zip -d $(macos)/library.zip OpenGL/\*
 	zip -d $(macos)/library.zip oyoyo/\*
 	zip -d $(macos)/library.zip workspace/\*
 

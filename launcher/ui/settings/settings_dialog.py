@@ -15,7 +15,6 @@ from .joystick_settings_page import JoystickSettingsPage
 from .keyboard_settings_page import KeyboardSettingsPage
 from .language_settings_page import LanguageSettingsPage
 from .logging_settings_page import LoggingSettingsPage
-from .maintenance_settings_page import MaintenanceSettingsPage
 from .mouse_settings_page import MouseSettingsPage
 from .netplay_settings_page import NetplaySettingsPage
 from .scan_settings_page import ScanSettingsPage
@@ -73,7 +72,7 @@ class SettingsDialog(PagedDialog):
             fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
             "FS-UAE Launcher", LauncherSettingsPage,
-            fsui.Icon("settings", "pkg:workspace"))
+            fsui.Icon("fs-uae-launcher", "pkg:launcher"))
         self.add_page(
             gettext("File Database"), ScanSettingsPage,
             fsui.Icon("indexing-settings", "pkg:workspace"))
@@ -94,12 +93,12 @@ class SettingsDialog(PagedDialog):
         # self.add_page(
         #     gettext("Experimental Features"), ExperimentalFeaturesPage,
         #     fsui.Icon("settings", "pkg:workspace"))
-        self.add_page(
-            gettext("Maintenance"), MaintenanceSettingsPage,
-            fsui.Icon("maintenance", "pkg:workspace"))
+        # self.add_page(
+        #     gettext("Maintenance"), MaintenanceSettingsPage,
+        #     fsui.Icon("maintenance", "pkg:workspace"))
         self.add_page(
             "FS-UAE Arcade", ArcadeSettingsPage,
-            fsui.Icon("settings", "pkg:workspace"))
+            fsui.Icon("fs-uae-arcade", "pkg:launcher"))
         self.add_page(
             gettext("Advanced Settings"), AdvancedSettingsPage,
             fsui.Icon("settings", "pkg:workspace"))

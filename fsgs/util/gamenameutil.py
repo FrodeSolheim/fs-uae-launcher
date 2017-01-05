@@ -1,7 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
 import os
 import re
 import unicodedata
@@ -280,8 +276,16 @@ class GameNameUtil(object):
         # name = name.replace('(Boot)', '')
         return name
 
+    # FIXME: Mark as deprecated
     @classmethod
-    def extract_names(cls, path, info={}, style=TOSEC):
+    def extract_names(cls, path, info=None, style=TOSEC):
+        return cls.extract_names_from_file_name(path, info=info, style=style)
+
+
+    @classmethod
+    def extract_names_from_file_name(cls, path, info=None, style=TOSEC):
+        if info is None:
+            info = {}
         # game_name = ""
         config_name = ""
 
@@ -335,9 +339,9 @@ class GameNameUtil(object):
             if part[-1] != ")":
                 continue
             if style == cls.TOSEC:
-                commaed_parts = part.split(", ")
-                if len(commaed_parts) == 2:
-                    parts[i] = commaed_parts[1][:-1] + " " + commaed_parts[0] + ")"
+                comma_parts = part.split(", ")
+                if len(comma_parts) == 2:
+                    parts[i] = comma_parts[1][:-1] + " " + comma_parts[0] + ")"
             elif style == cls.NOINTRO:
                 part = part.replace(",", ") (")
                 part = re.sub("[ ]+", " ", part)
@@ -618,6 +622,13 @@ class TestGameNameUtil(unittest.TestCase):
         self.assertEquals(name, "Hitchhiker's Guide to the Galaxy, The")
         self.assertEquals(variant, "r58, 1986, Infocom")
 
+    def test_deep_core(self):
+        full_name =  "Deep Core (Europe)(v1.00).dummy"
+        name, variant = GameNameUtil.extract_names_from_file_name(
+            full_name, style=GameNameUtil.NOINTRO)
+        self.assertEquals(name, "Deep Core")
+        self.assertEquals(variant, "Europe, v1.00")
+
     def test_extract_index_terms_kings_quest(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("King's Quest IV"),
@@ -646,7 +657,7 @@ class TestGameNameUtil(unittest.TestCase):
     def test_extract_index_terms_fa_18_interceptor(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("F/A-18 Interceptor"),
-            set(["f", "fa", "fa18", "f18", "a18", "f", "18", "a",
+            set(["f", "fa", "fa18", "f18", "a18", "f", "18",
                  "interceptor"]))
 
     def test_extract_index_sensible_soccer_95_96(self):
@@ -661,17 +672,17 @@ class TestGameNameUtil(unittest.TestCase):
     def test_extract_index_bump_n_burn(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Bump 'n' Burn"),
-            set(["bump", "and", "burng"]))
+            set(["bump", "burng"]))
 
     def test_extract_index_bump_n_burn_2(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Bump'n' Burn"),
-            set(["bump", "and", "burng", "bumpng"]))
+            set(["bump", "burng", "bumpng"]))
 
     def test_extract_index_bump_n_burn_3(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Bump'n Burn"),
-            set(["bump", "and", "burng", "bumpng"]))
+            set(["bump", "burng", "bumpng"]))
 
     def test_search_bump_n_burn(self):
         self.assertTrue(

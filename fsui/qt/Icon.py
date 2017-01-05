@@ -13,8 +13,12 @@ class Icon(object):
         # package, file_ = name.split(":", 1)
         assert self.path.startswith("pkg:")
         package = self.path[4:]
-        name = "res/{0}/{1}.png".format(size, self.name)
-        stream = Resources(package).stream(name)
+        try:
+            name = "res/{0}x{0}/{1}.png".format(size, self.name)
+            stream = Resources(package).stream(name)
+        except LookupError:
+            name = "res/{0}/{1}.png".format(size, self.name)
+            stream = Resources(package).stream(name)
         return stream
 
     def qimage(self, size):

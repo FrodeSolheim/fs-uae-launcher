@@ -104,7 +104,7 @@ setup_kwargs = {
 if sys.argv[1] == "build_exe":
     if sys.platform == "win32":
         setup_kwargs["executables"] = [
-            Executable(s, base="Win32GUI", icon="icon/" + s + ".ico") 
+            Executable(s, base="Win32GUI", icon="icon/" + s + ".ico")
                 for s in scripts]
     else:
         setup_kwargs["executables"] = [Executable(s) for s in scripts]

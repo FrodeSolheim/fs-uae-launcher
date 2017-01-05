@@ -84,6 +84,9 @@ def initialize_qt_style(qapplication):
     elif launcher_theme == "fusion-dark":
         use_fusion_theme = True
         fusion_variant = "dark"
+    elif launcher_theme == "fusion-windows10":
+        use_fusion_theme = True
+        fusion_variant = "windows10"
     elif launcher_theme == "fws":
         use_fusion_theme = True
         fusion_variant = "fws"
@@ -93,6 +96,8 @@ def initialize_qt_style(qapplication):
         use_fusion_theme = True
         if fstd.desktop.is_running_gnome_3():
             fusion_variant = "adwaita"
+        elif fstd.desktop.is_running_windows_10():
+            fusion_variant = "windows10"
 
     if "--launcher-theme=fusion-dark" in sys.argv:
         use_fusion_theme = True
@@ -110,7 +115,7 @@ def initialize_qt_style(qapplication):
             pa.setColor(QPalette.AlternateBase, QColor(237, 237, 237))
             pa.setColor(QPalette.Button, QColor(237, 237, 237))
             qapplication.setPalette(pa)
-        elif fusion_variant == "fws":
+        elif fusion_variant == "fws" or fusion_variant == "windows10":
             pa = QPalette()
             pa.setColor(QPalette.Window, QColor(242, 242, 242))
             pa.setColor(QPalette.AlternateBase, QColor(242, 242, 242))
@@ -152,3 +157,8 @@ def initialize_qt_style(qapplication):
                 font.setPointSizeF(10.5)
                 font.setHintingPreference(QFont.PreferNoHinting)
             qapplication.setFont(font)
+
+    import fsui
+    if use_fusion_theme:
+        fsui.theme = "fusion"
+        fsui.theme_variant = fusion_variant

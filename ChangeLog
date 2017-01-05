@@ -1,3 +1,11 @@
+Version 2.9.3dev:
+
+* Improved look on Windows 10.
+* Updated look for the settings dialog.
+* Updated button links to option docs.
+* Updated FS-UAE Launcher icon.
+* CDTV games (from database) did not set CDTV model.
+
 Version 2.9.2dev:
 
 * Try ralphschmidt-cyberstorm-ppc-4471.rom if cyberstormppc.rom is not found.

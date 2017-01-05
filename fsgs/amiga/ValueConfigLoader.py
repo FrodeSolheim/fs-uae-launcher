@@ -54,7 +54,7 @@ class ValueConfigLoader(object):
             cd_based = True
             self.options["joystick_port_1_mode"] = "cd32 gamepad"
         elif platform == "cdtv":
-            amiga_model = "cdtv"
+            amiga_model = "CDTV"
             cd_based = True
         else:
             raise Exception("unknown platform")

@@ -1,7 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
 import os
 import io
 import xml.etree.cElementTree as ElementTree
@@ -46,7 +42,9 @@ class DatFile(object):
 
         root = ElementTree.fromstring(data)
         header_node = root.find("header")
-        self.description = header_node.find("description").text.strip()
+        description_node = header_node.find("description")
+        if description_node is not None:
+            self.description = description_node.text.strip()
         for game_node in root.findall("game"):
             game = {
                 "name": game_node.attrib["name"],
@@ -55,9 +53,9 @@ class DatFile(object):
             for rom_node in game_node.findall("rom"):
                 rom = {"name": rom_node.attrib["name"],
                        "size": int(rom_node.attrib["size"]),
-                       "crc32": rom_node.attrib["crc"],
-                       "md5": rom_node.attrib["md5"],
-                       "sha1": rom_node.attrib["sha1"]}
+                       "crc32": rom_node.attrib["crc"].lower(),
+                       "md5": rom_node.attrib["md5"].lower(),
+                       "sha1": rom_node.attrib["sha1"].lower()}
                 game["files"].append(rom)
             self.games.append(game)
 

@@ -8,6 +8,10 @@ class SettingsPage(fsui.Panel):
     def __init__(self, parent):
         super().__init__(parent)
         self.layout = fsui.VerticalLayout()
+        self.layout.padding_top = 20
+        self.layout.padding_bottom = 20
+        self.layout.padding_left = 20
+        self.layout.padding_right = 20
         self.icon_header = None
 
     def add_header(self, icon, title, subtitle=""):

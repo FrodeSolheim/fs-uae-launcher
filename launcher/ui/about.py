@@ -20,7 +20,7 @@ class AboutDialog(fsui.Window):
             self, fsui.Icon("fs-uae-launcher", "pkg:launcher"),
             "{name} {version}".format(name="FS-UAE Launcher",
                                       version=app.version),
-            "Copyright © 2012-2015 Frode Solheim")
+            "Copyright © 2012-2017 Frode Solheim")
         layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         self.text_area = fsui.TextArea(

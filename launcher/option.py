@@ -126,6 +126,7 @@ class Option(object):
     VIDEO_SYNC = "video_sync"
     VIDEO_SYNC_METHOD = "video_sync_method"
     VOLUME = "volume"
+    WARP_MODE = "warp_mode"
     WHDLOAD_BOOT_DIR = "whdload_boot_dir"
     WHDLOAD_SPLASH_DELAY = "whdload_splash_delay"
     WINDOW_BORDER = "window_border"
@@ -653,11 +654,12 @@ options = {
         "description": N_("Launcher Theme"),
         "type": "Choice",
         "values": [
-            ("standard", N_("Standard")),
+            ("standard", N_("Standard Qt Theme")),
             ("fusion", "Fusion Auto"),
-            ("fusion-plain", "Fusion Plain"),
+            ("fusion-plain", "Fusion"),
             ("fusion-adwaita", "Fusion Adwaita"),
             ("fusion-dark", "Fusion Dark"),
+            ("fusion-windows10", "Fusion Windows 10"),
         ]
     },
     "load_state": {
@@ -1109,6 +1111,11 @@ options = {
         "type": "integer",
         "min": 0,
         "max": 100,
+    },
+    "warp_mode": {
+        "default": "0",
+        "description": N_("Start in warp mode"),
+        "type": "Boolean",
     },
     "whdload_boot_dir": {
         "default": "",

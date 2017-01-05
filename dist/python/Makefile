@@ -10,6 +10,8 @@ build:
 	cd $(lib) && rm -f *.zip
 
 	# cd $(lib) && zip -r --exclude="*.ttf" arcade.zip arcade
+	cd $(lib) && zip -r amitools.zip amitools
+	mv $(lib)/amitools.zip .
 	cd $(lib) && zip -r arcade.zip arcade
 	mv $(lib)/arcade.zip .
 	cd $(lib) && zip -r fsbc.zip fsbc
