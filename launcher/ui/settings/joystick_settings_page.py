@@ -11,10 +11,14 @@ class JoystickSettingsPage(SettingsPage):
         super().__init__(parent)
         icon = fsui.Icon("joystick-settings", "pkg:workspace")
         # gettext("Joystick Settings")
-        title = gettext("Joysticks & Gamepads")
+        title = gettext("Controllers")
         subtitle = gettext("Configure joysticks and set preferred joystick "
                            "devices")
         self.add_header(icon, title, subtitle)
+
+        label = fsui.Label(
+            self, gettext("Double-click a controller to configure it:"))
+        self.layout.add(label, margin_bottom=10)
 
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_height(140)
@@ -24,11 +28,6 @@ class JoystickSettingsPage(SettingsPage):
             if DeviceManager.is_joystick(device_name):
                 self.list_view.add_item(device_name, icon=image)
         self.layout.add(self.list_view, fill=True, expand=True)
-
-        label = fsui.Label(
-            self, gettext("Double-click a device entry to configure it (map "
-                          "joystick buttons)."))
-        self.layout.add(label, margin_top=10)
 
         self.layout.add_spacer(20)
         self.pref_group = PreferredJoysticksGroup(self)
@@ -63,12 +62,12 @@ class PreferredJoysticksGroup(fsui.Group):
         self.layout2 = fsui.VerticalLayout()
         self.layout.add(self.layout2, fill=True, expand=True)
 
-        heading = gettext("Preferred Joysticks")
+        heading = gettext("Preferred Controllers")
         label = fsui.HeadingLabel(self, heading)
         self.layout2.add(label)
 
         self.layout2.add_spacer(20)
-        label = fsui.Label(self, gettext("The following joystick will be "
+        label = fsui.Label(self, gettext("The following controller will be "
                                          "preferred, if present:"))
         self.layout2.add(label)
 
@@ -78,7 +77,7 @@ class PreferredJoysticksGroup(fsui.Group):
 
         self.layout2.add_spacer(20)
         label = fsui.Label(
-            self, gettext("Preferred device for secondary joystick:"))
+            self, gettext("Preferred device for secondary controller:"))
         self.layout2.add(label)
 
         self.layout2.add_spacer(6)

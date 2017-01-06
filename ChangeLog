@@ -1,5 +1,6 @@
 Version 2.9.3dev:
 
+* Renamed "Joystick" to "Controller" in settings dialog.
 * Improved look on Windows 10.
 * Updated look for the settings dialog.
 * Updated button links to option docs.
