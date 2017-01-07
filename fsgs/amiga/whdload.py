@@ -1,8 +1,37 @@
+from fsgs.option import Option
+
 DEFAULT_WHDLOAD_VERSION = "18.2"
 
 
-def whdload_should_disable_drive_click():
+def should_disable_drive_click():
     return True
+
+
+def create_prefs_file(config, path):
+    # FIXME: require config object returning empty string on unset keys?
+    # print(repr(config.get("__invalid__")))
+    # assert config.get("__invalid__") == ""
+    default_prefs = default_whdload_prefs
+    # make sure the data is CRLF line terminated
+    default_prefs = default_prefs.replace("\r\n", "\n")
+    default_prefs = default_prefs.replace("\n", "\r\n")
+
+    if config.get("__netplay_game", ""):
+        print("WHDLoad defaults only in net play mode")
+    else:
+        splash_delay = config.get(Option.WHDLOAD_SPLASH_DELAY, "")
+        if splash_delay:
+            default_prefs = default_prefs.replace(
+                ";SplashDelay=0", "SplashDelay={}".format(
+                    int(splash_delay)))
+        quit_key = config.get(Option.WHDLOAD_QUIT_KEY, "")
+        if quit_key:
+            default_prefs = default_prefs.replace(
+                ";QuitKey=$45", "QuitKey={}".format(
+                    quit_key))
+
+    with open(path, "wb") as f:
+        f.write(default_prefs.encode("UTF-8"))
 
 
 # noinspection SpellCheckingInspection

@@ -1,5 +1,4 @@
 # FIXME: send fsgs as parameter to ValueConfigLoader instead
-from fsgs.amiga.whdload import whdload_should_disable_drive_click
 from fsgs.context import fsgs
 import os
 import json
@@ -7,11 +6,11 @@ from fsbc.paths import Paths
 from fsgs.amiga.Amiga import Amiga
 from fsgs.FileDatabase import FileDatabase
 from fsgs.network import openretro_url_prefix
-from launcher.option import Option
+from fsgs.option import Option
+from fsgs.amiga import whdload
 
 
 class ValueConfigLoader(object):
-
     DB_VERSION_MAX = 1
 
     def __init__(self, uuid=""):
@@ -72,7 +71,7 @@ class ValueConfigLoader(object):
         #     self.load_game_info(game_uuid)
 
         # self.load_options())
-        
+
         sort_list = []
         for key in values:
             if key == "chip_memory":
@@ -96,7 +95,7 @@ class ValueConfigLoader(object):
             self.load_floppies()
 
         self.load_hard_drives()
-        
+
         # if not self.check_all_files():
         #     print(" -- some files are missing --")
         #     self.options["x_missing_files"] = "1"
@@ -119,7 +118,7 @@ class ValueConfigLoader(object):
             self.config[key] = value
 
         if (self.config.get("amiga_model", "") == "A500" and
-                self.config.get("slow_memory") == "0"):
+                    self.config.get("slow_memory") == "0"):
             self.config["amiga_model"] = "A500/512K"
             self.config["slow_memory"] = ""
 
@@ -200,15 +199,15 @@ class ValueConfigLoader(object):
         #         self.viewport.append(value)
         elif key == "hd_startup":
             self.options["hd_startup"] = value
-            if whdload_should_disable_drive_click():
+            if whdload.should_disable_drive_click():
                 self.options[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
         elif key == "whdload_args":
             self.options["x_whdload_args"] = value
-            if whdload_should_disable_drive_click():
+            if whdload.should_disable_drive_click():
                 self.options[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
         elif key == "hdinst_args":
             self.options["x_hdinst_args"] = value
-            if whdload_should_disable_drive_click():
+            if whdload.should_disable_drive_click():
                 self.options[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
         elif key == "hd_requirements":
             self.options["hd_requirements"] = value
@@ -288,19 +287,19 @@ class ValueConfigLoader(object):
             # FIXME: handle
             pass
         elif key in [
-                "joystick_port_0_mode", "joystick_port_1_mode",
-                "joystick_port_2_mode", "joystick_port_3_mode",
-                "joystick_port_4_mode"]:
-            self. load_joystick_port_x_mode_option(key, value)
+            "joystick_port_0_mode", "joystick_port_1_mode",
+            "joystick_port_2_mode", "joystick_port_3_mode",
+            "joystick_port_4_mode"]:
+            self.load_joystick_port_x_mode_option(key, value)
         elif key in [
-                "amiga_model", "accuracy", "cdrom_drive_0_delay",
-                "floppy_drive_count", "slow_memory", "front_sha1",
-                "screen1_sha1", "screen2_sha1", "screen3_sha1",
-                "screen4_sha1", "screen5_sha1", "title_sha1",
-                "year", "publisher", "developer", "hol_url",
-                "lemon_url", "wikipedia_url", "mobygames_url",
-                "whdload_url", "amigamemo_url", "longplay_url",
-                "thelegacy_url", "homepage_url", "languages", "dongle_type"]:
+            "amiga_model", "accuracy", "cdrom_drive_0_delay",
+            "floppy_drive_count", "slow_memory", "front_sha1",
+            "screen1_sha1", "screen2_sha1", "screen3_sha1",
+            "screen4_sha1", "screen5_sha1", "title_sha1",
+            "year", "publisher", "developer", "hol_url",
+            "lemon_url", "wikipedia_url", "mobygames_url",
+            "whdload_url", "amigamemo_url", "longplay_url",
+            "thelegacy_url", "homepage_url", "languages", "dongle_type"]:
             self.options[key] = value
         elif key == "requirements":
             if "wb" in value.lower():
@@ -322,8 +321,8 @@ class ValueConfigLoader(object):
             self.options["x_variant_error"] = value
         elif key == "joy_emu_conflict":
             self.options["x_joy_emu_conflict"] = value
-        # elif key == "languages":
-        #     self.options["x_languages"] = value
+            # elif key == "languages":
+            #     self.options["x_languages"] = value
 
     def load_joystick_port_x_mode_option(self, key, value):
         value = value.lower()
@@ -467,8 +466,8 @@ class ValueConfigLoader(object):
                 cue = True
             if file_item["name"].endswith(".ccd"):
                 ccd = True
-            # if file_item["name"].endswith(".iso"):
-            #     iso = True
+                # if file_item["name"].endswith(".iso"):
+                #     iso = True
         media_list = []
         if ccd:
             ext = ".ccd"

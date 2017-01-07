@@ -7,6 +7,7 @@ import tempfile
 import unittest
 import traceback
 import zlib
+
 from fsbc.paths import Paths
 from fsbc.task import current_task, TaskFailure
 from fsbc.resources import Resources
@@ -20,8 +21,7 @@ from fsgs.amiga.Amiga import Amiga
 from fsgs.amiga.ConfigWriter import ConfigWriter
 from fsgs.amiga.FSUAE import FSUAE
 from fsgs.amiga.ROMManager import ROMManager
-from fsgs.amiga.whdload import DEFAULT_WHDLOAD_VERSION, whdload_files, \
-    whdload_support_files, default_whdload_prefs
+from fsgs.amiga import whdload
 from fsgs.amiga.workbench import WorkbenchExtractor
 from fsgs.knownfiles import ACTION_REPLAY_MK_III_3_17_ROM, \
     ACTION_REPLAY_MK_III_3_17_MOD_ROM, ACTION_REPLAY_MK_II_2_14_ROM, \
@@ -29,7 +29,7 @@ from fsgs.knownfiles import ACTION_REPLAY_MK_III_3_17_ROM, \
 from fsgs.network import is_http_url
 from fsgs.res import gettext
 from fsgs.amiga.roms import PICASSO_IV_74_ROM, CD32_FMV_ROM
-from launcher.option import Option
+from fsgs.option import Option
 from typing import List, Dict
 
 
@@ -744,15 +744,16 @@ class LaunchHandler(object):
         self.copy_whdload_kickstart(
             dest_dir, "kick40068.A4000",
             ["5fe04842d04a489720f0f4bb0e46948199406f49"])
-        self.create_whdload_prefs_file(os.path.join(s_dir, "WHDLoad.prefs"))
+        whdload.create_prefs_file(
+            self.config, os.path.join(s_dir, "WHDLoad.prefs"))
 
         whdload_version = self.config["x_whdload_version"]
         if not whdload_version:
-            whdload_version = DEFAULT_WHDLOAD_VERSION
+            whdload_version = whdload.DEFAULT_WHDLOAD_VERSION
 
-        for key, value in whdload_files[whdload_version].items():
+        for key, value in whdload.whdload_files[whdload_version].items():
             self.install_whdload_file(key, dest_dir, value)
-        for key, value in whdload_support_files.items():
+        for key, value in whdload.whdload_support_files.items():
             self.install_whdload_file(key, dest_dir, value)
 
         if self.config.get("__netplay_game", ""):
@@ -835,24 +836,6 @@ class LaunchHandler(object):
         name = os.path.basename(rel_path)
         self.on_progress(gettext("Downloading {0}...".format(name)))
         Downloader.install_file_by_sha1(sha1, name, abs_path)
-
-    def create_whdload_prefs_file(self, path):
-        default_prefs = default_whdload_prefs
-        # make sure the data is CRLF line terminated
-        default_prefs = default_prefs.replace("\r\n", "\n")
-        default_prefs = default_prefs.replace("\n", "\r\n")
-
-        if self.config.get("__netplay_game", ""):
-            print("WHDLoad defaults only in net play mode")
-        else:
-            splash_delay = self.config.get("whdload_splash_delay", "")
-            if splash_delay:
-                default_prefs = default_prefs.replace(
-                    ";SplashDelay=0", "SplashDelay={}".format(
-                        int(splash_delay)))
-
-        with open(path, "wb") as f:
-            f.write(default_prefs.encode("UTF-8"))
 
     def copy_setpatch(self, base_dir):
         dest = os.path.join(base_dir, "C")

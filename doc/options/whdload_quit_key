@@ -1,0 +1,22 @@
+Summary: WHDLoad quit key
+Default: 0
+Example: $59
+Type: Choice
+
+This option specifies a global WHDLoad quit key which will be written
+to the auto-generated WHDLoad.prefs file. The global quit key override will
+only work when using a 68010 or higher CPU, for example by using the
+A1200 or A4000 models.
+
+Value: 0 (Slave Default)
+Value: $45 (Escape)
+Value: $50 (F1)
+Value: $51 (F2)
+Value: $52 (F3)
+Value: $53 (F4)
+Value: $54 (F5)
+Value: $55 (F6)
+Value: $56 (F7)
+Value: $57 (F8)
+Value: $58 (F9)
+Value: $59 (F10)
