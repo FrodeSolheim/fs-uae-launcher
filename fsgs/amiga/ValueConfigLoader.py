@@ -1,4 +1,5 @@
 # FIXME: send fsgs as parameter to ValueConfigLoader instead
+from fsgs.amiga.whdload import whdload_should_disable_drive_click
 from fsgs.context import fsgs
 import os
 import json
@@ -6,6 +7,7 @@ from fsbc.paths import Paths
 from fsgs.amiga.Amiga import Amiga
 from fsgs.FileDatabase import FileDatabase
 from fsgs.network import openretro_url_prefix
+from launcher.option import Option
 
 
 class ValueConfigLoader(object):
@@ -198,13 +200,16 @@ class ValueConfigLoader(object):
         #         self.viewport.append(value)
         elif key == "hd_startup":
             self.options["hd_startup"] = value
-            self.options["floppy_drive_volume_empty"] = "0"
+            if whdload_should_disable_drive_click():
+                self.options[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
         elif key == "whdload_args":
             self.options["x_whdload_args"] = value
-            self.options["floppy_drive_volume_empty"] = "0"
+            if whdload_should_disable_drive_click():
+                self.options[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
         elif key == "hdinst_args":
             self.options["x_hdinst_args"] = value
-            self.options["floppy_drive_volume_empty"] = "0"
+            if whdload_should_disable_drive_click():
+                self.options[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
         elif key == "hd_requirements":
             self.options["hd_requirements"] = value
         elif key == "save_disk":

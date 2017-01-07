@@ -1,5 +1,10 @@
 DEFAULT_WHDLOAD_VERSION = "18.2"
 
+
+def whdload_should_disable_drive_click():
+    return True
+
+
 # noinspection SpellCheckingInspection
 whdload_support_files = {
     "1d1c557f4a0f5ea88aeb96d68b09f41990340f70":

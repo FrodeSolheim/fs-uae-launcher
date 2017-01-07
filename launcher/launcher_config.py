@@ -127,7 +127,7 @@ cfg = [
     ("jit_compiler", "", "checksum", "sync"),
     ("__database", ""),
     ("platform", ""),
-    ("floppy_drive_volume_empty", "", "sync"),
+    (Option.FLOPPY_DRIVE_VOLUME_EMPTY, "", "sync"),
     ("save_disk", "", "checksum", "sync"),
     ("network_card", "", "checksum", "sync"),
     ("freezer_cartridge", "", "checksum", "sync"),

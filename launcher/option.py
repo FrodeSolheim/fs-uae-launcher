@@ -144,7 +144,7 @@ def N_(x):
 
 
 options = {
-    "accelerator": {
+    Option.ACCELERATOR: {
         "default": "0",
         "description": N_("Accelerator Board"),
         "type": "Choice",
@@ -157,7 +157,7 @@ options = {
             ("cyberstorm-ppc", "CyberStorm PPC"),
         ]
     },
-    "accelerator_memory": {
+    Option.ACCELERATOR_MEMORY: {
         "default": "",
         "description": N_("Accelerator RAM"),
         "type": "Choice",
@@ -174,26 +174,26 @@ options = {
             ("262144", "256 MB"),
         ]
     },
-    "arcade_fullscreen": {
+    Option.ARCADE_FULLSCREEN: {
         "default": "0",
         "description": N_("Arcade Fullscreen"),
         "type": "boolean",
     },
-    "audio_buffer_target_bytes": {
+    Option.AUDIO_BUFFER_TARGET_BYTES: {
         "default": "8192",
         "description": N_("Audio buffer target size (bytes)"),
         "type": "integer",
         "min": 1024,
         "max": 32768,
     },
-    "audio_buffer_target_size": {
+    Option.AUDIO_BUFFER_TARGET_SIZE: {
         "default": "40",
         "description": N_("Audio buffer target size (ms)"),
         "type": "integer",
         "min": 1,
         "max": 100,
     },
-    "audio_frequency": {
+    Option.AUDIO_FREQUENCY: {
         "default": "48000",
         "description": N_("Audio output frequency"),
         "type": "choice",
@@ -204,32 +204,32 @@ options = {
             ("11025", "11025 Hz"),
         ]
     },
-    "automatic_input_grab": {
+    Option.AUTOMATIC_INPUT_GRAB: {
         "default": "1",
         "description": N_("Grab Input on Click"),
         "type": "boolean",
     },
-    "blizzard_scsi_kit": {
+    Option.BLIZZARD_SCSI_KIT: {
         "default": "0",
         "description": N_("Blizzard SCSI Kit"),
         "type": "boolean",
     },
-    "bsdsocket_library": {
+    Option.BSDSOCKET_LIBRARY: {
         "default": "0",
         "description": N_("UAE bsdsocket.library"),
         "type": "boolean",
     },
-    "builtin_configs": {
+    Option.BUILTIN_CONFIGS: {
         "default": "1",
         "description": N_("Include built-in configurations"),
         "type": "boolean",
     },
-    "cdrom_drive_0_delay": {
+    Option.CDROM_DRIVE_0_DELAY: {
         "default": "0",
         "description": N_("Delayed CD-ROM Insert"),
         "type": "Boolean",
     },
-    "cdrom_drive_count": {
+    Option.CDROM_DRIVE_COUNT: {
         "default": "",
         "description": N_("CD-ROM Drive Count"),
         "type": "Choice",
@@ -238,7 +238,7 @@ options = {
             ("1", "1"),
         ]
     },
-    "chip_memory": {
+    Option.CHIP_MEMORY: {
         "default": "",
         "description": N_("Chip RAM"),
         "type": "Choice",
@@ -252,7 +252,7 @@ options = {
             ("8192", "8 MB"),
         ]
     },
-    "cpu": {
+    Option.CPU: {
         "default": "",
         "description": N_("CPU"),
         "type": "Choice",
@@ -273,7 +273,7 @@ options = {
             ("68060", "68060"),
         ]
     },
-    "cpu_idle": {
+    Option.CPU_IDLE: {
         "default": "",
         "description": N_(
             "Relax host CPU usage when using fastest-possible CPU"),
@@ -281,90 +281,90 @@ options = {
         "min": 0,
         "max": 10,
     },
-    "database_arcade": {
+    Option.DATABASE_ARCADE: {
         "default": "0",
         "description": N_("Enable/disable use of the Arcade game database"),
         "type": "Boolean",
     },
-    "database_atari": {
+    Option.DATABASE_ATARI: {
         "default": "0",
         "description": N_("Enable/disable use of the Atari ST game database"),
         "type": "Boolean",
     },
-    "database_auth": {
+    Option.DATABASE_AUTH: {
         "default": "",
         "description": N_("Game database authentication"),
         "type": "string",
     },
-    "database_c64": {
+    Option.DATABASE_C64: {
         "default": "0",
         "description": N_(
             "Enable/disable use of the Commodore 64 (C64) database"),
         "type": "Boolean",
     },
-    "database_cpc": {
+    Option.DATABASE_CPC: {
         "default": "0",
         "description": N_(
             "Enable/disable use of the Amstrad CPC game database"),
         "type": "Boolean",
     },
-    "database_dos": {
+    Option.DATABASE_DOS: {
         "default": "0",
         "description": N_("Enable/disable use of the DOS game database"),
         "type": "Boolean",
     },
-    "database_email": {
+    Option.DATABASE_EMAIL: {
         "default": "",
         "description": N_("Game database email"),
         "type": "string",
     },
-    "database_feature": {
+    Option.DATABASE_FEATURE: {
         "default": "0",
         "description": N_("Enable online database support (requires restart)"),
         "type": "boolean",
     },
-    "database_gb": {
+    Option.DATABASE_GB: {
         "default": "0",
         "description": N_("Enable/disable use of the Game Boy database"),
         "type": "Boolean",
     },
-    "database_gba": {
+    Option.DATABASE_GBA: {
         "default": "0",
         "description": N_(
             "Enable/disable use of the Game Boy Advance database"),
         "type": "Boolean",
     },
-    "database_gbc": {
+    Option.DATABASE_GBC: {
         "default": "0",
         "description": N_("Enable/disable use of the Game Boy Color database"),
         "type": "Boolean",
     },
-    "database_locker": {
+    Option.DATABASE_LOCKER: {
         "default": "",
         "description": N_("Enable/disable use of OAGD.net locker"),
         "type": "boolean",
     },
-    "database_nes": {
+    Option.DATABASE_NES: {
         "default": "0",
         "description": N_("Enable/disable use of the Nintendo (NES) database"),
         "type": "Boolean",
     },
-    "database_password": {
+    Option.DATABASE_PASSWORD: {
         "default": "",
         "description": N_("Game database password"),
         "type": "string",
     },
-    "database_server": {
+    Option.DATABASE_SERVER: {
         "default": "oagd.net",
         "description": N_("Game Database Server"),
         "type": "string",
     },
-    "database_show_adult": {
+    Option.DATABASE_SHOW_ADULT: {
         "default": "0",
         "description": N_("Adult-Themed Games"),
         "type": "boolean",
     },
-    "database_show_games": {
+    Option.DATABASE_SHOW_GAMES: {
         "default": "1",
         "description": N_("Database Games"),
         "type": "choice",
@@ -375,27 +375,27 @@ options = {
             ("3", N_("Available Games")),
         ]
     },
-    "database_show_unpublished": {
+    Option.DATABASE_SHOW_UNPUBLISHED: {
         "default": "0",
         "description": N_("Unpublished Games"),
         "type": "boolean",
     },
-    "database_snes": {
+    Option.DATABASE_SNES: {
         "default": "0",
         "description": N_("Enable/disable use of the Super Nintendo database"),
         "type": "Boolean",
     },
-    "database_username": {
+    Option.DATABASE_USERNAME: {
         "default": "",
         "description": N_("Game database user name"),
         "type": "string",
     },
-    "device_id": {
+    Option.DEVICE_ID: {
         "default": "",
         "description": N_("Device ID used with OAGD.net authentication"),
         "type": "string",
     },
-    "dongle_type": {
+    Option.DONGLE_TYPE: {
         "default": "0",
         "description": N_("Hardware Dongle"),
         "type": "Choice",
@@ -411,17 +411,17 @@ options = {
             ("leviathan", "Leviathan"),
         ]
     },
-    "expect_version": {
+    Option.EXPECT_VERSION: {
         "default": "",
         "description": N_("Expect Specific FS-UAE Version"),
         "type": "",
     },
-    "fade_in_duration": {
+    Option.FADE_IN_DURATION: {
         "default": "0",
         "description": N_("Fade-in Duration on Start"),
         "type": "",
     },
-    "fast_memory": {
+    Option.FAST_MEMORY: {
         "default": "",
         "description": N_("Fast RAM"),
         "type": "Choice",
@@ -438,7 +438,7 @@ options = {
             ("", ""),
         ]
     },
-    "floppy_drive_count": {
+    Option.FLOPPY_DRIVE_COUNT: {
         "default": "",
         "description": N_("Floppy Drive Count"),
         "type": "Choice",
@@ -450,7 +450,7 @@ options = {
             ("4", "4"),
         ]
     },
-    "floppy_drive_speed": {
+    Option.FLOPPY_DRIVE_SPEED: {
         "default": "100",
         "description": N_("Floppy Drive Speed"),
         "type": "Choice",
@@ -462,21 +462,21 @@ options = {
             ("800", "800 %"),
         ]
     },
-    "floppy_drive_volume": {
+    Option.FLOPPY_DRIVE_VOLUME: {
         "default": "25",
         "description": N_("Floppy Drive Volume"),
         "type": "integer",
         "min": 0,
         "max": 100,
     },
-    "floppy_drive_volume_empty": {
+    Option.FLOPPY_DRIVE_VOLUME_EMPTY: {
         "default": "25",
         "description": N_("Empty Floppy Drive Volume"),
         "type": "integer",
         "min": 0,
         "max": 100,
     },
-    "freezer_cartridge": {
+    Option.FREEZER_CARTRIDGE: {
         "default": "0",
         "description": N_("Freezer Cartridge"),
         "type": "Choice",
@@ -487,7 +487,7 @@ options = {
             ("action-replay-3", "Action Replay Mk III v3.17"),
         ]
     },
-    "fsaa": {
+    Option.FSAA: {
         "default": "0",
         "description": N_("Full-scene anti-aliasing (FSAA)"),
         "type": "choice",
@@ -498,17 +498,17 @@ options = {
             ("8", "8x8"),
         ]
     },
-    "full_keyboard": {
+    Option.FULL_KEYBOARD: {
         "default": "0",
         "description": N_("Start with full keyboard emulation"),
         "type": "boolean",
     },
-    "fullscreen": {
+    Option.FULLSCREEN: {
         "default": "0",
         "description": N_("Start FS-UAE in fullscreen mode"),
         "type": "boolean",
     },
-    "fullscreen_mode": {
+    Option.FULLSCREEN_MODE: {
         "default": "desktop",
         "description": N_("Fullscreen Mode"),
         "type": "Choice",
@@ -518,7 +518,7 @@ options = {
             ("window", N_("Fullscreen Window")),
         ]
     },
-    "graphics_card": {
+    Option.GRAPHICS_CARD: {
         "default": "none",
         "description": N_("Graphics Card"),
         "type": "Choice",
@@ -534,7 +534,7 @@ options = {
             ("picasso-iv-z3", "Picasso IV Zorro III"),
         ]
     },
-    "graphics_memory": {
+    Option.GRAPHICS_MEMORY: {
         "default": "",
         "description": N_("Graphics Card RAM"),
         "type": "Choice",
@@ -551,42 +551,42 @@ options = {
             ("262144", "256 MB"),
         ]
     },
-    "initial_input_grab": {
+    Option.INITIAL_INPUT_GRAB: {
         "default": "",
         "description": N_("Grab Input on FS-UAE Startup"),
         "type": "boolean",
     },
-    "irc_nick": {
+    Option.IRC_NICK: {
         "default": "",
         "description": N_("IRC nickname"),
         "type": "string",
     },
-    "irc_server": {
+    Option.IRC_SERVER: {
         "default": "irc.fs-uae.net",
         "description": N_("Custom IRC Server"),
         "type": "String",
     },
-    "jit_compiler": {
+    Option.JIT_COMPILER: {
         "default": "0",
         "description": N_("JIT Compiler"),
         "type": "Boolean",
     },
-    "joystick_port_0_autoswitch": {
+    Option.JOYSTICK_PORT_0_AUTOSWITCH: {
         "default": "1",
         "description": N_("Automatic mouse/joystick mode for mouse port"),
         "type": "boolean",
     },
-    "keep_aspect": {
+    Option.KEEP_ASPECT: {
         "default": "0",
         "description": N_("Keep aspect ratio when scaling (do not stretch)"),
         "type": "boolean",
     },
-    "keyboard_input_grab": {
+    Option.KEYBOARD_INPUT_GRAB: {
         "default": "1",
         "description": N_("Grab keyboard when input is grabbed"),
         "type": "boolean",
     },
-    "keyboard_key_backslash": {
+    Option.KEYBOARD_KEY_BACKSLASH: {
         "default": "action_key_backslash",
         "description": N_("Host Key BACKSLASH"),
         "type": "Choice",
@@ -597,7 +597,7 @@ options = {
             ("action_key_equals", "Amiga Key Equals"),
         ]
     },
-    "keyboard_key_equals": {
+    Option.KEYBOARD_KEY_EQUALS: {
         "default": "action_key_equals",
         "description": N_("Host Key EQUALS"),
         "type": "Choice",
@@ -608,7 +608,7 @@ options = {
             ("action_key_equals", "Amiga Key Equals"),
         ]
     },
-    "keyboard_key_insert": {
+    Option.KEYBOARD_KEY_INSERT: {
         "default": "action_key_2b",
         "description": N_("Host Key INSERT"),
         "type": "Choice",
@@ -619,7 +619,7 @@ options = {
             ("action_key_equals", "Amiga Key Equals"),
         ]
     },
-    "keyboard_key_less": {
+    Option.KEYBOARD_KEY_LESS: {
         "default": "action_key_30",
         "description": N_("Host Key LESS"),
         "type": "Choice",
@@ -630,26 +630,26 @@ options = {
             ("action_key_equals", "Amiga Key Equals"),
         ]
     },
-    "kickstart_setup": {
+    Option.KICKSTART_SETUP: {
         "default": "1",
         "description": N_(
             "Show kickstart setup page on startup when all ROMs are missing"),
         "type": "boolean",
     },
-    "launcher_config_feature": {
+    Option.LAUNCHER_CONFIG_FEATURE: {
         "default": "0",
         "description": N_(
             "Experimental Config Visualization (Requires Restart)"),
         "type": "Boolean",
     },
-    "launcher_font_size": {
+    Option.LAUNCHER_FONT_SIZE: {
         "default": "",
         "description": N_("Launcher Font Size"),
         "type": "Integer",
         "min": 6,
         "max": 18,
     },
-    "launcher_theme": {
+    Option.LAUNCHER_THEME: {
         "default": "fusion",
         "description": N_("Launcher Theme"),
         "type": "Choice",
@@ -662,59 +662,59 @@ options = {
             ("fusion-windows10", "Fusion Windows 10"),
         ]
     },
-    "load_state": {
+    Option.LOAD_STATE: {
         "default": "",
         "description": N_("Load state by number"),
         "type": "integer",
         "min": 1,
         "max": 9,
     },
-    "log_autoscale": {
+    Option.LOG_AUTOSCALE: {
         "default": "0",
         "description": N_("Log Autoscale Changes"),
         "type": "boolean",
     },
-    "log_bsdsocket": {
+    Option.LOG_BSDSOCKET: {
         "default": "0",
         "description": "",
         "type": "boolean",
     },
-    "log_flush": {
+    Option.LOG_FLUSH: {
         "default": "",
         "description": N_("Flush log after each log line"),
         "type": "boolean",
     },
-    "log_input": {
+    Option.LOG_INPUT: {
         "default": "0",
         "description": N_("Log Input Events"),
         "type": "boolean",
     },
-    "log_query_plans": {
+    Option.LOG_QUERY_PLANS: {
         "default": "",
         "description": N_("Log database query plans"),
         "type": "",
     },
-    "low_latency_vsync": {
+    Option.LOW_LATENCY_VSYNC: {
         "default": "1",
         "description": N_("Low latency video sync"),
         "type": "boolean",
     },
-    "middle_click_ungrab": {
+    Option.MIDDLE_CLICK_UNGRAB: {
         "default": "1",
         "description": N_("Ungrab Input on Middle Mouse Button"),
         "type": "boolean",
     },
-    "min_first_line_ntsc": {
+    Option.MIN_FIRST_LINE_NTSC: {
         "default": "21",
         "description": N_("First rendered line (NTSC)"),
         "type": "",
     },
-    "min_first_line_pal": {
+    Option.MIN_FIRST_LINE_PAL: {
         "default": "26",
         "description": N_("First rendered line (PAL)"),
         "type": "",
     },
-    "monitor": {
+    Option.MONITOR: {
         "default": "middle-left",
         "description": N_("Monitor to display FS-UAE on (fullscreen)"),
         "type": "choice",
@@ -725,7 +725,7 @@ options = {
             ("right", N_("Right")),
         ]
     },
-    "motherboard_ram": {
+    Option.MOTHERBOARD_RAM: {
         "default": "",
         "description": N_("Motherboard RAM"),
         "type": "Choice",
@@ -740,25 +740,25 @@ options = {
             ("65536", "64 MB"),
         ]
     },
-    "mouse_speed": {
+    Option.MOUSE_SPEED: {
         "default": "100",
         "description": N_("Mouse Speed (%)"),
         "type": "integer",
         "min": 1,
         "max": 500,
     },
-    "netplay_feature": {
+    Option.NETPLAY_FEATURE: {
         "default": "0",
         "description": N_(
             "Enable experimental net play GUI (requires restart)"),
         "type": "boolean",
     },
-    "netplay_tag": {
+    Option.NETPLAY_TAG: {
         "default": "UNK",
         "description": N_("Net play tag (max 3 characters)"),
         "type": "string",
     },
-    "network_card": {
+    Option.NETWORK_CARD: {
         "default": "0",
         "description": N_("Network Card"),
         "type": "Choice",
@@ -767,42 +767,42 @@ options = {
             ("a2065", "A2065"),
         ]
     },
-    "platform": {
+    Option.PLATFORM: {
         "default": "",
         "description": N_("Platform"),
         "type": "choice",
     },
-    "raw_input": {
+    Option.RAW_INPUT: {
         "default": "1",
         "description": N_("Use keyboard raw input (Windows)"),
         "type": "Boolean",
     },
-    "relative_paths": {
+    Option.RELATIVE_PATHS: {
         "default": "",
         "description": N_("Relative paths"),
         "type": "",
     },
-    "relative_temp_feature": {
+    Option.RELATIVE_TEMP_FEATURE: {
         "default": "0",
         "description": N_("Relative Temporary Directories"),
         "type": "Boolean",
     },
-    "rtg_scanlines": {
+    Option.RTG_SCANLINES: {
         "default": "0",
         "description": N_("Render scan lines in RTG graphics mode"),
         "type": "boolean",
     },
-    "save_disk": {
+    Option.SAVE_DISK: {
         "default": "1",
         "description": N_("Save Disk"),
         "type": "Boolean",
     },
-    "scanlines": {
+    Option.SCANLINES: {
         "default": "0",
         "description": N_("Render scan lines"),
         "type": "boolean",
     },
-    "slow_memory": {
+    Option.SLOW_MEMORY: {
         "default": "",
         "description": N_("Slow RAM"),
         "type": "Choice",
@@ -814,7 +814,7 @@ options = {
             ("1792", "1.8 MB"),
         ]
     },
-    "sound_card": {
+    Option.SOUND_CARD: {
         "default": "0",
         "description": N_("Sound Card"),
         "type": "Choice",
@@ -823,7 +823,7 @@ options = {
             ("toccata", "Toccata"),
         ]
     },
-    "stereo_separation": {
+    Option.STEREO_SEPARATION: {
         "default": "70",
         "description": N_("Stereo Separation"),
         "type": "choice",
@@ -841,12 +841,12 @@ options = {
             ("0", "0%"),
         ]
     },
-    "swap_ctrl_keys": {
+    Option.SWAP_CTRL_KEYS: {
         "default": "0",
         "description": N_("Swap left and right CTRL keys"),
         "type": "boolean",
     },
-    "texture_filter": {
+    Option.TEXTURE_FILTER: {
         "default": "linear",
         "description": N_("Texture filter"),
         "type": "choice",
@@ -855,7 +855,7 @@ options = {
             ("linear", "GL_LINEAR"),
         ]
     },
-    "texture_format": {
+    Option.TEXTURE_FORMAT: {
         "default": "",
         "description": N_("Video texture format (on the GPU)"),
         "type": "choice",
@@ -868,7 +868,7 @@ options = {
             ("rgb5_1", "GL_RGB5_1"),
         ]
     },
-    "uae_a2065": {
+    Option.UAE_A2065: {
         "default": "",
         "description": "uae_a2065",
         "type": "",
@@ -876,14 +876,14 @@ options = {
             ("slirp", "slirp"),
         ]
     },
-    "uae_a3000mem_size": {
+    Option.UAE_A3000MEM_SIZE: {
         "default": "",
         "description": "Size in megabytes of motherboard fast memory",
         "type": "integer",
         "min": 0,
         "max": 65536,
     },
-    "uae_chipset_compatible": {
+    Option.UAE_CHIPSET_COMPATIBLE: {
         "default": "",
         "description":
             "Enable default chipset features for a specific model",
@@ -905,7 +905,7 @@ options = {
             ("A4000T", "A4000T"),
         ]
     },
-    "uae_cpu_frequency": {
+    Option.UAE_CPU_FREQUENCY: {
         "default": "",
         "description":
             "Specify the frequency of the emulated CPU in cycle-exact modes",
@@ -913,14 +913,14 @@ options = {
         "min": 1.0,
         "max": 100.0,
     },
-    "uae_cpu_multiplier": {
+    Option.UAE_CPU_MULTIPLIER: {
         "default": "",
         "description": "FIXME",
         "type": "integer",
         "min": 0,
         "max": 256,
     },
-    "uae_cpu_speed": {
+    Option.UAE_CPU_SPEED: {
         "default": "",
         "description": "Enable/disable fastest possible CPU speed",
         "type": "choice",
@@ -929,14 +929,14 @@ options = {
             ("max", "Fastest possible"),
         ]
     },
-    "uae_cpu_throttle": {
+    Option.UAE_CPU_THROTTLE: {
         "default": "",
         "description": "FIXME",
         "type": "float",
         "min": -900.0,
         "max": 5000.0,
     },
-    "uae_fastmem2_size": {
+    Option.UAE_FASTMEM2_SIZE: {
         "default": "0",
         "description":
             "Size in MB of Zorro-II Fast RAM (second) expansion board",
@@ -948,12 +948,12 @@ options = {
             ("4", "4"),
         ]
     },
-    "uae_fastmem_autoconfig": {
+    Option.UAE_FASTMEM_AUTOCONFIG: {
         "default": "1",
         "description": "Autoconfig Z2 Fast RAM",
         "type": "boolean",
     },
-    "uae_fastmem_size": {
+    Option.UAE_FASTMEM_SIZE: {
         "default": "0",
         "description": "Size in MB of Zorro-II Fast RAM expansion board",
         "type": "choice",
@@ -965,12 +965,12 @@ options = {
             ("8", "8"),
         ]
     },
-    "uae_force_0x10000000_z3": {
+    Option.UAE_FORCE_0X10000000_Z3: {
         "default": "false",
         "description": "Force Zorro-III address space at 0x10000000",
         "type": "boolean",
     },
-    "uae_gfx_linemode": {
+    Option.UAE_GFX_LINEMODE: {
         "default": "",
         "description":
             "Controls how lines are doubled and interlaced modes are handled",
@@ -991,14 +991,14 @@ options = {
             ("scanlines3p3", "Double Fields+ / Double Fields+"),
         ]
     },
-    "uae_mbresmem_size": {
+    Option.UAE_MBRESMEM_SIZE: {
         "default": "",
         "description": "Size in megabytes of processor slot fast memory",
         "type": "integer",
         "min": 0,
         "max": 131072,
     },
-    "uae_rtc": {
+    Option.UAE_RTC: {
         "default": "auto",
         "description": "Enable a real time clock (RTC) module.",
         "type": "Choice",
@@ -1010,12 +1010,12 @@ options = {
             ("MSM6242B_A2000", "A2000 MSM6242B"),
         ]
     },
-    "uae_sana2": {
+    Option.UAE_SANA2: {
         "default": "false",
         "description": "uae_sana2",
         "type": "BooleanUAE,",
     },
-    "uae_slirp_implementation": {
+    Option.UAE_SLIRP_IMPLEMENTATION: {
         "default": "auto",
         "description": "Slirp Implementation",
         "type": "Choice",
@@ -1026,7 +1026,7 @@ options = {
             ("qemu", "qemu"),
         ]
     },
-    "uae_sound_output": {
+    Option.UAE_SOUND_OUTPUT: {
         "default": "",
         "description": "Sound emulation",
         "type": "",
@@ -1036,42 +1036,42 @@ options = {
             ("exact", "Enabled"),
         ]
     },
-    "uae_toccata": {
+    Option.UAE_TOCCATA: {
         "default": "",
         "description": "Toccata Z2 sound card emulation",
         "type": "uaeyesno",
     },
-    "uae_z3chipmem_size": {
+    Option.UAE_Z3CHIPMEM_SIZE: {
         "default": "",
         "description": "",
         "type": "integer",
     },
-    "uae_z3mapping": {
+    Option.UAE_Z3MAPPING: {
         "default": "auto",
         "description": "JIT Direct compatible Z3 memory mapping",
         "type": "choice",
     },
-    "uae_z3mem2_size": {
+    Option.UAE_Z3MEM2_SIZE: {
         "default": "",
         "description": "",
         "type": "integer",
     },
-    "uae_z3mem_size": {
+    Option.UAE_Z3MEM_SIZE: {
         "default": "",
         "description": "Size in MB of Zorro-III Fast RAM expansion board",
         "type": "integer",
     },
-    "uaegfx_card": {
+    Option.UAEGFX_CARD: {
         "default": "0",
         "description": N_("Deprecated: uaegfx_card"),
         "type": "boolean",
     },
-    "uaem_write_flags": {
+    Option.UAEM_WRITE_FLAGS: {
         "default": "1",
         "description": N_("Write .uaem metadata files"),
         "type": "flags",
     },
-    "video_format": {
+    Option.VIDEO_FORMAT: {
         "default": "bgra",
         "description": N_("Video buffer format and color depth"),
         "type": "choice",
@@ -1081,7 +1081,7 @@ options = {
             ("rgb565", N_("16-bit")),
         ]
     },
-    "video_sync": {
+    Option.VIDEO_SYNC: {
         "default": "0",
         "description": N_("Video synchronization"),
         "type": "choice",
@@ -1090,7 +1090,7 @@ options = {
             ("0", N_("Off")),
         ]
     },
-    "video_sync_method": {
+    Option.VIDEO_SYNC_METHOD: {
         "default": "auto",
         "description": N_("Video synchronization method"),
         "type": "choice",
@@ -1105,37 +1105,37 @@ options = {
             ("swap-sleep-fence", "Swap-Sleep-Fence"),
         ]
     },
-    "volume": {
+    Option.VOLUME: {
         "default": "100",
         "description": N_("Main Volume"),
         "type": "integer",
         "min": 0,
         "max": 100,
     },
-    "warp_mode": {
+    Option.WARP_MODE: {
         "default": "0",
         "description": N_("Start in warp mode"),
         "type": "Boolean",
     },
-    "whdload_boot_dir": {
+    Option.WHDLOAD_BOOT_DIR: {
         "default": "",
         "description": N_(
             "Custom boot directory for automatic WHDLoad support"),
         "type": "",
     },
-    "whdload_splash_delay": {
+    Option.WHDLOAD_SPLASH_DELAY: {
         "default": "200",
         "description": N_("WHDLoad splash delay"),
         "type": "integer",
         "min": -1,
         "max": 500,
     },
-    "window_border": {
+    Option.WINDOW_BORDER: {
         "default": "",
         "description": N_("Show window border and decorations"),
         "type": "boolean",
     },
-    "zoom": {
+    Option.ZOOM: {
         "default": "auto",
         "description": N_("Zoom Amiga display (crop)"),
         "type": "choice",
@@ -1155,7 +1155,7 @@ options = {
             ("724x566", "724x566"),
         ]
     },
-    "zorro_iii_memory": {
+    Option.ZORRO_III_MEMORY: {
         "default": "",
         "description": N_("Zorro III Fast Memory"),
         "type": "Choice",

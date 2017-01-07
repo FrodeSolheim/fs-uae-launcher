@@ -67,8 +67,8 @@ class PreferredJoysticksGroup(fsui.Group):
         self.layout2.add(label)
 
         self.layout2.add_spacer(20)
-        label = fsui.Label(self, gettext("The following controller will be "
-                                         "preferred, if present:"))
+        label = fsui.Label(
+            self, gettext("Preferred controller (if present):"))
         self.layout2.add(label)
 
         self.layout2.add_spacer(6)

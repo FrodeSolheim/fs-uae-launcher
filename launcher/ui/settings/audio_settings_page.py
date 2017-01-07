@@ -1,5 +1,6 @@
 import fsui
 from launcher.i18n import gettext
+from launcher.option import Option
 from launcher.ui.settings.settings_page import SettingsPage
 
 
@@ -17,7 +18,7 @@ class AudioSettingsPage(SettingsPage):
 
         self.add_section(gettext("Floppy Drive Sound Emulation"))
         self.add_option("floppy_drive_volume")
-        self.add_option("floppy_drive_volume_empty")
+        self.add_option(Option.FLOPPY_DRIVE_VOLUME_EMPTY)
 
         self.add_section(gettext("Advanced Audio Options"))
         self.add_option("audio_frequency")
