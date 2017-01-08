@@ -1,5 +1,6 @@
 Version 2.9.3dev:
 
+* Show error message when version started is too old (cannot read databases).
 * New option whdload_quit_key to set global quit key, added to settings UI.
 * Renamed "Joystick" to "Controller" in settings dialog.
 * Improved look on Windows 10.

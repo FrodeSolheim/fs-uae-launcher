@@ -10,10 +10,16 @@ def app_main():
 
     from launcher.fs_uae_launcher import FSUAELauncher
     application = FSUAELauncher()
-
-    application.start()
-    application.run()
-    application.save_settings()
+    try:
+        application.start()
+    except Exception as e:
+        import fsui
+        fsui.show_error("An error occurred starting FS-UAE Launcher:\n\n" +
+                        repr(e) + "\n\nFS-UAE Launcher cannot start "
+                        "because of this.", "FS-UAE Launcher")
+    else:
+        application.run()
+        application.save_settings()
 
     # from fs_uae_launcher.netplay.IRC import IRC
     # IRC.stop()
