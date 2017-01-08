@@ -50,8 +50,11 @@ cfg = [
     ("x_kickstart_ext_file", "", "no_save"),
     ("x_kickstart_ext_file_sha1", "", "checksum", "sync", "no_save"),
 
-    ("x_whdload_args", "", "checksum", "sync"),
-    ("x_whdload_version", "", "checksum", "sync"),
+    (Option.X_WHDLOAD_ARGS, "", "checksum", "sync"),
+    (Option.X_WHDLOAD_VERSION, "", "checksum", "sync"),
+    # (Option.WHDLOAD_SPLASH_DELAY, "", "checksum", "sync"),
+    # (Option.WHDLOAD_QUIT_KEY, "", "checksum", "sync"),
+
     ("floppy_drive_count", "", "checksum", "sync"),
     ("floppy_drive_speed", "", "checksum", "sync"),
     ("cdrom_drive_count", "", "checksum", "sync"),

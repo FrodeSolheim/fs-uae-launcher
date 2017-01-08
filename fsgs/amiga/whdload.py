@@ -1,9 +1,12 @@
+from fsbc import settings
 from fsgs.option import Option
 
 DEFAULT_WHDLOAD_VERSION = "18.2"
 
 
 def should_disable_drive_click():
+    """Return True when drive clicks should be disabled when generating a
+    WHDLoad configuration."""
     return True
 
 
@@ -17,6 +20,9 @@ def create_prefs_file(config, path):
     default_prefs = default_prefs.replace("\n", "\r\n")
 
     if config.get("__netplay_game", ""):
+        # The options below are commonly retrieved from settings, not
+        # config, and settings are not synced in net play, so we use
+        # default settings.
         print("WHDLoad defaults only in net play mode")
     else:
         splash_delay = config.get(Option.WHDLOAD_SPLASH_DELAY, "")
@@ -34,8 +40,26 @@ def create_prefs_file(config, path):
         f.write(default_prefs.encode("UTF-8"))
 
 
+def override_config(config):
+    if should_disable_drive_click():
+        config[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
+    model = settings.get(Option.WHDLOAD_MODEL)
+    if model:
+        if model == "A1200":
+            config[Option.AMIGA_MODEL] = "A1200"
+        elif model == "A1200/NONCE":
+            # The following slaves do not work with A1200 non-cycle-exact
+            # (non-exhaustive list, only some random tests):
+            # - Cyber World
+            config[Option.AMIGA_MODEL] = "A1200"
+            config[Option.ACCURACY] = "0"
+        config[Option.CHIP_MEMORY] = ""
+        config[Option.SLOW_MEMORY] = ""
+        config[Option.FAST_MEMORY] = "8192"
+
+
 # noinspection SpellCheckingInspection
-whdload_support_files = {
+support_files = {
     "1d1c557f4a0f5ea88aeb96d68b09f41990340f70":
         "Devs/Kickstarts/kick33180.A500.RTB",
     "1ad1b55e7226bd5cd66def8370a69f19244da796":
@@ -51,7 +75,7 @@ whdload_support_files = {
 }
 
 # noinspection SpellCheckingInspection
-whdload_files = {
+binaries = {
     "10.0": {
         "3096b2f41dfebf490aac015bdf0e91a80045c2c0": "C/WHDLoad",
     },

@@ -995,12 +995,22 @@ options = {
             "Custom boot directory for automatic WHDLoad support"),
         "type": "",
     },
-    Option.WHDLOAD_QUIT_KEY: {
-        "default": "0",
-        "description": N_("WHDLoad quit key"),
+    Option.WHDLOAD_MODEL: {
+        "default": "auto",
+        "description": N_("Override WHDLoad Amiga model"),
         "type": "Choice",
         "values": [
-            ("0", "Slave Default"),
+            ("0", "No override"),
+            ("A1200", "A1200"),
+            ("A1200/NONCE", "A1200/NONCE"),
+        ]
+    },
+    Option.WHDLOAD_QUIT_KEY: {
+        "default": "0",
+        "description": N_("Override WHDLoad quit key"),
+        "type": "Choice",
+        "values": [
+            ("0", "No override"),
             ("$45", "Escape"),
             ("$50", "F1"),
             ("$51", "F2"),
@@ -1016,7 +1026,7 @@ options = {
     },
     Option.WHDLOAD_SPLASH_DELAY: {
         "default": "200",
-        "description": N_("WHDLoad splash delay"),
+        "description": N_("Override WHDLoad splash delay"),
         "type": "integer",
         "min": -1,
         "max": 500,

@@ -1,4 +1,4 @@
-Description: WHDLoad splash delay
+Description: Override WHDLoad splash delay
 Default: 200
 Example: 0
 Type: integer

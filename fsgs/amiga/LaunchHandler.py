@@ -751,9 +751,9 @@ class LaunchHandler(object):
         if not whdload_version:
             whdload_version = whdload.DEFAULT_WHDLOAD_VERSION
 
-        for key, value in whdload.whdload_files[whdload_version].items():
+        for key, value in whdload.binaries[whdload_version].items():
             self.install_whdload_file(key, dest_dir, value)
-        for key, value in whdload.whdload_support_files.items():
+        for key, value in whdload.support_files.items():
             self.install_whdload_file(key, dest_dir, value)
 
         if self.config.get("__netplay_game", ""):

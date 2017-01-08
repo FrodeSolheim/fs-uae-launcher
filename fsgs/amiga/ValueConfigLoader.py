@@ -117,6 +117,9 @@ class ValueConfigLoader(object):
         for key, value in self.options.items():
             self.config[key] = value
 
+        if self.config.get(Option.X_WHDLOAD_ARGS):
+            whdload.override_config(self.config)
+
         if (self.config.get("amiga_model", "") == "A500" and
                     self.config.get("slow_memory") == "0"):
             self.config["amiga_model"] = "A500/512K"
@@ -202,9 +205,7 @@ class ValueConfigLoader(object):
             if whdload.should_disable_drive_click():
                 self.options[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
         elif key == "whdload_args":
-            self.options["x_whdload_args"] = value
-            if whdload.should_disable_drive_click():
-                self.options[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
+            self.options[Option.X_WHDLOAD_ARGS] = value
         elif key == "hdinst_args":
             self.options["x_hdinst_args"] = value
             if whdload.should_disable_drive_click():
