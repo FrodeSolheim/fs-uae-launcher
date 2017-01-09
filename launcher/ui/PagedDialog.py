@@ -1,14 +1,13 @@
 import fsui
-from fsui.qt import Signal
-from .skin import Skin
+from .skin import Theme
 
 
 class PagedDialog(fsui.Window):
-
-    page_changed = Signal()
+    page_changed = fsui.Signal()
 
     def __init__(self, parent, title):
         super().__init__(parent, title, minimizable=False, maximizable=False)
+        self.theme = Theme.get()
         # buttons, layout = fsui.DialogButtons.create_with_layout(self)
         # buttons.create_close_button()
         self.layout = fsui.VerticalLayout()
@@ -26,51 +25,28 @@ class PagedDialog(fsui.Window):
         self.list_view = fsui.ListView(self, border=False)
         self.list_view.set_min_width(240)
         self.list_view.item_selected.connect(self.on_select_item)
-        if Skin.fws():
-            from workspace.ui.theme import Theme
-            theme = Theme.instance()
-            self.list_view.set_row_height(28)
-            # self.list_view.set_background_color(fsui.Color(0xeb, 0xeb, 0xeb))
-            self.list_view.setStyleSheet("""
-            QListView {{
-                padding-top: 20px;
-                background-color: {0};
-                outline: none;
-            }}
-            QListView::item {{
-                padding-left: 20px;
-                border: 0px;
-            }}
-            QListView::item:selected {{
-                background-color: {1};
-            }}
-            """.format(theme.sidebar_background.to_hex(),
-                       theme.selection_background.to_hex()))
-            layout_2.add(self.list_view, fill=True, expand=True)
-        else:
-            self.list_view.set_row_height(28)
-            from fsui.qt import QPalette
-            palette = self._real_widget.palette()
-            base = fsui.Color(palette.color(QPalette.Base))
-            bg = fsui.Color(palette.color(QPalette.Highlight))
-            fg = fsui.Color(palette.color(QPalette.HighlightedText))
-            self.list_view.setStyleSheet("""
-            QListView {{
-                padding-top: 20px;
-                background-color: {base};
-                outline: none;
-            }}
-            QListView::item {{
-                padding-left: 20px;
-                border: 0px;
-            }}
-            QListView::item:selected {{
-                background-color: {highlight_bg};
-                color: {highlight_fg};
-            }}
-            """.format(highlight_fg=fg.to_hex(), highlight_bg=bg.to_hex(),
-                       base=base.to_hex()))
-            layout_2.add(self.list_view, fill=True, expand=True)
+
+        self.list_view.set_row_height(
+            self.window.theme.sidebar_list_row_height)
+        self.list_view.setStyleSheet("""
+        QListView {{
+            padding-top: 20px;
+            background-color: {base};
+            outline: none;
+        }}
+        QListView::item {{
+            padding-left: 20px;
+            border: 0px;
+        }}
+        QListView::item:selected {{
+            background-color: {row_bg};
+            color: {row_fg};
+        }}
+        """.format(
+            row_fg=self.window.theme.sidebar_list_row_text.to_hex(),
+            row_bg=self.window.theme.sidebar_list_row_background.to_hex(),
+            base=self.window.theme.sidebar_list_background.to_hex()))
+        layout_2.add(self.list_view, fill=True, expand=True)
         hor_layout.add(layout_2, fill=True)
 
         # hor_layout.add_spacer(20)

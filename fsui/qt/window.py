@@ -327,6 +327,10 @@ class Window(QObject):
         windows.remove(self)
 
     @property
+    def window(self):
+        return self
+
+    @property
     def visible(self):
         return self._real_window.isVisible()
 

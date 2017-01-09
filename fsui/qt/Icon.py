@@ -38,7 +38,7 @@ class Icon(object):
         if size is not None:
             sizes = [size]
         else:
-            sizes = [16, 22, 24, 32, 64, 128, 256]
+            sizes = [16, 22, 24, 32, 40, 48, 64, 128, 256]
         for size in sizes:
             try:
                 pixmap = self.qpixmap(size)

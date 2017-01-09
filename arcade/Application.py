@@ -1,8 +1,8 @@
+import fsui
 from fsgs.application import ApplicationMixin
-from fsui import Application as BaseApplication
 
 
-class Application(ApplicationMixin, BaseApplication):
+class Application(ApplicationMixin, fsui.Application):
     instance = None
     name = None
 
@@ -11,4 +11,5 @@ class Application(ApplicationMixin, BaseApplication):
         cls.name = name
 
     def __init__(self):
-        BaseApplication.__init__(self, Application.name)
+        super().__init__(Application.name)
+        self.set_icon(fsui.Icon("fs-uae-arcade", "pkg:launcher"))
