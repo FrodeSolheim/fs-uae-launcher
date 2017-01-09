@@ -361,7 +361,7 @@ class FSGameSystemContext(object):
             name = name.replace(" \u00b7 ", ", ")
             name += ")"
 
-            if not variant["published"]:
+            if variant["published"] == 0:
                 primary_sort = 1
                 variant["name"] = "[UNPUBLISHED] " + variant["name"]
             else:

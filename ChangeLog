@@ -1,5 +1,6 @@
 Version 2.9.3dev:
 
+* Fix for published/unpublished status of variants.
 * Extract WHDLoad arguments from .info file when loading a WHDLoad archive.
 * Set floppy drive volume (empty) to 0 when starting with a WHDLoad archive.
 * Show error message when version started is too old (cannot read databases).

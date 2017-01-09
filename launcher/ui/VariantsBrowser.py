@@ -191,7 +191,7 @@ class VariantsBrowser(fsui.ItemChoice):
             variant["personal_rating"], ignored = \
                 database.get_ratings_for_game(variant["uuid"])
 
-            if not variant["published"]:
+            if variant["published"] == 0:
                 primary_sort = 1
                 variant["name"] = "[UNPUBLISHED] " + variant["name"]
             else:

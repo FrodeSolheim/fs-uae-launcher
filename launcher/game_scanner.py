@@ -244,7 +244,14 @@ class GameScanner(object):
 
             parent_uuid = doc.get("parent_uuid", "")
             variant_name = doc.get("variant_name", "")
-            published_variant = doc.get("publish", "")
+            # published_variant = doc.get("publish", "")
+            published_variant = doc.get("__publish_hack__", "")
+            if not published_variant:
+                published_variant = None
+            elif published_variant == "1":
+                published_variant = 1
+            else:
+                published_variant = 0
 
             game_variant_id = existing_variant[2]
             if not game_variant_id:
@@ -258,8 +265,7 @@ class GameScanner(object):
                 "UPDATE game_variant SET name = ?, game_uuid = ?, have = ?, "
                 "update_stamp = ?, database = ?, published = ? WHERE id = ?",
                 (variant_name, parent_uuid, have_variant, update_stamp,
-                 database_name,
-                 1 if published_variant == "1" else 0, game_variant_id))
+                 database_name, published_variant, game_variant_id))
 
             # ensure_updated_games.add(parent_uuid)
 

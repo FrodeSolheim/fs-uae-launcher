@@ -129,7 +129,13 @@ class GameDatabase(BaseDatabase):
             assert self.binary_uuid_to_str(row[0]) == game_uuid
         data = zlib.decompress(row[1])
         data = data.decode("UTF-8")
+
         doc = json.loads(data)
+        # This is a hack so we can retrieve the published-status of the
+        # child entry. The original key should have been named _published,
+        # probably, so avoid it being inherited.
+        doc["__publish_hack__"] = doc.get("publish", "")
+
         next_parent_uuid = doc.get("parent_uuid", "")
         while next_parent_uuid and recursive:
             # Treat game_uuid special, it will be the first parent_uuid

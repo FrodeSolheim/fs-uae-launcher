@@ -6,8 +6,8 @@ from fsgs.FSGSDirectories import FSGSDirectories
 import threading
 
 thread_local = threading.local()
-VERSION = 37
-RESET_VERSION = 37
+VERSION = 38
+RESET_VERSION = 38
 QUOTED_TERMS_RE = re.compile("[\"].*?[\"]")
 
 
@@ -233,7 +233,7 @@ class Database(BaseDatabase):
                  "FROM game_variant WHERE "
                  "game_uuid = ? AND have >= ?")
         if not include_unpublished:
-            query += " AND published = 1"
+            query += " AND (published = 1 OR published IS NULL)"
         query += " ORDER BY like_rating DESC, work_rating DESC, name"
         cursor.execute(
             query, (game_uuid, have))
@@ -644,7 +644,7 @@ class Database(BaseDatabase):
         cursor.execute("SELECT uuid, name FROM game_list")
         return cursor.fetchall()
 
-    def update_database_to_version_37(self):
+    def update_database_to_version_38(self):
         cursor = self.internal_cursor()
         cursor.execute("""CREATE TABLE game (
                 id INTEGER PRIMARY KEY,
