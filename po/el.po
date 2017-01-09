@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-09-10 15:11-0400\n"
+"POT-Creation-Date: 2016-12-11 15:16+0100\n"
+"PO-Revision-Date: 2016-12-11 12:01-0500\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Greek\n"
 "Language: el_GR\n"
@@ -82,6 +82,9 @@ msgstr "Προσθήκη Πολλαπλών Δισκετών Ταυτόχρον�
 
 msgid "Additional Configuration"
 msgstr "Επιπλέον Ρυθμίσεις"
+
+msgid "Additional Databases"
+msgstr ""
 
 msgid "Adult-Themed Games"
 msgstr "Παιχνίδια με θέμα για Ενήλικους"
@@ -357,6 +360,9 @@ msgstr "Προσαρμοσμένη Επιλογή: {name}"
 msgid "Custom Options"
 msgstr "Προσαρμοσμένες Επιλογές"
 
+msgid "Custom boot directory for automatic WHDLoad support"
+msgstr ""
+
 msgid "Custom uae_ Options"
 msgstr "Προσαρμοσμένη uae_ Επιλογές"
 
@@ -487,6 +493,12 @@ msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βά�
 msgid "Enable/disable use of the Game Boy Advance database"
 msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων Game Boy Advance"
 
+msgid "Enable/disable use of the Game Boy Color database"
+msgstr ""
+
+msgid "Enable/disable use of the Game Boy database"
+msgstr ""
+
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr "Ενεργοποίηση/απενεργοποίηση χρήσης βάσης δεδομένων της Nintendo (NES)"
 
@@ -525,6 +537,9 @@ msgstr "Extended ROM"
 
 msgid "FS-UAE   Arcade"
 msgstr "FS-UAE Arcade"
+
+msgid "FS-UAE Arcade"
+msgstr ""
 
 msgid "Fade-in Duration on Start"
 msgstr "Fade-in Διάρκεια κατά την Έναρξη"
@@ -976,6 +991,9 @@ msgstr "Κανένα"
 msgid "Not logged in"
 msgstr "Δεν έχετε συνδεθεί"
 
+msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgstr ""
+
 msgid "OAGD.net Locker Uploader"
 msgstr "Μεταφορτωτής ερμαριού OAGD.net"
 
@@ -1074,6 +1092,9 @@ msgstr "Ανανεώσετε τη λίστα των συνδεδεμένων σ�
 
 msgid "Reject"
 msgstr "Απόρριψη"
+
+msgid "Relative Temporary Directories"
+msgstr ""
 
 msgid "Relative paths"
 msgstr "Διαδρομές σχετικών αρχέιων"
@@ -1372,6 +1393,9 @@ msgstr "Μεταφόρτωση {name}"
 #, python-brace-format
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Χρησιμοποιήστε εικόνες δισκετών RDB  για μέγεθος > = {0}"
+
+msgid "Use keyboard raw input (Windows)"
+msgstr ""
 
 msgid "Using Kickstart ROM Replacement"
 msgstr "Χρήση Αναπληρωματικού Kickstart ROM"

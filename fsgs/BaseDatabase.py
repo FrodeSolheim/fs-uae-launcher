@@ -118,8 +118,8 @@ class BaseDatabase(object):
 
         if self.get_version() < version:
             raise Exception(
-                "BaseDatabase: Installed database schema is "
-                "newer. Have you started an old version?")
+                "The database has been created by a newer version of this "
+                "application. Have you started an older version?")
         if 0 < version < self.get_reset_version():
             print(" -- resetting database -- ")
             self.connection.close()

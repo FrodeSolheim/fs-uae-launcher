@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-05-14 05:19-0400\n"
+"POT-Creation-Date: 2016-12-11 15:16+0100\n"
+"PO-Revision-Date: 2016-12-11 12:01-0500\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Serbian (Latin)\n"
 "Language: sr_CS\n"
@@ -81,6 +81,9 @@ msgid "Add Multiple Floppies at Once"
 msgstr "Dodati više disketa odjednom"
 
 msgid "Additional Configuration"
+msgstr ""
+
+msgid "Additional Databases"
 msgstr ""
 
 msgid "Adult-Themed Games"
@@ -357,6 +360,9 @@ msgstr ""
 msgid "Custom Options"
 msgstr ""
 
+msgid "Custom boot directory for automatic WHDLoad support"
+msgstr ""
+
 msgid "Custom uae_ Options"
 msgstr ""
 
@@ -487,6 +493,12 @@ msgstr ""
 msgid "Enable/disable use of the Game Boy Advance database"
 msgstr ""
 
+msgid "Enable/disable use of the Game Boy Color database"
+msgstr ""
+
+msgid "Enable/disable use of the Game Boy database"
+msgstr ""
+
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr ""
 
@@ -524,6 +536,9 @@ msgid "Extended ROM"
 msgstr ""
 
 msgid "FS-UAE   Arcade"
+msgstr ""
+
+msgid "FS-UAE Arcade"
 msgstr ""
 
 msgid "Fade-in Duration on Start"
@@ -976,6 +991,9 @@ msgstr ""
 msgid "Not logged in"
 msgstr "Niste prijavljeni"
 
+msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgstr ""
+
 msgid "OAGD.net Locker Uploader"
 msgstr "Otpremanje u OAGD.net ormarić"
 
@@ -1074,6 +1092,9 @@ msgstr "Osveži listu povezanih džojstika"
 
 msgid "Reject"
 msgstr "Odbaci"
+
+msgid "Relative Temporary Directories"
+msgstr ""
 
 msgid "Relative paths"
 msgstr ""
@@ -1372,6 +1393,9 @@ msgstr "Otpremanje {name}"
 #, python-brace-format
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Koristiti RDB sliku diska za veličinu >= {0}"
+
+msgid "Use keyboard raw input (Windows)"
+msgstr ""
 
 msgid "Using Kickstart ROM Replacement"
 msgstr ""

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-09-10 15:11-0400\n"
+"POT-Creation-Date: 2016-12-11 15:16+0100\n"
+"PO-Revision-Date: 2016-12-31 10:05-0500\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -82,6 +82,9 @@ msgstr "Añadir Varios Disquetes de Una vez"
 
 msgid "Additional Configuration"
 msgstr "Configuración Adicional"
+
+msgid "Additional Databases"
+msgstr "Bases de datos adicionales"
 
 msgid "Adult-Themed Games"
 msgstr "Juegos con contenido adulto"
@@ -220,7 +223,7 @@ msgid "Cannot find required ROM file: {name}"
 msgstr "No se encuentra archivo necesario ROM: {name}"
 
 msgid "Change fullscreen mode (desktop, fullscreen, window)"
-msgstr ""
+msgstr "Cambiar a modo de pantalla completa (escritorio, pantalla completa, ventana)"
 
 msgid "Checksumming"
 msgstr "Comprobando "
@@ -280,11 +283,11 @@ msgid "Config"
 msgstr "Configuración"
 
 msgid "Config Options in Settings"
-msgstr ""
+msgstr "Opciones de ajustes en configuración"
 
 #, python-brace-format
 msgid "Config in Settings: {name}"
-msgstr ""
+msgstr "Ajustes en configuración: {name}"
 
 msgid "Configs"
 msgstr "Configuración"
@@ -357,8 +360,11 @@ msgstr "Opción personalizada: {name}"
 msgid "Custom Options"
 msgstr "Opciones personalizadas"
 
-msgid "Custom uae_ Options"
+msgid "Custom boot directory for automatic WHDLoad support"
 msgstr ""
+
+msgid "Custom uae_ Options"
+msgstr "Opciones uae_ Personalizadas"
 
 msgid "Database Games"
 msgstr "Base de datos juegos"
@@ -391,7 +397,7 @@ msgid "Depending on your OS and OpenGL drivers, synchronizing can use needlessly
 msgstr "Dependiendo de tu SO o driver OpenGL, sincronizar puede usar mucha CPU (esp. En Linux).Puedes experimentar con diferentes métodos de sincronía para mejorar el rendimiento."
 
 msgid "Depending on your OS and OpenGL drivers, video synchronization can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
-msgstr ""
+msgstr "Dependiendo de tu SO o driver OpenGL, sincronizar puede usar mucha CPU (esp. En Linux). Puedes experimentar con diferentes métodos de sincronía para mejorar el rendimiento."
 
 msgid "Deprecated: uaegfx_card"
 msgstr "Obsoleto: uaegfx_card"
@@ -400,7 +406,7 @@ msgid "Device ID used with OAGD.net authentication"
 msgstr "ID dispositivo usado con OAGD.net autentificación"
 
 msgid "Did not find required Kickstart or ROM for {}. Wanted one of these files: {}"
-msgstr ""
+msgstr "No se encontró Kickstart o ROM necesario para {}. Busca uno de estos archivos: {}"
 
 msgid "Digital Joystick"
 msgstr "Joystick Digital"
@@ -487,6 +493,12 @@ msgstr "Habilita/deshabilita uso base de datos juegos DOS"
 msgid "Enable/disable use of the Game Boy Advance database"
 msgstr "Habilita/deshabilita uso base de datos Game Boy Advance"
 
+msgid "Enable/disable use of the Game Boy Color database"
+msgstr ""
+
+msgid "Enable/disable use of the Game Boy database"
+msgstr ""
+
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr "Habilita/deshabilita uso base de datos Nintendo (NES)"
 
@@ -500,7 +512,7 @@ msgid "Enabling the following option will synchronize the emulation to the displ
 msgstr "Habilitar la siguiente opción sincroniza emulación pantalla cuando frecuencia de actualización de emulación coincide con tasa refresco pantalla."
 
 msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches thescreen refresh rate."
-msgstr ""
+msgstr "Habilitar la siguiente opción sincroniza emulación pantalla cuando frecuencia de actualización de emulación coincide con tasa refresco pantalla."
 
 msgid "Error moving file into place"
 msgstr "Error moviendo fichero "
@@ -524,6 +536,9 @@ msgid "Extended ROM"
 msgstr "ROM Extendida"
 
 msgid "FS-UAE   Arcade"
+msgstr ""
+
+msgid "FS-UAE Arcade"
 msgstr ""
 
 msgid "Fade-in Duration on Start"
@@ -599,13 +614,13 @@ msgid "Floppy Drives"
 msgstr "Disqueteras"
 
 msgid "Flush log after each log line"
-msgstr ""
+msgstr "Actualizar log después de cada línea del log"
 
 msgid "Forgot your password?"
 msgstr "Olvidaste tu contraseña?"
 
 msgid "Freezer Cartridge"
-msgstr ""
+msgstr "Congelar Cartucho"
 
 msgid "Full Frame"
 msgstr "Frame Completos"
@@ -692,7 +707,7 @@ msgid "Hardware"
 msgstr "Hardware"
 
 msgid "Hardware Dongle"
-msgstr ""
+msgstr "Hardware Dongle"
 
 msgid "High"
 msgstr "Alto"
@@ -738,7 +753,7 @@ msgid "Import task is done"
 msgstr "Tarea Importación Terminada"
 
 msgid "Include Save Disk"
-msgstr ""
+msgstr "Insertar disco de guardado"
 
 msgid "Include built-in configurations"
 msgstr "Incluir configuraciones Integradas"
@@ -759,7 +774,7 @@ msgid "JIT Compiler"
 msgstr "Compilador JIT"
 
 msgid "JIT compiler with a PPC-only OS is not recommended"
-msgstr ""
+msgstr "No recomendado el compilador JIT con un SO sólo para PPC"
 
 msgid "Joystick & Mouse Port"
 msgstr "Puerto Joystick y Ratón"
@@ -976,6 +991,9 @@ msgstr "Ningúno"
 msgid "Not logged in"
 msgstr "No logado :"
 
+msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgstr ""
+
 msgid "OAGD.net Locker Uploader"
 msgstr "OAGD.net taquilla Uploader"
 
@@ -1060,7 +1078,7 @@ msgid "ROM and RAM"
 msgstr "ROM y RAM"
 
 msgid "Rate Variant"
-msgstr ""
+msgstr "Puntúa Variante"
 
 #, python-brace-format
 msgid "Re-trying in {0} seconds..."
@@ -1074,6 +1092,9 @@ msgstr "Actualizar lista de Joysticks conectados "
 
 msgid "Reject"
 msgstr "Descartar"
+
+msgid "Relative Temporary Directories"
+msgstr ""
 
 msgid "Relative paths"
 msgstr "Rutas relativas"
@@ -1373,6 +1394,9 @@ msgstr "Descargando {name}"
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Usar imágenes disco RDB para tamaño >= {0}"
 
+msgid "Use keyboard raw input (Windows)"
+msgstr ""
+
 msgid "Using Kickstart ROM Replacement"
 msgstr "Usando Reemplazo Kickstart ROM"
 
@@ -1431,7 +1455,7 @@ msgid "When checked, enable video synchronization whenever possible"
 msgstr "Cuando marcada, habilitar sincronización vídeo siempre que sea posible"
 
 msgid "When checked, include a save disk in FS-UAE's floppy swap list"
-msgstr ""
+msgstr "Cuando marcada, insertar un disco de guardado en fs-uae cambiar diskette"
 
 msgid "While logged out you will not get database updates"
 msgstr "Mientras no esté logado no obtendrás actualizaciones de base de datos"

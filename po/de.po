@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-05-14 05:19-0400\n"
+"POT-Creation-Date: 2016-12-11 15:16+0100\n"
+"PO-Revision-Date: 2016-12-31 10:05-0500\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -57,7 +57,7 @@ msgid "Accelerator Board"
 msgstr "Beschleunigerkarte"
 
 msgid "Accelerator RAM"
-msgstr "Beschleuniger-RAM"
+msgstr "Turbokarten-RAM"
 
 msgid "Accept"
 msgstr "Akzeptieren"
@@ -82,6 +82,9 @@ msgstr "Mehrere Diskettenabbilder gleichzeitig hinzufügen"
 
 msgid "Additional Configuration"
 msgstr "Zusätzliche Konfiguration"
+
+msgid "Additional Databases"
+msgstr "Weitere Datenbanken"
 
 msgid "Adult-Themed Games"
 msgstr "Spiele für Erwachsene"
@@ -156,10 +159,10 @@ msgid "Auto-Download"
 msgstr "Auto-Download"
 
 msgid "Auto-Fire is Off"
-msgstr "Dauerfeuer ist AUS"
+msgstr "Dauerfeuer ist ausgeschaltet"
 
 msgid "Auto-Fire is On"
-msgstr "Dauerfeuer ist AN"
+msgstr "Dauerfeuer ist eingeschaltet"
 
 msgid "Automatic"
 msgstr "Automatisch"
@@ -171,7 +174,7 @@ msgid "Available Kickstart Versions"
 msgstr "Verfügbare Kickstart-Versionen"
 
 msgid "Available and Auto-Downloadable Games"
-msgstr "Verfügbare und automatisch-herunterladbare Spiele"
+msgstr "Verfügbare und automatisch herunterladbare Spiele"
 
 msgid "Available and Downloadable Games"
 msgstr "Verfügbare und herunterladbare Spiele"
@@ -183,7 +186,7 @@ msgid "Best Variant"
 msgstr "Beste Variante"
 
 msgid "Blizzard SCSI Kit"
-msgstr "Blizzard SCSI Kit"
+msgstr "Blizzard SCSI-Kit"
 
 msgid "Browse"
 msgstr "Öffnen"
@@ -229,13 +232,13 @@ msgid "Checksumming file..."
 msgstr "Berechne Prüfsumme für Datei..."
 
 msgid "Chip RAM"
-msgstr "Chip RAM"
+msgstr "Chip-RAM"
 
 msgid "Choose CD-ROM Image"
 msgstr "CD-Abbild auswählen"
 
 msgid "Choose Extended ROM"
-msgstr "Erweiterten ROM auswählen"
+msgstr "Erweitertes ROM auswählen"
 
 msgid "Choose Floppy Image"
 msgstr "Diskettenabbild auswählen"
@@ -244,13 +247,13 @@ msgid "Choose Hard Drive"
 msgstr "Festplatte auswählen"
 
 msgid "Choose Kickstart ROM"
-msgstr "Kickstart ROM auswählen"
+msgstr "Kickstart-ROM auswählen"
 
 msgid "Choose Type"
 msgstr "Typ auswählen"
 
 msgid "Choose what folders you want to scan for Amiga files"
-msgstr "Wählen Sie Verzeichnisse zum Scannen nach Amiga-Dateien aus"
+msgstr "Wählen Sie die Verzeichnisse aus, die nach Amiga-Dateien durchsucht werden sollen"
 
 msgid "Cleaning up..."
 msgstr "Räume auf …"
@@ -357,6 +360,9 @@ msgstr "Benutzerdef. Option: {name}"
 msgid "Custom Options"
 msgstr "Benutzerdef. Optionen"
 
+msgid "Custom boot directory for automatic WHDLoad support"
+msgstr "Eigenes Startverzeichnis für automatische WHDLoad-Unterstützung"
+
 msgid "Custom uae_ Options"
 msgstr "Benutzerdef. uae_Optionen"
 
@@ -430,7 +436,7 @@ msgid "Download Game"
 msgstr "Spiel herunterladen"
 
 msgid "Download Game Manually"
-msgstr "Manueller Spiele Download"
+msgstr "Manueller Spiele-Download"
 
 #, python-brace-format
 msgid "Download failed (attempt {0}) - retrying in {0} seconds"
@@ -464,43 +470,49 @@ msgid "Enable experimental net play GUI (requires restart)"
 msgstr "Experimentelle Net-Play-Oberfläche aktivieren (erfordert Neustart)"
 
 msgid "Enable online database support (requires restart)"
-msgstr "Online Datenbank Unterstützung aktivieren (Neustart erforderlich)"
+msgstr "Unterstützung für Online-Datenbank aktivieren (Neustart erforderlich)"
 
 msgid "Enable/disable use of OAGD.net locker"
 msgstr "Aktiviere/deaktiviere die Nutzung von OAGD.net-Locker"
 
 msgid "Enable/disable use of the Amstrad CPC game database"
-msgstr "Verwendung der Amstrad CPC Spiele-Datenbank aktivieren/deaktivieren"
+msgstr "Verwendung der Amstrad CPC-Spiele-Datenbank aktivieren/deaktivieren"
 
 msgid "Enable/disable use of the Arcade game database"
-msgstr "Verwendung der Arcade Spiele-Datenbank aktivieren/deaktivieren"
+msgstr "Verwendung der Arcade-Spiele-Datenbank aktivieren/deaktivieren"
 
 msgid "Enable/disable use of the Atari ST game database"
-msgstr "Verwendung der Atari ST Spiele-Datenbank aktivieren/deaktivieren"
+msgstr "Verwendung der Atari ST-Spiele-Datenbank aktivieren/deaktivieren"
 
 msgid "Enable/disable use of the Commodore 64 (C64) database"
-msgstr "Verwendung der Commodore 64 (C64) Spiele-Datenbank aktivieren/deaktivieren"
+msgstr "Verwendung der Commodore 64 (C64)-Spiele-Datenbank aktivieren/deaktivieren"
 
 msgid "Enable/disable use of the DOS game database"
-msgstr "Verwendung der DOS Spiele-Datenbank aktivieren/deaktivieren"
+msgstr "Verwendung der DOS-Spiele-Datenbank aktivieren/deaktivieren"
 
 msgid "Enable/disable use of the Game Boy Advance database"
-msgstr "Verwendung der Game Boy Advance Spiele-Datenbank aktivieren/deaktivieren"
+msgstr "Verwendung der Game Boy Advance-Spiele-Datenbank aktivieren/deaktivieren"
+
+msgid "Enable/disable use of the Game Boy Color database"
+msgstr "Game-Boy-Color-Datenbank aktivieren/deaktivieren"
+
+msgid "Enable/disable use of the Game Boy database"
+msgstr "Game-Boy-Datenbank aktivieren/deaktivieren"
 
 msgid "Enable/disable use of the Nintendo (NES) database"
-msgstr "Verwendung der Nintendo (NES) Spiele-Datenbank aktivieren/deaktivieren"
+msgstr "Verwendung der Nintendo (NES)-Spiele-Datenbank aktivieren/deaktivieren"
 
 msgid "Enable/disable use of the Super Nintendo database"
-msgstr "Verwendung der Super Nintendo Spiele-Datenbank aktivieren/deaktivieren"
+msgstr "Verwendung der Super Nintendo-Spiele-Datenbank aktivieren/deaktivieren"
 
 msgid "Enabled"
 msgstr "Aktiviert"
 
 msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches the screen refresh rate."
-msgstr "Bei Aktivierung folgender Option werden Emulation und Bildschirm synchron gehalten wenn deren Bildwiederholfrequenzen passen."
+msgstr "Bei Aktivierung folgender Option werden Emulation und Bildschirm synchron gehalten, wenn deren Bildwiederholfrequenzen identisch sind."
 
 msgid "Enabling the following option will synchronize the emulation to the display when the emulation refresh rate matches thescreen refresh rate."
-msgstr "Bei Aktivierung folgender Option werden Emulation und Bildschirm synchron gehalten wenn deren Bildwiederholfrequenzen passen."
+msgstr "Bei Aktivierung folgender Option werden Emulation und Bildschirm synchron gehalten, wenn deren Bildwiederholfrequenzen idntisch sind."
 
 msgid "Error moving file into place"
 msgstr "Fehler beim Verschieben der Datei"
@@ -526,11 +538,14 @@ msgstr "Erweiterter ROM"
 msgid "FS-UAE   Arcade"
 msgstr ""
 
+msgid "FS-UAE Arcade"
+msgstr "FS-UAE Arcade"
+
 msgid "Fade-in Duration on Start"
 msgstr "Einblendzeit beim Starten"
 
 msgid "Fast RAM"
-msgstr "Fast RAM"
+msgstr "Fast-RAM"
 
 msgid "Favorites"
 msgstr "Favoriten"
@@ -544,7 +559,7 @@ msgid "Fetching game ratings ({0})"
 msgstr "Hole Spielbewertungen ({0})"
 
 msgid "Fetching locker data..."
-msgstr "Rufe Locker Daten ab..."
+msgstr "Rufe Locker-Daten ab..."
 
 msgid "Fetching synchronization information..."
 msgstr "Rufe Synchronisationsinformationen ab..."
@@ -572,7 +587,7 @@ msgid "Filters"
 msgstr "Filter"
 
 msgid "Finding files eligible for OAGD.net Locker"
-msgstr "Suche für OAGD.net Locker berechtigte Dateien"
+msgstr "Suche für OAGD.net-Locker berechtigte Dateien"
 
 msgid "First rendered line (NTSC)"
 msgstr "Zuerst gerenderte Zeile (NTSC)"
@@ -605,7 +620,7 @@ msgid "Forgot your password?"
 msgstr "Passwort vergessen?"
 
 msgid "Freezer Cartridge"
-msgstr "Freezer-Cartridge"
+msgstr "Freezer-Modul"
 
 msgid "Full Frame"
 msgstr "Voller Frame"
@@ -635,16 +650,16 @@ msgid "Game Database Settings"
 msgstr "Spiele-Datenbank Einstellungen"
 
 msgid "Game database authentication"
-msgstr "Spiele-Datenbank Authentifizierung"
+msgstr "Spiele-Datenbank-Authentifizierung"
 
 msgid "Game database email"
-msgstr "Spiele-Datenbank email"
+msgstr "E-Mail für Spiele-Datenbank"
 
 msgid "Game database password"
-msgstr "Spiele-Datenbank Passwort"
+msgstr "Passwort für Spiele-Datenbank"
 
 msgid "Game database user name"
-msgstr "Spiele-Datenbank Benutzername"
+msgstr "Benutzername für Spiele-Datenbank"
 
 msgid "Gamepad"
 msgstr "Gamepad"
@@ -659,10 +674,10 @@ msgid "Grab Input on Click"
 msgstr "Eingabe nach Klick einfangen"
 
 msgid "Grab Input on FS-UAE Startup"
-msgstr "Eingabe nach FS-UAE-Start einfangen"
+msgstr "Eingabe nach Start von FS-UAE einfangen"
 
 msgid "Grab keyboard when input is grabbed"
-msgstr "Ebenfalls Tastatur einfangen wenn Eingabe eingefangen wird"
+msgstr "Ebenfalls Tastatur einfangen, wenn Eingabe eingefangen wird"
 
 msgid "Graphics Card"
 msgstr "Grafikkarte"
@@ -720,13 +735,13 @@ msgstr "IRC-Nickname"
 
 #, python-brace-format
 msgid "If you own Amiga Forever, select the drive/folder and click \"{0}\""
-msgstr "Zum Import von Amiga Forever Pfad angeben und klicken \"{0}\""
+msgstr "Zum Import von Amiga Forever Pfad angeben und \"{0}\" klicken"
 
 msgid "Import"
 msgstr "Importieren"
 
 msgid "Import From Amiga Forever CD/DVD"
-msgstr "Von der Amiga Forever CD/DVD importieren"
+msgstr "Von der Amiga Forever-CD/DVD importieren"
 
 msgid "Import Kickstarts"
 msgstr "Importiere Kickstarts"
@@ -786,7 +801,7 @@ msgid "Keyword"
 msgstr "Stichwort"
 
 msgid "Kickstart ROM"
-msgstr "Kickstart ROM"
+msgstr "Kickstart-ROM"
 
 msgid "Kickstart import task started"
 msgstr "Kickstart-Importprozess gestartet"
@@ -825,7 +840,7 @@ msgid "Loading..."
 msgstr "Lade..."
 
 msgid "Log Autoscale Changes"
-msgstr "Autoscale Änderungen protokollieren"
+msgstr "Autoscale-Änderungen protokollieren"
 
 msgid "Log In"
 msgstr "Einloggen"
@@ -843,7 +858,7 @@ msgid "Log Out"
 msgstr "Ausloggen"
 
 msgid "Log Out from Your OAGD.net Account"
-msgstr "Aus Ihrem OAGD.net Konto ausloggen"
+msgstr "Aus Ihrem OAGD.net-Konto ausloggen"
 
 msgid "Log database query plans"
 msgstr "Datenbank-Auswertung loggen"
@@ -976,14 +991,17 @@ msgstr "Keine"
 msgid "Not logged in"
 msgstr "Nicht eingeloggt"
 
+msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgstr "Hinweis: Die Unterstützung weiterer Spieledatenbanken ist eine experimentelle Funktion und noch nicht so ausgereift wie Amiga/CDTV/CD32. Des Weiteren sind zusätzliche Plugins zum Spielen nötig."
+
 msgid "OAGD.net Locker Uploader"
-msgstr "OAGD.net Locker Uploader"
+msgstr "OAGD.net-Locker hochladen"
 
 msgid "OAGD.net Locker is not enabled for your user. It may be available only to a few select beta users."
-msgstr "OAGD.net Locker ist nicht für Ihren Benutzer aktiviert. Es ist möglicherweise nur für wenige ausgewählte Beta Nutzer verfügbar."
+msgstr "OAGD.net-Locker ist nicht für Ihren Benutzer aktiviert. Es ist möglicherweise nur für wenige ausgewählte Beta-Nutzer verfügbar."
 
 msgid "OAGD.net upload task completed successfully"
-msgstr "OAGD.net Upload erfolgreich abgeschlossen"
+msgstr "OAGD.net-Upload erfolgreich abgeschlossen"
 
 msgid "Off"
 msgstr "Aus"
@@ -992,7 +1010,7 @@ msgid "On"
 msgstr "Ein"
 
 msgid "OpenGL Settings"
-msgstr "OpenGL Einstellungen"
+msgstr "OpenGL-Einstellungen"
 
 #, python-brace-format
 msgid "Option {name} is overridden by current configuration"
@@ -1033,7 +1051,7 @@ msgid "Preferred device for secondary joystick:"
 msgstr "Bevorzugtes Gerät für den sekundären  Joystick:"
 
 msgid "Preparing WHDLoad..."
-msgstr "Vorbereitung von WHDLoad …"
+msgstr "WHDLoad wird vorbereitet …"
 
 msgid "Preparing floppy images..."
 msgstr "Bereite Diskettenabbilder vor …"
@@ -1042,13 +1060,13 @@ msgid "Preparing hard drives..."
 msgstr "Bereite Festplatten vor …"
 
 msgid "Preparing kickstart ROMs..."
-msgstr "Vorbereitung der Kickstart-ROMs …"
+msgstr "Kickstart-ROMs werden vorbereitet …"
 
 msgid "Preparing..."
-msgstr "Vorbereitung …"
+msgstr "Wird vorbereitet …"
 
 msgid "Purging old entries..."
-msgstr "Säubere alte Einträge"
+msgstr "Entferne alte Einträge..."
 
 msgid "Quit"
 msgstr "Beenden"
@@ -1074,6 +1092,9 @@ msgstr "Aktualisiere Liste der angeschlossenden Joysticks"
 
 msgid "Reject"
 msgstr "Ablehnen"
+
+msgid "Relative Temporary Directories"
+msgstr "Relative Temp-Verzeichnisse"
 
 msgid "Relative paths"
 msgstr "Relativer Pfad"
@@ -1129,7 +1150,7 @@ msgid "Save to directory:"
 msgstr "Speichere in Verzeichnis:"
 
 msgid "Saving changes..."
-msgstr "Sichere Änderungen..."
+msgstr "Änderungen werden gespeichert..."
 
 msgid "Scaling"
 msgstr "Skalierung"
@@ -1229,7 +1250,7 @@ msgid "Size:"
 msgstr "Größe:"
 
 msgid "Slow RAM"
-msgstr "Slow RAM"
+msgstr "Slow-RAM"
 
 msgid "Sound Card"
 msgstr "Soundkarte"
@@ -1280,7 +1301,7 @@ msgid "Synchronizing personal ratings..."
 msgstr "Synchronisiere persönliche Bewertungen …"
 
 msgid "Synchronizing with the display can in some cases cause increased stuttering and low frame rates (esp. in some Linux desktop environments with compositing enabled)."
-msgstr "Synchronisation mit dem Bildschirm kann in einigen Fällen Ursache für ein Holpern der Emulation und niedrige Bildraten sein (insbs. in einigen Linux-Desktop-Umgebungen mit aktiviertem Compositing)."
+msgstr "Synchronisation mit dem Bildschirm kann in einigen Fällen Ursache für erhöhtes Stottern und niedrige Bildraten sein (v.a. in einigen Linux-Desktop-Umgebungen mit aktiviertem Compositing)."
 
 msgid "System"
 msgstr "System"
@@ -1360,10 +1381,10 @@ msgid "Upload"
 msgstr "Hochladen"
 
 msgid "Upload Files to OAGD.net Locker"
-msgstr "Dateien in OAGD.net Locker hochladen"
+msgstr "Dateien in OAGD.net-Locker hochladen"
 
 msgid "Upload recognized Amiga files to your OAGD.net locker"
-msgstr "Erkannte Amiga-Dateien in OAGD.net Locker hochladen"
+msgstr "Erkannte Amiga-Dateien in OAGD.net-Locker hochladen"
 
 #, python-brace-format
 msgid "Uploading {name}"
@@ -1373,8 +1394,11 @@ msgstr "Lade {name} hoch"
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Nutze RDB-Images für Größe >= {0}"
 
+msgid "Use keyboard raw input (Windows)"
+msgstr "Direkte Tastatureingaben benutzen (Windows)"
+
 msgid "Using Kickstart ROM Replacement"
-msgstr "Verwende Kickstart ROM Ersatz"
+msgstr "Verwende Ersatz für Kickstart-ROM"
 
 msgid "Using Kickstart ROM replacement"
 msgstr "Ersatz-Kickstart-ROM wird verwendet"
@@ -1431,7 +1455,7 @@ msgid "When checked, enable video synchronization whenever possible"
 msgstr "Video-Synchronisierung aktivieren wenn möglich"
 
 msgid "When checked, include a save disk in FS-UAE's floppy swap list"
-msgstr "Eine Savedisk zur Floppy-Liste hinzufügen"
+msgstr "Eine Savedisk zur Disketten-Liste hinzufügen"
 
 msgid "While logged out you will not get database updates"
 msgstr "Während Sie ausgeloggt sind, bekommen sie keine Datenbank-Aktualisierungen."
@@ -1452,7 +1476,7 @@ msgid "Zoom Amiga display (crop)"
 msgstr "Amiga-Anzeige strecken"
 
 msgid "Zorro III Fast Memory"
-msgstr "Zorro III Fast Memory"
+msgstr "Zorro III-Fast-Memory"
 
 #, python-brace-format
 msgid "{amiga_model} with < 2 MB chip memory"

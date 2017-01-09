@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-09-10 15:10-0400\n"
+"POT-Creation-Date: 2016-12-11 15:16+0100\n"
+"PO-Revision-Date: 2016-12-11 12:01-0500\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Danish\n"
 "Language: da_DK\n"
@@ -82,6 +82,9 @@ msgstr "Tilføj flere disketter på én gang"
 
 msgid "Additional Configuration"
 msgstr "Yderligere konfiguration"
+
+msgid "Additional Databases"
+msgstr ""
 
 msgid "Adult-Themed Games"
 msgstr "Voksenspil"
@@ -250,7 +253,7 @@ msgid "Choose Type"
 msgstr "Vælg type"
 
 msgid "Choose what folders you want to scan for Amiga files"
-msgstr "Vælg hvilke mapper, du vil scanne for Amiga-filer"
+msgstr "Vælg hvilke mapper, du vil skanne for Amiga-filer"
 
 msgid "Cleaning up..."
 msgstr "Rydder op..."
@@ -356,6 +359,9 @@ msgstr "Tilpasset indstilling: {name}"
 
 msgid "Custom Options"
 msgstr "Tilpassede indstillinger"
+
+msgid "Custom boot directory for automatic WHDLoad support"
+msgstr ""
 
 msgid "Custom uae_ Options"
 msgstr "Tilpassede uae_-indstillinger"
@@ -487,6 +493,12 @@ msgstr "Aktiver/deaktiver brugen af DOS spil database"
 msgid "Enable/disable use of the Game Boy Advance database"
 msgstr "Aktiver/deaktiver brugen af Game Boy Advance-database"
 
+msgid "Enable/disable use of the Game Boy Color database"
+msgstr ""
+
+msgid "Enable/disable use of the Game Boy database"
+msgstr ""
+
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr "Aktiver/deaktiver brugen af Nintendo (NES) database"
 
@@ -524,6 +536,9 @@ msgid "Extended ROM"
 msgstr "Udvidet ROM"
 
 msgid "FS-UAE   Arcade"
+msgstr ""
+
+msgid "FS-UAE Arcade"
 msgstr ""
 
 msgid "Fade-in Duration on Start"
@@ -976,6 +991,9 @@ msgstr "Ingen"
 msgid "Not logged in"
 msgstr "Ikke logget på."
 
+msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgstr ""
+
 msgid "OAGD.net Locker Uploader"
 msgstr "OAGD.net locker uploader"
 
@@ -1075,6 +1093,9 @@ msgstr "Genopfrisk listen af forbundne joystick enheder"
 msgid "Reject"
 msgstr "Afvis"
 
+msgid "Relative Temporary Directories"
+msgstr ""
+
 msgid "Relative paths"
 msgstr "Relative stier"
 
@@ -1138,46 +1159,46 @@ msgid "Scaling Options"
 msgstr "Skalerings indstillinger"
 
 msgid "Scan"
-msgstr "Scan"
+msgstr "Skan"
 
 msgid "Scan Downloads"
-msgstr "Scan hentede filer"
+msgstr "Skan hentede filer"
 
 msgid "Scan complete"
-msgstr "Scanning komplet"
+msgstr "Skanning komplet"
 
 msgid "Scan error"
-msgstr "Scannings fejl"
+msgstr "Skannings fejl"
 
 msgid "Scan for Kickstarts, Files and Configurations"
-msgstr "Scan for kickstarter, filer og konfigurationer"
+msgstr "Skan for kickstarter, filer og konfigurationer"
 
 msgid "Scanning .fs-uae files..."
-msgstr "Scanner .fs-uae filer..."
+msgstr "Skanner .fs-uae filer..."
 
 msgid "Scanning configurations"
-msgstr "Scannings konfigurationer"
+msgstr "Skannings konfigurationer"
 
 msgid "Scanning files"
-msgstr "Scanner filer"
+msgstr "Skanner filer"
 
 #, python-brace-format
 msgid "Scanning files ({count} scanned)"
-msgstr "Scanner filer ({count} scannet)"
+msgstr "Skanner filer ({count} skannet)"
 
 msgid "Scanning game database entries..."
-msgstr "Scanner spil database poster"
+msgstr "Skanner spil database poster..."
 
 #, python-brace-format
 msgid "Scanning game variants ({count} scanned)"
-msgstr "Scanner spil varianter ({count} scannet)"
+msgstr "Skanner spil varianter ({count} skannet)"
 
 msgid "Scanning games"
-msgstr "Scanner spil"
+msgstr "Skanner spil"
 
 #, python-brace-format
 msgid "Scanning games ({count} scanned)"
-msgstr "Scanner spil ({count} scannet)"
+msgstr "Skanner spil ({count} skannet)"
 
 msgid "Select Destination Directory"
 msgstr "Vælg destinations biblioteket"
@@ -1253,7 +1274,7 @@ msgid "Start with full keyboard emulation"
 msgstr "Starte med fuld tastatur emulering"
 
 msgid "Starting scan"
-msgstr "Starter scanning"
+msgstr "Starter skanning"
 
 msgid "Stereo Separation"
 msgstr "Stereo adskildelse"
@@ -1372,6 +1393,9 @@ msgstr "Upload {name}"
 #, python-brace-format
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Brug RDB disk images for størrelser >= {0}"
+
+msgid "Use keyboard raw input (Windows)"
+msgstr ""
 
 msgid "Using Kickstart ROM Replacement"
 msgstr "Brug af Kickstart ROM udskiftning"

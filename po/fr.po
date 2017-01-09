@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-05-03 22:34+0200\n"
-"PO-Revision-Date: 2016-05-14 05:19-0400\n"
+"POT-Creation-Date: 2016-12-11 15:16+0100\n"
+"PO-Revision-Date: 2016-12-31 10:05-0500\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -82,6 +82,9 @@ msgstr "Ajouter Plusieurs Disquettes à la fois"
 
 msgid "Additional Configuration"
 msgstr "Configuration Supplémentaire"
+
+msgid "Additional Databases"
+msgstr "Bases de données supplémentaires"
 
 msgid "Adult-Themed Games"
 msgstr "Jeux pour Adultes"
@@ -357,6 +360,9 @@ msgstr "Option personnalisée : {name}"
 msgid "Custom Options"
 msgstr "Options personnalisées"
 
+msgid "Custom boot directory for automatic WHDLoad support"
+msgstr "Répertoire de démarrage personnalisée pour la prise en charge automatique de WHDLoad"
+
 msgid "Custom uae_ Options"
 msgstr "Options uae_ personnalisées"
 
@@ -487,6 +493,12 @@ msgstr "Activer/désactiver l'utilisation de la base de données de jeu DOS"
 msgid "Enable/disable use of the Game Boy Advance database"
 msgstr "Activer/désactiver l'utilisation de la base de données de la Game Boy Advance"
 
+msgid "Enable/disable use of the Game Boy Color database"
+msgstr "Activer/désactiver l’utilisation de la base de données de la Game Boy Color"
+
+msgid "Enable/disable use of the Game Boy database"
+msgstr "Activer/désactiver l’utilisation de la base de données de la Game Boy"
+
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr "Activer/désactiver l'utilisation de la base de données de Nintendo (NES)"
 
@@ -524,6 +536,9 @@ msgid "Extended ROM"
 msgstr "ROM Étendue"
 
 msgid "FS-UAE   Arcade"
+msgstr "FS-UAE Arcade"
+
+msgid "FS-UAE Arcade"
 msgstr "FS-UAE Arcade"
 
 msgid "Fade-in Duration on Start"
@@ -976,6 +991,9 @@ msgstr "Aucun"
 msgid "Not logged in"
 msgstr "Non connecté"
 
+msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgstr "Remarque : La prise en charge pour les bases de jeu supplémentaires est une fonctionnalité expérimentale et ne fournit pas le même niveau de maturité comme Amiga/CDTV/CD32. En outre, des plugins supplémentaires sont nécessaires pour jouer aux jeux."
+
 msgid "OAGD.net Locker Uploader"
 msgstr "Envoyeur OAGD.net Locker"
 
@@ -1074,6 +1092,9 @@ msgstr "Actualiser la liste des périphériques Joystick connectés "
 
 msgid "Reject"
 msgstr "Ejecter"
+
+msgid "Relative Temporary Directories"
+msgstr "Répertoires temporaires relatifs"
 
 msgid "Relative paths"
 msgstr "Chemins d'accès relatifs"
@@ -1372,6 +1393,9 @@ msgstr "En cours d'envoi {name}"
 #, python-brace-format
 msgid "Use RDB disk images for size >= {0}"
 msgstr "Utiliser des images de disque RDB pour la taille >= {0}"
+
+msgid "Use keyboard raw input (Windows)"
+msgstr "Utilisez les entrées brutes du clavier (Windows)"
 
 msgid "Using Kickstart ROM Replacement"
 msgstr "Utilisation de la ROM Kickstart de Remplacement"

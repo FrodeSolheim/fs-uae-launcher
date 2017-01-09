@@ -1,7 +1,7 @@
 version = $(strip $(shell cat ../../VERSION))
 arch = $(strip $(shell python3 ../arch.py))
 
-ver_os_arch = $(version)_macosx_$(arch)
+ver_os_arch = $(version)_macos_$(arch)
 dname = fs-uae-launcher_$(ver_os_arch)
 app = $(dname)/"FS-UAE Launcher.app"
 macos =  $(app)/Contents/MacOS/

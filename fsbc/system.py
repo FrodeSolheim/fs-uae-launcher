@@ -9,6 +9,6 @@ if windows:
 elif linux:
     platform = "linux"
 elif macosx:
-    platform = "macosx"
+    platform = "macos"
 else:
     platform = "unknown"

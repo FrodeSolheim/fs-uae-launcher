@@ -51,7 +51,7 @@ class Device(object):
         if windows:
             host_platform = "windows"
         elif macosx:
-            host_platform = "macosx"
+            host_platform = "macos"
         elif linux:
             host_platform = "linux"
         else:

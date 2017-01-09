@@ -1,3 +1,5 @@
+import sys
+
 import fsui
 from fsbc.application import app
 from fsgs.runner import GameRunner
@@ -233,6 +235,7 @@ class LaunchDialog(fsui.Window):
     def __init__(self, parent, title, task):
         print("LaunchDialog parent =", parent)
         self.has_parent = parent is not None
+        self.no_gui = "--no-gui" in sys.argv
         super().__init__(parent, title, maximizable=False)
         self.layout = fsui.VerticalLayout()
 
@@ -310,14 +313,17 @@ class LaunchDialog(fsui.Window):
                 LauncherConfig.set(
                     "__progress", gettext("Running: Emulator"))
             else:
-                self.sub_title_label.set_text(progress)
+                if self.no_gui:
+                    print("[PROGRESS]", progress)
+                else:
+                    self.sub_title_label.set_text(progress)
                 LauncherConfig.set(
                     "__progress", "Preparing: {}".format(progress))
 
         fsui.call_after(function)
 
     def show(self, *args, **kwargs):
-        if self.has_parent:
+        if self.has_parent or self.no_gui:
             # Hack to prevent it from being shown
             pass
         else:
