@@ -1,5 +1,7 @@
 Version 2.9.3dev:
 
+* Extract WHDLoad arguments from .info file when loading a WHDLoad archive.
+* Set floppy drive volume (empty) to 0 when starting with a WHDLoad archive.
 * Show error message when version started is too old (cannot read databases).
 * New option whdload_quit_key to set global quit key, added to settings UI.
 * Renamed "Joystick" to "Controller" in settings dialog.

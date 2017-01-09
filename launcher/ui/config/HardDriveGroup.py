@@ -1,8 +1,11 @@
 import os
 import traceback
+
+from fsgs.amiga import whdload
 from fsgs.ChecksumTool import ChecksumTool
 import fsui
 from fsgs.Archive import Archive
+from fsgs.option import Option
 from ...launcher_config import LauncherConfig
 from fsgs.FSGSDirectories import FSGSDirectories
 from ...i18n import gettext
@@ -130,7 +133,7 @@ class HardDriveGroup(fsui.Group):
 
     @classmethod
     def generate_config_for_archive(cls, path, model_config=True):
-        values = {}
+        config = {}
         whdload_args = ""
         dummy, ext = os.path.splitext(path)
         if ext.lower() in Archive.extensions:
@@ -138,17 +141,28 @@ class HardDriveGroup(fsui.Group):
                 whdload_args = cls.calculate_whdload_args(path)
             except Exception:
                 traceback.print_exc()
-        values["x_whdload_args"] = whdload_args
+        config["x_whdload_args"] = whdload_args
         if whdload_args and model_config:
-            values["amiga_model"] = "A1200"
-            values["fast_memory"] = "8192"
-        return values
+            config[Option.AMIGA_MODEL] = "A1200"
+            config[Option.FAST_MEMORY] = "8192"
+            if whdload.should_disable_drive_click():
+                config[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
+        return config
 
     @classmethod
     def calculate_whdload_args(cls, archive_path):
+        """
+        This function, as it is currently written, only works if there
+        is an .info with the same name as the .slave file. In theory, they
+        could be different since the .info file contains a slave=... tool type.
+        """
         archive = Archive(archive_path)
         slave = ""
+        args = []
+        lower_to_name = {}
         for path in archive.list_files():
+            lower_to_name[path.lower()] = path
+        for path in lower_to_name.values():
             name = os.path.basename(path)
             name_lower = name.lower()
             if name_lower.endswith(".slave"):
@@ -157,7 +171,24 @@ class HardDriveGroup(fsui.Group):
                           "one to choose")
                     return ""
                 slave = name
+                try:
+                    info_path = lower_to_name[
+                        os.path.splitext(path)[0].lower() + ".info"]
+                except KeyError:
+                    # No corresponding info file found.
+                    pass
+                else:
+                    try:
+                        args = whdload.read_whdload_args_from_info_stream(
+                            archive.open(info_path))
+                        args = whdload.strip_whdload_slave_prefix(args)
+                    except Exception as e:
+                        print("WARNING: Error reading WHDLoad args:", repr(e))
             elif name_lower == "startup-sequence":
                 print("found startup-sequence, assuming non-whdload "
                       "archive")
-        return slave
+                return ""
+        if args:
+            return " ".join(args)
+        else:
+            return slave

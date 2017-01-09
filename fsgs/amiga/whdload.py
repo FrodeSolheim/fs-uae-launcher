@@ -58,6 +58,36 @@ def override_config(config):
         config[Option.FAST_MEMORY] = "8192"
 
 
+def read_whdload_args_from_info_stream(stream):
+    return read_whdload_args_from_info_data(stream.read())
+
+
+def read_whdload_args_from_info_data(data):
+    index = data.lower().find(b"slave=") - 1
+    args = []
+    parts = data[index:].split(b"\x00\x00\x00\x00")
+    for part in parts[:]:
+        if len(part) > 2:
+            length = part[0]
+            print(length)
+            arg = part[1:1 + length - 1]
+            if b"***" in arg:
+                break
+            args.append(arg.decode("ISO-8859-1"))
+    return args
+
+
+def strip_whdload_slave_prefix(whdload_args):
+    result = []
+    for i, arg in enumerate(whdload_args):
+        arg = arg.split(";")[0]
+        if i == 0 and arg.lower().startswith("slave="):
+            arg = arg[6:]
+        if not arg.startswith("("):
+            result.append(arg)
+    return result
+
+
 # noinspection SpellCheckingInspection
 support_files = {
     "1d1c557f4a0f5ea88aeb96d68b09f41990340f70":
