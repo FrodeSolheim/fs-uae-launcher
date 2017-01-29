@@ -45,27 +45,26 @@ class VariantsBrowser(fsui.ItemChoice):
         # self.missing_icon = fsui.Image(
         #     "launcher:res/missing_game_16.png")
         self.missing_icon = fsui.Image(
-            "launcher:res/16/delete_grey.png")
+            "launcher:res/16x16/delete_grey.png")
         self.missing_color = fsui.Color(0xa8, 0xa8, 0xa8)
 
         self.blank_icon = fsui.Image(
-            "launcher:res/16/blank.png")
+            "launcher:res/16x16/blank.png")
         self.bullet_icon = fsui.Image(
-            "launcher:res/16/bullet.png")
+            "launcher:res/16x16/bullet.png")
 
         self.manual_download_icon = fsui.Image(
-            "launcher:res/16/arrow_down_yellow.png")
+            "launcher:res/16x16/arrow_down_yellow.png")
         self.auto_download_icon = fsui.Image(
-            "launcher:res/16/arrow_down_green.png")
+            "launcher:res/16x16/arrow_down_green.png")
 
         self.up_icon = fsui.Image(
-            "launcher:res/16/thumb_up_mod.png")
+            "launcher:res/16x16/thumb_up_mod.png")
         self.down_icon = fsui.Image(
-            "launcher:res/16/thumb_down_mod.png")
+            "launcher:res/16x16/thumb_down_mod.png")
         self.fav_icon = fsui.Image("launcher:res/rating_fav_16.png")
 
         LauncherSettings.add_listener(self)
-        LauncherConfig.add_listener(self)
         self.on_setting("parent_uuid", LauncherSettings.get("parent_uuid"))
 
     def on_destroy(self):
@@ -80,8 +79,8 @@ class VariantsBrowser(fsui.ItemChoice):
 
     # noinspection PyMethodMayBeStatic
     def on_activate_item(self, _):
-        from ..fs_uae_launcher import FSUAELauncher
-        FSUAELauncher.start_game()
+        from ..launcherapp import LauncherApp
+        LauncherApp.start_game()
 
     def on_setting(self, key, value):
         if key == "parent_uuid":
@@ -93,14 +92,13 @@ class VariantsBrowser(fsui.ItemChoice):
                 # self.set_items([gettext("Configuration")])
                 self.set_items([])
                 self.disable()
-
-    def on_config(self, key, value):
-        if key == "variant_rating":
+        elif key == "__variant_rating":
             variant_uuid = LauncherConfig.get("variant_uuid")
             for item in self.items:
                 if item["uuid"] == variant_uuid:
                     item["personal_rating"] = int(value or 0)
                     self.update()
+                    break
 
     def set_items(self, items):
         self.items = items
@@ -327,9 +325,10 @@ class VariantsBrowser(fsui.ItemChoice):
         # Config.set("__variant_rating", str(variant_rating))
 
         LauncherConfig.set("variant_uuid", variant_uuid)
-        LauncherConfig.set("variant_rating", str(personal_rating))
         LauncherConfig.set("__changed", "0")
         LauncherConfig.set("__database", database_name)
+
+        LauncherSettings.set("__variant_rating", str(personal_rating))
 
         if int(have) < self.AVAILABLE:
             print(" -- some files are missing --")

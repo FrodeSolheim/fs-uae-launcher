@@ -11,11 +11,11 @@ class WebButton(Panel):
         if icon is not None:
             self.icon = icon
         else:
-            self.icon = Image("launcher:res/16/world.png")
+            self.icon = Image("launcher:res/16x16/world.png")
         Panel.__init__(self, parent, paintable=True)
         # self.set_tooltip(tooltip)
         LauncherConfig.add_listener(self)
-        self.on_config("variant_rating", "")
+        self.on_config("variant_uuid", "")
 
     def on_destroy(self):
         LauncherConfig.remove_listener(self)

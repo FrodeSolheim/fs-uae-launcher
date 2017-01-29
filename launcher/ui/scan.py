@@ -5,6 +5,7 @@ from launcher.i18n import gettext
 from launcher.launcher_signal import LauncherSignal
 from launcher.scanner import Scanner
 from launcher.ui.settings.scan_paths_group import ScanPathsGroup
+from launcher.ui.widgets import CloseButton
 
 TIMER_INTERVAL = 100
 
@@ -19,7 +20,7 @@ class ScanDialog(fsui.Window):
                  scan_for_files=True):
         super().__init__(parent, gettext("Update File Database"))
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        # buttons.create_close_button()
+        buttons.create_close_button()
 
         self.layout.add_spacer(640, 0)
 
@@ -68,12 +69,6 @@ class ScanDialog(fsui.Window):
         self.stop_button = buttons.add_button(
             fsui.Button(buttons, gettext("Stop")))
         self.stop_button.activated.connect(self.on_stop_button)
-
-        # hor_layout.add_spacer(10)
-        # self.close_button = fsui.Button(self, _("Close"))
-        # self.close_button.activated.connect(self.on_close_button
-        # hor_layout.add(self.close_button)
-        # hor_layout.add_spacer(10)
 
         # layout.add_spacer(10)
 

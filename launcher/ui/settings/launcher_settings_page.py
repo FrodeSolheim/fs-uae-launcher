@@ -11,7 +11,7 @@ from launcher.ui.settings.maintenance_settings_page import \
 class LauncherSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
-        icon = fsui.Icon("settings", "pkg:workspace")
+        icon = fsui.Icon("fs-uae-launcher", "pkg:launcher")
         self.add_header(icon, "FS-UAE Launcher")
 
         if fsboot.get("fws") == "1":
@@ -22,10 +22,13 @@ class LauncherSettingsPage(SettingsPage):
             self.add_option(Option.LAUNCHER_THEME)
             self.add_option(Option.LAUNCHER_FONT_SIZE)
 
+        self.add_option(Option.LAUNCHER_CLOSE_BUTTONS)
+
         self.add_section(gettext("Experimental Features"))
         # Netplay feature is now enabled by default
         # self.add_option(Option.NETPLAY_FEATURE)
         self.add_option(Option.LAUNCHER_CONFIG_FEATURE)
+        self.add_option(Option.LAUNCHER_SETUP_WIZARD_FEATURE)
 
         self.add_section(gettext("Maintenance"))
         label = fsui.MultiLineLabel(self, gettext(

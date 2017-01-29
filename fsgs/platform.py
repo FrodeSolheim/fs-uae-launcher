@@ -67,6 +67,7 @@ from fsgs.platforms.lynx import LynxPlatformHandler
 from fsgs.platforms.master_system import MasterSystemPlatformHandler
 from fsgs.platforms.mega_drive import MegaDrivePlatformHandler
 from fsgs.platforms.nintendo import NintendoPlatformHandler
+from fsgs.platforms.psx import PlayStationPlatformHandler
 from fsgs.platforms.super_nintendo import SuperNintendoPlatformHandler
 from fsgs.platforms.turbografx_16 import TurboGrafx16PlatformHandler
 from fsgs.platforms.zx_spectrum import ZXSpectrumPlatformHandler
@@ -124,6 +125,7 @@ platforms = {
     "mega-drive": MegaDrivePlatformHandler,
     "nes": NintendoPlatformHandler,
     "snes": SuperNintendoPlatformHandler,
+    "psx": PlayStationPlatformHandler,
     "turbografx-16": TurboGrafx16PlatformHandler,
     "zx-spectrum": ZXSpectrumPlatformHandler,
 }

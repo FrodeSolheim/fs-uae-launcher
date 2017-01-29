@@ -12,12 +12,14 @@ from fsbc.task import Task
 from fsbc.util import unused, is_uuid
 from fsgs.Archive import Archive
 from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.FileDatabase import FileDatabase
 from fsgs.amiga.Amiga import Amiga
 from fsgs.application import ApplicationMixin
 from fsgs.context import fsgs
 from fsgs.download import Downloader
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.platform import PlatformHandler
+from fsgs.util.archiveutil import ArchiveUtil
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
@@ -30,11 +32,14 @@ from launcher.ui.launcher_window import LauncherWindow
 from launcher.version import VERSION
 
 
-class FSUAELauncher(ApplicationMixin, fsui.Application):
+class LauncherApp(ApplicationMixin, fsui.Application):
+    auto_detect_game = True
+
     def __init__(self):
         fsui.Application.__init__(self, "fs-uae-launcher")
         self.set_icon(fsui.Icon("fs-uae-launcher", "pkg:launcher"))
         self.fsgs = fsgs
+        # Try to auto-detect game when launching with an archive
 
     def on_idle(self):
         self.fsgs.signal.process()
@@ -70,9 +75,9 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         floppy_image_paths = []
         cdrom_image_paths = []
         config_uuid = None
-        floppy_exts = (".adf", ".ipf", ".dms", ".adz")
-        cdrom_exts = (".cue", ".iso")
-        archive_exts = (".zip", ".lha")
+        floppy_extensions = (".adf", ".ipf", ".dms", ".adz")
+        cdrom_extensions = (".cue", ".iso")
+        archive_extensions = (".zip", ".lha")
 
         # FIXME: replace argument "parsing" with use of argparse module
         # at some point
@@ -81,46 +86,71 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
         file_ext = os.path.splitext(last_arg)[-1].lower()
         if file_ext == ".fs-uae":
             config_path = last_arg
-        elif file_ext in archive_exts:
+        elif file_ext in archive_extensions:
             archive_path = last_arg
-        # elif file_ext in floppy_exts:
+        # elif file_ext in floppy_extensions:
         #     floppy_image_paths = [last_arg]
         elif is_uuid(last_arg):
             config_uuid = last_arg.lower()
         for arg in sys.argv[1:]:
             if not arg.startswith("--"):
                 _, ext = os.path.splitext(arg)
-                if ext in floppy_exts:
+                if ext in floppy_extensions:
                     floppy_image_paths.append(arg)
-                elif ext in cdrom_exts:
+                elif ext in cdrom_extensions:
                     cdrom_image_paths.append(arg)
 
         if config_path:
-            print("config path given:", config_path)
+            print("[STARTUP] Config path given:", config_path)
             if not os.path.exists(config_path):
-                print("config path does not exist", file=sys.stderr)
+                print("[STARTUP] Config path does not exist", file=sys.stderr)
                 return True
             LauncherConfig.load_file(config_path)
             fsgs.config.add_from_argv()
             return cls.run_config_directly()
 
         if archive_path:
-            print("archive path given:", archive_path)
+            print("[STARTUP] Archive path given:", archive_path)
             if not os.path.exists(archive_path):
-                print("archive path does not exist", file=sys.stderr)
+                print("[STARTUP] Archive path does not exist", file=sys.stderr)
                 return True
             archive = Archive(os.path.realpath(archive_path))
+            archive_name = os.path.basename(archive_path)
             # We want to exclude pure directory entries when checking for
             # archives with only floppies.
             arc_files = [x for x in archive.list_files() if not x.endswith("/")]
-            if all(map(lambda f: f.lower().endswith(floppy_exts), arc_files)):
-                print("archive contains floppy disk images only")
+            if all(map(lambda f: f.lower().endswith(floppy_extensions),
+                       arc_files)):
+                print("[STARTUP] Archive contains floppy disk images only")
                 floppy_image_paths = arc_files
             else:
+                if cls.auto_detect_game:
+                    # FIXME: Could also do this for floppy file archives.
+                    archive_util = ArchiveUtil(archive_path)
+                    archive_uuid = archive_util.create_variant_uuid()
+                    print("[STARTUP] Try auto-detecting variant, uuid =",
+                          archive_uuid)
+                    if fsgs.load_game_variant(archive_uuid):
+                        print("[STARTUP] Auto-detected variant", archive_uuid)
+                        print("[STARTUP] Adding archive files to file index")
+                        for archive_file in archive.list_files():
+                            stream = archive.open(archive_file)
+                            data = stream.read()
+                            size = len(data)
+                            sha1 = hashlib.sha1(data).hexdigest()
+                            FileDatabase.add_static_file(
+                                archive_file, size=size, sha1=sha1)
+                        fsgs.config.add_from_argv()
+                        fsgs.config.set("__config_name", archive_name)
+                        LauncherConfig.post_load_values(fsgs.config)
+                        return cls.run_config_directly()
+
                 values = HardDriveGroup.generate_config_for_archive(
                     archive_path)
                 values["hard_drive_0"] = archive_path
                 values.update(fsgs.config.config_from_argv())
+                # archive_name, archive_ext = os.path.splitext(archive_name)
+                values["__config_name"] = archive_name
                 return cls.run_config_directly_with_values(values)
 
         if floppy_image_paths:
@@ -132,6 +162,8 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                            for k, v in enum_paths[:max_drives]})
             values.update({"floppy_image_{0}".format(k): v
                            for k, v in enum_paths[:20]})
+            # FIXME: Generate a better config name for save dir?
+            values["__config_name"] = "Default"
             return cls.run_config_directly_with_values(values)
 
         if cdrom_image_paths:
@@ -143,19 +175,21 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                            for k, v in enum_paths[:max_drives]})
             values.update({"cdrom_image_{0}".format(k): v
                            for k, v in enum_paths[:20]})
+            # FIXME: Generate a better config name for save dir?
+            values["__config_name"] = "Default"
             return cls.run_config_directly_with_values(values)
 
         if config_uuid:
-            print("config uuid given:", config_uuid)
+            print("[STARTUP] Config uuid given:", config_uuid)
             variant_uuid = config_uuid
             # values = fsgs.game.set_from_variant_uuid(variant_uuid)
             if fsgs.load_game_variant(variant_uuid):
-                print("loaded variant")
+                print("[STARTUP] Loaded variant")
             else:
-                print("could not load variant, try to load game")
+                print("[STARTUP] Could not load variant, try to load game")
                 game_uuid = config_uuid
                 variant_uuid = fsgs.find_preferred_game_variant(game_uuid)
-                print("preferred variant:", variant_uuid)
+                print("[STARTUP] Preferred variant:", variant_uuid)
                 fsgs.load_game_variant(variant_uuid)
             fsgs.config.add_from_argv()
             LauncherConfig.post_load_values(fsgs.config)
@@ -163,13 +197,13 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
     @classmethod
     def run_config_directly(cls):
-        # LauncherSettings.set("parent_uuid", "")
         cls.start_game()
         return True
 
     @classmethod
     def run_config_directly_with_values(cls, values):
         LauncherConfig.load(values)
+        LauncherConfig.post_load_values(values)
         return cls.run_config_directly()
 
     _plugins_loaded = False
@@ -190,23 +224,22 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
 
     @staticmethod
     def _load_plugins(plugins_dir):
-        print("loading plugins")
+        print("[PLUGINS] Loading plugins")
         for full_name in os.listdir(plugins_dir):
             name, ext = os.path.splitext(full_name)
             if ext.lower() != ".py":
                 continue
             path = os.path.join(plugins_dir, full_name)
-            print("loading", path)
+            print("[PLUGINS] Loading", path)
             name = "plugin_" + hashlib.sha1(path.encode("UTF-8")).hexdigest()
             print(name)
-
             # noinspection PyDeprecation
             import imp
             try:
                 # noinspection PyDeprecation
                 plugin = imp.load_source(name, path)
-                print("name:", getattr(plugin, "name", ""))
-                print("version:", getattr(plugin, "version", ""))
+                print("[PLUGINS] Name:", getattr(plugin, "name", ""))
+                print("[PLUGINS] Version:", getattr(plugin, "version", ""))
                 plugin.fsgs = fsgs
                 plugin.plugin_dir = os.path.dirname(path)
                 plugin.fsgs_init()
@@ -214,7 +247,7 @@ class FSUAELauncher(ApplicationMixin, fsui.Application):
                 traceback.print_exc()
                 continue
             else:
-                print(name, "initialized")
+                print("[PLUGINS]", name, "initialized")
 
     settings_loaded = False
 

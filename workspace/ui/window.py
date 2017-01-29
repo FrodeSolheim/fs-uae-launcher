@@ -2,7 +2,7 @@ import pkg_resources
 import fsui
 from fsui.qt.window import RealWindow
 from .application import Application
-from .theme import Theme
+from .theme import WorkspaceTheme
 
 
 TEXT_SPACING = 2
@@ -251,7 +251,7 @@ class WindowTitlePanel(fsui.Panel):
         self.mouse_pos = (-1, -1)
 
     def on_paint(self):
-        theme = Theme.instance()
+        theme = WorkspaceTheme.instance()
         dc = self.create_dc()
         dc.set_font(theme.title_font)
         # text = self.parent().title()
@@ -372,9 +372,7 @@ class WindowMenuButton(WindowButton):
 
     def on_left_down(self):
         super().on_left_down()
-        # window = self.parent().parent()
-        window = self.window()
-        menu = window.menu()
+        menu = self.window.menu()
         if menu is not None:
             print(menu)
             self.popup_menu(menu, (0, self.size()[1]))
@@ -425,7 +423,7 @@ class TitlePanel(fsui.Panel):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.set_background_color(Theme.instance().title_background)
+        self.set_background_color(WorkspaceTheme.instance().title_background)
 
 
 # FIXME: Rename to TopSeparator?
@@ -433,6 +431,6 @@ class TitleSeparator(fsui.Panel):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.set_background_color(Theme.instance().title_separator_color)
+        self.set_background_color(WorkspaceTheme.instance().title_separator_color)
         self.set_min_height(2)
         self.set_min_width(100)

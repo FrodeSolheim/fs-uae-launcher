@@ -59,8 +59,8 @@ class TabPanel(fsui.Panel):
 
         line_color_1 = Skin.get_background_color()
         if Skin.fws() or Skin.windows_10():
-            from workspace.ui.theme import Theme
-            theme = Theme.instance()
+            from workspace.ui.theme import WorkspaceTheme
+            theme = WorkspaceTheme.instance()
             line_color_1 = theme.title_separator_color
             line_color_2 = line_color_1
         elif line_color_1 is not None:
@@ -92,8 +92,8 @@ class TabPanel(fsui.Panel):
         h = size[1] - 2
 
         if Skin.fws() or Skin.windows_10():
-            from workspace.ui.theme import Theme
-            theme = Theme.instance()
+            from workspace.ui.theme import WorkspaceTheme
+            theme = WorkspaceTheme.instance()
             white = fsui.Color(0xff, 0xff, 0xff)
             if selected:
                 bg_color = theme.window_background
@@ -179,8 +179,8 @@ class TabPanel(fsui.Panel):
     def draw_selected_tab(cls, widget, dc):
         line_color_1 = Skin.get_background_color()
         if Skin.fws() or Skin.windows_10():
-            from workspace.ui.theme import Theme
-            theme = Theme.instance()
+            from workspace.ui.theme import WorkspaceTheme
+            theme = WorkspaceTheme.instance()
             line_color_1 = theme.title_separator_color
             line_color_2 = line_color_1
         elif fsbc.system.macosx and False:

@@ -6,6 +6,7 @@ from functools import lru_cache
 from fsbc.system import windows
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.input.mapper import InputMapper
+from fsgs.option import Option
 from fsgs.runner import GameRunner
 
 
@@ -172,7 +173,14 @@ class MednafenRunner(GameRunner):
         else:
             self.args.extend(["-glvsync", "0"])
 
-        if self.config.get("audio_driver", "") in ["sdl", "pulseaudio"]:
+        if self.config.get(Option.MEDNAFEN_AUDIO_DRIVER):
+            if self.config.get(Option.MEDNAFEN_AUDIO_DRIVER) == "sdl":
+                # Mednafen does not support PulseAudio directly, but using the
+                # sdl driver will "often" result in PulseAudio being used
+                # indirectly.
+                self.args.extend(["-sound.driver", "sdl"])
+        # FIXME: Deprecated?
+        elif self.config.get("audio_driver", "") in ["sdl", "pulseaudio"]:
             # Mednafen does not support PulseAudio directly, but using the
             # sdl driver will "often" result in PulseAudio being used
             # indirectly.

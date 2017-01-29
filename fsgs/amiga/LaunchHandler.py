@@ -700,10 +700,15 @@ class LaunchHandler(object):
         whdload_args = self.config.get("x_whdload_args", "").strip()
         if not whdload_args:
             return
-        print("LaunchHandler.copy_whdload_files")
+        print("[WHDLOAD] LaunchHandler.copy_whdload_files")
+        if self.config.get(Option.WHDLOAD_PRELOAD, "") != "0":
+            if " PRELOAD" not in whdload_args.upper():
+                print("[WHDLOAD] Adding PRELOAD argument")
+                whdload_args += " PRELOAD"
+
         current_task.set_progress(gettext("Preparing WHDLoad..."))
         # self.on_progress(gettext("Preparing WHDLoad..."))
-        print("copy_whdload_files, dest_dir = ", dest_dir)
+        print("[WHDLOAD] copy_whdload_files, dest_dir = ", dest_dir)
 
         whdload_dir = ""
         slave = whdload_args.split(" ", 1)[0]
@@ -713,7 +718,7 @@ class LaunchHandler(object):
             for name in file_names:
                 # print(name, slave)
                 if name.lower() == slave:
-                    print("found", name)
+                    print("[WHDLOAD] Found", name)
                     found_slave = True
                     whdload_dir = dir_path[len(dest_dir):]
                     whdload_dir = whdload_dir.replace("\\", "/")
@@ -729,8 +734,8 @@ class LaunchHandler(object):
             raise Exception(
                 "Did not find the specified WHDLoad slave. "
                 "Check the WHDLoad arguments")
-        print("WHDLoad dir:", repr(whdload_dir))
-        print("WHDLoad args:", whdload_args)
+        print("[WHDLOAD] Slave directory:", repr(whdload_dir))
+        print("[WHDLOAD] Slave arguments:", whdload_args)
 
         self.copy_whdload_kickstart(
             dest_dir, "kick33180.A500",
@@ -757,7 +762,7 @@ class LaunchHandler(object):
             self.install_whdload_file(key, dest_dir, value)
 
         if self.config.get("__netplay_game", ""):
-            print("WHDLoad key is not copied in net play mode")
+            print("[WHDLOAD] Key file is not copied in net play mode")
         else:
             key_file = os.path.join(
                 self.fsgs.amiga.get_base_dir(), "WHDLoad.key")
@@ -765,7 +770,7 @@ class LaunchHandler(object):
                 print("found WHDLoad.key at ", key_file)
                 shutil.copy(key_file, os.path.join(s_dir, "WHDLoad.key"))
             else:
-                print("WHDLoad key not found in base dir (FS-UAE dir)")
+                print("[WHDLOAD] Key file not found in base dir (FS-UAE dir)")
 
             # temporary feature, at least until it's possible to set more
             # WHDLoad settings directly in the Launcher
@@ -775,14 +780,14 @@ class LaunchHandler(object):
                 print("found WHDLoad.prefs at ", prefs_file)
                 shutil.copy(prefs_file, os.path.join(s_dir, "WHDLoad.prefs"))
             else:
-                print("WHDLoad key not found in base dir (FS-UAE dir)")
+                print("[WHDLOAD] Key file not found in base dir (FS-UAE dir)")
 
         if self.config.get("__netplay_game", ""):
-            print("WHDLoad base dir is not copied in net play mode")
+            print("[WHDLOAD] WHDLoad base dir is not copied in net play mode")
         else:
             src_dir = self.get_whdload_dir()
             if src_dir and os.path.exists(src_dir):
-                print("WHDLoad base dir exists, copying resources...")
+                print("[WHDLOAD] WHDLoad base dir exists, copying resources...")
                 self.copy_folder_tree(src_dir, dest_dir)
 
         # icon = self.config.get("__whdload_icon", "")
@@ -791,7 +796,7 @@ class LaunchHandler(object):
             shutil.copy(os.path.expanduser("~/kgiconload"), 
                         os.path.join(dest_dir, "C", "kgiconload"))
             icon_path = os.path.join(dest_dir, icon)
-            print("create icon at ", icon_path)
+            print("[WHDLOAD] Create icon at ", icon_path)
             create_slave_icon(icon_path, whdload_args)
             self.write_startup_sequence(
                 s_dir,

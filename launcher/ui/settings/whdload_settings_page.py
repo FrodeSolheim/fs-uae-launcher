@@ -18,6 +18,7 @@ class WHDLoadSettingsPage(SettingsPage):
             "the online game database."), 640)
         self.layout.add(label, fill=True, margin_top=0)
 
+        self.add_option("whdload_preload")
         self.add_option("whdload_splash_delay")
         self.add_option("whdload_quit_key")
 

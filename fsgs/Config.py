@@ -2,6 +2,8 @@ import sys
 # import traceback
 from collections import defaultdict
 
+from fsbc import settings
+from fsgs.option import Option
 from .ContextAware import ContextAware
 
 
@@ -10,6 +12,7 @@ class Config(ContextAware):
     def __init__(self, context):
         ContextAware.__init__(self, context)
         self.values = {}
+        self.log_config = settings.get(Option.LAUNCHER_LOG_CONFIG) == "1"
 
     def add_behavior(self, instance, options):
         # FIXME: Move to fsgs
@@ -92,7 +95,9 @@ class Config(ContextAware):
                 #     print("config set {0} to {1} (no change)".format(
                 #         changed_key, changed_value))
                 return
-            print("config set {0} to {1}".format(changed_key, changed_value))
+            if self.log_config:
+                print("[CONFIG] set {0} to {1}".format(
+                    changed_key, changed_value))
             # if changed_key == "__changed" and changed_value == "1":
             #     print("Stack trace for event causing __changed = 1:")
             #     traceback.print_stack()

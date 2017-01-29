@@ -8,6 +8,7 @@ from launcher.launcher_settings import LauncherSettings
 from launcher.ui.ConfigGroup import ConfigGroup
 from launcher.ui.ConfigurationsBrowser import ConfigurationsBrowser
 from launcher.ui.GameListSelector import GameListSelector
+from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 from launcher.ui.skin import Skin
 from launcher.ui.VariantsBrowser import VariantsBrowser
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
@@ -130,14 +131,15 @@ class RatingChoice(Choice):
         super().__init__(parent, [], cursor_keys=False)
         with self.changed.inhibit:
             self.add_item(gettext("Rate Variant"),
-                          Image("launcher:res/16/bullet.png"))
+                          Image("launcher:res/16x16/bullet.png"))
             self.add_item(gettext("Best Variant"),
-                          Image("launcher:res/16/rating_fav_2.png"))
+                          Image("launcher:res/16x16/rating_fav_2.png"))
             self.add_item(gettext("Good Variant"),
-                          Image("launcher:res/16/thumb_up_2.png"))
+                          Image("launcher:res/16x16/thumb_up_2.png"))
             self.add_item(gettext("Bad Variant"),
-                          Image("launcher:res/16/thumb_down_2.png"))
-        ConfigBehavior(self, ["variant_rating", "variant_uuid"])
+                          Image("launcher:res/16x16/thumb_down_2.png"))
+        ConfigBehavior(self, ["variant_uuid"])
+        SettingsBehavior(self, ["__variant_rating"])
 
     def on_changed(self):
         variant_uuid = LauncherConfig.get("variant_uuid", "")
@@ -169,9 +171,9 @@ class RatingChoice(Choice):
             "INSERT INTO rating (game_uuid, work_rating, like_rating) "
             "VALUES (?, ?, ?)", (variant_uuid, work_rating, like_rating))
         database.commit()
-        LauncherConfig.set("variant_rating", str(like_rating))
+        LauncherSettings.set("__variant_rating", str(like_rating))
 
-    def on_variant_rating_config(self, value):
+    def on___variant_rating_setting(self, value):
         with self.changed.inhibit:
             try:
                 rating = int(value)

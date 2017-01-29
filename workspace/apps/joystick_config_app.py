@@ -15,6 +15,8 @@ from fsgs.input.inputdevice import InputDevice
 from launcher.device_manager import DeviceManager
 from launcher.i18n import gettext
 from launcher.ui.skin import Skin
+from launcher.ui.widgets import CloseButton
+from workspace.ui.theme import WorkspaceTheme
 
 
 class JoystickConfigWindow(fsui.Window):
@@ -23,7 +25,7 @@ class JoystickConfigWindow(fsui.Window):
             device_name=device_name)
         super().__init__(parent, title=title, minimizable=False,
                          maximizable=False, separator=False)
-
+        self.theme = WorkspaceTheme.instance()
         self.layout = fsui.VerticalLayout()
 
         self.image = fsui.Image("workspace:res/gamepad-config.png")
@@ -77,9 +79,9 @@ class JoystickConfigWindow(fsui.Window):
         self.save_button.activated.connect(self.on_save_button)
         panel.layout.add(self.save_button, margin_left=20)
 
-        # self.close_button = fsui.Button(panel, gettext("Close"))
-        # self.close_button.activated.connect(self.on_close_button)
-        # panel.layout.add(self.close_button, margin_left=10)
+        if self.window.theme.has_close_buttons:
+            self.close_button = CloseButton(panel)
+            panel.layout.add(self.close_button, margin_left=10)
 
         self.device_name = device_name
         existing_config = self.read_existing_config()
@@ -119,9 +121,6 @@ class JoystickConfigWindow(fsui.Window):
     def on_save_button(self):
         self.save_config()
         self.save_button.disable()
-
-    # def on_close_button(self):
-    #     self.close()
 
     def set_information(self, device_type, device_make, device_model):
         print("set_information", repr(device_type), repr(device_make),

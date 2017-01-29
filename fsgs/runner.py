@@ -56,15 +56,15 @@ class TemporaryItem:
         self.delete()
 
     def delete(self):
-        print("TemporaryItem.delete")
+        print("[DRIVER] TemporaryItem.delete")
         assert self.root is None
         if self._path is None:
             return
         if os.environ.get("FSGS_CLEANUP", "") == "0":
-            print("NOTICE: keeping temp files around...")
+            print("[DRIVER] NOTICE: keeping temp files around...")
             return
         if self._path:
-            print("Removing", self._path)
+            print("[DRIVER] Removing", self._path)
             shutil.rmtree(self._path)
             self._path = None
 

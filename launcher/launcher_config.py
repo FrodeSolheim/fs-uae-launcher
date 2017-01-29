@@ -93,8 +93,6 @@ cfg = [
     ("thelegacy_url", ""),
     ("homepage_url", ""),
     ("longplay_url", ""),
-    ("__variant_rating", ""),
-    ("variant_rating", ""),
     ("variant_uuid", ""),
 
     ("download_file", ""),

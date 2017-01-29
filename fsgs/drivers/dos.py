@@ -57,13 +57,15 @@ class DOSDriver(GameRunner):
         self.unpack_game_hard_drives(file_list)
 
     def unpack_game_hard_drives(self, file_list):
-
         drives_added = set()
         dir_path = self.drives_dir.path
         for file_entry in file_list:
             # if self.stop_flag:
             #     return
+
             name = file_entry["name"].upper()
+            # name = file_entry["name"]
+
             drives_added.add(name[0])
 
             # Extract relative path and convert each path component
@@ -96,6 +98,13 @@ class DOSDriver(GameRunner):
 
             with open(dst_file, "wb") as out_file:
                 out_file.write(data)
+            if dst_file.endswith(".CUE"):
+                with open(dst_file, "r", encoding="ISO-8859-1") as f:
+                    data = f.read()
+                data = data.upper()
+                with open(dst_file, "w", encoding="ISO-8859-1") as f:
+                    f.write(data)
+
 
         for drive in sorted(drives_added):
             self.drives.append((drive, os.path.join(dir_path, drive)))

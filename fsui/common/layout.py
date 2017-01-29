@@ -60,9 +60,18 @@ class Layout(object):
     def get_min_size(self):
         return self.get_min_width(), self.get_min_height()
 
+    def insert(self, index, element, spacing=0, expand=False, fill=False,
+               valign=0.5, margin=0, margin_left=None, margin_right=None,
+               margin_top=None, margin_bottom=None):
+        self.add(element, spacing=spacing, expand=expand, fill=fill,
+                 valign=valign, margin=margin, margin_left=margin_left,
+                 margin_right=margin_right, margin_top=margin_top,
+                 margin_bottom=margin_bottom, index=index)
+
+    # FIXME: Rename margin -> margins (+ alias), margin_top -> top, etc
     def add(self, element, spacing=0, expand=False, fill=False, valign=0.5,
             margin=0, margin_left=None, margin_right=None,
-            margin_top=None, margin_bottom=None):
+            margin_top=None, margin_bottom=None, index=None):
         """
 
         - By setting fill < 0, the height or width of the control will not
@@ -97,7 +106,10 @@ class Layout(object):
             child.margin_bottom = margin_bottom
         else:
             child.margin_bottom = margin
-        self.children.append(child)
+        if index is None:
+            self.children.append(child)
+        else:
+            self.children.insert(index, child)
 
     def remove(self, element):
         for i, child in enumerate(self.children):
@@ -105,7 +117,7 @@ class Layout(object):
                 del self.children[i]
                 return
 
-    def add_spacer(self, size, size2=None, expand=False):
+    def add_spacer(self, size=0, size2=None, expand=False):
         self.add(Spacer(size, size2), expand=expand)
 
     def get_position(self):

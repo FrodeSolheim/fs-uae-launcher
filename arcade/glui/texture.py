@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from arcade.arcadetheme import ArcadeTheme
 from fsui.qt import QImage
 # import numpy
 # from PIL import Image
@@ -72,7 +73,7 @@ class Texture(object):
             self.size = [0, 0]
             # print(name, kwargs)
             out_data = {}
-            self.texture = self.from_resource(
+            self.texture = self.from_theme(
                 name, target=target, size=self.size, out_data=out_data,
                 **kwargs)
             self.data = out_data["im_data"]
@@ -185,12 +186,20 @@ class Texture(object):
     def from_resource(cls, name, size=None, **kwargs):
         if size is None:
             size = [0, 0]
-        # try:
-        #     path = app.data_file(name)
-        # except LookupError:
-        #     im = resources.resource_pil_image(name)
-        # else:
-        #     im = Image.open(path)
-        # return cls.load(im, size=size, **kwargs)
         im = resources.resource_qt_image(name)
+        return cls.load(im, size=size, **kwargs)
+
+    # @classmethod
+    # def from_qimage(cls, name, size=None, **kwargs):
+    #     if size is None:
+    #         size = [0, 0]
+    #     im = resources.resource_qt_image(name)
+    #     return cls.load(im, size=size, **kwargs)
+
+    @classmethod
+    def from_theme(cls, name, size=None, **kwargs):
+        if size is None:
+            size = [0, 0]
+        # im = resources.resource_qt_image(name)
+        im = ArcadeTheme.get().qimage(name)
         return cls.load(im, size=size, **kwargs)

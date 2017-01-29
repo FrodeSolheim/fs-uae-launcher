@@ -1,4 +1,5 @@
 import fsui
+from fsgs.option import Option
 from launcher.i18n import gettext
 from launcher.ui.settings.settings_page import SettingsPage
 
@@ -18,5 +19,5 @@ class LoggingSettingsPage(SettingsPage):
             "debugging purposes."), 640)
         self.layout.add(label, fill=True, margin_top=20)
 
-        self.add_option("log_autoscale")
-        self.add_option("log_input")
+        self.add_option(Option.LOG_AUTOSCALE)
+        self.add_option(Option.LOG_INPUT)

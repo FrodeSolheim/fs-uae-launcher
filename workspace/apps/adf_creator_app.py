@@ -8,6 +8,7 @@ from fsgs.FSGSDirectories import FSGSDirectories
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
 from fsui.extra.iconheader import IconHeader
+from workspace.ui.theme import WorkspaceTheme
 
 
 class ADFCreatorWindow(fsui.Window):
@@ -19,8 +20,10 @@ class ADFCreatorWindow(fsui.Window):
     def __init__(self, parent=None):
         title = gettext("ADF Disk Image Creator")
         super().__init__(parent, title=title, maximizable=False)
+        self.theme = WorkspaceTheme.instance()
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        # buttons.create_close_button()
+        if self.window.theme.has_close_buttons:
+            buttons.create_close_button()
 
         self.dialog = None
         self.path = ""
@@ -41,7 +44,7 @@ class ADFCreatorWindow(fsui.Window):
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_width(560)
         self.list_view.set_min_height(60)
-        icon = fsui.Image("workspace:res/16/floppy.png")
+        icon = fsui.Image("workspace:res/16x16/floppy.png")
         self.list_view.add_item(
             gettext("ADF - Standard Floppy Disk Image"), icon)
         self.list_view.add_item(
@@ -93,7 +96,7 @@ class ADFCreatorWindow(fsui.Window):
         # hori_layout.add_spacer(20)
         self.create_button = fsui.Button(buttons, gettext("Create"))
         # self.create_button.activated.connect(self.on_create_clicked)
-        self.create_button.clicked.connect(self.on_create_clicked)
+        self.create_button.activated.connect(self.on_create_clicked)
         # hori_layout.add(self.create_button)
         buttons.add_button(self.create_button)
 

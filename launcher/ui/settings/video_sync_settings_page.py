@@ -55,7 +55,7 @@ class VideoSyncSettingsPage(SettingsPage):
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True, margin_top=10)
         hori_layout.add(fsui.ImageView(self, fsui.Image(
-            "launcher:res/16/world_link.png")))
+            "launcher:res/16x16/world_link.png")))
         label = fsui.URLLabel(self, gettext(
             "How to achieve perfectly smooth scrolling"),
                               "http://fs-uae.net/perfectly-smooth-scrolling")

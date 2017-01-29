@@ -10,10 +10,10 @@ class ProtectionElement(StatusElement):
         StatusElement.__init__(self, parent)
         # self.set_min_width(140)
         # self.layout = HorizontalLayout()
-        self.protection_icon = Image("launcher:res/16/lock.png")
+        self.protection_icon = Image("launcher:res/16x16/lock.png")
         # self.unknown_icon = self.icon.grey_scale()
         self.disabled_icon = Image(
-            "launcher:res/16/lock_open_green.png")
+            "launcher:res/16x16/lock_open_green.png")
         # self.disabled_icon = self.disabled_icon.grey_scale()
         self.icon = self.protection_icon
 

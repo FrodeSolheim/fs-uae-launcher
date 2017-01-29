@@ -1,5 +1,8 @@
 import os
 import subprocess
+
+from fsbc import settings
+from fsgs.option import Option
 from .FSUAE import FSUAE
 
 try:
@@ -19,6 +22,14 @@ class FSUAEDeviceHelper(object):
         args = [exe] + args
         print(args)
         env = os.environ.copy()
+        if settings.get(Option.FAKE_JOYSTICKS):
+            try:
+                fake_joysticks = int(settings.get(Option.FAKE_JOYSTICKS))
+            except ValueError:
+                print("WARNING: fake_joysticks contains invalid value",
+                      repr(settings.get(Option.FAKE_JOYSTICKS)))
+            else:
+                env["FSGS_FAKE_JOYSTICKS"] = str(fake_joysticks)
         FSUAE.add_environment_from_settings(env)
         process = subprocess.Popen(
             args, env=env, stdin=subprocess.PIPE,

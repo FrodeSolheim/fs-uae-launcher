@@ -1,31 +1,33 @@
-from binascii import hexlify
 import time
 import traceback
-from fsgs.context import fsgs
-from fsgs.Archive import Archive
-from fsgs.amiga.ROMManager import ROMManager
-import fsui
-from fsbc.task import Task
-from fsgs.FileDatabase import FileDatabase
-from fsgs.ogd.client import OGDClient
-from fsui.extra.iconheader import IconHeader
-# from workspace.shell import SimpleApplication
-from launcher.res import gettext
+from binascii import hexlify
 from io import BytesIO as StringIO
 
+import fsui
+from fsbc.task import Task
+from fsgs.Archive import Archive
+from fsgs.FileDatabase import FileDatabase
+from fsgs.amiga.ROMManager import ROMManager
+from fsgs.context import fsgs
+from fsgs.ogd.client import OGDClient
+from fsui.extra.iconheader import IconHeader
+from launcher.res import gettext
+from launcher.ui.widgets import CloseButton
+from workspace.ui.theme import WorkspaceTheme
 
-class LockerUploaderWindow(fsui.Window):
 
+class LockerUploaderWindow(fsui.DialogWindow):
     @classmethod
     def open(cls, parent=None):
         return fsui.open_window_instance(cls, parent)
 
     def __init__(self, parent=None):
         title = gettext("OAGD.net Locker Uploader")
-        super().__init__(parent, title, maximizable=False)
+        super().__init__(parent, title)
+        self.theme = WorkspaceTheme.instance()
+        self.layout = fsui.VerticalLayout()
         self.set_icon(fsui.Icon("refresh", "pkg:workspace"))
 
-        self.layout = fsui.VerticalLayout()
         self.layout.min_width = 600
         self.layout.set_padding(20, 20, 20, 20)
 
@@ -49,9 +51,11 @@ class LockerUploaderWindow(fsui.Window):
         self.stop_button.disable()
         hori_layout.add(self.stop_button, margin_left=10)
 
-        # self.close_button = fsui.Button(self, gettext("Close"))
-        # self.close_button.activated.connect(self.on_close_activated)
-        # hori_layout.add(self.close_button, margin_left=10)
+        if self.window.theme.has_close_buttons:
+            self.close_button = CloseButton(self)
+            hori_layout.add(self.close_button, margin_left=10)
+        else:
+            self.close_button = None
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
@@ -68,7 +72,8 @@ class LockerUploaderWindow(fsui.Window):
     #     self.close()
 
     def on_upload_activated(self):
-        # self.close_button.disable()
+        if self.close_button:
+            self.close_button.disable()
         self.upload_button.disable()
         self.stop_button.enable()
         self.task = LockerUploaderTask()
@@ -80,7 +85,8 @@ class LockerUploaderWindow(fsui.Window):
 
     def on_stop_activated(self):
         self.task.stop()
-        self.stop_button.disable()
+        if self.close_button:
+            self.stop_button.disable()
 
     def on_stopped(self):
         self.icon_header.subtitle_label.set_text(gettext("Stopped by user"))
@@ -94,7 +100,8 @@ class LockerUploaderWindow(fsui.Window):
         self.after_task_has_stopped()
 
     def after_task_has_stopped(self):
-        # self.close_button.enable()
+        if self.close_button:
+            self.close_button.enable()
         self.upload_button.enable()
         self.stop_button.disable()
 
@@ -109,7 +116,6 @@ def bytes_to_hex(sha1):
 
 
 class LockerUploaderTask(Task):
-
     def __init__(self):
         Task.__init__(self, "Locker Uploader Task")
         self.client = OGDClient()
@@ -150,7 +156,7 @@ class LockerUploaderTask(Task):
             # self.progressed(gettext("Verifying {name}").format(
             #                 name=bytes_to_hex(sha1)))
             self.progressed(gettext("Uploading {name}").format(
-                            name=bytes_to_hex(sha1)))
+                name=bytes_to_hex(sha1)))
             import hashlib
             new_hash = hashlib.sha1(data).hexdigest()
             print(new_hash, "vs", bytes_to_hex(sha1))
@@ -213,17 +219,5 @@ class LockerUploaderTask(Task):
                 retry_seconds = min(retry_seconds * 2, 60 * 10)
             else:
                 return result
-
-        # try:
-        #     result = self.client.post("/api/locker-upload-check",
-        #                               data=string_io.getvalue())
-        # except OGDClient.ForbiddenError:
-        #     raise Task.Failure(
-        #         gettext("OAGD.net Locker is not enabled for your user. "
-        #                 "It may be available only to a few select beta "
-        #                 "users."))
-        # string_io.close()
-        # return result
-
 
 # application = SimpleApplication(LockerUploaderWindow)

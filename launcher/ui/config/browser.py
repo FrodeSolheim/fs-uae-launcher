@@ -9,21 +9,21 @@ class ConfigBrowser(fsui.VerticalItemView):
         # fsui.VerticalItemView.__init__(self, parent, border=(not Skin.fws()))
         fsui.VerticalItemView.__init__(self, parent, border=False)
         self.items = []
-        self.game_icon = fsui.Image("launcher:res/16/controller.png")
+        self.game_icon = fsui.Image("launcher:res/16x16/controller.png")
         self.config_icon = fsui.Image(
             "launcher:res/fsuae_config_16.png")
 
         self.manual_download_icon = fsui.Image(
-            "launcher:res/16/arrow_down_yellow.png")
+            "launcher:res/16x16/arrow_down_yellow.png")
         self.auto_download_icon = fsui.Image(
-            "launcher:res/16/arrow_down_green.png")
+            "launcher:res/16x16/arrow_down_green.png")
         self.blank_icon = fsui.Image(
-            "launcher:res/16/blank.png")
+            "launcher:res/16x16/blank.png")
         self.missing_color = fsui.Color(0xa8, 0xa8, 0xa8)
         self.platform_icons = {}
 
-        from workspace.ui.theme import Theme
-        theme = Theme.instance()
+        from workspace.ui.theme import WorkspaceTheme
+        theme = WorkspaceTheme.instance()
         self.set_row_height(28)
         # self.list_view.set_background_color(fsui.Color(0xeb, 0xeb, 0xeb))
         self.setStyleSheet("""
@@ -107,7 +107,7 @@ class ConfigBrowser(fsui.VerticalItemView):
         # elif item[str("have")] == 4:
         #     if platform_id not in self.platform_icons:
         #         try:
-        #             icon = fsui.Image("launcher:res/16/{0}.png".format(
+        #             icon = fsui.Image("launcher:res/16x16/{0}.png".format(
         #                 platform_id))
         #         except Exception:
         #             icon = self.game_icon

@@ -8,7 +8,7 @@ class PlayersElement(StatusElement):
 
     def __init__(self, parent):
         StatusElement.__init__(self, parent)
-        self.icon = Image("launcher:res/16/user.png")
+        self.icon = Image("launcher:res/16x16/user.png")
         self.text = gettext("N/A")
         self.active = False
 

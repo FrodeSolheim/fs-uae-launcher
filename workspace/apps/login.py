@@ -1,9 +1,11 @@
 from fsgs.ogd.client import OGDClient
 import fsui
 from fsbc.application import app
+from launcher.ui.widgets import CloseButton
 from workspace.apps.refresh import RefreshWindow
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
+from workspace.ui.theme import WorkspaceTheme
 
 
 class LoginWindow(fsui.Window):
@@ -16,8 +18,9 @@ class LoginWindow(fsui.Window):
         print("LoginWindow, parent =", parent)
         super().__init__(parent, gettext("Log In to Your OAGD.net Account"))
         self.set_icon(fsui.Icon("password", "pkg:workspace"))
-
+        self.theme = WorkspaceTheme.instance()
         self.layout = fsui.VerticalLayout()
+
         self.layout.set_padding(20, 20, 20, 20)
 
         heading_layout = fsui.HorizontalLayout()
@@ -99,9 +102,10 @@ class LoginWindow(fsui.Window):
         self.login_button.activated.connect(self.on_login_activated)
         hori_layout.add(self.login_button)
 
-        # self.close_button = fsui.Button(self, gettext("Close"))
-        # self.close_button.activated.connect(self.on_close_activated)
-        # hori_layout.add(self.close_button, margin_left=10)
+        if self.window.theme.has_close_buttons:
+            self.close_button = CloseButton(self)
+            hori_layout.add(
+                self.close_button, fill=True, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
@@ -113,9 +117,6 @@ class LoginWindow(fsui.Window):
 
     def __del__(self):
         print("LoginWindow.__del__")
-
-    def on_close_activated(self):
-        self.close()
 
     def on_text_field_changed(self):
         email = self.username_field.get_text().strip()

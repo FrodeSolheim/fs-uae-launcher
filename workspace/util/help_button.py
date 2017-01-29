@@ -6,7 +6,7 @@ import workspace.ui
 class HelpButton(workspace.ui.ImageButton):
     def __init__(self, parent, url):
         super().__init__(parent, workspace.ui.Image(
-            workspace.Stream(__name__, "data/16/information.png")))
+            workspace.Stream(__name__, "data/16x16/information.png")))
         self.url = url
         self.set_min_width(40)
 

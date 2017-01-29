@@ -1,4 +1,4 @@
-from fsui.qt import Qt, QSize, Signal
+from fsui.qt import Qt, QSize, Signal, QFont
 from fsui.qt import QListView, QStandardItemModel, QStandardItem
 from .widget_mixin import WidgetMixin
 
@@ -64,6 +64,11 @@ class ListView(QListView, WidgetMixin):
         for item in items:
             if isinstance(item, str):
                 self.add_item(item)
+            elif isinstance(item, dict):
+                label = item["label"]
+                icon = item.get("icon", None)
+                bold = item.get("bold", False)
+                self.add_item(label, icon, bold)
             else:
                 label, icon = item
                 self.add_item(label, icon)
@@ -71,7 +76,7 @@ class ListView(QListView, WidgetMixin):
     def clear(self):
         self._model.clear()
 
-    def add_item(self, label, icon=None):
+    def add_item(self, label, icon=None, bold=False):
         item = QStandardItem(label)
         if icon:
             try:
@@ -79,6 +84,10 @@ class ListView(QListView, WidgetMixin):
             except TypeError:
                 item.setIcon(icon.qicon)
         item.setSizeHint(QSize(-1, self._row_height))
+        if bold:
+            font = self.font()
+            font.setWeight(QFont.Bold)
+            item.setFont(font)
         self._model.appendRow(item)
 
     def get_item(self, index):

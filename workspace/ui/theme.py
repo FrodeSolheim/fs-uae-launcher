@@ -1,9 +1,17 @@
 import fsui
+from fsgs.option import Option
+from launcher.launcher_settings import LauncherSettings
 
 
-class Theme:
+class WorkspaceTheme:
 
     __instance = None
+
+    @classmethod
+    def instance(cls):
+        if not cls.__instance:
+            cls.__instance = cls()
+        return cls.__instance
 
     def __init__(self):
         self.title_font = fsui.Font("Noto Sans", 15)
@@ -20,8 +28,6 @@ class Theme:
         self.title_glow_color = None
         # self.title_glow_color = fsui.Color(0xff, 0xcc, 0xff, 0x80)
 
-    @classmethod
-    def instance(cls):
-        if not cls.__instance:
-            cls.__instance = cls()
-        return cls.__instance
+    @property
+    def has_close_buttons(self):
+        return LauncherSettings.get(Option.LAUNCHER_CLOSE_BUTTONS) == "1"

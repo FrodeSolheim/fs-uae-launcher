@@ -7,7 +7,7 @@ from .WebButton import WebButton
 class EditButton(WebButton):
 
     def __init__(self, parent):
-        icon = Image("launcher:res/16/pencil.png")
+        icon = Image("launcher:res/16x16/pencil.png")
         WebButton.__init__(self, parent, icon)
 
     def get_url(self):

@@ -15,15 +15,16 @@ class VideoSettingsPage(SettingsPage):
         self.add_option("fullscreen")
         self.add_option("monitor")
 
-        self.add_section(gettext("Scaling"))
+        self.add_section(gettext("Scaling & Filters"))
         self.add_option("zoom")
         self.add_option("keep_aspect")
 
-        self.add_section(gettext("Filters"))
+        # self.add_section(gettext("Filters"))
         self.add_option("scanlines")
         self.add_option("rtg_scanlines")
 
         self.add_section(gettext("Video Synchronization"))
+        # FIXME: Move 640 to constants
         label = fsui.MultiLineLabel(self, gettext(
             "Enabling the following option will synchronize the emulation "
             "to the display when the emulation refresh rate matches the "

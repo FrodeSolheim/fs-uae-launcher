@@ -54,7 +54,7 @@ class InputSelector(fsui.Group):
         self.layout.add(self.device_choice, expand=True)
 
         if port < 4 and autofire_button:
-            self.autofire_button = IconButton(self, "16/lightning_off.png")
+            self.autofire_button = IconButton(self, "16x16/lightning_off.png")
             self.autofire_button.activated.connect(self.on_autofire_button)
             self.layout.add(self.autofire_button, margin_left=10)
         else:
@@ -170,11 +170,13 @@ class InputSelector(fsui.Group):
                 if value == "1":
                     self.autofire_button.set_tooltip(
                         gettext("Auto-Fire is On"))
-                    self.autofire_button.set_icon_name("16/lightning_red.png")
+                    self.autofire_button.set_icon_name(
+                        "16x16/lightning_red.png")
                 else:
                     self.autofire_button.set_tooltip(
                         gettext("Auto-Fire is Off"))
-                    self.autofire_button.set_icon_name("16/lightning_off.png")
+                    self.autofire_button.set_icon_name(
+                        "16x16/lightning_off.png")
 
         # this is intended to catch all config changes for all ports (both
         # mode and device) to update the defaults

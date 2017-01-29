@@ -149,4 +149,4 @@ class NetplayPanel(fsui.Panel):
             if args["channel"] == self.active_channel:
                 self.text_area.append_text(args["message"],
                                            color=args["color"])
-            self.window().alert()
+            self.window.alert()

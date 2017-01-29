@@ -1,4 +1,6 @@
 import fsui
+from launcher.ui.skin import LauncherTheme
+from launcher.ui.widgets import CloseButton
 from ...i18n import gettext
 from .ImportTask import ImportTask
 from ...launcher_signal import LauncherSignal
@@ -16,6 +18,7 @@ class ImportDialog(fsui.Window):
         else:
             title = gettext("Import Kickstarts and ROMs")
         super().__init__(parent, title, maximizable=False)
+        self.theme = LauncherTheme.get()
         self.layout = fsui.VerticalLayout()
         self.layout.padding_left = 20
         self.layout.padding_top = 20
@@ -27,13 +30,10 @@ class ImportDialog(fsui.Window):
         self.text_area.set_min_height(300)
         self.layout.add(self.text_area)
 
-        hori_layout = fsui.HorizontalLayout()
-        self.layout.add(hori_layout, fill=True, margin_top=20)
-        hori_layout.add_spacer(0, expand=True)
-        self.close_button = fsui.Button(self, gettext("Close"))
-        self.close_button.activated.connect(self.on_close_button)
-        self.close_button.disable()
-        hori_layout.add(self.close_button)
+        self.close_button = CloseButton.add_to_layout(
+            self, self.layout, margin_top=20)
+        if self.close_button:
+            self.close_button.disable()
 
         self.line_count = 0
         self.task = ImportTask(path, import_type)
@@ -46,14 +46,11 @@ class ImportDialog(fsui.Window):
     def on_timer(self):
         if self.task.done:
             LauncherSignal.broadcast("scan_done")
-            self.close_button.enable()
+            if self.close_button:
+                self.close_button.enable()
         else:
             fsui.call_later(TIMER_INTERVAL, self.on_timer)
         lines = self.task.get_new_log_lines(self.line_count)
         for line in lines:
             self.text_area.append_text(line + "\n")
         self.line_count += len(lines)
-
-    def on_close_button(self):
-        # self.end_modal(False)
-        self.close()

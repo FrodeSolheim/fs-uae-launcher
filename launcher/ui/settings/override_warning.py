@@ -7,7 +7,7 @@ class OverrideWarning(fsui.ImageView):
 
     def __init__(self, parent, name):
         fsui.ImageView.__init__(self, parent, fsui.Image(
-            "launcher:res/16/warning_2.png"))
+            "launcher:res/16x16/warning_2.png"))
         setattr(self, "on_{0}_config".format(name), self.on_config)
         ConfigBehavior(self, [name])
         text = gettext(

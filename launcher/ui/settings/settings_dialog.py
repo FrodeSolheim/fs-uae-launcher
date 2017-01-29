@@ -1,12 +1,15 @@
 import fsui
 from launcher.option import Option
+from launcher.ui.settings.directories_settings_page import \
+    DirectoriesSettingsPage
+from launcher.ui.settings.fs_uae_settings_page import FSUAESettingsPage
 from launcher.ui.settings.launcher_settings_page import LauncherSettingsPage
 from launcher.ui.settings.arcade_settings_page import ArcadeSettingsPage
 from launcher.ui.settings.plugins_settings_page import PluginsSettingsPage
 from .advanced_settings_page import AdvancedSettingsPage
 from .advanced_video_settings import AdvancedVideoSettingsPage
 from .audio_settings_page import AudioSettingsPage
-from ..PagedDialog import PagedDialog
+from ..pageddialog import PagedDialog
 from ...i18n import gettext
 from ...launcher_settings import LauncherSettings
 from ...launcher_signal import LauncherSignal
@@ -37,13 +40,28 @@ class SettingsDialog(PagedDialog):
         # FIXME: remove this once the dialog uses Window as base class
         # self.setAttribute(Qt.WA_DeleteOnClose, True)
 
+        # self.add_page(
+        #     # gettext("Appearance"), LanguageSettingsPage,
+        #     gettext("Language"), LanguageSettingsPage,
+        #     fsui.Icon("language-settings", "pkg:workspace"))
         self.add_page(
-            # gettext("Appearance"), LanguageSettingsPage,
-            gettext("Language"), LanguageSettingsPage,
-            fsui.Icon("language-settings", "pkg:workspace"))
+            gettext("Common"), LanguageSettingsPage,
+            fsui.Icon("language-settings", "pkg:workspace"), bold=True)
         self.add_page(
             gettext("Controllers"), JoystickSettingsPage,
             fsui.Icon("gamepad", "pkg:workspace"))
+        self.add_page(
+            gettext("Plugins"), PluginsSettingsPage,
+            fsui.Icon("settings", "pkg:workspace"))
+        self.add_page(
+            gettext("Directories"), DirectoriesSettingsPage,
+            fsui.Icon("settings", "pkg:workspace"))
+        self.add_page(
+            gettext("Advanced"), AdvancedSettingsPage,
+            fsui.Icon("settings", "pkg:workspace"))
+        self.add_page(
+            "FS-UAE", FSUAESettingsPage,
+            fsui.Icon("fs-uae", "pkg:launcher"), bold=True)
         self.add_page(
             gettext("Keyboard"), KeyboardSettingsPage,
             fsui.Icon("keyboard-settings", "pkg:workspace"))
@@ -67,12 +85,12 @@ class SettingsDialog(PagedDialog):
         #     fsui.Icon("video-settings", "pkg:workspace"))
         # self.add_page(gettext("OpenGL Settings"), OpenGLSettingsPage)
         # if Settings.get("database_feature") == "1":
-        self.add_page(
-            gettext("Logging"), LoggingSettingsPage,
-            fsui.Icon("settings", "pkg:workspace"))
+        # self.add_page(
+        #     gettext("Logging"), LoggingSettingsPage,
+        #     fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
             "FS-UAE Launcher", LauncherSettingsPage,
-            fsui.Icon("fs-uae-launcher", "pkg:launcher"))
+            fsui.Icon("fs-uae-launcher", "pkg:launcher"), bold=True)
         self.add_page(
             gettext("File Database"), ScanSettingsPage,
             fsui.Icon("indexing-settings", "pkg:workspace"))
@@ -87,9 +105,6 @@ class SettingsDialog(PagedDialog):
         self.add_page(
             "WHDLoad", WHDLoadSettingsPage,
             fsui.Icon("settings", "pkg:workspace"))
-        self.add_page(
-            gettext("Plugins"), PluginsSettingsPage,
-            fsui.Icon("settings", "pkg:workspace"))
         # self.add_page(
         #     gettext("Experimental Features"), ExperimentalFeaturesPage,
         #     fsui.Icon("settings", "pkg:workspace"))
@@ -98,10 +113,7 @@ class SettingsDialog(PagedDialog):
         #     fsui.Icon("maintenance", "pkg:workspace"))
         self.add_page(
             "FS-UAE Arcade", ArcadeSettingsPage,
-            fsui.Icon("fs-uae-arcade", "pkg:launcher"))
-        self.add_page(
-            gettext("Advanced Settings"), AdvancedSettingsPage,
-            fsui.Icon("settings", "pkg:workspace"))
+            fsui.Icon("fs-uae-arcade", "pkg:launcher"), bold=True)
 
         # Old texts
         # gettext("Video Synchronization")
@@ -112,6 +124,10 @@ class SettingsDialog(PagedDialog):
             LauncherSettings.get("last_settings_page"))
         index = last_index or index
         self.list_view.set_index(index)
+
+        defaults_button = fsui.Button(self, gettext("Reset to Defaults"))
+        defaults_button.activated.connect(self.__defaults_activated)
+        self.button_layout.insert(0, defaults_button, fill=True)
 
         self.set_size((940, 560))
         # self.center_on_parent()
@@ -126,5 +142,5 @@ class SettingsDialog(PagedDialog):
     def __closed(self):
         LauncherSignal.broadcast("settings_updated")
 
-    # def on_close(self):
-    #     self.destroy()
+    def __defaults_activated(self):
+        self.page.reset_to_defaults()

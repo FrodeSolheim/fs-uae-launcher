@@ -140,8 +140,8 @@ class Netplay:
         # we now reset __netplay_addresses so that the ConnectionTester
         # does not connect to the game in progress
         LauncherConfig.set("__netplay_addresses", "")
-        from ..fs_uae_launcher import FSUAELauncher
-        FSUAELauncher.start_local_game()
+        from ..launcherapp import LauncherApp
+        LauncherApp.start_local_game()
 
         # game done, resetting config as the same game server cannot be
         # used again

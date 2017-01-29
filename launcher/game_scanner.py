@@ -64,6 +64,8 @@ class GameScanner(object):
             yield "SNES", self.fsgs.game_database("SNES")
         if LauncherSettings.get(Option.DATABASE_ATARI) == "1":
             yield "Atari", self.fsgs.game_database("Atari")
+        if LauncherSettings.get(Option.PSX_DATABASE) == "1":
+            yield "PSX", self.fsgs.game_database("PSX")
         if custom:
             for name in self.custom_database_names():
                 yield name, self.fsgs.game_database(name)
@@ -76,6 +78,12 @@ class GameScanner(object):
             for item in os.listdir(custom_dir):
                 if item.endswith(".sqlite"):
                     custom_databases.append("Custom/" + item[:-7])
+        custom_dir = os.path.join(FSGSDirectories.databases_dir(), "User")
+        custom_databases = []
+        if os.path.exists(custom_dir):
+            for item in os.listdir(custom_dir):
+                if item.endswith(".sqlite"):
+                    custom_databases.append("User/" + item[:-7])
         return custom_databases
 
     def update_game_database(self):

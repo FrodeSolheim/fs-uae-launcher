@@ -1,4 +1,5 @@
 import fsui
+from fsgs.option import Option
 from launcher.i18n import gettext
 from launcher.ui.settings.scan_paths_group import ScanPathsGroup
 from launcher.ui.settings.settings_page import SettingsPage
@@ -19,3 +20,6 @@ class ScanSettingsPage(SettingsPage):
                           "files")), fill=True, margin_bottom=10)
         self.scan_paths_group = ScanPathsGroup(self)
         self.layout.add(self.scan_paths_group, fill=True, expand=True)
+
+        # For reset to defaults function
+        self.options_on_page.add(Option.SEARCH_PATH)

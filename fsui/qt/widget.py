@@ -1,3 +1,5 @@
+import warnings
+
 from fsui.common.layout import Layout
 from fsui.qt import QPoint
 from fsui.qt import Qt, QObject, QFontMetrics, QWidget, QPalette, QCursor
@@ -152,7 +154,13 @@ class Widget(QObject):
     def set_position_and_size(self, position, size):
         self.widget().setGeometry(position[0], position[1], size[0], size[1])
 
+    @property
+    def window(self):
+        # noinspection PyCallingNonCallable
+        return self._window()
+
     def get_window(self):
+        warnings.warn("use window property instead", DeprecationWarning)
         # noinspection PyCallingNonCallable
         return self._window()
 

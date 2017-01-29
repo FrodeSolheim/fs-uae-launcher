@@ -3,6 +3,8 @@ import fsui
 from fsui.extra.iconheader import IconHeader
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
+from launcher.ui.widgets import CloseButton
+from workspace.ui.theme import WorkspaceTheme
 
 
 class RefreshWindow(fsui.Window):
@@ -16,8 +18,9 @@ class RefreshWindow(fsui.Window):
         title = gettext("Updating Database")
         super().__init__(parent, title, maximizable=False)
         self.set_icon(fsui.Icon("refresh", "pkg:workspace"))
-
+        self.theme = WorkspaceTheme.instance()
         self.layout = fsui.VerticalLayout()
+
         self.layout.min_width = 500
         self.layout.set_padding(20, 20, 20, 20)
 
@@ -34,6 +37,11 @@ class RefreshWindow(fsui.Window):
         self.stop_button = fsui.Button(self, gettext("Stop"))
         self.stop_button.activated.connect(self.on_abort_activated)
         hori_layout.add(self.stop_button)
+
+        if self.window.theme.has_close_buttons:
+            self.close_button = CloseButton(self)
+            hori_layout.add(
+                self.close_button, fill=True, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()

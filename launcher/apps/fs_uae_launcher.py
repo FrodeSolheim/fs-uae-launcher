@@ -1,4 +1,6 @@
 import sys
+import traceback
+
 from launcher.version import VERSION
 
 
@@ -8,18 +10,26 @@ def app_main():
         return
     print("FS-UAE Launcher {0}".format(VERSION))
 
-    from launcher.fs_uae_launcher import FSUAELauncher
-    application = FSUAELauncher()
+    from launcher.launcherapp import LauncherApp
+    app = LauncherApp()
+    if "--no-auto-detect-game" in sys.argv:
+        sys.argv.remove("--no-auto-detect-game")
+        LauncherApp.auto_detect_game = False
     try:
-        application.start()
+        app.start()
     except Exception as e:
+        traceback.print_exc(file=sys.stderr)
         import fsui
-        fsui.show_error("An error occurred starting FS-UAE Launcher:\n\n" +
-                        repr(e) + "\n\nFS-UAE Launcher cannot start "
-                        "because of this.", "FS-UAE Launcher")
+        if "--no-gui" in sys.argv:
+            pass
+        else:
+            fsui.show_error(
+                "An error occurred starting FS-UAE Launcher:\n\n" +
+                repr(e) + "\n\nFS-UAE Launcher cannot start "
+                "because of this.", "FS-UAE Launcher")
     else:
-        application.run()
-        application.save_settings()
+        app.run()
+        app.save_settings()
 
     # from fs_uae_launcher.netplay.IRC import IRC
     # IRC.stop()
@@ -34,6 +44,7 @@ FS-UAE Launcher Help"
 
 Options:
   --no-gui                             Do not show launch progress dialog
+  --no-auto-detect-game                Do not try to auto-detect game from archive
 
 TODO: Add more documentation
 """

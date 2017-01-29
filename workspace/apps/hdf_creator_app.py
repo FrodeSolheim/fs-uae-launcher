@@ -6,9 +6,10 @@ from fsgs.FSGSDirectories import FSGSDirectories
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
 from fsui.extra.iconheader import IconHeader
+from workspace.ui.theme import WorkspaceTheme
 
 
-class HDFCreatorWindow(fsui.Window):
+class HDFCreatorWindow(fsui.DialogWindow):
 
     @classmethod
     def open(cls, parent=None):
@@ -16,9 +17,11 @@ class HDFCreatorWindow(fsui.Window):
 
     def __init__(self, parent=None):
         title = gettext("HDF Disk Image Creator")
-        super().__init__(parent, title=title, maximizable=False)
+        super().__init__(parent, title=title)
+        self.theme = WorkspaceTheme.instance()
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        # buttons.create_close_button()
+        if self.window.theme.has_close_buttons:
+            buttons.create_close_button()
 
         self.dialog = None
         self.path = ""
@@ -40,7 +43,7 @@ class HDFCreatorWindow(fsui.Window):
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_width(560)
         self.list_view.set_min_height(60)
-        icon = fsui.Image("workspace:res/16/hd-volume.png")
+        icon = fsui.Image("workspace:res/16x16/hd-volume.png")
         self.list_view.add_item(
             gettext("HDF - Single Partition Hard Disk File"), icon)
         self.list_view.add_item(

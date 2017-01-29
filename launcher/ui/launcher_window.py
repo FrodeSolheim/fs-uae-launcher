@@ -35,10 +35,10 @@ from .FloppiesPanel import FloppiesPanel
 from .HardDrivesPanel import HardDrivesPanel
 from .InputPanel import InputPanel
 from .MainPanel import MainPanel
-from .setup import SetupDialog
+from .kickstartimportdialog import KickstartImportDialog
 from .skin import Skin
 from .WindowWithTabs import WindowWithTabs
-from .about import AboutDialog
+from .aboutdialog import AboutDialog
 from .config.additionalconfigpanel import AdditionalConfigPanel
 from .config.expansionspanel import ExpansionsPanel
 from .statusbar.StatusBar import StatusBar
@@ -70,8 +70,8 @@ class LauncherWindow(WindowWithTabs):
         # New name
         self.gsc = self.fsgs
 
-        from launcher.fs_uae_launcher import FSUAELauncher
-        FSUAELauncher.pre_start()
+        from launcher.launcherapp import LauncherApp
+        LauncherApp.pre_start()
 
         border = True
         maximize = None
@@ -526,6 +526,11 @@ class LauncherWindow(WindowWithTabs):
         menu.add_separator()
         # menu.add_item(
         #         gettext("Kickstarts & ROMs"), self.on_import_kickstarts)
+
+        if LauncherSettings.get(Option.LAUNCHER_SETUP_WIZARD_FEATURE):
+            menu.add_item(gettext("Setup Wizard") + "...",
+                      self.on_setup_wizard)
+
         menu.add_preferences_item(
             gettext("Settings"), self.on_settings_button)
 
@@ -571,7 +576,7 @@ class LauncherWindow(WindowWithTabs):
         return self._add_page(book, instance, icon_name, title, tooltip)
 
     def on_custom_button(self):
-        from .config.ConfigDialog import ConfigDialog
+        from .config.configdialog import ConfigDialog
         ConfigDialog.run(self.get_window())
 
     def menu(self):
@@ -639,6 +644,10 @@ class LauncherWindow(WindowWithTabs):
         from .settings.settings_dialog import SettingsDialog
         SettingsDialog.open(self)
 
+    def on_setup_wizard(self):
+        from launcher.setup.setupwizarddialog import SetupWizardDialog
+        SetupWizardDialog.open(self)
+
     def on_about(self):
         dialog = AboutDialog(self.get_window())
         dialog.show()
@@ -647,7 +656,7 @@ class LauncherWindow(WindowWithTabs):
         self.close()
 
     def on_import_kickstarts(self):
-        SetupDialog(self.get_window()).show()
+        KickstartImportDialog(self.get_window()).show()
 
     def on_update_file_database(self):
         self.on_scan_button()

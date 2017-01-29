@@ -10,7 +10,6 @@ from .WebLinkElement import WebLinkElement
 
 
 class StatusBar(Panel):
-
     def __init__(self, parent):
         Panel.__init__(self, parent, paintable=True)
         self.set_min_height(29)
@@ -37,10 +36,17 @@ class StatusBar(Panel):
             ("fr", "flag-fr"),
             ("es", "flag-es"),
             ("it", "flag-it"),
+            ("pl", "flag-pl"),
+            ("sv", "flag-se"),
+            ("da", "flag-dk"),
+            ("nb", "flag-no"),
+            ("nn", "flag-no"),
+            ("no", "flag-no"),
+            ("fi", "flag-fi"),
             ("ja", "flag-jp"),
             # ("", "flag-unknown"),
         ]):
-            icon = Image("workspace:res/16/" + icon_name + ".png")
+            icon = Image("workspace:res/16x16/" + icon_name + ".png")
             element = LanguageElement(self, language, icon)
             self.hori_layout.add(element, fill=True)
         self.hori_layout.add_spacer(16)

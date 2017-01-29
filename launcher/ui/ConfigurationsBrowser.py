@@ -11,18 +11,18 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
     def __init__(self, parent):
         fsui.VerticalItemView.__init__(self, parent)
         self.items = []
-        self.game_icon = fsui.Image("launcher:res/16/controller.png")
+        self.game_icon = fsui.Image("launcher:res/16x16/controller.png")
         self.config_icon = fsui.Image(
             "launcher:res/fsuae_config_16.png")
         LauncherSettings.add_listener(self)
         self.update_search()
 
         self.manual_download_icon = fsui.Image(
-            "launcher:res/16/arrow_down_yellow.png")
+            "launcher:res/16x16/arrow_down_yellow.png")
         self.auto_download_icon = fsui.Image(
-            "launcher:res/16/arrow_down_green.png")
+            "launcher:res/16x16/arrow_down_green.png")
         self.blank_icon = fsui.Image(
-            "launcher:res/16/blank.png")
+            "launcher:res/16x16/blank.png")
         self.missing_color = fsui.Color(0xa8, 0xa8, 0xa8)
         self.unpublished_color = fsui.Color(0xcc, 0x00, 0x00)
 
@@ -38,8 +38,8 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
         self.load_configuration(self.items[index])
 
     def on_activate_item(self, index):
-        from ..fs_uae_launcher import FSUAELauncher
-        FSUAELauncher.start_game()
+        from ..launcherapp import LauncherApp
+        LauncherApp.start_game()
 
     def on_setting(self, key, _):
         if key in ["config_search", "game_list_uuid", "database_show_games",
@@ -127,7 +127,7 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
         elif item[str("have")] == 4:
             if platform_id not in self.platform_icons:
                 try:
-                    icon = fsui.Image("launcher:res/16/{0}.png".format(
+                    icon = fsui.Image("launcher:res/16x16/{0}.png".format(
                         platform_id))
                 except Exception:
                     icon = self.game_icon

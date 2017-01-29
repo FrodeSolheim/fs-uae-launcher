@@ -9,7 +9,7 @@ ACTION_REPLAY_MK_II_2_14_ROM = KnownFile(
     "Action Replay Mk II v2.14.rom")
 ACTION_REPLAY_MK_II_2_14_MOD_ROM = KnownFile(
     "14b1f5a69efb6f4e2331970e6ca0f33c0f04ac91", PLATFORM_AMIGA,
-    "Action Replay Mk II v2.14.rom")
+    "Action Replay Mk II v2.14 (Mod).rom")
 # noinspection SpellCheckingInspection
 ACTION_REPLAY_MK_III_3_17_ROM = KnownFile(
     "5d4987c2e3ffea8b1b02e31430ef190f2db76542", PLATFORM_AMIGA,

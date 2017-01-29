@@ -52,10 +52,13 @@ class DatFile(object):
             }
             for rom_node in game_node.findall("rom"):
                 rom = {"name": rom_node.attrib["name"],
-                       "size": int(rom_node.attrib["size"]),
-                       "crc32": rom_node.attrib["crc"].lower(),
-                       "md5": rom_node.attrib["md5"].lower(),
-                       "sha1": rom_node.attrib["sha1"].lower()}
+                       "size": int(rom_node.attrib["size"])}
+                if "crc" in rom_node.attrib:
+                    rom["crc32"] = rom_node.attrib["crc"].lower()
+                if "md5" in rom_node.attrib:
+                    rom["md5"] =rom_node.attrib["md5"].lower()
+                if "sha1" in rom_node.attrib:
+                    rom["sha1"] = rom_node.attrib["sha1"].lower()
                 game["files"].append(rom)
             self.games.append(game)
 

@@ -51,6 +51,15 @@ options = {
         "description": N_("Arcade Fullscreen"),
         "type": "boolean",
     },
+    Option.ARCADE_THEME: {
+        "default": "blue",
+        "description": N_("Arcade theme"),
+        "type": "Choice",
+        "values": [
+            ("blue", N_("Blue")),
+            ("red", N_("Red")),
+        ]
+    },
     Option.AUDIO_BUFFER_TARGET_BYTES: {
         "default": "8192",
         "description": N_("Audio buffer target size (bytes)"),
@@ -508,6 +517,11 @@ options = {
             "Show kickstart setup page on startup when all ROMs are missing"),
         "type": "boolean",
     },
+    Option.LAUNCHER_CLOSE_BUTTONS: {
+        "default": "0",
+        "description": N_("Include close buttons in dialogs"),
+        "type": "Boolean",
+    },
     Option.LAUNCHER_CONFIG_FEATURE: {
         "default": "0",
         "description": N_(
@@ -520,6 +534,11 @@ options = {
         "type": "Integer",
         "min": 6,
         "max": 18,
+    },
+    Option.LAUNCHER_SETUP_WIZARD_FEATURE: {
+        "default": "0",
+        "description": N_("Experimental Setup Wizard (Requires Restart)"),
+        "type": "Boolean",
     },
     Option.LAUNCHER_THEME: {
         "default": "fusion",
@@ -570,6 +589,14 @@ options = {
         "default": "1",
         "description": N_("Low latency video sync"),
         "type": "boolean",
+    },
+    Option.MEDNAFEN_AUDIO_DRIVER: {
+        "default": "",
+        "description": N_("Mednafen Audio Driver"),
+        "type": "Choice",
+        "values": [
+            ("sdl", "sdl"),
+        ]
     },
     Option.MIDDLE_CLICK_UNGRAB: {
         "default": "1",
@@ -643,6 +670,11 @@ options = {
         "default": "",
         "description": N_("Platform"),
         "type": "choice",
+    },
+    Option.PSX_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the PlayStation database"),
+        "type": "Boolean",
     },
     Option.RAW_INPUT: {
         "default": "1",
@@ -1004,6 +1036,11 @@ options = {
             ("A1200", "A1200"),
             ("A1200/NONCE", "A1200/NONCE"),
         ]
+    },
+    Option.WHDLOAD_PRELOAD: {
+        "default": "1",
+        "description": N_("Override WHDLoad preload option"),
+        "type": "Boolean",
     },
     Option.WHDLOAD_QUIT_KEY: {
         "default": "0",

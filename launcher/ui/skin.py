@@ -15,7 +15,7 @@ LEVEL = 0xeb
 # LEVEL = 0xe4
 
 
-class Theme(object):
+class LauncherTheme(object):
     __instance = None
 
     @classmethod
@@ -36,13 +36,17 @@ class Theme(object):
             palette.color(QPalette.Highlight))
 
         if Skin.fws():
-            from workspace.ui.theme import Theme as WorkspaceTheme
+            from workspace.ui.theme import WorkspaceTheme as WorkspaceTheme
             ws_theme = WorkspaceTheme.instance()
             self.sidebar_list_background = ws_theme.sidebar_background
             self.sidebar_list_row_text = fsui.Color(0xff, 0xff, 0xff)
             self.sidebar_list_row_background = ws_theme.selection_background
         elif Skin.windows_10():
             self.sidebar_list_background = fsui.Color(0xe2, 0xe2, 0xe2)
+
+    @property
+    def has_close_buttons(self):
+        return LauncherSettings.get(Option.LAUNCHER_CLOSE_BUTTONS) == "1"
 
 
 class Skin(object):

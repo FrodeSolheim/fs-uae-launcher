@@ -4,6 +4,11 @@ from .Image import Image
 
 
 class Icon(object):
+    """
+    FIXME: Add support for icon search path, so, during startup, a list
+    of package data directories to check can be added to this class, and
+    icons can be looked up just by name.
+    """
 
     def __init__(self, name, path):
         self.name = name

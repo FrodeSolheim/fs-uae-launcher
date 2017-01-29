@@ -1,6 +1,6 @@
 from fsui.common.element import Element, LightElement
 from fsui.common.group import Group
-from fsui.common.layout import VerticalLayout, HorizontalLayout
+from fsui.common.layout import Layout, VerticalLayout, HorizontalLayout
 from fsui.common.spacer import Spacer
 from fsui.qt import *
 from fsui.qt.adapter import Adapter
@@ -12,6 +12,7 @@ from fsui.qt.Choice import Choice, ItemChoice
 from fsui.qt.ComboBox import ComboBox
 from fsui.qt.dialog import Dialog
 from fsui.qt.dialogbuttons import DialogButtons
+from fsui.qt.dialogwindow import DialogWindow
 from fsui.qt.DirDialog import DirDialog
 from fsui.qt.DrawingContext import DrawingContext, Font
 from fsui.qt.FileDialog import FileDialog, pick_directory, pick_file, pick_files

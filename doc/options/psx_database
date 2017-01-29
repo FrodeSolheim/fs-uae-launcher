@@ -1,0 +1,3 @@
+Description: Enable/disable use of the PlayStation database
+Type: Boolean
+Default: 0

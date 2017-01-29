@@ -10,8 +10,7 @@ class AdvancedSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("settings", "pkg:workspace")
-        gettext("Advanced")
-        title = gettext("Advanced Settings")
+        title = gettext("Advanced")
         subtitle = gettext("Specify global options and settings which does "
                            "not have UI controls")
         self.add_header(icon, title, subtitle)

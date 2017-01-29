@@ -6,12 +6,12 @@ from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
 class MonitorButton(fsui.ImageButton):
     def __init__(self, parent):
-        self.left_icon = fsui.Image("launcher:res/16/monitor_left.png")
+        self.left_icon = fsui.Image("launcher:res/16x16/monitor_left.png")
         self.middle_left_icon = fsui.Image(
-            "launcher:res/16/monitor_middle_left.png")
+            "launcher:res/16x16/monitor_middle_left.png")
         self.middle_right_icon = fsui.Image(
-            "launcher:res/16/monitor_middle_right.png")
-        self.right_icon = fsui.Image("launcher:res/16/monitor_right.png")
+            "launcher:res/16x16/monitor_middle_right.png")
+        self.right_icon = fsui.Image("launcher:res/16x16/monitor_right.png")
         super().__init__(parent, self.middle_left_icon)
         self.set_tooltip(gettext("Monitor to display FS-UAE on (left, "
                                  "middle-left, middle-right, right)"))

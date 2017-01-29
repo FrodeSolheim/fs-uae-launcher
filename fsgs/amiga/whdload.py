@@ -14,10 +14,7 @@ def create_prefs_file(config, path):
     # FIXME: require config object returning empty string on unset keys?
     # print(repr(config.get("__invalid__")))
     # assert config.get("__invalid__") == ""
-    default_prefs = default_whdload_prefs
-    # make sure the data is CRLF line terminated
-    default_prefs = default_prefs.replace("\r\n", "\n")
-    default_prefs = default_prefs.replace("\n", "\r\n")
+    prefs = default_whdload_prefs
 
     if config.get("__netplay_game", ""):
         # The options below are commonly retrieved from settings, not
@@ -27,17 +24,25 @@ def create_prefs_file(config, path):
     else:
         splash_delay = config.get(Option.WHDLOAD_SPLASH_DELAY, "")
         if splash_delay:
-            default_prefs = default_prefs.replace(
+            prefs = prefs.replace(
                 ";SplashDelay=0", "SplashDelay={}".format(
                     int(splash_delay)))
         quit_key = config.get(Option.WHDLOAD_QUIT_KEY, "")
         if quit_key:
-            default_prefs = default_prefs.replace(
+            prefs = prefs.replace(
                 ";QuitKey=$45", "QuitKey={}".format(
                     quit_key))
+        # WHDLoad.prefs does not like the PRELOAD option, adding to
+        # executable arguments instead.
+        # if config.get(Option.WHDLOAD_PRELOAD, "") != "0":
+        #     prefs += "\nPreload\n"
 
+    print(prefs)
+    # Make sure the data is CRLF line terminated.
+    prefs = prefs.replace("\r\n", "\n")
+    prefs = prefs.replace("\n", "\r\n")
     with open(path, "wb") as f:
-        f.write(default_prefs.encode("UTF-8"))
+        f.write(prefs.encode("ISO-8859-1"))
 
 
 def override_config(config):

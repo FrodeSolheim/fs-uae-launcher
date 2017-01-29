@@ -27,6 +27,19 @@ class FileDatabase(BaseDatabase):
         self.last_file_insert = None
         self.last_file_delete = None
 
+    # This (class) map contains information about checksum -> uri locations
+    # discovered during runtime. This map is not saved.
+    static_files = {}
+
+    @classmethod
+    def add_static_file(cls, path, size, sha1):
+        file = File()
+        file["sha1"] = sha1
+        file["path"] = path
+        file["size"] = size
+        file["mtime"] = None
+        cls.static_files[sha1] = file
+
     @classmethod
     def get_path(cls):
         return os.path.join(FSGSDirectories.databases_dir(), "Files.sqlite")
@@ -115,6 +128,11 @@ class FileDatabase(BaseDatabase):
         self.last_file_delete = int(time.time())
 
     def check_sha1(self, sha1):
+        if sha1 in self.static_files:
+            # FIXME: Is the count necessary? ref query below, or do we
+            # only need a True/False result? If so, change query to
+            # check for existence only, and change return value to boolean.
+            return True
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT count(*) FROM file WHERE sha1 = ?", (
@@ -124,6 +142,13 @@ class FileDatabase(BaseDatabase):
     def find_file(self, name="", sha1="", path=""):
         cursor = self.internal_cursor()
         if sha1:
+            # First we try to find the file from the temporary static
+            # file map, in case we've been told about files from plugins or
+            # archives.
+            try:
+                return self.static_files[sha1]
+            except KeyError:
+                pass
             sha1 = unhexlify(sha1.encode("ASCII"))
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size, parent "

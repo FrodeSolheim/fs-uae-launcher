@@ -36,6 +36,13 @@ class LanguageSettingsPage(SettingsPage):
         self.layout.add(
             fsui.MultiLineLabel(self, information, 640))
 
+        label = fsui.Label(
+            self, "You can help translate FS-UAE on crowdin.net:")
+        self.layout.add(label, margin_top=20)
+        label = fsui.URLLabel(self, "https://crowdin.com/project/fs-uae",
+                              "https://crowdin.com/project/fs-uae")
+        self.layout.add(label, margin_top=5)
+
 
 class LanguageSettingChoice(fsui.Choice):
     def __init__(self, parent):
@@ -47,7 +54,7 @@ class LanguageSettingChoice(fsui.Choice):
         selected_index = 0
         for label, language_key, icon_name in LANGUAGE_ITEMS:
             self.add_item(label, fsui.Image(
-                "workspace:res/16/flag-{0}.png".format(icon_name)))
+                "workspace:res/16x16/flag-{0}.png".format(icon_name)))
             if language_key == selected_language:
                 selected_index = k
             k += 1

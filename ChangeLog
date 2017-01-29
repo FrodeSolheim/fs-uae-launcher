@@ -1,3 +1,16 @@
+Version 2.9.4dev:
+
+* Try to use config from game database when launching with a WHDLoad archive.
+* New startup argument --no-auto-detect-game to disable the above feature.
+* Save directory based on archive name when launching with an archive.
+* Fixed a bug where rating icons could disappear from variants list.
+* New option whdload_preload, defaults to 1 (change in behavior).
+* More language flags for the status bar.
+* New option to toggle close buttons in dialogs.
+  FIXME: Not in all dialogs yet.
+* New reset to defaults button on settings pages.
+  FIXME: GUI does not update yet.
+
 Version 2.9.3dev:
 
 * Fix for published/unpublished status of variants.

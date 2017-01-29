@@ -6,10 +6,10 @@ from launcher.launcher_config import LauncherConfig
 from launcher.device_manager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
-from launcher.ui.config.ConfigDialog import ConfigDialog
+from launcher.ui.config.configdialog import ConfigDialog
 from launcher.ui.settings.settings_dialog import SettingsDialog
 from launcher.update_manager import UpdateManager
-from launcher.ui.setup import SetupDialog
+from launcher.ui.kickstartimportdialog import KickstartImportDialog
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 from launcher.ui.download import DownloadGameWindow
@@ -32,9 +32,9 @@ class WarningsElement(StatusElement):
 
     def __init__(self, parent):
         StatusElement.__init__(self, parent)
-        self.error_icon = Image("launcher:res/16/error.png")
-        self.warning_icon = Image("launcher:res/16/warning_3.png")
-        self.notice_icon = Image("launcher:res/16/information.png")
+        self.error_icon = Image("launcher:res/16x16/error.png")
+        self.warning_icon = Image("launcher:res/16x16/warning_3.png")
+        self.notice_icon = Image("launcher:res/16x16/information.png")
         self.icons = [
             self.error_icon,
             self.warning_icon,
@@ -386,7 +386,7 @@ class WarningsElement(StatusElement):
         fsui.show_warning(text, gettext("Using Kickstart ROM Replacement"))
 
     def on_import_kickstarts(self):
-        SetupDialog(self.get_window()).show()
+        KickstartImportDialog(self.get_window()).show()
 
     def on_download_page(self):
         DownloadGameWindow(self.get_window(), fsgs).show()

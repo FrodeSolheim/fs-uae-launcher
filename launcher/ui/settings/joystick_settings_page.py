@@ -1,4 +1,5 @@
 import fsui
+from fsgs.option import Option
 from launcher.device_manager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
@@ -23,7 +24,7 @@ class JoystickSettingsPage(SettingsPage):
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_height(140)
         self.list_view.item_activated.connect(self.on_joystick_activated)
-        image = fsui.Image("workspace:res/16/gamepad.png")
+        image = fsui.Image("workspace:res/16x16/gamepad.png")
         for device_name in DeviceManager.get_joystick_names():
             if DeviceManager.is_joystick(device_name):
                 self.list_view.add_item(device_name, icon=image)
@@ -33,12 +34,16 @@ class JoystickSettingsPage(SettingsPage):
         self.pref_group = PreferredJoysticksGroup(self)
         self.layout.add(self.pref_group, fill=True)
 
+        # For reset to defaults function
+        self.options_on_page.add(Option.PRIMARY_JOYSTICK)
+        self.options_on_page.add(Option.SECONDARY_JOYSTICK)
+
     def on_joystick_activated(self, index):
         device_name = self.list_view.get_item(index)
         print(self.get_window())
         # shell_open("Workspace:Tools/JoystickConfig", [device_name],
         #            parent=self.get_window())
-        JoystickConfigWindow(self.window(), device_name).show()
+        JoystickConfigWindow(self.window, device_name).show()
 
 
 joystick_mode_values = ["nothing", "mouse", "joystick"]
@@ -90,9 +95,9 @@ class PreferredJoystickSelector(fsui.Group):
     def __init__(self, parent, index):
         self.index = index
         if index:
-            self.key = "secondary_joystick"
+            self.key = Option.SECONDARY_JOYSTICK
         else:
-            self.key = "primary_joystick"
+            self.key = Option.PRIMARY_JOYSTICK
 
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()

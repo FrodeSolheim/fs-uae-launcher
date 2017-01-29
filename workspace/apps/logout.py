@@ -3,10 +3,11 @@ import fsui
 from fsbc.application import app
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
+from launcher.ui.widgets import CloseButton
+from workspace.ui.theme import WorkspaceTheme
 
 
 class LogoutWindow(fsui.Window):
-
     @classmethod
     def open(cls, parent=None):
         return fsui.open_window_instance(cls, parent)
@@ -14,9 +15,10 @@ class LogoutWindow(fsui.Window):
     def __init__(self, parent=None):
         title = gettext("Log Out from Your OAGD.net Account")
         super().__init__(parent, title, minimizable=False, maximizable=False)
+        self.theme = WorkspaceTheme.instance()
+        self.layout = fsui.VerticalLayout()
         self.set_icon(fsui.Icon("password", "pkg:workspace"))
 
-        self.layout = fsui.VerticalLayout()
         self.layout.set_padding(20, 20, 20, 20)
 
         heading_layout = fsui.HorizontalLayout()
@@ -43,23 +45,17 @@ class LogoutWindow(fsui.Window):
 
         self.logout_button = fsui.Button(self, gettext("Log Out"))
         # self.logout_button.disable()
-        self.logout_button.activated.connect(self.on_logout_activated)
+        self.logout_button.activated.connect(self.__logout_activated)
         hori_layout.add(self.logout_button)
 
-        # self.close_button = fsui.Button(self, gettext("Close"))
-        # self.close_button.activated.connect(self.on_close_activated)
-        # hori_layout.add(self.close_button, margin_left=10)
-
-        # self.set_size(self.layout.get_min_size())
-        # self.center_on_parent()
+        if self.window.theme.has_close_buttons:
+            self.close_button = CloseButton(self)
+            hori_layout.add(self.close_button, fill=True, margin_left=10)
 
     def __del__(self):
         print("LogoutWindow.__del__")
 
-    def on_close_activated(self):
-        self.close()
-
-    def on_logout_activated(self):
+    def __logout_activated(self):
         auth_token = app.settings["database_auth"]
         if auth_token:
             task = OGDClient().logout_task(auth_token)
@@ -78,7 +74,7 @@ class LogoutWindow(fsui.Window):
             self.on_close()
 
     def on_failure(self, message):
-        fsui.show_error(message, parent=self.get_window())
+        fsui.show_error(message, parent=self.window)
 
     # def on_progress(self):
     #    print("on_progress")

@@ -1,7 +1,9 @@
 import fsui
 from fsui.extra.iconheader import IconHeader
 from fsbc.application import app
-from ..i18n import gettext
+from launcher.i18n import gettext
+from launcher.ui.skin import LauncherTheme
+from launcher.ui.widgets import CloseButton
 
 
 class AboutDialog(fsui.Window):
@@ -10,25 +12,25 @@ class AboutDialog(fsui.Window):
         # title = gettext("About {name}").format(name="FS-UAE Launcher")
         title = "{} - FS-UAE Launcher".format(gettext("About"))
         super().__init__(parent, title, minimizable=False, maximizable=False)
-        # buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        # buttons.create_close_button()
+        self.theme = LauncherTheme.get()
         self.layout = fsui.VerticalLayout()
         self.layout.set_padding(20)
-        layout = self.layout
 
         self.icon_header = IconHeader(
             self, fsui.Icon("fs-uae-launcher", "pkg:launcher"),
             "{name} {version}".format(name="FS-UAE Launcher",
                                       version=app.version),
             "Copyright © 2012-2017 Frode Solheim")
-        layout.add(self.icon_header, fill=True, margin_bottom=20)
+        self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         self.text_area = fsui.TextArea(
             self, about_message, read_only=True, font_family="monospace")
         self.text_area.scroll_to_start()
         self.text_area.set_min_width(760)
         self.text_area.set_min_height(340)
-        layout.add(self.text_area, fill=True, expand=True)
+        self.layout.add(self.text_area, fill=True, expand=True)
+
+        CloseButton.add_to_layout(self, self.layout, margin_top=20)
 
 
 about_message = """\n

@@ -14,7 +14,7 @@ class PluginsSettingsPage(SettingsPage):
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_height(140)
         # self.list_view.item_activated.connect(self.on_plugin_activated)
-        image = fsui.Image("workspace:res/16/settings.png")
+        image = fsui.Image("workspace:res/16x16/settings.png")
         plugin_manager = PluginManager.instance()
         for plugin in plugin_manager.plugins():
             text = "{0} ({1})".format(plugin.name, plugin.version)

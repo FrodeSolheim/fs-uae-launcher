@@ -2,7 +2,7 @@ import fsui
 from launcher.i18n import gettext
 from launcher.option import Option
 from launcher.ui.config.configpanel import ConfigPanel
-from .ConfigDialog import ConfigDialog
+from .configdialog import ConfigDialog
 
 
 class AdditionalConfigPanel(ConfigPanel):

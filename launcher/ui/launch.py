@@ -77,8 +77,8 @@ class StartButton(fsui.Button):
         gsc.config.add_behavior(self, ["__running"])
 
     def on_activated(self):
-        from launcher.fs_uae_launcher import FSUAELauncher
-        FSUAELauncher.start_game()
+        from launcher.launcherapp import LauncherApp
+        LauncherApp.start_game()
 
     def on___running_config(self, value):
         self.set_enabled(value != "1")
@@ -196,11 +196,11 @@ class FullscreenToggleButton(fsui.ImageButton):
 
 class FullscreenModeButton(fsui.ImageButton):
     def __init__(self, parent):
-        self.window_icon = fsui.Image("launcher:res/16/fullscreen_window.png")
+        self.window_icon = fsui.Image("launcher:res/16x16/fullscreen_window.png")
         self.fullscreen_icon = fsui.Image(
-            "launcher:res/16/fullscreen_fullscreen.png")
+            "launcher:res/16x16/fullscreen_fullscreen.png")
         self.desktop_icon = fsui.Image(
-            "launcher:res/16/fullscreen_desktop.png")
+            "launcher:res/16x16/fullscreen_desktop.png")
         super().__init__(parent, self.desktop_icon)
         self.set_tooltip(gettext(
             "Change fullscreen mode (desktop, fullscreen, window)"))

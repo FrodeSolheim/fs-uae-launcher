@@ -50,6 +50,8 @@ class RealWindow(QMainWindow):
                 flags |= Qt.WindowMinimizeButtonHint
             if maximizable:
                 flags |= Qt.WindowMaximizeButtonHint
+            # else:
+            #     flags &= ~Qt.WindowMaximizeButtonHint
         else:
             flags |= Qt.FramelessWindowHint
             flags |= Qt.NoDropShadowWindowHint
@@ -312,7 +314,7 @@ class Window(QObject):
         self.title_panel_visible = False
         if not native:
             self.real_window()._window = weakref.ref(self)
-            from workspace.ui.theme import Theme
+            from workspace.ui.theme import WorkspaceTheme
             from workspace.ui.window import WindowHeader
             if header:
                 self.title_panel = WindowHeader(
@@ -320,7 +322,7 @@ class Window(QObject):
                     maximizable=maximizable, separator=separator,
                     closable=closable, background=color)
             self.title_panel_visible = True
-            self.set_background_color(Theme.instance().window_background)
+            self.set_background_color(WorkspaceTheme.instance().window_background)
 
     def __closed(self):
         print("Removing window reference", self)

@@ -249,7 +249,8 @@ class ChoiceControl(fsui.Choice):
                     self.remove_invalid_item()
                 break
         else:
-            print("WARNING: Could not find value", value)
+            print("WARNING: Could not find value",
+                  repr(value), "key =", self.key)
             self.set_invalid_item(value)
 
     def set_invalid_item(self, value):
