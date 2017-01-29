@@ -1,8 +1,7 @@
 import threading
 import traceback
 from weakref import ref
-# noinspection PyUnresolvedReferences
-from typing import Dict, Function, List, Any, Tuple
+from typing import Dict, List, Any, Tuple
 
 
 main_thread_id = threading.current_thread().ident

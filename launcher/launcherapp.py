@@ -13,6 +13,7 @@ from fsbc.util import unused, is_uuid
 from fsgs.Archive import Archive
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.FileDatabase import FileDatabase
+from fsgs.amiga import whdload
 from fsgs.amiga.Amiga import Amiga
 from fsgs.application import ApplicationMixin
 from fsgs.context import fsgs
@@ -145,7 +146,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                         LauncherConfig.post_load_values(fsgs.config)
                         return cls.run_config_directly()
 
-                values = HardDriveGroup.generate_config_for_archive(
+                values = whdload.generate_config_for_archive(
                     archive_path)
                 values["hard_drive_0"] = archive_path
                 values.update(fsgs.config.config_from_argv())

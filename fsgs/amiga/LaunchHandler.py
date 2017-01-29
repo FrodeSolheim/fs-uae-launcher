@@ -754,7 +754,7 @@ class LaunchHandler(object):
 
         whdload_version = self.config["x_whdload_version"]
         if not whdload_version:
-            whdload_version = whdload.DEFAULT_WHDLOAD_VERSION
+            whdload_version = whdload.default_whdload_version
 
         for key, value in whdload.binaries[whdload_version].items():
             self.install_whdload_file(key, dest_dir, value)

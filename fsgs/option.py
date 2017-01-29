@@ -3,6 +3,7 @@
 
 class Option(object):
     """Constants for option names."""
+    NETPLAY_GAME = "__netplay_game"
     ACCELERATOR = "accelerator"
     ACCELERATOR_MEMORY = "accelerator_memory"
     ACCELERATOR_ROM = "accelerator_rom"

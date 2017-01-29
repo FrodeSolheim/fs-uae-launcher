@@ -1,7 +1,9 @@
-from fsbc import settings
-from fsgs.option import Option
+import os
+import traceback
 
-DEFAULT_WHDLOAD_VERSION = "18.2"
+from fsbc import settings
+from fsgs.Archive import Archive
+from fsgs.option import Option
 
 
 def should_disable_drive_click():
@@ -16,7 +18,7 @@ def create_prefs_file(config, path):
     # assert config.get("__invalid__") == ""
     prefs = default_whdload_prefs
 
-    if config.get("__netplay_game", ""):
+    if config.get(Option.NETPLAY_GAME, ""):
         # The options below are commonly retrieved from settings, not
         # config, and settings are not synced in net play, so we use
         # default settings.
@@ -68,13 +70,14 @@ def read_whdload_args_from_info_stream(stream):
 
 
 def read_whdload_args_from_info_data(data):
+    print("[WHDLOAD] Read WHDLoad args from info data")
     index = data.lower().find(b"slave=") - 1
     args = []
     parts = data[index:].split(b"\x00\x00\x00\x00")
     for part in parts[:]:
         if len(part) > 2:
             length = part[0]
-            print(length)
+            # print(length)
             arg = part[1:1 + length - 1]
             if b"***" in arg:
                 break
@@ -93,6 +96,70 @@ def strip_whdload_slave_prefix(whdload_args):
     return result
 
 
+def calculate_whdload_args(archive_path):
+    """
+    This function, as it is currently written, only works if there
+    is an .info with the same name as the .slave file. In theory, they
+    could be different since the .info file contains a slave=... tool type.
+    """
+    archive = Archive(archive_path)
+    slave = ""
+    args = []
+    lower_to_name = {}
+    for path in archive.list_files():
+        lower_to_name[path.lower()] = path
+    for path in lower_to_name.values():
+        name = os.path.basename(path)
+        name_lower = name.lower()
+        if name_lower.endswith(".slave"):
+            if slave:
+                print("[WHDLOAD] Already found one slave, don't know "
+                      "which one to choose")
+                return ""
+            slave = name
+            try:
+                info_path = lower_to_name[
+                    os.path.splitext(path)[0].lower() + ".info"]
+            except KeyError:
+                # No corresponding info file found.
+                pass
+            else:
+                try:
+                    args = read_whdload_args_from_info_stream(
+                        archive.open(info_path))
+                    args = strip_whdload_slave_prefix(args)
+                except Exception as e:
+                    print("[WHDLOAD] WARNING: Error reading args:", repr(e))
+        elif name_lower == "startup-sequence":
+            print("[WHDLOAD] Found startup-sequence, assuming non-WHDLoad "
+                  "archive")
+            return ""
+    if args:
+        return " ".join(args)
+    else:
+        return slave
+
+
+def generate_config_for_archive(path, model_config=True):
+    print("[WHDLOAD] Generate config for archive", path)
+    config = {}
+    whdload_args = ""
+    dummy, ext = os.path.splitext(path)
+    if ext.lower() in Archive.extensions:
+        try:
+            whdload_args = calculate_whdload_args(path)
+        except Exception:
+            traceback.print_exc()
+    config["x_whdload_args"] = whdload_args
+    if whdload_args and model_config:
+        config[Option.AMIGA_MODEL] = "A1200"
+        config[Option.FAST_MEMORY] = "8192"
+        if should_disable_drive_click():
+            config[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
+    return config
+
+
+default_whdload_version = "18.2"
 # noinspection SpellCheckingInspection
 support_files = {
     "1d1c557f4a0f5ea88aeb96d68b09f41990340f70":
@@ -108,7 +175,6 @@ support_files = {
     "3b40b7277f0408ebb98526205748138f88d84330":
         "C/OSEmu.400",
 }
-
 # noinspection SpellCheckingInspection
 binaries = {
     "10.0": {
@@ -169,7 +235,6 @@ binaries = {
         "0a9e7bfa1183420543e44c08410af1c5500fa704": "C/WHDLoad",
     },
 }
-
 default_whdload_prefs = """
 ; wait for button pressed (slave must support this)
 ;ButtonWait
@@ -230,3 +295,58 @@ default_whdload_prefs = """
 ; wait after saving something to disk (1/50 seconds)
 ;WriteDelay=150
 """
+# noinspection SpellCheckingInspection
+primary_icons = set([
+    "3DPool/3DPool.info",
+    "BartVsSpaceMutants2Disk/BartVsSpaceMutants2Disk.info",
+    "BattleIsle/BattleIsle.info",
+    "BattleIsle/Programm.info",
+    "BattleIsle&DataDisks/BattleIsle.info",
+    "BattleIsle&DataDisks/BattleIsle.info",
+    "BattleIsle&DataDisks/Programm.info",
+    "BlackViperCD32/BlackViperCD32.info",
+    "Cadaver&CadaverThePayoff/CadaverThePayoff.info",
+    "ChaosStrikesBack/ChaosStrikesBack.info",
+    "Entity/Entity.info",
+    "Fuzzball/Fuzzball.info",
+    "Genesia/Genesia.info",
+    "GenesiaFr/GenesiaFr.info",
+    "HardDrivin2/HardDrivin2.info",
+    "Historyline/Historyline.info",
+    "Historyline/Historyline.info",
+    "HistorylineDe/HistorylineDe.info",
+    "HistorylineDe/HistorylineDe.info",
+    "HistorylineFr/HistorylineFr.info",
+    "HistorylineFr/HistorylineFr.info",
+    "Jetstrike/Jetstrike.info",
+    "JetstrikeAGA/JetstrikeAGA.info",
+    "Lemmings21MB/Lemmings21MB.info",
+    "Lemmings2512KB/Lemmings2512KB.info",
+    "MetalMasters/MetalMasters.info",
+    "Might&Magic3/Might&Magic3.info",
+    "Might&Magic3/Might&Magic3.info",
+    "Might&Magic3De/Might&Magic3De.info",
+    "MightAndMagic3/MightAndMagic3.info",
+    "MightAndMagic3De/MightAndMagic3De.info",
+    "MightAndMagic3De/MightAndMagic3.info",
+    "PinballPrelude/PinballPrelude Past.info",
+    "PinballPreludeAGA/PinballPreludeAGA Past.info",
+    "PinballPreludeAGA/Past.info",
+    "RaceDrivin/RaceDrivin.info",
+    "SensibleSoccer/SensibleSoccer.info",
+    "SensibleSoccer/SensibleSoccer.info",
+    "SensibleSoccerEuro/SensibleSoccerEuro.info",
+    "SensibleSoccerEuro/SensibleSoccerEuro.info",
+    "SensibleSoccerIntEd/SensibleSoccerIntEd.info",
+    "SensibleSoccerIntlEd/SensibleSoccerIntlEd.info",
+    "SpaceHarrier&RFantasyZone/RFantasyZone.info",
+    "Superfrog/Superfrog.info",
+    "SuperfrogCD32/SuperfrogCD32.info",
+    "SuprStrtFtr2TrboAGA/SuprStrtFtr2TrboAGA.info",
+    "SuprStrtFtr2TrboCD32/SuprStrtFtr2TrboCD32.info",
+    "TubularWorldsECS/TubularWorldsECS.info",
+    "TurboTraxArcane/TurboTraxArcane.info",
+    "Virocop/Virocop2Meg.info",
+    "WalkerCrunched/WalkerCrunched.info",
+    "WalkerDecrunched/WalkerDecrunched.info",
+])
