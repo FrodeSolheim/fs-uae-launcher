@@ -101,9 +101,7 @@ class ArchiveUtil:
             if type == self.TYPE_WHDLOAD:
                 list_name = "DH0/ " + name
             elif type == self.TYPE_DOS:
-                # DOS
-                list_name = "C/" + name
-                list_name = name.upper()
+                list_name = "C/" + name.upper()
             else:
                 list_name = name
 

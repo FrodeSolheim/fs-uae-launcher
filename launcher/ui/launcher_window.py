@@ -45,6 +45,7 @@ from .statusbar.StatusBar import StatusBar
 from ..i18n import gettext
 from ..launcher_settings import LauncherSettings
 from ..launcher_signal import LauncherSignal
+import fsgs as fsgs_module
 
 USE_MAIN_MENU = 1
 
@@ -88,11 +89,14 @@ class LauncherWindow(WindowWithTabs):
         if "--no-window-border" in sys.argv:
             border = False
 
-        if Skin.fws():
-            title = "FS-UAE Launcher"
+        if fsgs_module.product == "OpenRetro":
+            app_name = "OpenRetro Launcher"
         else:
-            title = "FS-UAE Launcher {0}".format(
-                Application.instance().version)
+            app_name = "FS-UAE Launcher"
+        if Skin.fws():
+            title = app_name
+        else:
+            title = "{} {}".format(app_name, Application.instance().version)
 
         WindowWithTabs.__init__(self, None, title, border=border, menu=menu)
         icon = self.find_icon()
@@ -298,8 +302,12 @@ class LauncherWindow(WindowWithTabs):
             login_info = username
         else:
             login_info = gettext("Not logged in")
-        title = "FS-UAE Launcher {0} ({1})".format(
-            Application.instance().version, login_info)
+        if fsgs_module.product == "OpenRetro":
+            app_name = "OpenRetro Launcher"
+        else:
+            app_name = "FS-UAE Launcher"
+        title = "{} {} ({})".format(
+            app_name, Application.instance().version, login_info)
         self.set_title(title)
 
     def on_setting(self, key, value):
@@ -536,9 +544,13 @@ class LauncherWindow(WindowWithTabs):
 
         menu.add_separator()
         menu.add_item(gettext("About {name}").format(
-            name="OAGD.net"), self.on_what_is_this)
+            name="OpenRetro.org"), self.on_what_is_this)
+        if fsgs_module.product == "OpenRetro":
+            app_name = "OpenRetro Launcher"
+        else:
+            app_name = "FS-UAE Launcher"
         menu.add_about_item(gettext("About {name}").format(
-            name="FS-UAE Launcher"), self.on_about)
+            name=app_name), self.on_about)
 
         menu.add_separator()
         menu.add_about_item(gettext("Quit"), self.on_quit)
@@ -612,7 +624,7 @@ class LauncherWindow(WindowWithTabs):
             # menu.add_item(_("Log In / Register"), self.on_log_in)
             # menu.add_item(gettext("Update Game Database"),
             #               self.on_game_database_refresh)
-            menu.add_item(gettext("Upload Files to OAGD.net Locker"),
+            menu.add_item(gettext("Upload Files to OpenRetro Locker"),
                           self.on_upload_locker_files)
             # menu.add_separator()
             menu.add_item(gettext("Log Out"), self.on_log_out)
@@ -634,7 +646,7 @@ class LauncherWindow(WindowWithTabs):
 
     def on_what_is_this(self):
         print("on_what_is_this")
-        fstd.desktop.open_url_in_browser("https://oagd.net/about")
+        fstd.desktop.open_url_in_browser("https://openretro.org/about")
 
     def on_scan_button(self):
         from .scan import ScanDialog

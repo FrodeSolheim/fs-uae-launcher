@@ -1,0 +1,1 @@
+product = "FS-UAE"

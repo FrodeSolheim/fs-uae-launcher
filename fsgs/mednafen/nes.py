@@ -1,7 +1,9 @@
+from binascii import unhexlify
+
 from fsgs.mednafen.mednafen import MednafenRunner
 
 
-class NintendoRunner(MednafenRunner):
+class MednafenNintendoDriver(MednafenRunner):
 
     CONTROLLER = {
         "type": "gamepad",
@@ -79,3 +81,28 @@ class NintendoRunner(MednafenRunner):
         # FIXME: Sane default? -Or enable this in a per-game config
         # instead? SMB3 looks better with this
         return True
+
+    def get_game_file(self, config_key="cartridge"):
+        path = super().get_game_file()
+        data1 = b""
+        data2 = b""
+        with open(path, "rb") as f:
+
+            # Start iNES Hack
+            data = f.read(16)
+            if len(data) == 16 and data.startswith(b"NES\x1a"):
+                print("[DRIVER] Stripping iNES header")
+            else:
+                # No iNES header, include data
+                data1 = data
+            # End iNES Hack
+
+            data2 = f.read()
+        with open(path, "wb") as f:
+            ines_header = self.config.get("ines_header", "")
+            if ines_header:
+                assert len(ines_header) == 32
+                f.write(unhexlify(ines_header))
+            f.write(data1)
+            f.write(data2)
+        return path

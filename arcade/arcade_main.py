@@ -23,7 +23,6 @@ def os_x_set_system_ui_mode(mode, option):
 
 
 def main():
-    print("Fengestad Game System...")
     application = Application()
 
     # fs_width, fs_height = fsui.get_screen_size()

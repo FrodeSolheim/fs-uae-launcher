@@ -323,6 +323,7 @@ primary_icons = {_.lower() for _ in [
     "BlackViperCD32/BlackViperCD32.info",
     "Cadaver&CadaverThePayoff/CadaverThePayoff.info",
     "ChaosStrikesBack/ChaosStrikesBack.info",
+    "EmeraldMine2/EmeraldMine2.info",
     "Entity/Entity.info",
     "Fuzzball/Fuzzball.info",
     "Genesia/Genesia.info",

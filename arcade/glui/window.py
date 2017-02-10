@@ -4,11 +4,13 @@ import sys
 import time
 from collections import deque
 
+from fsbc import settings
 from fsgs.FSGSDirectories import FSGSDirectories
 
 from arcade.gamecenter import GameCenter
 from arcade.resources import resources
 from fsbc.system import windows
+from fsgs.option import Option
 from fsgs.platform import PlatformHandler
 from fsgs.util.gamenameutil import GameNameUtil
 
@@ -29,6 +31,7 @@ from arcade.glui.render import Render
 from arcade.glui.notification import NotificationRender
 from arcade.glui.font import Font, BitmapFont
 from arcade.glui.items import MenuItem, AllMenuItem, NoItem, PlatformItem
+from arcade.glui.items import ListItem
 from arcade.glui.texture import Texture
 from arcade.glui.texturemanager import TextureManager
 from arcade.glui.constants import TOP_HEIGHT
@@ -333,19 +336,43 @@ def show():
     new_menu = create_main_menu()
     State.get().history.append(new_menu)
 
+    override_items = []
     for platform_id in PlatformHandler.get_platform_ids():
         if "--platform=" + platform_id in sys.argv:
-            platform_menu = ItemMenu()
-            platform_menu.parent_menu = new_menu
-
+            sys.argv.remove("--platform=" + platform_id)
             platform_item = PlatformItem(platform_id)
-            platform_menu.items.append(platform_item)
-            # platform_menu.set_selected_index(0, immediate=True)
-
-            new_menu = platform_item.activate(platform_menu)
-            print(new_menu)
-            State.get().history.append(new_menu)
+            override_items.append(platform_item)
             break
+    # if "--favorites" in sys.argv or \
+    #         settings.get(Option.ARCADE_INITIAL_VIEW) == "favorites":
+    if "--favorites" in sys.argv or \
+                    settings.get(Option.ARCADE_INITIAL_FAVORITES) == "1":
+        if "--favorites" in sys.argv:
+            sys.argv.remove("--favorites")
+        try:
+            list_uuid = ListItem.get_favorites_uuid()
+            favorites_item = ListItem("Favorites", list_uuid)
+        except LookupError:
+            print("No favorites list")
+            # noinspection SpellCheckingInspection
+            favorites_item = ListItem(
+                "Favorites", "c03dd5fe-0e85-4efb-a126-f0e4f40feae6")
+        override_items.append(favorites_item)
+    if override_items:
+        parent_menu = new_menu
+        override_menu = None
+        parents = []
+        for item in override_items:
+            override_menu = ItemMenu()
+            override_menu.parent_menu = parent_menu
+            parents.append(parent_menu)
+            # This is really hackish
+            override_menu.parents = parents
+            override_menu.items.append(item)
+            parent_menu = override_menu
+        new_menu = override_items[-1].activate(override_menu)
+        print(new_menu)
+        State.get().history.append(new_menu)
 
     set_current_menu(new_menu)
     if len(new_menu) == 1:

@@ -1,3 +1,4 @@
+import fsgs
 import fsui
 from fsui.extra.iconheader import IconHeader
 from fsbc.application import app
@@ -9,8 +10,11 @@ from launcher.ui.widgets import CloseButton
 class AboutDialog(fsui.Window):
 
     def __init__(self, parent):
-        # title = gettext("About {name}").format(name="FS-UAE Launcher")
-        title = "{} - FS-UAE Launcher".format(gettext("About"))
+        if fsgs.product == "OpenRetro":
+            app_name = "OpenRetro Launcher"
+        else:
+            app_name = "FS-UAE Launcher"
+        title = "{} - {}".format(gettext("About"), app_name)
         super().__init__(parent, title, minimizable=False, maximizable=False)
         self.theme = LauncherTheme.get()
         self.layout = fsui.VerticalLayout()
@@ -18,7 +22,7 @@ class AboutDialog(fsui.Window):
 
         self.icon_header = IconHeader(
             self, fsui.Icon("fs-uae-launcher", "pkg:launcher"),
-            "{name} {version}".format(name="FS-UAE Launcher",
+            "{name} {version}".format(name=app_name,
                                       version=app.version),
             "Copyright © 2012-2017 Frode Solheim")
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)

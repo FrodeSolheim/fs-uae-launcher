@@ -10,3 +10,4 @@ class ArcadeSettingsPage(SettingsPage):
         self.add_header(icon, "FS-UAE Arcade")
         self.add_option(Option.ARCADE_FULLSCREEN)
         self.add_option(Option.ARCADE_THEME)
+        self.add_option(Option.ARCADE_INITIAL_FAVORITES)

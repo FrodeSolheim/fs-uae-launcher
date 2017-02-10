@@ -280,7 +280,7 @@ class MenuItem(object):
             PlatformMenuItem(),
             LetterMenuItem(),
             ShuffleMenuItem(),
-            # ListMenuItem(),
+            ListMenuItem(),
             # YearMenuItem(),
             # KeywordMenuItem(),
         ]
@@ -291,58 +291,43 @@ class MenuItem(object):
     def generate_game_items(self, menu_path):
         args = []
         clause = []
+        list_uuid = None
         for item in menu_path:
             c, a = item.get_filter_clause()
             if c:
                 clause.append(c)
                 args.extend(a)
+            if item.get_filter_list_uuid():
+                list_uuid = item.get_filter_list_uuid()
         # clause = " ".join(clause)
 
         filters = list(self.generate_game_filters(menu_path))
         print("filters for", menu_path, "-", filters)
-        return self.create_game_items(clause, args, filters)
+        return self.create_game_items(clause, args, filters, list_uuid)
 
     @classmethod
-    def create_game_items(cls, words, args=None, filters=None):
+    def create_game_items(cls, words, args=None, filters=None, list_uuid=None):
         if filters is None:
             filters = []
         search = " ".join(words)
-        # query = "SELECT id, name, config, platform, " \
-        #         "imageratio, screenratio, year, publisher, developer,
-        # subtitle " \
-        #        "FROM Game WHERE 1 = 1 {0} ORDER BY sort_key".format(clause)
-        # print(query, args)
-        # Database.cursor.execute(query, args)
-        # item_list = []
-        # last_item = None
-        # for row in Database.cursor:
-        #     if last_item:
-        #         if last_item.name == row[1] and last_item.platform == row[3]:
-        #             last_item.configurations.append(row[2])
-        #             continue
-        #     for filter in filters:
-        #         if not filter(row):
-        #             break
-        #     else:
-        #         item = GameItem(id=row[0], name=row[1], configurations=[
-        # row[2]],
-        #                 platform=row[3], ratio=row[4], screenratio=row[5],
-        #                 year=row[6], publisher=row[7], developer=row[8],
-        #                 subtitlepos=row[9])
-        #         item_list.append(item)
-        #         last_item = item
-        # return item_list
-
         item_list = []
         local_game_database = Database.instance()
         for game in local_game_database.find_games_new(
-                search=search, database_only=True):
+                search=search, database_only=True, list_uuid=list_uuid):
             item = GameItem(game)
-            item_list.append(item)
+            for filter in filters:
+                pass
+                # if not filter(game):
+                #     break
+            else:
+                item_list.append(item)
         return item_list
 
     def get_filter_clause(self):
         return "", []
+
+    def get_filter_list_uuid(self):
+        return None
 
     def update_size_left(self):
         self.update_size(self.get_top_left_text())
@@ -536,23 +521,6 @@ class NoLastPlayedItem(MenuItem):
         self.title = gettext("No Last Played")
 
 
-def get_game_lists_dirs():
-    if os.path.exists(os.path.expanduser("~/Games/Lists")):
-        return [os.path.expanduser("~/Games/Lists")]
-    return []
-
-
-def get_game_lists():
-    result = []
-    lists_dirs = get_game_lists_dirs()
-    for lists_dir in lists_dirs:
-        for name in os.listdir(lists_dir):
-            if name.endswith(".txt"):
-                title = name[:-4]
-                result.append((title, os.path.join(lists_dir, name)))
-    return result
-
-
 class ListMenuItem(MenuItem):
     def __init__(self):
         MenuItem.__init__(self)
@@ -576,7 +544,7 @@ class ListMenuItem(MenuItem):
         # for sort_title, item in sorted(items):
         #    new_menu.append(item)
 
-        for title, path in get_game_lists():
+        for title, path in ListItem.get_game_lists():
             item = ListItem(title, path)
             new_menu.append(item)
         return new_menu
@@ -592,6 +560,23 @@ class ListItem(AutoExpandItem):
         self.subtitle = ""
         self.sort_title = self.title
         # self.game_filter_set = set()
+        self._list = None
+
+    @classmethod
+    def get_game_lists(cls):
+        result = []
+        local_game_database = Database.instance()
+        for list_uuid, list_name in local_game_database.get_game_lists():
+            result.append((list_name, list_uuid))
+        return result
+
+    @classmethod
+    def get_favorites_uuid(cls):
+        for list_name, list_uuid in cls.get_game_lists():
+            # FIXME: Should use some common function to determine this
+            if list_name == "Favorites":
+                return list_uuid
+        raise LookupError("No favorites list")
 
     def get_category_filter(self):
         def category_filter(category):
@@ -601,63 +586,32 @@ class ListItem(AutoExpandItem):
 
         return category_filter
 
-    @memoize
-    def get_list_contents(self):
-        result = set()
-        print("read_list_contents", self.list_path)
-        with open(self.list_path, "rb") as f:
-            for line in f.readlines():
-                line = line.strip()
-                if not line:
-                    continue
-                print(line)
-                parts = line.rsplit("(", 1)
-                name = parts[0]
-                platform = None
-                if len(parts) == 2:
-                    parts = parts[1][:-1].split(",", 1)
-                    platform = parts[0]
-                    if len(parts) == 2:
-                        # FIXME variant...
-                        pass
-                print(name, platform)
-                cmp_game = GameNameUtil.create_cmpname(name)
-                if platform:
-                    cmp_platform = GameNameUtil.create_cmpname(platform)
-                    result.add((cmp_game, cmp_platform))
-                else:
-                    result.add(cmp_game)
-        return result
+    def get_filter_list_uuid(self):
+        return self.list_path
 
-    def get_game_filter(self):
-        def game_filter(row):
-            # print(game_info)
-            game_filter_set = self.get_list_contents()
-            # print(self.game_filter_set)
-            cmp_game = GameNameUtil.create_cmpname(row[ROW_NAME])
-            # print("check -- ", cmp_game)
-            if cmp_game in game_filter_set:
-                return True
-            cmp_platform = GameNameUtil.create_cmpname(row[ROW_PLATFORM])
-            # print("check -- ", (cmp_game, cmp_platform))
-            if (cmp_game, cmp_platform) in game_filter_set:
-                return True
-            return False
 
-        return game_filter
+            # @memoize
+    # def get_list_contents(self):
+    #     if self._list is None:
+    #         self._list = set()
+    #         local_game_database = Database.instance()
+    #         local_game_database.get
+    #     return self._list
 
-        # @memoize
-        # def get_resource_name(self):
-        #     name = ""
-        #     for c in self._platform.lower():
-        #         if c in "abcdefghijklmnopqrstuvwxyz0123456789":
-        #             name = name + c
-        #     return name
+    # def get_game_filter(self):
+    #
+    #     def game_filter(game):
+    #         game_uuids = set()
+    #         if game.uuid in game_uuids:
+    #             return True
+    #         return False
+    #
+    #     return game_filter
 
-        # def get_filter_clause(self):
-        #     # FIXME: NUMBERS
-        #     return "AND platform = ?", [self._platform]
-        #     print(name)
+    # def get_filter_clause(self):
+    #     # FIXME: NUMBERS
+    #     return "AND platform = ?", [self._platform]
+    #     print(name)
 
 
 class PlatformMenuItem(MenuItem):

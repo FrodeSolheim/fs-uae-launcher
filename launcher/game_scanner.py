@@ -44,10 +44,10 @@ class GameScanner(object):
             yield "Amiga", self.fsgs.get_game_database()
             yield "CD32", self.fsgs.game_database("CD32")
             yield "CDTV", self.fsgs.game_database("CDTV")
+        if LauncherSettings.get(Option.C64_DATABASE) == "1":
+            yield "C64", self.fsgs.game_database("C64")
         if LauncherSettings.get(Option.DATABASE_ARCADE) == "1":
             yield "Arcade", self.fsgs.game_database("Arcade")
-        if LauncherSettings.get(Option.DATABASE_C64) == "1":
-            yield "C64", self.fsgs.game_database("C64")
         if LauncherSettings.get(Option.DATABASE_CPC) == "1":
             yield "CPC", self.fsgs.game_database("CPC")
         if LauncherSettings.get(Option.DATABASE_DOS) == "1":

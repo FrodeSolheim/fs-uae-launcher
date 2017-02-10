@@ -51,6 +51,11 @@ options = {
         "description": N_("Arcade Fullscreen"),
         "type": "boolean",
     },
+    Option.ARCADE_INITIAL_FAVORITES: {
+        "default": "0",
+        "description": N_("Arcade starts with favorites filter"),
+        "type": "Boolean",
+    },
     Option.ARCADE_THEME: {
         "default": "blue",
         "description": N_("Arcade theme"),
@@ -104,6 +109,12 @@ options = {
         "default": "1",
         "description": N_("Include built-in configurations"),
         "type": "boolean",
+    },
+    Option.C64_DATABASE: {
+        "default": "0",
+        "description": N_(
+            "Enable/disable use of the Commodore 64 (C64) database"),
+        "type": "Boolean",
     },
     Option.CDROM_DRIVE_0_DELAY: {
         "default": "0",
@@ -176,12 +187,6 @@ options = {
         "default": "",
         "description": N_("Game database authentication"),
         "type": "string",
-    },
-    Option.DATABASE_C64: {
-        "default": "0",
-        "description": N_(
-            "Enable/disable use of the Commodore 64 (C64) database"),
-        "type": "Boolean",
     },
     Option.DATABASE_CPC: {
         "default": "0",

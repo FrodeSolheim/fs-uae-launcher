@@ -1,6 +1,7 @@
 import os
 import time
 
+import fsgs
 from arcade.gamecentersettings import GameCenterSettings
 from arcade.glui.constants import TOP_ITEM_LEFT
 from arcade.glui.constants import TOP_ITEM_NOBORDER
@@ -249,8 +250,12 @@ class TopMenu(Navigatable):
 class OldGameCenterItem(MenuItem):
     def __init__(self):
         super().__init__()
-        # if app.name == "fs-uae-arcade":
-        self.title = gettext("FS-UAE   Arcade")
+        if fsgs.product == "FS-UAE":
+            self.title = gettext("FS-UAE   Arcade")
+        elif fsgs.product == "OpenRetro":
+            self.title = gettext("OpenRetro   Arcade")
+        else:
+            self.title = gettext("Unknown   Arcade")
         # else:
         #     self.title = gettext("Game   Center")
         self.path_title = self.title
@@ -285,16 +290,23 @@ class OldGameCenterItem(MenuItem):
 class GameCenterItem(MenuItem):
     def __init__(self):
         super().__init__()
-        self.title = gettext("FS-UAE Arcade")
         self.path_title = self.title
         self.enabled = False
+        if fsgs.product == "FS-UAE":
+            self.text1 = "FS-UAE"
+        elif fsgs.product == "OpenRetro":
+            self.text1 = "OpenRetro"
+        else:
+            self.text1 = "Unknown"
+        self.text2 = "Arcade"
+        self.title = "{} {}".format(self.text1, self.text2)
 
     def activate(self, menu):
         pass
 
     def update_size(self, text):
-        tw, _ = BitmapFont.title_font.measure("FS-UAE")
-        tw2, _ = BitmapFont.title_font.measure("Arcade")
+        tw, _ = BitmapFont.title_font.measure(self.text1)
+        tw2, _ = BitmapFont.title_font.measure(self.text2)
         self.w = 20 + 32 + 20 + tw + 20 + tw2 + 20
 
     def render_top_left(self, selected=False):
@@ -305,10 +317,10 @@ class GameCenterItem(MenuItem):
         texture = Texture.logo_32
         texture.render(x, 1080 - y - texture.h, texture.w, texture.h)
         x += 32 + 20
-        BitmapFont.title_font.render("FS-UAE", x, self.y + 14)
-        tw, _ = BitmapFont.title_font.measure("FS-UAE")
+        BitmapFont.title_font.render(self.text1, x, self.y + 14)
+        tw, _ = BitmapFont.title_font.measure(self.text1)
         x += tw + 20
-        BitmapFont.title_font.render("Arcade", x, self.y + 14, alpha=0.5)
+        BitmapFont.title_font.render(self.text2, x, self.y + 14, alpha=0.5)
         gl.glEnable(gl.GL_DEPTH_TEST)
 
 

@@ -10,17 +10,32 @@ sys.modules["typing"] = fstd.typing
 
 
 def main():
+    app = "fs-uae-launcher"
+
     # Check deprecated/legacy app options.
     if "--server" in sys.argv:
         sys.argv.remove("--server")
         app = "fs-uae-netplay-server"
-    elif "--fs-uae-arcade" in sys.argv:
+    if "--arcade" in sys.argv:
+        sys.argv.remove("--arcade")
+        app = "fs-uae-arcade"
+    if "--fs-uae-arcade" in sys.argv:
         sys.argv.remove("--fs-uae-arcade")
         app = "fs-uae-arcade"
-    elif sys.argv[0].endswith("fs-game-center"):
+    if sys.argv[0].endswith("fs-game-center"):
         app = "fs-game-center"
-    else:
-        app = "fs-uae-launcher"
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "xdftool":
+            app = "xdftool"
+            del sys.argv[1]
+    if "--xdftool" in sys.argv:
+        sys.argv.remove("--xdftool")
+        app = "xdftool"
+
+    import fsgs
+    if "--openretro" in sys.argv:
+        sys.argv.remove("--openretro")
+        fsgs.product = "OpenRetro"
 
     # Check new app option.
     for arg in sys.argv:
@@ -28,6 +43,7 @@ def main():
             app = arg[6:]
             sys.argv.remove(arg)
 
+    # Check for (fake) version override
     for arg in sys.argv:
         if arg.startswith("--") and "=" in arg:
             key, value = arg[2:].split("=", 1)
@@ -35,16 +51,11 @@ def main():
             if key == "fake_version":
                 launcher.version.VERSION = value
 
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "xdftool":
-            sys.argv[0] = "xdftool"
-            app = "xdftool"
-            del sys.argv[1]
-
     import socket
     socket.setdefaulttimeout(30.0)
 
     if app == "xdftool":
+        sys.argv[0] = "xdftool"
         import amitools.tools.xdftool
         sys.exit(amitools.tools.xdftool.main())
 

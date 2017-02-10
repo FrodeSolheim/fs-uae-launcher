@@ -150,6 +150,8 @@ class GameRunner(object):
         # Fake home directory for the emulator.
         self.home = self.temp_dir("home")
 
+        # self.ines_hack = False
+
     def __del__(self):
         print("GameRunner.__del__")
 
@@ -364,7 +366,11 @@ class GameRunner(object):
             self.temp_root, file_uri.split("/")[-1])
 
         with open(self.__game_temp_file.path, "wb") as f:
-            f.write(input_stream.read())
+            while True:
+                data = input_stream.read(65536)
+                if not data:
+                    break
+                f.write(data)
         return self.__game_temp_file.path
 
     def create_temp_dir(self, suffix):
@@ -477,6 +483,7 @@ class GameRunner(object):
             kwargs["cwd"] = cwd
         else:
             kwargs["cwd"] = self.cwd.path
+        print("[EMULATOR] CWD:", kwargs["cwd"])
         if windows:
             kwargs["close_fds"] = True
         print(" ".join(args))

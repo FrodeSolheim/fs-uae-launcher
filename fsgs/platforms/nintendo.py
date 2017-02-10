@@ -1,4 +1,4 @@
-from fsgs.mednafen.nintendo import NintendoRunner
+from fsgs.mednafen.nes import MednafenNintendoDriver
 from fsgs.platform import PlatformHandler
 from fsgs.platforms.loader import SimpleLoader
 
@@ -13,8 +13,9 @@ class NintendoPlatformHandler(PlatformHandler):
         return NintendoLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return NintendoRunner(fsgs)
+        return MednafenNintendoDriver(fsgs)
 
 
 class NintendoLoader(SimpleLoader):
-    pass
+    def load_extra(self, values):
+        self.config["ines_header"] = values["ines_header"]

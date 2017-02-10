@@ -252,6 +252,23 @@ class FileScanner(object):
 
         f = archive.open(path)
         s = hashlib.sha1()
+
+        # Start iNES Hack
+        if ext == ".nes":
+            # FIXME: NES header hack. Would be better to add a proper notion of
+            # file filters to the file database.
+            # FIXME: This will confuse some functionaly, such as the
+            # Locker uploader or other tools expecting on-disk data to match
+            # the database checksum (this also applies to the Cloanto ROM
+            # hack). Should be done properly.
+            data = f.read(16)
+            if len(data) == 16 and data.startswith(b"NES\x1a"):
+                print("Stripping iNES header for", path)
+            else:
+                # No iNES header, include data in checksum
+                s.update(data)
+        # End iNES Hack
+
         while True:
             if self.stop_check():
                 return

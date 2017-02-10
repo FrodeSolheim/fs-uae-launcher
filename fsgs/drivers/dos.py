@@ -17,6 +17,10 @@
 """
 FSGS Game Driver for DOS.
 
+FIXME: Save data
+
+IMGMOUNT can refer to paths beginning with $DRIVES.
+
 """
 import hashlib
 import io
@@ -105,7 +109,6 @@ class DOSDriver(GameRunner):
                 with open(dst_file, "w", encoding="ISO-8859-1") as f:
                     f.write(data)
 
-
         for drive in sorted(drives_added):
             self.drives.append((drive, os.path.join(dir_path, drive)))
 
@@ -147,7 +150,7 @@ class DOSDriver(GameRunner):
             f.write("irq={}\n".format(self.config["sblaster_irq"]))
 
         f.write("\n[autoexec]\n")
-        f.write("@echo off\n")
+        f.write("@ECHO OFF\n")
         # for drive, drive_path in self.drives:
         #     pass
         for name in os.listdir(self.drives_dir.path):
@@ -165,6 +168,7 @@ class DOSDriver(GameRunner):
         if not os.environ.get("FSGS_AUTOEXEC", "") == "0":
             for command in self.config["hd_startup"].split(";"):
                 command = command.strip()
+                command = command.replace("$DRIVES", self.drives_dir.path)
                 f.write("{0}\n".format(command))
         if not os.environ.get("FSGS_AUTOEXIT", "") == "0":
             f.write("exit\n")

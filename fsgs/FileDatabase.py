@@ -7,8 +7,8 @@ from fsgs.BaseDatabase import BaseDatabase
 from fsgs.FSGSDirectories import FSGSDirectories
 
 SENTINEL = "fae7671d-e232-4b71-b179-b3cd45995f92"
-VERSION = 3
-RESET_VERSION = 3
+VERSION = 4
+RESET_VERSION = 4
 
 
 class File(dict):
@@ -260,7 +260,7 @@ class FileDatabase(BaseDatabase):
         cursor = self.internal_cursor()
         cursor.execute("DELETE FROM file")
 
-    def update_database_to_version_3(self):
+    def update_database_to_version_4(self):
         cursor = self.internal_cursor()
         try:
             cursor.execute("SELECT count(*) FROM file")

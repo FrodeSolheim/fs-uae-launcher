@@ -33,6 +33,7 @@ Options:
   --window
   --monitor=left|right|middle-left|middle-right  (Requires fullscreen)
   --platform=<platform>
+  --favorites
 
 TODO: Add more documentation
 """
