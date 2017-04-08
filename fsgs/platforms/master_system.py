@@ -1,10 +1,12 @@
+from fsbc import settings
+from fsgs.drivers.mess.messsmsdriver import MessSmsDriver
+from fsgs.option import Option
 from fsgs.platform import PlatformHandler
-from fsgs.mednafen.master_system import MasterSystemRunner
-from .loader import SimpleLoader
+from fsgs.platforms.loader import SimpleLoader
+from fsgs.platforms.sms.mednafensmsdriver import MednafenSMSDriver
 
 
 class MasterSystemPlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Master System"
 
     def __init__(self):
@@ -14,7 +16,10 @@ class MasterSystemPlatformHandler(PlatformHandler):
         return MasterSystemLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return MasterSystemRunner(fsgs)
+        if settings.get(Option.SMS_DRIVER) == "mess":
+            return MessSmsDriver(fsgs)
+        else:
+            return MednafenSMSDriver(fsgs)
 
 
 class MasterSystemLoader(SimpleLoader):

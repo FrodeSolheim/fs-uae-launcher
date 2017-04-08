@@ -4,7 +4,7 @@ import uuid
 from urllib.parse import parse_qs
 from urllib.request import urlopen, URLError
 
-from fsgs.amiga.Amiga import Amiga
+from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
 from .connection_tester import ConnectionTester
 from .irc import IRC

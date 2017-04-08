@@ -46,5 +46,7 @@ Options:
   --no-gui                             Do not show launch progress dialog
   --no-auto-detect-game                Do not try to auto-detect game from archive
 
+  --new-config[=<platform>]
+
 TODO: Add more documentation
 """

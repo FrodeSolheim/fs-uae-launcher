@@ -5,7 +5,7 @@ import traceback
 from fsbc.paths import Paths
 from fsgs.Archive import Archive
 from fsgs.FileDatabase import FileDatabase
-from fsgs.amiga.ROMManager import ROMManager
+from fsgs.amiga.rommanager import ROMManager
 from .i18n import gettext
 
 
@@ -61,6 +61,8 @@ class FileScanner(object):
             self.extensions.add(".img")  # bios images
             self.extensions.add(".bin")  # bios images
 
+            # Commodore 64
+
             # Game Boy
             self.extensions.add(".gb")
 
@@ -77,6 +79,8 @@ class FileScanner(object):
             self.extensions.add(".md")
             self.extensions.add(".bin")
             self.extensions.add(".gen")
+            # FIXME: Is .smd a common extension?
+            self.extensions.add(".smd")
 
             # Nintendo
             self.extensions.add(".nes")

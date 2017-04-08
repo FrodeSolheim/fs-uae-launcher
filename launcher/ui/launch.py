@@ -2,14 +2,16 @@ import sys
 
 import fsui
 from fsbc.application import app
-from fsgs.runner import GameRunner
+from fsgs.drivers.gamedriver import GameDriver
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
+from launcher.settings.fullscreenmodebutton import FullscreenModeButton
+from launcher.settings.monitorbutton import MonitorButton
+from launcher.settings.override_warning import OverrideWarning
+from launcher.settings.videosynccheckbox import VideoSyncCheckBox
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
-from launcher.ui.settings.monitor_button import MonitorButton
-from launcher.ui.settings.override_warning import OverrideWarning
 
 
 class LaunchGroup(fsui.Group):
@@ -21,20 +23,23 @@ class LaunchGroup(fsui.Group):
         self.progress_label = fsui.Label(self, "")
         self.progress_label.set_visible(False)
         self.hori_layout.add(self.progress_label, fill=True, expand=True)
+
         # self.progress_2_label = fsui.Label(self, "")
         # self.progress_2_label.set_visible(False)
         # self.hori_layout.add(self.progress_2_label, fill=True, expand=True)
-        self.fullscreen_mode_button = FullscreenModeButton(self)
-        self.hori_layout.add(
-            self.fullscreen_mode_button, fill=True, margin_right=10)
-        self.monitor_button = MonitorButton(self)
-        self.hori_layout.add(
-            self.monitor_button, fill=True, margin_right=10)
+
+        # self.fullscreen_mode_button = FullscreenModeButton(self)
+        # self.hori_layout.add(
+        #     self.fullscreen_mode_button, fill=True, margin_right=10)
+        # self.monitor_button = MonitorButton(self)
+        # self.hori_layout.add(
+        #     self.monitor_button, fill=True, margin_right=10)
+
         self.screen_info_label = ScreenInfoLabel(self)
         self.hori_layout.add(self.screen_info_label, fill=True,
                              expand=True, margin_right=10)
-        self.video_sync_checkbox = VideoSyncCheckBox(self)
-        self.hori_layout.add(self.video_sync_checkbox, margin_right=10)
+        # self.video_sync_checkbox = VideoSyncCheckBox(self)
+        # self.hori_layout.add(self.video_sync_checkbox, margin_right=10)
         self.override_warning = OverrideWarning(self, Option.FULLSCREEN)
         self.hori_layout.add(self.override_warning, margin_right=10)
         self.fullscreen_button = FullscreenToggleButton(self)
@@ -47,10 +52,10 @@ class LaunchGroup(fsui.Group):
 
     def on___running_config(self, value):
         widgets = [
-            self.fullscreen_mode_button,
-            self.monitor_button,
+            # self.fullscreen_mode_button,
+            # self.monitor_button,
             self.screen_info_label,
-            self.video_sync_checkbox,
+            # self.video_sync_checkbox,
             self.fullscreen_button,
         ]
         for widget in widgets:
@@ -127,9 +132,9 @@ class ScreenInfoLabel(fsui.Label):
             return
         if value is None:
             value = LauncherSettings.get("monitor")
-        x, y, w, h = GameRunner.screen_rect_for_monitor(value)
+        x, y, w, h = GameDriver.screen_rect_for_monitor(value)
         # index = GameRunner.screen_index_for_monitor(value)
-        refresh_rate = GameRunner.screen_refresh_rate_for_monitor(value)
+        refresh_rate = GameDriver.screen_refresh_rate_for_monitor(value)
         assume_refresh_rate = LauncherSettings.get("assume_refresh_rate")
         if assume_refresh_rate:
             refresh_rate_override = " (OVERRIDING {})".format(refresh_rate)
@@ -145,20 +150,6 @@ class ScreenInfoLabel(fsui.Label):
             pos_str = ""
         self.set_text("{}x{}{} @ {}Hz{}".format(
             w, h, pos_str, refresh_rate, refresh_rate_override))
-
-
-class VideoSyncCheckBox(fsui.CheckBox):
-    def __init__(self, parent):
-        super().__init__(parent, gettext("V-Sync"))
-        self.set_tooltip(gettext(
-            "When checked, enable video synchronization whenever possible"))
-        SettingsBehavior(self, ["video_sync"])
-
-    def on_changed(self):
-        LauncherSettings.set("video_sync", "1" if self.is_checked() else "")
-
-    def on_video_sync_setting(self, value):
-        self.check(value == "1")
 
 
 class FullscreenToggleButton(fsui.ImageButton):
@@ -192,43 +183,6 @@ class FullscreenToggleButton(fsui.ImageButton):
             app.settings["fullscreen"] = "0"
         else:
             app.settings["fullscreen"] = "1"
-
-
-class FullscreenModeButton(fsui.ImageButton):
-    def __init__(self, parent):
-        self.window_icon = fsui.Image("launcher:res/16x16/fullscreen_window.png")
-        self.fullscreen_icon = fsui.Image(
-            "launcher:res/16x16/fullscreen_fullscreen.png")
-        self.desktop_icon = fsui.Image(
-            "launcher:res/16x16/fullscreen_desktop.png")
-        super().__init__(parent, self.desktop_icon)
-        self.set_tooltip(gettext(
-            "Change fullscreen mode (desktop, fullscreen, window)"))
-        self.set_min_width(40)
-        self.fullscreen_mode = "desktop"
-        SettingsBehavior(self, ["fullscreen", "fullscreen_mode"])
-
-    def on_fullscreen_setting(self, value):
-        self.set_enabled(value == "1")
-
-    def on_fullscreen_mode_setting(self, value):
-        if value == "fullscreen":
-            self.fullscreen_mode = "fullscreen"
-            self.set_image(self.fullscreen_icon)
-        elif value == "window":
-            self.fullscreen_mode = "window"
-            self.set_image(self.window_icon)
-        else:
-            self.fullscreen_mode = "desktop"
-            self.set_image(self.desktop_icon)
-
-    def on_activate(self):
-        if self.fullscreen_mode == "fullscreen":
-            app.settings["fullscreen_mode"] = "window"
-        elif self.fullscreen_mode == "window":
-            app.settings["fullscreen_mode"] = ""
-        else:
-            app.settings["fullscreen_mode"] = "fullscreen"
 
 
 class LaunchDialog(fsui.Window):

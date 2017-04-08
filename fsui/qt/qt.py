@@ -21,6 +21,8 @@ from PyQt5.QtCore import pyqtSignal as QSignal
 # noinspection PyUnresolvedReferences, PyPackageRequirements
 from PyQt5.QtOpenGL import *
 
+from fsgs.option import Option
+
 try:
     # noinspection PyUnresolvedReferences, PyPackageRequirements
     from PyQt5.QtX11Extras import *
@@ -70,7 +72,7 @@ def initialize_qt_style(qapplication):
     # from fsui.qt import QStyleFactory, QPalette, QColor, Qt, QFont
     fusion_variant = ""
 
-    launcher_theme = Settings.instance().get("launcher_theme")
+    launcher_theme = Settings.instance().get(Option.LAUNCHER_THEME)
     if launcher_theme == "standard":
         use_fusion_theme = False
     elif launcher_theme == "native":
@@ -111,9 +113,11 @@ def initialize_qt_style(qapplication):
         qapplication.setStyle(QStyleFactory.create("Fusion"))
         if fusion_variant == "adwaita":
             pa = QPalette()
-            pa.setColor(QPalette.Window, QColor(237, 237, 237))
-            pa.setColor(QPalette.AlternateBase, QColor(237, 237, 237))
-            pa.setColor(QPalette.Button, QColor(237, 237, 237))
+            pa.setColor(QPalette.Window, QColor(232, 232, 231))
+            pa.setColor(QPalette.AlternateBase, QColor(232, 232, 231))
+            pa.setColor(QPalette.Button, QColor(232, 232, 231))
+            # pa.setColor(QPalette.Base, QColor(255, 255, 255))
+            pa.setColor(QPalette.Disabled, QPalette.Base, QColor(241, 241, 241))
             qapplication.setPalette(pa)
         elif fusion_variant == "fws" or fusion_variant == "windows10":
             pa = QPalette()

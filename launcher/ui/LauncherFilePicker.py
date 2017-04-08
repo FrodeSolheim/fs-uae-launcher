@@ -50,7 +50,9 @@ class LauncherFilePicker(object):
             return FSGSDirectories.get_hard_drives_dir()
         elif media_type == "rom":
             return FSGSDirectories.get_kickstarts_dir()
-        raise Exception("unknown file dialog type")
+        # FIXME: Return new Media directory instead
+        return FSGSDirectories.get_base_dir()
+        # raise Exception("unknown file dialog type")
 
     def show_modal(self):
         path = None

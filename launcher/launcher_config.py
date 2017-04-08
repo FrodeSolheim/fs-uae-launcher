@@ -7,8 +7,8 @@ from fsbc.paths import Paths
 from fsbc.signal import Signal
 from fsgs.ChecksumTool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.Amiga import Amiga
-from fsgs.amiga.ValueConfigLoader import ValueConfigLoader
+from fsgs.amiga.amiga import Amiga
+from fsgs.amiga.valueconfigloader import ValueConfigLoader
 from fsgs.context import fsgs
 from fsgs.platform import PlatformHandler
 from launcher.option import Option
@@ -128,10 +128,19 @@ cfg = [
     ("jit_compiler", "", "checksum", "sync"),
     ("__database", ""),
     ("platform", ""),
-    (Option.FLOPPY_DRIVE_VOLUME_EMPTY, "", "sync"),
     ("save_disk", "", "checksum", "sync"),
     ("network_card", "", "checksum", "sync"),
     ("freezer_cartridge", "", "checksum", "sync"),
+
+    (Option.ATARI_MODEL, "", "checksum", "sync"),
+    (Option.C64_MODEL, "", "checksum", "sync"),
+    (Option.CARTRIDGE_SLOT, "", "checksum", "sync"),
+    (Option.FLOPPY_DRIVE_VOLUME_EMPTY, "", "sync"),
+    (Option.GAME_NAME, ""),
+    (Option.SMD_MODEL, "", "checksum", "sync"),
+    (Option.TAPE_DRIVE_0, "", "checksum", "sync"),
+    (Option.VARIANT_NAME, ""),
+    (Option.ZXS_MODEL, "", "checksum", "sync"),
 ]
 
 for _i in range(Amiga.MAX_FLOPPY_DRIVES):
@@ -326,10 +335,13 @@ class LauncherConfig(object):
         cls.update_from_config_dict(config_dict)
 
     @classmethod
-    def load_default_config(cls):
-        print("load_default_config")
-        cls.load({})
-        LauncherSettings.set("config_name", "Unnamed Configuration")
+    def load_default_config(cls, platform=""):
+        print("load_default_config platform =", platform)
+        if platform:
+            cls.load({Option.PLATFORM: platform})
+        else:
+            cls.load({})
+        LauncherSettings.set(Option.CONFIG_NAME, "Unnamed Configuration")
         LauncherSettings.set("config_path", "")
         LauncherSettings.set("config_xml_path", "")
 
@@ -535,14 +547,14 @@ class LauncherConfig(object):
         else:
             config_name, ext = os.path.splitext(os.path.basename(path))
 
-        LauncherSettings.set("config_name", config_name)
+        LauncherSettings.set(Option.CONFIG_NAME, config_name)
         LauncherSettings.set("config_xml_path", config_xml_path)
         cls.set("__changed", changed)
         return True
 
     @classmethod
     def load_values(cls, values, uuid=""):
-        print("loading config values", values)
+        # print("loading config values", values)
         platform_id = values.get("platform", "").lower()
 
         if platform_id in ["amiga", "cdtv", "cd32"]:
@@ -567,11 +579,11 @@ class LauncherConfig(object):
         else:
             config_name = "{0} ({1})".format(
                 values.get("game_name"),
-                values.get("platform_name"))
+                values.get("variant_name"))
         LauncherSettings.set("config_path", "")
         if config_name:
             config_name = cls.create_fs_name(config_name)
-        LauncherSettings.set("config_name", config_name)
+        LauncherSettings.set(Option.CONFIG_NAME, config_name)
         LauncherSettings.set("config_xml_path", "")
         cls.set("__changed", "0")
 

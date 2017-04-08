@@ -1,11 +1,10 @@
 import fsui
-from fsgs.amiga.Amiga import Amiga
+from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
 from launcher.i18n import gettext
 from launcher.launcher_signal import LauncherSignal
 from launcher.scanner import Scanner
-from launcher.ui.settings.scan_paths_group import ScanPathsGroup
-from launcher.ui.widgets import CloseButton
+from launcher.settings.scan_paths_group import ScanPathsGroup
 
 TIMER_INTERVAL = 100
 

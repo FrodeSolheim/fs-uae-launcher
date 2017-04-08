@@ -108,7 +108,11 @@ def fix_whdload_args(args: List[str]) -> str:
         args_str = "QuestForGlory.Slave PRELOAD"
     elif args_str.startswith("Lorna.Slave PRELOAD \n"):
         args_str = "Lorna.Slave PRELOAD"
-    return args_str
+    elif args_str.startswith("BrainBlasters.Slave PRELOAD D\x88"):
+        args_str = "BrainBlasters.Slave PRELOAD"
+    elif args_str.startswith("MikroMortalTennis.slave PRELOAD fÿÝ"):
+        args_str = "MikroMortalTennis.slave PRELOAD"
+    return args_str.strip()
 
 
 def calculate_whdload_args(archive_path: str) -> str:
@@ -121,7 +125,12 @@ def calculate_whdload_args(archive_path: str) -> str:
     slave_args = {}
     lower_to_name = {}
     for path in archive.list_files():
-        lower_to_name[path.lower()] = path
+        path_lower = path.lower()
+        if path_lower.rsplit("#/", 1)[1] == "s/startup-sequence":
+            logging.info("[WHDLOAD] Found Startup-Sequence, assuming "
+                         "non-WHDLoad archive")
+            return ""
+        lower_to_name[path_lower] = path
     for path in lower_to_name.values():
         name = os.path.basename(path)
         name_lower = name.lower()
@@ -139,10 +148,6 @@ def calculate_whdload_args(archive_path: str) -> str:
                     logging.debug("[WHDLOAD] %s => %s".format(
                         archive_name, " ".join(args)))
                     slave_args[archive_name] = args
-        elif name_lower == "startup-sequence":
-            logging.info("[WHDLOAD] Found Startup-Sequence, assuming "
-                         "non-WHDLoad archive")
-            return ""
     if len(slave_args) == 0:
         return ""
     if len(slave_args) > 1:
@@ -322,7 +327,11 @@ primary_icons = {_.lower() for _ in [
     "BattleIsle&DataDisks/Programm.info",
     "BlackViperCD32/BlackViperCD32.info",
     "Cadaver&CadaverThePayoff/CadaverThePayoff.info",
+    "CastleOfDrBrain/CastleOfDrBrain.info",
     "ChaosStrikesBack/ChaosStrikesBack.info",
+    "DGeneration/DGeneration.info",
+    "DGenerationAGA/DGenerationAGA.info",
+    "DGenerationCD32/DGenerationCD32.info",
     "EmeraldMine2/EmeraldMine2.info",
     "Entity/Entity.info",
     "Fuzzball/Fuzzball.info",
@@ -357,6 +366,7 @@ primary_icons = {_.lower() for _ in [
     "SensibleSoccerIntEd/SensibleSoccerIntEd.info",
     "SensibleSoccerIntlEd/SensibleSoccerIntlEd.info",
     "SpaceHarrier&RFantasyZone/RFantasyZone.info",
+    "SpaceHarrier&RetrnFntZone/ReturnToFantasyZone.info",
     "Superfrog/Superfrog.info",
     "SuperfrogCD32/SuperfrogCD32.info",
     "SuprStrtFtr2TrboAGA/SuprStrtFtr2TrboAGA.info",

@@ -1,6 +1,9 @@
-from fsgs.mednafen.nes import MednafenNintendoDriver
+from fsbc import settings
+from fsgs.drivers.mess.messnesdriver import MessNesDriver
+from fsgs.option import Option
 from fsgs.platform import PlatformHandler
 from fsgs.platforms.loader import SimpleLoader
+from fsgs.platforms.nes.mednafennesdriver import MednafenNesDriver
 
 
 class NintendoPlatformHandler(PlatformHandler):
@@ -13,7 +16,10 @@ class NintendoPlatformHandler(PlatformHandler):
         return NintendoLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return MednafenNintendoDriver(fsgs)
+        if settings.get(Option.NES_DRIVER) == "mess":
+            return MessNesDriver(fsgs)
+        else:
+            return MednafenNesDriver(fsgs)
 
 
 class NintendoLoader(SimpleLoader):

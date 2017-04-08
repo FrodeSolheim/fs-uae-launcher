@@ -35,6 +35,7 @@ class GameCenterRunner(object):
 
     def _do_prepare(self):
         self.controller.prepare()
+        self.controller.install()
 
     def configure(self):
         self.done = True
@@ -115,8 +116,8 @@ class GameCenterRunner(object):
         try:
             print("state.game_running = True")
             state.game_running = True
-            process = self.controller.run()
-            process.wait()
+            self.controller.run()
+            self.controller.wait()
         finally:
             print("state.game_running = False")
             state.game_running = False

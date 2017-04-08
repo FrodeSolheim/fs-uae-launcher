@@ -314,7 +314,6 @@ class VariantsBrowser(fsui.ItemChoice):
         # values["variant_uuid"] = variant_uuid
         # values["variant_rating"] = str(item["personal_rating"])
 
-        print(values)
         LauncherConfig.load_values(values, uuid=variant_uuid)
 
         # variant_rating = 0

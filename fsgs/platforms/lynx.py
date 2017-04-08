@@ -1,10 +1,9 @@
+from fsgs.drivers.mednafen.lynxdriver import MednafenLynxDriver
 from fsgs.platform import PlatformHandler
-from fsgs.mednafen.lynx import LynxRunner
-from .loader import SimpleLoader
+from fsgs.platforms.loader import SimpleLoader
 
 
 class LynxPlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Lynx"
 
     def __init__(self):
@@ -14,7 +13,7 @@ class LynxPlatformHandler(PlatformHandler):
         return GameGearLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return LynxRunner(fsgs)
+        return MednafenLynxDriver(fsgs)
 
 
 class GameGearLoader(SimpleLoader):

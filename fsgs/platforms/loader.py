@@ -5,7 +5,6 @@ from fsgs.network import openretro_url_prefix
 
 
 class SimpleLoader:
-
     def __init__(self, fsgs):
         self.fsgs = fsgs
         self.config = {}
@@ -15,20 +14,23 @@ class SimpleLoader:
 
     def load_files(self, values):
         file_list = json.loads(values["file_list"])
-        assert len(file_list) == 1
-        self.config["cartridge"] = "sha1://{0}/{1}".format(
+        if len(file_list) == 0:
+            self.config["x_variant_error"] = "Variant has empty file list"
+        elif len(file_list) > 1:
+            self.config["x_variant_error"] = "Unsupported multi-file variant"
+
+        self.config["cartridge_slot"] = "sha1://{0}/{1}".format(
             file_list[0]["sha1"], file_list[0]["name"])
 
     def load_extra(self, values):
         pass
 
     def load_basic(self, values):
-        for key in ["command"]:
-            if key in values:
-                self.config[key] = values[key]
-
-        self.config["platform"] = values["platform"]
+        self.config["command"] = values["command"]
+        self.config["game_name"] = values["game_name"]
+        self.config["variant_name"] = values["variant_name"]
         self.config["model"] = values["model"]
+        self.config["platform"] = values["platform"]
         self.config["protection"] = values["protection"]
         self.config["viewport"] = values["viewport"]
         self.config["video_standard"] = values["video_standard"]
@@ -67,9 +69,9 @@ class SimpleLoader:
         values.update(key_values)
 
         self.load_basic(values)
-        self.load_files(values)
         self.load_extra(values)
         self.load_info(values)
         self.load_images(values)
+        self.load_files(values)
 
         return self.get_config()

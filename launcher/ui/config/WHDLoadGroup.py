@@ -1,28 +1,23 @@
 import fsui
+from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
 from ...launcher_config import LauncherConfig
 from ...i18n import gettext
 from ..HelpButton import HelpButton
 
 
-class WHDLoadGroup(fsui.Group):
+class WHDLoadGroup(fsui.Panel):
 
     def __init__(self, parent):
-        fsui.Group.__init__(self, parent)
+        fsui.Panel.__init__(self, parent)
+        AmigaEnableBehavior(self)
         self.layout = fsui.VerticalLayout()
-
-        heading_label = fsui.HeadingLabel(self, gettext("WHDLoad Arguments"))
-        self.layout.add(heading_label, margin=10)
-        self.layout.add_spacer(0)
-
         self.text_field = fsui.TextField(self, "")
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True, margin=10)
         hori_layout.add(self.text_field, expand=True)
-
         self.help_button = HelpButton(
             self, "https://fs-uae.net/whdload-support")
         hori_layout.add(self.help_button, margin_left=10)
-
         self.initialize_from_config()
         self.set_config_handlers()
 

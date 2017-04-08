@@ -4,6 +4,7 @@ import time
 from binascii import hexlify
 from functools import lru_cache
 
+from fsbc import settings
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.FileDatabase import FileDatabase
 from fsgs.GameDatabase import IncompleteGameException
@@ -11,8 +12,8 @@ from fsgs.GameDatabaseClient import GameDatabaseClient
 from fsgs.context import fsgs
 from fsgs.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
 from fsgs.ogd.locker import LockerSynchronizer
+from fsgs.option import Option
 from fsgs.util.gamenameutil import GameNameUtil
-from launcher.option import Option
 from .i18n import gettext
 from .launcher_settings import LauncherSettings
 
@@ -38,34 +39,63 @@ class GameScanner(object):
         if self.on_status:
             self.on_status((title, status))
 
+    def _check_platform(self, platform_option):
+        if platform_option in [Option.AMIGA_DATABASE, Option.CD32_DATABASE,
+                               Option.CDTV_DATABASE]:
+            if LauncherSettings.get(platform_option) != "0":
+                return True
+            return False
+        if settings.get(Option.PLATFORMS_FEATURE) != "1":
+            return False
+        if LauncherSettings.get(platform_option) == "1":
+            return True
+        return False
+
     def game_databases(self, custom=True):
-        if True:
-            # yield "openretro.org/amiga", self.fsgs.get_game_database()
+        if self._check_platform(Option.AMIGA_DATABASE):
             yield "Amiga", self.fsgs.get_game_database()
+        if self._check_platform(Option.CD32_DATABASE):
             yield "CD32", self.fsgs.game_database("CD32")
+        if self._check_platform(Option.CDTV_DATABASE):
             yield "CDTV", self.fsgs.game_database("CDTV")
-        if LauncherSettings.get(Option.C64_DATABASE) == "1":
-            yield "C64", self.fsgs.game_database("C64")
-        if LauncherSettings.get(Option.DATABASE_ARCADE) == "1":
+        if self._check_platform(Option.A2600_DATABASE):
+            yield "A2600", self.fsgs.game_database("A2600")
+        if self._check_platform(Option.A5200_DATABASE):
+            yield "A5200", self.fsgs.game_database("A5200")
+        if self._check_platform(Option.A7800_DATABASE):
+            yield "A7800", self.fsgs.game_database("A7800")
+        if self._check_platform(Option.ARCADE_DATABASE):
             yield "Arcade", self.fsgs.game_database("Arcade")
-        if LauncherSettings.get(Option.DATABASE_CPC) == "1":
-            yield "CPC", self.fsgs.game_database("CPC")
-        if LauncherSettings.get(Option.DATABASE_DOS) == "1":
-            yield "DOS", self.fsgs.game_database("DOS")
-        if LauncherSettings.get(Option.DATABASE_GB) == "1":
-            yield "GB", self.fsgs.game_database("GB")
-        if LauncherSettings.get(Option.DATABASE_GBA) == "1":
-            yield "GBA", self.fsgs.game_database("GBA")
-        if LauncherSettings.get(Option.DATABASE_GBC) == "1":
-            yield "GBC", self.fsgs.game_database("GBC")
-        if LauncherSettings.get(Option.DATABASE_NES) == "1":
-            yield "NES", self.fsgs.game_database("NES")
-        if LauncherSettings.get(Option.DATABASE_SNES) == "1":
-            yield "SNES", self.fsgs.game_database("SNES")
-        if LauncherSettings.get(Option.DATABASE_ATARI) == "1":
+        if self._check_platform(Option.ATARI_DATABASE):
             yield "Atari", self.fsgs.game_database("Atari")
-        if LauncherSettings.get(Option.PSX_DATABASE) == "1":
+        if self._check_platform(Option.C64_DATABASE):
+            yield "C64", self.fsgs.game_database("C64")
+        if self._check_platform(Option.CPC_DATABASE):
+            yield "CPC", self.fsgs.game_database("CPC")
+        if self._check_platform(Option.DOS_DATABASE):
+            yield "DOS", self.fsgs.game_database("DOS")
+        if self._check_platform(Option.GB_DATABASE):
+            yield "GB", self.fsgs.game_database("GB")
+        if self._check_platform(Option.GBA_DATABASE):
+            yield "GBA", self.fsgs.game_database("GBA")
+        if self._check_platform(Option.GBC_DATABASE):
+            yield "GBC", self.fsgs.game_database("GBC")
+        if self._check_platform(Option.MSX_DATABASE):
+            yield "MSX", self.fsgs.game_database("MSX")
+        if self._check_platform(Option.NES_DATABASE):
+            yield "NES", self.fsgs.game_database("NES")
+        if self._check_platform(Option.PSX_DATABASE):
             yield "PSX", self.fsgs.game_database("PSX")
+        if self._check_platform(Option.SMD_DATABASE):
+            yield "SMD", self.fsgs.game_database("SMD")
+        if self._check_platform(Option.SMS_DATABASE):
+            yield "SMS", self.fsgs.game_database("SMS")
+        if self._check_platform(Option.SNES_DATABASE):
+            yield "SNES", self.fsgs.game_database("SNES")
+        if self._check_platform(Option.TG16_DATABASE):
+            yield "TG16", self.fsgs.game_database("TG16")
+        if self._check_platform(Option.ZXS_DATABASE):
+            yield "ZXS", self.fsgs.game_database("ZXS")
         if custom:
             for name in self.custom_database_names():
                 yield name, self.fsgs.game_database(name)
@@ -203,7 +233,8 @@ class GameScanner(object):
                     count=self.scan_count), variant_uuid)
 
             try:
-                doc = game_database.get_game_values(variant_id)
+                doc = self.fsgs.game.get_game_values_for_id(
+                    game_database, variant_id)
             except IncompleteGameException as e:
                 print("[SCANNER]", repr(e))
                 continue

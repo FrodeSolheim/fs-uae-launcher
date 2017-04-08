@@ -1,10 +1,9 @@
 from fsgs.platform import PlatformHandler
-from fsgs.mednafen.game_boy_color import GameBoyColorRunner
-from .loader import SimpleLoader
+from fsgs.platforms.gbc.mednafengbcdriver import MednafenGbcDriver
+from fsgs.platforms.loader import SimpleLoader
 
 
 class GameBoyColorPlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Game Boy Color"
 
     def __init__(self):
@@ -14,7 +13,7 @@ class GameBoyColorPlatformHandler(PlatformHandler):
         return GameBoyColorLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return GameBoyColorRunner(fsgs)
+        return MednafenGbcDriver(fsgs)
 
 
 class GameBoyColorLoader(SimpleLoader):

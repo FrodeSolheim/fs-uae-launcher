@@ -16,7 +16,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from fsgs.platform import PlatformHandler
-from fsgs.mess.amstrad_cpc import AmstradCPCRunner
+from fsgs.platforms.cpc.messcpcdriver import MessCpcDriver
 from .loader import SimpleLoader
 
 
@@ -31,7 +31,7 @@ class AmstradCPCPlatformHandler(PlatformHandler):
         return AmstradCPCLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return AmstradCPCRunner(fsgs)
+        return MessCpcDriver(fsgs)
 
 
 class AmstradCPCLoader(SimpleLoader):

@@ -3,7 +3,7 @@ import subprocess
 import sys
 import traceback
 
-from fsgs.amiga.FSUAEDeviceHelper import FSUAEDeviceHelper
+from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 from .i18n import gettext
 from .launcher_settings import LauncherSettings
 from .launcher_signal import LauncherSignal

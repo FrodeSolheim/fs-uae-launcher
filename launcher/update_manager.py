@@ -50,7 +50,7 @@ class UpdateManager:
         result = compare_versions(version_str, launcher.version.VERSION)
         print("update check result: ", result)
         if result > 0 and version_str != "9.9.9":
-            web_url = "http://fs-uae.net/{0}/download/".format(cls.series())
+            web_url = "https://fs-uae.net/{0}/download/".format(cls.series())
             LauncherSignal.broadcast("update_available", version_str, web_url)
             # FIXME: Thread safety...
             # FIXME: Use above signal instead

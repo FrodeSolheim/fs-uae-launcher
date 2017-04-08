@@ -2,15 +2,15 @@ import traceback
 
 from arcade.glui.font import Font
 from arcade.glui.input import InputHandler
-from arcade.glui.texture import Texture
-from arcade.glui.topmenu import GameCenterItem
 from arcade.glui.menu import Menu
 from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.render import Render
 from arcade.glui.state import State
+from arcade.glui.texture import Texture
+from arcade.glui.topmenu import GameCenterItem
+from fsgs.drivers.gamedriver import GameDriver
 from fsgs.input.inputdevice import InputDevice
 from fsgs.input.manager import DeviceManager
-from fsgs.runner import GameRunner
 from .launchmenu import LaunchMenu
 
 
@@ -39,7 +39,7 @@ class InputMenu(Menu):
             len(self.top.left) + len(self.top.right) - 1)
 
         self.controller = controller
-        assert isinstance(self.controller, GameRunner)
+        assert isinstance(self.controller, GameDriver)
         self.first_shown_at = 0
 
         # controller must now initialize input ports

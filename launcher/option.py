@@ -16,6 +16,21 @@ def N_(x):
 
 
 options = {
+    Option.A2600_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the Atari 2600 database"),
+        "type": "Boolean",
+    },
+    Option.A5200_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the Atari 5200 database"),
+        "type": "Boolean",
+    },
+    Option.A7800_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the Atari 7800 database"),
+        "type": "Boolean",
+    },
     Option.ACCELERATOR: {
         "default": "0",
         "description": N_("Accelerator Board"),
@@ -46,6 +61,24 @@ options = {
             ("262144", "256 MB"),
         ]
     },
+    Option.AMIGA_DATABASE: {
+        "default": "1",
+        "description": N_("Enable/disable use of the Amiga game database"),
+        "type": "Boolean",
+    },
+    Option.AMIGA_DRIVER: {
+        "default": "fs-uae",
+        "description": N_("Amiga Game Driver"),
+        "type": "Choice",
+        "values": [
+            ("fs-uae", "FS-UAE"),
+        ]
+    },
+    Option.ARCADE_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the Arcade game database"),
+        "type": "Boolean",
+    },
     Option.ARCADE_FULLSCREEN: {
         "default": "0",
         "description": N_("Arcade Fullscreen"),
@@ -63,6 +96,22 @@ options = {
         "values": [
             ("blue", N_("Blue")),
             ("red", N_("Red")),
+        ]
+    },
+    Option.ATARI_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the Atari ST game database"),
+        "type": "Boolean",
+    },
+    Option.ATARI_MODEL: {
+        "default": "1040st",
+        "description": N_("Atari ST Model"),
+        "type": "Choice",
+        "values": [
+            ("520st", "520ST"),
+            ("1040st", "1040ST"),
+            ("520ste", "520STE"),
+            ("1040ste", "1040STE"),
         ]
     },
     Option.AUDIO_BUFFER_TARGET_BYTES: {
@@ -90,6 +139,16 @@ options = {
             ("11025", "11025 Hz"),
         ]
     },
+    Option.AUTO_LOAD: {
+        "default": "1",
+        "description": N_("Auto-Load Games"),
+        "type": "Boolean",
+    },
+    Option.AUTO_QUIT: {
+        "default": "1",
+        "description": N_("Auto-Quit"),
+        "type": "Boolean",
+    },
     Option.AUTOMATIC_INPUT_GRAB: {
         "default": "1",
         "description": N_("Grab Input on Click"),
@@ -99,6 +158,16 @@ options = {
         "default": "0",
         "description": N_("Blizzard SCSI Kit"),
         "type": "boolean",
+    },
+    Option.BORDER: {
+        "default": "1",
+        "description": N_("Border"),
+        "type": "Choice",
+        "values": [
+            ("1", N_("Small Border")),
+            ("0", N_("No Border")),
+            ("large", N_("Large Border")),
+        ]
     },
     Option.BSDSOCKET_LIBRARY: {
         "default": "0",
@@ -116,6 +185,44 @@ options = {
             "Enable/disable use of the Commodore 64 (C64) database"),
         "type": "Boolean",
     },
+    Option.C64_MODEL: {
+        "default": "c64c",
+        "description": N_("Commodore 64 Model"),
+        "type": "Choice",
+        "values": [
+            ("c64c", "C64C"),
+            ("c64c/1541-ii", "C64C, 1541-II Floppy Drive"),
+            ("c64", "C64"),
+        ]
+    },
+    Option.C64_PALETTE: {
+        "default": "0",
+        "description": N_("C64 Palette"),
+        "type": "Choice",
+        "values": [
+            ("0", "None"),
+            ("c64hq", "C64HQ"),
+            ("c64s", "C64S"),
+            ("ccs64", "CCS64"),
+            ("community-colors", "Community"),
+            ("deekay", "Deekay"),
+            ("frodo", "Frode"),
+            ("godot", "Godot"),
+            ("pc64", "PC64"),
+            ("pepto-ntsc-sony", "Pepto NTSC Sony"),
+            ("pepto-ntsc", "Pepto NTSC"),
+            ("pepto-palold", "Pepto PAL-Old"),
+            ("pepto-pal", "Pepto PAL"),
+            ("ptoing", "Ptoing"),
+            ("rgb", "RGB"),
+            ("vice", "Vice"),
+        ]
+    },
+    Option.CD32_DATABASE: {
+        "default": "1",
+        "description": N_("Enable/disable use of the CD32 game database"),
+        "type": "Boolean",
+    },
     Option.CDROM_DRIVE_0_DELAY: {
         "default": "0",
         "description": N_("Delayed CD-ROM Insert"),
@@ -130,6 +237,11 @@ options = {
             ("1", "1"),
         ]
     },
+    Option.CDTV_DATABASE: {
+        "default": "1",
+        "description": N_("Enable/disable use of the CDTV game database"),
+        "type": "Boolean",
+    },
     Option.CHIP_MEMORY: {
         "default": "",
         "description": N_("Chip RAM"),
@@ -143,6 +255,12 @@ options = {
             ("4096", "4 MB"),
             ("8192", "8 MB"),
         ]
+    },
+    Option.CPC_DATABASE: {
+        "default": "0",
+        "description": N_(
+            "Enable/disable use of the Amstrad CPC game database"),
+        "type": "Boolean",
     },
     Option.CPU: {
         "default": "",
@@ -173,31 +291,20 @@ options = {
         "min": 0,
         "max": 10,
     },
-    Option.DATABASE_ARCADE: {
-        "default": "0",
-        "description": N_("Enable/disable use of the Arcade game database"),
-        "type": "Boolean",
-    },
-    Option.DATABASE_ATARI: {
-        "default": "0",
-        "description": N_("Enable/disable use of the Atari ST game database"),
-        "type": "Boolean",
+    Option.CROP: {
+        "default": "1",
+        "description": N_("Crop"),
+        "type": "Choice",
+        "values": [
+            ("0", N_("Full Frame")),
+            ("1", N_("Crop")),
+            ("border", N_("Small Border")),
+        ]
     },
     Option.DATABASE_AUTH: {
         "default": "",
         "description": N_("Game database authentication"),
         "type": "string",
-    },
-    Option.DATABASE_CPC: {
-        "default": "0",
-        "description": N_(
-            "Enable/disable use of the Amstrad CPC game database"),
-        "type": "Boolean",
-    },
-    Option.DATABASE_DOS: {
-        "default": "0",
-        "description": N_("Enable/disable use of the DOS game database"),
-        "type": "Boolean",
     },
     Option.DATABASE_EMAIL: {
         "default": "",
@@ -209,31 +316,10 @@ options = {
         "description": N_("Enable online database support (requires restart)"),
         "type": "boolean",
     },
-    Option.DATABASE_GB: {
-        "default": "0",
-        "description": N_("Enable/disable use of the Game Boy database"),
-        "type": "Boolean",
-    },
-    Option.DATABASE_GBA: {
-        "default": "0",
-        "description": N_(
-            "Enable/disable use of the Game Boy Advance database"),
-        "type": "Boolean",
-    },
-    Option.DATABASE_GBC: {
-        "default": "0",
-        "description": N_("Enable/disable use of the Game Boy Color database"),
-        "type": "Boolean",
-    },
     Option.DATABASE_LOCKER: {
         "default": "",
         "description": N_("Enable/disable use of OAGD.net locker"),
         "type": "boolean",
-    },
-    Option.DATABASE_NES: {
-        "default": "0",
-        "description": N_("Enable/disable use of the Nintendo (NES) database"),
-        "type": "Boolean",
     },
     Option.DATABASE_PASSWORD: {
         "default": "",
@@ -266,11 +352,6 @@ options = {
         "description": N_("Unpublished Games"),
         "type": "boolean",
     },
-    Option.DATABASE_SNES: {
-        "default": "0",
-        "description": N_("Enable/disable use of the Super Nintendo database"),
-        "type": "Boolean",
-    },
     Option.DATABASE_USERNAME: {
         "default": "",
         "description": N_("Game database user name"),
@@ -295,6 +376,37 @@ options = {
             ("rugby coach", "Rugby Coach"),
             ("cricket captain", "Cricket Captain"),
             ("leviathan", "Leviathan"),
+        ]
+    },
+    Option.DOS_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the DOS game database"),
+        "type": "Boolean",
+    },
+    Option.DOS_EMULATOR: {
+        "default": "dosbox-fs",
+        "description": N_("DOS Emulator"),
+        "type": "Choice",
+        "values": [
+            ("dosbox-fs", "DOSBox-FS"),
+            ("dosbox", "DOSBox"),
+            ("dosbox-svn", "DOSBox-SVN"),
+        ]
+    },
+    Option.DOSBOX_SBLASTER_IRQ: {
+        "default": "7",
+        "description": N_("Sound Blaster IRQ"),
+        "type": "Choice",
+    },
+    Option.EFFECT: {
+        "default": "0",
+        "description": N_("Effect"),
+        "type": "Choice",
+        "values": [
+            ("0", N_("No Effect")),
+            ("hq2x", "HQ2X"),
+            ("scale2x", "Scale2X"),
+            ("crt", N_("CRT Emulation")),
         ]
     },
     Option.EXPECT_VERSION: {
@@ -403,6 +515,22 @@ options = {
             ("desktop", N_("Fullscreen Desktop")),
             ("window", N_("Fullscreen Window")),
         ]
+    },
+    Option.GB_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the Game Boy database"),
+        "type": "Boolean",
+    },
+    Option.GBA_DATABASE: {
+        "default": "0",
+        "description": N_(
+            "Enable/disable use of the Game Boy Advance database"),
+        "type": "Boolean",
+    },
+    Option.GBC_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the Game Boy Color database"),
+        "type": "Boolean",
     },
     Option.GRAPHICS_CARD: {
         "default": "none",
@@ -651,6 +779,25 @@ options = {
         "min": 1,
         "max": 500,
     },
+    Option.MSX_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the MSX game database"),
+        "type": "Boolean",
+    },
+    Option.NES_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the Nintendo (NES) database"),
+        "type": "Boolean",
+    },
+    Option.NES_DRIVER: {
+        "default": "mednafen",
+        "description": N_("NES Game Driver"),
+        "type": "Choice",
+        "values": [
+            ("mednafen", "mednafen"),
+            ("mess", "mess"),
+        ]
+    },
     Option.NETPLAY_FEATURE: {
         "default": "0",
         "description": N_(
@@ -672,9 +819,37 @@ options = {
         ]
     },
     Option.PLATFORM: {
-        "default": "",
+        "default": "amiga",
         "description": N_("Platform"),
-        "type": "choice",
+        "type": "Choice",
+        "values": [
+            ("amiga", "Amiga"),
+            ("cpc", "Amstrad CPC"),
+            ("a2600", "Atari 2600"),
+            ("a5200", "Atari 5200"),
+            ("a7800", "Atari 7800"),
+            ("atari", "Atari ST"),
+            ("arcade", "Arcade"),
+            ("cd32", "CD32"),
+            ("cdtv", "CDTV"),
+            ("c64", "Commodore 64"),
+            ("dos", "DOS"),
+            ("gb", "Game Boy"),
+            ("gba", "Game Boy Advance"),
+            ("gbc", "Game Boy Color"),
+            ("nes", "Nintendo"),
+            ("sms", "Master System"),
+            ("smd", "Mega Drive"),
+            ("psx", "PlayStation"),
+            ("snes", "Super Nintendo"),
+            ("tg16", "TurboGrafx-16"),
+            ("zxs", "ZX Spectrum"),
+        ]
+    },
+    Option.PLATFORMS_FEATURE: {
+        "default": "0",
+        "description": N_("Enable Additional Platforms (Requires Restart)"),
+        "type": "Boolean",
     },
     Option.PSX_DATABASE: {
         "default": "0",
@@ -706,6 +881,16 @@ options = {
         "description": N_("Save Disk"),
         "type": "Boolean",
     },
+    Option.SCALE: {
+        "default": "1",
+        "description": N_("Scale"),
+        "type": "Choice",
+        "values": [
+            ("1", N_("Max Scaling")),
+            ("0", N_("No Scaling")),
+            ("integer", N_("Integer Scaling")),
+        ]
+    },
     Option.SCANLINES: {
         "default": "0",
         "description": N_("Render scan lines"),
@@ -722,6 +907,62 @@ options = {
             ("1536", "1.5 MB"),
             ("1792", "1.8 MB"),
         ]
+    },
+    Option.SMD_DATABASE: {
+        "default": "0",
+        "description": N_(
+            "Enable/disable use of the Sega Mega Drive (Genesis) database"),
+        "type": "Boolean",
+    },
+    Option.SMD_DRIVER: {
+        "default": "mednafen",
+        "description": N_("Mega Drive Game Driver"),
+        "type": "Choice",
+        "values": [
+            ("mednafen", "mednafen"),
+            ("mess", "mess"),
+        ]
+    },
+    Option.SMD_MODEL: {
+        "default": "auto",
+        "description": N_("Mega Drive Model"),
+        "type": "Choice",
+        "values": [
+            ("auto", "Auto-Select Region"),
+            ("ntsc-u", "NTSC-U (Genesis)"),
+            ("ntsc-j", "NTSC-J"),
+            ("pal", "PAL"),
+        ]
+    },
+    Option.SMOOTHING: {
+        "default": "auto",
+        "description": N_("Smoothing"),
+        "type": "Choice",
+        "values": [
+            ("auto", N_("Auto Smoothing")),
+            ("0", N_("No Smoothing")),
+            ("1", N_("Smoothing")),
+        ]
+    },
+    Option.SMS_DATABASE: {
+        "default": "0",
+        "description": N_(
+            "Enable/disable use of the Sega Master System database"),
+        "type": "Boolean",
+    },
+    Option.SMS_DRIVER: {
+        "default": "mednafen",
+        "description": N_("Master System Game Driver"),
+        "type": "Choice",
+        "values": [
+            ("mednafen", "mednafen"),
+            ("mess", "mess"),
+        ]
+    },
+    Option.SNES_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the Super Nintendo database"),
+        "type": "Boolean",
     },
     Option.SOUND_CARD: {
         "default": "0",
@@ -750,6 +991,16 @@ options = {
             ("0", "0%"),
         ]
     },
+    Option.STRETCH: {
+        "default": "1",
+        "description": N_("Stretch"),
+        "type": "Choice",
+        "values": [
+            ("1", N_("Fill Screen")),
+            ("aspect", N_("Correct Aspect")),
+            ("0", N_("Square Pixels")),
+        ]
+    },
     Option.SWAP_CTRL_KEYS: {
         "default": "0",
         "description": N_("Swap left and right CTRL keys"),
@@ -776,6 +1027,17 @@ options = {
             ("rgb5", "GL_RGB5"),
             ("rgb5_1", "GL_RGB5_1"),
         ]
+    },
+    Option.TG16_DATABASE: {
+        "default": "0",
+        "description": N_(
+            "Enable/disable use of the TurboGrafx-16 game database"),
+        "type": "Boolean",
+    },
+    Option.TURBO_LOAD: {
+        "default": "1",
+        "description": N_("Turbo Load"),
+        "type": "Boolean",
     },
     Option.UAE_A2065: {
         "default": "",
@@ -1117,6 +1379,31 @@ options = {
             ("524288", "512 MB"),
             ("786432", "768 MB"),
             ("1048576", "1024 MB"),
+        ]
+    },
+    Option.ZXS_DATABASE: {
+        "default": "0",
+        "description": N_("Enable/disable use of the ZX Spectrum database"),
+        "type": "Boolean",
+    },
+    Option.ZXS_DRIVER: {
+        "default": "fuse",
+        "description": N_("ZX Spectrum Game Driver"),
+        "type": "Choice",
+        "values": [
+            ("fuse", "Fuse"),
+            ("mess", "MESS"),
+        ]
+    },
+    Option.ZXS_MODEL: {
+        "default": "spectrum",
+        "description": N_("ZX Spectrum Model"),
+        "type": "Choice",
+        "values": [
+            ("spectrum", "Spectrum 48K"),
+            ("spectrum/if2", "Spectrum 48K, Interface 2"),
+            ("spectrum128", "Spectrum 128"),
+            ("spectrum+3", "Spectrum +3"),
         ]
     },
 }

@@ -14,22 +14,23 @@ from fsgs.Archive import Archive
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.FileDatabase import FileDatabase
 from fsgs.amiga import whdload
-from fsgs.amiga.Amiga import Amiga
+from fsgs.amiga.amiga import Amiga
 from fsgs.application import ApplicationMixin
 from fsgs.context import fsgs
 from fsgs.download import Downloader
 from fsgs.input.enumeratehelper import EnumerateHelper
-from fsgs.platform import PlatformHandler
+from fsgs.platform import PlatformHandler, PLATFORM_IDS
 from fsgs.util.archiveutil import ArchiveUtil
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.startup_scan import StartupScan
+from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS
 from launcher.ui.config.HardDriveGroup import HardDriveGroup
 from launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
 from launcher.ui.launch import LaunchDialog
-from launcher.ui.launcher_window import LauncherWindow
+from launcher.ui.launcherwindow import LauncherWindow
 from launcher.version import VERSION
 
 
@@ -288,7 +289,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             else:
                 print("[CONFIG] Failed to load last configuration file")
                 LauncherConfig.load_default_config()
-
+        else:
             pass
             # config = {}
             # try:
@@ -300,6 +301,18 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             # for key, value in config.items():
             #     print("loaded", key, value)
             #     fsgs.config.values[key] = value
+
+        # Argument --new-config[=<platform>]
+        new_config = "--new-config" in sys.argv
+        new_config_platform = None
+        for platform_id in PLATFORM_IDS:
+            if "--new-config=" + platform_id in sys.argv:
+                new_config = True
+                new_config_platform = platform_id
+        if new_config:
+            LauncherConfig.load_default_config(platform=new_config_platform)
+            # Prevent the launcher from loading the last used game
+            LauncherSettings.set("parent_uuid", "")
 
     @staticmethod
     def save_settings():
@@ -330,13 +343,13 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                         Downloader.check_terms_accepted(
                             LauncherConfig.get("download_file"),
                             LauncherConfig.get("download_terms")):
-                    from .ui.launcher_window import LauncherWindow
+                    from .ui.launcherwindow import LauncherWindow
                     dialog = DownloadTermsDialog(LauncherWindow.current(), fsgs)
                     if not dialog.show_modal():
                         return
 
             elif LauncherConfig.get("download_page"):
-                from .ui.launcher_window import LauncherWindow
+                from .ui.launcherwindow import LauncherWindow
                 # fsui.show_error(_("This game must be downloaded first."))
                 DownloadGameWindow(LauncherWindow.current(), fsgs).show()
                 return
@@ -346,29 +359,30 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                             "because you don't have all required files."))
                 return
 
-        platform_id = LauncherConfig.get("platform").lower()
-        amiga_platform = platform_id in ["", "amiga", "cdtv", "cd32"]
-        if amiga_platform:
+        platform_id = LauncherConfig.get(Option.PLATFORM).lower()
+        if platform_id in AMIGA_PLATFORMS:
             cls.start_local_game_amiga()
         else:
             cls.start_local_game_other()
 
     @classmethod
     def start_local_game_other(cls):
-        database_name = LauncherConfig.get("__database")
-        variant_uuid = LauncherConfig.get("variant_uuid")
-        assert variant_uuid
+        if True:
+            platform_id = LauncherConfig.get(Option.PLATFORM).lower()
+            platform_handler = PlatformHandler.create(platform_id)
+        else:
+            database_name = LauncherConfig.get("__database")
+            variant_uuid = LauncherConfig.get("variant_uuid")
+            assert variant_uuid
+            fsgs.game.set_from_variant_uuid(database_name, variant_uuid)
+            platform_handler = PlatformHandler.create(fsgs.game.platform.id)
 
-        fsgs.game.set_from_variant_uuid(database_name, variant_uuid)
-        platform_handler = PlatformHandler.create(fsgs.game.platform.id)
         runner = platform_handler.get_runner(fsgs)
-
         task = RunnerTask(runner)
-        from .ui.launcher_window import LauncherWindow
+        from .ui.launcherwindow import LauncherWindow
         dialog = LaunchDialog(
             LauncherWindow.current(), gettext("Launching Game"), task)
         dialog.show()
-
         LauncherConfig.set("__running", "1")
         task.start()
         # dialog.show_modal()
@@ -411,11 +425,11 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         from fsgs.SaveStateHandler import SaveStateHandler
         save_state_handler = SaveStateHandler(fsgs, name, platform, uuid)
 
-        from fsgs.amiga.LaunchHandler import LaunchHandler
+        from fsgs.amiga.launchhandler import LaunchHandler
         launch_handler = LaunchHandler(fsgs, name, prepared_config,
                                        save_state_handler)
 
-        from .ui.launcher_window import LauncherWindow
+        from .ui.launcherwindow import LauncherWindow
         task = AmigaLaunchTask(launch_handler)
         # dialog = LaunchDialog(MainWindow.instance, launch_handler)
         dialog = LaunchDialog(
@@ -562,7 +576,8 @@ class RunnerTask(Task):
         device_helper.default_port_selection(self.runner.ports)
 
         self.runner.prepare()
+        self.runner.install()
         self.set_progress("__run__")
-        process = self.runner.run()
-        process.wait()
+        self.runner.run()
+        self.runner.wait()
         self.runner.finish()

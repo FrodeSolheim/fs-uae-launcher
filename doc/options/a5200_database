@@ -1,0 +1,3 @@
+Description: Enable/disable use of the Atari 5200 database
+Type: Boolean
+Default: 0

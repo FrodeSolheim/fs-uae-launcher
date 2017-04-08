@@ -2,7 +2,6 @@ from fsgs.platforms.amiga import AmigaPlatformHandler
 
 
 class CDTVPlatformHandler(AmigaPlatformHandler):
-
     PLATFORM_NAME = "CDTV"
 
     def __init__(self):

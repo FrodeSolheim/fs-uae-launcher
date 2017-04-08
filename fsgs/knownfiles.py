@@ -2,7 +2,7 @@ from collections import namedtuple
 from fsgs.platforms import PLATFORM_AMIGA
 
 KnownFile = namedtuple("KnownFile", ["sha1", "platform", "name"])
-KnownFileMod = namedtuple("KnownFileMod", ["sha", "mod"])
+KnownFileMod = namedtuple("KnownFileMod", ["sha1", "mod"])
 
 ACTION_REPLAY_MK_II_2_14_ROM = KnownFile(
     "255d6df63a4eab0a838eb1a16a267b0959dff634", PLATFORM_AMIGA,

@@ -25,5 +25,10 @@ class SettingsBehavior:
     def on_setting(self, key, value):
         if key in self._names:
             widget = self._parent()
-            func = getattr(widget, "on_{0}_setting".format(key))
-            func(value)
+            try:
+                func = getattr(widget, "on_{0}_setting".format(key))
+            except AttributeError:
+                func = getattr(widget, "on_settings".format(key))
+                func(key, value)
+            else:
+                func(value)

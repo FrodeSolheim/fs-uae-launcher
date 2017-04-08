@@ -1,3 +1,16 @@
+Version 2.9.5dev:
+
+* New quick settings panel (initial version) with toggle button.
+* Tweaked Fusion Adwaita theme colors to better match recent GNOME theme.
+* Controller configs for 8Bitdo SFC30 and Zero gamepads.
+* Controller config for DualShock 3 in bluetooth mode on Linux.
+* Make configurations list wider when window width is quite large.
+* Remember last selected game list on startup.
+* Lots of changes for non-Amiga/CDTV/CD32 game support.
+* New GUI setting to enable use of additional game platforms.
+* Disable config controls when loading a non-Amiga platform game.
+* Fix check for startup-sequence when determining if an archive is WHDLoad.
+
 Version 2.9.4dev:
 
 * Try to use config from game database when launching with a WHDLoad archive.

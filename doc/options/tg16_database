@@ -1,0 +1,3 @@
+Description: Enable/disable use of the TurboGrafx-16 game database
+Type: Boolean
+Default: 0

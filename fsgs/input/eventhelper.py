@@ -4,7 +4,7 @@ from queue import Queue, Empty
 from threading import Thread
 import traceback
 import subprocess
-from fsgs.amiga.FSUAEDeviceHelper import FSUAEDeviceHelper
+from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 
 
 class EventHelper(Thread):

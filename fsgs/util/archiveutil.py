@@ -15,7 +15,7 @@ class ArchiveUtil:
     def create_variant_uuid(self):
         return self.create_variant()["uuid"]
 
-    def create_variant(self, type=None):
+    def create_variant(self, type=None, file_callback=None):
         archive_name = os.path.basename(self.path)
         archive_name, archive_ext = os.path.splitext(archive_name)
         archive_ext = archive_ext.lower()
@@ -44,6 +44,8 @@ class ArchiveUtil:
             name = info.filename
             if name.endswith(".uaem"):
                 continue
+            if "META-INF/" in name:
+                continue
 
             # FIXME: For WHDLoad?
             # if name.startswith(archive_name + "/"):
@@ -58,8 +60,8 @@ class ArchiveUtil:
                 # FIXME: Create a uaem metadata helper class
                 # print(type(metadata))
                 metadata = metadata.split("\n")[0].strip()
-                x_permissions = metadata[0:8]
-                x_date = metadata[9:31]
+                # x_permissions = metadata[0:8]
+                # x_date = metadata[9:31]
                 comment = metadata[32:]
                 comment = urllib.parse.unquote(comment)
 
@@ -70,7 +72,8 @@ class ArchiveUtil:
                     # We're at game folder level
                     info_data = archive.read(name)
                     info_data_lower = info_data.lower()
-                    # if "whdload" in info_data_lower and "slave=" in info_data_lower:
+                    # if "whdload" in info_data_lower and \
+                    #         "slave=" in info_data_lower:
                     if b"slave=" in info_data_lower:
                         # if ".slav" in info_data.lower():
                         # assert "slave" in info_data
@@ -95,7 +98,7 @@ class ArchiveUtil:
         file_list = []
 
         for dummy, name, comment in names:
-            name_lower = name.lower()
+            # name_lower = name.lower()
             # content_hash.update(name.encode("ISO-8859-1"))
 
             if type == self.TYPE_WHDLOAD:
@@ -115,7 +118,6 @@ class ArchiveUtil:
             # FIXME: encoding
             # data = archive.read(name.encode("ISO-8859-1"))
             data = archive.read(name)
-            data_size = len(data)
             # content_hash.update(data)
             # data_hash.update(data)
             member_hash = hashlib.sha1()
@@ -130,6 +132,8 @@ class ArchiveUtil:
                 assert isinstance(comment, str)
                 file_list_item["comment"] = comment
             file_list.append(file_list_item)
+            if file_callback is not None:
+                file_callback(sha1=member_hash.hexdigest(), data=data)
 
         file_sha1s.sort()
         url = "http://sha1.fengestad.no/" + "/".join(sorted(file_sha1s[:]))

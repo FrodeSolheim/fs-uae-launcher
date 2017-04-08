@@ -5,8 +5,8 @@ from fsbc.paths import Paths
 from fsgs.Database import Database
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.FileDatabase import FileDatabase
-from fsgs.amiga.Amiga import Amiga
-from fsgs.amiga.ROMManager import ROMManager
+from fsgs.amiga.amiga import Amiga
+from fsgs.amiga.rommanager import ROMManager
 from fsgs.context import fsgs
 from launcher.configuration_scanner import ConfigurationScanner
 from launcher.launcher_settings import LauncherSettings

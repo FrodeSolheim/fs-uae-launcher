@@ -71,7 +71,8 @@ class Layout(object):
     # FIXME: Rename margin -> margins (+ alias), margin_top -> top, etc
     def add(self, element, spacing=0, expand=False, fill=False, valign=0.5,
             margin=0, margin_left=None, margin_right=None,
-            margin_top=None, margin_bottom=None, index=None):
+            margin_top=None, margin_bottom=None, index=None,
+            left=None, right=None, top=None, bottom=None):
         """
 
         - By setting fill < 0, the height or width of the control will not
@@ -84,6 +85,14 @@ class Layout(object):
           share of expansion space, according to abs(expand) / sum(all expand).
 
         """
+        if left is not None:
+            margin_left = left
+        if right is not None:
+            margin_right = right
+        if top is not None:
+            margin_top = top
+        if bottom is not None:
+            margin_bottom = bottom
         child = LayoutChild()
         child.element = element
         child.spacing = spacing

@@ -12,3 +12,10 @@ elif macosx:
     platform = "macos"
 else:
     platform = "unknown"
+
+
+class System:
+    windows = windows
+    linux = linux
+    macos = macosx
+    platform = platform

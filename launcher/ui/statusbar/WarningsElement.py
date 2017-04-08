@@ -1,23 +1,22 @@
 from operator import itemgetter
 
+import fsui
+from fsgs.amiga.amiga import Amiga
+from fsgs.context import fsgs
 from fsgs.plugins.plugin_manager import PluginManager
-
-from launcher.launcher_config import LauncherConfig
+from fsui import Image
 from launcher.device_manager import DeviceManager
 from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
-from launcher.ui.config.configdialog import ConfigDialog
-from launcher.ui.settings.settings_dialog import SettingsDialog
-from launcher.update_manager import UpdateManager
-from launcher.ui.kickstartimportdialog import KickstartImportDialog
+from launcher.settings.settings_dialog import SettingsDialog
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
+from launcher.ui.config.configdialog import ConfigDialog
 from launcher.ui.download import DownloadGameWindow
+from launcher.ui.kickstartimportdialog import KickstartImportDialog
 from launcher.ui.statusbar.StatusElement import StatusElement
-from fsgs.amiga.Amiga import Amiga
-from fsgs.context import fsgs
-from fsui import Image
-import fsui
+from launcher.update_manager import UpdateManager
 
 ERROR_LEVEL = 0
 WARNING_LEVEL = 1

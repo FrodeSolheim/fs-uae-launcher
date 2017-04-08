@@ -1,6 +1,6 @@
 from fsgs.platform import PlatformHandler
-from fsgs.mednafen.super_nintendo import SuperNintendoRunner
-from .loader import SimpleLoader
+from fsgs.platforms.loader import SimpleLoader
+from fsgs.platforms.snes.mednafensnesdriver import MednafenSnesDriver
 
 
 class SuperNintendoPlatformHandler(PlatformHandler):
@@ -13,7 +13,7 @@ class SuperNintendoPlatformHandler(PlatformHandler):
         return SuperNintendoLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return SuperNintendoRunner(fsgs)
+        return MednafenSnesDriver(fsgs)
 
 
 class SuperNintendoLoader(SimpleLoader):

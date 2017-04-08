@@ -2,7 +2,7 @@ import re
 import subprocess
 import traceback
 
-from fsgs.amiga.FSUAEDeviceHelper import FSUAEDeviceHelper
+from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 from .device import Device
 
 

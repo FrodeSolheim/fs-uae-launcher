@@ -1,5 +1,28 @@
 Summary: Platform
-Type: choice
+Type: Choice
+Default: amiga
+
+Value: amiga (Amiga)
+Value: cpc (Amstrad CPC)
+Value: a2600 (Atari 2600)
+Value: a5200 (Atari 5200)
+Value: a7800 (Atari 7800)
+Value: atari (Atari ST)
+Value: arcade (Arcade)
+Value: cd32 (CD32)
+Value: cdtv (CDTV)
+Value: c64 (Commodore 64)
+Value: dos (DOS)
+Value: gb (Game Boy)
+Value: gba (Game Boy Advance)
+Value: gbc (Game Boy Color)
+Value: nes (Nintendo)
+Value: sms (Master System)
+Value: smd (Mega Drive)
+Value: psx (PlayStation)
+Value: snes (Super Nintendo)
+Value: tg16 (TurboGrafx-16)
+Value: zxs (ZX Spectrum)
 
 Code:
     pass

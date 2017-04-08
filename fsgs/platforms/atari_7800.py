@@ -1,10 +1,9 @@
 from fsgs.platform import PlatformHandler
-from fsgs.mess.atari_7800 import Atari7800Runner
-from .loader import SimpleLoader
+from fsgs.platforms.a7800.messa7800driver import MessA7800Driver
+from fsgs.platforms.loader import SimpleLoader
 
 
 class Atari7800PlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Atari 7800"
 
     def __init__(self):
@@ -14,7 +13,7 @@ class Atari7800PlatformHandler(PlatformHandler):
         return Atari7800Loader(fsgs)
 
     def get_runner(self, fsgs):
-        return Atari7800Runner(fsgs)
+        return MessA7800Driver(fsgs)
 
 
 class Atari7800Loader(SimpleLoader):

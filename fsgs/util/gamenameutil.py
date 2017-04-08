@@ -52,15 +52,32 @@ class GameNameUtil(object):
     def create_cmp_name(cls, name):
         name = str(name)
         decomposed = unicodedata.normalize('NFD', name)
-        cmpname = []
+        result = []
         for c in decomposed.lower():
             if c in "abcdefghijklmnopqrstuvwxyz0123456789+":
-                cmpname.append(c)
-        return "".join(cmpname)
+                result.append(c)
+        return "".join(result)
 
+    # noinspection SpellCheckingInspection
     @classmethod
     def create_cmpname(cls, name):
         return cls.create_cmp_name(name)
+
+    @classmethod
+    def create_link_name(cls, name):
+        name = str(name)
+        decomposed = unicodedata.normalize('NFD', name)
+        result = []
+        for c in decomposed.lower():
+            if c in "abcdefghijklmnopqrstuvwxyz0123456789+-":
+                pass
+            else:
+                c = "-"
+            if c != "-" or not result or result[-1] != "-":
+                result.append(c)
+        if result and result[-1] == '-':
+            result = result[:-1]
+        return "".join(result)
 
     @classmethod
     def is_bad_dump(cls, path):

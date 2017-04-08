@@ -7,7 +7,7 @@ import fsui
 from fsbc.task import Task
 from fsgs.Archive import Archive
 from fsgs.FileDatabase import FileDatabase
-from fsgs.amiga.ROMManager import ROMManager
+from fsgs.amiga.rommanager import ROMManager
 from fsgs.context import fsgs
 from fsgs.ogd.client import OGDClient
 from fsui.extra.iconheader import IconHeader

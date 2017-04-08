@@ -1,10 +1,9 @@
+from fsgs.drivers.mednafen.gamegeardriver import MednafenGameGearDriver
 from fsgs.platform import PlatformHandler
-from fsgs.mednafen.game_gear import GameGearRunner
 from .loader import SimpleLoader
 
 
 class GameGearPlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Game Gear"
 
     def __init__(self):
@@ -14,7 +13,7 @@ class GameGearPlatformHandler(PlatformHandler):
         return GameGearLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return GameGearRunner(fsgs)
+        return MednafenGameGearDriver(fsgs)
 
 
 class GameGearLoader(SimpleLoader):

@@ -8,24 +8,26 @@ from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
+from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
 
 
-class HardDriveGroup(fsui.Group):
+class HardDriveGroup(fsui.Panel):
 
     def __init__(self, parent, index):
-        fsui.Group.__init__(self, parent)
+        fsui.Panel.__init__(self, parent)
+        AmigaEnableBehavior(self)
         self.layout = fsui.VerticalLayout()
 
         self.index = index
         self.config_key = "hard_drive_{0}".format(index)
         self.config_key_sha1 = "x_hard_drive_{0}_sha1".format(index)
 
-        if index == 0:
-            # heading_label = fsui.HeadingLabel(self,
-            #         _("Hard Drive {0}").format(index + 1))
-            heading_label = fsui.HeadingLabel(self, gettext("Hard Drives"))
-            self.layout.add(heading_label, margin_bottom=20)
-            self.layout.add_spacer(0)
+        # if index == 0:
+        #     # heading_label = fsui.HeadingLabel(self,
+        #     #         _("Hard Drive {0}").format(index + 1))
+        #     heading_label = fsui.HeadingLabel(self, gettext("Hard Drives"))
+        #     self.layout.add(heading_label, margin_bottom=20)
+        #     self.layout.add_spacer(0)
 
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)

@@ -1,10 +1,9 @@
 from fsgs.platform import PlatformHandler
-from fsgs.mednafen.game_boy_advance import GameBoyAdvanceRunner
-from .loader import SimpleLoader
+from fsgs.platforms.gba.mednafengbadriver import MednafenGbaDriver
+from fsgs.platforms.loader import SimpleLoader
 
 
 class GameBoyAdvancePlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Game Boy Advance"
 
     def __init__(self):
@@ -14,10 +13,9 @@ class GameBoyAdvancePlatformHandler(PlatformHandler):
         return GameBoyAdvanceLoader(fsgs)
 
     def get_runner(self, fsgs):
-        return GameBoyAdvanceRunner(fsgs)
+        return MednafenGbaDriver(fsgs)
 
 
 class GameBoyAdvanceLoader(SimpleLoader):
-
     def load_extra(self, values):
-       	self.config["sram_type"] = values["sram_type"]
+        self.config["sram_type"] = values["sram_type"]

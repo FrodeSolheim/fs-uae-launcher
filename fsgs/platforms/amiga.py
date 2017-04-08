@@ -1,10 +1,9 @@
 from fsgs.platform import PlatformHandler
-from fsgs.amiga.ValueConfigLoader import ValueConfigLoader
-from fsgs.amiga.amigarunner import AmigaRunner
+from fsgs.amiga.valueconfigloader import ValueConfigLoader
+from fsgs.amiga.fsuaeamigadriver import FSUAEAmigaDriver
 
 
 class AmigaPlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Amiga"
 
     def __init__(self):
@@ -16,4 +15,4 @@ class AmigaPlatformHandler(PlatformHandler):
         return loader
 
     def get_runner(self, fsgs):
-        return AmigaRunner(fsgs)
+        return FSUAEAmigaDriver(fsgs)

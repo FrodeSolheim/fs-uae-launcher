@@ -7,43 +7,56 @@ from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.ui.HelpButton import HelpButton
 from launcher.ui.behaviors import OptionsBehavior
+from launcher.ui.behaviors.platformbehavior import PlatformEnableBehavior
 
 
 class OptionWidgetFactory(object):
     """Factory for creating user interface groups for options."""
 
     # noinspection PyShadowingBuiltins
-    def __init__(self, check=False, help=False, settings=False):
+    def __init__(self, check=False, help=False, settings=False, label=True):
         self.check = check
         self.help = help
         self.label_spacing = 10
+        self.label = label
         if settings:
             self.options = LauncherSettings
         else:
             self.options = LauncherConfig
 
     # noinspection PyShadowingBuiltins
-    def create(self, parent, name, text=None, check=None, help=None):
+    def create(self, parent, name, text=None, check=None, help=None,
+               platforms=None, label=None):
         option = Option.get(name)
         return create_option_group(
             parent, self.options, option, name, option["type"].lower(),
             text if text is not None else gettext(option["description"]),
             check if check is not None else self.check,
             help if help is not None else self.help,
-            self.label_spacing)
+            self.label_spacing, platforms=platforms,
+            use_label=(label if label is not None else self.label))
+
+
+class OptionPanel(fsui.Panel):
+    def __init__(self, parent, platforms):
+        super().__init__(parent)
+        if platforms:
+            PlatformEnableBehavior(self, platforms)
 
 
 def create_option_group(
         parent, options, option, key, option_type, option_text,
-        use_checkbox, use_help_button, label_spacing):
-    group = fsui.Group(parent)
+        use_checkbox, use_help_button, label_spacing, platforms=None,
+        use_label=True):
+    # group = fsui.Group(parent)
+    group = OptionPanel(parent, platforms)
     group.layout = fsui.HorizontalLayout()
 
     if use_checkbox:
         group.layout.add(
             OptionCheckBox(group, option_text + ":", options, key),
             margin_right=label_spacing)
-    else:
+    elif use_label:
         group.layout.add(
             fsui.Label(group, option_text + ":"),
             margin_right=label_spacing)
@@ -147,8 +160,8 @@ class ConfigWidgetFactory(OptionWidgetFactory):
     """Factory for creating user interface groups for config options."""
 
     # noinspection PyShadowingBuiltins
-    def __init__(self, check=True, help=False):
-        super().__init__(check=check, help=help)
+    def __init__(self, check=True, help=False, label=True):
+        super().__init__(check=check, help=help, label=label)
 
 
 class SettingsWidgetFactory(OptionWidgetFactory):

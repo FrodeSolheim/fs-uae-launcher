@@ -1,10 +1,9 @@
 from fsgs.platform import PlatformHandler
-from fsgs.mednafen.turbografx_16 import TurboGrafx16Runner
-from .loader import SimpleLoader
+from fsgs.platforms.loader import SimpleLoader
+from fsgs.platforms.tg16.mednafentg16driver import MednafenTg16Driver
 
 
 class TurboGrafx16PlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "TurboGrafx-16"
 
     def __init__(self):
@@ -14,7 +13,7 @@ class TurboGrafx16PlatformHandler(PlatformHandler):
         return TurboGrafx16Loader(fsgs)
 
     def get_runner(self, fsgs):
-        return TurboGrafx16Runner(fsgs)
+        return MednafenTg16Driver(fsgs)
 
 
 class TurboGrafx16Loader(SimpleLoader):

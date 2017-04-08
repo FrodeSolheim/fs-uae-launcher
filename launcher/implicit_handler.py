@@ -31,7 +31,7 @@ class ImplicitConfigHandler:
         if not self.dirty:
             return
         self.dirty = False
-        print("ImplicitConfigHandler.do_update")
+        # print("ImplicitConfigHandler.do_update")
         implicit = ImplicitConfig(ConfigProxy(), SettingsProxy())
         # failed = False
         try:

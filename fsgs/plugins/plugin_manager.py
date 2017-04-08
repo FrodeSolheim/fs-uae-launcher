@@ -6,6 +6,7 @@ import traceback
 from configparser import ConfigParser, NoSectionError
 from operator import attrgetter
 
+import fsboot
 from fsbc.util import Version
 
 from fsbc.system import windows, linux, macosx
@@ -14,15 +15,18 @@ from fsgs.FSGSDirectories import FSGSDirectories
 logger = logging.getLogger("PLUGINS")
 
 known_plugin_versions = {
+    "Arcade-FS": "0.168fs0",
     "CAPSImg": "5.1fs3",
-    "DOSBox-FS": "0.74.3969fs3",
-    "Hatari-FS": "1.9.0fs2",
-    "Mednafen-FS": "0.9.38.7fs2",
+    "DOSBox-FS": "0.74.4006fs0",
+    "Fuse-FS": "1.3.3fs4",
+    "Hatari-FS": "2.0.0fs0",
+    "Mednafen-FS": "0.9.42fs0",
+    "Mess-FS": "0.168fs0",
     "MultiEmu-FS": "0.168fs0",
     "QEMU-UAE": "3.8.2qemu2.2.0",
     "Regina-FS": "3.9.1fs0",
     "UADE-FS": "2.13fs1",
-    "Vice-FS": "2.4.25fs3",
+    "Vice-FS": "3.0fs0",
 }
 
 
@@ -74,17 +78,17 @@ class Plugin(BasePlugin):
             return "windows"
         elif macosx:
             if pretty:
-                return "OSX"
-            return "macosx"
+                return "macOS"
+            return "macos"
         elif linux:
-            if os.environ.get("STEAM_RUNTIME", ""):
-                if pretty:
-                    return "SteamOS"
-                return "steamos"
-            else:
-                if pretty:
-                    return "Linux"
-                return "linux"
+            # if os.environ.get("STEAM_RUNTIME", ""):
+            #     if pretty:
+            #         return "SteamOS"
+            #     return "steamos"
+            # else:
+            if pretty:
+                return "Linux"
+            return "linux"
         else:
             if pretty:
                 return "Unknown"
@@ -161,13 +165,13 @@ class PluginResource:
         return p
 
 
-class PluginExecutable:
+class Executable:
 
-    def __init__(self, plugin, path):
-        self.plugin = plugin
+    def __init__(self, path):
         self.path = path
 
     def popen(self, args, env=None, **kwargs):
+        logger.info("[EXECUTE] %s %s", self.path, repr(args))
         # logger.debug("PluginExecutable.popen %s %s %s",
         #              repr(args), repr(env), repr(kwargs))
         args = [self.path] + args
@@ -182,6 +186,13 @@ class PluginExecutable:
         else:
             env["LD_LIBRARY_PATH"] = os.path.dirname(self.path)
         return subprocess.Popen(args, env=env, **kwargs)
+
+
+class PluginExecutable(Executable):
+
+    def __init__(self, plugin, path):
+        super().__init__(path)
+        self.plugin = plugin
 
 
 class PluginManager:
@@ -267,16 +278,15 @@ class PluginManager:
         try:
             plugin = self.provides()["executable:" + name]
         except KeyError:
+            # Did not find executable in plugin, try to find executable
+            # bundled with the program.
+            if windows:
+                exe_name = name + ".exe"
+            else:
+                exe_name = name
+            path = os.path.join(fsboot.executable_dir(), exe_name)
+            if os.path.exists(path):
+                logger.debug("[PLUGINS] Found non-plugin executable %s", path)
+                return Executable(path)
             return None
         return plugin.executable(name)
-
-        # if windows:
-        #     name = "{0}.exe".format(name)
-        # elif macosx:
-        #     name = "{0}.app/Contents/MacOS/{0}".format(name)
-
-        # for plugin in self._plugins:
-        #     path = os.path.join(plugin.path, Plugin.platform(), name)
-        #     print("check", path)
-        #     if os.path.exists(path):
-        #         return PluginExecutable(plugin, path)

@@ -1,10 +1,11 @@
 import fsui
-from .Constants import Constants
-from .skin import Skin
-from .TabPanel import TabPanel
+from launcher.ui.Constants import Constants
+from launcher.ui.skin import Skin
+from launcher.ui.TabPanel import TabPanel
 
 
 class TabButton(fsui.Panel):
+    activated = fsui.Signal()
 
     TYPE_TAB = 0
     TYPE_BUTTON = 1
@@ -76,4 +77,4 @@ class TabButton(fsui.Panel):
             self.on_activate()
 
     def on_activate(self):
-        pass
+        self.activated.emit()

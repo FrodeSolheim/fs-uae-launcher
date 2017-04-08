@@ -4,7 +4,7 @@ from fsbc.paths import Paths
 from fsgs.Archive import Archive
 from fsgs.ChecksumTool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.Amiga import Amiga
+from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
 from .i18n import gettext
 from .launcher_config import LauncherConfig

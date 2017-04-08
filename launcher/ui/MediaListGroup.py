@@ -4,7 +4,7 @@ import fsui
 from fsbc.paths import Paths
 from fsgs.ChecksumTool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.Amiga import Amiga
+from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
 from launcher.cd_manager import CDManager
 from launcher.floppy_manager import FloppyManager
@@ -14,6 +14,8 @@ from launcher.option import Option
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
+from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS, \
+    PlatformEnableBehavior
 
 
 class MediaListGroup(fsui.Group):
@@ -26,10 +28,12 @@ class MediaListGroup(fsui.Group):
             self.file_key_prefix = "cdrom_image_"
             self.file_key = "cdrom_image_{0}"
             self.sha1_key = "x_cdrom_image_{0}_sha1"
+            platforms = AMIGA_PLATFORMS
         else:
             self.file_key_prefix = "floppy_image_"
             self.file_key = "floppy_image_{0}"
             self.sha1_key = "x_floppy_image_{0}_sha1"
+            platforms = AMIGA_PLATFORMS
 
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, expand=False, fill=True)
@@ -38,26 +42,32 @@ class MediaListGroup(fsui.Group):
         hori_layout.add(
             self.heading_label, margin=10, margin_top=20, margin_bottom=20)
         hori_layout.add_spacer(0, expand=True)
+
         if not self.cd_mode:
-            # hori_layout.add(ConfigWidgetFactory().create(
-            #     self, Option.SAVE_DISK), margin_right=20)
-            hori_layout.add(SaveDiskCheckBox(self), margin_right=20)
+            save_disk_check_box = SaveDiskCheckBox(self)
+            hori_layout.add(save_disk_check_box, margin_right=20)
+            PlatformEnableBehavior(save_disk_check_box, platforms=platforms)
+
         clear_button = IconButton(self, "clear_button.png")
         clear_button.set_tooltip(gettext("Clear List"))
         clear_button.activated.connect(self.on_clear_list)
+        PlatformEnableBehavior(clear_button, platforms=platforms)
         hori_layout.add(clear_button, margin_right=10)
         remove_button = IconButton(self, "remove_button.png")
         remove_button.set_tooltip(gettext("Remove Selected Files"))
         remove_button.activated.connect(self.on_remove_button)
+        PlatformEnableBehavior(remove_button, platforms=platforms)
         hori_layout.add(remove_button, margin_right=10)
         add_button = IconButton(self, "add_button.png")
         add_button.set_tooltip(gettext("Add Files to List"))
         add_button.activated.connect(self.on_add_button)
+        PlatformEnableBehavior(add_button, platforms=platforms)
         hori_layout.add(add_button, margin_right=10)
 
         # hori_layout = fsui.HorizontalLayout()
         # self.layout.add(hori_layout, expand=True, fill=True)
         self.list_view = fsui.ListView(self)
+        PlatformEnableBehavior(self.list_view, platforms=platforms)
         self.list_view.on_activate_item = self.on_activate_item
         if self.cd_mode:
             self.default_icon = fsui.Image("launcher:res/cdrom_16.png")

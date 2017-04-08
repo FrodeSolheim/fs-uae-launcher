@@ -1,21 +1,19 @@
 import os
 import shutil
 import tempfile
-import time
-import weakref
 import threading
+import time
 import traceback
-# import hashlib
-# from fsbc.task import current_task
-
-from fsgs.Archive import Archive
+import weakref
+from fsbc.paths import Paths
 from fsbc.util import unused
+from fsgs.Archive import Archive
 from fsgs.BaseContext import BaseContext
-from fsgs.download import Downloader
-from fsgs.FileDatabase import FileDatabase
-from fsgs.GameDatabase import GameDatabase
-from fsgs.LockerDatabase import LockerDatabase
 from fsgs.Database import Database
+from fsgs.FileDatabase import FileDatabase
+from fsgs.GameDatabase import GameDatabase, IncompleteGameException
+from fsgs.LockerDatabase import LockerDatabase
+from fsgs.download import Downloader
 from fsgs.network import is_http_url
 from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
 from fsgs.plugins.plugin_manager import PluginManager
@@ -84,6 +82,8 @@ class FileContext(BaseContext):
             return open_locker_uri(
                 uri, opener_cache_dict=self.opener_cache_dict)
         else:
+            if uri.startswith("$"):
+                uri = Paths.expand_path(uri)
             if prefer_path and os.path.exists(uri):
                 # return helper object so isinstance does not match with str
                 return File(uri)
@@ -235,6 +235,7 @@ class FSGameSystemContext(object):
     def __init__(self):
         self._amiga = None
         self._config = None
+        self._settings = None
         self._signal = None
         self._netplay = None
         self._game = None
@@ -246,7 +247,7 @@ class FSGameSystemContext(object):
     @property
     def amiga(self):
         if self._amiga is None:
-            from .amiga.AmigaContext import AmigaContext
+            from .amiga.amigacontext import AmigaContext
             self._amiga = AmigaContext(self)
         return self._amiga
 
@@ -256,6 +257,13 @@ class FSGameSystemContext(object):
             from .Config import Config
             self._config = Config(self)
         return self._config
+
+    @property
+    def settings(self):
+        if self._settings is None:
+            from fsbc.application import settings
+            self._settings = settings
+        return self._settings
 
     @property
     def game(self):
@@ -485,7 +493,9 @@ class GameContext(object):
 
     def __init__(self, context):
         self._context = weakref.ref(context)
+        # FIXME: REMOVE? use config[game_name] instead?
         self.name = ""
+        # FIXME: REMOVE? use config[game_uuid] instead?
         self.uuid = ""
         self.variant = VariantContext()
         self.platform = GamePlatform()
@@ -494,25 +504,49 @@ class GameContext(object):
     def fsgs(self):
         return self._context()
 
+    def get_game_values_for_id(self, game_database, id):
+        doc = game_database.get_game_values(id)
+        return self._fix_with_game_values_from_parent_database(doc)
+
+    def get_game_values_for_uuid(self, game_database, uuid):
+        doc = game_database.get_game_values_for_uuid(uuid)
+        return self._fix_with_game_values_from_parent_database(doc)
+
+    def _fix_with_game_values_from_parent_database(self, doc):
+        parent_database_name = doc.get("parent_database", "")
+        if parent_database_name:
+            parent_database = self.fsgs.game_database(parent_database_name)
+            try:
+                parent_doc = parent_database.get_game_values(
+                    game_uuid=doc.get("parent_uuid", ""))
+            except LookupError:
+                raise IncompleteGameException(
+                    "Could not find parent {0} of game {1}".format(
+                        doc.get("parent_uuid", ""), doc.get("game_uuid")))
+            parent_doc.update(doc)
+            doc = parent_doc
+        return doc
+
     def set_from_variant_uuid(self, database_name, variant_uuid):
         print("set_from_variant_uuid", database_name, variant_uuid)
         game_database = self.fsgs.game_database(database_name)
-        values = game_database.get_game_values_for_uuid(variant_uuid)
-        if not values.get("_type", "") == "2":
+        doc = self.get_game_values_for_uuid(game_database, variant_uuid)
+
+        if not doc.get("_type", "") == "2":
             return {}
         print("")
-        for key in sorted(values.keys()):
-            print(" * {0} = {1}".format(key, values[key]))
+        for key in sorted(doc.keys()):
+            print(" * {0} = {1}".format(key, doc[key]))
         print("")
 
-        platform_id = values["platform"]
+        platform_id = doc["platform"]
         self.platform.id = platform_id
 
-        self.uuid = values["game_uuid"]
-        self.name = values["game_name"]
+        self.uuid = doc["game_uuid"]
+        self.name = doc["game_name"]
         self.variant.uuid = variant_uuid
-        self.variant.name = values["variant_name"]
-        return values
+        self.variant.name = doc["variant_name"]
+        return doc
 
 
 class PluginsContext(object):

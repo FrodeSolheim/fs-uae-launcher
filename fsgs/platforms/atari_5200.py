@@ -1,10 +1,9 @@
 from fsgs.platform import PlatformHandler
-from fsgs.mess.atari_5200 import Atari5200Runner
-from .loader import SimpleLoader
+from fsgs.platforms.a5200.messa5200driver import MessA5200Driver
+from fsgs.platforms.loader import SimpleLoader
 
 
 class Atari5200PlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Atari 5200"
 
     def __init__(self):
@@ -14,7 +13,7 @@ class Atari5200PlatformHandler(PlatformHandler):
         return Atari5200Loader(fsgs)
 
     def get_runner(self, fsgs):
-        return Atari5200Runner(fsgs)
+        return MessA5200Driver(fsgs)
 
 
 class Atari5200Loader(SimpleLoader):

@@ -71,7 +71,7 @@ class Settings(object):
         self._loaded = True
         # print("[SETTINGS] Loaded, path is", self.path)
 
-    def save(self, extra: Dict[str, str]=None) -> None:
+    def save(self, extra: Dict[str, str] = None) -> None:
         print("[SETTINGS] Save", self)
         self._provider.save(self, extra)
 
@@ -131,7 +131,16 @@ class SettingsProvider:
                 values[key] = value
 
         for key in sorted(values.keys()):
-            settings.set(key, values[key])
+            value = values[key]
+            key = self.rewrite_key(key)
+            settings.set(key, value)
+
+    def rewrite_key(self, key):
+        # FIXME: Should be moved to subclass
+        try:
+            return key_replacement_table[key]
+        except KeyError:
+            return key
 
     def save(self, settings, extra=None):
         partial_path = settings.path + ".partial"
@@ -196,3 +205,18 @@ def unload() -> None:
 
 def set_path(path: str) -> None:
     Settings.instance().set_path(path)
+
+
+key_replacement_table = {
+    "database_arcade": "arcade_database",
+    "database_atari": "atari_database",
+    "database_c64": "c64_database",
+    "database_cpc": "cpc_database",
+    "database_dos": "dos_database",
+    "database_gb": "gb_database",
+    "database_gba": "gba_database",
+    "database_gbc": "gbc_database",
+    "database_nes": "nes_database",
+    "database_psx": "psx_database",
+    "database_snes": "snes_database",
+}

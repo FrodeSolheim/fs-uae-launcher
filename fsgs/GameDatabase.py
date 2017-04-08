@@ -133,30 +133,37 @@ class GameDatabase(BaseDatabase):
         doc = json.loads(data)
         # This is a hack so we can retrieve the published-status of the
         # child entry. The original key should have been named _published,
-        # probably, so avoid it being inherited.
-        doc["__publish_hack__"] = doc.get("publish", "")
+        # probably, to avoid it being inherited.
+        variant_published = doc.get("publish", "")
 
         next_parent_uuid = doc.get("parent_uuid", "")
+        next_parent_database = doc.get("parent_database", "")
         while next_parent_uuid and recursive:
             # Treat game_uuid special, it will be the first parent_uuid
             # in the chain.
             doc["game_uuid"] = next_parent_uuid
-            cursor.execute(
-                "SELECT data FROM game WHERE uuid = ?",
-                (sqlite3.Binary(
-                    unhexlify(next_parent_uuid.replace("-", ""))),))
-            row = cursor.fetchone()
-            if not row:
-                raise IncompleteGameException(
-                    "Could not find parent {0} of game {1}".format(
-                        next_parent_uuid, game_uuid))
-            data = zlib.decompress(row[0])
-            data = data.decode("UTF-8")
-            next_doc = json.loads(data)
+            if next_parent_database:
+                break
+            else:
+                cursor.execute(
+                    "SELECT data FROM game WHERE uuid = ?",
+                    (sqlite3.Binary(
+                        unhexlify(next_parent_uuid.replace("-", ""))),))
+                row = cursor.fetchone()
+                if not row:
+                    raise IncompleteGameException(
+                        "Could not find parent {0} of game {1}".format(
+                            next_parent_uuid, game_uuid))
+                data = zlib.decompress(row[0])
+                data = data.decode("UTF-8")
+                next_doc = json.loads(data)
             next_parent_uuid = next_doc.get("parent_uuid", "")
+            next_parent_database = next_doc.get("parent_database", "")
             # Let child doc overwrite and append values to parent doc.
             next_doc.update(doc)
             doc = next_doc
+
+        doc["__publish_hack__"] = variant_published
         return doc
 
     def get_game_database_version(self):
