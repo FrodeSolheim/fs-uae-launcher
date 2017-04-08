@@ -180,7 +180,8 @@ def generate_config_for_archive(path: str, model_config: bool=True) \
     return config
 
 
-default_whdload_version = "18.2"
+default_whdload_version = "18.3"
+
 # noinspection SpellCheckingInspection
 support_files = {
     "1d1c557f4a0f5ea88aeb96d68b09f41990340f70":
@@ -254,6 +255,9 @@ binaries = {
     },
     "18.2": {
         "0a9e7bfa1183420543e44c08410af1c5500fa704": "C/WHDLoad",
+    },
+    "18.3": {
+        "b126b899d57f81a7646787776893416c20f43ec2": "C/WHDLoad",
     },
 }
 default_whdload_prefs = """

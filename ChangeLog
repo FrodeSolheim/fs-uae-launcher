@@ -1,5 +1,6 @@
 Version 2.9.5dev:
 
+* Added support for WHDLoad 18.3.
 * New quick settings panel (initial version) with toggle button.
 * Tweaked Fusion Adwaita theme colors to better match recent GNOME theme.
 * Controller configs for 8Bitdo SFC30 and Zero gamepads.

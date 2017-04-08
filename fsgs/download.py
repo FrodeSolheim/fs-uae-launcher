@@ -96,6 +96,7 @@ class Downloader(object):
             os.utime(cache_path, None)
             return
         url = cls.sha1_to_url(sha1, name)
+        print("[DOWNLOADER]", url)
         input = urlopen(url)
         temp_path = path + ".partial." + str(uuid4())
         h = hashlib.sha1()
