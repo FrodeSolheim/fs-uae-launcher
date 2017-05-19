@@ -80,7 +80,7 @@ options = {
         "type": "Boolean",
     },
     Option.ARCADE_FULLSCREEN: {
-        "default": "0",
+        "default": "1",
         "description": N_("Arcade Fullscreen"),
         "type": "boolean",
     },
@@ -415,7 +415,7 @@ options = {
         "type": "",
     },
     Option.FADE_IN_DURATION: {
-        "default": "0",
+        "default": "500",
         "description": N_("Fade-in Duration on Start"),
         "type": "",
     },
@@ -461,7 +461,7 @@ options = {
         ]
     },
     Option.FLOPPY_DRIVE_VOLUME: {
-        "default": "25",
+        "default": "20",
         "description": N_("Floppy Drive Volume"),
         "type": "integer",
         "min": 0,
@@ -473,6 +473,15 @@ options = {
         "type": "integer",
         "min": 0,
         "max": 100,
+    },
+    Option.FRAME: {
+        "default": "auto",
+        "description": N_("Frame"),
+        "type": "",
+        "values": [
+            ("0", N_("None")),
+            ("auto", N_("Auto")),
+        ]
     },
     Option.FREEZER_CARTRIDGE: {
         "default": "0",
@@ -889,6 +898,7 @@ options = {
             ("1", N_("Max Scaling")),
             ("0", N_("No Scaling")),
             ("integer", N_("Integer Scaling")),
+            ("legacy", N_("Legacy Scaling")),
         ]
     },
     Option.SCANLINES: {
@@ -992,7 +1002,7 @@ options = {
         ]
     },
     Option.STRETCH: {
-        "default": "1",
+        "default": "aspect",
         "description": N_("Stretch"),
         "type": "Choice",
         "values": [
@@ -1341,7 +1351,7 @@ options = {
         "type": "boolean",
     },
     Option.ZOOM: {
-        "default": "auto",
+        "default": "692x540",
         "description": N_("Zoom Amiga display (crop)"),
         "type": "choice",
         "values": [
@@ -1354,7 +1364,7 @@ options = {
             ("640x480+border", N_("640x480 + Border")),
             ("640x512", "640x512"),
             ("640x512+border", N_("640x512 + Border")),
-            ("704x520", "704x520"),
+            ("692x540", "692x540"),
             ("704x540", "704x540"),
             ("704x566", "704x566"),
             ("724x566", "724x566"),

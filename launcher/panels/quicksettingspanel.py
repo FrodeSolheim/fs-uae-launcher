@@ -21,6 +21,9 @@ BORDER = [Platform.C64, Platform.ZXS] + MEDNAFEN
 SMOOTHING = [] + MEDNAFEN
 CROPPING = [Platform.ZXS]
 
+SCALING += AMIGA_PLATFORMS
+STRETCHING += AMIGA_PLATFORMS
+
 
 class QuickSettingsPanel(fsui.Panel):
     def __init__(self, parent, fsgc):
@@ -38,10 +41,11 @@ class QuickSettingsPanel(fsui.Panel):
         hori_layout.add(settings_button, margin_right=10)
         self.layout.add_spacer(0)
 
-        self.add_option(Option.KEEP_ASPECT, text=gettext("Keep Aspect"),
-                        platforms=AMIGA_PLATFORMS)
+        # self.add_option(Option.KEEP_ASPECT, text=gettext("Keep Aspect"),
+        #                 platforms=AMIGA_PLATFORMS)
         self.add_option(Option.SCALE, text=None, platforms=SCALING)
         self.add_option(Option.STRETCH, text=None, platforms=STRETCHING)
+        self.add_option(Option.ZOOM, text=None, platforms=AMIGA_PLATFORMS)
         self.add_option(Option.BORDER, text=None, platforms=BORDER)
 
         self.add_option(Option.SMOOTHING, text=None, platforms=SMOOTHING)
@@ -50,7 +54,7 @@ class QuickSettingsPanel(fsui.Panel):
         # self.add_option(Option.CROP, text=None, platforms=CROPPING)
 
         # self.add_option(Option.ZXS_DRIVER, [Platform.ZXS])
-        self.add_option(Option.DOS_EMULATOR, [Platform.DOS])
+        # self.add_option(Option.DOS_EMULATOR, [Platform.DOS])
         self.add_option(Option.AUTO_LOAD, [Platform.DOS, Platform.ZXS])
         self.add_option(Option.AUTO_QUIT, [Platform.DOS])
         self.add_option(Option.TURBO_LOAD, [Platform.ZXS])

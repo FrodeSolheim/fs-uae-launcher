@@ -1,3 +1,4 @@
+import fsgs
 import fsui
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
@@ -32,8 +33,8 @@ class SettingsDialog(PagedDialog):
         return fsui.open_window_instance(cls, parent)
 
     def __init__(self, parent, index=0):
-        PagedDialog.__init__(self, parent, "{} - FS-UAE Launcher".format(
-                gettext("Settings")))
+        PagedDialog.__init__(self, parent, "{} - {} Launcher".format(
+                gettext("Settings"), fsgs.product))
 
         # FIXME: remove this once the dialog uses Window as base class
         # self.setAttribute(Qt.WA_DeleteOnClose, True)
@@ -87,7 +88,7 @@ class SettingsDialog(PagedDialog):
         #     gettext("Logging"), LoggingSettingsPage,
         #     fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
-            "FS-UAE Launcher", LauncherSettingsPage,
+            "{} Launcher".format(fsgs.product), LauncherSettingsPage,
             fsui.Icon("fs-uae-launcher", "pkg:launcher"), bold=True)
         self.add_page(
             gettext("File Database"), ScanSettingsPage,
@@ -110,7 +111,7 @@ class SettingsDialog(PagedDialog):
         #     gettext("Maintenance"), MaintenanceSettingsPage,
         #     fsui.Icon("maintenance", "pkg:workspace"))
         self.add_page(
-            "FS-UAE Arcade", ArcadeSettingsPage,
+            "{} Arcade".format(fsgs.product), ArcadeSettingsPage,
             fsui.Icon("fs-uae-arcade", "pkg:launcher"), bold=True)
 
         # Old texts

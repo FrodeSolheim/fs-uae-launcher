@@ -19,18 +19,18 @@ class DOSPlatformHandler(PlatformHandler):
 class DOSLoader(SimpleLoader):
     def load_files(self, values):
         self.config["file_list"] = values["file_list"]
+        self.config["cue_sheets"] = values["cue_sheets"]
 
     def load_extra(self, values):
-        self.config["dosbox_cpu_cycles"] = values["dosbox_cpu_cycles"]
-        self.config["dosbox_sblaster_irq"] = values["sblaster_irq"]
-        # FIXME: REMOVE
-        self.config["sblaster_irq"] = values["sblaster_irq"]
+        for key in values.keys():
+            if key.startswith("dosbox_"):
+                self.config[key] = values[key]
+        # for key in ["dosbox_cpu_cycles", "dosbox_sblaster_sbtype",
+        #             "dosbox_sblaster_sbbase", "dosbox_sblaster_irq",
+        #             "dosbox_sblaster_oplrate"]:
+        #     self.config[key] = values[key]
 
         self.config["command"] = values["command"]
         if not self.config["command"]:
             # Deprecated option
             self.config["command"] = values["hd_startup"]
-
-        for key in values.keys():
-            if key.startswith("dosbox_"):
-                self.config[key] = values[key]

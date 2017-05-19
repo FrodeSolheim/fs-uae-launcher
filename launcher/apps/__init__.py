@@ -6,6 +6,8 @@ import launcher.version
 
 # Workaround to make import typing work without having it on the default
 # python path (would confuse mypy).
+from launcher.option import Option
+
 sys.modules["typing"] = fstd.typing
 
 
@@ -36,6 +38,19 @@ def main():
     if "--openretro" in sys.argv:
         sys.argv.remove("--openretro")
         fsgs.product = "OpenRetro"
+        fsgs.openretro = True
+        Option.get(Option.ARCADE_DATABASE)["default"] = "1"
+        Option.get(Option.ATARI_DATABASE)["default"] = "1"
+        Option.get(Option.C64_DATABASE)["default"] = "1"
+        Option.get(Option.CPC_DATABASE)["default"] = "1"
+        Option.get(Option.DOS_DATABASE)["default"] = "1"
+        Option.get(Option.GB_DATABASE)["default"] = "1"
+        Option.get(Option.GBA_DATABASE)["default"] = "1"
+        Option.get(Option.GBC_DATABASE)["default"] = "1"
+        Option.get(Option.NES_DATABASE)["default"] = "1"
+        Option.get(Option.PSX_DATABASE)["default"] = "1"
+        Option.get(Option.SNES_DATABASE)["default"] = "1"
+        Option.get(Option.ZXS_DATABASE)["default"] = "1"
 
     # Check new app option.
     for arg in sys.argv:

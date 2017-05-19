@@ -29,7 +29,7 @@ import os
 import shutil
 
 from fsbc.path import str_path
-from fsbc.system import windows, System
+from fsbc.system import System
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.drivers.gamedriver import GameDriver
 
@@ -47,9 +47,14 @@ class DosBoxDosDriver(GameDriver):
             self.emulator.name = "dosbox-svn"
         else:
             self.emulator.name = "dosbox-fs"
+
         # Right now G-SYNC only works fine with 60Hz modes. There's stuttering
-        # when DOSBox outputs 70 fps.
-        self.set_allow_gsync(False)
+        # when DOSBox outputs 70 fps. Edit: The problem is that G-SYNC is
+        # capped to monitors selected refresh rate.
+        if self.screen_refresh_rate() < 70.0:
+            print("[VIDEO] Screen refresh rate is < 70.0, disabling G-SYNC")
+            self.set_allow_gsync(False)
+
         # self.ultrasnd_drive = None
 
     def __del__(self):
@@ -64,9 +69,20 @@ class DosBoxDosDriver(GameDriver):
             self.configure(f)
         self.args.extend(["-conf", config_file])
 
+        # FIXME: Move to game driver?
+        if self.options[Option.VIEWPORT]:
+            self.emulator.env["FSGS_VIEWPORT"] = self.options[Option.VIEWPORT]
+
     def prepare_media(self):
         file_list = json.loads(self.config["file_list"])
         self.unpack_game_hard_drives(file_list)
+
+        if self.options["cue_sheets"]:
+            cue_sheets = json.loads(self.options["cue_sheets"])
+            for cue_sheet in cue_sheets:
+                with open(os.path.join(self.drives_dir.path,
+                                       cue_sheet["name"]), "wb") as f:
+                    f.write(cue_sheet["data"].encode("UTF-8"))
 
     def unpack_game_hard_drives(self, file_list):
         drives_added = set()
@@ -75,8 +91,8 @@ class DosBoxDosDriver(GameDriver):
             # if self.stop_flag:
             #     return
 
-            name = file_entry["name"].upper()
-            # name = file_entry["name"]
+            name = file_entry["name"]
+            name = name.upper()
 
             drives_added.add(name[0])
 
@@ -158,27 +174,38 @@ class DosBoxDosDriver(GameDriver):
 
         f.write("\n[cpu]\n")
         cpu_core = "auto"
-        # cpu_core = "normal"
+        if self.config[Option.DOSBOX_CPU_CORE]:
+            cpu_core = self.config[Option.DOSBOX_CPU_CORE]
+            cpu_core = cpu_core.lower().strip()
+        if System.windows and System.x86_64:
+            # Dynamic core crashes on Windows x86-64
+            print("[DOS] Forcing normal cpu core on Windows x86-64")
+            if cpu_core in ["auto", "dynamic"]:
+                cpu_core = "normal"
         f.write("core={0}\n".format(cpu_core))
         cpu_cycles = "auto"
+        if self.config[Option.DOSBOX_CPU_CPUTYPE]:
+            f.write("cputype={0}\n".format(
+                self.config[Option.DOSBOX_CPU_CPUTYPE]))
         if self.config[Option.DOSBOX_CPU_CYCLES]:
             cpu_cycles = self.options[Option.DOSBOX_CPU_CYCLES]
-            if cpu_cycles not in ["auto", "max"]:
+            if cpu_cycles.startswith("max "):
+                pass
+            elif cpu_cycles in ["auto", "max"]:
+                pass
+            else:
                 cpu_cycles = "fixed " + cpu_cycles
         f.write("cycles={0}\n".format(cpu_cycles))
 
         f.write("\n[dosbox]\n")
-        if self.options[Option.DOSBOX_MEMSIZE]:
-            f.write("memsize={}\n".format(self.options[Option.DOSBOX_MEMSIZE]))
         if self.options[Option.DOSBOX_MACHINE]:
             f.write("machine={}\n".format(self.options[Option.DOSBOX_MACHINE]))
+        if self.options[Option.DOSBOX_MEMSIZE]:
+            f.write("memsize={}\n".format(self.options[Option.DOSBOX_MEMSIZE]))
 
         self.configure_gus(f)
         self.configure_midi(f)
-
-        f.write("\n[sblaster]\n")
-        if self.config[Option.DOSBOX_SBLASTER_IRQ]:
-            f.write("irq={}\n".format(self.options[Option.DOSBOX_SBLASTER_IRQ]))
+        self.configure_sblaster(f)
 
         f.write("\n[autoexec]\n")
         if self.options[Option.AUTO_LOAD] != "0":
@@ -187,14 +214,22 @@ class DosBoxDosDriver(GameDriver):
         #     pass
         for name in os.listdir(self.drives_dir.path):
             if name in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+                p = os.path.join(self.drives_dir.path, name, "CD", "IMAGE.CUE")
+                if os.path.exists(p):
+                    f.write('IMGMOUNT {0} "{1}" -t iso\n'.format(name, p))
+                    continue
+                p = os.path.join(self.drives_dir.path, name, "CD", "IMAGE.ISO")
+                if os.path.exists(p):
+                    f.write('IMGMOUNT {0} "{1}" -t iso\n'.format(name, p))
+                    continue
                 if name in "DEF":
                     f.write('MOUNT {0} "{1}" -t cdrom\n'.format(
                         name, os.path.join(self.drives_dir.path, name)))
-                else:
-                    f.write('MOUNT {0} "{1}"\n'.format(
-                        name, os.path.join(self.drives_dir.path, name)))
+                    continue
+                f.write('MOUNT {0} "{1}"\n'.format(
+                    name, os.path.join(self.drives_dir.path, name)))
         f.write("C:\n")
-        # f.write("CLS\n")
+        f.write("CLS\n")
         # for i in range(25):
         #     f.write("echo.\n")
         if self.options[Option.AUTO_LOAD] == "0":
@@ -216,7 +251,7 @@ class DosBoxDosDriver(GameDriver):
             if not self.options[Option.AUTO_QUIT] == "0":
                 f.write("exit\n")
 
-        if windows:
+        if System.windows:
             # We don't want to open the separate console window on windows.
             self.args.append("-noconsole")
 
@@ -247,6 +282,20 @@ class DosBoxDosDriver(GameDriver):
         else:
             f.write("mididevice=alsa\n")
             f.write("midiconfig=128:0\n")
+
+    def configure_sblaster(self, f):
+        f.write("\n[sblaster]\n")
+        if self.config[Option.DOSBOX_SBLASTER_SBTYPE]:
+            f.write("sbtype={}\n".format(
+                self.options[Option.DOSBOX_SBLASTER_SBTYPE]))
+        if self.config[Option.DOSBOX_SBLASTER_SBBASE]:
+            f.write("sbbase={}\n".format(
+                self.options[Option.DOSBOX_SBLASTER_SBBASE]))
+        if self.config[Option.DOSBOX_SBLASTER_IRQ]:
+            f.write("irq={}\n".format(self.options[Option.DOSBOX_SBLASTER_IRQ]))
+        if self.config[Option.DOSBOX_SBLASTER_OPLRATE]:
+            f.write("oplrate={}\n".format(
+                self.options[Option.DOSBOX_SBLASTER_OPLRATE]))
 
     def finish(self):
         pass

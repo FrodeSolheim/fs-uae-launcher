@@ -38,7 +38,7 @@ def fullscreen():
     value = check_argument("fullscreen")
     if not value:
         value = Settings.instance().get("arcade_fullscreen")
-    return value == "1"
+    return value != "0"
 
 
 def maximized():
@@ -126,7 +126,10 @@ class ArcadeWindow(fsui.Window):
 
     def show_auto(self):
         if fullscreen():
-            self.set_fullscreen(True, screen_geometry())
+            geometry = screen_geometry()
+            self.set_fullscreen(True, geometry)
+            Settings.instance().set("__cursor_x", geometry[2])
+            Settings.instance().set("__cursor_y", geometry[3])
         elif maximized():
             x, y, w, h = screen_geometry()
             self.set_maximized(True, (x, y, 960, 540))

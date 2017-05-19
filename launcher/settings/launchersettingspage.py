@@ -1,3 +1,5 @@
+import fsgs
+from fsgs import openretro
 from launcher.settings.maintenance_settings_page import DefragmentDatabasesTask
 
 import fsboot
@@ -12,7 +14,7 @@ class LauncherSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("fs-uae-launcher", "pkg:launcher")
-        self.add_header(icon, "FS-UAE Launcher")
+        self.add_header(icon, "{} Launcher".format(fsgs.product))
 
         if fsboot.get("fws") == "1":
             # We omit the appearance settings, since they have no effect
@@ -27,7 +29,8 @@ class LauncherSettingsPage(SettingsPage):
         self.add_section(gettext("Experimental Features"))
         # Netplay feature is now enabled by default
         # self.add_option(Option.NETPLAY_FEATURE)
-        self.add_option(Option.PLATFORMS_FEATURE)
+        if not openretro:
+            self.add_option(Option.PLATFORMS_FEATURE)
         # self.add_option(Option.LAUNCHER_CONFIG_FEATURE)
         # self.add_option(Option.LAUNCHER_SETUP_WIZARD_FEATURE)
 

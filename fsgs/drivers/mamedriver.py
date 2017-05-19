@@ -19,6 +19,9 @@ class MameDriver(GameDriver):
         super().__init__(fsgs)
         # self.emulator.name = "multiemu-fs"
         self.emulator.name = "arcade-fs"
+        # To prevent slow startup on Linux due to scanning all system
+        # fonts.
+        self.emulator.allow_home_access = True
         self.mame_init()
 
     def mame_emulator_name(self):

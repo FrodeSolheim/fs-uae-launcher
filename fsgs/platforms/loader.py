@@ -22,6 +22,9 @@ class SimpleLoader:
         self.config["cartridge_slot"] = "sha1://{0}/{1}".format(
             file_list[0]["sha1"], file_list[0]["name"])
 
+        self.config["cue_sheets"] = values["cue_sheets"]
+
+
     def load_extra(self, values):
         pass
 

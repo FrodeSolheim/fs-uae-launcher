@@ -7,6 +7,7 @@ from collections import defaultdict
 
 import fsboot
 from fsbc.application import Application
+from fsbc.resources import Resources
 from fsbc.settings import Settings
 from fsbc.system import System
 from fsbc.task import current_task
@@ -50,10 +51,18 @@ class GameDriver:
         self.temp_root = TemporaryItem(
             root=None, prefix="fsgs-", suffix="tmp", directory=True)
 
-        # Default current working directory for the emulator.
+        # # Default current working directory for the emulator.
         self.cwd = self.temp_dir("cwd")
-        # Fake home directory for the emulator.
+        # # Fake home directory for the emulator.
         self.home = self.temp_dir("home")
+
+        self.home._path = os.path.join(FSGSDirectories.get_cache_dir(), "Home")
+        if not os.path.exists(self.home.path):
+            os.makedirs(self.home.path)
+        self.cwd._path = self.home._path
+        # self.cwd._path = os.path.join(self.home._path, "cwd")
+        # if not os.path.exists(self.cwd.path):
+        #     os.makedirs(self.cwd.path)
 
         # Deprecated compatibility name
         self.args = self.emulator.args
@@ -160,7 +169,7 @@ class GameDriver:
     NO_STRETCHING = "0"
     STRETCH_FILL_SCREEN = "1"
     STRETCH_ASPECT = "aspect"
-    DEFAULT_STRETCHING = STRETCH_FILL_SCREEN
+    DEFAULT_STRETCHING = STRETCH_ASPECT
 
     def stretching(self):
         if self.options[Option.STRETCH] == self.NO_STRETCHING:
@@ -545,14 +554,24 @@ class GameDriver:
             env["FSGS_WINDOW_TITLE"] = self._model_name
 
         env.update(self.env)
-        env["HOME"] = self.home.path
+        if not self.emulator.allow_home_access:
+            env["HOME"] = self.home.path
 
         if not self._allow_gsync:
             # DOSBox-FS and Fuse-FS does not work nicely with G-SYNC yet.
             # Enabling G-SYNC causes stuttering.
+            # Update: Should work fine with DOSBox-FS now...
             env["__GL_GSYNC_ALLOWED"] = "0"
             # Disable V-Sync
             env["__GL_SYNC_TO_VBLANK"] = "0"
+
+        # Make sure we are allowed to flip buff ers faster than the screen
+        # refresh rate, important for e.g. DOSBox @70Hz.
+        # https://dri.freedesktop.org/wiki/ConfigurationOptions/
+        # 1 = Application preference, default interval 0
+        # Update: Not needed when emulators explicitly set swap interval 0.
+        # env["vblank_mode"] = "1"
+
         self.update_environment_with_centering_info(env)
 
     def update_environment_with_centering_info(self, env):
@@ -596,6 +615,16 @@ class GameDriver:
         # print("window position", env["SDL_VIDEO_WINDOW_POS"])
         # os.environ["SDL_VIDEO_WINDOW_POS"] = "{0},{1}".format(x, y)
 
+    def prepare_emulator_skin(self, env):
+        path = self.temp_file("left.png").path
+        with open(path, "wb") as f:
+            f.write(Resources("fsgs").stream("res/emu/left.png").read())
+        env["FSGS_SKIN_LEFT"] = path
+        path = self.temp_file("right.png").path
+        with open(path, "wb") as f:
+            f.write(Resources("fsgs").stream("res/emu/right.png").read())
+        env["FSGS_SKIN_RIGHT"] = path
+
     def start_emulator(
             self, emulator, args=None, env_vars=None, executable=None,
             cwd=None):
@@ -615,7 +644,6 @@ class GameDriver:
 
         args = []
         args.extend(self.args)
-        print(repr(args))
 
         if "SDL_VIDEODRIVER" in os.environ:
             print("SDL_VIDEODRIVER was present in environment, removing!")
@@ -624,9 +652,16 @@ class GameDriver:
         env = os.environ.copy()
         FSUAE.add_environment_from_settings(env)
         self.update_environment(env)
+        self.prepare_emulator_skin(env)
         if env_vars:
             env.update(env_vars)
-        print(env)
+        print("")
+        for key in sorted(env.keys()):
+            print("[ENV]", key, ":", repr(env[key]))
+        print("")
+        for arg in args:
+            print("[ARG]", repr(arg))
+        print("")
 
         kwargs = {}
         if env is not None:
@@ -635,13 +670,15 @@ class GameDriver:
             kwargs["cwd"] = cwd
         else:
             kwargs["cwd"] = self.cwd.path
-        print("[EMULATOR] CWD:", kwargs["cwd"])
+        print("[CWD]", kwargs["cwd"])
+        print("")
         if System.windows:
             kwargs["close_fds"] = True
-        print(" ".join(args))
+        # print(" ".join(args))
         current_task.set_progress(
             "Starting {emulator}".format(emulator=emulator))
-        # process = subprocess.Popen(*args, **kwargs)
+        # import subprocess
+        # return subprocess.Popen(["strace", emulator.path] + args, **kwargs)
         return emulator.popen(args, **kwargs)
         # return process
 
@@ -875,6 +912,7 @@ class GameEmulator:
         self.env = {}
         self.process = None
         # self.allow_system_emulator = False
+        self.allow_home_access = False
 
 
 class GameFiles:

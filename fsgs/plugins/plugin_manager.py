@@ -17,21 +17,19 @@ logger = logging.getLogger("PLUGINS")
 known_plugin_versions = {
     "Arcade-FS": "0.168fs0",
     "CAPSImg": "5.1fs3",
-    "DOSBox-FS": "0.74.4006fs0",
-    "Fuse-FS": "1.3.3fs4",
-    "Hatari-FS": "2.0.0fs0",
-    "Mednafen-FS": "0.9.42fs0",
+    "DOSBox-FS": "0.74.4006fs2",
+    "Fuse-FS": "1.3.3fs5",
+    "Hatari-FS": "2.0.0fs1",
+    "Mednafen-FS": "0.9.42fs1",
     "Mess-FS": "0.168fs0",
-    "MultiEmu-FS": "0.168fs0",
     "QEMU-UAE": "3.8.2qemu2.2.0",
     "Regina-FS": "3.9.1fs0",
     "UADE-FS": "2.13fs1",
-    "Vice-FS": "3.0fs0",
+    "Vice-FS": "3.0fs1",
 }
 
 
 class BasePlugin:
-
     def __init__(self, path, name, version="0.0.0"):
         self.path = path
         self.name = name
@@ -54,7 +52,6 @@ class BasePlugin:
 
 
 class Plugin(BasePlugin):
-
     def __init__(self, path, name, version, cp):
         super().__init__(path, name, version)
         self.load_provides(cp)
@@ -113,7 +110,6 @@ class Plugin(BasePlugin):
 
 
 class Expansion(BasePlugin):
-
     def __init__(self, path, arch_path):
         name = os.path.basename(path)
         version_path = os.path.join(arch_path, "Version.txt")
@@ -154,7 +150,6 @@ class Expansion(BasePlugin):
 
 
 class PluginResource:
-
     def __init__(self, plugin, name):
         self.plugin = plugin
         self.name = name
@@ -166,7 +161,6 @@ class PluginResource:
 
 
 class Executable:
-
     def __init__(self, path):
         self.path = path
 
@@ -179,24 +173,20 @@ class Executable:
             env = env.copy()
         else:
             env = os.environ.copy()
-        if windows:
-            pass
-        elif macosx:
-            pass
-        else:
+
+        if os.environ.get("FS_PLUGINS_LD_LIBRARY_PATH") == "1":
             env["LD_LIBRARY_PATH"] = os.path.dirname(self.path)
+
         return subprocess.Popen(args, env=env, **kwargs)
 
 
 class PluginExecutable(Executable):
-
     def __init__(self, plugin, path):
         super().__init__(path)
         self.plugin = plugin
 
 
 class PluginManager:
-
     @classmethod
     def instance(cls):
         if not hasattr(cls, "_instance") or cls._instance is None:
@@ -210,9 +200,13 @@ class PluginManager:
         if plugins_dir and os.path.isdir(plugins_dir):
             result.append(plugins_dir)
         expansion_dir = os.path.join(
-                FSGSDirectories.get_base_dir(), "Workspace", "Expansion")
+            FSGSDirectories.get_base_dir(), "Workspace", "Expansion")
         if expansion_dir and os.path.isdir(expansion_dir):
             result.append(expansion_dir)
+        system_plugins_dir = os.path.join(
+            fsboot.executable_dir(), "..", "..", "..", "Plugins")
+        if system_plugins_dir and os.path.isdir(system_plugins_dir):
+            result.append(system_plugins_dir)
         return result
 
     def __init__(self):

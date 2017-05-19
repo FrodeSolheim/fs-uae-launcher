@@ -18,7 +18,7 @@ STATE_STOPPING = 4
 STATE_ABORTING = 5
 STATE_ABORTED = 6
 
-FADE_TIME = 1.0
+FADE_TIME = 0.5
 
 
 class LaunchMenu(Menu):

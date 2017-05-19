@@ -1,3 +1,4 @@
+from fsgs import openretro
 from launcher.settings.option_ui import OptionUI
 
 import fsui
@@ -23,7 +24,7 @@ class GameDatabaseSettingsPage(SettingsPage):
         self.add_option(Option.DATABASE_SHOW_ADULT)
         self.add_option(Option.DATABASE_SHOW_UNPUBLISHED)
 
-        if settings.get(Option.PLATFORMS_FEATURE) == "1":
+        if openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
             self.add_section(gettext("Additional Databases"))
 
             label = fsui.MultiLineLabel(

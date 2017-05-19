@@ -1408,8 +1408,7 @@ def back_to_menu_from_game():
 
     State.get().fade_splash = True
     State.get().fade_start = State.get().time
-    State.get().fade_end = State.get().time + 2.0
-    # Use 2.0 here to force full black for 1 second
+    State.get().fade_end = State.get().time + 0.5
     State.get().fade_from = (0.0, 0.0, 0.0, 2.0)
     State.get().fade_to = (0.0, 0.0, 0.0, 0.0)
 

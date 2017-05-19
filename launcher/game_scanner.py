@@ -5,6 +5,7 @@ from binascii import hexlify
 from functools import lru_cache
 
 from fsbc import settings
+from fsgs import openretro
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.FileDatabase import FileDatabase
 from fsgs.GameDatabase import IncompleteGameException
@@ -45,6 +46,23 @@ class GameScanner(object):
             if LauncherSettings.get(platform_option) != "0":
                 return True
             return False
+        if openretro:
+            if platform_option in [
+                    Option.ARCADE_DATABASE,
+                    Option.ATARI_DATABASE,
+                    Option.C64_DATABASE,
+                    Option.CPC_DATABASE,
+                    Option.DOS_DATABASE,
+                    Option.GB_DATABASE,
+                    Option.GBA_DATABASE,
+                    Option.GBC_DATABASE,
+                    Option.NES_DATABASE,
+                    Option.PSX_DATABASE,
+                    Option.SNES_DATABASE,
+                    Option.ZXS_DATABASE]:
+                if LauncherSettings.get(platform_option) != "0":
+                    return True
+                return False
         if settings.get(Option.PLATFORMS_FEATURE) != "1":
             return False
         if LauncherSettings.get(platform_option) == "1":

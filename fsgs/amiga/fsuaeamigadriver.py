@@ -83,6 +83,13 @@ class FSUAEAmigaDriver(GameDriver):
                 if Settings.instance()["__fullscreen_mode"]:
                     self.launch_handler.config["fullscreen_mode"] = \
                         Settings.instance()["__fullscreen_mode"]
+            if Settings.instance()["__arcade"]:
+                # Remove window border when launched from FS-UAE Arcade in
+                # order to reduce flickering
+                self.launch_handler.config["window_border"] = "0"
+                # Set fade out duration to 500, if not already specified.
+                if not self.launch_handler.config.get("fade_out_duration", ""):
+                    self.launch_handler.config["fade_out_duration"] = "500"
         else:
             self.launch_handler.config["fullscreen"] = "0"
 

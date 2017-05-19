@@ -2,6 +2,7 @@ import os
 import threading
 
 from arcade.glui.state import State
+from fsbc.settings import Settings
 from fsui.qt import QCursor
 
 
@@ -76,6 +77,16 @@ class GameCenterRunner(object):
         else:
             # noinspection PyCallByClass,PyTypeChecker
             QCursor.setPos(x, y)
+
+        # cursor_x = Settings.instance().get("__cursor_x")
+        # cursor_y = Settings.instance().get("__cursor_y")
+        # try:
+        #     cursor_x = int(cursor_x)
+        #     cursor_y = int(cursor_y)
+        # except ValueError:
+        #     pass
+        # else:
+        #     QCursor.setPos(cursor_x, cursor_y)
 
         threading.Thread(target=self._run_thread,
                          name="GameRunnerRunThread").start()

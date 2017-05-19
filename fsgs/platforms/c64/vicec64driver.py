@@ -38,6 +38,8 @@ FIXME:
 """
 import os
 
+import shutil
+
 from fsbc.system import windows, macosx
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.input.mapper import InputMapper
@@ -79,6 +81,8 @@ class ViceC64Driver(GameDriver):
 
     def prepare(self):
         dot_vice_dir = os.path.join(self.home.path, ".vice")
+        if os.path.exists(dot_vice_dir):
+            shutil.rmtree(dot_vice_dir)
         os.makedirs(dot_vice_dir)
 
         # noinspection SpellCheckingInspection

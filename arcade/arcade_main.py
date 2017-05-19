@@ -2,6 +2,7 @@ from arcade.Application import Application
 from arcade.glui.imageloader import ImageLoader
 from arcade.ui.arcade_window import ArcadeWindow, check_argument, fullscreen, \
     maximized
+from fsbc.settings import Settings
 from fsbc.system import macosx
 from .gnome3 import running_in_gnome_3, handle_gnome_extensions
 
@@ -54,6 +55,8 @@ def main():
         else:
             # We want a normal window.
             pass
+
+    Settings.instance().set("__arcade", "1")
 
     # if windows:
     #     pass

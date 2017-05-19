@@ -385,4 +385,9 @@ distclean: clean clean-dist
     rm -f Makefile
     rm -f setup.py
 
+bindist: distdir
+    cd $(dist_dir)/dist/linux && fs-sdk-linux-x86-64 make
+    mv $(dist_dir)/fs-uae-launcher_*linux* .
+    rm -Rf $(dist_dir)
+
 """.format(project=project.tar_name))

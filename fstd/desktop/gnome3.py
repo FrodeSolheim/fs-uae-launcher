@@ -51,8 +51,6 @@ def handle_gnome_extensions():
             print("atexit.register reset_gnome_extensions")
             atexit.register(reset_gnome_extensions, original_extensions)
 
-    # sys.exit(1)
-
 
 def running_in_gnome_3():
     value = os.environ.get("XDG_CURRENT_DESKTOP", "").upper()
