@@ -437,18 +437,11 @@ class Database(BaseDatabase):
             return None
         return row[0]
 
-    def find_games_new(self, search="", have=3, list_uuid="",
+    def find_games_new(self, search="", have=3, list_uuid=None,
                        database_only=False):
-        print("Database.find_games_new search = {0}".format(repr(search)))
-        non_database_only = False
-        if list_uuid == self.GAME_LIST_GAMES:
-            database_only = True
-            list_uuid = ""
-        elif list_uuid == self.GAME_LIST_CONFIGS:
-            non_database_only = True
-            list_uuid = ""
-        elif list_uuid:
-            have = 0
+
+        # FIXME: game.game_list_game never populated?
+        ENABLE_JOIN = False
 
         cursor = self.internal_cursor()
         query = "SELECT DISTINCT uuid, name, platform, year, publisher, " \
@@ -458,7 +451,7 @@ class Database(BaseDatabase):
                 "published FROM game"
 
         args = []
-        if list_uuid:
+        if ENABLE_JOIN and list_uuid:
             query += (" INNER JOIN game_list_game "
                       "ON game.uuid = game_list_game.game_uuid ")
 
@@ -550,15 +543,17 @@ class Database(BaseDatabase):
             query += " AND adult = 0"
         for clause in additional_clauses:
             query += clause
-        if list_uuid:
+        if ENABLE_JOIN and list_uuid:
             query += " AND game_list_game.list_uuid = ?"
             args.append(list_uuid)
-        if database_only:
-            query += " AND path is NULL"
-        elif non_database_only:
-            query += " AND path is NOT NULL"
+        path = ''
+        if list_uuid == self.GAME_LIST_GAMES:
+            path = " AND path IS NULL "
+        elif list_uuid == self.GAME_LIST_CONFIGS:
+            path = " AND path IS NOT NULL "
+        query += path
         query += " ORDER BY"
-        if list_uuid:
+        if ENABLE_JOIN and list_uuid:
             query += " game_list_game.position,"
         args.extend(additional_args)
         query += " sort_key, platform"
