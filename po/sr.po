@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-12-11 15:16+0100\n"
-"PO-Revision-Date: 2016-12-11 12:01-0500\n"
+"POT-Creation-Date: 2017-05-20 17:57+0200\n"
+"PO-Revision-Date: 2017-05-21 04:54-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Serbian (Latin)\n"
 "Language: sr_CS\n"
@@ -116,6 +116,9 @@ msgstr "Uvoženje iz Amiga Forever"
 msgid "Amiga Forever import task started"
 msgstr "Započet je uvoz iz Amiga Forever"
 
+msgid "Amiga Game Driver"
+msgstr ""
+
 msgid "Amiga Joystick"
 msgstr ""
 
@@ -129,6 +132,15 @@ msgid "An Error Occurred"
 msgstr "Došlo je do greške"
 
 msgid "Arcade Fullscreen"
+msgstr ""
+
+msgid "Arcade starts with favorites filter"
+msgstr ""
+
+msgid "Arcade theme"
+msgstr ""
+
+msgid "Atari ST Model"
 msgstr ""
 
 msgid "Audio"
@@ -155,6 +167,9 @@ msgstr "Auto + okvir"
 msgid "Auto - {}"
 msgstr ""
 
+msgid "Auto Smoothing"
+msgstr ""
+
 msgid "Auto-Download"
 msgstr ""
 
@@ -164,7 +179,16 @@ msgstr "Automatsko pucanje je isključeno"
 msgid "Auto-Fire is On"
 msgstr "Automatsko pucanje je uključeno"
 
+msgid "Auto-Load Games"
+msgstr ""
+
+msgid "Auto-Quit"
+msgstr ""
+
 msgid "Automatic"
+msgstr ""
+
+msgid "Automatic mouse/joystick mode for mouse port"
 msgstr ""
 
 msgid "Available Games"
@@ -188,6 +212,12 @@ msgstr ""
 msgid "Blizzard SCSI Kit"
 msgstr ""
 
+msgid "Blue"
+msgstr ""
+
+msgid "Border"
+msgstr ""
+
 msgid "Browse"
 msgstr "Pretražiti"
 
@@ -196,6 +226,9 @@ msgstr "Pronaći fajl"
 
 msgid "Browse for Folder"
 msgstr "Pronaći folder"
+
+msgid "C64 Palette"
+msgstr ""
 
 msgid "CD-ROM Drive"
 msgstr "CD-ROM uređaj"
@@ -215,11 +248,17 @@ msgstr "CD32 "
 msgid "CPU"
 msgstr ""
 
+msgid "CRT Emulation"
+msgstr ""
+
 msgid "Cancel"
 msgstr "Otkazati"
 
 #, python-brace-format
 msgid "Cannot find required ROM file: {name}"
+msgstr ""
+
+msgid "Cartridge"
 msgstr ""
 
 msgid "Change fullscreen mode (desktop, fullscreen, window)"
@@ -237,6 +276,9 @@ msgstr "Čip RAM"
 msgid "Choose CD-ROM Image"
 msgstr "Odabrati CD-ROM sliku"
 
+msgid "Choose Cartridge Image"
+msgstr ""
+
 msgid "Choose Extended ROM"
 msgstr "Odabrati prošireni ROM"
 
@@ -248,6 +290,9 @@ msgstr "Odabrati hard disk uređaj"
 
 msgid "Choose Kickstart ROM"
 msgstr "Izabrati kikstart ROM"
+
+msgid "Choose Tape Image"
+msgstr ""
 
 msgid "Choose Type"
 msgstr ""
@@ -277,6 +322,12 @@ msgid "Committing data..."
 msgstr "Izvršavanje podataka"
 
 msgid "Committing locker data..."
+msgstr ""
+
+msgid "Commodore 64 Model"
+msgstr ""
+
+msgid "Common"
 msgstr ""
 
 msgid "Config"
@@ -314,11 +365,17 @@ msgstr ""
 msgid "Connect"
 msgstr "Povezivanje"
 
+msgid "Controllers"
+msgstr ""
+
 #, python-brace-format
 msgid "Copy {0}\n"
 "to {1}"
 msgstr "Kopiranje {0}\n"
 "u {1}"
+
+msgid "Correct Aspect"
+msgstr ""
 
 msgid "Could not open file for writing"
 msgstr "Nije moguće otvoriti fajl za upis"
@@ -337,6 +394,9 @@ msgstr "Kreirajte odmah nalog"
 
 msgid "Create disk image of type:"
 msgstr "Kreiranje slike diska tipa:"
+
+msgid "Crop"
+msgstr ""
 
 msgid "Cursor Keys and Right Ctrl/Alt"
 msgstr "Kursorski tasteri i desni Ctrl/Alt"
@@ -366,6 +426,9 @@ msgstr ""
 msgid "Custom uae_ Options"
 msgstr ""
 
+msgid "DOS Emulator"
+msgstr ""
+
 msgid "Database Games"
 msgstr ""
 
@@ -375,10 +438,6 @@ msgstr "Podrazumevano"
 #, python-brace-format
 msgid "Default ({0})"
 msgstr "Podrazumevano ({0})"
-
-#, python-brace-format
-msgid "Default - {0}"
-msgstr ""
 
 msgid "Defragment Databases"
 msgstr "Defragmentacija baze"
@@ -411,7 +470,7 @@ msgstr ""
 msgid "Digital Joystick"
 msgstr ""
 
-msgid "Directory for WHDLoad.key file (if you have it):"
+msgid "Directories"
 msgstr ""
 
 msgid "Disabled"
@@ -429,8 +488,8 @@ msgstr "Nemate već nalog?"
 msgid "Dongle"
 msgstr ""
 
-msgid "Double-click a device entry to configure it (map joystick buttons)."
-msgstr "Dvoklik na stavku uređaja da bi ga konfigurisali (mapiranje tastera džojstika)."
+msgid "Double-click a controller to configure it:"
+msgstr ""
 
 msgid "Download Game"
 msgstr ""
@@ -460,10 +519,16 @@ msgstr ""
 msgid "E-mail:"
 msgstr "E-mail:"
 
+msgid "Effect"
+msgstr ""
+
 msgid "Eject"
 msgstr "Izbaciti"
 
 msgid "Empty Floppy Drive Volume"
+msgstr ""
+
+msgid "Enable Additional Platforms (Requires Restart)"
 msgstr ""
 
 msgid "Enable experimental net play GUI (requires restart)"
@@ -475,13 +540,31 @@ msgstr "Omogućiti onlajn podršku baze podataka (zahteva restart)"
 msgid "Enable/disable use of OAGD.net locker"
 msgstr ""
 
+msgid "Enable/disable use of the Amiga game database"
+msgstr ""
+
 msgid "Enable/disable use of the Amstrad CPC game database"
 msgstr ""
 
 msgid "Enable/disable use of the Arcade game database"
 msgstr ""
 
+msgid "Enable/disable use of the Atari 2600 database"
+msgstr ""
+
+msgid "Enable/disable use of the Atari 5200 database"
+msgstr ""
+
+msgid "Enable/disable use of the Atari 7800 database"
+msgstr ""
+
 msgid "Enable/disable use of the Atari ST game database"
+msgstr ""
+
+msgid "Enable/disable use of the CD32 game database"
+msgstr ""
+
+msgid "Enable/disable use of the CDTV game database"
 msgstr ""
 
 msgid "Enable/disable use of the Commodore 64 (C64) database"
@@ -499,10 +582,28 @@ msgstr ""
 msgid "Enable/disable use of the Game Boy database"
 msgstr ""
 
+msgid "Enable/disable use of the MSX game database"
+msgstr ""
+
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr ""
 
+msgid "Enable/disable use of the PlayStation database"
+msgstr ""
+
+msgid "Enable/disable use of the Sega Master System database"
+msgstr ""
+
+msgid "Enable/disable use of the Sega Mega Drive (Genesis) database"
+msgstr ""
+
 msgid "Enable/disable use of the Super Nintendo database"
+msgstr ""
+
+msgid "Enable/disable use of the TurboGrafx-16 game database"
+msgstr ""
+
+msgid "Enable/disable use of the ZX Spectrum database"
 msgstr ""
 
 msgid "Enabled"
@@ -532,13 +633,13 @@ msgstr ""
 msgid "Experimental Features"
 msgstr "Eksperimentalne funkcije"
 
+msgid "Experimental Setup Wizard (Requires Restart)"
+msgstr ""
+
 msgid "Extended ROM"
 msgstr ""
 
 msgid "FS-UAE   Arcade"
-msgstr ""
-
-msgid "FS-UAE Arcade"
 msgstr ""
 
 msgid "Fade-in Duration on Start"
@@ -583,6 +684,9 @@ msgstr "Ime datoteke za novu sliku diskete:"
 msgid "Files for this game are still missing. Did you download the game and put the file(s) in the Downloads directory?"
 msgstr "Fajlovi za ovu igru i dalje nedostaju. Da li ste preuzeli igru i stavili datoteke u Downloads direktorijum?"
 
+msgid "Fill Screen"
+msgstr ""
+
 msgid "Filters"
 msgstr "Filteri"
 
@@ -618,6 +722,9 @@ msgstr ""
 
 msgid "Forgot your password?"
 msgstr "Zaboravili ste lozinku?"
+
+msgid "Frame"
+msgstr ""
 
 msgid "Freezer Cartridge"
 msgstr ""
@@ -758,11 +865,17 @@ msgstr ""
 msgid "Include built-in configurations"
 msgstr "Uključiti ugrađene konfiguracije"
 
+msgid "Include close buttons in dialogs"
+msgstr ""
+
 msgid "Input"
 msgstr "Ulaz"
 
 msgid "Input Options"
 msgstr "Opcije ulaza"
+
+msgid "Integer Scaling"
+msgstr ""
 
 msgid "Internal"
 msgstr "Interno"
@@ -781,9 +894,6 @@ msgstr "Port džojstika i miša"
 
 msgid "Joystick Ports"
 msgstr "Džojstik portovi"
-
-msgid "Joysticks & Gamepads"
-msgstr ""
 
 msgid "Keep aspect ratio when scaling (do not stretch)"
 msgstr "Zadržati razmeru kada se skalira (bez rastezanja)"
@@ -812,6 +922,9 @@ msgstr ""
 msgid "Language:"
 msgstr ""
 
+msgid "Large Border"
+msgstr ""
+
 msgid "Launcher Font Size"
 msgstr ""
 
@@ -825,6 +938,9 @@ msgid "Launching Game"
 msgstr "Pokretanje igre"
 
 msgid "Left"
+msgstr ""
+
+msgid "Legacy Scaling"
 msgstr ""
 
 msgid "Letter"
@@ -893,10 +1009,25 @@ msgstr "Održavanje"
 msgid "Make:"
 msgstr ""
 
+msgid "Master System Game Driver"
+msgstr ""
+
+msgid "Max Scaling"
+msgstr ""
+
 msgid "Media Swap List"
 msgstr "Lista izmena medija"
 
 msgid "Medium"
+msgstr ""
+
+msgid "Mednafen Audio Driver"
+msgstr ""
+
+msgid "Mega Drive Game Driver"
+msgstr ""
+
+msgid "Mega Drive Model"
 msgstr ""
 
 msgid "Middle Left"
@@ -904,10 +1035,6 @@ msgstr ""
 
 msgid "Middle Right"
 msgstr ""
-
-#, python-brace-format
-msgid "Miscellaneous functions to optimize {name}"
-msgstr "Ostale funkcije za optimizaciju {name}"
 
 msgid "Missing Files"
 msgstr "Nedostajući fajlovi"
@@ -946,6 +1073,9 @@ msgstr ""
 msgid "N/A"
 msgstr "Neprimenjivo"
 
+msgid "NES Game Driver"
+msgstr ""
+
 msgid "Net Play"
 msgstr "Igra preko mreže"
 
@@ -961,14 +1091,23 @@ msgstr ""
 msgid "New Config"
 msgstr ""
 
+msgid "Next"
+msgstr ""
+
 msgid "Nick:"
 msgstr "Nadimak:"
 
 msgid "No Amiga Device"
 msgstr ""
 
+msgid "No Border"
+msgstr ""
+
 msgid "No Device"
 msgstr "Nema uređaja"
+
+msgid "No Effect"
+msgstr ""
 
 msgid "No Host Device"
 msgstr "Nema host uređaja"
@@ -977,6 +1116,12 @@ msgid "No Last Played"
 msgstr ""
 
 msgid "No Protection"
+msgstr ""
+
+msgid "No Scaling"
+msgstr ""
+
+msgid "No Smoothing"
 msgstr ""
 
 msgid "No extended kickstart found for this model. Try 'scan' function."
@@ -991,7 +1136,7 @@ msgstr ""
 msgid "Not logged in"
 msgstr "Niste prijavljeni"
 
-msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgid "Note: This is an experimental feature. Additional plugins are needed."
 msgstr ""
 
 msgid "OAGD.net Locker Uploader"
@@ -1012,6 +1157,9 @@ msgstr "Uključeno"
 msgid "OpenGL Settings"
 msgstr "Podešavanje OpenGL-a "
 
+msgid "OpenRetro   Arcade"
+msgstr ""
+
 #, python-brace-format
 msgid "Option {name} is overridden by current configuration"
 msgstr ""
@@ -1026,6 +1174,18 @@ msgstr ""
 msgid "Outdated plugins: {0}"
 msgstr ""
 
+msgid "Override WHDLoad Amiga model"
+msgstr ""
+
+msgid "Override WHDLoad preload option"
+msgstr ""
+
+msgid "Override WHDLoad quit key"
+msgstr ""
+
+msgid "Override WHDLoad splash delay"
+msgstr ""
+
 msgid "Parallel Port Joysticks"
 msgstr "Paralelni džojstik portovi"
 
@@ -1033,6 +1193,9 @@ msgid "Password:"
 msgstr "Lozinka:"
 
 msgid "Platform"
+msgstr ""
+
+msgid "Platform & Model"
 msgstr ""
 
 msgid "Please open the following web page and download the game from there:"
@@ -1044,11 +1207,14 @@ msgstr "Molimo sačekajte..."
 msgid "Plugins"
 msgstr ""
 
-msgid "Preferred Joysticks"
-msgstr "Prioritetni džojstici"
+msgid "Preferred Controllers"
+msgstr ""
 
-msgid "Preferred device for secondary joystick:"
-msgstr "Željeni uređaj za drugi džojstik:"
+msgid "Preferred controller (if present):"
+msgstr ""
+
+msgid "Preferred device for secondary controller:"
+msgstr ""
 
 msgid "Preparing WHDLoad..."
 msgstr "Priprema WHDLoad..."
@@ -1064,6 +1230,9 @@ msgstr "Pripremanje kikstart ROM-ova..."
 
 msgid "Preparing..."
 msgstr "Priprema..."
+
+msgid "Prev"
+msgstr ""
 
 msgid "Purging old entries..."
 msgstr "Čišćenje starih zapisa..."
@@ -1086,6 +1255,9 @@ msgstr "Ponovni pokušaj u {0} sekundi..."
 
 msgid "Read more"
 msgstr "Pročitajte više o tome"
+
+msgid "Red"
+msgstr ""
 
 msgid "Refresh List of Connected Joystick Devices"
 msgstr "Osveži listu povezanih džojstika"
@@ -1121,6 +1293,9 @@ msgstr "Renderovanje sken linija u RTG grafičkom režimu"
 msgid "Reset password via e-mail"
 msgstr "Poništavanje lozinke preko e-mail"
 
+msgid "Reset to Defaults"
+msgstr ""
+
 msgid "Resetting game database..."
 msgstr "Poništavanje baze igara..."
 
@@ -1152,8 +1327,11 @@ msgstr "Snimanje u direktorijum:"
 msgid "Saving changes..."
 msgstr "Snimanje izmena..."
 
-msgid "Scaling"
-msgstr "Skaliranje"
+msgid "Scale"
+msgstr ""
+
+msgid "Scaling & Filters"
+msgstr ""
 
 msgid "Scaling Options"
 msgstr "Opcije skaliranja"
@@ -1237,6 +1415,9 @@ msgstr ""
 msgid "Settings"
 msgstr "Podešavanja"
 
+msgid "Setup Wizard"
+msgstr ""
+
 msgid "Show kickstart setup page on startup when all ROMs are missing"
 msgstr "Prikaži na startu kikstart podešavanja ako svi ROM-ovi nedostaju"
 
@@ -1252,6 +1433,15 @@ msgstr "Veličina:"
 msgid "Slow RAM"
 msgstr "Spori RAM"
 
+msgid "Small Border"
+msgstr ""
+
+msgid "Smoothing"
+msgstr ""
+
+msgid "Sound Blaster IRQ"
+msgstr ""
+
 msgid "Sound Card"
 msgstr ""
 
@@ -1261,7 +1451,10 @@ msgstr "Navedeni direktorijum ne postoji"
 msgid "Specify global options and settings which does not have UI controls"
 msgstr "Navedite globalne opcije i podešavanja koja nemaju UI kontrole"
 
-msgid "Standard"
+msgid "Square Pixels"
+msgstr ""
+
+msgid "Standard Qt Theme"
 msgstr ""
 
 msgid "Start"
@@ -1269,6 +1462,9 @@ msgstr "Pokreni"
 
 msgid "Start FS-UAE in fullscreen mode"
 msgstr "Pokretanje FS-UAE preko celog ekrana"
+
+msgid "Start in warp mode"
+msgstr ""
 
 msgid "Start with full keyboard emulation"
 msgstr ""
@@ -1284,6 +1480,9 @@ msgstr "Zaustavi"
 
 msgid "Stopped by user"
 msgstr "Zaustavljeno od strane korisnika"
+
+msgid "Stretch"
+msgstr ""
 
 msgid "Swap left and right CTRL keys"
 msgstr "Zameniti levi i desni CTRL taster"
@@ -1306,14 +1505,14 @@ msgstr "Sinhronizacija sa ekranom može u nekim slučajevima izazvati štucanje 
 msgid "System"
 msgstr ""
 
+msgid "Tape Drive"
+msgstr ""
+
 msgid "Terms of Download"
 msgstr "Uslovi za preuzimanje"
 
 msgid "Texture filter"
 msgstr "Filter teksture"
-
-msgid "The following joystick will be preferred, if present:"
-msgstr "Sledeći džojstik će biti prioritetan, ako je prisutan:"
 
 msgid "The following options may affect performance, so only enable them when needed for testing or debugging purposes."
 msgstr ""
@@ -1342,13 +1541,25 @@ msgstr ""
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Prelaženje između moda prozora i čitavog ekrana"
 
+msgid "Toggle quick settings sidebar"
+msgstr ""
+
 msgid "Turbo"
+msgstr ""
+
+msgid "Turbo Load"
 msgstr ""
 
 msgid "UAE bsdsocket.library"
 msgstr ""
 
 msgid "Ungrab Input on Middle Mouse Button"
+msgstr ""
+
+msgid "Unknown   Arcade"
+msgstr ""
+
+msgid "Unpublished Games"
 msgstr ""
 
 msgid "Update File Database"
@@ -1380,8 +1591,8 @@ msgstr "Ažuriranje podataka ormarića..."
 msgid "Upload"
 msgstr "Otpremanje"
 
-msgid "Upload Files to OAGD.net Locker"
-msgstr "Otpremanje datoteka u OAGD.net ormarić"
+msgid "Upload Files to OpenRetro Locker"
+msgstr ""
 
 msgid "Upload recognized Amiga files to your OAGD.net locker"
 msgstr "Otpremanje prepoznatih amiga datoteka u vaš OAGD.net ormarić"
@@ -1436,9 +1647,6 @@ msgstr ""
 msgid "WHDLoad Arguments"
 msgstr "WHDLoad argumenti"
 
-msgid "WHDLoad splash delay"
-msgstr ""
-
 msgid "Warning"
 msgstr ""
 
@@ -1447,6 +1655,9 @@ msgstr ""
 
 msgid "Web Links"
 msgstr "Veb linkovi"
+
+msgid "Welcome to the setup wizard for FS-UAE Launcher!"
+msgstr ""
 
 msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
 msgstr "Kada je Automatski režim naveden, željeni jezik je postavljen na osnovu informacija iz operativnog sistema (ili engleski jezik, ako se podržani jezik ne otkrije)."
@@ -1466,11 +1677,20 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
+msgid "You can close this wizard at any time if you do not want to use it, and you can also run it again later."
+msgstr ""
+
 msgid "You can write key = value pairs here to set FS-UAE options not currently supported by the user interface. This is only a temporary feature until the GUI supports all options directly."
 msgstr ""
 
 msgid "You should have kickstart files for each Amiga model you want to use:"
 msgstr "Trebalo bi da posedujete kikstart fajlove za svaki Amiga model koji koristite:"
+
+msgid "ZX Spectrum Game Driver"
+msgstr ""
+
+msgid "ZX Spectrum Model"
+msgstr ""
 
 msgid "Zoom Amiga display (crop)"
 msgstr "Zumiranje Amiga prikaza (crop opcija)"

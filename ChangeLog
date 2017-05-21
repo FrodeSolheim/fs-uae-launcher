@@ -1,3 +1,7 @@
+Version 2.9.6dev:
+
+* Imported updated translations from crowdin.com.
+
 Version 2.9.5dev:
 
 * Added support for WHDLoad 18.3.
@@ -11,6 +15,7 @@ Version 2.9.5dev:
 * New GUI setting to enable use of additional game platforms.
 * Disable config controls when loading a non-Amiga platform game.
 * Fix check for startup-sequence when determining if an archive is WHDLoad.
+
 
 Version 2.9.4dev:
 

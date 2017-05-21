@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2016-12-11 15:16+0100\n"
-"PO-Revision-Date: 2016-12-31 10:05-0500\n"
+"POT-Creation-Date: 2017-05-20 17:57+0200\n"
+"PO-Revision-Date: 2017-05-21 04:54-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -116,6 +116,9 @@ msgstr "Importar Amiga Forever"
 msgid "Amiga Forever import task started"
 msgstr "Tarea Importar Amiga Forever comenzada"
 
+msgid "Amiga Game Driver"
+msgstr ""
+
 msgid "Amiga Joystick"
 msgstr "Joystick amiga"
 
@@ -130,6 +133,15 @@ msgstr "Un Error ha Sucedido"
 
 msgid "Arcade Fullscreen"
 msgstr "Pantalla completa Arcade"
+
+msgid "Arcade starts with favorites filter"
+msgstr ""
+
+msgid "Arcade theme"
+msgstr ""
+
+msgid "Atari ST Model"
+msgstr ""
 
 msgid "Audio"
 msgstr "Sonido"
@@ -155,6 +167,9 @@ msgstr "Auto + Borde"
 msgid "Auto - {}"
 msgstr "Auto - {}"
 
+msgid "Auto Smoothing"
+msgstr ""
+
 msgid "Auto-Download"
 msgstr "Auto-descargar"
 
@@ -164,8 +179,17 @@ msgstr "Auto-disparo no activo"
 msgid "Auto-Fire is On"
 msgstr "Auto-disparo activo"
 
+msgid "Auto-Load Games"
+msgstr ""
+
+msgid "Auto-Quit"
+msgstr ""
+
 msgid "Automatic"
 msgstr "Automático"
+
+msgid "Automatic mouse/joystick mode for mouse port"
+msgstr ""
 
 msgid "Available Games"
 msgstr "Juegos disponibles"
@@ -188,6 +212,12 @@ msgstr "Mejor variante"
 msgid "Blizzard SCSI Kit"
 msgstr "Kit SCSI Blizzard"
 
+msgid "Blue"
+msgstr ""
+
+msgid "Border"
+msgstr ""
+
 msgid "Browse"
 msgstr "Navegar"
 
@@ -196,6 +226,9 @@ msgstr "Navegar a un Archivo"
 
 msgid "Browse for Folder"
 msgstr "Navegar a una Carpeta"
+
+msgid "C64 Palette"
+msgstr ""
 
 msgid "CD-ROM Drive"
 msgstr "Lector CD-rom"
@@ -215,12 +248,18 @@ msgstr "CD32 Joypad"
 msgid "CPU"
 msgstr "CPU"
 
+msgid "CRT Emulation"
+msgstr ""
+
 msgid "Cancel"
 msgstr "Cancelar"
 
 #, python-brace-format
 msgid "Cannot find required ROM file: {name}"
 msgstr "No se encuentra archivo necesario ROM: {name}"
+
+msgid "Cartridge"
+msgstr ""
 
 msgid "Change fullscreen mode (desktop, fullscreen, window)"
 msgstr "Cambiar a modo de pantalla completa (escritorio, pantalla completa, ventana)"
@@ -237,6 +276,9 @@ msgstr "Chip de RAM"
 msgid "Choose CD-ROM Image"
 msgstr "Seleccionar Imagen CD-ROM"
 
+msgid "Choose Cartridge Image"
+msgstr ""
+
 msgid "Choose Extended ROM"
 msgstr "Seleccionar ROM Extendida"
 
@@ -248,6 +290,9 @@ msgstr "Seleccionar Disco Duro"
 
 msgid "Choose Kickstart ROM"
 msgstr "Seleccionar Kickstart ROM"
+
+msgid "Choose Tape Image"
+msgstr ""
 
 msgid "Choose Type"
 msgstr "Elegir Tipo"
@@ -278,6 +323,12 @@ msgstr "Enviando datos..."
 
 msgid "Committing locker data..."
 msgstr "Transfiriendo datos de taquilla…"
+
+msgid "Commodore 64 Model"
+msgstr ""
+
+msgid "Common"
+msgstr ""
 
 msgid "Config"
 msgstr "Configuración"
@@ -314,11 +365,17 @@ msgstr "Configurar {device_name}"
 msgid "Connect"
 msgstr "Conectado"
 
+msgid "Controllers"
+msgstr ""
+
 #, python-brace-format
 msgid "Copy {0}\n"
 "to {1}"
 msgstr "Copiar {0}\n"
 "en {1}"
+
+msgid "Correct Aspect"
+msgstr ""
 
 msgid "Could not open file for writing"
 msgstr "No se puede abrir el fichero para escritura"
@@ -337,6 +394,9 @@ msgstr "Crear una cuenta ahora"
 
 msgid "Create disk image of type:"
 msgstr "Crear imagen de disco del tipo:"
+
+msgid "Crop"
+msgstr ""
 
 msgid "Cursor Keys and Right Ctrl/Alt"
 msgstr "Teclas Cursor y Ctlr/Alt Derecho"
@@ -361,10 +421,13 @@ msgid "Custom Options"
 msgstr "Opciones personalizadas"
 
 msgid "Custom boot directory for automatic WHDLoad support"
-msgstr ""
+msgstr "Directorio de arranque personalizado para WHDLoad automático"
 
 msgid "Custom uae_ Options"
 msgstr "Opciones uae_ Personalizadas"
+
+msgid "DOS Emulator"
+msgstr ""
 
 msgid "Database Games"
 msgstr "Base de datos juegos"
@@ -375,10 +438,6 @@ msgstr "Por Defecto"
 #, python-brace-format
 msgid "Default ({0})"
 msgstr "Por Defecto ({0})"
-
-#, python-brace-format
-msgid "Default - {0}"
-msgstr "Por defecto - {0}"
 
 msgid "Defragment Databases"
 msgstr "Defragmentar Base de datos"
@@ -411,8 +470,8 @@ msgstr "No se encontró Kickstart o ROM necesario para {}. Busca uno de estos ar
 msgid "Digital Joystick"
 msgstr "Joystick Digital"
 
-msgid "Directory for WHDLoad.key file (if you have it):"
-msgstr "Directorio para archivo WHDLoad.key (si tiene):"
+msgid "Directories"
+msgstr ""
 
 msgid "Disabled"
 msgstr "Deshabilitado"
@@ -429,8 +488,8 @@ msgstr "No tienes ya una cuenta?"
 msgid "Dongle"
 msgstr "Dongle"
 
-msgid "Double-click a device entry to configure it (map joystick buttons)."
-msgstr "Hacer Doble-clic sobre una entrada para configurarla (mapear botones joystick)"
+msgid "Double-click a controller to configure it:"
+msgstr ""
 
 msgid "Download Game"
 msgstr "Descargar juego"
@@ -460,20 +519,29 @@ msgstr "Conteo unidades"
 msgid "E-mail:"
 msgstr "Correo electrónico:"
 
+msgid "Effect"
+msgstr ""
+
 msgid "Eject"
 msgstr "Expulsar"
 
 msgid "Empty Floppy Drive Volume"
 msgstr "Unidad Disquete Vacia"
 
+msgid "Enable Additional Platforms (Requires Restart)"
+msgstr "Activar plataformas adicionales (es necesario reiniciar)"
+
 msgid "Enable experimental net play GUI (requires restart)"
-msgstr "Activar GUI experimental de juego en red (requiere reiniciar)"
+msgstr "Activar interfaz experimental de juego en red (es necesario reiniciar)"
 
 msgid "Enable online database support (requires restart)"
-msgstr "Activar soporte Base de datos online (requiere reinicio)"
+msgstr "Activar soporte de base de datos en línea (es necesario reiniciar)"
 
 msgid "Enable/disable use of OAGD.net locker"
 msgstr "Activar/desactivar uso locker OAGD.net"
+
+msgid "Enable/disable use of the Amiga game database"
+msgstr "Activar/desactivar el uso de la base de datos de juegos de Amiga"
 
 msgid "Enable/disable use of the Amstrad CPC game database"
 msgstr "Habilita/deshabilita uso base datos juego Amstrad CPC"
@@ -481,8 +549,23 @@ msgstr "Habilita/deshabilita uso base datos juego Amstrad CPC"
 msgid "Enable/disable use of the Arcade game database"
 msgstr "Habilita/deshabilita uso base de datos juegos Arcade"
 
+msgid "Enable/disable use of the Atari 2600 database"
+msgstr "Activar/desactivar el uso de la base de datos de Atari 2600"
+
+msgid "Enable/disable use of the Atari 5200 database"
+msgstr "Activar/desactivar el uso de la base de datos de Atari 5200"
+
+msgid "Enable/disable use of the Atari 7800 database"
+msgstr "Activar/desactivar el uso de la base de datos de Atari 7800"
+
 msgid "Enable/disable use of the Atari ST game database"
 msgstr "Habilita/deshabilita uso base datos juego Atari ST"
+
+msgid "Enable/disable use of the CD32 game database"
+msgstr "Activar/desactivar el uso de la base de datos de juegos de CD32"
+
+msgid "Enable/disable use of the CDTV game database"
+msgstr "Activar/desactivar el uso de la base de datos de juegos de CDTV"
 
 msgid "Enable/disable use of the Commodore 64 (C64) database"
 msgstr "Habilita/deshabilita uso base datos Commodore 64 (C64)"
@@ -494,16 +577,34 @@ msgid "Enable/disable use of the Game Boy Advance database"
 msgstr "Habilita/deshabilita uso base de datos Game Boy Advance"
 
 msgid "Enable/disable use of the Game Boy Color database"
-msgstr ""
+msgstr "Habilita/deshabilita uso base de datos Game Boy Color"
 
 msgid "Enable/disable use of the Game Boy database"
-msgstr ""
+msgstr "Habilita/deshabilita uso base de datos Game Boy"
+
+msgid "Enable/disable use of the MSX game database"
+msgstr "Activar/desactivar el uso de la base de datos de juegos de MSX"
 
 msgid "Enable/disable use of the Nintendo (NES) database"
 msgstr "Habilita/deshabilita uso base de datos Nintendo (NES)"
 
+msgid "Enable/disable use of the PlayStation database"
+msgstr "Activar/desactivar el uso de la base de datos de PlayStation"
+
+msgid "Enable/disable use of the Sega Master System database"
+msgstr "Activar/desactivar el uso de la base de datos de Sega Master System"
+
+msgid "Enable/disable use of the Sega Mega Drive (Genesis) database"
+msgstr "Activar/desactivar el uso de la base de datos de Sega Meda Drive (Génesis)"
+
 msgid "Enable/disable use of the Super Nintendo database"
 msgstr "Habilita/deshabilita uso base de datos Super Nintendo"
+
+msgid "Enable/disable use of the TurboGrafx-16 game database"
+msgstr "Activar/desactivar el uso de la base de datos de juegos de TurboGrafx-16"
+
+msgid "Enable/disable use of the ZX Spectrum database"
+msgstr "Activar/desactivar el uso de la base de datos de ZX Spectrum"
 
 msgid "Enabled"
 msgstr "Habilitado"
@@ -532,13 +633,13 @@ msgstr "Visualización configuración experimental (requiere reiniciar)"
 msgid "Experimental Features"
 msgstr "Características Experimentales"
 
+msgid "Experimental Setup Wizard (Requires Restart)"
+msgstr ""
+
 msgid "Extended ROM"
 msgstr "ROM Extendida"
 
 msgid "FS-UAE   Arcade"
-msgstr ""
-
-msgid "FS-UAE Arcade"
 msgstr ""
 
 msgid "Fade-in Duration on Start"
@@ -583,6 +684,9 @@ msgstr "Nombre para la nueva imagen de disquete:"
 msgid "Files for this game are still missing. Did you download the game and put the file(s) in the Downloads directory?"
 msgstr "Archivos de este juego todavía no encontrados. Descargaste el juego y pusiste el fichero en el directorio de descargas?"
 
+msgid "Fill Screen"
+msgstr ""
+
 msgid "Filters"
 msgstr "Filtros"
 
@@ -618,6 +722,9 @@ msgstr "Actualizar log después de cada línea del log"
 
 msgid "Forgot your password?"
 msgstr "Olvidaste tu contraseña?"
+
+msgid "Frame"
+msgstr ""
 
 msgid "Freezer Cartridge"
 msgstr "Congelar Cartucho"
@@ -758,11 +865,17 @@ msgstr "Insertar disco de guardado"
 msgid "Include built-in configurations"
 msgstr "Incluir configuraciones Integradas"
 
+msgid "Include close buttons in dialogs"
+msgstr ""
+
 msgid "Input"
 msgstr "Entrada"
 
 msgid "Input Options"
 msgstr "Opciones Entrada"
+
+msgid "Integer Scaling"
+msgstr ""
 
 msgid "Internal"
 msgstr "Interno"
@@ -781,9 +894,6 @@ msgstr "Puerto Joystick y Ratón"
 
 msgid "Joystick Ports"
 msgstr "Puerto Joystick"
-
-msgid "Joysticks & Gamepads"
-msgstr "Joysticks y Gamepads"
 
 msgid "Keep aspect ratio when scaling (do not stretch)"
 msgstr "Manterner el ratio de aspectos cuando escale (no estirar)"
@@ -812,6 +922,9 @@ msgstr "Idioma"
 msgid "Language:"
 msgstr "Idioma:"
 
+msgid "Large Border"
+msgstr ""
+
 msgid "Launcher Font Size"
 msgstr "Tamaño de la fuente lanzador"
 
@@ -826,6 +939,9 @@ msgstr "Lanzando Juego"
 
 msgid "Left"
 msgstr "Izquierda"
+
+msgid "Legacy Scaling"
+msgstr ""
 
 msgid "Letter"
 msgstr "Letra"
@@ -893,21 +1009,32 @@ msgstr "Mantenimiento"
 msgid "Make:"
 msgstr "Hacer:"
 
+msgid "Master System Game Driver"
+msgstr ""
+
+msgid "Max Scaling"
+msgstr ""
+
 msgid "Media Swap List"
 msgstr "Lista Intercambio Medios"
 
 msgid "Medium"
 msgstr "Medio"
 
+msgid "Mednafen Audio Driver"
+msgstr ""
+
+msgid "Mega Drive Game Driver"
+msgstr ""
+
+msgid "Mega Drive Model"
+msgstr ""
+
 msgid "Middle Left"
 msgstr "Media izquierda"
 
 msgid "Middle Right"
 msgstr "Medio derecha"
-
-#, python-brace-format
-msgid "Miscellaneous functions to optimize {name}"
-msgstr "Funciones variadas para optimizar {name}"
 
 msgid "Missing Files"
 msgstr "Ficheros no encontrados"
@@ -946,6 +1073,9 @@ msgstr "Selección múltiple..."
 msgid "N/A"
 msgstr "N/D"
 
+msgid "NES Game Driver"
+msgstr ""
+
 msgid "Net Play"
 msgstr "Juego en Red"
 
@@ -961,14 +1091,23 @@ msgstr "Tarjeta red"
 msgid "New Config"
 msgstr "Configuración nueva"
 
+msgid "Next"
+msgstr ""
+
 msgid "Nick:"
 msgstr "Apodo:"
 
 msgid "No Amiga Device"
 msgstr "Ningún Dispositivo Amiga"
 
+msgid "No Border"
+msgstr ""
+
 msgid "No Device"
 msgstr "Ningún Dispositivo"
+
+msgid "No Effect"
+msgstr ""
 
 msgid "No Host Device"
 msgstr "Ningún Dispositivo Host"
@@ -978,6 +1117,12 @@ msgstr "No Ultimo Jugado"
 
 msgid "No Protection"
 msgstr "Sin Protección"
+
+msgid "No Scaling"
+msgstr ""
+
+msgid "No Smoothing"
+msgstr ""
 
 msgid "No extended kickstart found for this model. Try 'scan' function."
 msgstr "Kickstart extendida no encontrada de este modelo. Prueba función 'escanear'."
@@ -991,7 +1136,7 @@ msgstr "Ningúno"
 msgid "Not logged in"
 msgstr "No logado :"
 
-msgid "Note: Support for additional game databases is an experimental feature and does not provide the same level of maturity as Amiga/CDTV/CD32. Also, additional plugins are needed to play the games."
+msgid "Note: This is an experimental feature. Additional plugins are needed."
 msgstr ""
 
 msgid "OAGD.net Locker Uploader"
@@ -1012,6 +1157,9 @@ msgstr "Activado"
 msgid "OpenGL Settings"
 msgstr "Ajustes OpenGL"
 
+msgid "OpenRetro   Arcade"
+msgstr ""
+
 #, python-brace-format
 msgid "Option {name} is overridden by current configuration"
 msgstr "Opción {name} reemplazada por configuración actual"
@@ -1026,6 +1174,18 @@ msgstr "Otro Dispositivo"
 msgid "Outdated plugins: {0}"
 msgstr "Plugins anticuado: {0}"
 
+msgid "Override WHDLoad Amiga model"
+msgstr ""
+
+msgid "Override WHDLoad preload option"
+msgstr ""
+
+msgid "Override WHDLoad quit key"
+msgstr ""
+
+msgid "Override WHDLoad splash delay"
+msgstr ""
+
 msgid "Parallel Port Joysticks"
 msgstr "Joysticks Puerto Paralelo"
 
@@ -1034,6 +1194,9 @@ msgstr "Contraseña:"
 
 msgid "Platform"
 msgstr "Plataforma"
+
+msgid "Platform & Model"
+msgstr ""
 
 msgid "Please open the following web page and download the game from there:"
 msgstr "Por favor abre la siguiente página web para descargar el juego:"
@@ -1044,11 +1207,14 @@ msgstr "Por favor espere..."
 msgid "Plugins"
 msgstr "Plugins"
 
-msgid "Preferred Joysticks"
-msgstr "Joysticks Preferidos"
+msgid "Preferred Controllers"
+msgstr ""
 
-msgid "Preferred device for secondary joystick:"
-msgstr "Dispositivo preferido para joystick secundario:"
+msgid "Preferred controller (if present):"
+msgstr ""
+
+msgid "Preferred device for secondary controller:"
+msgstr ""
 
 msgid "Preparing WHDLoad..."
 msgstr "Preparando WHDLoad..."
@@ -1064,6 +1230,9 @@ msgstr "Preparando kickstart ROMs…"
 
 msgid "Preparing..."
 msgstr "Preparando..."
+
+msgid "Prev"
+msgstr ""
 
 msgid "Purging old entries..."
 msgstr "Purgando entradas antiguas..."
@@ -1087,6 +1256,9 @@ msgstr "Reintentar en {0} segundos…"
 msgid "Read more"
 msgstr "Leer más"
 
+msgid "Red"
+msgstr ""
+
 msgid "Refresh List of Connected Joystick Devices"
 msgstr "Actualizar lista de Joysticks conectados "
 
@@ -1094,7 +1266,7 @@ msgid "Reject"
 msgstr "Descartar"
 
 msgid "Relative Temporary Directories"
-msgstr ""
+msgstr "Directorios temporales relativos"
 
 msgid "Relative paths"
 msgstr "Rutas relativas"
@@ -1120,6 +1292,9 @@ msgstr "Renderizar scanlines en modo gráfico RTG"
 
 msgid "Reset password via e-mail"
 msgstr "Resetear contraseña por e-mail"
+
+msgid "Reset to Defaults"
+msgstr ""
 
 msgid "Resetting game database..."
 msgstr "Reseteando Base de datos juegos…"
@@ -1152,8 +1327,11 @@ msgstr "Reseteando Base de datos juegos…"
 msgid "Saving changes..."
 msgstr "Guardando Cambios..."
 
-msgid "Scaling"
-msgstr "Escala"
+msgid "Scale"
+msgstr ""
+
+msgid "Scaling & Filters"
+msgstr ""
 
 msgid "Scaling Options"
 msgstr "Opciones de escalado"
@@ -1237,6 +1415,9 @@ msgstr "Configurar idioma aplicacion FS-UAE"
 msgid "Settings"
 msgstr "Ajustes"
 
+msgid "Setup Wizard"
+msgstr ""
+
 msgid "Show kickstart setup page on startup when all ROMs are missing"
 msgstr "Configuración kickstart en el inicio si no hay ROMs disponibles"
 
@@ -1252,6 +1433,15 @@ msgstr "Tamaño:"
 msgid "Slow RAM"
 msgstr "RAM lenta"
 
+msgid "Small Border"
+msgstr ""
+
+msgid "Smoothing"
+msgstr ""
+
+msgid "Sound Blaster IRQ"
+msgstr ""
+
 msgid "Sound Card"
 msgstr "Tarjeta sonido"
 
@@ -1261,14 +1451,20 @@ msgstr "El directorio especificado no existe"
 msgid "Specify global options and settings which does not have UI controls"
 msgstr "Especificar opciones globales y ajustes que no tienen controles UI"
 
-msgid "Standard"
-msgstr "Estándar"
+msgid "Square Pixels"
+msgstr ""
+
+msgid "Standard Qt Theme"
+msgstr ""
 
 msgid "Start"
 msgstr "Comenzar"
 
 msgid "Start FS-UAE in fullscreen mode"
 msgstr "Comenzar FS-UAE en modo Pantalla Completa"
+
+msgid "Start in warp mode"
+msgstr ""
 
 msgid "Start with full keyboard emulation"
 msgstr "Comenzar con emulación teclado completo"
@@ -1284,6 +1480,9 @@ msgstr "Parar"
 
 msgid "Stopped by user"
 msgstr "Parado por usuario"
+
+msgid "Stretch"
+msgstr ""
 
 msgid "Swap left and right CTRL keys"
 msgstr "Cambiar tecla CTRL izquierda y derecha"
@@ -1306,14 +1505,14 @@ msgstr "Sincronizar con la pantalla puedes en algunos casos incrementar cortes y
 msgid "System"
 msgstr "Sistema"
 
+msgid "Tape Drive"
+msgstr ""
+
 msgid "Terms of Download"
 msgstr "Condiciones de descarga "
 
 msgid "Texture filter"
 msgstr "Filtro Texturas"
-
-msgid "The following joystick will be preferred, if present:"
-msgstr "Jostick preferido si está conectado:"
 
 msgid "The following options may affect performance, so only enable them when needed for testing or debugging purposes."
 msgstr "Las siguientes opciones pueden afectar al rendimiento, solamente actívalas cuando sea necesario para la prueba o depuración."
@@ -1342,14 +1541,26 @@ msgstr "Este plugin esta anticuado"
 msgid "Toggle Between Windowed and Full-Screen Mode"
 msgstr "Cambiar entre modo ventana y pantalla completa"
 
+msgid "Toggle quick settings sidebar"
+msgstr ""
+
 msgid "Turbo"
 msgstr "Turbo"
+
+msgid "Turbo Load"
+msgstr ""
 
 msgid "UAE bsdsocket.library"
 msgstr "UAE bsdsocket.library"
 
 msgid "Ungrab Input on Middle Mouse Button"
 msgstr "Desasignar entrada botón central del ratón"
+
+msgid "Unknown   Arcade"
+msgstr ""
+
+msgid "Unpublished Games"
+msgstr ""
 
 msgid "Update File Database"
 msgstr "Actualizar Base de Datos Archivo"
@@ -1380,8 +1591,8 @@ msgstr "Actualizando datos taquilla…"
 msgid "Upload"
 msgstr "Subir"
 
-msgid "Upload Files to OAGD.net Locker"
-msgstr "Subir ficheros a taquilla OAGD.net"
+msgid "Upload Files to OpenRetro Locker"
+msgstr ""
 
 msgid "Upload recognized Amiga files to your OAGD.net locker"
 msgstr "Subir juegos amiga reconocidos a tu taquilla OAGD.net"
@@ -1395,7 +1606,7 @@ msgid "Use RDB disk images for size >= {0}"
 msgstr "Usar imágenes disco RDB para tamaño >= {0}"
 
 msgid "Use keyboard raw input (Windows)"
-msgstr ""
+msgstr "Usar el teclado raw (Windows)"
 
 msgid "Using Kickstart ROM Replacement"
 msgstr "Usando Reemplazo Kickstart ROM"
@@ -1436,9 +1647,6 @@ msgstr "WHDLoad"
 msgid "WHDLoad Arguments"
 msgstr "Parámetros WHDLoad"
 
-msgid "WHDLoad splash delay"
-msgstr "Retardo WHDLoad splash"
-
 msgid "Warning"
 msgstr "Atención"
 
@@ -1447,6 +1655,9 @@ msgstr "ADVERTENCIA: No archivos ROM encontrados!"
 
 msgid "Web Links"
 msgstr "Enlaces Web"
+
+msgid "Welcome to the setup wizard for FS-UAE Launcher!"
+msgstr ""
 
 msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
 msgstr "Cuando automático está marcado, tu idioma preferido está basado en la información de tu sistema operativo (o Ingles, si el idioma no es detectado)"
@@ -1466,11 +1677,20 @@ msgstr "Escribir archivos metadatos .uaem"
 msgid "Year"
 msgstr "Año"
 
+msgid "You can close this wizard at any time if you do not want to use it, and you can also run it again later."
+msgstr ""
+
 msgid "You can write key = value pairs here to set FS-UAE options not currently supported by the user interface. This is only a temporary feature until the GUI supports all options directly."
 msgstr "Puedes escribir pares clave = valor aquí para establecer las opciones de FS-UAE que no se admiten en la interfaz de usuario. Esto es sólo temporal hasta que la GUI incluya las opciones directamente."
 
 msgid "You should have kickstart files for each Amiga model you want to use:"
 msgstr "Debes tener archivos kickstart por cada modelo Amiga que quieras usar:"
+
+msgid "ZX Spectrum Game Driver"
+msgstr ""
+
+msgid "ZX Spectrum Model"
+msgstr ""
 
 msgid "Zoom Amiga display (crop)"
 msgstr "Visualización Zoom Amiga (recortado)"
