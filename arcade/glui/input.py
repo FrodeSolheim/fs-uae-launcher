@@ -6,7 +6,7 @@ from fsbc.util import memoize
 from fsgs.input.eventlistener import EventListener
 from fsgs.input.inputdevice import InputDevice
 from fsgs.input.keyboard import Keyboard
-from fsgs.input.manager import DeviceManager
+from fsgs.input.devicemanager import DeviceManager
 
 REPEAT_THRESHOLD = 0.300
 REPEAT_INTERVAL = 0.075
@@ -336,7 +336,7 @@ class InputHandler(object):
 
     @classmethod
     def get_device_manager(cls):
-        return cls.event_listener.manager
+        return cls.event_listener.device_manager
 
     @classmethod
     def reinit_joysticks(cls):

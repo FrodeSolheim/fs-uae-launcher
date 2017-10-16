@@ -18,6 +18,11 @@ class MessA7800Driver(MessDriver):
         },
     ]
 
+    def prepare(self):
+        super().prepare()
+        # self.emulator.args.extend(
+        #     ["-lightgun", "-lightgun_device", "mouse"])
+
     def mess_configure(self):
         self.mess_configure_cartridge()
 

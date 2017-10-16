@@ -1,4 +1,5 @@
 from fsbc import settings
+from fsgs import openretro
 from fsgs.option import Option
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
@@ -16,7 +17,7 @@ class NewButton(IconButton):
 
     @staticmethod
     def new_config():
-        if settings.get(Option.PLATFORMS_FEATURE):
+        if openretro or settings.get(Option.PLATFORMS_FEATURE):
             platform_id = LauncherConfig.get(Option.PLATFORM)
         else:
             platform_id = None

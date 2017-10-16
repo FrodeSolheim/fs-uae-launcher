@@ -1,6 +1,8 @@
+import logging
 import os
 
 import functools
+import warnings
 from configparser import ConfigParser
 
 import fsboot
@@ -15,14 +17,15 @@ from fsgs import openretro
 class FSGSDirectories(object):
     @classmethod
     def initialize(cls):
-        print("[DEPRECATED] FSGSDirectories.initialize")
+        warnings.warn(DeprecationWarning)
+        logging.debug("[DEPRECATED] FSGSDirectories.initialize")
         cls._initialize()
 
     @classmethod
     def _initialize(cls):
         if hasattr(cls, "_initialized") and cls._initialized:
             return
-        print("FSGSDirectories._initialize")
+        logging.debug("FSGSDirectories._initialize")
         cls.get_base_dir()
         cls._initialized = True
 

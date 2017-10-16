@@ -1,2 +1,6 @@
-Description: Enable/disable use of OAGD.net locker
-Type: boolean
+Description: OpenRetro.org Locker
+Type: Boolean
+Default: 1
+Example: 0
+
+Use this option to toggle the usage of OpenRetro.org locker functionality.

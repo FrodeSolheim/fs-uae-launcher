@@ -1,5 +1,6 @@
 import json
 
+from fsgs import Option
 from fsgs.drivers.mamedriver import MameDriver
 
 
@@ -12,25 +13,25 @@ class MameArcadeDriver(MameDriver):
 
     PORTS = [
         {
-            "description": "1st Controller",
+            "description": "Player 1",
             "types": [CONTROLLER]
         }, {
-            "description": "2nd Controller",
+            "description": "Player 2",
             "types": [CONTROLLER]
         }, {
-            "description": "3rd Controller",
+            "description": "Player 3",
             "types": [CONTROLLER]
         }, {
-            "description": "4th Controller",
+            "description": "Player 4",
             "types": [CONTROLLER]
         },
     ]
 
     def mame_romset(self):
-        name = self.config["mame_rom_set"]
+        name = self.options["mame_rom_set"]
         files = {}
-        for entry in json.loads(self.config["file_list"]):
-            files[entry["sha1"]] = entry["name"]
+        for entry in json.loads(self.options["file_list"]):
+            files[entry["name"]] = entry["sha1"]
         return name, files
 
     def mame_input_mapping(self, _):
@@ -51,3 +52,10 @@ class MameArcadeDriver(MameDriver):
                 b += 1
                 mapping[str(b)] = "P#_BUTTON" + button
         return mapping
+
+    def prepare(self):
+        super().prepare()
+        if self.options[Option.MAME_ARTWORK] == "1":
+            pass
+        else:
+            self.create_mame_layout()

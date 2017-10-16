@@ -8,7 +8,7 @@ from ...i18n import gettext
 from fsgs.amiga.rommanager import ROMManager
 from fsgs.FSGSDirectories import FSGSDirectories
 from ...launcher_signal import LauncherSignal
-from fsgs.FileDatabase import FileDatabase
+from fsgs.filedatabase import FileDatabase
 
 
 class ImportTask(threading.Thread):

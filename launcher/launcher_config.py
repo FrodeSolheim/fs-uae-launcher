@@ -94,6 +94,7 @@ cfg = [
     ("homepage_url", ""),
     ("longplay_url", ""),
     ("variant_uuid", ""),
+    ("game_uuid", ""),
 
     ("download_file", ""),
     ("download_page", ""),
@@ -135,9 +136,15 @@ cfg = [
     (Option.ATARI_MODEL, "", "checksum", "sync"),
     (Option.C64_MODEL, "", "checksum", "sync"),
     (Option.CARTRIDGE_SLOT, "", "checksum", "sync"),
+    (Option.FILE_LIST, "", "custom", "sync"),
     (Option.FLOPPY_DRIVE_VOLUME_EMPTY, "", "sync"),
     (Option.GAME_NAME, ""),
+    ("mame_rom_set", "", "custom", "checksum", "sync"),
+    (Option.NEOGEO_MODEL, "", "checksum", "sync"),
+    (Option.NES_INES_HEADER, "", "checksum", "sync"),
+    (Option.NES_MODEL, "", "checksum", "sync"),
     (Option.SMD_MODEL, "", "checksum", "sync"),
+    ("refresh_rate", "", "custom", "checksum", "sync"),
     (Option.TAPE_DRIVE_0, "", "checksum", "sync"),
     (Option.VARIANT_NAME, ""),
     (Option.ZXS_MODEL, "", "checksum", "sync"),
@@ -393,7 +400,7 @@ class LauncherConfig(object):
         print("---", config["joystick_port_0"])
         print("---", config["joystick_port_1"])
 
-        from .device_manager import DeviceManager
+        from .devicemanager import DeviceManager
         available = DeviceManager.get_joystick_names()
         available.extend(["none", "mouse", "keyboard"])
         available_lower = [x.lower() for x in available]

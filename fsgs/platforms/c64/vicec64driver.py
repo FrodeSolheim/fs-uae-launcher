@@ -114,13 +114,13 @@ class ViceC64Driver(GameDriver):
 
         if self.helper.model() == C64_MODEL_C64:
             self.set_model_name("Commodore C64")
-            self.args.extend(["-model", "c64"])
+            self.emulator.args.extend(["-model", "c64"])
         elif self.helper.model() == C64_MODEL_C64C_1541_II:
             self.set_model_name("Commodore C64C 1541-II")
-            self.args.extend(["-model", "c64c"])
+            self.emulator.args.extend(["-model", "c64c"])
         else:
             self.set_model_name("Commodore C64C")
-            self.args.extend(["-model", "c64c"])
+            self.emulator.args.extend(["-model", "c64c"])
 
         media_keys = ["floppy_drive_0", "tape_drive_0"]
         for i in range(20):

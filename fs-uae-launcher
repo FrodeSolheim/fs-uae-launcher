@@ -10,11 +10,6 @@ if os.environ.get("FSGS_PYTHONPATH", ""):
     sys.path.insert(0, os.environ.get("FSGS_PYTHONPATH"))
 
 
-def print_help():
-    print("fs-uae-launcher")
-    print("FIXME")
-
-
 def print_version():
     import launcher.version
     print(launcher.version.VERSION)
@@ -78,9 +73,6 @@ def main():
         frozen_python_libs()
         frozen_requests_ca_cert()
 
-    # if "--help" in sys.argv:
-    #     print_help()
-    #     sys.exit(0)
     if "--version" in sys.argv:
         print_version()
         sys.exit(0)
@@ -93,6 +85,8 @@ main()
 
 # Dummy imports for cx_Freeze
 sys.exit(0)
+# noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
+import pkg_resources._vendor.appdirs
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.packaging.requirements
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember

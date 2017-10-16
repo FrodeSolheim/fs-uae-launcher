@@ -4,7 +4,7 @@ import os
 from fsbc.paths import Paths
 from fsgs.Database import Database
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.FileDatabase import FileDatabase
+from fsgs.filedatabase import FileDatabase
 from fsgs.amiga.amiga import Amiga
 from fsgs.amiga.rommanager import ROMManager
 from fsgs.context import fsgs

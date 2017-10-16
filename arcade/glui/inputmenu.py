@@ -10,7 +10,7 @@ from arcade.glui.texture import Texture
 from arcade.glui.topmenu import GameCenterItem
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.input.inputdevice import InputDevice
-from fsgs.input.manager import DeviceManager
+from fsgs.input.devicemanager import DeviceManager
 from .launchmenu import LaunchMenu
 
 

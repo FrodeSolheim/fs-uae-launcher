@@ -4,6 +4,7 @@ from http.client import HTTPConnection, HTTPSConnection
 from urllib.request import build_opener, HTTPBasicAuthHandler
 
 from fsbc.application import app
+from fsbc.settings import Settings
 from fsgs.FSGSDirectories import FSGSDirectories
 
 
@@ -27,7 +28,7 @@ def fs_uae_url_from_sha1_and_name(sha1, name):
 
 
 def openretro_server():
-    server = app.settings["database_server"]
+    server = Settings.instance()["database_server"]
     if not server:
         server = default_openretro_server_from_file()
     if not server:

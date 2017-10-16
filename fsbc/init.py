@@ -25,11 +25,11 @@ def initialize_application(
 
     if name is not None:
         Application.app_name = name
-        print(name)
+        # print(name)
 
     if version is not None:
         Application.app_version = version
-        print(version)
+        # print(version)
 
     if enable_exception_handler:
         fsbc.debug.enable_exception_handler()
@@ -42,5 +42,5 @@ def initialize_application(
         # fsbc.unicode.patch_all()
         unicode_patched = True
 
-    print(platform.uname())
-    print(sys.argv)
+    # print(platform.uname())
+    # print(sys.argv)

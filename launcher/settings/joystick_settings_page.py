@@ -1,6 +1,6 @@
 import fsui
 from fsgs.option import Option
-from launcher.device_manager import DeviceManager
+from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.settings.settings_page import SettingsPage

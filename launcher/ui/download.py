@@ -1,4 +1,4 @@
-from launcher.file_scanner import FileScanner
+from launcher.filescanner import FileScanner
 from fsgs.download import Downloader
 from fsgs.FSGSDirectories import FSGSDirectories
 import fsui

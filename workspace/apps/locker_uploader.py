@@ -6,7 +6,7 @@ from io import BytesIO as StringIO
 import fsui
 from fsbc.task import Task
 from fsgs.Archive import Archive
-from fsgs.FileDatabase import FileDatabase
+from fsgs.filedatabase import FileDatabase
 from fsgs.amiga.rommanager import ROMManager
 from fsgs.context import fsgs
 from fsgs.ogd.client import OGDClient
@@ -139,6 +139,8 @@ class LockerUploaderTask(Task):
             try:
                 # this is done to properly handle encrypted ROMs
                 archive = Archive(path)
+                # FIXME: Use Archive.open to get support for filter functions
+                # FIXME: Also use stream api, do not buffer entire file
                 data = ROMManager.decrypt_archive_rom(archive, path)["data"]
             except Exception:
                 traceback.print_exc()

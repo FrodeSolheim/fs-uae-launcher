@@ -81,10 +81,11 @@ def setup_logging(log_name):
     from fsgs.FSGSDirectories import FSGSDirectories
     logs_dir = FSGSDirectories.get_logs_dir()
     log_file = os.path.join(logs_dir, log_name)
+    print("[LOGGING] Logging to", log_file)
     try:
         f = open(log_file, "wb")
     except Exception:
-        print("could not open log file")
+        print("[LOGGING] Could not open log file")
         # use MultiplexedOutput here too, for the mutex handling
         sys.stdout = MultiplexedOutput(sys.stdout)
         sys.stderr = MultiplexedOutput(sys.stderr)

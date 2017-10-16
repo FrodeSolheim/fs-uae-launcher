@@ -1,6 +1,9 @@
 import os
 import io
 import traceback
+
+from io import BytesIO
+
 from fsbc.zipfile import ZipFile
 
 archive_extensions = [".zip", ".rp9"]
@@ -9,7 +12,7 @@ try:
     from lhafile import LhaFile
 except ImportError:
     traceback.print_exc()
-    print("LhaFile module import problem")
+    print("[ARCHIVE] LhaFile module import problem")
     LhaFile = None
 else:
     archive_extensions.append(".lha")
@@ -18,7 +21,7 @@ try:
     from fsbc.seven_zip_file import SevenZipFile
 except ImportError:
     traceback.print_exc()
-    print("SevenZipFile module import problem")
+    print("[ARCHIVE] SevenZipFile module import problem")
     SevenZipFile = None
 else:
     archive_extensions.append(".7z")
@@ -166,7 +169,55 @@ class NullHandler(object):
         return []
 
     def open(self, path):
-        return open(path, "rb")
+        return filter_open(path)
+
+
+def filter_open(path, stream=None):
+    if stream is None:
+        stream = open(path.rsplit("#?", 1)[0], "rb")
+    if "#?" in path:
+        if path.endswith("#?Filter=Skip(16)"):
+            return SkipFilter(stream, 16)
+        elif path.endswith("#?Filter=ByteSwapWords"):
+            return ByteSwapWordsFilter(stream)
+        else:
+            raise Exception(
+                "Unrecognized file filter: " + path.split("#?")[-1])
+    return stream
+
+
+class SkipFilter:
+    def __init__(self, stream, count):
+        print("[ARCHIVE] Skip({}) filter for".format(count), stream)
+        self.stream = stream
+        self.count = count
+        self.strip_left = count
+
+    def read(self, n=-1):
+        if self.strip_left:
+            data = self.stream.read(self.strip_left)
+            if len(data) == 0:
+                # No data returned, end of stream
+                return b""
+            self.strip_left -= len(data)
+        return self.stream.read(n)
+
+
+class ByteSwapWordsFilter:
+    def __init__(self, stream):
+        print("[ARCHIVE] ByteSwapWords filter for", stream)
+        self.stream = stream
+
+    def read(self, n=-1):
+        data = self.stream.read(n)
+        # FIXME: Support odd length reads
+        assert len(data) % 2 == 0
+        io = BytesIO()
+        for i in range(0, len(data), 2):
+            io.write(data[i + 1:i + 2])
+            io.write(data[i:i + 1])
+        io.seek(0)
+        return io.getvalue()
 
 
 class Archive(object):
@@ -184,7 +235,7 @@ class Archive(object):
         return os.path.dirname(path)
 
     def split_path(self, path):
-        print("split_path", path)
+        print("[ARCHIVE] Split path", path)
         if "#/" in path:
             parts = path.rsplit("#/", 1)
             archive = parts[0]
@@ -207,7 +258,7 @@ class Archive(object):
     def get_handler(self):
         if self._handler is not None:
             return self._handler
-        print("get_handler", self.path)
+        print("[ARCHIVE] get_handler", self.path)
         name, ext = os.path.splitext(self.path)
         ext = ext.lower()
         if ext == ".7z" and SevenZipFile is not None:
@@ -218,18 +269,18 @@ class Archive(object):
             self._handler = ZipHandler(self.path)
         except Exception as e:
             if ext == ".zip":
-                print(repr(e))
+                print("[ARCHIVE]", repr(e))
             try:
                 self._handler = LhaHandler(self.path)
             except Exception as e:
                 if ext == ".lha":
-                    print(repr(e))
+                    print("[ARCHIVE]", repr(e))
                 self._handler = NullHandler(self.path)
         return self._handler
 
     def list_files(self):
         result = []
-        print(self.get_handler())
+        print("[ARCHIVE]", self.get_handler())
         for item in self.get_handler().list_files(self.sub_path):
             # result.append(os.path.join(self.path, item))
             result.append(self.path + "#/" + item)
@@ -240,18 +291,23 @@ class Archive(object):
         # print(path, self.path)
         assert path == self.path
         if not sub_path:
-            # print("os.path.exists", path)
+            if "#?" in path:
+                path = path.rsplit("#?", 1)[0]
             return os.path.exists(path)
+        if "#?" in sub_path:
+            sub_path = sub_path.rsplit("#?", 1)[0]
         return self.get_handler().exists(sub_path)
 
     def open(self, path):
-        # print("open", repr(path))
+        print("[Archive] Open", repr(path))
         path, sub_path = self.split_path(path)
         # print(path, self.path)
         assert path == self.path
         if not sub_path:
-            return open(path, "rb")
-        return self.get_handler().open(sub_path)
+            return filter_open(path)
+        if "#?" in sub_path:
+            sub_path = sub_path.rsplit("#?", 1)[0]
+        return filter_open(path, self.get_handler().open(sub_path))
 
     def copy(self, path, dest):
         ifo = self.open(path)

@@ -5,7 +5,7 @@ from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
 from fsgs.plugins.plugin_manager import PluginManager
 from fsui import Image
-from launcher.device_manager import DeviceManager
+from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
@@ -282,36 +282,36 @@ class WarningsElement(StatusElement):
     def add_option_warnings(self):
         if len(self.settings_config_keys):
             if len(self.settings_config_keys) == 1:
-                text = gettext("Config in Settings: {name}".format(
+                text = gettext("Config in settings: {name}".format(
                     name=list(self.settings_config_keys)[0]))
             else:
-                text = gettext("Config Options in Settings")
+                text = gettext("Config options in settings")
             self.warnings.append((ERROR_LEVEL, text, "on_advanced_settings"))
         if len(self.custom_uae_config):
             if len(self.custom_uae_config) == 1:
-                text = gettext("Custom Option: {name}".format(
+                text = gettext("Custom option: {name}".format(
                     name=list(self.custom_uae_config)[0]))
             else:
                 text = gettext("Custom uae_ Options")
             self.warnings.append((WARNING_LEVEL, text, "on_uae_config"))
         if len(self.custom_config):
             if len(self.custom_config) == 1:
-                text = gettext("Custom Option: {name}".format(
+                text = gettext("Custom option: {name}".format(
                     name=list(self.custom_config)[0]))
             else:
-                text = gettext("Custom Options")
+                text = gettext("Custom options")
             self.warnings.append((NOTICE_LEVEL, text, "on_uae_config"))
 
     def add_game_warnings(self):
         if is_warning(self.x_missing_files):
             if self.download_file:
-                text = gettext("Auto-Download")
+                text = gettext("Auto-download")
                 self.warnings.append((NOTICE_LEVEL, text, ""))
             elif self.download_page:
-                text = gettext("Download Game")
+                text = gettext("Download game")
                 self.warnings.append((WARNING_LEVEL, text, "on_download_page"))
             else:
-                text = gettext("Missing Game Files")
+                text = gettext("Missing game files")
                 self.warnings.append((ERROR_LEVEL, text, ""))
 
         for name in ["variant_notice", "game_notice"]:

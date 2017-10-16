@@ -3,6 +3,7 @@ import subprocess
 import traceback
 
 from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
+from launcher.devicemanager import DeviceManager
 from .device import Device
 
 
@@ -32,17 +33,17 @@ class EnumerateHelper(object):
         self.initialized = True
 
     def init_fsuae(self):
-        print("EnumerateHelper: finding connected joysticks")
+        print("[INPUT] EnumerateHelper: Finding connected joysticks")
         try:
             p = FSUAEDeviceHelper.start_with_args(
                 ["list"], stdout=subprocess.PIPE)
             joysticks = p.stdout.read()
             p.wait()
         except Exception:
-            print("exception while listing joysticks and devices")
+            print("[INPUT] Exception while listing joysticks and devices")
             traceback.print_exc()
             return
-        print(repr(joysticks))
+        print("[INPUT]", repr(joysticks))
         # If the character conversion fails, replace will ensure that
         # as much as possible succeeds. The joystick in question will
         # not be pre-selectable in the launcher, but the other ones will
@@ -94,18 +95,34 @@ class EnumerateHelper(object):
             device.index = i
         for i, device in enumerate(self.keyboard_devices):
             device.index = i
+
         self.joystick_like_devices.extend(self.joystick_devices)
         self.joystick_like_devices.extend(self.keyboard_devices)
 
-    def default_port_selection(self, ports):
-        print("devices:")
+    def default_port_selection(self, ports, options):
+        print("[INPUT] Default port selection")
         self.init()
         # for device in self.devices:
         #     print(" #", device.id)
         #     device.configure("megadrive")
 
+        if len(ports) > 0:
+            if ports[0].type_option:
+                # Supports new-style port selection
+                port_devices = DeviceManager.get_non_amiga_devices_for_ports(
+                    options)
+                for i, port in enumerate(ports):
+                    for device in self.devices:
+                        if port_devices[i + 1].id == device.id:
+                            port.device = device
+                            print("[INPUT]", port.name, "<-", device.id)
+                            break
+                    else:
+                        print("[INPUT]", port.name, "<- [None]")
+                return
+
         joystick_like_devices = self.joystick_like_devices[:]
-        print("ports:")
+        print("[INPUT] Old Selection: Ports:")
         for port in ports:
             for i, device in enumerate(joystick_like_devices):
                 # device.configure()
@@ -113,4 +130,4 @@ class EnumerateHelper(object):
                     joystick_like_devices.pop(i)
                     port.device = device
                     break
-            print(" /", port.name, port.device)
+            print("[INPUT] Old Selection:", port.name, port.device)

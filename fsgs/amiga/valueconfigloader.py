@@ -4,7 +4,7 @@ import os
 import json
 from fsbc.paths import Paths
 from fsgs.amiga.amiga import Amiga
-from fsgs.FileDatabase import FileDatabase
+from fsgs.filedatabase import FileDatabase
 from fsgs.network import openretro_url_prefix
 from fsgs.option import Option
 from fsgs.amiga import whdload
@@ -163,6 +163,9 @@ class ValueConfigLoader(object):
 
     def set_name_and_uuid(self):
         # self.config["x_config_uuid"] = self.root.get("uuid", "")
+
+        self.config["game_uuid"] = self.values.get("game_uuid", "")
+        self.config["variant_uuid"] = self.values.get("variant_uuid", "")
 
         game_name = self.values.get("game_name", "")
         platform_name = self.values.get("platform", "")

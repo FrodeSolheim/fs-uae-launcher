@@ -5,9 +5,9 @@ from binascii import hexlify
 from functools import lru_cache
 
 from fsbc import settings
-from fsgs import openretro
+from fsgs import openretro, OPENRETRO_DEFAULT_DATABASES
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.FileDatabase import FileDatabase
+from fsgs.filedatabase import FileDatabase
 from fsgs.GameDatabase import IncompleteGameException
 from fsgs.GameDatabaseClient import GameDatabaseClient
 from fsgs.context import fsgs
@@ -15,6 +15,7 @@ from fsgs.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
 from fsgs.ogd.locker import LockerSynchronizer
 from fsgs.option import Option
 from fsgs.util.gamenameutil import GameNameUtil
+from launcher.launcher_config import LauncherConfig
 from .i18n import gettext
 from .launcher_settings import LauncherSettings
 
@@ -41,31 +42,17 @@ class GameScanner(object):
             self.on_status((title, status))
 
     def _check_platform(self, platform_option):
+        if LauncherSettings.get(platform_option) == "1":
+            return True
         if platform_option in [Option.AMIGA_DATABASE, Option.CD32_DATABASE,
                                Option.CDTV_DATABASE]:
             if LauncherSettings.get(platform_option) != "0":
                 return True
             return False
-        if openretro:
-            if platform_option in [
-                    Option.ARCADE_DATABASE,
-                    Option.ATARI_DATABASE,
-                    Option.C64_DATABASE,
-                    Option.CPC_DATABASE,
-                    Option.DOS_DATABASE,
-                    Option.GB_DATABASE,
-                    Option.GBA_DATABASE,
-                    Option.GBC_DATABASE,
-                    Option.NES_DATABASE,
-                    Option.PSX_DATABASE,
-                    Option.SNES_DATABASE,
-                    Option.ZXS_DATABASE]:
-                if LauncherSettings.get(platform_option) != "0":
-                    return True
+        # Must also remember to update apps/__init__.py
+        if openretro and platform_option in OPENRETRO_DEFAULT_DATABASES:
+            if LauncherSettings.get(platform_option) == "0":
                 return False
-        if settings.get(Option.PLATFORMS_FEATURE) != "1":
-            return False
-        if LauncherSettings.get(platform_option) == "1":
             return True
         return False
 
@@ -100,8 +87,14 @@ class GameScanner(object):
             yield "GBC", self.fsgs.game_database("GBC")
         if self._check_platform(Option.MSX_DATABASE):
             yield "MSX", self.fsgs.game_database("MSX")
+        if self._check_platform(Option.N64_DATABASE):
+            yield "N64", self.fsgs.game_database("N64")
+        if self._check_platform(Option.NEOGEO_DATABASE):
+            yield "NEOGEO", self.fsgs.game_database("NEOGEO")
         if self._check_platform(Option.NES_DATABASE):
             yield "NES", self.fsgs.game_database("NES")
+        if self._check_platform(Option.NGC_DATABASE):
+            yield "NGC", self.fsgs.game_database("NGC")
         if self._check_platform(Option.PSX_DATABASE):
             yield "PSX", self.fsgs.game_database("PSX")
         if self._check_platform(Option.SMD_DATABASE):
@@ -112,6 +105,8 @@ class GameScanner(object):
             yield "SNES", self.fsgs.game_database("SNES")
         if self._check_platform(Option.TG16_DATABASE):
             yield "TG16", self.fsgs.game_database("TG16")
+        if self._check_platform(Option.TGCD_DATABASE):
+            yield "TGCD", self.fsgs.game_database("TGCD")
         if self._check_platform(Option.ZXS_DATABASE):
             yield "ZXS", self.fsgs.game_database("ZXS")
         if custom:
@@ -513,6 +508,16 @@ class ScanHelper(object):
                             cached_file_stamps["last_file_insert"])
         self.deleted_files = (self.file_stamps["last_file_delete"] !=
                               cached_file_stamps["last_file_delete"])
+        # print(LauncherSettings.get(Option.DATABASE_LOCKER),
+        #         cached_file_stamps["database_locker"])
+        # assert 0
+        if LauncherSettings.get(Option.DATABASE_LOCKER) != \
+                cached_file_stamps["database_locker"]:
+            # Assume that files could be deleted or removed...
+            if LauncherSettings.get(Option.DATABASE_LOCKER) == "0":
+                self.deleted_files = True
+            else:
+                self.added_files = True
 
     def game_seen(self, seen_game_uuid):
         # after the loop has run its course, games to be removed
@@ -557,7 +562,10 @@ class ScanHelper(object):
                 "game_variant WHERE game_uuid = game.uuid) WHERE uuid IS NOT "
                 "NULL AND (have IS NULL OR have != (SELECT coalesce(max("
                 "have), 0) FROM game_variant WHERE game_uuid = game.uuid))")
+        # FIXME: Remove this line?
         FileDatabase.get_instance().get_last_event_stamps()
+        self.file_stamps["database_locker"] = \
+            LauncherSettings.get(Option.DATABASE_LOCKER)
         self.database.update_last_file_event_stamps(self.file_stamps)
 
 

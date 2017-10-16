@@ -131,6 +131,8 @@ class GameDatabase(BaseDatabase):
         data = data.decode("UTF-8")
 
         doc = json.loads(data)
+        doc["variant_uuid"] = game_uuid
+
         # This is a hack so we can retrieve the published-status of the
         # child entry. The original key should have been named _published,
         # probably, to avoid it being inherited.

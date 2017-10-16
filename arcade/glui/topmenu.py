@@ -113,24 +113,46 @@ class ClockItem(MenuItem):
 class AspectItem(TopMenuItem):
     def __init__(self):
         super().__init__()
-        self.normal_texture = Texture.stretch
-        self.selected_texture = Texture.stretch
+        # self.normal_texture = Texture.stretch
+        # self.selected_texture = Texture.stretch
+        self.normal_texture = Texture.aspect
+        self.selected_texture = Texture.aspect
         self.update_texture()
+
+    # def update_texture(self):
+    #     # TODO: Ideally, this class should listen for settings changes.
+    #     if Settings.instance()["keep_aspect"] in ["0", ""]:
+    #         texture = Texture.stretch
+    #     else:
+    #         texture = Texture.aspect
+    #     self.normal_texture = texture
+    #     self.selected_texture = texture
+    #
+    # def activate(self, menu):
+    #     if Settings.instance()["keep_aspect"] == "1":
+    #         Settings.instance()["keep_aspect"] = ""
+    #     else:
+    #         Settings.instance()["keep_aspect"] = "1"
+    #     self.update_texture()
 
     def update_texture(self):
         # TODO: Ideally, this class should listen for settings changes.
-        if Settings.instance()["keep_aspect"] in ["0", ""]:
+        if Settings.instance()["stretch"] == "1":
             texture = Texture.stretch
+        elif Settings.instance()["stretch"] == "0":
+            texture = Texture.square_pixels
         else:
             texture = Texture.aspect
         self.normal_texture = texture
         self.selected_texture = texture
 
     def activate(self, menu):
-        if Settings.instance()["keep_aspect"] == "1":
-            Settings.instance()["keep_aspect"] = ""
+        if Settings.instance()["stretch"] == "1":
+            Settings.instance()["stretch"] = "0"
+        elif Settings.instance()["stretch"] == "0":
+            Settings.instance()["stretch"] = ""
         else:
-            Settings.instance()["keep_aspect"] = "1"
+            Settings.instance()["stretch"] = "1"
         self.update_texture()
 
 

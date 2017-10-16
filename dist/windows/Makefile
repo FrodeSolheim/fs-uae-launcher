@@ -3,8 +3,9 @@ arch = $(strip $(shell python3 ../arch.py))
 
 emulator_dir = fs-uae_$(version)_windows_$(arch)
 launcher_dir = fs-uae-launcher_$(version)_windows_$(arch)
+library_zip = $(launcher_dir)/lib/python36.zip
 
-all: progdir zipfile setup
+all: progdir zip setup
 
 clean:
 	rm -Rf fs-uae-launcher-*_windows*
@@ -14,10 +15,24 @@ progdir:
 	rm -Rf $(launcher_dir)
 
 	make -C ../..
-
 	rm -Rf ../build
+
+	# Create dummy sqlite3.dll (cx_Freeze looks for it...)
+	mkdir -p /mingw32/DLLs
+	cp /mingw32/bin/libsqlite3-0.dll /mingw32/DLLs/sqlite3.dll
+	mkdir -p /mingw64/DLLs
+	cp /mingw64/bin/libsqlite3-0.dll /mingw64/DLLs/sqlite3.dll
+
 	cd ../.. && python3 setup.py build_exe
-	mv ../../build/exe.mingw-3.4 $(launcher_dir)
+	mv ../../build/exe.mingw-3.6 $(launcher_dir)
+
+	# Remove dummy sqlite3.dll
+	rm /mingw32/DLLs/sqlite3.dll
+	rm /mingw64/DLLs/sqlite3.dll
+	rm  $(launcher_dir)/sqlite3.dll
+
+	# Remove debug libraries
+	rm $(launcher_dir)/*d.dll
 
 	rm -f $(launcher_dir)/imageformats/qdds*.dll
 	rm -f $(launcher_dir)/imageformats/qicns*.dll
@@ -56,24 +71,32 @@ progdir:
 	rm -Rf $(launcher_dir)/oyoyo
 	rm -Rf $(launcher_dir)/workspace
 
-	zip -d $(launcher_dir)/library.zip amitools/\*
-	zip -d $(launcher_dir)/library.zip arcade/\*
-	zip -d $(launcher_dir)/library.zip fsbc/\*
-	zip -d $(launcher_dir)/library.zip fsgs/\*
-	zip -d $(launcher_dir)/library.zip fstd/\*
-	zip -d $(launcher_dir)/library.zip fsui/\*
-	zip -d $(launcher_dir)/library.zip launcher/\*
-	zip -d $(launcher_dir)/library.zip OpenGL/\*
-	zip -d $(launcher_dir)/library.zip oyoyo/\*
-	zip -d $(launcher_dir)/library.zip workspace/\*
+	zip -d $(library_zip) amitools/\*
+	zip -d $(library_zip) arcade/\*
+	zip -d $(library_zip) fsbc/\*
+	zip -d $(library_zip) fsgs/\*
+	zip -d $(library_zip) fstd/\*
+	zip -d $(library_zip) fsui/\*
+	zip -d $(library_zip) launcher/\*
+	zip -d $(library_zip) OpenGL/\*
+	zip -d $(library_zip) oyoyo/\*
+	zip -d $(library_zip) workspace/\*
+
+	mv $(launcher_dir)/lib $(launcher_dir)/python3.6
+	mkdir -p $(launcher_dir)/lib
+	mv  $(launcher_dir)/python3.6 $(launcher_dir)/lib/
+	mv $(launcher_dir)/lib/python3.6/python36.zip $(launcher_dir)/lib/
 
 	make -C ../python
 	cp -a ../python/*.zip $(launcher_dir)
 
 	python3 sign.py $(launcher_dir)/fs-uae-launcher.exe
 
-zipfile:
+zip:
 	cd $(launcher_dir) && zip -9 -r ../../../$(launcher_dir).zip *
+
+tar.xz: progdir
+	cd $(launcher_dir) && tar cfvJ ../../../$(launcher_dir).tar.xz *
 
 setup:
 	sed s/9.8.7/${version}/g fs-uae-launcher.iss > fs-uae-launcher.iss2.tmp

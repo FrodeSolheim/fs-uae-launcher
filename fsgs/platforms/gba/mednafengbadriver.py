@@ -3,23 +3,27 @@ import os
 
 from fsgs.drivers.mednafendriver import MednafenDriver
 
+# FIXME: Use KnownFile
 # [BIOS] Game Boy Advance (World).gba
 GBA_WORLD_BIOS_SHA1 = "300c20df6731a33952ded8c436f7f186d25d3492"
 
+GBA_CONTROLLER = {
+    "type": "gamepad",
+    "description": "Built-in Controller",
+    "mapping_name": "gameboyadvance",
+}
+GBA_PORTS = [
+    {
+        "description": "Built-in",
+        "types": [GBA_CONTROLLER],
+        "type_option": "gba_port_1_type",
+        "device_option": "gba_port_1",
+    },
+]
+
 
 class MednafenGbaDriver(MednafenDriver):
-    CONTROLLER = {
-        "type": "gamepad",
-        "description": "Built-in Controller",
-        "mapping_name": "gameboyadvance",
-    }
-
-    PORTS = [
-        {
-            "description": "Controller",
-            "types": [CONTROLLER]
-        },
-    ]
+    PORTS = GBA_PORTS
 
     def __init__(self, fsgs):
         super().__init__(fsgs)

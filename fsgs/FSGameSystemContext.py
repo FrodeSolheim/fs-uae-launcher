@@ -10,7 +10,7 @@ from fsbc.util import unused
 from fsgs.Archive import Archive
 from fsgs.BaseContext import BaseContext
 from fsgs.Database import Database
-from fsgs.FileDatabase import FileDatabase
+from fsgs.filedatabase import FileDatabase
 from fsgs.GameDatabase import GameDatabase, IncompleteGameException
 from fsgs.LockerDatabase import LockerDatabase
 from fsgs.download import Downloader
@@ -90,6 +90,7 @@ class FileContext(BaseContext):
             return Archive(uri).open(uri)
 
     def open(self, uri, prefer_path=False):
+        print("[FILES] Open", uri)
         while isinstance(uri, str):
             uri = self.convert_uri(uri, prefer_path=prefer_path)
         if prefer_path and isinstance(uri, File):
@@ -261,8 +262,8 @@ class FSGameSystemContext(object):
     @property
     def settings(self):
         if self._settings is None:
-            from fsbc.application import settings
-            self._settings = settings
+            from fsbc.settings import Settings
+            self._settings = Settings.instance()
         return self._settings
 
     @property
@@ -337,8 +338,10 @@ class FSGameSystemContext(object):
     #     return TemporaryFile(suffix)
 
     def load_game_by_uuid(self, game_uuid):
+        if self.load_game_variant(game_uuid):
+            return True
         variant_uuid = self.find_preferred_game_variant(game_uuid)
-        self.load_game_variant(variant_uuid)
+        return self.load_game_variant(variant_uuid)
 
     # noinspection PyMethodMayBeStatic
     def find_preferred_game_variant(self, game_uuid):
@@ -442,7 +445,7 @@ class FSGameSystemContext(object):
 
         from fsgs.input.enumeratehelper import EnumerateHelper
         device_helper = EnumerateHelper()
-        device_helper.default_port_selection(runner.ports)
+        device_helper.default_port_selection(runner.ports, runner.options)
 
         runner.prepare()
         process = runner.run()

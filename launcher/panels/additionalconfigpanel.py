@@ -2,6 +2,7 @@ import fsui
 from launcher.i18n import gettext
 from launcher.option import Option
 from launcher.ui.IconButton import IconButton
+from launcher.ui.behaviors.platformbehavior import AmigaShowBehavior
 from launcher.ui.config.configpanel import ConfigPanel
 from launcher.ui.config.configdialog import ConfigDialog
 
@@ -17,12 +18,19 @@ class AdditionalConfigPanel(ConfigPanel):
         hori_layout.add_spacer(0, expand=True)
         hori_layout.add(CustomConfigButton(self), margin_right=10)
         self.layout.add_spacer(0)
-        self.add_amiga_option(Option.CPU)
-        self.add_amiga_option(Option.JIT_COMPILER)
-        self.add_amiga_option(Option.FLOPPY_DRIVE_SPEED)
-        self.add_amiga_option(Option.FLOPPY_DRIVE_VOLUME_EMPTY)
-        self.add_amiga_option(Option.FREEZER_CARTRIDGE)
-        self.add_amiga_option(Option.DONGLE_TYPE)
+
+        amiga_panel = fsui.Panel(self)
+        # AmigaShowBehavior(amiga_panel)
+        amiga_panel.layout = fsui.VerticalLayout()
+        self.layout.add(amiga_panel, fill=True)
+
+        self.add_amiga_option(Option.CPU, parent=amiga_panel)
+        self.add_amiga_option(Option.JIT_COMPILER, parent=amiga_panel)
+        self.add_amiga_option(Option.FLOPPY_DRIVE_SPEED, parent=amiga_panel)
+        self.add_amiga_option(
+            Option.FLOPPY_DRIVE_VOLUME_EMPTY, parent=amiga_panel)
+        self.add_amiga_option(Option.FREEZER_CARTRIDGE, parent=amiga_panel)
+        self.add_amiga_option(Option.DONGLE_TYPE, parent=amiga_panel)
 
 
 class CustomConfigButton(IconButton):

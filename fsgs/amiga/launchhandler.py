@@ -720,12 +720,11 @@ class LaunchHandler(object):
         print("[WHDLOAD] copy_whdload_files, dest_dir = ", dest_dir)
 
         whdload_dir = ""
-        slave = whdload_args.split(" ", 1)[0]
-        slave = slave.lower()
+        slave_original_name = whdload_args.split(" ", 1)[0]
+        slave = slave_original_name.lower()
         found_slave = False
         for dir_path, dir_names, file_names in os.walk(dest_dir):
             for name in file_names:
-                # print(name, slave)
                 if name.lower() == slave:
                     print("[WHDLOAD] Found", name)
                     found_slave = True
@@ -741,8 +740,8 @@ class LaunchHandler(object):
                 break
         if not found_slave:
             raise Exception(
-                "Did not find the specified WHDLoad slave. "
-                "Check the WHDLoad arguments")
+                "Did not find the specified WHDLoad slave {}. "
+                "Check the WHDLoad arguments".format(repr(slave_original_name)))
         print("[WHDLOAD] Slave directory:", repr(whdload_dir))
         print("[WHDLOAD] Slave arguments:", whdload_args)
 

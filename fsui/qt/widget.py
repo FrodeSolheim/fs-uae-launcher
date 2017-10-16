@@ -19,6 +19,7 @@ class Widget(QObject):
         # noinspection PyProtectedMember
         self._window = parent._window
         self._widget = None
+        self._explicitly_hidden = False
 
     def widget(self):
         return self._widget
@@ -46,11 +47,15 @@ class Widget(QObject):
         print("Widget.on_destroy", self)
         self.destroyed.emit()
 
+    def explicitly_hidden(self):
+        return self._explicitly_hidden
+
     def set_visible(self, show=True):
         if show:
             self.widget().show()
         else:
             self.widget().hide()
+        self._explicitly_hidden = not show
 
     def show(self):
         self.set_visible(True)

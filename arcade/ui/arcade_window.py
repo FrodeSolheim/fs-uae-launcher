@@ -15,8 +15,12 @@ from fsui.qt import init_qt, Qt, QWidget, QKeyEvent
 CURSOR_SHOW_DURATION = 5.0
 
 
-def check_argument(name):
+def check_argument(name, options=None):
     name = name.replace("_", "-")
+    if options is not None:
+        for option in options:
+            if "--" + name + "=" + option in sys.argv:
+                return option
     if "--" + name in sys.argv:
         return "1"
     if "--" + name + "=1" in sys.argv:
@@ -29,12 +33,12 @@ def check_argument(name):
 
 
 def fullscreen():
-    # If we have explicitly used --window or --maximized as arguments, do
+    # If we have explicitly used --window as arguments, do
     # not enable fullscreen regardless of settings.
-    if check_argument("window") == "1":
+    if check_argument("window", ["maximize"]) in ["1", "maximize"]:
         return False
-    if check_argument("maximize") == "1":
-        return False
+    # if check_argument("maximize") == "1":
+    #     return False
     value = check_argument("fullscreen")
     if not value:
         value = Settings.instance().get("arcade_fullscreen")
@@ -42,12 +46,17 @@ def fullscreen():
 
 
 def maximized():
-    if check_argument("window") == "1":
-        return False
-    value = check_argument("maximize")
-    if not value:
+    # if check_argument("fullscreen") == "1":
+    #     return False
+    # if check_argument("window") == "1":
+    #     return False
+    # value = check_argument("window") == "maximize"
+    value = check_argument("window", ["maximize"]) == "maximize"
+    if value:
+        return True
+    else:
         value = Settings.instance().get("arcade_maximized")
-    return value != "0"
+        return value == "1"
 
 
 def monitor():

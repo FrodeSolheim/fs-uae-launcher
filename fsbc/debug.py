@@ -24,7 +24,7 @@ def enable_exception_handler(force=False):
         _let_thread_exceptions_be_unhandled()
         return False
 
-    print("enabling except hook")
+    # print("enabling except hook")
     sys.excepthook = _handle_exception
     _enable_thread_exception_handler()
     return True
@@ -45,7 +45,7 @@ def _let_thread_exceptions_be_unhandled():
 
 
 def _enable_thread_exception_handler():
-    print("enable tread exception handler")
+    # print("enable tread exception handler")
 
     def run():
         self = threading.current_thread()

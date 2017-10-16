@@ -4,8 +4,7 @@ from fsgs.drivers.mamedriver import MameDriver
 class MessDriver(MameDriver):
     def __init__(self, fsgs):
         super().__init__(fsgs)
-        # self.emulator.name = "multiemu-fs"
-        self.emulator.name = "mess-fs"
+        # self.emulator.name = "mess-fs"
 
     def is_pal(self):
         # return self.config.get("ntsc_mode") != "1"
@@ -24,7 +23,11 @@ class MessDriver(MameDriver):
         pass
 
     def mame_romset(self):
-        return self.mess_romset()
+        result = {}
+        romset_name, files = self.mess_romset()
+        for sha1, name in files.items():
+            result[name] = sha1
+        return romset_name, result
 
     def mess_romset(self):
         pass

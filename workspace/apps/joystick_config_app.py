@@ -12,7 +12,7 @@ from fsbc.system import platform
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 from fsgs.input.inputdevice import InputDevice
-from launcher.device_manager import DeviceManager
+from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.ui.skin import Skin
 from launcher.ui.widgets import CloseButton

@@ -1,10 +1,17 @@
+import platform
 import sys
+
+from launcher.version import VERSION
 
 
 def app_main():
     if "--help" in sys.argv:
         print(help_text)
         return
+    print("FS-UAE Arcade {0}".format(VERSION))
+    print(sys.argv)
+    print(platform.uname())
+
     for i, arg in enumerate(sys.argv):
         if arg.startswith("--monitor="):
             sys.argv[i] = "--settings:monitor=" + arg[10:]
@@ -26,14 +33,15 @@ def app_main():
 
 
 help_text = """\
-FS-UAE Arcade Help"
+FS-UAE Arcade {version}
 
 Options:
   --fullscreen
-  --window
+  --window[=maximize]
   --monitor=left|right|middle-left|middle-right  (Requires fullscreen)
-  --platform=<platform>
-  --favorites
+  --platform=<platform>                Open with chosen platform pre-selected
+  --favorites                          Open with favorites pre-selected
+  --disable-search                     Disable search function in Arcade UI
 
 TODO: Add more documentation
-"""
+""".format(version=VERSION)

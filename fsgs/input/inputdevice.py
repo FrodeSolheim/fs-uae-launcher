@@ -39,7 +39,7 @@ class InputDevice(object):
     MissingPlatformSupportException = MissingPlatformSupportException 
 
     def __init__(self, platform, name, sclist, sdl_name="", sdl_joystick_id=-1,
-                 version=1, buttons=0, axes=0, hats=0, balls=0):
+                 version=1, buttons=0, axes=0, hats=0, balls=0, multiple=True):
         """
         sclist -- system controller list
         """
@@ -89,7 +89,7 @@ class InputDevice(object):
                     "No input device support for platform")
         elif version == 2:
             old_name = self.name
-            self.configure_version_2()
+            self.configure_version_2(multiple=multiple)
             if self.name != old_name:
                 # print("****** name is now", self.name)
                 print(self.id, "=>", repr(self.name))
@@ -281,8 +281,8 @@ class InputDevice(object):
         #         if cp.has_option('gamepad', value):
         #             config[key] = cp.get('gamepad', value)
 
-    def configure_version_2(self):
-        self.config = self.configure(self.platform)
+    def configure_version_2(self, multiple=True):
+        self.config = self.configure(self.platform, multiple=multiple)
 
     def configure(self, platform, multiple=True):
         print("CONFIGURE", platform, self.name, self.sdl_name)
@@ -310,6 +310,12 @@ class InputDevice(object):
             host_platform)
 
         config = {}
+        try:
+            self.read_config(self.name, config, platform, multiple)
+        except Exception:
+            pass
+        else:
+            return config
         try:
             self.read_config(self.sdl_name, config, platform, multiple)
         except Exception:

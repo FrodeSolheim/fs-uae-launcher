@@ -1,13 +1,14 @@
 import os
 import re
 from fsbc.application import app
+from fsbc.settings import Settings
 from fsgs.BaseDatabase import BaseDatabase
 from fsgs.FSGSDirectories import FSGSDirectories
 import threading
 
 thread_local = threading.local()
-VERSION = 38
-RESET_VERSION = 38
+VERSION = 40
+RESET_VERSION = 39
 QUOTED_TERMS_RE = re.compile("[\"].*?[\"]")
 
 
@@ -224,7 +225,7 @@ class Database(BaseDatabase):
 
     def find_game_variants_new(self, game_uuid="", have=3):
         include_unpublished = False
-        if app.settings["database_show_unpublished"] == "1":
+        if Settings.instance()["database_show_unpublished"] == "1":
             include_unpublished = True
         cursor = self.internal_cursor()
         print("FIXME: not looking up ratings yet!")
@@ -619,11 +620,13 @@ class Database(BaseDatabase):
     def get_last_file_event_stamps(self):
         cursor = self.internal_cursor()
         cursor.execute(
-            "SELECT last_file_insert, last_file_delete FROM metadata")
+            "SELECT last_file_insert, last_file_delete, "
+            "database_locker FROM metadata")
         row = cursor.fetchone()
         result = {
             "last_file_insert": row[0],
-            "last_file_delete": row[0],
+            "last_file_delete": row[1],
+            "database_locker": row[2],
         }
         return result
 
@@ -638,13 +641,17 @@ class Database(BaseDatabase):
             cursor.execute(
                 "UPDATE metadata set last_file_delete = ?",
                 (stamps["last_file_delete"],))
+        if stamps["database_locker"] != last_stamps["database_locker"]:
+            cursor.execute(
+                "UPDATE metadata set database_locker = ?",
+                (stamps["database_locker"],))
 
     def get_game_lists(self):
         cursor = self.internal_cursor()
         cursor.execute("SELECT uuid, name FROM game_list")
         return cursor.fetchall()
 
-    def update_database_to_version_38(self):
+    def update_database_to_version_39(self):
         cursor = self.internal_cursor()
         cursor.execute("""CREATE TABLE game (
                 id INTEGER PRIMARY KEY,
@@ -722,3 +729,8 @@ class Database(BaseDatabase):
             )""")
         cursor.execute("""CREATE INDEX game_list_game_list_uuid
             ON  game_list_game(list_uuid)""")
+
+    def update_database_to_version_40(self):
+        cursor = self.internal_cursor()
+        cursor.execute(
+            "ALTER TABLE metadata ADD COLUMN database_locker INTEGER")

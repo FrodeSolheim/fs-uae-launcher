@@ -1,12 +1,17 @@
 from fsbc.system import macosx
+from fsgs.drivers.gamedriver import Port
+from fsgs.input.device import Device
 
 
 class InputMapper(object):
-
-    def __init__(self, input, mapping):
-        self.input = input
-        self.device = input.device
+    def __init__(self, port, mapping, multiple=True):
+        self.port = port  # type: Port
+        self.device = port.device  # type: Device
         self.mapping = mapping
+        self.multiple = multiple
+        print("[INPUT] Port", port.number, "Device:",
+              self.device.id if self.device is not None else "(none)")
+        print("[INPUT] Port", port.number, "mapping:", mapping)
 
     def items(self):
         # input = self.input
@@ -14,7 +19,8 @@ class InputMapper(object):
         #     return
         if not self.device:
             return
-        config = self.device.configure(self.input.mapping_name)
+        config = self.device.configure(
+            self.port.mapping_name, multiple=self.multiple)
         # print(config)
         print("mapping:", self.mapping)
         for native_button, game_button in config.items():
@@ -89,7 +95,6 @@ class InputMapper(object):
 
 
 class Key(object):
-
     def __init__(self, name):
         self.name = name
 
@@ -111,7 +116,6 @@ class Key(object):
 
 
 class Keyboard(object):
-
     @staticmethod
     def key(name):
         if isinstance(name, int):

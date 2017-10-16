@@ -4,6 +4,7 @@ import sys
 import time
 from collections import deque
 
+from arcade.gamecentersettings import ArcadeSettings
 from fsbc import settings
 from fsgs.FSGSDirectories import FSGSDirectories
 
@@ -28,7 +29,7 @@ from arcade.glui.animation import AnimationSystem
 from arcade.glui.animation import AnimateValueBezier
 from arcade.glui.state import State
 from arcade.glui.render import Render
-from arcade.glui.notification import NotificationRender
+from arcade.glui.notificationrender import NotificationRender
 from arcade.glui.font import Font, BitmapFont
 from arcade.glui.items import MenuItem, AllMenuItem, NoItem, PlatformItem
 from arcade.glui.items import ListItem
@@ -44,10 +45,14 @@ ENABLE_VSYNC = "--vsync" in sys.argv
 ALWAYS_RENDER = True
 # IDLE = Config.get_bool("Menu/Idle", 1)
 IDLE = 1
+if "--no-idle" in sys.argv:
+    IDLE = 0
 # Render.get().display_fps = pyapp.user.ini.get_bool("Menu/ShowFPS", False)
 # LIGHTING = Config.get_bool("Menu/Lighting", False)
 LIGHTING = False
 RENDER_DEBUG_SQUARES = 0
+if "--render-debug-squares" in sys.argv:
+    RENDER_DEBUG_SQUARES = 1
 SEARCH_CHARS = \
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 -:.,"
 CONFIG_SEPARATION = 0.15
@@ -456,6 +461,10 @@ def reinit_fonts():
     #         vera_font_path, int(0.06 * Render.get().display_height))
     # Font.header_font.set_size(int(0.06 * Render.get().display_height))
 
+    if NotificationRender.font is None:
+        NotificationRender.font = Font(
+            liberation_sans_bold_path, int(0.020 * Render.get().display_height))
+
 
 char_buffer = ""
 char_buffer_last_updated = 0
@@ -498,30 +507,32 @@ def character_press(char):
         print("returning false")
         return False
     elif char == "BACKSPACE" or char == u"\b":
-        char_buffer = char_buffer[:-1]
-        if len(char_buffer) <= 2:
-            char_buffer = ""
-        handle_search_menu_on_character_press(char_buffer)
+        if ArcadeSettings().search():
+            char_buffer = char_buffer[:-1]
+            if len(char_buffer) <= 2:
+                char_buffer = ""
+            handle_search_menu_on_character_press(char_buffer)
         return True
     elif len(char) == 1:
-        char_buffer += char
-        handle_search_menu_on_character_press(char_buffer)
-        if 1 <= len(char_buffer) <= 2:
-            jump_to_item = -1
-            for i, item in enumerate(current_menu.items):
-                # FIXME: a bit hack-y this, should check sort_name
-                # instead (need to store this in items then)
-                # also, should use binary search and not sequential search...
-                searches = [char_buffer, "the " + char_buffer,
-                            "a " + char_buffer]
-                check = item.name.lower()
-                for s in searches:
-                    if check.startswith(s):
-                        jump_to_item = i
-                        break
-            if jump_to_item >= 0:
-                current_menu.set_selected_index(jump_to_item, immediate=True)
-
+        if ArcadeSettings().search():
+            char_buffer += char
+            handle_search_menu_on_character_press(char_buffer)
+            if 1 <= len(char_buffer) <= 2:
+                jump_to_item = -1
+                for i, item in enumerate(current_menu.items):
+                    # FIXME: a bit hack-y this, should check sort_name
+                    # instead (need to store this in items then)
+                    # also, should use binary search and not sequential search
+                    searches = [char_buffer, "the " + char_buffer,
+                                "a " + char_buffer]
+                    check = item.name.lower()
+                    for s in searches:
+                        if check.startswith(s):
+                            jump_to_item = i
+                            break
+                if jump_to_item >= 0:
+                    current_menu.set_selected_index(
+                        jump_to_item, immediate=True)
         return True
     else:
         raise Exception(repr(char))
@@ -1262,8 +1273,10 @@ def init_textures():
     Texture.item_background = Texture("item_background.png")
     Texture.top_item_background = Texture("top_item_background.png")
     Texture.logo_32 = Texture("logo-32.png")
+
     Texture.stretch = Texture("stretch.png")
-    Texture.aspect = Texture("aspect.png")
+    Texture.aspect = Texture("stretch-aspect.png")
+    Texture.square_pixels = Texture("stretch-none.png")
 
     # # FIXME: TEMPORARY - FOR TESTING, ONLY
     # path = "c:\\git\\fs-game-database\\Backdrops\\ffx.png"
