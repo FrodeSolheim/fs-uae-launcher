@@ -1,6 +1,6 @@
 %define name fs-uae-launcher
-%define version 2.9.6dev8
-%define unmangled_version 2.9.6dev8
+%define version 2.9.7dev2
+%define unmangled_version 2.9.7dev2
 %define release 1%{?dist}
 
 Summary: Graphical configuration frontend and launcher for FS-UAE
