@@ -7,7 +7,7 @@ import traceback
 import weakref
 from fsbc.paths import Paths
 from fsbc.util import unused
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.BaseContext import BaseContext
 from fsgs.Database import Database
 from fsgs.filedatabase import FileDatabase

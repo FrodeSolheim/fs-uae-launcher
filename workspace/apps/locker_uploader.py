@@ -5,7 +5,7 @@ from io import BytesIO as StringIO
 
 import fsui
 from fsbc.task import Task
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.filedatabase import FileDatabase
 from fsgs.amiga.rommanager import ROMManager
 from fsgs.context import fsgs

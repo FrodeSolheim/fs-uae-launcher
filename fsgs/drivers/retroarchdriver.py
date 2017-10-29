@@ -45,6 +45,9 @@ class RetroArchDriver(GameDriver):
             self.emulator.args.append("--fullscreen")
 
         libretro_core = self.find_libretro_core(self.libretro_core)
+        if not libretro_core:
+            raise Exception("Could not find libretro core {0!r}".format(
+                self.libretro_core))
         self.emulator.args.extend(["-L", libretro_core])
 
         # Verbose logging

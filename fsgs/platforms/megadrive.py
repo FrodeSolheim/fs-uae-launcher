@@ -1,16 +1,16 @@
 from fsbc import settings
 from fsgs.drivers.mednafendriver import MednafenDriver
-from fsgs.drivers.mess.messsmddriver import MessSmdDriver
+from fsgs.drivers.retroarchdriver import RetroArchDriver
 from fsgs.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
 
-SMD_MODEL_NTSC_U = "ntsc"
+SMD_MODEL_NTSC = "ntsc"
 SMD_MODEL_NTSC_J = "ntsc-j"
 SMD_MODEL_PAL = "pal"
 # FIXME: REMOVE MODEL AUTO? It makes it difficult to predict video size
 # without inspecting ROM file.
-SMD_MODEL_AUTO = "auto"
+# SMD_MODEL_AUTO = "auto"
 SMD_CONTROLLER = {
     "type": "gamepad",
     "description": "Gamepad",
@@ -31,10 +31,13 @@ class MegaDrivePlatform(Platform):
     PLATFORM_NAME = "Mega Drive"
 
     def driver(self, fsgc):
-        if settings.get(Option.SMD_DRIVER) == "mess":
-            return MessSmdDriver(fsgc)
-        else:
-            return MegaDriveMednafenDriver(fsgc)
+        emulator = settings.get(Option.SMD_EMULATOR)
+
+        if emulator in ["retroarch", "retroarch-genesis-plus-gx"]:
+            return MegaDriveRetroArchDriver(fsgc)
+        # elif driver in ["mame", "mess"]:
+        #     return MessNesDriver(fsgc)
+        return MegaDriveMednafenDriver(fsgc)
 
     def loader(self, fsgc):
         return MegaDriveLoader(fsgc)
@@ -52,14 +55,15 @@ class MegaDriveLoader(SimpleLoader):
         if not self.config[Option.SMD_MODEL]:
             variant = values["variant_name"].lower()
             if "world" in variant or "usa" in variant:
-                model = SMD_MODEL_NTSC_U
+                model = SMD_MODEL_NTSC
             elif "europe" in variant or "australia" in variant:
                 model = SMD_MODEL_PAL
             elif "japan" in variant:
                 model = SMD_MODEL_NTSC_J
             else:
                 # FIXME: Remove?
-                model = SMD_MODEL_AUTO
+                # model = SMD_MODEL_AUTO
+                model = SMD_MODEL_NTSC
             self.config[Option.SMD_MODEL] = model
 
 
@@ -81,18 +85,15 @@ class MegaDriveMednafenDriver(MednafenDriver):
         super().prepare()
 
     def init_mega_drive_model(self):
-        if self.helper.model() == SMD_MODEL_NTSC_U:
-            self.set_model_name("Genesis")
+        self.helper.set_model_name_from_model(self)
+        if self.helper.model() == SMD_MODEL_NTSC:
             region = "overseas_ntsc"
         elif self.helper.model() == SMD_MODEL_PAL:
-            self.set_model_name("Mega Drive PAL")
             region = "overseas_pal"
         elif self.helper.model() == SMD_MODEL_NTSC_J:
-            self.set_model_name("Mega Drive NTSC-J")
             region = "domestic_ntsc"
         else:
             # FIXME: This model might disappear
-            self.set_model_name("Mega Drive / Genesis")
             region = "game"
         self.emulator.args.extend(["-md.region", region])
 
@@ -143,16 +144,106 @@ class MegaDriveMednafenDriver(MednafenDriver):
             return 320, 224
 
 
+class MegaDriveRetroArchDriver(RetroArchDriver):
+    PORTS = SMD_PORTS
+
+    def __init__(self, fsgc):
+        super().__init__(
+            fsgc, "genesis_plus_gx_libretro", "RetroArch/Genesis-Plus-Gx")
+        self.helper = MegaDriveHelper(self.options)
+
+    def prepare(self):
+        super().prepare()
+        hw = "mega drive / genesis"
+        region = self.init_mega_drive_model()
+        with self.open_retroarch_core_options() as f:
+            f.write("genesis_plus_gx_system_hw = \"{}\"\n".format(hw))
+            f.write("genesis_plus_gx_region_detect = {}\n".format(region))
+
+        #     viewport = self.options[Option.VIEWPORT]
+        #     if viewport == "0 0 256 240 = 0 0 256 240":
+        #         overscan_h, overscan_v = "disabled", "disabled"
+        #     # elif viewport == "0 0 256 240 = 0 8 256 224":
+        #     #     return 256, 224
+        #     elif viewport == "0 0 256 240 = 8 0 240 240":
+        #         overscan_h, overscan_v = "enabled", "disabled"
+        #     elif viewport == "0 0 256 240 = 8 8 240 224":
+        #         overscan_h, overscan_v = "enabled", "enabled"
+        #     else:
+        #         overscan_h, overscan_v = "disabled", "enabled"
+        #     f.write("nestopia_overscan_h = {}\n".format(overscan_h))
+        #     f.write("nestopia_overscan_v = {}\n".format(overscan_v))
+        # self.emulator.args.append(self.helper.prepare_rom(self))
+        self.emulator.args.append(self.get_game_file())
+
+    def init_mega_drive_model(self):
+        self.helper.set_model_name_from_model(self)
+        if self.helper.model() == SMD_MODEL_NTSC:
+            return "ntsc-u"
+        elif self.helper.model() == SMD_MODEL_PAL:
+            return "pal"
+        elif self.helper.model() == SMD_MODEL_NTSC_J:
+            return "ntsc-j"
+        return "ntsc-u"
+
+    def game_video_size(self):
+        # # FIXME: Account for horizontal overscan
+        # # FIXME: Account for vertical overscan
+        #
+        # viewport = self.options[Option.VIEWPORT]
+        # if viewport == "0 0 256 240 = 0 0 256 240":
+        #     return 256, 240
+        # # elif viewport == "0 0 256 240 = 0 8 256 224":
+        # #     return 256, 224
+        # elif viewport == "0 0 256 240 = 8 0 240 240":
+        #     return 240, 240
+        # elif viewport == "0 0 256 240 = 8 8 240 224":
+        #     return 240, 224
+        # else:
+        #     return 256, 224
+        return 320, 224
+
+    def retroarch_input_mapping(self, port):
+        n = port + 1
+        return {
+            "A": "input_player{}_a".format(n),
+            "B": "input_player{}_b".format(n),
+            "UP": "input_player{}_up".format(n),
+            "DOWN": "input_player{}_down".format(n),
+            "LEFT": "input_player{}_left".format(n),
+            "RIGHT": "input_player{}_right".format(n),
+            "SELECT": "input_player{}_select".format(n),
+            "START": "input_player{}_start".format(n),
+        }
+
+    # def window_size(self):
+    #     return 256, 224
+
+
 class MegaDriveHelper:
     def __init__(self, options):
         self.options = options
 
     def model(self):
-        if self.options[Option.SMD_MODEL] == SMD_MODEL_NTSC_U:
-            return SMD_MODEL_NTSC_U
+        if self.options[Option.SMD_MODEL] == SMD_MODEL_NTSC:
+            return SMD_MODEL_NTSC
         if self.options[Option.SMD_MODEL] == SMD_MODEL_NTSC_J:
             return SMD_MODEL_NTSC_J
         if self.options[Option.SMD_MODEL] == SMD_MODEL_PAL:
             return SMD_MODEL_PAL
         # FIXME: REMOVE?
-        return SMD_MODEL_AUTO
+        # return SMD_MODEL_AUTO
+        return SMD_MODEL_NTSC
+
+    def set_model_name_from_model(self, driver):
+        model = self.model()
+        if model == SMD_MODEL_NTSC:
+            driver.set_model_name("Genesis")
+        elif model == SMD_MODEL_PAL:
+            driver.set_model_name("Mega Drive PAL")
+        elif model == SMD_MODEL_NTSC_J:
+            driver.set_model_name("Mega Drive NTSC-J")
+        # else:
+        #     # FIXME: This model might disappear
+        #     # driver.set_model_name("Mega Drive / Genesis")
+        #     assert False

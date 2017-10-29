@@ -1,11 +1,6 @@
-import json
-import os
 from functools import lru_cache
 
 from fsgs.drivers.gamedriver import GameDriver
-from fsgs.option import Option
-from fsgs.platforms.c64 import C64_MODEL_C64C
-from fsgs.platforms.c64.vicec64driver import ViceC64Driver
 
 
 class PlatformHandler:
@@ -105,12 +100,12 @@ from fsgs.platforms.atari_7800 import Atari7800PlatformHandler
 from fsgs.platforms.atari.atariplatform import AtariSTPlatformHandler
 from fsgs.platforms.cd32 import CD32PlatformHandler
 from fsgs.platforms.cdtv import CDTVPlatformHandler
+from fsgs.platforms.commodore64 import Commodore64Platform
 from fsgs.platforms.dos.dosplatform import DOSPlatformHandler
 from fsgs.platforms.game_boy import GameBoyPlatformHandler
 from fsgs.platforms.game_boy_advance import GameBoyAdvancePlatformHandler
 from fsgs.platforms.game_boy_color import GameBoyColorPlatformHandler
 from fsgs.platforms.game_gear import GameGearPlatformHandler
-from fsgs.platforms.loader import SimpleLoader
 from fsgs.platforms.lynx import LynxPlatformHandler
 from fsgs.platforms.master_system import MasterSystemPlatformHandler
 from fsgs.platforms.megadrive import MegaDrivePlatform
@@ -130,40 +125,6 @@ class UnsupportedPlatform(PlatformHandler):
     PLATFORM_NAME = "Unsupported"
 
 
-class C64Loader(SimpleLoader):
-    def load_files(self, values):
-        file_list = json.loads(values["file_list"])
-        # assert len(file_list) == 1
-        for i, item in enumerate(file_list):
-            _, ext = os.path.splitext(item["name"])
-            ext = ext.upper()
-            if ext in [".TAP", ".T64"]:
-                if i == 0:
-                    self.config["tape_drive_0"] = "sha1://{0}/{1}".format(
-                        item["sha1"], item["name"])
-                self.config["tape_image_{0}".format(i)] = \
-                    "sha1://{0}/{1}".format(item["sha1"], item["name"])
-            elif ext in [".D64"]:
-                if i == 0:
-                    self.config["floppy_drive_0"] = "sha1://{0}/{1}".format(
-                        item["sha1"], item["name"])
-                self.config["floppy_image_{0}".format(i)] = \
-                    "sha1://{0}/{1}".format(item["sha1"], item["name"])
-
-    def load_extra(self, values):
-        self.config[Option.C64_MODEL] = values["model"]
-        if not self.config[Option.C64_MODEL]:
-            self.config[Option.C64_MODEL] = C64_MODEL_C64C
-        self.config["model"] = ""
-
-
-class C64Platform(PlatformHandler):
-    PLATFORM_NAME = "Commodore 64"
-
-    def __init__(self):
-        super().__init__(C64Loader, ViceC64Driver)
-
-
 platforms = {
     Platform.AMIGA: AmigaPlatformHandler,
     Platform.ARCADE: ArcadePlatformHandler,
@@ -171,7 +132,7 @@ platforms = {
     Platform.A5200: Atari5200PlatformHandler,
     Platform.A7800: Atari7800PlatformHandler,
     Platform.ATARI: AtariSTPlatformHandler,
-    Platform.C64: C64Platform,
+    Platform.C64: Commodore64Platform,
     Platform.CD32: CD32PlatformHandler,
     Platform.CDTV: CDTVPlatformHandler,
     Platform.CPC: AmstradCPCPlatformHandler,

@@ -1,4 +1,4 @@
-Description: Database Games
+Description: "Database Games"
 Default: 1
 Example: 3
 Type: choice

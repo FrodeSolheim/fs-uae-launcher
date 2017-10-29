@@ -273,11 +273,11 @@ class OldGameCenterItem(MenuItem):
     def __init__(self):
         super().__init__()
         if fsgs.product == "FS-UAE":
-            self.title = gettext("FS-UAE   Arcade")
+            self.title = "FS-UAE   Arcade"
         elif fsgs.product == "OpenRetro":
-            self.title = gettext("OpenRetro   Arcade")
+            self.title = "OpenRetro   Arcade"
         else:
-            self.title = gettext("Unknown   Arcade")
+            self.title = "Unknown   Arcade"
         # else:
         #     self.title = gettext("Game   Center")
         self.path_title = self.title

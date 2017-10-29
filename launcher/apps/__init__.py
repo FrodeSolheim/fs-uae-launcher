@@ -44,6 +44,8 @@ def find_app(app):
 
     elif app in ["uade", "uade-fs"]:
         from launcher.apps.uade_fs import app_main
+    elif app in ["x64sc", "x64sc-fs"]:
+        from launcher.apps.x64sc_fs import app_main
     else:
         return None
     return app_main

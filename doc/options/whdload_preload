@@ -1,4 +1,4 @@
-Summary: Override WHDLoad preload option
+Summary: "Override WHDLoad preload option"
 Default: 1
 Example: 0
 Type: Boolean

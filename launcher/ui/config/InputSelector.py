@@ -1,6 +1,7 @@
 import sys
 
 import fsui
+from fsgs.platform import Platform
 from launcher.option import Option
 from fsgs.context import fsgs
 from launcher.devicemanager import DeviceManager
@@ -27,12 +28,13 @@ class InputSelector(fsui.Group):
         self.layout = fsui.HorizontalLayout()
 
         if port == 1:
-            non_amiga_port = 1
+            non_amiga_port_gui_index = 0
         elif port == 0:
-            non_amiga_port = 2
+            non_amiga_port_gui_index = 1
         else:
-            non_amiga_port = port + 1
-        self.layout.add(InputPortTypeChoice(self, fsgs, non_amiga_port))
+            non_amiga_port_gui_index = port
+        self.layout.add(InputPortTypeChoice(
+            self, fsgs, non_amiga_port_gui_index))
 
         self.joystick_mode_values = ["nothing", "mouse", "joystick",
                                      "cd32 gamepad"]
@@ -71,7 +73,7 @@ class InputSelector(fsui.Group):
         self.layout.add(self.device_choice, expand=True)
 
         self.layout.add(InputPortDeviceChoice(
-            self, fsgs, non_amiga_port), expand=True)
+            self, fsgs, non_amiga_port_gui_index), expand=True)
 
         if port < 4 and autofire_button:
             self.autofire_button = IconButton(self, "16x16/lightning_off.png")
@@ -249,11 +251,12 @@ class InputSelector(fsui.Group):
 
 
 class InputPortTypeChoice(fsui.Choice):
-    def __init__(self, parent, fsgc, port):
+    def __init__(self, parent, fsgc, port_gui_index):
         self.fsgc = fsgc
         self._choice_values = []
         self._choice_labels = []
-        self.port = port
+        self.port_gui_index = port_gui_index
+        self.port = self.port_gui_index + 1
         super().__init__(parent, self._choice_labels)
         self._platform = ""
         self._config_key = ""
@@ -271,6 +274,12 @@ class InputPortTypeChoice(fsui.Choice):
 
     def on_config(self, key, value):
         if key == Option.PLATFORM:
+            self.port = self.port_gui_index + 1
+            if value == Platform.C64:
+                if self.port_gui_index == 0:
+                    self.port = 2
+                elif self.port_gui_index == 1:
+                    self.port = 1
             self._platform = value
             self._config_key = "{}_port_{}_type".format(value, self.port)
             self.update_options()
@@ -318,10 +327,11 @@ class InputPortTypeChoice(fsui.Choice):
 
 
 class InputPortDeviceChoice(fsui.ComboBox):
-    def __init__(self, parent, fsgc, port):
+    def __init__(self, parent, fsgc, port_gui_index):
         super().__init__(parent, [""], read_only=True)
         self.fsgc = fsgc
-        self.port = port
+        self.port_gui_index = port_gui_index
+        self.port = self.port_gui_index + 1
         self._platform = ""
         self._config_key = ""
         self.device_option_key = ""
@@ -375,6 +385,12 @@ class InputPortDeviceChoice(fsui.ComboBox):
 
     def on_config(self, key, value):
         if key == "platform":
+            self.port = self.port_gui_index + 1
+            if value == Platform.C64:
+                if self.port_gui_index == 0:
+                    self.port = 2
+                elif self.port_gui_index == 1:
+                    self.port = 1
             self._platform = value
             self.update_enabled()
             self.device_option_key = "{}_port_{}".format(
@@ -443,7 +459,7 @@ class InputPortDeviceChoice(fsui.ComboBox):
         device = DeviceManager.get_non_amiga_device_for_port(
             config, self.port)
 
-        default_description = gettext("{} (*)").format(
+        default_description = "{} (*)".format(
             fix_device_name(device.name))
         # print("default_description = ", default_description)
 

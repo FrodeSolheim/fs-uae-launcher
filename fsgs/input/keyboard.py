@@ -1,6 +1,5 @@
 import fsgs.util.sdl2constants as sdl2
 
-
 # with open(os.expanduser('~/Desktop/keys.txt'), 'wb') as f:
 #     for key in sorted(sdl_key_codes.keys()):
 #         value = str(sdl_key_codes[key])
@@ -13,8 +12,8 @@ import fsgs.util.sdl2constants as sdl2
 #             dik_code = str(dinput_key_codes[key.upper()])
 #         except KeyError:
 #             dik_code = ''
-#         f.write("    '" + sdl_name + "': (" + value + ", '" + dik_name + "', " + \
-#                 dik_code + '),\n')
+#         f.write("    '" + sdl_name + "': (" + value + ", '" + dik_name +
+#                 "', " + dik_code + '),\n')
 
 
 class Key(object):
@@ -302,4 +301,3 @@ key_table = {
 sdl_key_code_to_name = {}
 for key, value in key_table.items():
     sdl_key_code_to_name[value[0]] = key
-

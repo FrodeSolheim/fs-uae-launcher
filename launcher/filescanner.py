@@ -3,7 +3,7 @@ import os
 import traceback
 
 from fsbc.paths import Paths
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.filedatabase import FileDatabase
 from fsgs.amiga.rommanager import ROMManager
 from .i18n import gettext

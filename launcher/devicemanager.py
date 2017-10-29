@@ -381,7 +381,13 @@ class DeviceManager:
 
         for p in [1, 2, 3, 4]:
             auto_fill(p, "mouse")
-        for p in [1, 2, 3, 4]:
+        # FIXME: Hack, circular dependency
+        from fsgs.platform import Platform
+        if platform == Platform.C64:
+            port_order = [2, 1, 3, 4]
+        else:
+            port_order = [1, 2, 3, 4]
+        for p in port_order:
             auto_fill(p, "joystick")
             print("auto-fill", p, "=", ports[p])
         return ports

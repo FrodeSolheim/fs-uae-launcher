@@ -1,6 +1,5 @@
 import sys
 
-from arcade.notification import Notification
 from .device import Device
 from .enumeratehelper import EnumerateHelper
 

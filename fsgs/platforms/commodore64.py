@@ -36,6 +36,7 @@ FIXME:
   Keyboard: Error - Cannot load keymap `sdl_pos.vkm'.
 
 """
+import json
 import os
 
 import shutil
@@ -45,39 +46,90 @@ from fsgs.drivers.gamedriver import GameDriver
 from fsgs.input.mapper import InputMapper
 from fsgs.input.sdlkeycodes import SDLK_LAST
 from fsgs.option import Option
-from fsgs.platforms.c64 import C64_MODEL_C64, C64_MODEL_C64C, \
-    C64_MODEL_C64C_1541_II
+from fsgs.platform import Platform
+from fsgs.platforms.loader import SimpleLoader
 
+C64_MODEL_C64 = "c64"
+C64_MODEL_C64C = "c64c"
+C64_MODEL_C64C_1541_II = "c64c/1541-ii"
+C64_JOYSTICK = {
+    "type": "joystick",
+    "description": "Joystick",
+    "mapping_name": "c64",
+}
+C64_PORTS = [
+    {
+        "description": "Port 2",
+        "types": [C64_JOYSTICK],
+        "type_option": "c64_port_2_type",
+        "device_option": "c64_port_2",
+    },
+    {
+        "description": "Port 1",
+        "types": [C64_JOYSTICK],
+        "type_option": "c64_port_1_type",
+        "device_option": "c64_port_1",
+    },
+]
 C64_VIDEO_WIDTH = 384
 C64_VIDEO_HEIGHT = 272
+
 VICE_KEY_SET_A = 2
 VICE_KEY_SET_B = 3
 VICE_JOYSTICK = 4
 
 
-class ViceC64Driver(GameDriver):
+class Commodore64Platform(Platform):
+    PLATFORM_NAME = "Commodore 64"
 
-    CONTROLLER = {
-        "type": "joystick",
-        "description": "Joystick",
-        "mapping_name": "c64",
-    }
+    def __init__(self):
+        super().__init__(Commodore64Loader, Commodore64ViceDriver)
 
-    PORTS = [
-        {
-            "description": "Port 2",
-            "types": [CONTROLLER]
-        },
-        {
-            "description": "Port 1",
-            "types": [CONTROLLER]
-        },
-    ]
+    def driver(self, fsgc):
+        return Commodore64ViceDriver(fsgc)
+
+    def loader(self, fsgc):
+        return Commodore64Loader(fsgc)
+
+
+class Commodore64Loader(SimpleLoader):
+    def load_files(self, values):
+        file_list = json.loads(values["file_list"])
+        # assert len(file_list) == 1
+        for i, item in enumerate(file_list):
+            _, ext = os.path.splitext(item["name"])
+            ext = ext.upper()
+            if ext in [".TAP", ".T64"]:
+                if i == 0:
+                    self.config["tape_drive_0"] = "sha1://{}/{}".format(
+                        item["sha1"], item["name"])
+                self.config["tape_image_{0}".format(i)] = \
+                    "sha1://{}/{}".format(item["sha1"], item["name"])
+            elif ext in [".D64"]:
+                if i == 0:
+                    self.config["floppy_drive_0"] = "sha1://{}/{}".format(
+                        item["sha1"], item["name"])
+                self.config["floppy_image_{}".format(i)] = \
+                    "sha1://{0}/{1}".format(item["sha1"], item["name"])
+
+    def load_extra(self, values):
+        # FIXME: Replace with c64_model?
+        self.config[Option.C64_MODEL] = values["model"]
+        if not self.config[Option.C64_MODEL]:
+            self.config[Option.C64_MODEL] = C64_MODEL_C64C
+        self.config["c64_port_1_type"] = values["c64_port_1_type"]
+        self.config["c64_port_2_type"] = values["c64_port_2_type"]
+        # FIXME: Remove?
+        self.config["model"] = ""
+
+
+class Commodore64ViceDriver(GameDriver):
+    PORTS = C64_PORTS
 
     def __init__(self, fsgs):
         super().__init__(fsgs)
         self.emulator.name = "x64sc-fs"
-        self.helper = C64Helper(self.options)
+        self.helper = Commodore64Helper(self.options)
 
     def prepare(self):
         dot_vice_dir = os.path.join(self.home.path, ".vice")
@@ -94,7 +146,7 @@ class ViceC64Driver(GameDriver):
             # Not using normpath because os.sep can be "/" on MSYS2,
             # and Vice on Windows really requires backslashes here.
             joymap_file = joymap_file.replace("/", "\\")
-        self.args.extend(["-joymap", joymap_file])
+        self.emulator.args.extend(["-joymap", joymap_file])
 
         hotkey_file = self.temp_file("hotkey.vkm").path
         with open(hotkey_file, "w", encoding="UTF-8") as f:
@@ -102,7 +154,7 @@ class ViceC64Driver(GameDriver):
         # noinspection SpellCheckingInspection
         if windows:
             hotkey_file = hotkey_file.replace("/", "\\")
-        self.args.extend(["-hotkeyfile", hotkey_file])
+        self.emulator.args.extend(["-hotkeyfile", hotkey_file])
 
         config_file = self.temp_file("vice.cfg").path
         with open(config_file, "w", encoding="UTF-8") as f:
@@ -110,7 +162,7 @@ class ViceC64Driver(GameDriver):
             self.configure_audio(f)
             self.configure_input(f)
             self.configure_video(f)
-        self.args.extend(["-config", config_file])
+        self.emulator.args.extend(["-config", config_file])
 
         if self.helper.model() == C64_MODEL_C64:
             self.set_model_name("Commodore C64")
@@ -128,23 +180,24 @@ class ViceC64Driver(GameDriver):
             media_keys.append("tape_image_{0}".format(i))
         unique_uris = set()
         for key in media_keys:
-            if self.config[key]:
-                unique_uris.add(self.config[key])
+            if self.options[key]:
+                unique_uris.add(self.options[key])
         # media_dir = self.temp_dir("media")
         # VICE uses CWD as default directory for media files
         media_dir = self.cwd
         for file_uri in unique_uris:
-            input_stream = self.fsgs.file.open(file_uri)
+            input_stream = self.fsgc.file.open(file_uri)
             game_file = os.path.join(media_dir.path, file_uri.split("/")[-1])
             with open(game_file, "wb") as f:
                 f.write(input_stream.read())
 
-        if self.config["tape_drive_0"]:
-            file_uri = self.config["tape_drive_0"]
+        if self.options[Option.TAPE_DRIVE_0]:
+            file_uri = self.options[Option.TAPE_DRIVE_0]
         else:
-            file_uri = self.config["floppy_drive_0"]
+            file_uri = self.options[Option.FLOPPY_DRIVE_0]
+
         autostart_file = os.path.join(media_dir.path, file_uri.split("/")[-1])
-        self.args.extend(["-autostart", autostart_file])
+        self.emulator.args.extend(["-autostart", autostart_file])
 
     def finish(self):
         pass
@@ -229,14 +282,14 @@ class ViceC64Driver(GameDriver):
     #     return floppies
 
     def configure_audio(self, f):
-        audio_driver = self.config.get("vice_audio_driver", "")
+        audio_driver = self.options[Option.VICE_AUDIO_DRIVER]
         if audio_driver:
-            print("Using audio driver", repr(audio_driver))
+            print("[VICE] Using audio driver", repr(audio_driver))
             f.write("SoundDeviceName={0}\n".format(audio_driver))
-        else:
-            audio_driver = self.config.get("audio_driver", "")
-            if audio_driver == "sdl":
-                f.write("SoundDeviceName={0}\n".format(audio_driver))
+        # else:
+        #     audio_driver = self.config.get("audio_driver", "")
+        #     if audio_driver == "sdl":
+        #         f.write("SoundDeviceName={0}\n".format(audio_driver))
 
         if self.use_audio_frequency():
             f.write("SoundSampleRate={0}\n".format(self.use_audio_frequency()))
@@ -255,6 +308,7 @@ class ViceC64Driver(GameDriver):
 
         for i, port in enumerate(self.ports):
             vice_port = [2, 1, 3, 4][i]
+            # vice_port = i + 1
             if port.device is None:
                 vice_port_type = 0
             elif port.device.type == "joystick":
@@ -265,6 +319,8 @@ class ViceC64Driver(GameDriver):
             else:
                 vice_port_type = 0
             f.write("JoyDevice{0}={1}\n".format(vice_port, vice_port_type))
+            print("[INPUT] Port", port.type_option, "VicePort", vice_port,
+                  port.type, port.device)
 
             if port.device is None:
                 continue
@@ -299,10 +355,16 @@ class ViceC64Driver(GameDriver):
 
         if self.effect() == self.CRT_EFFECT:
             f.write("VICIIFilter=1\n")
+        elif self.effect() == self.DOUBLE_EFFECT:
+            f.write("VICIIFilter=0\n")
+        elif self.effect() == self.HQ2X_EFFECT:
+            # HQ2X is not supported
+            f.write("VICIIFilter=0\n")
         elif self.effect() == self.SCALE2X_EFFECT:
             f.write("VICIIFilter=2\n")
         else:
             f.write("VICIIFilter=0\n")
+            f.write("VICIIDoubleSize=0\n")
 
         screen_w, screen_h = self.screen_size()
 
@@ -313,7 +375,6 @@ class ViceC64Driver(GameDriver):
         else:
             f.write("SDLWindowWidth={w}\n".format(w=960))
             f.write("SDLWindowHeight={h}\n".format(h=540))
-            pass
 
         if self.scaling() == self.MAX_SCALING:
             f.write("VICIIHwScale=1\n")
@@ -333,13 +394,15 @@ class ViceC64Driver(GameDriver):
         if self.border() == self.LARGE_BORDER:
             f.write("VICIIBorderMode=1\n")
         elif self.border() == self.SMALL_BORDER:
-            # Value 4 is an FSGS extension to Vice.
+            # Value 4 is an FSGS extension in Vice-FS.
             f.write("VICIIBorderMode=4\n")
         else:
             f.write("VICIIBorderMode=3\n")
 
+        # # Disable scanlines in CRT mode
+        # f.write("VICIIPALScanLineShade=1000\n")
         # Disable scanlines in CRT mode
-        f.write("VICIIPALScanLineShade=1000\n")
+        f.write("VICIIPALScanLineShade=850\n")
 
         # Can this be used to set fullscreen desktop, etc?
         # f.write("VICIISDLFullscreenMode = 1\n")
@@ -444,7 +507,7 @@ class ViceInputMapper(InputMapper):
         return "{0}".format(key.sdl_code)
 
 
-class C64Helper:
+class Commodore64Helper:
     def __init__(self, options):
         self.options = options
 

@@ -1,6 +1,6 @@
 import os
 import hashlib
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 
 
 class ROMManager(object):

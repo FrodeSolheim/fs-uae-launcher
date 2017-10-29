@@ -8,7 +8,7 @@ import shutil
 
 from fsbc.paths import Paths
 from fsbc.system import System
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.drivers.gamedriver import GameDriver, Emulator
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.input.mapper import InputMapper

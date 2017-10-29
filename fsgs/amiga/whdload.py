@@ -3,7 +3,7 @@ import os
 from typing import List, Dict, DefaultDict, BinaryIO
 
 from fsbc import settings
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.option import Option
 
 

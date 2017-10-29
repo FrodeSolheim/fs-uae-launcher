@@ -72,7 +72,7 @@ class InputMenu(Menu):
         self.set_defaults()
 
     def set_defaults(self):
-        print("set_defaults")
+        print("[INPUT] InputMenu.set_defaults")
         devices = []
         for device in self.devices:
             score = 0
@@ -80,9 +80,9 @@ class InputMenu(Menu):
                 score = -1
             devices.append([score, device])
         devices = [x[1] for x in sorted(devices)]
-        print("- devices:", devices)
+        print("[INPUT] Devices:", devices)
         for i, input_ in enumerate(self.controller.ports):
-            print("- input port {0}:".format(i))
+            print("[INPUT] Input port {0}:".format(i))
             for device in devices:
                 try:
                     device.configure(input_.mapping_name)

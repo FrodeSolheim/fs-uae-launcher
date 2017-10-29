@@ -3,7 +3,8 @@ arch = $(strip $(shell python3 ../arch.py))
 
 emulator_dir = fs-uae_$(version)_windows_$(arch)
 launcher_dir = fs-uae-launcher_$(version)_windows_$(arch)
-library_zip = $(launcher_dir)/lib/python36.zip
+# library_zip = $(launcher_dir)/lib/python36.zip
+library_zip = $(launcher_dir)/lib/library.zip
 
 all: progdir zip setup
 
@@ -29,7 +30,7 @@ progdir:
 	# Remove dummy sqlite3.dll
 	rm /mingw32/DLLs/sqlite3.dll
 	rm /mingw64/DLLs/sqlite3.dll
-	rm  $(launcher_dir)/sqlite3.dll
+	rm  $(launcher_dir)/lib/sqlite3.dll
 
 	# Remove debug libraries
 	rm $(launcher_dir)/*d.dll
@@ -82,10 +83,13 @@ progdir:
 	zip -d $(library_zip) oyoyo/\*
 	zip -d $(library_zip) workspace/\*
 
-	mv $(launcher_dir)/lib $(launcher_dir)/python3.6
-	mkdir -p $(launcher_dir)/lib
-	mv  $(launcher_dir)/python3.6 $(launcher_dir)/lib/
-	mv $(launcher_dir)/lib/python3.6/python36.zip $(launcher_dir)/lib/
+	# mv $(launcher_dir)/lib $(launcher_dir)/python3.6
+	# mkdir -p $(launcher_dir)/lib
+	# mv $(launcher_dir)/python3.6 $(launcher_dir)/lib/
+	# mv $(launcher_dir)/lib/python3.6/python36.zip $(launcher_dir)/lib/
+
+	mv $(launcher_dir)/lib/* $(launcher_dir)/
+	rm -Rf $(launcher_dir)/lib
 
 	make -C ../python
 	cp -a ../python/*.zip $(launcher_dir)

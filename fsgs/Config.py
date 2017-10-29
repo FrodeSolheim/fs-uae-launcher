@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from fsbc import settings
 from fsgs.option import Option
-from .ContextAware import ContextAware
+from .contextaware import ContextAware
 
 
 class Config(ContextAware):
@@ -20,7 +20,7 @@ class Config(ContextAware):
         ConfigBehavior(instance, options)
 
     def copy(self):
-        # return a defaultdict so lookups for unset keys return an empty string
+        # Return a defaultdict so lookups for unset keys returns empty strings.
         return defaultdict(str, self.values)
 
     def get(self, key, default=""):

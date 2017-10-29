@@ -11,7 +11,7 @@ from fsbc.application import app
 from fsbc.settings import Settings
 from fsbc.task import Task
 from fsbc.util import unused, is_uuid
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.filedatabase import FileDatabase
 from fsgs.amiga import whdload
@@ -566,7 +566,7 @@ class AmigaLaunchTask(Task):
 
 class RunnerTask(Task):
     def __init__(self, driver):
-        Task.__init__(self, "Runner Task")
+        Task.__init__(self, "RunnerTask")
         self.driver = driver
 
     @property

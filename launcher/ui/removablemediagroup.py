@@ -2,7 +2,7 @@ import fsui
 from fsgs.amiga.amiga import Amiga
 from fsgs.option import Option
 from fsgs.platform import Platform
-from fsgs.platforms.c64 import C64_MODEL_C64C_1541_II
+from fsgs.platforms.commodore64 import C64_MODEL_C64C_1541_II
 from fsgs.platforms.zxs.spectrumplatform import ZXS_MODEL_PLUS3
 from launcher.launcher_config import LauncherConfig
 from launcher.ui.behaviors.configbehavior import ConfigBehavior

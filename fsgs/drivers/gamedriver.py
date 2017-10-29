@@ -95,7 +95,7 @@ class GameDriver:
 
     def init_port(self, index, port_info):
         port = Port(port_info["description"])
-        # FIXME: MOVE TO CONSTRUCTOR
+        # FIXME: MOVE TO Port CONSTRUCTOR
         port.number = index + 1
         port.types = port_info["types"]
         port.type_option = port_info.get("type_option", "")
@@ -555,18 +555,18 @@ class GameDriver:
         #     self.env["FSGS_STRETCH"] = "0"
 
         if self.stretching() == self.STRETCH_FILL_SCREEN:
-            self.env["FSGS_STRETCH"] = "1"
+            self.emulator.env["FSGS_STRETCH"] = "1"
         elif self.stretching() == self.STRETCH_ASPECT:
-            self.env["FSGS_STRETCH"] = "2"
+            self.emulator.env["FSGS_STRETCH"] = "2"
         else:
-            self.env["FSGS_STRETCH"] = "0"
+            self.emulator.env["FSGS_STRETCH"] = "0"
 
         if self.border() == self.SMALL_BORDER:
-            self.env["FSGS_BORDER"] = "1"
+            self.emulator.env["FSGS_BORDER"] = "1"
         elif self.border() == self.LARGE_BORDER:
-            self.env["FSGS_BORDER"] = "2"
+            self.emulator.env["FSGS_BORDER"] = "2"
         else:
-            self.env["FSGS_BORDER"] = "0"
+            self.emulator.env["FSGS_BORDER"] = "0"
 
         # env["FSGS_WINDOW_TITLE"] = ""
         self.set_environment_path(
@@ -576,7 +576,7 @@ class GameDriver:
         if self._model_name:
             env["FSGS_WINDOW_TITLE"] = self._model_name
 
-        env.update(self.env)
+        env.update(self.emulator.env)
         if not self.emulator.allow_home_access:
             env["HOME"] = self.home.path
 
@@ -702,7 +702,7 @@ class GameDriver:
         #     raise Exception("could not find executable for " + emulator)
 
         args = []
-        args.extend(self.args)
+        args.extend(self.emulator.args)
 
         if "SDL_VIDEODRIVER" in os.environ:
             print("SDL_VIDEODRIVER was present in environment, removing!")

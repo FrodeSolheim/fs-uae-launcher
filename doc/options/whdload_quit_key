@@ -1,4 +1,4 @@
-Summary: Override WHDLoad quit key
+Summary: "Override WHDLoad quit key"
 Default: 0
 Example: $59
 Type: Choice

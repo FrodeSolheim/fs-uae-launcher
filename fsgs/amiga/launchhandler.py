@@ -12,7 +12,7 @@ from typing import List, Dict
 from fsbc.paths import Paths
 from fsbc.resources import Resources
 from fsbc.task import current_task, TaskFailure
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.GameChangeHandler import GameChangeHandler
 from fsgs.GameNameUtil import GameNameUtil

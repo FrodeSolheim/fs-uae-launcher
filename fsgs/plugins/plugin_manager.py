@@ -24,6 +24,7 @@ known_plugin_versions = {
     "Cheats": "1.0.0",
     "DOSBox-FS": "0.74.4006fs7",
     "Fuse-FS": "1.3.3fs5",
+    "Genesis-Plus-GX-LR": "1.7.4git",
     "Hatari-FS": "2.0.0fs1",
     "MAME-FS": "0.189fs1",
     # "Mess-FS": "0.168fs0",

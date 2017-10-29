@@ -2,6 +2,7 @@ import re
 import subprocess
 import traceback
 
+from fsgs import Option
 from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 from launcher.devicemanager import DeviceManager
 from .device import Device
@@ -100,7 +101,7 @@ class EnumerateHelper(object):
         self.joystick_like_devices.extend(self.keyboard_devices)
 
     def default_port_selection(self, ports, options):
-        print("[INPUT] Default port selection")
+        print("[INPUT] Default port selection (EnumerateHelper)")
         self.init()
         # for device in self.devices:
         #     print(" #", device.id)
@@ -108,9 +109,16 @@ class EnumerateHelper(object):
 
         if len(ports) > 0:
             if ports[0].type_option:
+                print("[INPUT] New-style port device selection:")
                 # Supports new-style port selection
                 port_devices = DeviceManager.get_non_amiga_devices_for_ports(
                     options)
+                from fsgs.platform import Platform
+                if ports[0].type_option == Option.C64_PORT_2_TYPE:
+                    print("[INPUT] Hack for inverted C64 port order")
+                    temp = port_devices[1]
+                    port_devices[1] = port_devices[2]
+                    port_devices[2] = temp
                 for i, port in enumerate(ports):
                     for device in self.devices:
                         if port_devices[i + 1].id == device.id:
@@ -122,7 +130,7 @@ class EnumerateHelper(object):
                 return
 
         joystick_like_devices = self.joystick_like_devices[:]
-        print("[INPUT] Old Selection: Ports:")
+        print("[INPUT] Old-style port device selection:")
         for port in ports:
             for i, device in enumerate(joystick_like_devices):
                 # device.configure()

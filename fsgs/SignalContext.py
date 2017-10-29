@@ -1,6 +1,6 @@
 import weakref
 from fsbc.signal import Signal
-from .ContextAware import ContextAware
+from .contextaware import ContextAware
 
 
 class SignalBehavior:

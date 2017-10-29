@@ -15,7 +15,7 @@ from launcher.settings.videosynccheckbox import VideoSyncCheckBox
 from launcher.ui.IconButton import IconButton
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.behaviors.platformbehavior import PlatformShowBehavior, \
-    AMIGA_PLATFORMS
+    AMIGA_PLATFORMS, PlatformEnableBehavior
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
 MEDNAFEN = [
@@ -34,7 +34,8 @@ STRETCHING += AMIGA_PLATFORMS
 STRETCHING += [Platform.ARCADE, Platform.NEOGEO]
 
 BEZEL = AMIGA_PLATFORMS + MEDNAFEN + [
-    Platform.ARCADE, Platform.NEOGEO, Platform.ZXS, Platform.DOS]
+    Platform.ARCADE, Platform.NEOGEO, Platform.ZXS, Platform.DOS,
+    Platform.C64]
 CHEATS = MEDNAFEN + [Platform.ARCADE, Platform.NEOGEO]
 
 
@@ -60,15 +61,16 @@ class QuickSettingsPanel(fsui.Panel):
 
         # self.add_option(Option.KEEP_ASPECT, text=gettext("Keep Aspect"),
         #                 platforms=AMIGA_PLATFORMS)
-        self.add_option(Option.SCALE, text=None, platforms=SCALING)
-        self.add_option(Option.STRETCH, text=None, platforms=STRETCHING)
-        self.add_option(Option.BEZEL, text=None, platforms=BEZEL)
+        self.add_option(Option.SCALE, text=None, enable=SCALING)
+        self.add_option(Option.STRETCH, text=None, enable=STRETCHING)
+        self.add_option(Option.BEZEL, text=None, enable=BEZEL)
+
+        self.add_option(Option.EFFECT, text=None, enable=EFFECTS)
 
         self.add_option(Option.ZOOM, text=None, platforms=AMIGA_PLATFORMS)
         self.add_option(Option.BORDER, text=None, platforms=BORDER)
 
         # self.add_option(Option.SMOOTHING, text=None, platforms=SMOOTHING)
-        self.add_option(Option.EFFECT, text=None, platforms=EFFECTS)
 
         # self.add_option(Option.CROP, text=None, platforms=CROPPING)
 
@@ -81,7 +83,6 @@ class QuickSettingsPanel(fsui.Panel):
         self.add_option(Option.AUTO_LOAD, [Platform.DOS, Platform.ZXS])
         self.add_option(Option.AUTO_QUIT, [Platform.DOS])
         self.add_option(Option.TURBO_LOAD, [Platform.ZXS])
-        self.add_option(Option.C64_PALETTE, [Platform.C64])
 
         # self.add_option(Option.FRAME, text=None, platforms=BEZEL)
         # self.add_option(Option.BEZEL, text=None, platforms=BEZEL)
@@ -128,7 +129,7 @@ class QuickSettingsPanel(fsui.Panel):
         ConfigBehavior(self, [Option.PLATFORM])
         SettingsBehavior(self, [Option.G_SYNC])
 
-    def add_option(self, option, platforms=None, text=""):
+    def add_option(self, option, platforms=None, enable=None, text=""):
         panel = fsui.Panel(self)
         panel.layout = fsui.VerticalLayout()
         panel.layout.add(
@@ -138,6 +139,8 @@ class QuickSettingsPanel(fsui.Panel):
         self.layout.add(panel, fill=True, margin=10)
         if platforms:
             PlatformShowBehavior(panel, platforms)
+        elif enable:
+            PlatformEnableBehavior(panel, enable)
 
     def on_platform_config(self, value):
         self.layout.update()

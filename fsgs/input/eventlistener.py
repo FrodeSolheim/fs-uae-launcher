@@ -5,8 +5,8 @@ from fsgs.input.device import Device
 from fsgs.input.eventhelper import EventHelper
 from fsgs.input.devicemanager import DeviceManager
 
-
 CHECK_DELAY = 0.5
+
 
 class EventListener:
     def __init__(self):
