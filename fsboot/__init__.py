@@ -5,6 +5,9 @@ import getpass
 import subprocess
 import logging
 import sys
+import time
+
+perf_counter_epoch = time.perf_counter()
 
 # The current directory when the application was started.
 _cwd = os.getcwd()

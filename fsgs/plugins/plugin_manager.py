@@ -19,7 +19,6 @@ X86_ANY_MACHINES = X86_MACHINES + X86_64_MACHINES
 logger = logging.getLogger("PLUGINS")
 
 known_plugin_versions = {
-    # "Arcade-FS": "0.168fs0",
     "CAPSImg": "5.1fs3",
     "Cheats": "1.0.0",
     "DOSBox-FS": "0.74.4006fs7",
@@ -27,8 +26,6 @@ known_plugin_versions = {
     "Genesis-Plus-GX-LR": "1.7.4git",
     "Hatari-FS": "2.0.0fs1",
     "MAME-FS": "0.189fs1",
-    # "Mess-FS": "0.168fs0",
-    # "MultiEmu-FS": "0.189fs1",
     "Mednafen-FS": "0.9.47fs6",
     "Mupen64Plus-LR": "2.5fs0git",
     "Nestopia-LR": "1.49fs0wip",

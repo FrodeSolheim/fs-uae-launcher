@@ -1,5 +1,6 @@
 Version 2.9.8dev:
 
+* Added elapsed time to log file (to debug startup time).
 * Imported updated translations from crowdin.com.
 
 Version 2.9.7dev:
