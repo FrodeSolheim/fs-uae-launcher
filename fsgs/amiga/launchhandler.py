@@ -671,7 +671,7 @@ class LaunchHandler(object):
             workbench_version = "2.04"
         elif amiga_model.startswith("A1200"):
             workbench_version = "3.0"
-        elif amiga_model.startswith("A4200"):
+        elif amiga_model.startswith("A4000"):
             workbench_version = "3.0"
         else:
             workbench_version = None
