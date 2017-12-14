@@ -133,6 +133,11 @@ cfg = [
     ("network_card", "", "checksum", "sync"),
     ("freezer_cartridge", "", "checksum", "sync"),
 
+    (Option.A7800_A78_HEADER, "", "checksum", "sync"),
+    (Option.A7800_MODEL, "", "checksum", "sync"),
+    (Option.A7800_PORT_1_TYPE, "", "checksum", "sync"),
+    (Option.A7800_PORT_2_TYPE, "", "checksum", "sync"),
+    (Option.NES_MODEL, "", "checksum", "sync"),
     (Option.ATARI_MODEL, "", "checksum", "sync"),
     (Option.C64_MODEL, "", "checksum", "sync"),
     (Option.CARTRIDGE_SLOT, "", "checksum", "sync"),

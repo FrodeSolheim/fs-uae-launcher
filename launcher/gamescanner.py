@@ -72,6 +72,8 @@ class GameDatabaseIterator:
             yield "MSX", self.fsgc.game_database("MSX")
         if self._check_platform(Option.N64_DATABASE):
             yield "N64", self.fsgc.game_database("N64")
+        if self._check_platform(Option.NDS_DATABASE):
+            yield "NDS", self.fsgc.game_database("NDS")
         if self._check_platform(Option.NEOGEO_DATABASE):
             yield "NEOGEO", self.fsgc.game_database("NEOGEO")
         if self._check_platform(Option.NES_DATABASE):

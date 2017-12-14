@@ -15,11 +15,9 @@ from fsgs.platforms.loader import SimpleLoader
 
 NES_PLATFORM_ID = "nes"
 NES_PLATFORM_NAME = "Nintendo"
-
 NES_MODEL_NTSC = "ntsc"
 NES_MODEL_PAL = "pal"
 NES_MODEL_FAMICOM = "ntsc-j"
-
 NES_CONTROLLER_TYPE = "gamepad"
 NES_CONTROLLER = {
     "type": NES_CONTROLLER_TYPE,
@@ -138,11 +136,11 @@ class NintendoMednafenDriver(MednafenDriver):
         self.emulator.args.extend(
             ["-{}.input.port2".format(pfx), self.ports[1].type])
 
-        if self.helper.nes_model() == NES_MODEL_PAL:
+        if self.helper.model() == NES_MODEL_PAL:
             self.set_model_name("Nintendo (PAL)")
             self.emulator.args.extend(["-{}.pal".format(pfx), "1"])
         else:
-            if self.helper.nes_model() == NES_MODEL_FAMICOM:
+            if self.helper.model() == NES_MODEL_FAMICOM:
                 self.set_model_name("Famicom")
             else:
                 self.set_model_name("Nintendo (NTSC)")
@@ -235,10 +233,10 @@ class NintendoRetroArchDriver(RetroArchDriver):
     def prepare(self):
         super().prepare()
         with self.open_retroarch_core_options() as f:
-            if self.helper.nes_model() == NES_MODEL_PAL:
+            if self.helper.model() == NES_MODEL_PAL:
                 self.set_model_name("Nintendo (PAL)")
                 f.write("nestopia_favored_system = pal\n")
-            elif self.helper.nes_model() == NES_MODEL_FAMICOM:
+            elif self.helper.model() == NES_MODEL_FAMICOM:
                 self.set_model_name("Famicom")
                 f.write("nestopia_favored_system = famicom\n")
             else:
@@ -317,6 +315,21 @@ class NintendoHelper:
     def __init__(self, options):
         self.options = options
 
+    def model(self):
+        model = self.options[Option.NES_MODEL]
+        if model in ["", NES_MODEL_NTSC]:
+            return NES_MODEL_NTSC
+        elif model == NES_MODEL_PAL:
+            return NES_MODEL_PAL
+        elif model == NES_MODEL_FAMICOM:
+            return NES_MODEL_FAMICOM
+        else:
+            print("[NES] Warning: Invalid model:", model)
+            return NES_MODEL_NTSC
+
+    def pal(self):
+        return self.model() == NES_MODEL_PAL
+
     def fix_ines_rom(self, path):
         data1 = b""
         with open(path, "rb") as f:
@@ -360,11 +373,11 @@ class NintendoHelper:
 
         path = driver.temp_file("rom" + ext).path
         with open(path, "wb") as f:
-            ines_header = self.options[Option.NES_INES_HEADER]
-            if ines_header:
-                assert len(ines_header) == 32
-                f.write(unhexlify(ines_header))
-                sha1_obj.update(unhexlify(ines_header))
+            header = self.options[Option.NES_INES_HEADER]
+            if header:
+                assert len(header) == 16 * 2
+                f.write(unhexlify(header))
+                sha1_obj.update(unhexlify(header))
             if data is not None:
                 f.write(data)
                 sha1_obj.update(data)
@@ -374,31 +387,7 @@ class NintendoHelper:
                     break
                 f.write(data)
                 sha1_obj.update(data)
-
         new_path = os.path.join(
             os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext)
         os.rename(path, new_path)
         return new_path
-
-        # FIXME: Replace code and write ROM in one go with iNES fix...
-        # rom_path = self.get_game_file()
-        # self.fix_ines_rom(rom_path)
-        # with open(rom_path, "rb") as f:
-        #     new_rom_name = hashlib.sha1(f.read()).hexdigest()[:8]
-        # new_rom_path = os.path.join(os.path.dirname(rom_path), new_rom_name)
-        # shutil.copy(rom_path, new_rom_path)
-        # rom_path = new_rom_path
-
-    def nes_model(self):
-        model = self.options[Option.NES_MODEL]
-        if model in ["", NES_MODEL_NTSC]:
-            return NES_MODEL_NTSC
-        elif model == NES_MODEL_PAL:
-            return NES_MODEL_PAL
-        elif model == NES_MODEL_FAMICOM:
-            return NES_MODEL_FAMICOM
-        print("[NES] Warning: Invalid model:", model)
-        return NES_MODEL_NTSC
-
-    def pal(self):
-        return self.nes_model() == NES_MODEL_PAL

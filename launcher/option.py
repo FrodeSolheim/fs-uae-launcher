@@ -31,6 +31,33 @@ options = {
         "description": ("Enable/disable use of the Atari 7800 database"),
         "type": "Boolean",
     },
+    Option.A7800_MODEL: {
+        "default": "ntsc",
+        "description": ("Atari 7800 Model"),
+        "type": "Choice",
+        "values": [
+            ("ntsc", "NTSC"),
+            ("pal", "PAL"),
+        ]
+    },
+    Option.A7800_PORT_1_TYPE: {
+        "default": "joystick",
+        "description": ("Atari 7800 Port 1"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ]
+    },
+    Option.A7800_PORT_2_TYPE: {
+        "default": "joystick",
+        "description": ("Atari 7800 Port 2"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ]
+    },
     Option.ACCELERATOR: {
         "default": "0",
         "description": N_("Accelerator Board"),
@@ -456,6 +483,11 @@ options = {
             ("crt", N_("CRT Emulation")),
         ]
     },
+    Option.EMULATOR_PID_FILE: {
+        "default": "",
+        "description": ("Write emulator PID file"),
+        "type": "",
+    },
     Option.EXPECT_VERSION: {
         "default": "",
         "description": ("Expect Specific FS-UAE Version"),
@@ -588,15 +620,47 @@ options = {
         "description": ("Enable/disable use of the Game Boy database"),
         "type": "Boolean",
     },
+    Option.GB_PORT_1_TYPE: {
+        "default": "builtin",
+        "description": ("Game Boy Port 1"),
+        "type": "Choice",
+        "values": [
+            ("builtin", N_("Built-in")),
+        ]
+    },
     Option.GBA_DATABASE: {
         "default": "0",
         "description": (
             "Enable/disable use of the Game Boy Advance database"),
         "type": "Boolean",
     },
+    Option.GBA_GAMMA: {
+        "default": "1.3",
+        "description": ("Game Boy Advance Gamma Adjustment"),
+        "type": "Choice",
+        "values": [
+            ("1.0", "1.0"),
+            ("1.1", "1.1"),
+            ("1.2", "1.2"),
+            ("1.3", "1.3"),
+            ("1.4", "1.4"),
+            ("1.5", "1.5"),
+            ("1.6", "1.6"),
+            ("1.7", "1.7"),
+            ("1.8", "1.8"),
+            ("1.9", "1.9"),
+            ("2.0", "2.0"),
+            ("2.1", "2.1"),
+            ("2.2", "2.2"),
+            ("2.3", "2.3"),
+            ("2.4", "2.4"),
+            ("2.5", "2.5"),
+            ("2.6", "2.6"),
+        ]
+    },
     Option.GBA_PORT_1_TYPE: {
         "default": "builtin",
-        "description": ("GBA Port 1"),
+        "description": ("Game Boy Advance Port 1"),
         "type": "Choice",
         "values": [
             ("builtin", N_("Built-in")),
@@ -606,6 +670,14 @@ options = {
         "default": "0",
         "description": ("Enable/disable use of the Game Boy Color database"),
         "type": "Boolean",
+    },
+    Option.GBC_PORT_1_TYPE: {
+        "default": "builtin",
+        "description": ("Game Boy Color Port 1"),
+        "type": "Choice",
+        "values": [
+            ("builtin", N_("Built-in")),
+        ]
     },
     Option.GRAPHICS_CARD: {
         "default": "none",
@@ -889,6 +961,11 @@ options = {
         "description": ("Enable/disable use of the Nintendo 64 database"),
         "type": "Boolean",
     },
+    Option.NDS_DATABASE: {
+        "default": "0",
+        "description": ("Enable/disable use of the Nintendo DS database"),
+        "type": "Boolean",
+    },
     Option.NEOGEO_DATABASE: {
         "default": "0",
         "description": ("Enable/disable use of the Neo-Geo game database"),
@@ -1049,6 +1126,7 @@ options = {
             ("neogeo", "Neo-Geo"),
             ("nes", "Nintendo"),
             ("n64", "Nintendo 64"),
+            ("nds", "Nintendo DS"),
             ("sms", "Master System"),
             ("smd", "Mega Drive"),
             ("psx", "PlayStation"),

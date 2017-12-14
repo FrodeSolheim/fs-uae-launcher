@@ -123,8 +123,6 @@ if sys.argv[1] == "build_exe":
         ],
         "include_files": [],
         "zip_includes": [],
-	"zip_include_packages": "*",
-	"zip_exclude_packages": [],
     }
     #for res_dir in res_dirs:
     #    print(res_dir)

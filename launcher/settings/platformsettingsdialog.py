@@ -48,6 +48,11 @@ class PlatformSettingsDialog(fsui.Window):
             # options.append(Option.C64_DATABASE)
             options.append(Option.C64_PALETTE)
             options.append(Option.VICE_AUDIO_DRIVER)
+        elif platform == Platform.GBA:
+            # options.append(Option.NES_DATABASE)
+            # options.append(Option.GBA_EMULATOR)
+            options.append(Option.GBA_GAMMA)
+            options.extend(mednafen_options)
         elif platform == Platform.NEOGEO:
             # options.append(Option.NEOGEO_DATABASE)
             options.extend(mame_options)

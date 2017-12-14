@@ -52,7 +52,7 @@ class SuperNintendoMednafenDriver(MednafenDriver):
         self.helper = SuperNintendoHelper(self.options)
 
     def prepare(self):
-        print("[DRIVER] Mednafen SNES driver preparing...")
+        print("[SNES] Mednafen SNES driver preparing...")
         super().prepare()
         self.set_mednafen_aspect(4, 3)
         # We do aspect calculation separately. Must not be done twice.

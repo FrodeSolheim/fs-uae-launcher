@@ -67,6 +67,7 @@ class Platform(PlatformHandler):
     LYNX = "lynx"
     MSX = "msx"
     N64 = "n64"
+    NDS = "nds"
     NEOGEO = "neogeo"
     NES = "nes"
     NGC = "ngc"
@@ -96,23 +97,24 @@ from fsgs.platforms.amstrad_cpc import AmstradCPCPlatformHandler
 from fsgs.platforms.arcade.arcadeplatform import ArcadePlatformHandler
 from fsgs.platforms.atari_2600 import Atari2600PlatformHandler
 from fsgs.platforms.atari5200 import Atari5200PlatformHandler
-from fsgs.platforms.atari_7800 import Atari7800PlatformHandler
+from fsgs.platforms.atari7800 import Atari7800PlatformHandler
 from fsgs.platforms.atari.atariplatform import AtariSTPlatformHandler
 from fsgs.platforms.cd32 import CD32PlatformHandler
 from fsgs.platforms.cdtv import CDTVPlatformHandler
 from fsgs.platforms.commodore64 import Commodore64Platform
 from fsgs.platforms.dos.dosplatform import DOSPlatformHandler
-from fsgs.platforms.game_boy import GameBoyPlatformHandler
-from fsgs.platforms.game_boy_advance import GameBoyAdvancePlatformHandler
-from fsgs.platforms.game_boy_color import GameBoyColorPlatformHandler
+from fsgs.platforms.gameboy import GameBoyPlatform
+from fsgs.platforms.gameboyadvance import GameBoyAdvancePlatform
+from fsgs.platforms.gameboycolor import GameBoyColorPlatform
 from fsgs.platforms.game_gear import GameGearPlatformHandler
 from fsgs.platforms.lynx import LynxPlatformHandler
 from fsgs.platforms.master_system import MasterSystemPlatformHandler
 from fsgs.platforms.megadrive import MegaDrivePlatform
 from fsgs.platforms.msx import MsxPlatformHandler
 from fsgs.platforms.nintendo64 import Nintendo64Platform
+from fsgs.platforms.nintendods import NintendoDSPlatform
 from fsgs.platforms.neogeo import NeoGeoPlatform
-from fsgs.platforms.ngc.ngcplatform import NGCPlatformHandler
+from fsgs.platforms.gamecube import GameCubePlatform
 from fsgs.platforms.nintendo import NintendoPlatform
 from fsgs.platforms.psx.psxplatform import PlayStationPlatformHandler
 from fsgs.platforms.supernintendo import SuperNintendoPlatformHandler
@@ -137,16 +139,17 @@ platforms = {
     Platform.CDTV: CDTVPlatformHandler,
     Platform.CPC: AmstradCPCPlatformHandler,
     Platform.DOS: DOSPlatformHandler,
-    Platform.GB: GameBoyPlatformHandler,
-    Platform.GBA: GameBoyAdvancePlatformHandler,
-    Platform.GBC: GameBoyColorPlatformHandler,
+    Platform.GB: GameBoyPlatform,
+    Platform.GBA: GameBoyAdvancePlatform,
+    Platform.GBC: GameBoyColorPlatform,
     Platform.GAME_GEAR: GameGearPlatformHandler,
     Platform.LYNX: LynxPlatformHandler,
     Platform.MSX: MsxPlatformHandler,
     Platform.N64: Nintendo64Platform,
+    Platform.NDS: NintendoDSPlatform,
     Platform.NEOGEO: NeoGeoPlatform,
     Platform.NES: NintendoPlatform,
-    Platform.NGC: NGCPlatformHandler,
+    Platform.NGC: GameCubePlatform,
     Platform.SNES: SuperNintendoPlatformHandler,
     Platform.PSX: PlayStationPlatformHandler,
     Platform.SMD: MegaDrivePlatform,
@@ -181,6 +184,8 @@ def normalize_platform_id(platform_id):
         return Platform.NES
     elif platform_id in ["nintendo64"]:
         return Platform.N64
+    elif platform_id in ["nintendods"]:
+        return Platform.NDS
     elif platform_id in ["nintendogamecube", "gamecube", "gc"]:
         return Platform.NGC
     elif platform_id in ["supernintendo", "supernes", "superfamicom"]:

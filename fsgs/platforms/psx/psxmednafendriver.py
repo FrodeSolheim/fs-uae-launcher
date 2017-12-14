@@ -66,6 +66,12 @@ class PlayStationMednafenDriver(MednafenDriver):
 
     def prepare(self):
         super().prepare()
+
+        # self.init_mednafen_crop_from_viewport()
+        self.set_mednafen_aspect(4, 3)
+        # We do aspect calculation separately. Must not be done twice.
+        # self.emulator.args.extend(["-psx.correct_aspect", "0"])
+
         self.prepare_mednafen_bios(PSX_SCPH5501_BIN, "scph5501.bin")
         self.prepare_mednafen_cd_images()
 

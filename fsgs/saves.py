@@ -1,11 +1,10 @@
 import os
-import warnings
-
 import shutil
+import warnings
 from configparser import ConfigParser
 
-from fsgs import Option
 from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.GameChangeHandler import GameChangeHandler
 from fsgs.util.gamenameutil import GameNameUtil
 
 """
@@ -13,8 +12,8 @@ TODO: Snapshots support. Create a Snapshots/TimeTDate/ directory with a
 copy of the state dir!
 """
 
-class SaveHandler(object):
 
+class SaveHandler(object):
     def __init__(
             self, fsgc, name="", platform="Unknown", uuid=None, options=None):
         self.fsgc = fsgc
@@ -22,6 +21,7 @@ class SaveHandler(object):
         self._options = options
 
         self.uuid = uuid
+        self.change_handlers = []
 
         self.config_name = name
         if "(" in name:
@@ -46,8 +46,14 @@ class SaveHandler(object):
             value = self.fsgc.settings.get(name, "")
         return value
 
+    def register_changes(self, original_dir, changes_dir):
+        self.change_handlers.append(
+            (GameChangeHandler(original_dir), changes_dir))
+
     def prepare(self):
         self.create_save_ini()
+        for change_handler, changes_dir in self.change_handlers:
+            change_handler.init(changes_dir)
 
     def create_save_ini(self):
         save_dir = self.save_dir()
@@ -60,9 +66,12 @@ class SaveHandler(object):
 
         if not cp.has_section("fsgs-save"):
             cp.add_section("fsgs-save")
-        cp.set("fsgs-save", "version", "1")
+        cp.set("fsgs-save", "version", "2")
+        cp.set("fsgs-save", "platform", self.get("platform"))
         cp.set("fsgs-save", "game_uuid", self.get("game_uuid"))
+        cp.set("fsgs-save", "game_name", self.get("game_name"))
         cp.set("fsgs-save", "variant_uuid", self.get("variant_uuid"))
+        cp.set("fsgs-save", "variant_name", self.get("variant_name"))
 
         with open(save_ini_path + ".partial", "w", encoding="UTF-8") as f:
             cp.write(f)
@@ -79,7 +88,6 @@ class SaveHandler(object):
         if not os.path.exists(save_state_directory):
             os.makedirs(save_state_directory)
         return save_state_directory
-
 
     def uuid_save_dir_path(self):
         saves_dir = FSGSDirectories.saves_dir()
@@ -99,6 +107,8 @@ class SaveHandler(object):
         assert False, "save_dir_path not implemented for this case"
 
     def finish(self):
+        for change_handler, changes_dir in self.change_handlers:
+            change_handler.update(changes_dir)
         self.cleanup()
 
     def cleanup(self):

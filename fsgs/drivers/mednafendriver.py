@@ -296,8 +296,6 @@ class MednafenDriver(GameDriver):
 
         print("\n" + "-" * 79 + "\n" + "CONFIGURE DIRS")
 
-        state_dir = self.emulator_state_dir("mednafen")
-
         self.emulator.args.extend(["-path_sav", self.save_handler.save_dir()])
         self.emulator.args.extend([
             "-path_state", self.save_handler.emulator_state_dir("Mednafen")])

@@ -25,6 +25,7 @@ from fsgs.amiga.rommanager import ROMManager
 from fsgs.amiga.roms import PICASSO_IV_74_ROM, CD32_FMV_ROM
 from fsgs.amiga.workbench import WorkbenchExtractor
 from fsgs.download import Downloader
+from fsgs.drivers.gamedriver import GameDriver
 from fsgs.knownfiles import ACTION_REPLAY_MK_III_3_17_ROM, \
     ACTION_REPLAY_MK_III_3_17_MOD_ROM, ACTION_REPLAY_MK_II_2_14_ROM, \
     ACTION_REPLAY_MK_II_2_14_MOD_ROM
@@ -37,6 +38,7 @@ class LaunchHandler(object):
 
     def __init__(self, fsgs, config_name, config, game_paths, temp_dir=""):
         self.fsgs = fsgs
+        self.fsgc = fsgs
         self.config_name = config_name
         self.config = config.copy()
 
@@ -1009,7 +1011,10 @@ class LaunchHandler(object):
                 config, cwd=self.temp_dir)
         else:
             process, config_file = FSUAE.start_with_config(config)
+        pid_file = self.fsgc.settings[Option.EMULATOR_PID_FILE]
+        GameDriver.write_emulator_pid_file(pid_file, process)
         process.wait()
+        GameDriver.remove_emulator_pid_file(pid_file)
         print("LaunchHandler.start is done")
         if os.environ.get("FSGS_CLEANUP", "") == "0":
             print("Not removing", config_file)

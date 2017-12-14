@@ -2,6 +2,7 @@ import io
 import os
 import shutil
 import tempfile
+import traceback
 import warnings
 from collections import defaultdict
 
@@ -73,8 +74,33 @@ class GameDriver:
                 "Could not find emulator " + repr(self.emulator.name))
         self.emulator.process = self.start_emulator(executable)
 
+    def emulator_pid_file(self):
+        return self.fsgc.settings[Option.EMULATOR_PID_FILE]
+
+    @classmethod
+    def write_emulator_pid_file(cls, pid_file, process):
+        if pid_file:
+            try:
+                with open(pid_file, "w") as f:
+                    f.write("{}".format(process.pid))
+            except Exception:
+                traceback.print_exc()
+                print("WARNING: Error writing emulator PID file")
+
+    @classmethod
+    def remove_emulator_pid_file(cls, pid_file):
+        if not pid_file:
+            return
+        try:
+            os.remove(pid_file)
+        except Exception:
+            traceback.print_exc()
+            print("WARNING: Error removing emulator PID file")
+
     def wait(self):
-        return self.emulator.process.wait()
+        result = self.emulator.process.wait()
+        self.remove_emulator_pid_file(self.emulator_pid_file())
+        return result
 
     def finish(self):
         pass
@@ -739,8 +765,9 @@ class GameDriver:
             "Starting {emulator}".format(emulator=emulator))
         # import subprocess
         # return subprocess.Popen(["strace", emulator.path] + args, **kwargs)
-        return emulator.popen(args, **kwargs)
-        # return process
+        process = emulator.popen(args, **kwargs)
+        self.write_emulator_pid_file(self.emulator_pid_file(), process)
+        return process
 
     def find_emulator_executable(self, name):
         # if os.path.isdir("../fs-uae/src"):

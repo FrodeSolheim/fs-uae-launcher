@@ -97,6 +97,9 @@ class FileScanner(object):
             self.extensions.add(".v64")
             self.extensions.add(".z64")
 
+            # Nintendo DS
+            self.extensions.add(".nds")
+
             # Super Nintendo
             self.extensions.add(".sfc")
 
@@ -278,6 +281,13 @@ class FileScanner(object):
                 print("Stripping iNES header for", path)
                 filter_name = "Skip(16)"
             raw_sha1_obj.update(data)
+        elif ext == ".a78":
+            # FIXME: Check if 128 is a fixed or variable number of bytes
+            data = f.read(128)
+            if len(data) == 128 and data[1:10] == b"ATARI7800":
+                print("Stripping A78 header for", path)
+                filter_name = "Skip(128)"
+            raw_sha1_obj.update(data)
         elif ext in [".v64", ".n64"]:
             filter_name = "ByteSwapWords"
 
@@ -288,7 +298,7 @@ class FileScanner(object):
             if not data:
                 break
             raw_sha1_obj.update(data)
-            if filter_name == "Skip(16)":
+            if filter_name.startswith("Skip("):
                 filter_sha1_obj.update(data)
                 filter_size += len(data)
             elif filter_name == "ByteSwapWords":

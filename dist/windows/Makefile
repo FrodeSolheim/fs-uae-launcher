@@ -18,19 +18,19 @@ progdir:
 	make -C ../..
 	rm -Rf ../build
 
-	# Create dummy sqlite3.dll (cx_Freeze looks for it...)
-	mkdir -p /mingw32/DLLs
-	cp /mingw32/bin/libsqlite3-0.dll /mingw32/DLLs/sqlite3.dll
-	mkdir -p /mingw64/DLLs
-	cp /mingw64/bin/libsqlite3-0.dll /mingw64/DLLs/sqlite3.dll
+	# # Create dummy sqlite3.dll (cx_Freeze looks for it...)
+	# mkdir -p /mingw32/DLLs
+	# cp /mingw32/bin/libsqlite3-0.dll /mingw32/DLLs/sqlite3.dll
+	# mkdir -p /mingw64/DLLs
+	# cp /mingw64/bin/libsqlite3-0.dll /mingw64/DLLs/sqlite3.dll
 
 	cd ../.. && python3 setup.py build_exe
 	mv ../../build/exe.mingw-3.6 $(launcher_dir)
 
 	# Remove dummy sqlite3.dll
-	rm /mingw32/DLLs/sqlite3.dll
-	rm /mingw64/DLLs/sqlite3.dll
-	rm  $(launcher_dir)/lib/sqlite3.dll
+	# rm /mingw32/DLLs/sqlite3.dll
+	# rm /mingw64/DLLs/sqlite3.dll
+	# rm  $(launcher_dir)/lib/sqlite3.dll
 
 	# Remove debug libraries
 	rm $(launcher_dir)/*d.dll

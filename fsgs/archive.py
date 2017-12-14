@@ -178,6 +178,8 @@ def filter_open(path, stream=None):
     if "#?" in path:
         if path.endswith("#?Filter=Skip(16)"):
             return SkipFilter(stream, 16)
+        elif path.endswith("#?Filter=Skip(128)"):
+            return SkipFilter(stream, 128)
         elif path.endswith("#?Filter=ByteSwapWords"):
             return ByteSwapWordsFilter(stream)
         else:
