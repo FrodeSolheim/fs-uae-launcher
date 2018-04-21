@@ -102,6 +102,7 @@ class FileScanner(object):
 
             # Super Nintendo
             self.extensions.add(".sfc")
+            self.extensions.add(".smc")
 
             # TurboGrafx-CD system ROM
             self.extensions.add(".pce")
@@ -287,6 +288,12 @@ class FileScanner(object):
             if len(data) == 128 and data[1:10] == b"ATARI7800":
                 print("Stripping A78 header for", path)
                 filter_name = "Skip(128)"
+            raw_sha1_obj.update(data)
+        elif ext == ".smc":
+            data = f.read(512)
+            if len(data) == 512 and all(map(lambda x: x == 0, data[48:])):
+                print("Stripping SMC header for", path)
+                filter_name = "Skip(512)"
             raw_sha1_obj.update(data)
         elif ext in [".v64", ".n64"]:
             filter_name = "ByteSwapWords"
