@@ -1146,6 +1146,39 @@ options = {
         "description": ("Enable/disable use of the PlayStation database"),
         "type": "Boolean",
     },
+    Option.PSX_MODEL: {
+        "default": "ntsc",
+        "description": ("PlayStation Model"),
+        "type": "Choice",
+        "values": [
+            ("ntsc", "NTSC v3.0A ROM BIOS"),
+            ("ntsc-j", "NTSC-J v3.0J ROM BIOS"),
+            ("pal", "PAL v3.0E ROM BIOS"),
+        ]
+    },
+    Option.PSX_PORT_1_TYPE: {
+        "default": "gamepad",
+        "description": ("PlayStation Port 1"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", N_("Gamepad")),
+        ]
+    },
+    Option.PSX_PORT_2_TYPE: {
+        "default": "gamepad",
+        "description": ("PlayStation Port 1"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", N_("Gamepad")),
+        ]
+    },
+    Option.PSX_PRELOAD: {
+        "default": "0",
+        "description": ("Preload PlayStation CD images in RAM"),
+        "type": "Boolean",
+    },
     Option.QUICK_SETTINGS_OPTIONS: {
         "default": "",
         "description": ("Quick Settings to Display"),

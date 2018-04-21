@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import struct
+from base64 import b64decode
 from functools import lru_cache
 
 import shutil
@@ -85,6 +86,14 @@ class MednafenDriver(GameDriver):
                 with open(path, "wb") as f:
                     # noinspection PyTypeChecker
                     f.write(cue_sheet["data"].encode("UTF-8"))
+
+            if self.options[Option.SBI_DATA]:
+                sbi_data = json.loads(self.options[Option.SBI_DATA])
+                for i, sbi_file in enumerate(sbi_data):
+                    path = os.path.join(temp_dir, sbi_file["name"])
+                    with open(path, "wb") as f:
+                        f.write(b64decode(sbi_file["base64"]))
+
         self.emulator.args.append(game_file)
 
     def prepare_mednafen_bios(self, known_file, name):

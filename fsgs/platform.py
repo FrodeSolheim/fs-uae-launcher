@@ -116,7 +116,7 @@ from fsgs.platforms.nintendods import NintendoDSPlatform
 from fsgs.platforms.neogeo import NeoGeoPlatform
 from fsgs.platforms.gamecube import GameCubePlatform
 from fsgs.platforms.nintendo import NintendoPlatform
-from fsgs.platforms.psx.psxplatform import PlayStationPlatformHandler
+from fsgs.platforms.playstation import PlayStationPlatform
 from fsgs.platforms.supernintendo import SuperNintendoPlatformHandler
 from fsgs.platforms.turbografx16 import TurboGrafx16Platform
 from fsgs.platforms.turbografxcd import TurboGrafxCDPlatform
@@ -151,7 +151,7 @@ platforms = {
     Platform.NES: NintendoPlatform,
     Platform.NGC: GameCubePlatform,
     Platform.SNES: SuperNintendoPlatformHandler,
-    Platform.PSX: PlayStationPlatformHandler,
+    Platform.PSX: PlayStationPlatform,
     Platform.SMD: MegaDrivePlatform,
     Platform.SMS: MasterSystemPlatformHandler,
     Platform.TG16: TurboGrafx16Platform,
