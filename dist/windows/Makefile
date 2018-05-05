@@ -3,8 +3,7 @@ arch = $(strip $(shell python3 ../arch.py))
 
 emulator_dir = fs-uae_$(version)_windows_$(arch)
 launcher_dir = fs-uae-launcher_$(version)_windows_$(arch)
-# library_zip = $(launcher_dir)/lib/python36.zip
-library_zip = $(launcher_dir)/lib/library.zip
+library_zip = $(launcher_dir)/library.zip
 
 all: progdir zip setup
 
@@ -18,43 +17,8 @@ progdir:
 	make -C ../..
 	rm -Rf ../build
 
-	# # Create dummy sqlite3.dll (cx_Freeze looks for it...)
-	# mkdir -p /mingw32/DLLs
-	# cp /mingw32/bin/libsqlite3-0.dll /mingw32/DLLs/sqlite3.dll
-	# mkdir -p /mingw64/DLLs
-	# cp /mingw64/bin/libsqlite3-0.dll /mingw64/DLLs/sqlite3.dll
-
-	cd ../.. && python3 setup.py build_exe
+	cd ../.. && PYTHONHASHSEED=1 python3 setup.py build_exe
 	mv ../../build/exe.mingw-3.6 $(launcher_dir)
-
-	# Remove dummy sqlite3.dll
-	# rm /mingw32/DLLs/sqlite3.dll
-	# rm /mingw64/DLLs/sqlite3.dll
-	# rm  $(launcher_dir)/lib/sqlite3.dll
-
-	# Remove debug libraries
-	rm $(launcher_dir)/*d.dll
-
-	rm -f $(launcher_dir)/imageformats/qdds*.dll
-	rm -f $(launcher_dir)/imageformats/qicns*.dll
-	rm -f $(launcher_dir)/imageformats/qjp2*.dll
-	rm -f $(launcher_dir)/imageformats/qmng*.dll
-	rm -f $(launcher_dir)/imageformats/qsvg*.dll
-	rm -f $(launcher_dir)/imageformats/qtga*.dll
-	rm -f $(launcher_dir)/imageformats/qtiff*.dll
-	rm -f $(launcher_dir)/imageformats/qwbmp*.dll
-	rm -f $(launcher_dir)/imageformats/qwebp*.dll
-	rm -f $(launcher_dir)/imageformats/*d.dll
-	rm -f $(launcher_dir)/imageformats/*d4.dll
-	rm -f $(launcher_dir)/platforms/qminimal*.dll
-	rm -f $(launcher_dir)/platforms/*d.dll
-
-	# mv $(launcher_dir)/imageformats/* $(launcher_dir)
-	# rm -Rf $(launcher_dir)/imageformats/
-	# mv $(launcher_dir)/platforms/* $(launcher_dir)
-	# rm -Rf $(launcher_dir)/platforms/
-
-	python3 clib.py libjpeg-8.dll $(launcher_dir)
 
 	cp -a ../../share $(launcher_dir)
 	cp ../../requests/cacert.pem $(launcher_dir)
@@ -65,6 +29,7 @@ progdir:
 	rm -Rf $(launcher_dir)/arcade
 	rm -Rf $(launcher_dir)/fsbc
 	rm -Rf $(launcher_dir)/fsgs
+	rm -Rf $(launcher_dir)/fspy
 	rm -Rf $(launcher_dir)/fstd
 	rm -Rf $(launcher_dir)/fsui
 	rm -Rf $(launcher_dir)/launcher
@@ -76,6 +41,7 @@ progdir:
 	zip -d $(library_zip) arcade/\*
 	zip -d $(library_zip) fsbc/\*
 	zip -d $(library_zip) fsgs/\*
+	zip -d $(library_zip) fspy/\*
 	zip -d $(library_zip) fstd/\*
 	zip -d $(library_zip) fsui/\*
 	zip -d $(library_zip) launcher/\*
@@ -83,13 +49,13 @@ progdir:
 	zip -d $(library_zip) oyoyo/\*
 	zip -d $(library_zip) workspace/\*
 
-	# mv $(launcher_dir)/lib $(launcher_dir)/python3.6
-	# mkdir -p $(launcher_dir)/lib
-	# mv $(launcher_dir)/python3.6 $(launcher_dir)/lib/
-	# mv $(launcher_dir)/lib/python3.6/python36.zip $(launcher_dir)/lib/
-
-	mv $(launcher_dir)/lib/* $(launcher_dir)/
-	rm -Rf $(launcher_dir)/lib
+	# This file differs between each build
+	zip -d $(library_zip) BUILD_CONSTANTS.pyc
+	# Remove wrong-cased members from the archive
+	zip -d $(library_zip) ConfigParser.pyc
+	zip -d $(library_zip) Queue.pyc
+	PYTHONPATH=../.. python3 -m fspy.zipfile deterministic \
+		--fix-pyc-timestamps $(library_zip)
 
 	make -C ../python
 	cp -a ../python/*.zip $(launcher_dir)

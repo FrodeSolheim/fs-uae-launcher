@@ -54,6 +54,7 @@ class WarningsElement(StatusElement):
         self.x_missing_files = ""
         self.download_page = ""
         self.download_file = ""
+        self.platform = ""
         self.amiga_model = ""
         self.amiga_model_calculated = ""
         self.chip_memory = ""
@@ -73,7 +74,7 @@ class WarningsElement(StatusElement):
             "x_variant_error", "x_joy_emu_conflict", "amiga_model",
             "x_kickstart_file_sha1", "kickstart_file", "download_page",
             "download_file", "x_missing_files", "__error",
-            "chip_memory", "jit_compiler"])
+            "chip_memory", "jit_compiler", "platform"])
         SettingsBehavior(self, ["__update_available"])
 
         LauncherConfig.add_listener(self)
@@ -93,6 +94,11 @@ class WarningsElement(StatusElement):
     def on_destroy(self):
         LauncherConfig.remove_listener(self)
         LauncherSettings.remove_listener(self)
+
+    def on_platform_config(self, value):
+        if value != self.platform:
+            self.platform = value
+            self.rebuild_warnings_and_refresh()
 
     def on_amiga_model_config(self, value):
         LauncherConfig.update_kickstart()
@@ -264,7 +270,8 @@ class WarningsElement(StatusElement):
                 ", ".join(self.outdated_plugins)))
             self.warnings.append((ERROR_LEVEL, text, "on_outdated_plugins"))
 
-        if self.x_kickstart_file_sha1 == Amiga.INTERNAL_ROM_SHA1 and \
+        if self.platform in ["", "amiga", "cdtv", "cd32"] and \
+                self.x_kickstart_file_sha1 == Amiga.INTERNAL_ROM_SHA1 and \
                 self.kickstart_file != "internal":
             # text = gettext("Compatibility Issue")
             # self.warnings.append((ERROR_LEVEL, text, "on_kickstart_warning"))

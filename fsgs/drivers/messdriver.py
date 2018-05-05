@@ -1,10 +1,23 @@
+import os
+import shutil
+
 from fsgs.drivers.mamedriver import MameDriver
+from fsgs.saves import SaveHandler
 
 
 class MessDriver(MameDriver):
     def __init__(self, fsgs):
         super().__init__(fsgs)
-        # self.emulator.name = "mess-fs"
+        self.save_handler = MessSaveHandler(self.fsgc, options=self.options)
+
+    def prepare(self):
+        super().prepare()
+        self.save_handler.prepare()
+        self.create_mame_layout()
+
+    def finish(self):
+        super().finish()
+        self.save_handler.finish()
 
     def is_pal(self):
         # return self.config.get("ntsc_mode") != "1"
@@ -30,7 +43,10 @@ class MessDriver(MameDriver):
         return romset_name, result
 
     def mess_romset(self):
-        pass
+        return self.get_mess_romset()
+
+    def get_mess_romset(self):
+        return "", {}
 
     # def mess_get_firmware_name(self):
     #     return self.context.game.platform + ' Firmware'
@@ -72,6 +88,9 @@ class MessDriver(MameDriver):
         return self.mess_input_mapping(port)
 
     def mess_input_mapping(self, port):
+        return self.get_mess_input_mapping(port)
+
+    def get_mess_input_mapping(self, port):
         return None
 
     def mame_get_bios_dir(self):
@@ -87,8 +106,8 @@ class MessDriver(MameDriver):
             return result
         return super().mame_offset_and_scale()
 
-#    def mess_configure_media(self):
-#        pass
+    #    def mess_configure_media(self):
+    #        pass
 
     def mess_configure_cartridge(self, slot="cart"):
         self.add_arg("-{0}".format(slot), self.get_game_file())
@@ -137,3 +156,70 @@ class MessDriver(MameDriver):
                 raise Exception("inject_fake_input_string cannot "
                                 "handle '{0}' yet".format(c))
         self.inject_fake_input_string_list(delay, s)
+
+
+class MessSaveHandler(SaveHandler):
+    def __init__(self, fsgc, options):
+        super().__init__(fsgc, options, emulator="MAME")
+        self._mame_driver = ""
+
+    def prepare(self):
+        if self._emulator_specific:
+            if not self._mame_driver:
+                raise Exception("MAME driver not specified")
+            self.copy_to_mame_dir()
+        super().prepare()
+
+    def finish(self):
+        if self._emulator_specific:
+            self.move_from_mame_dir()
+        super().finish()
+
+    def set_mame_driver(self, mame_driver):
+        self._mame_driver = mame_driver
+
+    def mame_save_dirs(self):
+        save_dir = self.emulator_save_dir()
+        mame_save_dir = os.path.join(save_dir, self._mame_driver)
+        return save_dir, mame_save_dir
+
+    def copy_to_mame_dir(self):
+        save_dir, mame_save_dir = self.mame_save_dirs()
+        if not os.path.exists(save_dir):
+            return
+        for full_name in os.listdir(save_dir):
+            src = os.path.join(save_dir, full_name)
+            if not os.path.isfile(src):
+                continue
+            name, ext = os.path.splitext(full_name)
+            if ext not in [".srm"]:
+                continue
+            if not os.path.exists(mame_save_dir):
+                os.makedirs(mame_save_dir)
+            dst = os.path.join(mame_save_dir, name + ".nv")
+            print("MessSaveHandler:", src, "->", dst)
+            shutil.copy(src, dst)
+
+    def move_from_mame_dir(self):
+        save_dir, mame_save_dir = self.mame_save_dirs()
+        if not os.path.exists(mame_save_dir):
+            return
+        for full_name in os.listdir(mame_save_dir):
+            src = os.path.join(mame_save_dir, full_name)
+            if not os.path.isfile(src):
+                continue
+            name, ext = os.path.splitext(full_name)
+            if ext not in [".nv"]:
+                print("MessSaveHandler: Removing", src)
+                os.remove(src)
+                continue
+            dst = os.path.join(save_dir, name + ".srm")
+            print("MessSaveHandler:", dst, "<-", src)
+            shutil.copy(src, dst)
+            os.remove(src)
+        try:
+            # FIXME: Maybe try to force removing this directory, at least
+            # if we created it, and self._mame_driver is specified
+            os.rmdir(mame_save_dir)
+        except Exception:
+            pass

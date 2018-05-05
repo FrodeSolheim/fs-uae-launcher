@@ -1251,13 +1251,14 @@ options = {
         "type": "Boolean",
     },
     Option.SMD_EMULATOR: {
-        "default": "mednafen",
+        "default": "mednafen-fs",
         "description": ("Mega Drive Emulator"),
         "type": "Choice",
         "values": [
-            ("mednafen", "Mednafen"),
-            ("retroarch", "RetroArch"),
-            ("retroarch-genesis-plus-gx", "RetroArch Genesis Plus GX"),
+            ("mame-fs", "MAME-FS"),
+            ("mednafen-fs", "Mednafen-FS"),
+            ("retroarch-fs", "RetroArch-FS"),
+            ("retroarch-fs/genesisplusgx", "RetroArch-FS: Genesis Plus GX"),
         ]
     },
     Option.SMD_MODEL: {
@@ -1268,6 +1269,26 @@ options = {
             ("ntsc", "Genesis"),
             ("pal", "Mega Drive PAL"),
             ("ntsc-j", "Mega Drive NTSC-J"),
+        ]
+    },
+    Option.SMD_PORT_1_TYPE: {
+        "default": "gamepad",
+        "description": ("Mega Drive Port 1"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", "Control Pad"),
+            ("gamepad6", N_("Six Button Control Pad")),
+        ]
+    },
+    Option.SMD_PORT_2_TYPE: {
+        "default": "gamepad",
+        "description": ("Mega Drive Port 2"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", "Control Pad"),
+            ("gamepad6", N_("Six Button Control Pad")),
         ]
     },
     Option.SMOOTHING: {
@@ -1708,6 +1729,16 @@ options = {
         "default": "",
         "description": ("Show window border and decorations"),
         "type": "boolean",
+    },
+    Option.WINDOW_HIDDEN: {
+        "default": "0",
+        "description": ("Window is hidden on startup"),
+        "type": "Boolean",
+    },
+    Option.WINDOW_MINIMIZED: {
+        "default": "0",
+        "description": ("Window is minimized on startup"),
+        "type": "Boolean",
     },
     Option.ZOOM: {
         "default": "692x540",

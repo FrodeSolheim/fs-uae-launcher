@@ -102,6 +102,7 @@ setup_kwargs = {
 }
 
 if sys.argv[1] == "build_exe":
+    import cx_Freeze
     if sys.platform == "win32":
         setup_kwargs["executables"] = [
             Executable(s, base="Win32GUI", icon="icon/" + s + ".ico")
@@ -124,6 +125,9 @@ if sys.argv[1] == "build_exe":
         "include_files": [],
         "zip_includes": [],
     }
+    if int(cx_Freeze.version.split(".")[0]) >= 5:
+        build_exe_options["zip_include_packages"] = "*"
+        build_exe_options["zip_exclude_packages"] = []
     #for res_dir in res_dirs:
     #    print(res_dir)
     #    build_exe_options["zip_includes"].append((res_dir, res_dir))

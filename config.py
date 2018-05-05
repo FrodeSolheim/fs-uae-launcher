@@ -11,6 +11,7 @@ package_map = {
     "fsbc": ".",
     "fsboot": ".",
     "fsgs": ".",
+    "fspy": ".",
     "fstd": ".",
     "fsui": ".",
     "launcher": ".",

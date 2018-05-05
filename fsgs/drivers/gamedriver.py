@@ -20,6 +20,23 @@ from fsgs.refreshratetool import RefreshRateTool
 from fsgs.util.gamenameutil import GameNameUtil
 
 
+class GameDriverLogger:
+
+    def debug(self, message):
+        print("[DEBUG]", message)
+
+    def info(self, message):
+        print("[INFO]", message)
+
+    def warning(self, message):
+        # FIXME: Store warning and show in some kind of launch log
+        # (i.e. "warnings and error generated during game execution")
+        print("[WARNING]", message)
+
+    def error(self, message):
+        print("[ERROR]", message)
+
+
 # noinspection PyMethodMayBeStatic
 class GameDriver:
     PORTS = []
@@ -27,6 +44,7 @@ class GameDriver:
     def __init__(self, fsgc):
         self.fsgc = fsgc
         self.files = GameFiles(fsgc)
+        self.logger = GameDriverLogger()
         self.emulator = Emulator("no-emulator")
 
         self.options = defaultdict(str)

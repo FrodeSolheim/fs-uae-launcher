@@ -15,10 +15,13 @@ copy of the state dir!
 
 class SaveHandler(object):
     def __init__(
-            self, fsgc, name="", platform="Unknown", uuid=None, options=None):
+            self, fsgc, name="", platform="Unknown", uuid=None, options=None,
+            emulator=""):
         self.fsgc = fsgc
         # FIXME: SaveHandler(fsgc, options=options) is new usage?
         self._options = options
+        self._emulator_specific = False
+        self._emulator_name = emulator
 
         self.uuid = uuid
         self.change_handlers = []
@@ -38,6 +41,9 @@ class SaveHandler(object):
             self.variant = ""
         self.platform = platform
 
+    def set_save_data_is_emulator_specific(self, emulator_specific=True):
+        self._emulator_specific = emulator_specific
+
     def get(self, name):
         if self._options is not None:
             return self._options.get(name, "")
@@ -56,7 +62,7 @@ class SaveHandler(object):
             change_handler.init(changes_dir)
 
     def create_save_ini(self):
-        save_dir = self.save_dir()
+        save_dir = self.base_save_dir()
         save_ini_path = os.path.join(save_dir, "Save.ini")
 
         cp = ConfigParser()
@@ -77,17 +83,29 @@ class SaveHandler(object):
             cp.write(f)
         os.replace(save_ini_path + ".partial", save_ini_path)
 
-    def save_dir(self):
+    def base_save_dir(self):
         save_dir = self.save_dir_path()
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         return save_dir
 
-    def emulator_state_dir(self, name):
-        save_state_directory = os.path.join(self.save_dir(), name)
+    def save_dir(self):
+        return self.base_save_dir()
+
+    def emulator_state_dir(self, name=""):
+        emulator = name or self._emulator_name
+        assert emulator
+        save_state_directory = os.path.join(self.base_save_dir(), emulator)
         if not os.path.exists(save_state_directory):
             os.makedirs(save_state_directory)
         return save_state_directory
+
+    def emulator_save_dir(self, name=""):
+        emulator = name or self._emulator_name
+        if self._emulator_specific:
+            return self.emulator_state_dir(emulator)
+        else:
+            return self.base_save_dir()
 
     def uuid_save_dir_path(self):
         saves_dir = FSGSDirectories.saves_dir()

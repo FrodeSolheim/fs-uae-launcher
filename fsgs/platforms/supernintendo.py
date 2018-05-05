@@ -59,6 +59,7 @@ class SuperNintendoMednafenDriver(MednafenDriver):
         self.emulator.args.extend(["-snes.correct_aspect", "0"])
         # FIXME: Input ports configuration
         # FIXME: SNES model
+        # ROM path must be added at the end of the argument list
         self.emulator.args.append(self.helper.prepare_rom(self))
 
     # def mednafen_aspect_ratio(self):
@@ -108,12 +109,14 @@ class SuperNintendoHelper:
     def __init__(self, options):
         self.options = options
 
+    # FIXME: Shared, move into common module (find all occurrences)
     def prepare_rom(self, driver):
         file_uri = self.options[Option.CARTRIDGE_SLOT]
         input_stream = driver.fsgc.file.open(file_uri)
         _, ext = os.path.splitext(file_uri)
         return self.prepare_rom_with_stream(driver, input_stream, ext)
 
+    # FIXME: Shared, move into common module (find all occurrences)
     def prepare_rom_with_stream(self, driver, input_stream, ext):
         sha1_obj = hashlib.sha1()
         path = driver.temp_file("rom" + ext).path

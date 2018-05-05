@@ -132,7 +132,6 @@ class NeoGeoDriver(MameDriver):
         super().prepare()
         self.create_mame_layout()
 
-
         self.install_mame_hash_file("neogeo.xml")
         self.emulator.args.append(self.options["mame_rom_set"])
         if self.helper.model() == NEOGEO_MODEL_AES_JP:

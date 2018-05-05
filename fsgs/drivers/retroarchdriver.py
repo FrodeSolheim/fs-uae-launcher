@@ -17,11 +17,17 @@ class RetroArchDriver(GameDriver):
         # self.emulator.allow_system_emulator = True
         # self.libretro_core = "no_core_specified"
         self.system_dir = self.temp_dir("system")
-        self.save_handler = SaveHandler(self.fsgc, options=self.options)
+        self.save_handler = RetroArchSaveHandler(
+            self.fsgc, options=self.options, emulator=retroarch_state_dir)
         # self.retroarch_state_dir = None
 
         self.libretro_core = libretro_core
         self.retroarch_state_dir = retroarch_state_dir
+        # Dictionary with key-values which will be written to retroarch.cfg
+        self.retroarch_config_file = self.temp_file("retroarch.cfg")
+        self.retroarch_config = {}
+        # FIXME
+        self.retroarch_core_config = {}
 
     def prepare(self):
         self.erase_old_config()
@@ -34,13 +40,13 @@ class RetroArchDriver(GameDriver):
 
         self.save_handler.prepare()
 
-        config_file = self.temp_file("retroarch.cfg").path
-        with open(config_file, "w", encoding="UTF-8") as f:
+        with open(self.retroarch_config_file.path, "w", encoding="UTF-8") as f:
             self.write_retroarch_config(f)
             self.write_retroarch_input_config(f)
             self.write_retroarch_video_config(f)
 
-        self.emulator.args.extend(["--appendconfig=" + config_file])
+        self.emulator.args.append(
+            "--appendconfig=" + self.retroarch_config_file.path)
         if self.use_fullscreen():
             self.emulator.args.append("--fullscreen")
 
@@ -52,6 +58,12 @@ class RetroArchDriver(GameDriver):
 
         # Verbose logging
         self.emulator.args.extend(["-v"])
+
+    def run(self):
+        with open(self.retroarch_config_file.path, "a", encoding="UTF-8") as f:
+            for key, value in self.retroarch_config.items():
+                f.write("{} = \"{}\"\n".format(key, value))
+        super().run()
 
     def finish(self):
         self.save_handler.finish()
@@ -98,9 +110,9 @@ class RetroArchDriver(GameDriver):
         # noinspection SpellCheckingInspection
 
         f.write("savefile_directory = \"{}\"\n".format(
-            self.save_handler.save_dir()))
+            self.save_handler.emulator_save_dir()))
         f.write("savestate_directory = \"{}\"\n".format(
-            self.save_handler.emulator_state_dir(self.retroarch_state_dir)))
+            self.save_handler.emulator_state_dir()))
 
         # FIXME: Maybe enable autosave to save .srm while running the emulator
         # and not only on shutdown?
@@ -383,3 +395,14 @@ class RetroArchInputMapper(InputMapper):
             # FIXME: HACK
             name = "enter"
         return "", name
+
+
+class RetroArchSaveHandler(SaveHandler):
+    def __init__(self, fsgc, options, emulator):
+        super().__init__(fsgc, options, emulator=emulator)
+
+    def prepare(self):
+        super().prepare()
+
+    def finish(self):
+        super().finish()

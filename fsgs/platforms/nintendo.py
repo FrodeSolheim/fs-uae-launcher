@@ -2,8 +2,6 @@ import hashlib
 import os
 from binascii import unhexlify
 
-import shutil
-
 from fsbc import settings
 from fsgs.drivers.gamedriver import GameDriver, Emulator
 from fsgs.drivers.mednafendriver import MednafenDriver

@@ -148,8 +148,7 @@ class ArchiveUtil:
             if file_callback is not None:
                 file_callback(sha1=member_hash.hexdigest(), data=data)
 
-        file_sha1s.sort()
-        url = "http://sha1.fengestad.no/" + "/".join(sorted(file_sha1s[:]))
-        variant["uuid"] = str(uuid5(NAMESPACE_URL, str(url)))
+        url = "http://sha1.fengestad.no/" + "/".join(sorted(file_sha1s))
+        variant["uuid"] = str(uuid5(NAMESPACE_URL, url))
         variant["file_list"] = file_list
         return variant

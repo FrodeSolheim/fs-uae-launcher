@@ -21,7 +21,8 @@ class MednafenDriver(GameDriver):
     def __init__(self, fsgc):
         super().__init__(fsgc)
         self.emulator = Emulator("mednafen-fs")
-        self.save_handler = SaveHandler(self.fsgc, options=self.options)
+        self.save_handler = MednafenSaveHandler(
+            self.fsgc, options=self.options)
         # self._game_files_added = False
 
     def prepare(self):
@@ -172,142 +173,12 @@ class MednafenDriver(GameDriver):
             # self.emulator.args.extend(["-filesys.path_cheat", cheats_dir])
             self.emulator.args.extend(["-path_cheat", cheats_dir])
 
-        # screen_w, screen_h = self.screen_size()
-        #
-        # dest_w, dest_h = screen_w, screen_h
-        # # a_ratio = self.force_aspect_ratio()
-        # a_ratio = 0
-        # # game_w, game_h = self.mednafen_video_size()
-        # src, dst = self.mednafen_viewport()
-        # if src is None:
-        #     game_w, game_h = self.mednafen_video_size()
-        # else:
-        #     game_w, game_h = dst[2], dst[3]
-        #
-        # self.emulator.args.extend(["-{}.xres".format(pfx), str(screen_w)])
-        # self.emulator.args.extend(["-{}.yres".format(pfx), str(screen_h)])
-        #
-        # integer_scaling = False
-        # if self.use_fullscreen():
-        #     self.emulator.args.extend(["-fs", "1"])
-        # else:
-        #     self.emulator.args.extend(["-fs", "0"])
-        #
-        # if True:
-        #     if self.scaling() == self.MAX_SCALING:
-        #         if self.stretching() == self.STRETCH_FILL_SCREEN:
-        #             stretch = "full"
-        #         else:
-        #             stretch = "aspect"
-        #         # FIXME: Calculate if we are using integer scaling
-        #     elif self.scaling() == self.INTEGER_SCALING:
-        #         stretch = "aspect_int"
-        #         integer_scaling = True
-        #     else:
-        #         stretch = "0"
-        #         integer_scaling = True
-        #     self.emulator.args.extend(["-{}.stretch".format(pfx), stretch])
-        #
-        # if self.smoothing() == self.SMOOTHING:
-        #     videoip = "1"
-        # elif self.smoothing() == self.NON_INTEGER_SMOOTHING:
-        #     if integer_scaling:
-        #         videoip = "0"
-        #     else:
-        #         videoip = "1"
-        # else:
-        #     videoip = "0"
-        #
-        # self.emulator.args.extend(["-{}.videoip".format(pfx), videoip])
-
-        # if game_w and game_h:
-        #     real_game_size = (game_w, game_h)
-        #     if self.use_stretching():
-        #         x_scale = dest_w / game_w
-        #         y_scale = dest_h / game_h
-        #
-        #         if src is not None and dst is not None:
-        #             x_offset = dest_w * (
-        #                 (src[2] - dst[2]) / 2 - dst[0]) / dst[2]
-        #             y_offset = dest_h * (
-        #                 (src[3] - dst[3]) / 2 - dst[1]) / dst[3]
-        #             x_offset = int(round(x_offset))
-        #             y_offset = int(round(y_offset))
-        #             self.env["FSGS_OFFSET"] = "{0},{1}".format(
-        #                 x_offset, y_offset)
-        #             print("FSGS_OFFSET", self.env["FSGS_OFFSET"])
-        #     else:
-        #         if a_ratio:
-        #             print("Forcing aspect ratio %f", a_ratio)
-        #             game_h = game_w / a_ratio
-        #         x_scale = min(dest_w / game_w, dest_h / game_h)
-        #         if a_ratio:
-        #             y_scale = (x_scale * real_game_size[0] /
-        #                        real_game_size[1] / a_ratio)
-        #         else:
-        #             y_scale = x_scale
-        #     print("Fullscreen scale factors: %f %f", x_scale, y_scale)
-        #     self.emulator.args.extend(["-%s.xscalefs" % pfx, str(x_scale)])
-        #     self.emulator.args.extend(["-%s.yscalefs" % pfx, str(y_scale)])
-        #     self.emulator.args.extend(["-%s.stretch" % pfx, "0"])
-        # else:
-        #     if self.use_stretching():
-        #         self.emulator.args.extend(["-%s.stretch" % pfx, "full"])
-        #     else:
-        #         self.emulator.args.extend(["-%s.stretch" % pfx, "aspect"])
-        #
-        # if self.use_fullscreen():
-        #     pass
-        # else:
-        #     self.emulator.args.extend(["-%s.xscale" % pfx, "2"])
-        #     self.emulator.args.extend(["-%s.yscale" % pfx, "2"])
-
-        # self.emulator.args.extend(["-%s.scanlines" % pfx, "0"])
-        # if gamew < 200:
-        #     self.emulator.args.extend(["-%s.xscale" % pfx, "4"])
-        #     self.emulator.args.extend(["-%s.yscale" % pfx, "4"])
-        # else:
-        #     self.emulator.args.extend(["-%s.xscale" % pfx, "3"])
-        #     self.emulator.args.extend(["-%s.yscale" % pfx, "3"])
-        # self.emulator.args.extend(["-%s.videoip" % pfx, "0"])
-        #  FIXME:
-        # self.options.smooth = False
-        # self.options.filter = '2x'
-
-        # if self.use_doubling():
-        #     self.emulator.args.extend(["-%s.special" % pfx, "nn2x"])
-        #
-        # self.emulator.args.extend(self.mednafen_extra_graphics_options())
-
-        # filter_data = self.configure_filter()
-        # if filter_data["name"] == "ntsc":
-        #     self.emulator.args.extend(["-{0}.ntscblitter".format(pfx), "1"])
-        #     self.emulator.args.extend(["-{0}.ntsc.preset".format(pfx), "composite"])
-        #     self.emulator.args.extend(["-{0}.ntsc.saturation".format(pfx), "0.5"])
-        # else:
-        #     self.emulator.args.extend(
-        #         ["-{0}.special".format(pfx), filter_data["special"]])
-
-        # self.emulator.args.extend(["-%s.special" % pfx,
-        # self.mednafen_special_filter()])
-
-        # if self.configure_vsync():
-        #     self.emulator.args.extend(["-glvsync", "1"])
-        # else:
-        #     self.emulator.args.extend(["-glvsync", "0"])
-
-        # # FIXME: Deprecated?
-        # elif self.config.get("audio_driver", "") in ["sdl", "pulseaudio"]:
-        #     # Mednafen does not support PulseAudio directly, but using the
-        #     # sdl driver will "often" result in PulseAudio being used
-        #     # indirectly.
-        #     self.emulator.args.extend(["-sound.driver", "sdl"])
-
         print("\n" + "-" * 79 + "\n" + "CONFIGURE DIRS")
 
-        self.emulator.args.extend(["-path_sav", self.save_handler.save_dir()])
         self.emulator.args.extend([
-            "-path_state", self.save_handler.emulator_state_dir("Mednafen")])
+            "-path_sav", self.save_handler.emulator_save_dir()])
+        self.emulator.args.extend([
+            "-path_state", self.save_handler.emulator_state_dir()])
 
         # self.emulator.args.extend(["-filesys.fname_state", "%M%X"])
         # self.emulator.args.extend(["-filesys.fname_sav", "%M%x"])
@@ -430,7 +301,7 @@ class MednafenDriver(GameDriver):
             else:  # Square pixels
                 scale_y = dest_h // game_h
                 scale_x = scale_y
-        else:
+        else:  # NO SCALING
             scale_x = 1
             scale_y = 1
 
@@ -438,6 +309,7 @@ class MednafenDriver(GameDriver):
             if scale_x == 1 and scale_y == 1:
                 scale_x = 2
                 scale_y = 2
+
         # self.emulator.args.extend(["-{}.special".format(pfx), "nn2x"])
 
         if self.smoothing() == self.SMOOTHING:
@@ -532,62 +404,10 @@ class MednafenDriver(GameDriver):
         # can be overridden by subclasses
         pass
 
-    # def mednafen_refresh_rate(self):
-    #     return 0.0
-    #
-    # def get_game_refresh_rate(self):
-    #     # can be overridden by subclasses
-    #     return self.mednafen_refresh_rate()
-
     def mednafen_cfg_path(self):
         if not os.path.exists(os.path.join(self.home.path, ".mednafen")):
             os.makedirs(os.path.join(self.home.path, ".mednafen"))
         return os.path.join(self.home.path, ".mednafen", "mednafen-09x.cfg")
-
-        # config_path = os.path.join(os.environ['HOME'], '.mednafen')
-
-        # the SDL version (even on Windows) seems to read HOME, so
-        # use environment instead of pyapp.user.home_dir
-
-        # try:
-        #     config_path = os.path.join(os.environ['HOME'], '.mednafen')
-        # except KeyError:
-        #     config_path = os.path.join(pyapp.user.home_dir(), '.mednafen')
-        # self.config_temp = self.create_temp_file(".mednafen")
-        #  self.config_temp = self.create_temp_file(".mednafen")
-        #  config_path = os.path.join(self.context.temp.dir('mednafen'),
-        #  '.mednafen')
-        # if not os.path.isdir(config_path):
-        #     os.makedirs(config_path)
-        # return os.path.join(config_path, "mednafen.cfg")
-        # return self.config_temp.path
-
-        # elif fs.windows:
-        #     config_path = os.path.join(pyapp.fs.data_dir_user_app(),
-        #             "mednafen")
-        #     os.putenv("HOME", str_path_path(config_path))
-        #     if not os.path.exists(config_path):
-        #         os.makedirs(config_path)
-        #     config_path = os.path.join(config_path, ".mednafen")
-        #     if not os.path.exists(config_path):
-        #         os.makedirs(config_path)
-        #     return os.path.join(config_path, "mednafen.cfg")
-        # elif fs.macosx:
-        #     config_path = os.path.join(pyapp.user.home_dir(), "Library",
-        #             "Application Support", "ZSNES")
-        #     if not os.path.isdir(config_path):
-        #         os.makedirs(config_path)
-        #     return os.path.join(config_path, "zsnesl.cfg")
-
-    # def get_joystick_unique_ids(self, controllers):
-    #     unique_ids = {}
-    #     for i in range(len(controllers)):
-    #         controller = controllers[i]
-    #         unique_id = self.get_joystick_unique_id(controller)
-    #         plusplus = unique_ids.values().count(unique_id)
-    #         unique_id += plusplus
-    #         unique_ids[controller.id] = unique_id
-    #     return unique_ids
 
     def is_pal(self):
         # return self.config.get("ntsc_mode") != "1"
@@ -671,3 +491,54 @@ class MednafenInputMapper(InputMapper):
             # ret ^= ord(digest[x]) << ((x & 7) * 8)
             ret ^= digest[x] << ((x & 7) * 8)
         return ret
+
+
+class MednafenSaveHandler(SaveHandler):
+    def __init__(self, fsgc, options):
+        super().__init__(fsgc, options, emulator="Mednafen")
+        self._srm_alias = ""
+
+    def prepare(self):
+        self.copy_to_srm_alias()
+        super().prepare()
+
+    def finish(self):
+        self.move_from_srm_alias()
+        super().finish()
+
+    def set_srm_alias(self, alias):
+        assert alias.startswith(".")
+        self._srm_alias = alias
+
+    def copy_to_srm_alias(self):
+        if not self._srm_alias:
+            return
+        save_dir = self.save_dir()
+        if not os.path.exists(save_dir):
+            return
+        for full_name in os.listdir(save_dir):
+            src = os.path.join(save_dir, full_name)
+            if not os.path.isfile(src):
+                continue
+            name, ext = os.path.splitext(full_name)
+            if ext not in [".srm"]:
+                continue
+            dst = os.path.join(save_dir, name + self._srm_alias)
+            print("MednafenSaveHandler:", src, "->", dst)
+            shutil.copy(src, dst)
+
+    def move_from_srm_alias(self):
+        if not self._srm_alias:
+            return
+        save_dir = self.save_dir()
+        for full_name in os.listdir(save_dir):
+            src = os.path.join(save_dir, full_name)
+            if not os.path.isfile(src):
+                continue
+            name, ext = os.path.splitext(full_name)
+            if ext != self._srm_alias:
+                continue
+            dst = os.path.join(save_dir, name + ".srm")
+            print("MednafenSaveHandler:", dst, "<-", src)
+            shutil.copy(src, dst)
+            os.remove(src)

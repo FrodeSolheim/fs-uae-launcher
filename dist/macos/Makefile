@@ -17,7 +17,7 @@ launcher:
 	make -C ../..
 	rm -Rf $(dname)
 	mkdir -p $(dname)
-	cd ../.. && python3 setup.py build_exe
+	cd ../.. && PYTHONHASHSEED=1 python3 setup.py build_exe
 
 	#mv ../dist/"FS-UAE Launcher.app" $(dname)/
 	# cp -pPR fs-uae_$(ver_os_arch)/FS-UAE.app $(app)/Contents/Resources/
@@ -64,6 +64,7 @@ launcher:
 	rm -Rf $(macos)/arcade
 	rm -Rf $(macos)/fsbc
 	rm -Rf $(macos)/fsgs
+	rm -Rf $(macos)/fspy
 	rm -Rf $(macos)/fstd
 	rm -Rf $(macos)/fsui
 	rm -Rf $(macos)/launcher
@@ -75,12 +76,21 @@ launcher:
 	zip -d $(macos)/library.zip arcade/\*
 	zip -d $(macos)/library.zip fsbc/\*
 	zip -d $(macos)/library.zip fsgs/\*
+	zip -d $(macos)/library.zip fspy/\*
 	zip -d $(macos)/library.zip fstd/\*
 	zip -d $(macos)/library.zip fsui/\*
 	zip -d $(macos)/library.zip launcher/\*
 	zip -d $(macos)/library.zip OpenGL/\*
 	zip -d $(macos)/library.zip oyoyo/\*
 	zip -d $(macos)/library.zip workspace/\*
+
+	# This file differs between each build
+	zip -d $(macos)/library.zip BUILD_CONSTANTS.pyc
+	# Remove wrong-cased members from the archive
+	zip -d $(macos)/library.zip ConfigParser.pyc
+	zip -d $(macos)/library.zip Queue.pyc
+	PYTHONPATH=../.. python3 -m fspy.zipfile deterministic \
+		--fix-pyc-timestamps $(macos)/library.zip
 
 	cp -a ../python/*.zip $(macos)
 

@@ -7,10 +7,10 @@ import subprocess
 p = subprocess.Popen("file --dereference `which python3`",
                      shell=True, stdout=subprocess.PIPE)
 exe_info = p.stdout.read().decode("UTF-8")
-if "386" in exe_info:
+if "386," in exe_info:
     # arch = "i386"
     arch = "x86"
-elif "x86-64" in exe_info:
+elif "x86-64," in exe_info:
     # arch = "amd64"
     arch = "x86-64"
 else:
@@ -82,8 +82,10 @@ def wrap(name, target=None, args=None):
 s("rm -Rf {package_dir}")
 # s("make -C ..")
 # s("rm -Rf ../build ../dist")
-s("cd ../.. && python3 setup.py build_exe")
-s("mv ../../build/exe.linux-*-3.4 {package_dir}")
+
+# Trying to get deterministic .pyc creation
+s("cd ../.. && PYTHONHASHSEED=1 python3 setup.py build_exe")
+s("mv ../../build/exe.linux-*-3.6 {package_dir}")
 
 # we want to perform our own standalone/library management, so we remove the
 # libraries added by cx_Freeze
@@ -154,6 +156,7 @@ s("rm -Rf {package_dir}/arcade")
 s("rm -Rf {package_dir}/fsbc")
 # s("rm -Rf {package_dir}/fsboot")
 s("rm -Rf {package_dir}/fsgs")
+s("rm -Rf {package_dir}/fspy")
 s("rm -Rf {package_dir}/fstd")
 s("rm -Rf {package_dir}/fsui")
 s("rm -Rf {package_dir}/launcher")
@@ -166,12 +169,17 @@ s("zip -d {package_dir}/library.zip arcade/\*")
 s("zip -d {package_dir}/library.zip fsbc/\*")
 # s("zip -d {package_dir}/library.zip fsboot/\*")
 s("zip -d {package_dir}/library.zip fsgs/\*")
+s("zip -d {package_dir}/library.zip fspy/\*")
 s("zip -d {package_dir}/library.zip fstd/\*")
 s("zip -d {package_dir}/library.zip fsui/\*")
 s("zip -d {package_dir}/library.zip launcher/\*")
 s("zip -d {package_dir}/library.zip OpenGL/\*")
 s("zip -d {package_dir}/library.zip oyoyo/\*")
 s("zip -d {package_dir}/library.zip workspace/\*")
+
+s("zip -d {package_dir}/library.zip BUILD_CONSTANTS.pyc")
+s("PYTHONPATH=../.. python3 -m fspy.zipfile deterministic "
+  "--fix-pyc-timestamps {package_dir}/library.zip")
 
 s("cp -a ../python/*.zip {package_dir}")
 

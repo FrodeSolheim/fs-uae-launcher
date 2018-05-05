@@ -71,14 +71,15 @@ class SimpleLoader:
         # print(key_values)
         values = defaultdict(str)
         values.update(key_values)
+        self.load(values)
+        return self.get_config()
 
+    def load(self, values):
         self.load_basic(values)
         self.load_extra(values)
         self.load_info(values)
         self.load_images(values)
         self.load_files(values)
-
-        return self.get_config()
 
 
 class PlatformLoader(SimpleLoader):

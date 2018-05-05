@@ -94,6 +94,7 @@ class LauncherSettings(object):
         "search_path": "",
         "secondary_joystick": "",
         Option.SMD_DATABASE: "",
+        Option.SMD_EMULATOR: "",
         Option.SMS_DATABASE: "",
         Option.SNES_DATABASE: "",
         "stereo_separation": "",

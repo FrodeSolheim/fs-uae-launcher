@@ -175,8 +175,19 @@ class MameDriver(GameDriver):
 
         self.emulator.args.extend(["-skip_gameinfo"])
         # state_dir = self.get_state_dir()
-        state_dir = self.emulator_state_dir(self.mame_emulator_name())
-        state_dir = state_dir + os.sep
+        base_save_dir = self.emulator_state_dir(self.mame_emulator_name())
+        emu_save_dir = base_save_dir
+        if hasattr(self, "save_handler"):
+            # save_dir = self.save_handler.save_dir()
+            base_save_dir = self.save_handler.save_dir()
+            emu_save_dir = self.save_handler.emulator_save_dir()
+            base_save_dir = base_save_dir + os.sep
+        emu_save_dir = emu_save_dir + os.sep
+
+        emu_state_dir = self.emulator_state_dir(self.mame_emulator_name())
+        if hasattr(self, "save_handler"):
+            emu_state_dir = self.save_handler.emulator_state_dir()
+        emu_state_dir = emu_state_dir + os.sep
 
         self.cwd_dir = self.create_temp_dir("mame-cwd")
         self.cfg_dir = self.create_temp_dir("mame-cfg")
@@ -221,11 +232,17 @@ class MameDriver(GameDriver):
         game_cfg_file = os.path.join(
             self.cfg_dir.path, "{romset}.cfg".format(romset=self.romset))
         self.emulator.args.extend(["-cfg_directory", self.cfg_dir.path])
-        self.emulator.args.extend(["-nvram_directory", state_dir])
         # self.add_arg("-memcard_directory", state_dir)
         # self.add_arg("-hiscore_directory", state_dir)
-        self.emulator.args.extend(["-state_directory", state_dir])
-        self.emulator.args.extend(["-diff_directory", state_dir])
+        # FIXME: What is this?
+        self.emulator.args.extend(["-diff_directory", emu_state_dir])
+
+        self.emulator.args.extend(["-nvram_directory", emu_save_dir])
+
+        # We not not need nor want system-specific sub-directories since we
+        # already have unique save directories per game variant.
+        self.emulator.args.extend(["-statename", "MAME"])
+        self.emulator.args.extend(["-state_directory", base_save_dir])
 
         self.emulator.args.extend(
             ["-snapshot_directory", self.screenshots_dir()])
@@ -260,12 +277,12 @@ class MameDriver(GameDriver):
             print("")
 
         if self.use_doubling():
-            self.add_arg("-prescale", "2")
+            self.emulator.args.extend(["-prescale", "2"])
 
         if self.use_smoothing():
-            self.add_arg("-filter")
+            self.emulator.args.append("-filter")
         else:
-            self.add_arg("-nofilter")
+            self.emulator.args.append("-nofilter")
 
         cheats_file_path = mame_cheat_file.path
         if not os.path.exists(cheats_file_path):
@@ -403,6 +420,10 @@ class MameDriver(GameDriver):
             self.emulator.args.extend(["-window", "-nomaximize"])
             if self.use_stretching():
                 self.emulator.args.extend(["-resolution", "960x540"])
+            else:
+                # FIXME: Square pixels and no stretch... how to open window
+                # at appropriate size? (with and without pixel doubling?
+                pass
 
         if self.stretching() == self.STRETCH_FILL_SCREEN:
             self.emulator.args.extend(["-nokeepaspect"])

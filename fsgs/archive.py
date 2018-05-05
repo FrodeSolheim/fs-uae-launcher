@@ -1,10 +1,9 @@
-import os
 import io
+import os
 import traceback
-
 from io import BytesIO
 
-from fsbc.zipfile import ZipFile
+from fspy.zipfile import ZipFile
 
 archive_extensions = [".zip", ".rp9"]
 

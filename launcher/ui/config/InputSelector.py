@@ -13,7 +13,7 @@ from launcher.ui.IconButton import IconButton
 from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS, \
     AmigaShowBehavior
 
-MIN_TYPE_CHOICE_WIDTH = 160
+MIN_TYPE_CHOICE_WIDTH = 200
 
 
 class InputSelector(fsui.Group):
