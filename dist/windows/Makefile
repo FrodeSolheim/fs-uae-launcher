@@ -52,8 +52,8 @@ progdir:
 	# This file differs between each build
 	zip -d $(library_zip) BUILD_CONSTANTS.pyc
 	# Remove wrong-cased members from the archive
-	zip -d $(library_zip) ConfigParser.pyc
-	zip -d $(library_zip) Queue.pyc
+	zip -d $(library_zip) ConfigParser.pyc || true
+	zip -d $(library_zip) Queue.pyc || true
 	PYTHONPATH=../.. python3 -m fspy.zipfile deterministic \
 		--fix-pyc-timestamps $(library_zip)
 

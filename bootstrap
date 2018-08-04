@@ -394,4 +394,9 @@ bindist: distdir
     mv $(dist_dir)/fs-uae-launcher_*linux* .
     rm -Rf $(dist_dir)
 
+bindist-x86: distdir
+    cd $(dist_dir)/dist/linux && fs-sdk-linux-x86 make
+    mv $(dist_dir)/fs-uae-launcher_*linux* .
+    rm -Rf $(dist_dir)
+
 """.format(project=project.tar_name))

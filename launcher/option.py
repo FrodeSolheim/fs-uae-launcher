@@ -1256,6 +1256,7 @@ options = {
         "type": "Choice",
         "values": [
             ("mame-fs", "MAME-FS"),
+            ("mednafen", "Mednafen"),
             ("mednafen-fs", "Mednafen-FS"),
             ("retroarch-fs", "RetroArch-FS"),
             ("retroarch-fs/genesisplusgx", "RetroArch-FS: Genesis Plus GX"),

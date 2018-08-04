@@ -1,5 +1,6 @@
 Version 2.9.8dev:
 
+* Fixed problem on Windows where devices were sometimes not detected.
 * Remove kickstart warnings when not using Amiga platform.
 * Added elapsed time to log file (to debug startup time).
 * Imported updated translations from crowdin.com.

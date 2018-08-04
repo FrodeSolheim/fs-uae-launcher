@@ -56,6 +56,8 @@ class MegaDrivePlatform(Platform):
             return MegaDriveRetroArchDriver(fsgc)
         if emulator in ["mame-fs"]:
             return MegaDriveMameDriver(fsgc)
+        if emulator in ["mednafen"]:
+            return MegaDriveMednafenDriver(fsgc)
 
         # FIXME: Vanilla retroarch not supported yet
         if emulator in ["retroarch", "retroarch/genesisplusgx"]:
@@ -67,7 +69,7 @@ class MegaDrivePlatform(Platform):
         if emulator in ["mame", "mess"]:
             return MegaDriveMameDriver(fsgc)
 
-        return MegaDriveMednafenDriver(fsgc)
+        return MegaDriveMednafenFSDriver(fsgc)
 
     def loader(self, fsgc):
         return MegaDriveLoader(fsgc)
@@ -145,8 +147,8 @@ class MegaDriveMameDriver(MessDriver):
 class MegaDriveMednafenDriver(MednafenDriver):
     PORTS = SMD_PORTS
 
-    def __init__(self, fsgs):
-        super().__init__(fsgs)
+    def __init__(self, fsgs, vanilla=True):
+        super().__init__(fsgs, vanilla)
         self.helper = MegaDriveHelper(self.options)
         self.save_handler.set_save_data_is_emulator_specific(True)
         self.save_handler.set_srm_alias(".sav")
@@ -248,6 +250,11 @@ class MegaDriveMednafenDriver(MednafenDriver):
 
     def get_game_file(self, config_key="cartridge_slot"):
         return None
+
+
+class MegaDriveMednafenFSDriver(MegaDriveMednafenDriver):
+    def __init__(self, fsgs):
+        super().__init__(fsgs, vanilla=False)
 
 
 class MegaDriveRetroArchDriver(RetroArchDriver):

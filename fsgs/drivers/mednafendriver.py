@@ -18,9 +18,12 @@ from fsgs.saves import SaveHandler
 
 
 class MednafenDriver(GameDriver):
-    def __init__(self, fsgc):
+    def __init__(self, fsgc, vanilla=False):
         super().__init__(fsgc)
-        self.emulator = Emulator("mednafen-fs")
+        if vanilla:
+            self.emulator = Emulator("mednafen")
+        else:
+            self.emulator = Emulator("mednafen-fs")
         self.save_handler = MednafenSaveHandler(
             self.fsgc, options=self.options)
         # self._game_files_added = False
