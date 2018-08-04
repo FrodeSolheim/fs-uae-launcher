@@ -35,6 +35,11 @@ from launcher.ui.launcherwindow import LauncherWindow
 from launcher.version import VERSION
 
 
+class StringDict(defaultdict):
+    def get(self, item, default=""):
+        return super().get(item, default)
+
+
 class LauncherApp(ApplicationMixin, fsui.Application):
     auto_detect_game = True
 
@@ -460,7 +465,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
 
     @classmethod
     def prepare_config(cls, original_config):
-        config = defaultdict(str)
+        config = StringDict(str)
         for key, value in LauncherSettings.items():
             # We now show warnings on status bar instead
             # if key in LauncherConfig.config_keys:
