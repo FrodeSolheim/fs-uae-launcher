@@ -11,6 +11,9 @@ class ArchiveUtil:
 
     def __init__(self, path):
         self.path = path
+        self.extensions = set()
+        self.ignore_extensions = set()
+        self.ignore_comments = False
 
     def create_variant_uuid(self):
         return self.create_variant()["uuid"]
@@ -42,6 +45,9 @@ class ArchiveUtil:
 
         for info in archive.infolist():
             name = info.filename
+            _, ext = os.path.splitext(name)
+            if ext and ext.lower() in self.ignore_extensions:
+                continue
             if name.endswith(".uaem"):
                 continue
             if "META-INF/" in name:
@@ -51,7 +57,10 @@ class ArchiveUtil:
             # if name.startswith(archive_name + "/"):
             #     name = name[len(archive_name) + 1:]
 
-            comment = info.comment
+            if info.comment and not self.ignore_comments:
+                comment = info.comment
+            else:
+                comment = None
             try:
                 metadata = archive.read(name + ".uaem").decode("UTF-8")
             except KeyError:
@@ -98,6 +107,9 @@ class ArchiveUtil:
         file_list = []
 
         for dummy, name, comment in names:
+            _, ext = os.path.splitext(name)
+            if ext:
+                self.extensions.add(ext.lower())
             # name_lower = name.lower()
             # content_hash.update(name.encode("ISO-8859-1"))
 
@@ -129,14 +141,14 @@ class ArchiveUtil:
                 "size": len(data),
             }
             if comment:
+                print(repr(comment))
                 assert isinstance(comment, str)
                 file_list_item["comment"] = comment
             file_list.append(file_list_item)
             if file_callback is not None:
                 file_callback(sha1=member_hash.hexdigest(), data=data)
 
-        file_sha1s.sort()
-        url = "http://sha1.fengestad.no/" + "/".join(sorted(file_sha1s[:]))
-        variant["uuid"] = str(uuid5(NAMESPACE_URL, str(url)))
+        url = "http://sha1.fengestad.no/" + "/".join(sorted(file_sha1s))
+        variant["uuid"] = str(uuid5(NAMESPACE_URL, url))
         variant["file_list"] = file_list
         return variant

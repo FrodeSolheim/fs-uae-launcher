@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2017-05-20 17:57+0200\n"
-"PO-Revision-Date: 2017-05-21 04:54-0400\n"
+"POT-Creation-Date: 2017-10-20 10:14+0200\n"
+"PO-Revision-Date: 2017-10-20 05:20-0400\n"
 "Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
@@ -83,9 +83,6 @@ msgstr "Meerdere diskettes tegelijk toevoegen"
 msgid "Additional Configuration"
 msgstr "Additionele configuratie"
 
-msgid "Additional Databases"
-msgstr "Aanvullende databanken"
-
 msgid "Adult-Themed Games"
 msgstr "18+ Spelen"
 
@@ -116,9 +113,6 @@ msgstr "Amiga Forever importeren"
 msgid "Amiga Forever import task started"
 msgstr "Amiga Forever importeren gestart"
 
-msgid "Amiga Game Driver"
-msgstr ""
-
 msgid "Amiga Joystick"
 msgstr "Amiga Joystick"
 
@@ -140,17 +134,11 @@ msgstr ""
 msgid "Arcade theme"
 msgstr ""
 
-msgid "Atari ST Model"
-msgstr ""
-
 msgid "Audio"
 msgstr "Geluid"
 
 msgid "Audio Settings"
 msgstr "Geluidsinstellingen"
-
-msgid "Audio buffer target size (bytes)"
-msgstr "Audiobuffer grootte (bytes)"
 
 msgid "Audio buffer target size (ms)"
 msgstr "Audiobuffer grootte (ms)"
@@ -170,19 +158,13 @@ msgstr "Automatisch - {}"
 msgid "Auto Smoothing"
 msgstr ""
 
-msgid "Auto-Download"
-msgstr "Automatische download"
-
 msgid "Auto-Fire is Off"
 msgstr "Automatisch vuren staat Aan"
 
 msgid "Auto-Fire is On"
 msgstr "Automatisch vuren staat Uit"
 
-msgid "Auto-Load Games"
-msgstr ""
-
-msgid "Auto-Quit"
+msgid "Auto-download"
 msgstr ""
 
 msgid "Automatic"
@@ -215,9 +197,6 @@ msgstr "Blizzard SCSI-Kit"
 msgid "Blue"
 msgstr ""
 
-msgid "Border"
-msgstr ""
-
 msgid "Browse"
 msgstr "Bladeren"
 
@@ -227,14 +206,11 @@ msgstr "Bladeren naar bestand"
 msgid "Browse for Folder"
 msgstr "Bladeren naar map"
 
-msgid "C64 Palette"
+msgid "Built-in"
 msgstr ""
 
 msgid "CD-ROM Drive"
 msgstr "CD-ROM station"
-
-msgid "CD-ROM Drive Count"
-msgstr "Aantal CD-ROM apparaten"
 
 msgid "CD-ROM Drives"
 msgstr "CD-ROM stations"
@@ -272,6 +248,9 @@ msgstr "Checksum bestand..."
 
 msgid "Chip RAM"
 msgstr "Chip RAM"
+
+msgid "Choices marked with (*) is the default setting"
+msgstr ""
 
 msgid "Choose CD-ROM Image"
 msgstr "Selecteert CD-ROM image"
@@ -324,21 +303,18 @@ msgstr "Bezig met opslaan..."
 msgid "Committing locker data..."
 msgstr "Locker gegevens vastleggen..."
 
-msgid "Commodore 64 Model"
-msgstr ""
-
 msgid "Common"
 msgstr ""
 
 msgid "Config"
 msgstr "Configureer"
 
-msgid "Config Options in Settings"
-msgstr "Configuratie-opties in Instellingen"
-
 #, python-brace-format
-msgid "Config in Settings: {name}"
-msgstr "Configuratie in Instellingen: {name}"
+msgid "Config in settings: {name}"
+msgstr ""
+
+msgid "Config options in settings"
+msgstr ""
 
 msgid "Configs"
 msgstr "Configuraties"
@@ -414,20 +390,14 @@ msgid "Custom Joystick Port"
 msgstr "Joystickpoort Aanpassingen"
 
 #, python-brace-format
-msgid "Custom Option: {name}"
-msgstr "Aangepaste optie: {name}"
+msgid "Custom option: {name}"
+msgstr ""
 
-msgid "Custom Options"
-msgstr "Aangepaste opties"
-
-msgid "Custom boot directory for automatic WHDLoad support"
-msgstr "Aangepaste opstart directory voor automatische WHDLoad ondersteuning"
+msgid "Custom options"
+msgstr ""
 
 msgid "Custom uae_ Options"
 msgstr "Aangepaste uae_ opties"
-
-msgid "DOS Emulator"
-msgstr ""
 
 msgid "Database Games"
 msgstr "Spellen database"
@@ -458,12 +428,6 @@ msgstr "Afhankelijk van uw OS en OpenGL-stuurprogramma's, synchroniseren kunt on
 msgid "Depending on your OS and OpenGL drivers, video synchronization can use needlessly much CPU (esp. applies to Linux). You can experiment with different sync methods to improve performance."
 msgstr "Afhankelijk van uw OS en OpenGL-stuurprogramma's, video synchronisatie kan onnodig veel CPU gebruiken (in het bijzonder bij Linux). U kunt experimenteren met verschillende sync methoden om prestaties te verbeteren."
 
-msgid "Deprecated: uaegfx_card"
-msgstr "Verouderd: uaegfx_card"
-
-msgid "Device ID used with OAGD.net authentication"
-msgstr "Apparaat-ID gebruikt met OAGD.net-verificatie"
-
 msgid "Did not find required Kickstart or ROM for {}. Wanted one of these files: {}"
 msgstr "Kan vereist Kickstart of ROM voor {} niet vinden. Gezochte bestanden: {}"
 
@@ -491,9 +455,6 @@ msgstr "Dongle"
 msgid "Double-click a controller to configure it:"
 msgstr ""
 
-msgid "Download Game"
-msgstr "Spel downloaden"
-
 msgid "Download Game Manually"
 msgstr "Handmatig het spel downloaden"
 
@@ -504,6 +465,9 @@ msgstr "Downloaden mislukt (poging {0}) - opnieuw proberen over {0} seconden"
 #, python-brace-format
 msgid "Download failed (attempt {0}) - retrying in {1} seconds"
 msgstr "Downloaden mislukt (poging {0}) - opnieuw proberen in {1} seconden"
+
+msgid "Download game"
+msgstr ""
 
 #, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
@@ -519,9 +483,6 @@ msgstr "Aantal diskettestations"
 msgid "E-mail:"
 msgstr "E-mail:"
 
-msgid "Effect"
-msgstr ""
-
 msgid "Eject"
 msgstr "Uitwerpen"
 
@@ -529,81 +490,6 @@ msgid "Empty Floppy Drive Volume"
 msgstr "Volume voor leeg diskettestation"
 
 msgid "Enable Additional Platforms (Requires Restart)"
-msgstr ""
-
-msgid "Enable experimental net play GUI (requires restart)"
-msgstr "Inschakelen experimentele 'net play' interface (herstart vereist)"
-
-msgid "Enable online database support (requires restart)"
-msgstr "Inschakelen van online database ondersteuning (herstart vereist)"
-
-msgid "Enable/disable use of OAGD.net locker"
-msgstr "Inschakelen/uitschakelen gebruik van OAGD.net locker"
-
-msgid "Enable/disable use of the Amiga game database"
-msgstr ""
-
-msgid "Enable/disable use of the Amstrad CPC game database"
-msgstr "In/uitschakelen gebruik van Amstrad CPC spellen database"
-
-msgid "Enable/disable use of the Arcade game database"
-msgstr "In/uitschakelen gebruik van Arcade spellen database"
-
-msgid "Enable/disable use of the Atari 2600 database"
-msgstr ""
-
-msgid "Enable/disable use of the Atari 5200 database"
-msgstr ""
-
-msgid "Enable/disable use of the Atari 7800 database"
-msgstr ""
-
-msgid "Enable/disable use of the Atari ST game database"
-msgstr "In/uitschakelen gebruik van Atari ST spellen database"
-
-msgid "Enable/disable use of the CD32 game database"
-msgstr ""
-
-msgid "Enable/disable use of the CDTV game database"
-msgstr ""
-
-msgid "Enable/disable use of the Commodore 64 (C64) database"
-msgstr ""
-
-msgid "Enable/disable use of the DOS game database"
-msgstr ""
-
-msgid "Enable/disable use of the Game Boy Advance database"
-msgstr ""
-
-msgid "Enable/disable use of the Game Boy Color database"
-msgstr ""
-
-msgid "Enable/disable use of the Game Boy database"
-msgstr ""
-
-msgid "Enable/disable use of the MSX game database"
-msgstr ""
-
-msgid "Enable/disable use of the Nintendo (NES) database"
-msgstr ""
-
-msgid "Enable/disable use of the PlayStation database"
-msgstr ""
-
-msgid "Enable/disable use of the Sega Master System database"
-msgstr ""
-
-msgid "Enable/disable use of the Sega Mega Drive (Genesis) database"
-msgstr ""
-
-msgid "Enable/disable use of the Super Nintendo database"
-msgstr ""
-
-msgid "Enable/disable use of the TurboGrafx-16 game database"
-msgstr ""
-
-msgid "Enable/disable use of the ZX Spectrum database"
 msgstr ""
 
 msgid "Enabled"
@@ -624,26 +510,11 @@ msgstr ""
 msgid "Expansions"
 msgstr "Expansies"
 
-msgid "Expect Specific FS-UAE Version"
-msgstr ""
-
-msgid "Experimental Config Visualization (Requires Restart)"
-msgstr ""
-
 msgid "Experimental Features"
 msgstr "Expirimentele functies"
 
-msgid "Experimental Setup Wizard (Requires Restart)"
-msgstr ""
-
 msgid "Extended ROM"
 msgstr "Uitgebreid ROM"
-
-msgid "FS-UAE   Arcade"
-msgstr ""
-
-msgid "Fade-in Duration on Start"
-msgstr ""
 
 msgid "Fast RAM"
 msgstr "Fast RAM"
@@ -693,17 +564,8 @@ msgstr "Filters"
 msgid "Finding files eligible for OAGD.net Locker"
 msgstr ""
 
-msgid "First rendered line (NTSC)"
-msgstr ""
-
-msgid "First rendered line (PAL)"
-msgstr ""
-
 msgid "Floppies"
 msgstr "Diskettes"
-
-msgid "Floppy Drive Count"
-msgstr "Aantal diskettestations"
 
 msgid "Floppy Drive Sound Emulation"
 msgstr "Emulatie van diskettestation geluid"
@@ -717,14 +579,8 @@ msgstr "Volume diskettestation"
 msgid "Floppy Drives"
 msgstr "Diskettestations"
 
-msgid "Flush log after each log line"
-msgstr ""
-
 msgid "Forgot your password?"
 msgstr "Wachtwoord vergeten?"
-
-msgid "Frame"
-msgstr ""
 
 msgid "Freezer Cartridge"
 msgstr ""
@@ -750,23 +606,11 @@ msgstr "Volledig scherm"
 msgid "Game Database"
 msgstr "Spel Database"
 
-msgid "Game Database Server"
-msgstr ""
-
 msgid "Game Database Settings"
 msgstr "Spel Database instellingen"
 
-msgid "Game database authentication"
-msgstr "Spel database authenticatie"
-
-msgid "Game database email"
-msgstr "Spel database e-mail"
-
-msgid "Game database password"
-msgstr "Spel database wachtwoord"
-
-msgid "Game database user name"
-msgstr "Spel database gebruikersnaam"
+msgid "Game Platforms"
+msgstr ""
 
 msgid "Gamepad"
 msgstr "Gamepad"
@@ -816,23 +660,14 @@ msgstr "Hardware"
 msgid "Hardware Dongle"
 msgstr ""
 
+msgid "Hide Bezel"
+msgstr ""
+
 msgid "High"
 msgstr "Hoog"
 
 msgid "Home"
 msgstr "Beginscherm"
-
-msgid "Host Key BACKSLASH"
-msgstr ""
-
-msgid "Host Key EQUALS"
-msgstr ""
-
-msgid "Host Key INSERT"
-msgstr ""
-
-msgid "Host Key LESS"
-msgstr ""
 
 msgid "How to achieve perfectly smooth scrolling"
 msgstr ""
@@ -862,9 +697,6 @@ msgstr "Importeren gereed"
 msgid "Include Save Disk"
 msgstr ""
 
-msgid "Include built-in configurations"
-msgstr ""
-
 msgid "Include close buttons in dialogs"
 msgstr ""
 
@@ -887,6 +719,9 @@ msgid "JIT Compiler"
 msgstr "JIT-Compiler"
 
 msgid "JIT compiler with a PPC-only OS is not recommended"
+msgstr ""
+
+msgid "Joystick"
 msgstr ""
 
 msgid "Joystick & Mouse Port"
@@ -949,9 +784,6 @@ msgstr "Letter"
 msgid "List"
 msgstr "Lijst"
 
-msgid "Load state by number"
-msgstr ""
-
 msgid "Loading..."
 msgstr "Bezig met laden..."
 
@@ -975,9 +807,6 @@ msgstr "Uitloggen"
 
 msgid "Log Out from Your OAGD.net Account"
 msgstr "Uitloggen van uw OAGD.net account"
-
-msgid "Log database query plans"
-msgstr ""
 
 msgid "Logging"
 msgstr "Logboek"
@@ -1009,9 +838,6 @@ msgstr "Onderhoud"
 msgid "Make:"
 msgstr "Merk:"
 
-msgid "Master System Game Driver"
-msgstr ""
-
 msgid "Max Scaling"
 msgstr ""
 
@@ -1020,15 +846,6 @@ msgstr ""
 
 msgid "Medium"
 msgstr "Middel"
-
-msgid "Mednafen Audio Driver"
-msgstr ""
-
-msgid "Mega Drive Game Driver"
-msgstr ""
-
-msgid "Mega Drive Model"
-msgstr ""
 
 msgid "Middle Left"
 msgstr ""
@@ -1039,7 +856,7 @@ msgstr ""
 msgid "Missing Files"
 msgstr ""
 
-msgid "Missing Game Files"
+msgid "Missing game files"
 msgstr ""
 
 msgid "Model:"
@@ -1050,9 +867,6 @@ msgstr ""
 
 msgid "Monitor to display FS-UAE on (left, middle-left, middle-right, right)"
 msgstr ""
-
-msgid "Motherboard RAM"
-msgstr "Moederbord RAM"
 
 msgid "Mouse"
 msgstr "Muis"
@@ -1072,9 +886,6 @@ msgstr ""
 
 msgid "N/A"
 msgstr "N.v.t."
-
-msgid "NES Game Driver"
-msgstr ""
 
 msgid "Net Play"
 msgstr "Netwerk spel"
@@ -1102,9 +913,6 @@ msgstr ""
 
 msgid "No Border"
 msgstr ""
-
-msgid "No Device"
-msgstr "Geen apparaat"
 
 msgid "No Effect"
 msgstr ""
@@ -1157,9 +965,6 @@ msgstr "Aan"
 msgid "OpenGL Settings"
 msgstr "OpenGL instellingen"
 
-msgid "OpenRetro   Arcade"
-msgstr ""
-
 #, python-brace-format
 msgid "Option {name} is overridden by current configuration"
 msgstr ""
@@ -1172,9 +977,6 @@ msgstr ""
 
 #, python-brace-format
 msgid "Outdated plugins: {0}"
-msgstr ""
-
-msgid "Override WHDLoad Amiga model"
 msgstr ""
 
 msgid "Override WHDLoad preload option"
@@ -1191,6 +993,9 @@ msgstr ""
 
 msgid "Password:"
 msgstr "Wachtwoord:"
+
+msgid "Pixel Doubling"
+msgstr ""
 
 msgid "Platform"
 msgstr "Platform"
@@ -1265,15 +1070,6 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-msgid "Relative Temporary Directories"
-msgstr ""
-
-msgid "Relative paths"
-msgstr ""
-
-msgid "Relax host CPU usage when using fastest-possible CPU"
-msgstr ""
-
 msgid "Remove Directory from Search Path"
 msgstr ""
 
@@ -1318,16 +1114,10 @@ msgstr "Opslaan"
 msgid "Save Config"
 msgstr ""
 
-msgid "Save Disk"
-msgstr ""
-
 msgid "Save to directory:"
 msgstr ""
 
 msgid "Saving changes..."
-msgstr ""
-
-msgid "Scale"
 msgstr ""
 
 msgid "Scaling & Filters"
@@ -1418,10 +1208,7 @@ msgstr "Instellingen"
 msgid "Setup Wizard"
 msgstr ""
 
-msgid "Show kickstart setup page on startup when all ROMs are missing"
-msgstr "Toon Kickstart configuratie pagina bij het starten indien alle ROM's ontbreken"
-
-msgid "Show window border and decorations"
+msgid "Show Bezel"
 msgstr ""
 
 msgid "Shuffle"
@@ -1437,9 +1224,6 @@ msgid "Small Border"
 msgstr ""
 
 msgid "Smoothing"
-msgstr ""
-
-msgid "Sound Blaster IRQ"
 msgstr ""
 
 msgid "Sound Card"
@@ -1463,9 +1247,6 @@ msgstr "Starten"
 msgid "Start FS-UAE in fullscreen mode"
 msgstr ""
 
-msgid "Start in warp mode"
-msgstr ""
-
 msgid "Start with full keyboard emulation"
 msgstr ""
 
@@ -1480,9 +1261,6 @@ msgstr "Stoppen"
 
 msgid "Stopped by user"
 msgstr "Gestopt door gebruiker"
-
-msgid "Stretch"
-msgstr ""
 
 msgid "Swap left and right CTRL keys"
 msgstr "Verwissel linker en rechter CTRL-toetsen"
@@ -1547,16 +1325,7 @@ msgstr ""
 msgid "Turbo"
 msgstr ""
 
-msgid "Turbo Load"
-msgstr ""
-
-msgid "UAE bsdsocket.library"
-msgstr ""
-
 msgid "Ungrab Input on Middle Mouse Button"
-msgstr ""
-
-msgid "Unknown   Arcade"
 msgstr ""
 
 msgid "Unpublished Games"
@@ -1671,9 +1440,6 @@ msgstr ""
 msgid "While logged out you will not get database updates"
 msgstr ""
 
-msgid "Write .uaem metadata files"
-msgstr ""
-
 msgid "Year"
 msgstr "Jaar"
 
@@ -1684,12 +1450,6 @@ msgid "You can write key = value pairs here to set FS-UAE options not currently 
 msgstr ""
 
 msgid "You should have kickstart files for each Amiga model you want to use:"
-msgstr ""
-
-msgid "ZX Spectrum Game Driver"
-msgstr ""
-
-msgid "ZX Spectrum Model"
 msgstr ""
 
 msgid "Zoom Amiga display (crop)"

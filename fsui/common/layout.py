@@ -314,6 +314,9 @@ class VerticalLayout(LinearLayout):
     def get_min_width(self):
         min_width = 0
         for child in self.children:
+            if hasattr(child.element, "explicitly_hidden"):
+                if child.element.explicitly_hidden():
+                    continue
             w = child.element.get_min_width()
             w += child.margin_left + child.margin_right
             if w > min_width:
@@ -327,6 +330,9 @@ class VerticalLayout(LinearLayout):
         min_height = 0
         last_margin = 0
         for child in self.children:
+            if hasattr(child.element, "explicitly_hidden"):
+                if child.element.explicitly_hidden():
+                    continue
             min_height += child.element.get_min_height()
             min_height += max(last_margin, child.margin_top)
             last_margin = child.margin_bottom

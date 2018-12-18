@@ -2,6 +2,7 @@ import io
 import os
 import shutil
 import tempfile
+import traceback
 import warnings
 from collections import defaultdict
 
@@ -13,10 +14,27 @@ from fsbc.system import System
 from fsbc.task import current_task
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.fsuae import FSUAE
-from fsgs.option import Option
-from fsgs.plugins.plugin_manager import PluginManager
+from launcher.option import Option
+from fsgs.plugins.plugin_manager import PluginManager, Executable
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.util.gamenameutil import GameNameUtil
+
+
+class GameDriverLogger:
+
+    def debug(self, message):
+        print("[DEBUG]", message)
+
+    def info(self, message):
+        print("[INFO]", message)
+
+    def warning(self, message):
+        # FIXME: Store warning and show in some kind of launch log
+        # (i.e. "warnings and error generated during game execution")
+        print("[WARNING]", message)
+
+    def error(self, message):
+        print("[ERROR]", message)
 
 
 # noinspection PyMethodMayBeStatic
@@ -26,52 +44,32 @@ class GameDriver:
     def __init__(self, fsgc):
         self.fsgc = fsgc
         self.files = GameFiles(fsgc)
-        self.emulator = GameEmulator()
-        self._allow_gsync = True
-        self._model_name = ""
+        self.logger = GameDriverLogger()
+        self.emulator = Emulator("no-emulator")
 
         self.options = defaultdict(str)
-        for key, value in Settings.instance().values.items():
-            # FIXME: re-enable this check?
-            # if key in Config.config_keys:
-            #     print("... ignoring config key from settings:", key)
-            #     continue
-            self.options[key] = value
-        for key, value in self.fsgc.config.items():
-            self.options[key] = value
+        self.init_options()
 
         self.ports = []
-        for port_info in self.PORTS:
-            port = Port(port_info["description"])
-            port.types = port_info["types"]
-            self.ports.append(port)
+        self.init_ports()
 
+        self._allow_gsync = True
+        self._model_name = ""
+        self._emulator_skin_prepared = {}
         self.__vsync = False
         self.__game_temp_file = None
+
         self.temp_root = TemporaryItem(
             root=None, prefix="fsgs-", suffix="tmp", directory=True)
-
         # # Default current working directory for the emulator.
         self.cwd = self.temp_dir("cwd")
         # # Fake home directory for the emulator.
         self.home = self.temp_dir("home")
-
         self.home._path = os.path.join(FSGSDirectories.get_cache_dir(), "Home")
         if not os.path.exists(self.home.path):
             os.makedirs(self.home.path)
+        # noinspection PyProtectedMember
         self.cwd._path = self.home._path
-        # self.cwd._path = os.path.join(self.home._path, "cwd")
-        # if not os.path.exists(self.cwd.path):
-        #     os.makedirs(self.cwd.path)
-
-        # Deprecated compatibility name
-        self.args = self.emulator.args
-        # Deprecated compatibility name
-        self.config = self.options
-        # Deprecated compatibility name
-        self.env = self.emulator.env
-        # Deprecated compatibility name
-        self.fsgs = self.fsgc
 
     def __del__(self):
         print("GameDriver.__del__")
@@ -85,34 +83,100 @@ class GameDriver:
     def run(self):
         executable = PluginManager.instance().find_executable(
             self.emulator.name)
+        if executable is None and self.emulator.allow_system_emulator:
+            executable_path = shutil.which(self.emulator.name)
+            if executable_path is not None:
+                executable = Executable(executable_path)
         if executable is None:
-            # if self.emulator.allow_system_emulator:
-            #     pass
             raise LookupError(
                 "Could not find emulator " + repr(self.emulator.name))
         self.emulator.process = self.start_emulator(executable)
 
+    def emulator_pid_file(self):
+        return self.fsgc.settings[Option.EMULATOR_PID_FILE]
+
+    @classmethod
+    def write_emulator_pid_file(cls, pid_file, process):
+        if pid_file:
+            try:
+                with open(pid_file, "w") as f:
+                    f.write("{}".format(process.pid))
+            except Exception:
+                traceback.print_exc()
+                print("WARNING: Error writing emulator PID file")
+
+    @classmethod
+    def remove_emulator_pid_file(cls, pid_file):
+        if not pid_file:
+            return
+        try:
+            os.remove(pid_file)
+        except Exception:
+            traceback.print_exc()
+            print("WARNING: Error removing emulator PID file")
+
     def wait(self):
-        return self.emulator.process.wait()
+        result = self.emulator.process.wait()
+        self.remove_emulator_pid_file(self.emulator_pid_file())
+        return result
 
     def finish(self):
         pass
 
-    def set_env(self, name, value):
-        warnings.warn("set_env is deprecated", DeprecationWarning)
-        self.env[name] = value
+    def init_options(self):
+        for key, value in Settings.instance().values.items():
+            # FIXME: re-enable this check?
+            # if key in Config.config_keys:
+            #     print("... ignoring config key from settings:", key)
+            #     continue
+            self.options[key] = value
+        for key, value in self.fsgc.config.items():
+            self.options[key] = value
 
-    def add_arg(self, *args):
-        warnings.warn("add_arg is deprecated", DeprecationWarning)
-        self.args.extend(args)
+    def init_ports(self):
+        for i, port_info in enumerate(self.PORTS):
+            self.init_port(i, port_info)
 
-    # def set_emulator(self, emulator):
-    #     self._emulator = emulator
+    def init_port(self, index, port_info):
+        port = Port(port_info["description"])
+        # FIXME: MOVE TO Port CONSTRUCTOR
+        port.number = index + 1
+        port.types = port_info["types"]
+        port.type_option = port_info.get("type_option", "")
+        port.device_option = port_info.get("device_option", "")
+        # Set correct (port type index) based on type option
+        # FIXME: MOVE CODE TO port CLASS
+        if port.type_option:
+            type_value = self.options[port.type_option]
+            if type_value:
+                print("[INPUT] Port option", port.type_option,
+                      "was set to", type_value)
+            else:
+                print("[INPUT] No value specified for", port.type_option)
 
-    # self.inputs.append(self.create_input(
-    #         name='Controller {0}'.format(i + 1),
-    #         type='megadrive',
-    #         description='Gamepad'))
+            # Hack / Workaround for Amiga
+            # FIXME: Move to driver subclasses?
+            # if not type_value:
+            #     if self.options[Option.AMIGA_MODEL].lower() == "cd32":
+            #         type_value = "cd32 pad"
+
+            if not type_value:
+                # FIXME: RETRIEVE DEFAULT VALUE FOR TYPE OPTION
+                try:
+                    type_value = Option.get(port.type_option)["default"]
+                except Exception:
+                    print("[INPUT] Could not find default for",
+                          port.type_option)
+            for j, port_type in enumerate(port.types):
+                print("[INPUT]", j, port_type["type"])
+                if type_value == port_type["type"]:
+                    print("[INPUT] Set index", j, "for type", type_value)
+                    port.index = j
+                    break
+            else:
+                print("[INPUT] WARNING: Could not find index for type",
+                      type_value)
+        self.ports.append(port)
 
     def set_allow_gsync(self, allow):
         self._allow_gsync = False
@@ -129,7 +193,16 @@ class GameDriver:
             return False
         return True
 
+    def fullscreen_window_mode(self):
+        fullscreen_mode = self.options[Option.FULLSCREEN_MODE]
+        return fullscreen_mode == "window"
+
+    def g_sync(self):
+        return self.options[Option.G_SYNC] == "1"
+
     def use_vsync(self):
+        if self.g_sync():
+            return False
         # if "--no-vsync" in sys.argv:
         #     return False
         # return True
@@ -198,7 +271,8 @@ class GameDriver:
     CRT_EFFECT = "crt"
     HQ2X_EFFECT = "hq2x"
     SCALE2X_EFFECT = "scale2x"
-    DEFAULT_EFFECT = NO_EFFECT
+    DOUBLE_EFFECT = "2x"
+    DEFAULT_EFFECT = DOUBLE_EFFECT
 
     def effect(self):
         if self.options[Option.EFFECT] == self.NO_EFFECT:
@@ -210,6 +284,9 @@ class GameDriver:
         if self.options[Option.EFFECT] == self.SCALE2X_EFFECT:
             return self.SCALE2X_EFFECT
         return self.DEFAULT_EFFECT
+
+    def bezel(self):
+        return self.options[Option.BEZEL] != "0"
 
     # FIXME: REMOVE
     def use_smoothing(self):
@@ -253,7 +330,7 @@ class GameDriver:
 
     def screenshots_name(self):
         # FIXME: REMOVE?
-        return GameNameUtil.create_fs_name(self.get_name())
+        return GameNameUtil.create_fs_name(self.game_name())
 
     # def get_game_name(self):
     #     return self.options["game_name"]
@@ -315,8 +392,6 @@ class GameDriver:
             refresh_rate_tool = RefreshRateTool()
             screens = refresh_rate_tool.screens_xrandr()
             rect = cls.screen_rect_for_monitor(monitor)
-            # from pprint import pprint
-            # pprint(screens)
             for screen in screens:
                 print("Screen {} refresh rate (Xrandr) = {}".format(
                     screen, screens[screen]["refresh_rate"]))
@@ -441,14 +516,6 @@ class GameDriver:
                 f.write(data)
         return self.__game_temp_file.path
 
-    def create_temp_dir(self, suffix):
-        warnings.warn("create_temp_dir is deprecated", DeprecationWarning)
-        return self.temp_dir(suffix)
-
-    def create_temp_file(self, suffix):
-        warnings.warn("create_temp_file is deprecated", DeprecationWarning)
-        return self.temp_file(suffix)
-
     def temp_dir(self, name):
         return TemporaryNamedItem(
             root=self.temp_root, name=name, directory=True)
@@ -532,18 +599,18 @@ class GameDriver:
         #     self.env["FSGS_STRETCH"] = "0"
 
         if self.stretching() == self.STRETCH_FILL_SCREEN:
-            self.env["FSGS_STRETCH"] = "1"
+            self.emulator.env["FSGS_STRETCH"] = "1"
         elif self.stretching() == self.STRETCH_ASPECT:
-            self.env["FSGS_STRETCH"] = "2"
+            self.emulator.env["FSGS_STRETCH"] = "2"
         else:
-            self.env["FSGS_STRETCH"] = "0"
+            self.emulator.env["FSGS_STRETCH"] = "0"
 
         if self.border() == self.SMALL_BORDER:
-            self.env["FSGS_BORDER"] = "1"
+            self.emulator.env["FSGS_BORDER"] = "1"
         elif self.border() == self.LARGE_BORDER:
-            self.env["FSGS_BORDER"] = "2"
+            self.emulator.env["FSGS_BORDER"] = "2"
         else:
-            self.env["FSGS_BORDER"] = "0"
+            self.emulator.env["FSGS_BORDER"] = "0"
 
         # env["FSGS_WINDOW_TITLE"] = ""
         self.set_environment_path(
@@ -553,9 +620,13 @@ class GameDriver:
         if self._model_name:
             env["FSGS_WINDOW_TITLE"] = self._model_name
 
-        env.update(self.env)
+        env.update(self.emulator.env)
         if not self.emulator.allow_home_access:
             env["HOME"] = self.home.path
+
+        if self.options[Option.G_SYNC] == "0":
+            print("[VIDEO] Disabling G-Sync (Might only work on Linux)")
+            env["__GL_GSYNC_ALLOWED"] = "0"
 
         if not self._allow_gsync:
             # DOSBox-FS and Fuse-FS does not work nicely with G-SYNC yet.
@@ -615,15 +686,47 @@ class GameDriver:
         # print("window position", env["SDL_VIDEO_WINDOW_POS"])
         # os.environ["SDL_VIDEO_WINDOW_POS"] = "{0},{1}".format(x, y)
 
-    def prepare_emulator_skin(self, env):
-        path = self.temp_file("left.png").path
-        with open(path, "wb") as f:
+    def emulator_skin_paths(self):
+        left = self.temp_file("left.png").path
+        left_overlay = self.temp_file("left-overlay.png").path
+        right = self.temp_file("right.png").path
+        right_overlay = self.temp_file("right-overlay.png").path
+        return {
+            "left": left,
+            "left-overlay": left_overlay,
+            "right": right,
+            "right-overlay": right_overlay,
+        }
+
+    def prepare_emulator_skin(self, env=None, paths=None):
+        if self._emulator_skin_prepared:
+            return self._emulator_skin_prepared
+        if paths is None:
+            paths = self.emulator_skin_paths()
+        with open(paths["left"], "wb") as f:
             f.write(Resources("fsgs").stream("res/emu/left.png").read())
-        env["FSGS_SKIN_LEFT"] = path
-        path = self.temp_file("right.png").path
-        with open(path, "wb") as f:
+        if env is not None:
+            env["FSGS_BEZEL_LEFT"] = paths["left"]
+            env["FSGS_SKIN_LEFT"] = paths["left"]
+        if "left-overlay" in paths:
+            with open(paths["left-overlay"], "wb") as f:
+                f.write(Resources("fsgs").stream(
+                    "res/emu/left-overlay.png").read())
+            if env is not None:
+                env["FSGS_BEZEL_LEFT_OVERLAY"] = paths["left-overlay"]
+        with open(paths["right"], "wb") as f:
             f.write(Resources("fsgs").stream("res/emu/right.png").read())
-        env["FSGS_SKIN_RIGHT"] = path
+        if env is not None:
+            env["FSGS_BEZEL_RIGHT"] = paths["right"]
+            env["FSGS_SKIN_RIGHT"] = paths["right"]
+        if "right-overlay" in paths:
+            with open(paths["right-overlay"], "wb") as f:
+                f.write(Resources("fsgs").stream(
+                    "res/emu/right-overlay.png").read())
+            if env is not None:
+                env["FSGS_BEZEL_RIGHT_OVERLAY"] = paths["right-overlay"]
+        self._emulator_skin_prepared = paths
+        return self._emulator_skin_prepared
 
     def start_emulator(
             self, emulator, args=None, env_vars=None, executable=None,
@@ -643,7 +746,7 @@ class GameDriver:
         #     raise Exception("could not find executable for " + emulator)
 
         args = []
-        args.extend(self.args)
+        args.extend(self.emulator.args)
 
         if "SDL_VIDEODRIVER" in os.environ:
             print("SDL_VIDEODRIVER was present in environment, removing!")
@@ -652,7 +755,8 @@ class GameDriver:
         env = os.environ.copy()
         FSUAE.add_environment_from_settings(env)
         self.update_environment(env)
-        self.prepare_emulator_skin(env)
+        if self.bezel():
+            self.prepare_emulator_skin(env)
         if env_vars:
             env.update(env_vars)
         print("")
@@ -679,8 +783,9 @@ class GameDriver:
             "Starting {emulator}".format(emulator=emulator))
         # import subprocess
         # return subprocess.Popen(["strace", emulator.path] + args, **kwargs)
-        return emulator.popen(args, **kwargs)
-        # return process
+        process = emulator.popen(args, **kwargs)
+        self.write_emulator_pid_file(self.emulator_pid_file(), process)
+        return process
 
     def find_emulator_executable(self, name):
         # if os.path.isdir("../fs-uae/src"):
@@ -816,13 +921,64 @@ class GameDriver:
     def abort(self):
         print("GameRunner.abort - WARNING: not implemented")
 
+    def cheats_file(self, name):
+        try:
+            plugin = PluginManager.instance().plugin("Cheats")
+        except LookupError:
+            return None
+        path = plugin.data_file_path(name)
+        if os.path.exists(path):
+            return path
+        return None
+
+    @property
+    def args(self):
+        warnings.warn("deprecated", DeprecationWarning)
+        return self.emulator.args
+
+    @property
+    def config(self):
+        warnings.warn("deprecated", DeprecationWarning)
+        return self.options
+
+    @property
+    def env(self):
+        warnings.warn("deprecated", DeprecationWarning)
+        return self.emulator.env
+
+    @property
+    def fsgs(self):
+        warnings.warn("deprecated", DeprecationWarning)
+        return self.fsgc
+
+    def set_env(self, name, value):
+        warnings.warn("deprecated", DeprecationWarning)
+        self.emulator.env[name] = value
+
+    def add_arg(self, *args):
+        warnings.warn("deprecated", DeprecationWarning)
+        self.emulator.args.extend(args)
+
+    def create_temp_dir(self, suffix):
+        warnings.warn("create_temp_dir is deprecated", DeprecationWarning)
+        return self.temp_dir(suffix)
+
+    def create_temp_file(self, suffix):
+        warnings.warn("create_temp_file is deprecated", DeprecationWarning)
+        return self.temp_file(suffix)
+
 
 class Port(object):
     def __init__(self, name):
+        self.number = 0
         self.name = name
         self.types = []
         self.index = 0
         self.device = None
+        # Name of config option for device type
+        self.type_option = ""
+        # Name of config option for device
+        self.device_option = ""
 
         # FIXME: remove
         self.device_id = None
@@ -905,13 +1061,13 @@ class TemporaryNamedItem:
         return self._path
 
 
-class GameEmulator:
-    def __init__(self):
-        self.name = "no-emulator"
+class Emulator:
+    def __init__(self, name):
+        self.name = name
         self.args = []
         self.env = {}
         self.process = None
-        # self.allow_system_emulator = False
+        self.allow_system_emulator = False
         self.allow_home_access = False
 
 

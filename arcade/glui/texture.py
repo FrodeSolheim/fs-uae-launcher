@@ -60,8 +60,10 @@ class Texture(object):
     item_background = None
     top_item_background = None
     logo_32 = None
+
     stretch = None
     aspect = None
+    square_pixels = None
 
     def __init__(self, name, target=gl.GL_TEXTURE_2D, **kwargs):
         # print(repr(type(name)))

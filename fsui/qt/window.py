@@ -138,7 +138,7 @@ class RealWindow(QMainWindow):
     def changeEvent(self, event):
         # print(event.type(), QEvent.WindowStateChange)
         if event.type() == QEvent.WindowStateChange:
-            print("RealWindow.changeEvent(WindowStateChange)")
+            # print("RealWindow.changeEvent(WindowStateChange)")
             self.child.on_resize()
         QMainWindow.changeEvent(self, event)
     #         size = self.size()

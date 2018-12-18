@@ -20,7 +20,6 @@ class Settings(object):
         return cls._instance
 
     def __init__(self, app=None, path: str = None) -> None:
-        print("[SETTINGS] Constructor", self)
         self.app = app
         self.path = path
         self.values = {}  # type: Dict[str, str]
@@ -28,6 +27,7 @@ class Settings(object):
         self._loaded = False
         self._loading = False
         self._atexit_registered = False
+        self.verbose = True
 
     def set_path(self, path):
         self.path = path
@@ -47,7 +47,8 @@ class Settings(object):
             self.log_key_value(key, value, extra="(unchanged)")
             return
         if not self._loading and not self._atexit_registered:
-            print("[SETTINGS] Register atexit save path =", self.path)
+            if self.verbose:
+                print("[SETTINGS] Register atexit save path =", self.path)
             atexit.register(self.save)
             self._atexit_registered = True
         self.log_key_value(key, value)
@@ -65,14 +66,15 @@ class Settings(object):
         if (not self._loaded) or force:
             try:
                 self._loading = True
-                self._provider.load(self)
+                self._provider.load(self, verbose=self.verbose)
             finally:
                 self._loading = False
         self._loaded = True
         # print("[SETTINGS] Loaded, path is", self.path)
 
     def save(self, extra: Dict[str, str] = None) -> None:
-        print("[SETTINGS] Save", self)
+        if self.verbose:
+            print("[SETTINGS] Save", self)
         self._provider.save(self, extra)
 
     def log_key_value(self, key, value, extra=""):
@@ -81,7 +83,8 @@ class Settings(object):
             value = "*CENSORED*"
         if extra:
             extra = " " + extra
-        print("[SETTINGS] Set {} = {}{}".format(key, value, extra))
+        if self.verbose:
+            print("[SETTINGS] Set {} = {}{}".format(key, value, extra))
 
 
 class SettingsProvider:
@@ -89,26 +92,31 @@ class SettingsProvider:
     this and replace the provider on the Settings instance if you want
     customized loading/saving."""
 
-    def load(self, settings):
+    def load(self, settings, verbose=True):
         cp = ConfigParser(interpolation=None)
         cp.optionxform = str
         path = settings.path
         if settings.app and not path:
             path = settings.app.get_settings_path()
         if not path:
-            print("[SETTINGS] No settings path specified")
+            if verbose:
+                print("[SETTINGS] No settings path specified")
             path = os.path.join(fsboot.base_dir(), "Data", "Settings.ini")
-            print("[SETTINGS] Using default", path)
+            if verbose:
+                print("[SETTINGS] Using default", path)
         if os.path.exists(path):
-            print("[SETTINGS] Loading from", path)
+            if verbose:
+                print("[SETTINGS] Loading from", path)
         else:
-            print("[SETTINGS] File", path, "does not exist")
+            if verbose:
+                print("[SETTINGS] File", path, "does not exist")
         # Write current settings path back to Settings instance
         settings.path = path
         try:
             cp.read([path], encoding="UTF-8")
         except Exception as e:
-            print("[SETTINGS] Error loading", repr(e))
+            if verbose:
+                print("[SETTINGS] Error loading", repr(e))
             return
         try:
             keys = cp.options("settings")
@@ -118,7 +126,8 @@ class SettingsProvider:
         values = {}
         for key in sorted(keys):
             if key.startswith("__"):
-                print("[SETTINGS] Ignoring", key)
+                if verbose:
+                    print("[SETTINGS] Ignoring", key)
                 continue
             value = cp.get("settings", key)
             values[key] = value

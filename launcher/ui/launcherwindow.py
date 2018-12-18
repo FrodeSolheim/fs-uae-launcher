@@ -332,16 +332,18 @@ class LauncherWindow(WindowWithTabs):
 
     def on_resize(self):
         width, height = self.get_size()
-        print("on_resize, size =", width, height)
+        # print("on_resize, size =", width, height)
         if self.is_maximized():
-            LauncherSettings.set("maximized", "1")
+            if LauncherSettings.get("maximized") != "1":
+                LauncherSettings.set("maximized", "1")
         else:
-            LauncherSettings.set("maximized", "0")
+            if LauncherSettings.get("maximized") != "0":
+                LauncherSettings.set("maximized", "0")
         if self.screenshots_panel is not None:
             available = (width - 2 * 10 - self.game_info_panel.get_min_width())
             num_screenshots = int((available - 22 + 22) /
                                   (Constants.SCREEN_SIZE[0] + 22))
-            print(num_screenshots)
+            # print("Screenshots count:", num_screenshots)
             screenshots_panel_width = \
                 (Constants.SCREEN_SIZE[0] + 22) * num_screenshots - 22 + 22
             self.screenshots_panel.set_min_width(screenshots_panel_width)

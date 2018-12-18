@@ -102,6 +102,7 @@ setup_kwargs = {
 }
 
 if sys.argv[1] == "build_exe":
+    import cx_Freeze
     if sys.platform == "win32":
         setup_kwargs["executables"] = [
             Executable(s, base="Win32GUI", icon="icon/" + s + ".ico")
@@ -124,6 +125,9 @@ if sys.argv[1] == "build_exe":
         "include_files": [],
         "zip_includes": [],
     }
+    if int(cx_Freeze.version.split(".")[0]) >= 5:
+        build_exe_options["zip_include_packages"] = "*"
+        build_exe_options["zip_exclude_packages"] = []
     #for res_dir in res_dirs:
     #    print(res_dir)
     #    build_exe_options["zip_includes"].append((res_dir, res_dir))
@@ -298,10 +302,10 @@ copy_files = [
     "dist/linux/build.py",
     "dist/linux/Makefile",
     "dist/linux/standalone-linux.py",
-    "dist/macosx/Makefile",
-    "dist/macosx/fs-make-standalone-app.py",
-    "dist/macosx/Info.plist",
-    "dist/macosx/sign.py",
+    "dist/macos/Makefile",
+    "dist/macos/fs-make-standalone-app.py",
+    "dist/macos/Info.plist",
+    "dist/macos/sign.py",
     "dist/python/Makefile",
     "dist/steamos/Makefile",
     "dist/windows/clib.py",
@@ -344,7 +348,7 @@ for copy_file in copy_files:
 write("""\
     cd $(dist_dir) && ./update-version setup.py --strict
     cd $(dist_dir) && ./update-version debian/changelog --deb
-    cd $(dist_dir) && ./update-version dist/macosx/Info.plist --strict
+    cd $(dist_dir) && ./update-version dist/macos/Info.plist --strict
     cd $(dist_dir) && ./update-version launcher/version.py
     cd $(dist_dir) && ./update-version {project}
     cd $(dist_dir) && ./update-version {project}.spec --rpm
@@ -366,7 +370,7 @@ windows-dist: distdir
     rm -Rf $(dist_dir)
 
 macosx-dist: distdir
-    cd $(dist_dir)/dist/macosx && make
+    cd $(dist_dir)/dist/macos && make
     mv $(dist_dir)/{project}_*macos* .
     rm -Rf $(dist_dir)
 
@@ -387,6 +391,11 @@ distclean: clean clean-dist
 
 bindist: distdir
     cd $(dist_dir)/dist/linux && fs-sdk-linux-x86-64 make
+    mv $(dist_dir)/fs-uae-launcher_*linux* .
+    rm -Rf $(dist_dir)
+
+bindist-x86: distdir
+    cd $(dist_dir)/dist/linux && fs-sdk-linux-x86 make
     mv $(dist_dir)/fs-uae-launcher_*linux* .
     rm -Rf $(dist_dir)
 

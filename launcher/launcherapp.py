@@ -2,6 +2,7 @@ import hashlib
 import os
 import sys
 import traceback
+import warnings
 from collections import defaultdict
 from configparser import ConfigParser
 
@@ -10,9 +11,9 @@ from fsbc.application import app
 from fsbc.settings import Settings
 from fsbc.task import Task
 from fsbc.util import unused, is_uuid
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.FileDatabase import FileDatabase
+from fsgs.filedatabase import FileDatabase
 from fsgs.amiga import whdload
 from fsgs.amiga.amiga import Amiga
 from fsgs.application import ApplicationMixin
@@ -32,6 +33,11 @@ from launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
 from launcher.ui.launch import LaunchDialog
 from launcher.ui.launcherwindow import LauncherWindow
 from launcher.version import VERSION
+
+
+class StringDict(defaultdict):
+    def get(self, item, default=""):
+        return super().get(item, default)
 
 
 class LauncherApp(ApplicationMixin, fsui.Application):
@@ -422,12 +428,12 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         name = LauncherSettings.get("config_name")
         uuid = LauncherConfig.get("x_game_uuid")
 
-        from fsgs.SaveStateHandler import SaveStateHandler
-        save_state_handler = SaveStateHandler(fsgs, name, platform, uuid)
+        from fsgs.saves import SaveHandler
+        save_state_handler = SaveHandler(fsgs, name, platform, uuid)
 
         from fsgs.amiga.launchhandler import LaunchHandler
-        launch_handler = LaunchHandler(fsgs, name, prepared_config,
-                                       save_state_handler)
+        launch_handler = LaunchHandler(
+            fsgs, name, prepared_config, save_state_handler)
 
         from .ui.launcherwindow import LauncherWindow
         task = AmigaLaunchTask(launch_handler)
@@ -459,7 +465,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
 
     @classmethod
     def prepare_config(cls, original_config):
-        config = defaultdict(str)
+        config = StringDict(str)
         for key, value in LauncherSettings.items():
             # We now show warnings on status bar instead
             # if key in LauncherConfig.config_keys:
@@ -485,7 +491,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         if not config["joystick_port_3_mode"]:
             config["joystick_port_3_mode"] = "none"
 
-        from .device_manager import DeviceManager
+        from .devicemanager import DeviceManager
         devices = DeviceManager.get_devices_for_ports(config)
         for port in range(4):
             key = "joystick_port_{0}".format(port)
@@ -564,20 +570,26 @@ class AmigaLaunchTask(Task):
 
 
 class RunnerTask(Task):
-    def __init__(self, runner):
-        Task.__init__(self, "Runner Task")
-        self.runner = runner
+    def __init__(self, driver):
+        Task.__init__(self, "RunnerTask")
+        self.driver = driver
+
+    @property
+    def runner(self):
+        warnings.warn("Deprecated", DeprecationWarning)
+        return self.driver
 
     def __del__(self):
         print("RunnerTask.__del__")
 
     def run(self):
         device_helper = EnumerateHelper()
-        device_helper.default_port_selection(self.runner.ports)
+        device_helper.default_port_selection(
+            self.driver.ports, self.driver.options)
 
-        self.runner.prepare()
-        self.runner.install()
+        self.driver.prepare()
+        self.driver.install()
         self.set_progress("__run__")
-        self.runner.run()
-        self.runner.wait()
-        self.runner.finish()
+        self.driver.run()
+        self.driver.wait()
+        self.driver.finish()

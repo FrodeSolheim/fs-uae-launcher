@@ -66,9 +66,9 @@ class Task(object):
                 print(self, "failed", repr(str(e)))
                 traceback.print_exc()
                 self.failed(
-                    "{} failed with {}:\n{}\n\nSee log file for "
-                    "details.".format(
-                        self.get_task_name(), type(e).__name__, repr(str(e))))
+                    "Task: {}\nError: {}\nMessage: {}\n\n"
+                    "See the log file for more details.".format(
+                        self.get_task_name(), type(e).__name__, str(e)))
             else:
                 print(self, "succeeded")
                 self.succeeded()

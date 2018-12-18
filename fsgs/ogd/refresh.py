@@ -29,7 +29,7 @@ class DatabaseRefreshTask(Task):
         # Scanner.start([], scan_for_files=False, update_game_database=True)
         from fsgs.ogd.game_rating_synchronizer \
             import GameRatingSynchronizer
-        from launcher.game_scanner import GameScanner
+        from launcher.gamescanner import GameScanner
 
         context = SynchronizerContext()
 

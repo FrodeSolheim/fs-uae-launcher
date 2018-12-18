@@ -34,9 +34,11 @@ class OptionUI(object):
         choice_values = []
 
         if description:
-            default_tmpl = "Default - {0}"
+            default_tmpl = "{0} (*)"
+            # default_tmpl = "Default - {0}"
         else:
-            default_tmpl = "{0} (Default)"
+            default_tmpl = "{0} (*)"
+            # default_tmpl = "Default - {0}"
 
         if option["type"].lower() == "boolean":
             if option["default"] == "1":

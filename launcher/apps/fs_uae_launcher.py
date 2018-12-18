@@ -1,3 +1,4 @@
+import platform
 import sys
 import traceback
 
@@ -9,6 +10,8 @@ def app_main():
         print(help_text)
         return
     print("FS-UAE Launcher {0}".format(VERSION))
+    print(sys.argv)
+    print(platform.uname())
 
     for i, arg in enumerate(sys.argv[:]):
         if arg == "--fullscreen" or arg == "--fullscreen=1":
@@ -33,6 +36,7 @@ def app_main():
                 "An error occurred starting FS-UAE Launcher:\n\n" +
                 repr(e) + "\n\nFS-UAE Launcher cannot start "
                 "because of this.", "FS-UAE Launcher")
+            fsui.show_error(traceback.format_exc())
     else:
         app.run()
         app.save_settings()
@@ -46,7 +50,7 @@ def app_main():
 
 
 help_text = """\
-FS-UAE Launcher Help"
+FS-UAE Launcher {version}
 
 Options:
   --new-config[=<platform>]
@@ -55,8 +59,13 @@ Options for directly launching games:
   --fullscreen
   --no-fullscreen
   --no-gui                             Do not show launch progress dialog
-  --no-auto-detect-game                Do not try to auto-detect game from archive
-
+  --no-auto-detect-game                Do not auto-detect game from archive
 
 TODO: Add more documentation
-"""
+
+Or you can execute fs-uae-launcher <command> - where command is one of:
+  * arcade                             Launch FS-UAE Arcade
+  * fs-uae-netplay-server              Run netplay server
+  * list-dirs                          List directories used by the Launcher
+  * list-plugins                       List installed plugins
+""".format(version=VERSION)

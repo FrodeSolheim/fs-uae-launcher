@@ -12,7 +12,7 @@ from typing import List, Dict
 from fsbc.paths import Paths
 from fsbc.resources import Resources
 from fsbc.task import current_task, TaskFailure
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.GameChangeHandler import GameChangeHandler
 from fsgs.GameNameUtil import GameNameUtil
@@ -25,6 +25,7 @@ from fsgs.amiga.rommanager import ROMManager
 from fsgs.amiga.roms import PICASSO_IV_74_ROM, CD32_FMV_ROM
 from fsgs.amiga.workbench import WorkbenchExtractor
 from fsgs.download import Downloader
+from fsgs.drivers.gamedriver import GameDriver
 from fsgs.knownfiles import ACTION_REPLAY_MK_III_3_17_ROM, \
     ACTION_REPLAY_MK_III_3_17_MOD_ROM, ACTION_REPLAY_MK_II_2_14_ROM, \
     ACTION_REPLAY_MK_II_2_14_MOD_ROM
@@ -37,6 +38,7 @@ class LaunchHandler(object):
 
     def __init__(self, fsgs, config_name, config, game_paths, temp_dir=""):
         self.fsgs = fsgs
+        self.fsgc = fsgs
         self.config_name = config_name
         self.config = config.copy()
 
@@ -671,7 +673,7 @@ class LaunchHandler(object):
             workbench_version = "2.04"
         elif amiga_model.startswith("A1200"):
             workbench_version = "3.0"
-        elif amiga_model.startswith("A4200"):
+        elif amiga_model.startswith("A4000"):
             workbench_version = "3.0"
         else:
             workbench_version = None
@@ -720,12 +722,11 @@ class LaunchHandler(object):
         print("[WHDLOAD] copy_whdload_files, dest_dir = ", dest_dir)
 
         whdload_dir = ""
-        slave = whdload_args.split(" ", 1)[0]
-        slave = slave.lower()
+        slave_original_name = whdload_args.split(" ", 1)[0]
+        slave = slave_original_name.lower()
         found_slave = False
         for dir_path, dir_names, file_names in os.walk(dest_dir):
             for name in file_names:
-                # print(name, slave)
                 if name.lower() == slave:
                     print("[WHDLOAD] Found", name)
                     found_slave = True
@@ -741,8 +742,8 @@ class LaunchHandler(object):
                 break
         if not found_slave:
             raise Exception(
-                "Did not find the specified WHDLoad slave. "
-                "Check the WHDLoad arguments")
+                "Did not find the specified WHDLoad slave {}. "
+                "Check the WHDLoad arguments".format(repr(slave_original_name)))
         print("[WHDLOAD] Slave directory:", repr(whdload_dir))
         print("[WHDLOAD] Slave arguments:", whdload_args)
 
@@ -1010,7 +1011,10 @@ class LaunchHandler(object):
                 config, cwd=self.temp_dir)
         else:
             process, config_file = FSUAE.start_with_config(config)
+        pid_file = self.fsgc.settings[Option.EMULATOR_PID_FILE]
+        GameDriver.write_emulator_pid_file(pid_file, process)
         process.wait()
+        GameDriver.remove_emulator_pid_file(pid_file)
         print("LaunchHandler.start is done")
         if os.environ.get("FSGS_CLEANUP", "") == "0":
             print("Not removing", config_file)

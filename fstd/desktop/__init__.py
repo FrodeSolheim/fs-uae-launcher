@@ -1,4 +1,5 @@
 import sys
+import platform
 import webbrowser
 
 
@@ -27,4 +28,4 @@ def is_running_gnome_3():
 def is_running_windows_10():
     if sys.platform != "win32":
         return False
-    return sys.getwindowsversion()[0] == 10
+    return platform.uname()[2] == "10"

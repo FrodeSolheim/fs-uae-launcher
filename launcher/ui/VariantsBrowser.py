@@ -316,6 +316,8 @@ class VariantsBrowser(fsui.ItemChoice):
 
         LauncherConfig.load_values(values, uuid=variant_uuid)
 
+        # print("--->", LauncherConfig.get("variant_uuid"))
+
         # variant_rating = 0
         # if item["work_rating"] is not None:
         #     variant_rating = item["work_rating"] - 2
@@ -323,7 +325,7 @@ class VariantsBrowser(fsui.ItemChoice):
         #     variant_rating = item["like_rating"]
         # Config.set("__variant_rating", str(variant_rating))
 
-        LauncherConfig.set("variant_uuid", variant_uuid)
+        # LauncherConfig.set("variant_uuid", variant_uuid)
         LauncherConfig.set("__changed", "0")
         LauncherConfig.set("__database", database_name)
 

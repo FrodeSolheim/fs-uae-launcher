@@ -85,6 +85,7 @@ def ignore_library(name):
     if name.startswith("libgpg-error.so"):
         raise Exception(
             "Bundling libgpg-error (libgcrypt?) breaks Intel GL driver")
+
     if name.startswith("linux-gate.so"):
         return True
     if name.startswith("linux-vdso.so"):
@@ -123,17 +124,14 @@ def ignore_library(name):
         return True
     if name.startswith("libGLU.so"):
         return True
+    if name.startswith("libEGL.so"):
+        return True
 
     if name.startswith("libasound.so"):
         # Alsa library is in LSB, looks like only "old" interfaces are used
         # by SDL2.
         return True
-    if name.startswith("libfreetype.so"):
-        # libfreetype.so.6 is commonly available (also in LSB standard)
-        return True
-    if name.startswith("libz.so"):
-        # libz.so.1 is commonly available (also in LSB standard)
-        return True
+
     if name.startswith("libX11.so"):
         return True
     if name.startswith("libXext.so"):

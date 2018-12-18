@@ -29,4 +29,6 @@ class ArcadeLoader(SimpleLoader):
     def load_extra(self, values):
         if "refresh_rate" in values:
             self.config["refresh_rate"] = values["refresh_rate"]
+        if "orientation" in values:
+            self.config["orientation"] = values["orientation"]
         self.config["mame_rom_set"] = values["mame_rom_set"]

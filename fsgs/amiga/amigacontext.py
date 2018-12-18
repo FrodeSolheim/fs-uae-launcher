@@ -1,9 +1,9 @@
 import os
 
 from fsbc.paths import Paths
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.BaseContext import BaseContext
-from fsgs.ChecksumTool import ChecksumTool
+from fsgs.checksumtool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.amiga import Amiga
 

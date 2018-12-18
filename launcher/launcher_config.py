@@ -5,7 +5,7 @@ from configparser import ConfigParser, NoSectionError
 
 from fsbc.paths import Paths
 from fsbc.signal import Signal
-from fsgs.ChecksumTool import ChecksumTool
+from fsgs.checksumtool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.amiga import Amiga
 from fsgs.amiga.valueconfigloader import ValueConfigLoader
@@ -94,6 +94,7 @@ cfg = [
     ("homepage_url", ""),
     ("longplay_url", ""),
     ("variant_uuid", ""),
+    ("game_uuid", ""),
 
     ("download_file", ""),
     ("download_page", ""),
@@ -132,12 +133,26 @@ cfg = [
     ("network_card", "", "checksum", "sync"),
     ("freezer_cartridge", "", "checksum", "sync"),
 
+    (Option.A7800_A78_HEADER, "", "checksum", "sync"),
+    (Option.A7800_MODEL, "", "checksum", "sync"),
+    (Option.A7800_PORT_1_TYPE, "", "checksum", "sync"),
+    (Option.A7800_PORT_2_TYPE, "", "checksum", "sync"),
+    (Option.NES_MODEL, "", "checksum", "sync"),
     (Option.ATARI_MODEL, "", "checksum", "sync"),
     (Option.C64_MODEL, "", "checksum", "sync"),
     (Option.CARTRIDGE_SLOT, "", "checksum", "sync"),
+    (Option.FILE_LIST, "", "custom", "sync"),
     (Option.FLOPPY_DRIVE_VOLUME_EMPTY, "", "sync"),
     (Option.GAME_NAME, ""),
+    ("mame_rom_set", "", "custom", "checksum", "sync"),
+    (Option.NEOGEO_MODEL, "", "checksum", "sync"),
+    (Option.NES_INES_HEADER, "", "checksum", "sync"),
+    (Option.NES_MODEL, "", "checksum", "sync"),
+    (Option.SMD_EMULATOR, "", "checksum", "sync"),
     (Option.SMD_MODEL, "", "checksum", "sync"),
+    (Option.SMD_PORT_1_TYPE, "", "checksum", "sync"),
+    (Option.SMD_PORT_2_TYPE, "", "checksum", "sync"),
+    ("refresh_rate", "", "custom", "checksum", "sync"),
     (Option.TAPE_DRIVE_0, "", "checksum", "sync"),
     (Option.VARIANT_NAME, ""),
     (Option.ZXS_MODEL, "", "checksum", "sync"),
@@ -393,7 +408,7 @@ class LauncherConfig(object):
         print("---", config["joystick_port_0"])
         print("---", config["joystick_port_1"])
 
-        from .device_manager import DeviceManager
+        from .devicemanager import DeviceManager
         available = DeviceManager.get_joystick_names()
         available.extend(["none", "mouse", "keyboard"])
         available_lower = [x.lower() for x in available]

@@ -292,7 +292,7 @@ class LaunchDialog(fsui.Window):
         fsui.call_after(function)
 
     def on_error(self, message):
-        fsui.show_error(message)
+        fsui.show_error(message, title="Guru Meditation")
         self.close()
 
     def on_cancel_button(self):

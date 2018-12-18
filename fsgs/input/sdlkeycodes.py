@@ -236,4 +236,3 @@ sdl_key_codes = {
     'EURO': 321,
     'UNDO': 322,
 }
-

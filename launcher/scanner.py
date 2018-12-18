@@ -9,8 +9,8 @@ from fsgs.ogd.game_rating_synchronizer import GameRatingSynchronizer
 from fsgs.ogd.lists import ListsSynchronizer
 from fsgs.ogd.meta import MetaSynchronizer
 from launcher.configuration_scanner import ConfigurationScanner
-from launcher.file_scanner import FileScanner
-from launcher.game_scanner import GameScanner
+from launcher.filescanner import FileScanner
+from launcher.gamescanner import GameScanner
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal

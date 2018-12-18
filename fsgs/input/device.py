@@ -19,6 +19,7 @@ class Device(object):
         self.hats = 0
         self.axes = 0
         self.buttons = 0
+        # self.event_id = ""
 
     def __lt__(self, other):
         if self.index < other.index:
@@ -62,15 +63,21 @@ class Device(object):
             host_platform)
         return config_name
 
-    def configure(self, system):
-        name = self.name.rsplit("#", 1)[0]
+    def configure(self, system, multiple=True):
+        # name = self.name.rsplit("#", 1)[0]
+        name = self.name
         from fsgs.input.inputdevice import InputDevice
         try:
             # device id must end with #something (really a device number,
             # but can be anything
+            if "#" in name:
+                name_with_hash = name
+            else:
+                name_with_hash = name + " #DUMMY"
             device = InputDevice(
-                system, name + " #DUMMY", [], version=2, axes=self.axes,
-                hats=self.hats, buttons=self.buttons, balls=self.balls)
+                system, name_with_hash, [], version=2, axes=self.axes,
+                hats=self.hats, buttons=self.buttons, balls=self.balls,
+                multiple=multiple)
             config = device.get_config()
         except Exception as e:
             print("error initializing device {0} for {1}".format(

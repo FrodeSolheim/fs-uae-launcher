@@ -1,5 +1,6 @@
 import fsgs
 import fsui
+from fsbc import settings
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
@@ -11,6 +12,7 @@ from launcher.settings.audio_settings_page import AudioSettingsPage
 from launcher.settings.directories_settings_page import DirectoriesSettingsPage
 from launcher.settings.fs_uae_settings_page import FSUAESettingsPage
 from launcher.settings.gamedatabasesettingspage import GameDatabaseSettingsPage
+from launcher.settings.gameplatformssettingspage import GamePlatformsSettingsPage
 from launcher.settings.joystick_settings_page import JoystickSettingsPage
 from launcher.settings.keyboard_settings_page import KeyboardSettingsPage
 from launcher.settings.language_settings_page import LanguageSettingsPage
@@ -96,6 +98,10 @@ class SettingsDialog(PagedDialog):
         self.add_page(
             gettext("Game Database"), GameDatabaseSettingsPage,
             fsui.Icon("database-settings", "pkg:workspace"))
+        if fsgs.openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
+            self.add_page(
+                gettext("Game Platforms"), GamePlatformsSettingsPage,
+                fsui.Icon("database-settings", "pkg:workspace"))
         # self.add_page(gettext("Custom Settings"), CustomSettingsPage)
         if LauncherSettings.get(Option.NETPLAY_FEATURE) != "0":
             self.add_page(
@@ -127,6 +133,10 @@ class SettingsDialog(PagedDialog):
         defaults_button = fsui.Button(self, gettext("Reset to Defaults"))
         defaults_button.activated.connect(self.__defaults_activated)
         self.button_layout.insert(0, defaults_button, fill=True)
+
+        defaults_label = fsui.Label(
+            self, gettext("Choices marked with (*) is the default setting"))
+        self.button_layout.insert(1, defaults_label, margin_left=20)
 
         self.set_size((940, 560))
         # self.center_on_parent()

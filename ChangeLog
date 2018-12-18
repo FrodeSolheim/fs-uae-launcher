@@ -1,6 +1,21 @@
+Version 2.9.8dev:
+
+* Fixed problem on Windows where devices were sometimes not detected.
+* Remove kickstart warnings when not using Amiga platform.
+* Added elapsed time to log file (to debug startup time).
+* Imported updated translations from crowdin.com.
+
+Version 2.9.7dev:
+
+* Fix detection of Windows 10.
+* Support building with latest version of MSYS2.
+* Include quick setting to toggle display of bezel.
+* Quite a bit of changes, but many related to non-Amiga platforms.
+
 Version 2.9.6dev:
 
 * Imported updated translations from crowdin.com.
+* Moved additional game databases to a separate settings page.
 
 Version 2.9.5dev:
 

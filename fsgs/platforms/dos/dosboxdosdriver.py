@@ -32,10 +32,8 @@ from fsbc.path import str_path
 from fsbc.system import System
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.drivers.gamedriver import GameDriver
-
-
-# noinspection PyAttributeOutsideInit
 from fsgs.option import Option
+from fsgs.saves import SaveHandler
 
 
 class DosBoxDosDriver(GameDriver):
@@ -48,6 +46,8 @@ class DosBoxDosDriver(GameDriver):
         else:
             self.emulator.name = "dosbox-fs"
 
+        self.save_handler = SaveHandler(self.fsgc, options=self.options)
+
         # Right now G-SYNC only works fine with 60Hz modes. There's stuttering
         # when DOSBox outputs 70 fps. Edit: The problem is that G-SYNC is
         # capped to monitors selected refresh rate.
@@ -56,25 +56,37 @@ class DosBoxDosDriver(GameDriver):
             self.set_allow_gsync(False)
 
         # self.ultrasnd_drive = None
+        self.drives_dir = self.temp_dir("drives")
+        self.drives = []
 
     def __del__(self):
         print("DosBoxDosDriver.__del__")
 
     def prepare(self):
-        self.drives_dir = self.temp_dir("drives")
         config_file = self.temp_file("dosbox.cfg").path
-        self.drives = []
         self.prepare_media()
         with open(config_file, "w", encoding="UTF-8") as f:
             self.configure(f)
-        self.args.extend(["-conf", config_file])
+        self.emulator.args.extend(["-conf", config_file])
 
         # FIXME: Move to game driver?
         if self.options[Option.VIEWPORT]:
             self.emulator.env["FSGS_VIEWPORT"] = self.options[Option.VIEWPORT]
 
+        # Must run after game hard drives have been unpacked
+        for drive, drive_path in self.drives:
+            assert drive in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            # print(drive)
+            # print(drive_path)
+            self.save_handler.register_changes(
+                drive_path, os.path.join(self.save_handler.save_dir(), drive))
+        self.save_handler.prepare()
+
+    def finish(self):
+        self.save_handler.finish()
+
     def prepare_media(self):
-        file_list = json.loads(self.config["file_list"])
+        file_list = json.loads(self.options[Option.FILE_LIST])
         self.unpack_game_hard_drives(file_list)
 
         if self.options["cue_sheets"]:
@@ -115,10 +127,10 @@ class DosBoxDosDriver(GameDriver):
                 os.makedirs(str_path(dst_file))
                 continue
             sha1 = file_entry["sha1"]
-            src_file = self.fsgs.file.find_by_sha1(sha1)
+            src_file = self.fsgc.file.find_by_sha1(sha1)
             if not os.path.exists(os.path.dirname(dst_file)):
                 os.makedirs(os.path.dirname(dst_file))
-            stream = self.fsgs.file.open(src_file)
+            stream = self.fsgc.file.open(src_file)
             # archive = Archive(src_file)
             # f = archive.open(src_file)
             data = stream.read()
@@ -174,8 +186,8 @@ class DosBoxDosDriver(GameDriver):
 
         f.write("\n[cpu]\n")
         cpu_core = "auto"
-        if self.config[Option.DOSBOX_CPU_CORE]:
-            cpu_core = self.config[Option.DOSBOX_CPU_CORE]
+        if self.options[Option.DOSBOX_CPU_CORE]:
+            cpu_core = self.options[Option.DOSBOX_CPU_CORE]
             cpu_core = cpu_core.lower().strip()
         if System.windows and System.x86_64:
             # Dynamic core crashes on Windows x86-64
@@ -184,10 +196,10 @@ class DosBoxDosDriver(GameDriver):
                 cpu_core = "normal"
         f.write("core={0}\n".format(cpu_core))
         cpu_cycles = "auto"
-        if self.config[Option.DOSBOX_CPU_CPUTYPE]:
+        if self.options[Option.DOSBOX_CPU_CPUTYPE]:
             f.write("cputype={0}\n".format(
-                self.config[Option.DOSBOX_CPU_CPUTYPE]))
-        if self.config[Option.DOSBOX_CPU_CYCLES]:
+                self.options[Option.DOSBOX_CPU_CPUTYPE]))
+        if self.options[Option.DOSBOX_CPU_CYCLES]:
             cpu_cycles = self.options[Option.DOSBOX_CPU_CYCLES]
             if cpu_cycles.startswith("max "):
                 pass
@@ -241,7 +253,7 @@ class DosBoxDosDriver(GameDriver):
             command = command.replace("$DRIVES", self.drives_dir.path)
             if not self.options[Option.AUTO_LOAD] == "0" or \
                     command.lower().split(" ")[0].strip("@") in [
-                        "imgmount", "mount"]:
+                    "imgmount", "mount"]:
                 f.write("{0}\n".format(command))
             else:
                 f.write("@echo {0}\n".format(command))
@@ -253,7 +265,7 @@ class DosBoxDosDriver(GameDriver):
 
         if System.windows:
             # We don't want to open the separate console window on windows.
-            self.args.append("-noconsole")
+            self.emulator.args.append("-noconsole")
 
     def configure_gus(self, f):
         f.write("\n[gus]\n")
@@ -285,17 +297,14 @@ class DosBoxDosDriver(GameDriver):
 
     def configure_sblaster(self, f):
         f.write("\n[sblaster]\n")
-        if self.config[Option.DOSBOX_SBLASTER_SBTYPE]:
+        if self.options[Option.DOSBOX_SBLASTER_SBTYPE]:
             f.write("sbtype={}\n".format(
                 self.options[Option.DOSBOX_SBLASTER_SBTYPE]))
-        if self.config[Option.DOSBOX_SBLASTER_SBBASE]:
+        if self.options[Option.DOSBOX_SBLASTER_SBBASE]:
             f.write("sbbase={}\n".format(
                 self.options[Option.DOSBOX_SBLASTER_SBBASE]))
-        if self.config[Option.DOSBOX_SBLASTER_IRQ]:
+        if self.options[Option.DOSBOX_SBLASTER_IRQ]:
             f.write("irq={}\n".format(self.options[Option.DOSBOX_SBLASTER_IRQ]))
-        if self.config[Option.DOSBOX_SBLASTER_OPLRATE]:
+        if self.options[Option.DOSBOX_SBLASTER_OPLRATE]:
             f.write("oplrate={}\n".format(
                 self.options[Option.DOSBOX_SBLASTER_OPLRATE]))
-
-    def finish(self):
-        pass

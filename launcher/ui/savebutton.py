@@ -10,7 +10,7 @@ from launcher.launcher_settings import LauncherSettings
 from launcher.ui.IconButton import IconButton
 from fsgs.Database import Database
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.FileDatabase import FileDatabase
+from fsgs.filedatabase import FileDatabase
 from fsgs.context import fsgs
 
 

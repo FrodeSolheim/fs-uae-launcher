@@ -3,6 +3,10 @@ import sys
 import logging
 import threading
 
+import time
+
+import fsboot
+
 # using this lock to serialize logging from different threads
 lock = threading.Lock()
 
@@ -36,6 +40,7 @@ class FileOutput(object):
 
     def __init__(self, file_obj):
         self.file = file_obj
+        self.new_line = False
 
     def flush(self):
         return self.file.flush()
@@ -45,15 +50,18 @@ class FileOutput(object):
 
     def write(self, msg):
         if isinstance(msg, str):
-            # FIXME: legacy hack, should be removed in the future
-            if "database_password" in msg:
-                return
-            self.file.write(msg.encode("UTF-8"))
-        else:
-            # FIXME: legacy hack, should be removed in the future
-            if b"database_password" in msg:
-                return
-            self.file.write(msg)
+            self.write(msg.encode("UTF-8"))
+            return
+        # FIXME: legacy hack, should be removed in the future
+        if b"database_password" in msg:
+            return
+
+        if self.new_line:
+            elapsed = time.perf_counter() - fsboot.perf_counter_epoch
+            self.file.write("{:0.3f} ".format(elapsed).encode("ASCII"))
+
+        self.file.write(msg)
+        self.new_line = msg.endswith(b"\n")
 
 
 class NullOutput(object):
@@ -81,10 +89,11 @@ def setup_logging(log_name):
     from fsgs.FSGSDirectories import FSGSDirectories
     logs_dir = FSGSDirectories.get_logs_dir()
     log_file = os.path.join(logs_dir, log_name)
+    print("[LOGGING] Logging to", log_file)
     try:
         f = open(log_file, "wb")
     except Exception:
-        print("could not open log file")
+        print("[LOGGING] Could not open log file")
         # use MultiplexedOutput here too, for the mutex handling
         sys.stdout = MultiplexedOutput(sys.stdout)
         sys.stderr = MultiplexedOutput(sys.stderr)

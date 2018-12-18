@@ -1,7 +1,7 @@
 import os
 
 import fsui
-from fsgs.ChecksumTool import ChecksumTool
+from fsgs.checksumtool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig

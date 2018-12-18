@@ -1,4 +1,4 @@
-from .ContextAware import ContextAware
+from .contextaware import ContextAware
 
 
 class BaseContext(ContextAware):

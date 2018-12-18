@@ -24,14 +24,15 @@ class SimpleLoader:
 
         self.config["cue_sheets"] = values["cue_sheets"]
 
-
     def load_extra(self, values):
         pass
 
     def load_basic(self, values):
         self.config["command"] = values["command"]
         self.config["game_name"] = values["game_name"]
+        self.config["game_uuid"] = values["game_uuid"]
         self.config["variant_name"] = values["variant_name"]
+        self.config["variant_uuid"] = values["variant_uuid"]
         self.config["model"] = values["model"]
         self.config["platform"] = values["platform"]
         self.config["protection"] = values["protection"]
@@ -70,11 +71,26 @@ class SimpleLoader:
         # print(key_values)
         values = defaultdict(str)
         values.update(key_values)
+        self.load(values)
+        return self.get_config()
 
+    def load(self, values):
         self.load_basic(values)
         self.load_extra(values)
         self.load_info(values)
         self.load_images(values)
         self.load_files(values)
 
-        return self.get_config()
+
+class PlatformLoader(SimpleLoader):
+    pass
+
+
+class CartridgePlatformLoader(PlatformLoader):
+    pass
+
+
+class CDPlatformLoader(PlatformLoader):
+    def load_files(self, values):
+        self.config["cue_sheets"] = values["cue_sheets"]
+        self.config["file_list"] = values["file_list"]

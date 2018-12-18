@@ -1,5 +1,5 @@
 import fsui
-from ...device_manager import DeviceManager
+from ...devicemanager import DeviceManager
 from ...i18n import gettext
 from ..IconButton import IconButton
 from .InputSelector import InputSelector

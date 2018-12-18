@@ -3,7 +3,7 @@ import os
 from typing import List, Dict, DefaultDict, BinaryIO
 
 from fsbc import settings
-from fsgs.Archive import Archive
+from fsgs.archive import Archive
 from fsgs.option import Option
 
 
@@ -338,6 +338,7 @@ primary_icons = {_.lower() for _ in [
     "DGenerationCD32/DGenerationCD32.info",
     "EmeraldMine2/EmeraldMine2.info",
     "Entity/Entity.info",
+    "EyeOfTheStorm/EyeOfTheStorm.info",
     "Fuzzball/Fuzzball.info",
     "Genesia/Genesia.info",
     "GenesiaFr/GenesiaFr.info",

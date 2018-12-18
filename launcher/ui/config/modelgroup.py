@@ -1,6 +1,7 @@
 import fsui
 from fsbc import settings
 from fsbc.util import unused
+from fsgs import openretro
 from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
 from fsgs.platform import PLATFORM_IDS
@@ -46,38 +47,40 @@ class ModelGroup(fsui.Group):
             gettext("Medium"),
             gettext("Low")])
         # AmigaEnableBehavior(self.accuracy_choice)
-
         self.ntsc_checkbox = ConfigCheckBox(self, "NTSC", Option.NTSC_MODE)
-        AmigaEnableBehavior(self.ntsc_checkbox)
+
+        AmigaShowBehavior(self.accuracy_label)
+        AmigaShowBehavior(self.accuracy_choice)
+        AmigaShowBehavior(self.ntsc_checkbox)
 
         # if fs_uae_launcher.ui.get_screen_size()[1] > 768:
         # self.layout.add(heading_label, margin=10)
         # self.layout.add_spacer(0)
 
-        hori_layout = fsui.HorizontalLayout()
-        self.layout.add(hori_layout, fill=True)
+        self.model_title_layout = fsui.HorizontalLayout()
+        self.layout.add(self.model_title_layout, fill=True)
 
-        if settings.get(Option.PLATFORMS_FEATURE) == "1":
+        if openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
             heading_label = fsui.HeadingLabel(self, gettext("Platform & Model"))
-            hori_layout.add(heading_label, margin=10)
+            self.model_title_layout.add(heading_label, margin=10)
             # platform_group = ConfigWidgetFactory(
             #     check=False, label=False).create(self, Option.PLATFORM)
-            # hori_layout.add(platform_group, margin_left=20)
+            # self.model_title_layout.add(platform_group, margin_left=20)
             # Adding label to get the vertical spacing correct.
             # heading_label = fsui.HeadingLabel(self, "")
-            # hori_layout.add(heading_label, margin=10)
+            # self.model_title_layout.add(heading_label, margin=10)
         else:
             heading_label = fsui.HeadingLabel(self, gettext("Amiga Model"))
-            hori_layout.add(heading_label, margin=10)
+            self.model_title_layout.add(heading_label, margin=10)
 
-        hori_layout.add_spacer(0, expand=True)
-        hori_layout.add(self.ntsc_checkbox, expand=False,
+        self.model_title_layout.add_spacer(0, expand=True)
+        self.model_title_layout.add(self.ntsc_checkbox, expand=False,
                         margin_left=10, margin_right=10)
-        hori_layout.add_spacer(20)
+        self.model_title_layout.add_spacer(20)
 
-        hori_layout.add(self.accuracy_label, margin_right=10)
-        hori_layout.add(self.accuracy_choice, margin_right=10)
-        hori_layout.add(CustomConfigButton(self), margin_right=10)
+        self.model_title_layout.add(self.accuracy_label, margin_right=10)
+        self.model_title_layout.add(self.accuracy_choice, margin_right=10)
+        self.model_title_layout.add(CustomConfigButton(self), margin_right=10)
 
         self.model_layout = fsui.HorizontalLayout()
 
@@ -89,7 +92,7 @@ class ModelGroup(fsui.Group):
         self.model_layout.get_min_width = dummy_min_width
         self.layout.add(self.model_layout, fill=True)
 
-        if settings.get(Option.PLATFORMS_FEATURE) == "1":
+        if openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
             platform_group = ConfigWidgetFactory(
                 check=False, label=False).create(self, Option.PLATFORM)
             self.model_layout.add(platform_group, margin=10)
@@ -112,6 +115,7 @@ class ModelGroup(fsui.Group):
 
     def on_platform_config(self, _):
         # Update layout after widgets have been shown/hidden.
+        self.model_title_layout.update()
         self.model_layout.update()
 
     def on_model_changed(self):

@@ -2,7 +2,7 @@ import time
 from functools import lru_cache
 
 import fsbc.settings
-from fsgs.FileDatabase import FileDatabase
+from fsgs.filedatabase import FileDatabase
 from fsgs.LockerDatabase import LockerDatabase
 from fsgs.download import Downloader
 from fsgs.network import opener_for_url_prefix, openretro_url_prefix

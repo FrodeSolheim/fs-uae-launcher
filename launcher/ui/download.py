@@ -1,4 +1,4 @@
-from launcher.file_scanner import FileScanner
+from launcher.filescanner import FileScanner
 from fsgs.download import Downloader
 from fsgs.FSGSDirectories import FSGSDirectories
 import fsui
@@ -10,7 +10,7 @@ from fsbc.signal import Signal
 from fsbc.task import Task
 from fsgs.Database import Database
 from fsgs.ogd.context import SynchronizerContext
-from launcher.game_scanner import GameScanner
+from launcher.gamescanner import GameScanner
 from ..i18n import gettext
 
 

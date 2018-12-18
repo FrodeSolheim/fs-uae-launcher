@@ -53,11 +53,8 @@ class MednafenSMSDriver(MednafenDriver):
         # FIXME: add PAUSE button to universal gamepad config
 
     def game_video_par(self):
-        # These may not be entirely correct...
-        if self.is_pal():
-            return (4 / 3) / (256 / 240)
-        else:
-            return (4 / 3) / (256 / 224)
+        size = self.game_video_size()
+        return (4 / 3) / (size[0] / size[1])
 
     def game_video_size(self):
         if self.is_pal():

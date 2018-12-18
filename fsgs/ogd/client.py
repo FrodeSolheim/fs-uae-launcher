@@ -11,6 +11,7 @@ from urllib.request import Request
 from uuid import uuid4
 
 from fsbc.application import app
+from fsbc.settings import Settings
 from fsbc.task import Task
 from fsgs.network import openretro_http_connection, openretro_url_prefix, \
     opener_for_url_prefix
@@ -70,7 +71,7 @@ class OGDClient(object):
     def is_logged_in():
         # non-empty ogd_auth means we are logged in (probably, the
         # authorization can in theory have been invalidated on the server
-        return bool(app.settings["database_auth"])
+        return bool(Settings.instance()["database_auth"])
 
     def login_task(self, username, password):
         return LoginTask(self, username, password)
@@ -106,7 +107,7 @@ class OGDClient(object):
 
     @staticmethod
     def credentials():
-        auth_token = app.settings["database_auth"]
+        auth_token = Settings.instance()["database_auth"]
         return "auth_token", auth_token
 
     def post(self, path, params=None, data=None, auth=True):
@@ -210,19 +211,19 @@ class LoginTask(Task):
 
     def run(self):
         self.progressed("Logging into oagd.net...")
-        if not app.settings["device_id"]:
-            app.settings["device_id"] = str(uuid4())
+        if not Settings.instance()["device_id"]:
+            Settings.instance()["device_id"] = str(uuid4())
         try:
             result = self.client.auth(
-                self.username, self.password, app.settings["device_id"],
+                self.username, self.password, Settings.instance()["device_id"],
                 get_device_name())
         except UnauthorizedError:
             raise Task.Failure("Wrong e-mail address or password")
 
-        app.settings["database_username"] = result["username"]
-        app.settings["database_email"] = result["email"]
-        app.settings["database_auth"] = result["auth_token"]
-        app.settings["database_password"] = ""
+        Settings.instance()["database_username"] = result["username"]
+        Settings.instance()["database_email"] = result["email"]
+        Settings.instance()["database_auth"] = result["auth_token"]
+        Settings.instance()["database_password"] = ""
 
 
 class LogoutTask(Task):
@@ -233,11 +234,11 @@ class LogoutTask(Task):
 
     def run(self):
         self.progressed("Logging out from oagd.net...")
-        if not app.settings["device_id"]:
-            app.settings["device_id"] = str(uuid4())
+        if not Settings.instance()["device_id"]:
+            Settings.instance()["device_id"] = str(uuid4())
         self.client.deauth(self.auth_token)
 
-        app.settings["database_username"] = ""
-        # app.settings["database_email"] = ""
-        app.settings["database_auth"] = ""
-        app.settings["database_password"] = ""
+        Settings.instance()["database_username"] = ""
+        # Settings.instance()["database_email"] = ""
+        Settings.instance()["database_auth"] = ""
+        Settings.instance()["database_password"] = ""

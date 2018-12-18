@@ -1,9 +1,17 @@
+import filecmp
 import os
+
+import shutil
 
 from fsbc.system import windows
 from fsbc.task import current_task
-from fsgs.drivers.gamedriver import GameDriver
+from fsgs.option import Option
+from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.drivers.gamedriver import GameDriver, Emulator
 from fsgs.input.mapper import InputMapper
+from fsgs.knownfiles import KnownFilePath
+from fsgs.plugins.plugin_manager import PluginManager
+
 """
 
 FIXME: Check screenshot saving
@@ -13,15 +21,31 @@ without quitting the emu when the menu is gone. Introduce a separate quit
 action? And then also map a joystick button back?
 """
 
+
+class MameCheatFile(KnownFilePath):
+    @property
+    def path(self):
+        return os.path.join(
+            FSGSDirectories.get_data_dir(), "MAME", "Cheats", "cheat.7z")
+
+
+class MameArtworkDirectory(KnownFilePath):
+    # FIXME: KnownDirectory
+    @property
+    def path(self):
+        return os.path.join(
+            FSGSDirectories.get_data_dir(), "MAME", "Artwork")
+
+
+mame_cheat_file = MameCheatFile()
+mame_artwork_dir = MameArtworkDirectory()
+
+
 # noinspection PyAttributeOutsideInit
 class MameDriver(GameDriver):
     def __init__(self, fsgs):
         super().__init__(fsgs)
-        # self.emulator.name = "multiemu-fs"
-        self.emulator.name = "arcade-fs"
-        # To prevent slow startup on Linux due to scanning all system
-        # fonts.
-        self.emulator.allow_home_access = True
+        self.emulator = Emulator("mame-fs")
         self.mame_init()
 
     def mame_emulator_name(self):
@@ -40,9 +64,95 @@ class MameDriver(GameDriver):
         if windows:
             self.input_device_order = "DINPUT8"
 
+    def install_mame_hash_file(self, name):
+        # FIXME: Better to find data file based on path/provides rather than
+        # hardcoding plugin name, but...
+        plugin = PluginManager.instance().plugin("MAME-FS")
+        src = plugin.data_file_path("hash/" + name)
+        hash_dir = os.path.join(self.cwd.path, "hash")
+        if not os.path.exists(hash_dir):
+            os.makedirs(hash_dir)
+        dst = os.path.join(hash_dir, name)
+        # FIXME: Check if file is the same (no need to copy)
+        if os.path.exists(dst) and filecmp.cmp(src, dst):
+            print("[A5200] Hash file", name, "already in place")
+            return
+        print("[A5200] Installing hash/" + name)
+        shutil.copy2(src, dst)
+
     def prepare(self):
         self.configure()
         self.mame_prepare()
+
+    def create_mame_layout(self):
+        paths = self.emulator_skin_paths()
+        artwork = os.path.join(self.cwd.path, "artwork", self.romset)
+        if not os.path.exists(artwork):
+            os.makedirs(artwork)
+
+        if self.stretching() == self.STRETCH_FILL_SCREEN or not self.bezel():
+            shutil.rmtree(os.path.join(self.cwd.path, "artwork"))
+            return
+
+        # FIXME: filecmp?
+        self.prepare_emulator_skin(paths={
+            "left": os.path.join(artwork, "left.png"),
+            "right": os.path.join(artwork, "right.png"),
+        })
+        # shutil.move(paths["left"], )
+        # shutil.move(paths["right"], )
+
+        # FIXME: With no bezel, we should still use a black bezel to
+        # hide screen stretching
+
+        # FIXME: On taller displays than 16:9, the bezel can cause the
+        # graphics to shrink (fit-in). Is it possible to display the
+        # bezel
+
+        if self.options["orientation"] == "vertical":
+            # noinspection SpellCheckingInspection
+            layout = (
+                """<mamelayout version="2">
+                <element name="left">
+                    <image file="left.png" />
+                </element>
+                <element name="right">
+                    <image file="right.png" />
+                </element>
+                <view name="FSGS Bezel">
+                    <screen index="0">
+                        <bounds x="0" y="0" width="810" height="1080" />
+                    </screen>
+                    <bezel element="left">
+                        <bounds x="-160" y="0" width="160" height="1080" />
+                    </bezel>
+                    <bezel element="right">
+                        <bounds x="810" y="0" width="160" height="1080" />
+                    </bezel>
+                </view></mamelayout>""")
+        else:
+            # noinspection SpellCheckingInspection
+            layout = (
+                """<mamelayout version="2">
+                <element name="left">
+                    <image file="left.png" />
+                </element>
+                <element name="right">
+                    <image file="right.png" />
+                </element>
+                <view name="FSGS Bezel">
+                    <screen index="0">
+                        <bounds x="0" y="0" width="1440" height="1080" />
+                    </screen>
+                    <bezel element="left">
+                        <bounds x="-160" y="0" width="160" height="1080" />
+                    </bezel>
+                    <bezel element="right">
+                        <bounds x="1440" y="0" width="160" height="1080" />
+                    </bezel>
+                </view></mamelayout>""")
+        with open(os.path.join(artwork, "default.lay"), "w") as f:
+            f.write(layout)
 
     def mame_init(self):
         # override in subclasses
@@ -63,10 +173,21 @@ class MameDriver(GameDriver):
 <mameconfig version="10">
     <system name="{0}">\n""".format(self.romset)]
 
-        self.add_arg("-skip_gameinfo")
+        self.emulator.args.extend(["-skip_gameinfo"])
         # state_dir = self.get_state_dir()
-        state_dir = self.emulator_state_dir(self.mame_emulator_name())
-        state_dir = state_dir + os.sep
+        base_save_dir = self.emulator_state_dir(self.mame_emulator_name())
+        emu_save_dir = base_save_dir
+        if hasattr(self, "save_handler"):
+            # save_dir = self.save_handler.save_dir()
+            base_save_dir = self.save_handler.save_dir()
+            emu_save_dir = self.save_handler.emulator_save_dir()
+            base_save_dir = base_save_dir + os.sep
+        emu_save_dir = emu_save_dir + os.sep
+
+        emu_state_dir = self.emulator_state_dir(self.mame_emulator_name())
+        if hasattr(self, "save_handler"):
+            emu_state_dir = self.save_handler.emulator_state_dir()
+        emu_state_dir = emu_state_dir + os.sep
 
         self.cwd_dir = self.create_temp_dir("mame-cwd")
         self.cfg_dir = self.create_temp_dir("mame-cfg")
@@ -76,7 +197,8 @@ class MameDriver(GameDriver):
         system_rom_path = os.path.join(rom_path, self.romset)
         os.makedirs(system_rom_path)
 
-        for sha1, name in self.romset_files:
+        # for sha1, name in self.romset_files:
+        for name, sha1 in self.romset_files:
             file_uri = self.fsgs.file.find_by_sha1(sha1)
             current_task.set_progress("Preparing ROM {name}".format(name=name))
             input_stream = self.fsgs.file.open(file_uri)
@@ -109,15 +231,23 @@ class MameDriver(GameDriver):
 
         game_cfg_file = os.path.join(
             self.cfg_dir.path, "{romset}.cfg".format(romset=self.romset))
-        self.add_arg("-cfg_directory", self.cfg_dir.path)
-        self.add_arg("-nvram_directory", state_dir)
+        self.emulator.args.extend(["-cfg_directory", self.cfg_dir.path])
         # self.add_arg("-memcard_directory", state_dir)
         # self.add_arg("-hiscore_directory", state_dir)
-        self.add_arg("-state_directory", state_dir)
-        self.add_arg("-diff_directory", state_dir)
+        # FIXME: What is this?
+        self.emulator.args.extend(["-diff_directory", emu_state_dir])
 
-        self.add_arg("-snapshot_directory", self.screenshots_dir())
-        self.add_arg("-snapname", "{0}-%i".format(self.screenshots_name()))
+        self.emulator.args.extend(["-nvram_directory", emu_save_dir])
+
+        # We not not need nor want system-specific sub-directories since we
+        # already have unique save directories per game variant.
+        self.emulator.args.extend(["-statename", "MAME"])
+        self.emulator.args.extend(["-state_directory", base_save_dir])
+
+        self.emulator.args.extend(
+            ["-snapshot_directory", self.screenshots_dir()])
+        self.emulator.args.extend(
+            ["-snapname", "{0}-%i".format(self.screenshots_name())])
 
         # self.change_handler = GameChangeHandler(self.cfg_dir.path)
         # self.change_handler.init(
@@ -147,15 +277,27 @@ class MameDriver(GameDriver):
             print("")
 
         if self.use_doubling():
-            self.add_arg("-prescale", "2")
+            self.emulator.args.extend(["-prescale", "2"])
 
         if self.use_smoothing():
-            self.add_arg("-filter")
+            self.emulator.args.append("-filter")
         else:
-            self.add_arg("-nofilter")
+            self.emulator.args.append("-nofilter")
 
+        cheats_file_path = mame_cheat_file.path
+        if not os.path.exists(cheats_file_path):
+            # Data/MAME/Cheat/cheat.7z not found, trying plugin instead.
+            cheats_file_path = self.cheats_file("MAME/cheat.7z")
+        if cheats_file_path:
+            print("[MAME] Using cheats file:".format(cheats_file_path))
+            self.emulator.args.extend(
+                ["-cheatpath", cheats_file_path[:-3]])  # Stripping .7z
+            self.emulator.args.extend(["-cheat"])
+        else:
+            print("[MAME] No cheats file found")
+
+        self.emulator.args.append(self.romset)
         self.mame_configure()
-        self.args.append(self.romset)
 
     def mame_configure(self):
         # override in subclasses
@@ -181,7 +323,7 @@ class MameDriver(GameDriver):
         for i, port in enumerate(self.ports):
             input_mapping = self.mame_input_mapping(i)
 
-            mapper = MAMEInputMapper(port, input_mapping)
+            mapper = MameInputMapper(port, input_mapping)
             for key, value in mapper.items():
                 print("---->", key, value)
                 if isinstance(key, tuple):
@@ -257,6 +399,7 @@ class MameDriver(GameDriver):
 
     def mame_shortcuts(self):
         shortcuts = {
+            "TOGGLE_KEEP_ASPECT": ["KEYCODE_LALT KEYCODE_A"],
             "UI_CANCEL": ["KEYCODE_LALT KEYCODE_Q"],
             "UI_PAUSE": ["KEYCODE_LALT KEYCODE_P"],
             "UI_CONFIGURE": ["KEYCODE_F12"],
@@ -277,20 +420,36 @@ class MameDriver(GameDriver):
             self.emulator.args.extend(["-window", "-nomaximize"])
             if self.use_stretching():
                 self.emulator.args.extend(["-resolution", "960x540"])
+            else:
+                # FIXME: Square pixels and no stretch... how to open window
+                # at appropriate size? (with and without pixel doubling?
+                pass
 
-        if self.use_stretching():
+        if self.stretching() == self.STRETCH_FILL_SCREEN:
             self.emulator.args.extend(["-nokeepaspect"])
         else:
             self.emulator.args.extend(["-keepaspect"])
 
+        # FIXME: Square pixels and no stretch...
+
         self.game_xml.append('        <video>\n')
-        self.game_xml.append('            <screen index="0" ')
-        ox, oy, sx, sy = self.mame_offset_and_scale()
-        self.game_xml.append('hstretch="{0:0.6f}" '.format(sx))
-        self.game_xml.append('vstretch="{0:0.6f}" '.format(sy))
-        self.game_xml.append('hoffset="{0:0.6f}" '.format(ox))
-        self.game_xml.append('voffset="{0:0.6f}" '.format(oy))
-        self.game_xml.append('/>\n')
+        # if self.stretching() == self.NO_STRETCHING:
+        #     self.game_xml.append('            <target index="0" '
+        #                          'view="Pixel Aspect (" />\n')
+
+        if self.options[Option.MAME_ARTWORK] == "1":
+            # Do not use scaling options
+            self.emulator.args.extend(["-artpath", mame_artwork_dir.path])
+            pass
+        else:
+            self.game_xml.append('            <screen index="0" ')
+            ox, oy, sx, sy = self.mame_offset_and_scale()
+            self.game_xml.append('hstretch="{0:0.6f}" '.format(sx))
+            self.game_xml.append('vstretch="{0:0.6f}" '.format(sy))
+            self.game_xml.append('hoffset="{0:0.6f}" '.format(ox))
+            self.game_xml.append('voffset="{0:0.6f}" '.format(oy))
+            self.game_xml.append('/>\n')
+
         self.game_xml.append('        </video>\n')
 
         # effect = 'none'
@@ -328,21 +487,20 @@ class MameDriver(GameDriver):
             video_override = "mame_video_options"
             if windows and False:
                 video_args.append('-triplebuffer')
-
         # print("mame_video_options_vsync", self.config[video_override])
         # raise Exception("gnit")
-
-        if self.config[video_override]:
-            for arg in self.config[video_override].split(" "):
+        # FIXME: REMOVE video_override options?
+        if self.options[video_override]:
+            for arg in self.options[video_override].split(" "):
                 arg = arg.strip()
                 if arg:
-                    self.add_arg(arg)
+                    self.emulator.args.append(arg)
         else:
-            self.add_arg(*video_args)
+            self.emulator.args.extend(video_args)
 
     def mame_offset_and_scale(self):
         ox, oy, sx, sy = 0.0, 0.0, 1.0, 1.0
-        viewport = self.config["viewport"]
+        viewport = self.options["viewport"]
         if viewport:
             src, dst = viewport.split("=")
             src = src.strip()
@@ -370,7 +528,7 @@ class MameDriver(GameDriver):
         pass
 
 
-class MAMEInputMapper(InputMapper):
+class MameInputMapper(InputMapper):
     def axis(self, axis, positive):
         axis_str = ["X", "Y", "Z", "RX", "RY", "RZ"][axis]
         if axis == 0:
