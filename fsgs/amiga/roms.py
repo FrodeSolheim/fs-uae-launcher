@@ -11,6 +11,8 @@ A500_KICKSTARTS = [
     # Kickstart v1.3 r34.5 (1987)(Commodore)(A500-A1000-A2000-CDTV)[!]
     # Kickstart v1.3 r34.5 (1987)(Commodore)(A500-A1000-A2000-CDTV)[o] (patch)
     "891e9a547772fe0c6c19b610baf8bc4ea7fcb785",
+    # Kickstart v1.3 r34.2 (1987)(Commodore)(A500 with Fast-Ram (Germany))
+    "90933936cce43ca9bc6bf375662c076b27e3c458",
 ]
 
 A500_1_2_KICKSTARTS = [
@@ -61,6 +63,9 @@ A4000_KICKSTARTS = [
 
     # Kickstart v3.1 r40.68 (1993)(Commodore)(A4000)[h Cloanto]
     # "c3c481160866e60d085e436a24db3617ff60b5f9",
+
+    # Kickstart v3.1 r40.10 (1993)(Commodore)(A4000 (Germany))
+    "3b7f1493b27e212830f989f26ca76c02049f09ca",
 ]
 
 CD32_KICKSTARTS = [
