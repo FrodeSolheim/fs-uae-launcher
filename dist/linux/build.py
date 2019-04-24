@@ -24,15 +24,19 @@ if os.environ.get("STEAMOS", ""):
     #     arch = "i686"
 else:
     os_name = "linux"
+    os_name_pretty = "Linux"
 
 package_name = "fs-uae-launcher"
 package_version = sys.argv[1]
 dbg_package_dir = "{0}-dbg_{1}_{2}_{3}".format(
     package_name, package_version, os_name, arch)
-package_dir = "../{2}/{0}_{1}_{2}_{3}".format(
-    package_name, package_version, os_name, arch)
+
+package_dir = "../linux/Launcher/Linux//{}".format(arch)
+
 full_package_name = "{0}_{1}_{2}_{3}".format(
     package_name, package_version, os_name, arch)
+full_package_name_2 = "Launcher_{}_{}_{}".format(
+    package_version, os_name_pretty, arch)
 
 
 def s(command):
@@ -79,7 +83,8 @@ def wrap(name, target=None, args=None):
     os.chmod(path, 0o755)
 
 
-s("rm -Rf {package_dir}")
+s("rm -Rf Launcher")
+s("mkdir -p Launcher/Linux")
 # s("make -C ..")
 # s("rm -Rf ../build ../dist")
 
@@ -146,10 +151,12 @@ s("find {package_dir} -name '*.standalone' -delete")
 
 s("chmod a-x {package_dir}/*.so")
 s("cd ../.. && make")
-s("cp ../../requests/cacert.pem {package_dir}")
-s("cp -a ../../share {package_dir}")
-s("rm -Rf {package_dir}/share/applications")
-s("rm -Rf {package_dir}/share/icons")
+s("mkdir Launcher/Data")
+s("cp ../../requests/cacert.pem Launcher/Data")
+s("cp -a ../../share/locale Launcher/Data/Locale")
+# s("cp -a ../../share {package_dir}")
+# s("rm -Rf {package_dir}/share/applications")
+# s("rm -Rf {package_dir}/share/icons")
 
 s("rm -Rf {package_dir}/amitools")
 s("rm -Rf {package_dir}/arcade")
@@ -181,14 +188,21 @@ s("zip -d {package_dir}/library.zip BUILD_CONSTANTS.pyc")
 s("PYTHONPATH=../.. python3 -m fspy.zipfile deterministic "
   "--fix-pyc-timestamps {package_dir}/library.zip")
 
-s("cp -a ../python/*.zip {package_dir}")
+# s("cp -a ../python/*.zip {package_dir}")
+s("mkdir Launcher/Python")
+s("cp -a ../python/*.zip Launcher/Python")
+
+s("echo {package_version} > Launcher/Version.txt")
+s("echo {package_version} > {package_dir}/Version.txt")
 
 if os_name == "steamos":
     # s("mv {package_dir}/fs-uae-launcher {package_dir}/fs-uae-launcher.bin")
     wrap("fs-uae-launcher")
     wrap("fs-uae-arcade", "fs-uae-launcher.bin", ["--fs-uae-arcade", "$@"])
 
-s("cd {package_dir} && tar Jcfv ../../../{full_package_name}.tar.xz *")
+# s("cd {package_dir} && tar Jcfv ../../../{full_package_name}.tar.xz *")
+s("tar Jcfv ../../{full_package_name}.tar.xz Launcher")
+s("cp ../../{full_package_name}.tar.xz ../../{full_package_name_2}.tar.xz")
 
 # s("rm -Rf {dbg_package_dir}")
 # s("mkdir {dbg_package_dir}")

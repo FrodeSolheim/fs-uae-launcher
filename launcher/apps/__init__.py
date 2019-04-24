@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 import sys
 
-import fstd.typing
 import launcher.version
-
-# Workaround to make import typing work without having it on the default
-# python path (would confuse mypy).
 from fsgs import OPENRETRO_DEFAULT_DATABASES, openretro
 from launcher.option import Option
 
-sys.modules["typing"] = fstd.typing
+try:
+    import typing
+except ImportError:
+    # Workaround to make import typing work without having it on the
+    # default python path (would confuse mypy).
+    import fstd.typing
+    sys.modules["typing"] = fstd.typing
 
 
 def find_app(app):

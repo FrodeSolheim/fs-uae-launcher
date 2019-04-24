@@ -1,24 +1,38 @@
 version = $(strip $(shell cat ../../VERSION))
-arch = $(strip $(shell python3 ../arch.py))
-
-emulator_dir = fs-uae_$(version)_windows_$(arch)
-launcher_dir = fs-uae-launcher_$(version)_windows_$(arch)
 library_zip = $(launcher_dir)/library.zip
+python_dir = $$LOCALAPPDATA/Programs/Python/Python36
+python = $(python_dir)/python.exe
+qt_dir = $(python_dir)/Lib/site-packages/PyQt5/Qt
+arch = $(strip $(shell $(python) ../arch.py))
+launcher_dir = Launcher/Windows/$(arch)
+launcher_zip = fs-uae-launcher_$(version)_windows_$(arch).zip
+launcher_txz = fs-uae-launcher_$(version)_windows_$(arch).tar.xz
 
-all: progdir zip setup
+
+all: clean progdir zip
 
 clean:
 	rm -Rf fs-uae-launcher-*_windows*
 	rm -Rf fs-uae-launcher_*_windows*
+	rm -Rf $(launcher_dir)
+	rm -Rf Launcher
+	rm -f *.tmp
 
 progdir:
-	rm -Rf $(launcher_dir)
+	rm -Rf Launcher
 
 	make -C ../..
 	rm -Rf ../build
 
-	cd ../.. && PYTHONHASHSEED=1 python3 setup.py build_exe
-	mv ../../build/exe.mingw-3.6 $(launcher_dir)
+	cd ../.. && PYTHONHASHSEED=1 $(python) setup.py build_exe
+	mkdir -p $(launcher_dir)
+	mv ../../build/exe.win-amd64-3.6/* $(launcher_dir)
+
+	mkdir $(launcher_dir)/imageformats
+	cp $(qt_dir)/plugins/imageformats/qico.dll $(launcher_dir)/imageformats
+	cp $(qt_dir)/plugins/imageformats/qjpeg.dll $(launcher_dir)/imageformats
+	mkdir $(launcher_dir)/platforms
+	cp $(qt_dir)/plugins/platforms/qwindows.dll $(launcher_dir)/platforms
 
 	cp -a ../../share $(launcher_dir)
 	cp ../../requests/cacert.pem $(launcher_dir)
@@ -63,10 +77,12 @@ progdir:
 	python3 sign.py $(launcher_dir)/fs-uae-launcher.exe
 
 zip:
-	cd $(launcher_dir) && zip -9 -r ../../../$(launcher_dir).zip *
+	# cd $(launcher_dir) && zip -9 -r ../../../$(launcher_zip) *
+	zip -9 -r ../../$(launcher_zip) Launcher
 
 tar.xz: progdir
-	cd $(launcher_dir) && tar cfvJ ../../../$(launcher_dir).tar.xz *
+	# cd $(launcher_dir) && tar cfvJ ../../../$(launcher_txz) *
+	tar cfvJ ../../$(launcher_txz) Launcher
 
 setup:
 	sed s/9.8.7/${version}/g fs-uae-launcher.iss > fs-uae-launcher.iss2.tmp
