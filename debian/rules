@@ -9,6 +9,9 @@ override_dh_auto_install:
 	--install-layout=deb --install-lib=/usr/share/fs-uae-launcher \
 	--install-scripts=/usr/share/fs-uae-launcher
 	make DESTDIR=$$(pwd)/debian/fs-uae-launcher prefix=/usr install-data
+	# Use python-opengl from system instead
+	# rm -Rf $$(pwd)/debian/fs-uae-launcher/usr/share/fs-uae-launcher/OpenGL
+	rm -Rf debian/fs-uae-launcher/usr/share/fs-uae-launcher/OpenGL
 
 override_dh_auto_build:
 	make mo

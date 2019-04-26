@@ -9,7 +9,15 @@ Homepage: http://fs-uae.net/
 
 Package: fs-uae-launcher
 Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends}, python3-pyqt5, python3-pyqt5.qtopengl, python3-setuptools, fs-uae
-Recommends: python3-lhafile
+Depends:
+ ${python3:Depends},
+ ${misc:Depends},
+ python3-opengl,
+ python3-pyqt5,
+ python3-pyqt5.qtopengl,
+ python3-setuptools,
+ fs-uae
+Recommends:
+ python3-lhafile
 Description: Launcher and configuration program for FS-UAE.
  FS-UAE Launcher is a graphical user interface for setting up FS-UAE.

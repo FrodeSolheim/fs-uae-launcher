@@ -1,3 +1,6 @@
+import sys
+
+
 def fs_emu_blending(enable):
     if enable:
         gl.glEnable(gl.GL_BLEND)
@@ -100,6 +103,7 @@ class GL:
 
     def log_opengl_info(self):
         print("[OPENGL] PyOpenGL information:")
+        print("[OPENGL]", sys.modules["OpenGL"])
         print("[OPENGL] Vendor:", self.glGetString(self.GL_VENDOR))
         print("[OPENGL] Renderer:", self.glGetString(self.GL_RENDERER))
         print("[OPENGL] Version:", self.glGetString(self.GL_VERSION))
