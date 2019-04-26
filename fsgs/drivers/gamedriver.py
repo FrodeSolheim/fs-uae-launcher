@@ -83,6 +83,10 @@ class GameDriver:
     def run(self):
         executable = PluginManager.instance().find_executable(
             self.emulator.name)
+        if executable is None:
+            path = self.find_emulator_executable(self.emulator.name)
+            if path is not None:
+                executable = Executable(path)
         if executable is None and self.emulator.allow_system_emulator:
             executable_path = shutil.which(self.emulator.name)
             if executable_path is not None:
@@ -788,6 +792,17 @@ class GameDriver:
         return process
 
     def find_emulator_executable(self, name):
+        paths = list(self.find_emulator_executable_paths(name))
+        print("Looking for {}:".format(name))
+        for path in paths:
+            print(path)
+        for path in paths:
+            if os.path.exists(path):
+                print("[!!] Found", path)
+                return path
+            return None
+
+    def find_emulator_executable_paths(self, name):
         # if os.path.isdir("../fs-uae/src"):
         #     # running from source directory, we then want to find locally
         #     # compiled binaries if available
@@ -798,6 +813,10 @@ class GameDriver:
         #         return path
         #     raise Exception("Could not find development FS-UAE executable")
 
+        # FIXME: EXTENSION
+        yield os.path.join(
+            fsboot.executable_dir(), "..", name, name)
+
         if "/" in name:
             package, name = name.split("/")
         else:
@@ -806,46 +825,32 @@ class GameDriver:
         if System.windows:
             # first we check if the emulator is bundled inside the launcher
             # directory
-            exe = os.path.join(
+            yield os.path.join(
                 fsboot.executable_dir(), package, name + ".exe")
-            if not os.path.exists(exe):
-                # for when the emulators are placed alongside the launcher /
-                # game center directory
-                exe = os.path.join(
-                    fsboot.executable_dir(), "..", package, name + ".exe")
-            if not os.path.exists(exe):
-                # when the emulators are placed alongside the fs-uae/ directory
-                # containing launcher/, for FS-UAE Launcher & FS-UAE Arcade
-                exe = os.path.join(
-                    fsboot.executable_dir(), "..", "..", package, name + ".exe")
-            if not os.path.exists(exe):
-                return None
-            return exe
+            # for when the emulators are placed alongside the launcher /
+            # game center directory
+            yield os.path.join(
+                fsboot.executable_dir(), "..", package, name + ".exe")
+            # when the emulators are placed alongside the fs-uae/ directory
+            # containing launcher/, for FS-UAE Launcher & FS-UAE Arcade
+            yield os.path.join(
+                fsboot.executable_dir(), "..", "..", package, name + ".exe")
         elif System.macos:
-            exe = os.path.join(
+            yield os.path.join(
                 fsboot.executable_dir(), "..",
                 package + ".app", "Contents", "MacOS", name)
-            if not os.path.exists(exe):
-                exe = os.path.join(
+            yield os.path.join(
                     fsboot.executable_dir(), "..", "..", "..",
                     package + ".app", "Contents", "MacOS", name)
-            if not os.path.exists(exe):
-                exe = os.path.join(
+            yield os.path.join(
                     "/Applications",
                     package + ".app", "Contents", "MacOS", name)
-            if not os.path.exists(exe):
-                return None
-            return exe
 
-        if os.path.exists("/opt/{0}/bin/{1}".format(package, name)):
-            return "/opt/{0}/bin/{1}".format(package, name)
+        yield "/opt/{0}/bin/{1}".format(package, name)
 
         if package == name:
             for directory in os.environ["PATH"].split(":"):
-                path = os.path.join(directory, name)
-                if os.path.exists(path):
-                    return path
-        return None
+                yield os.path.join(directory, name)
 
     def get_game_refresh_rate(self):
         """Override in inherited classes to specify custom refresh rate."""
