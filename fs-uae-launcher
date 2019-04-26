@@ -9,6 +9,8 @@ if sys.version_info[0] < 3 or sys.version_info[1] < 2:
 if os.environ.get("FSGS_PYTHONPATH", ""):
     sys.path.insert(0, os.environ.get("FSGS_PYTHONPATH"))
 
+if os.getcwd().startswith("C:\\msys64\\home\\"):
+    os.environ["PATH"] = "C:\\msys64\\mingw64\\bin;" + os.environ["PATH"]
 
 def print_version():
     import launcher.version
@@ -97,3 +99,5 @@ import pkg_resources._vendor.packaging.version
 import pkg_resources._vendor.pyparsing
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.six
+# noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
+import PyQt5.sip

@@ -5,6 +5,7 @@ import traceback
 
 from fsbc.application import Application, app
 from fsbc.system import windows, macosx
+from fsgs.plugins.plugin_manager import Plugin
 
 try:
     getcwd = os.getcwdu
@@ -136,10 +137,22 @@ class FSUAE(object):
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
-                    "fs-uae/" + executable + ".exe")
+                    "fs-uae",
+                    executable + ".exe")
             if not os.path.exists(exe):
                 exe = os.path.join(
-                    application.executable_dir(), "../" + executable + ".exe")
+                    application.executable_dir(),
+                    "..", executable + ".exe")
+            if not os.path.exists(exe):
+                exe = os.path.join(
+                    application.executable_dir(),
+                    "..",
+                    "..",
+                    "..",
+                    "FS-UAE",
+                    Plugin.os_name(True),
+                    Plugin.arch_name(True),
+                    executable + ".exe")
         elif macosx:
             exe = os.path.join(application.executable_dir(), executable)
             if not os.path.exists(exe):

@@ -112,6 +112,21 @@ def fix_whdload_args(args: List[str]) -> str:
         args_str = "BrainBlasters.Slave PRELOAD"
     elif args_str.startswith("MikroMortalTennis.slave PRELOAD fÿÝ"):
         args_str = "MikroMortalTennis.slave PRELOAD"
+    elif args_str.startswith("BreakOutRevolutionAGA.slave PRELOAD \x0f"):
+        args_str = "BreakOutRevolutionAGA.slave PRELOAD"
+    elif args_str.startswith("KingsQuestEnhancedMT32.Slave PRELOAD /\x8c"):
+        args_str = "KingsQuestEnhancedMT32.Slave PRELOAD"
+    elif args_str.startswith("Turbo.Slave PRELOAD \x00"):
+        args_str = "Turbo.Slave PRELOAD"
+    elif args_str.startswith("WinterChallengeNTSC.slave PRELOAD NTSC î\x00"):
+        args_str = "WinterChallengeNTSC.slave PRELOAD NTSC"
+    elif args_str.startswith("OscarCD32NTSC.Slave PRELOAD NTSC Ì"):
+        args_str = "OscarCD32NTSC.Slave PRELOAD NTSC"
+    elif args_str.startswith("AlienBreed.Slave PRELOAD \x11"):
+        args_str = "AlienBreed.Slave PRELOAD"
+    elif args_str.startswith("LittleComputerPeopleNTSC.Slave PRELOAD NTSC MAG\x00"):
+        # FIXME: Should MAG be included?
+        args_str = "LittleComputerPeopleNTSC.Slave PRELOAD NTSC"
     return args_str.strip()
 
 

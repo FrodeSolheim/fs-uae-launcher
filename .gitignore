@@ -9,6 +9,8 @@
 *.egg-info
 fs-uae-launcher_*
 fs-uae-launcher-*
+/Launcher_*
+/Launcher-*
 Lib
 /Makefile
 *.mo
