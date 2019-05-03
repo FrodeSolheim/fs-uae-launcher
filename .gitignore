@@ -1,6 +1,6 @@
 *~
 /build/
-/debian/.debhelper
+/debian/.debhelper/
 /debian/files
 /debian/fs-uae-launcher
 /debian/fs-uae-launcher.debhelper.log

@@ -154,14 +154,14 @@ class Expansion(BasePlugin):
                     self.add_provide("executable:" + item.lower(), path)
             if System.macos:
                 if path.endswith(".app"):
-                    app_path = os.path.join(
-                        path, "Contents", "MacOS")
+                    app_path = os.path.join(path, "Contents", "MacOS")
                     if os.path.exists(app_path):
                         for app_item in os.listdir(app_path):
                             p = os.path.join(app_path, app_item)
                             if os.access(p, os.X_OK):
                                 self.add_provide(
-                                    "executable:" + app_item.lower(), p)
+                                    "executable:" + app_item.lower(), p
+                                )
 
     def executable(self, name):
         path = self.provides()["executable:" + name]
@@ -228,16 +228,25 @@ class PluginManager:
         if plugins_dir and os.path.isdir(plugins_dir):
             result.append(plugins_dir)
         expansion_dir = os.path.join(
-            FSGSDirectories.get_base_dir(), "Workspace", "Expansion")
+            FSGSDirectories.get_base_dir(), "Workspace", "Expansion"
+        )
         if expansion_dir and os.path.isdir(expansion_dir):
             result.append(expansion_dir)
         if System.macos:
             system_plugins_dir = os.path.join(
-                fsboot.executable_dir(), "..", "..", "..", "..", "..", "..",
-                "Plugins")
+                fsboot.executable_dir(),
+                "..",
+                "..",
+                "..",
+                "..",
+                "..",
+                "..",
+                "Plugins",
+            )
         else:
             system_plugins_dir = os.path.join(
-                fsboot.executable_dir(), "..", "..", "..", "Plugins")
+                fsboot.executable_dir(), "..", "..", "..", "Plugins"
+            )
         if os.path.isdir(system_plugins_dir):
             result.append(system_plugins_dir)
         return result
@@ -262,12 +271,13 @@ class PluginManager:
 
     def load_plugins(self):
         plugin_path = self.plugin_path()
-        print("[PLUGINS] Executable dir:", fsboot.executable_dir())
-        print("[PLUGINS] Path:", plugin_path)
-        print("[PLUGINS] Machine:", platform.machine().lower())
-        print("[PLUGINS] Architecture:", platform.architecture()[0])
-        print("[PLUGINS] Plugin OS/arch:",
-              Plugin.os_name(True), Plugin.arch_name(True))
+        logger.info("Executable dir: %s", fsboot.executable_dir())
+        logger.info("Path: %s", plugin_path)
+        logger.info("Machine: %s", platform.machine().lower())
+        logger.info("Architecture: %s", platform.architecture()[0])
+        logger.info(
+            "Plugin OS/arch: %s", Plugin.os_name(True), Plugin.arch_name(True)
+        )
 
         for dir_path in plugin_path:
             # if not os.path.isdir(dir_path):
@@ -288,7 +298,7 @@ class PluginManager:
             self._plugins.sort(key=attrgetter("name"))
 
     def load_plugin(self, plugin_dir):
-        print("[PLUGINS] Load plugin", plugin_dir)
+        logger.info("Load plugin %s", plugin_dir)
         plugin_ini = os.path.join(plugin_dir, "plugin.ini")
         name = os.path.basename(plugin_dir).split("_")[0]
         if not os.path.exists(plugin_ini):
@@ -301,9 +311,10 @@ class PluginManager:
         return plugin
 
     def load_expansion(self, path):
-        print("[PLUGINS] Load expansion", path)
-        arch_path = os.path.join(path, Plugin.os_name(pretty=True),
-                                 Plugin.arch_name(pretty=True))
+        logger.info("Load expansion %s", path)
+        arch_path = os.path.join(
+            path, Plugin.os_name(pretty=True), Plugin.arch_name(pretty=True)
+        )
         version_path = os.path.join(arch_path, "Version.txt")
         if not os.path.exists(version_path):
             # version_path = os.path.join(path, "Data", "Version.txt")
@@ -330,9 +341,21 @@ class PluginManager:
             else:
                 exe_name = name
             path = os.path.join(fsboot.executable_dir(), exe_name)
+            logger.debug("Checking %s", path)
             if os.path.exists(path):
-                logger.debug("[PLUGINS] Found non-plugin executable %s", path)
+                logger.debug("Found non-plugin executable %s", path)
                 return Executable(path)
+            if fsboot.development():
+                if name == "x64sc-fs":
+                    logger.debug("Lookup hack for vice-fs/x64sc-fs")
+                    name = "vice-fs"
+                path = os.path.join(
+                    fsboot.executable_dir(), "..", name, exe_name
+                )
+                logger.debug("Checking %s", path)
+                if os.path.exists(path):
+                    logger.debug("Found non-plugin executable %s", path)
+                    return Executable(path)
             return None
         return plugin.executable(name)
 
@@ -349,7 +372,7 @@ class PluginManager:
                 module_name = name + ".so"
             path = os.path.join(fsboot.executable_dir(), module_name)
             if os.path.exists(path):
-                logger.debug("[PLUGINS] Found non-plugin module %s", path)
+                logger.debug("Found non-plugin module %s", path)
                 return path
             return None
         return plugin.library_path(name)

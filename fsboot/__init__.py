@@ -277,3 +277,10 @@ def base_dir():
     # path = Paths.get_real_case(path)
     logger.debug("Using default base dir %s", repr(path))
     return path
+
+
+@functools.lru_cache()
+def development():
+    result = os.path.exists(os.path.join(executable_dir(), ".git"))
+    logger.info("Development mode: %s", result)
+    return result
