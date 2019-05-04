@@ -1,5 +1,7 @@
 Version 2.9.8dev:
 
+* Support new whdload_quit_key option with online game database.
+* Disabled (global) whdload_quit_key setting, see new FS-UAE option.
 * Fixed problem on Windows where devices were sometimes not detected.
 * Remove kickstart warnings when not using Amiga platform.
 * Added elapsed time to log file (to debug startup time).

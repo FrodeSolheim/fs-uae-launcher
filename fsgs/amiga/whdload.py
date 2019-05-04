@@ -29,11 +29,13 @@ def create_prefs_file(config: DefaultDict[str, str], path: str) -> bool:
         prefs = prefs.replace(
             ";SplashDelay=0", "SplashDelay={}".format(
                 int(splash_delay)))
-    quit_key = config[Option.WHDLOAD_QUIT_KEY]
-    if quit_key:
-        prefs = prefs.replace(
-            ";QuitKey=$45", "QuitKey=${}".format(
-                quit_key.upper()))
+
+    # quit_key = config[Option.WHDLOAD_QUIT_KEY]
+    # if quit_key:
+    #     prefs = prefs.replace(
+    #         ";QuitKey=$45", "QuitKey=${}".format(
+    #             quit_key.upper()))
+
     # Make sure the data is CRLF line terminated.
     prefs = prefs.replace("\r\n", "\n").replace("\n", "\r\n")
     with open(path, "wb") as f:

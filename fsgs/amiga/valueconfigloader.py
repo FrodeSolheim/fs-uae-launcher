@@ -41,6 +41,8 @@ class ValueConfigLoader(object):
                 return self.get_config()
 
         self.values = values
+        # from pprint import pprint
+        # pprint(values)
 
         cd_based = False
         amiga_model = "A500"
@@ -209,6 +211,8 @@ class ValueConfigLoader(object):
                 self.options[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
         elif key == "whdload_args":
             self.options[Option.X_WHDLOAD_ARGS] = value
+        elif key == "whdload_quit_key":
+            self.options[Option.WHDLOAD_QUIT_KEY] = value
         elif key == "hdinst_args":
             self.options["x_hdinst_args"] = value
             if whdload.should_disable_drive_click():
