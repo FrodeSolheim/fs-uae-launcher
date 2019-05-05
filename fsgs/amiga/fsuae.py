@@ -182,6 +182,17 @@ class FSUAE(object):
                     application.executable_dir(), "..", "bin", executable)
                 print("checking", exe)
             if not os.path.exists(exe):
+                exe = os.path.join(
+                    application.executable_dir(),
+                    "..",
+                    "..",
+                    "..",
+                    "FS-UAE",
+                    Plugin.os_name(True),
+                    Plugin.arch_name(True),
+                    executable)
+                print("checking", exe)
+            if not os.path.exists(exe):
                 return executable
 
         if not os.path.exists(exe):

@@ -369,7 +369,7 @@ windows-dist: distdir
     mv $(dist_dir)/{project}_*windows* .
     rm -Rf $(dist_dir)
 
-macosx-dist: distdir
+macos-dist: distdir
     cd $(dist_dir)/dist/macos && make
     mv $(dist_dir)/{project}_*macos* .
     rm -Rf $(dist_dir)

@@ -17,6 +17,7 @@ launcher:
 	make -C ../..
 	rm -Rf $(dname)
 	mkdir -p $(dname)
+	rm -Rf ../../build
 	cd ../.. && PYTHONHASHSEED=1 python3 setup.py build_exe
 
 	#mv ../dist/"FS-UAE Launcher.app" $(dname)/
@@ -87,8 +88,8 @@ launcher:
 	# This file differs between each build
 	zip -d $(macos)/library.zip BUILD_CONSTANTS.pyc
 	# Remove wrong-cased members from the archive
-	zip -d $(macos)/library.zip ConfigParser.pyc
-	zip -d $(macos)/library.zip Queue.pyc
+	zip -d $(macos)/library.zip ConfigParser.pyc || true
+	zip -d $(macos)/library.zip Queue.pyc || true
 	PYTHONPATH=../.. python3 -m fspy.zipfile deterministic \
 		--fix-pyc-timestamps $(macos)/library.zip
 

@@ -34,8 +34,9 @@ progdir:
 	mkdir $(launcher_dir)/platforms
 	cp $(qt_dir)/plugins/platforms/qwindows.dll $(launcher_dir)/platforms
 
-	cp -a ../../share $(launcher_dir)
-	cp ../../requests/cacert.pem $(launcher_dir)
+	mkdir -p Launcher/Data
+	cp -a ../../share/locale Launcher/Data/Locale
+	cp ../../requests/cacert.pem Launcher/Data
 	rm -Rf $(launcher_dir)/share/applications
 	rm -Rf $(launcher_dir)/share/icons
 
@@ -72,7 +73,11 @@ progdir:
 		--fix-pyc-timestamps $(library_zip)
 
 	make -C ../python
-	cp -a ../python/*.zip $(launcher_dir)
+	mkdir -p Launcher/Python
+	cp -a ../python/*.zip Launcher/Python
+
+	echo $(ver) > Launcher/Version.txt
+	echo $(ver) > $(launcher_dir)/Version.txt
 
 	python3 sign.py $(launcher_dir)/fs-uae-launcher.exe
 
