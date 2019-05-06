@@ -22,7 +22,6 @@ elif macosx:
 
 
 class RefreshRateTool(object):
-
     def __init__(self, game_platform=None, game_refresh=None):
         self.game_platform = game_platform
         self.game_refresh = game_refresh
@@ -36,12 +35,12 @@ class RefreshRateTool(object):
         for mode in modes:
             # print(mode)
             # for now, only consider same resolution
-            if mode['width'] != current['width']:
+            if mode["width"] != current["width"]:
                 continue
-            if mode['height'] != current['height']:
+            if mode["height"] != current["height"]:
                 continue
             # only consider modes with the same bpp
-            if mode['bpp'] != current['bpp']:
+            if mode["bpp"] != current["bpp"]:
                 continue
             score = self.calculate_mode_score(mode)
             if score is not None:
@@ -67,7 +66,7 @@ class RefreshRateTool(object):
             if debug:
                 print("REFRESH RATE TOOL: game refresh not specified")
             return None
-        display_refresh = mode['refresh']
+        display_refresh = mode["refresh"]
         if not display_refresh:
             if debug:
                 print("REFRESH RATE TOOL: display refresh not found")
@@ -83,10 +82,15 @@ class RefreshRateTool(object):
         allowable_pos_diff = 1.01
         allowable_neg_diff = 1.01
         if debug:
-            print("REFRESH RATE TOOL: game refresh: {0} vs "
-                  "display refresh: {1}".format(game_refresh, display_refresh))
-            print("REFRESH RATE TOOL: allow +{0}/-{1}".format(
-                allowable_pos_diff, allowable_neg_diff))
+            print(
+                "REFRESH RATE TOOL: game refresh: {0} vs "
+                "display refresh: {1}".format(game_refresh, display_refresh)
+            )
+            print(
+                "REFRESH RATE TOOL: allow +{0}/-{1}".format(
+                    allowable_pos_diff, allowable_neg_diff
+                )
+            )
             print("REFRESH RATE TOOL: diff: {0}".format(diff))
         if allowable_pos_diff > diff > -allowable_neg_diff:
             if debug:
@@ -132,7 +136,7 @@ class RefreshRateTool(object):
         """
         current = self.get_current_mode()
         return self.calculate_mode_score(current, debug=True) is not None
-        
+
     def get_display_refresh(self):
         # # FIXME:
         # if macosx:
@@ -157,7 +161,8 @@ class RefreshRateTool(object):
         if windows:
             if win32api:
                 settings = win32api.EnumDisplaySettings(
-                    None, win32con.ENUM_CURRENT_SETTINGS)
+                    None, win32con.ENUM_CURRENT_SETTINGS
+                )
                 refresh = float(settings.DisplayFrequency)
                 width = int(settings.PelsWidth)
                 height = int(settings.PelsHeight)
@@ -165,8 +170,7 @@ class RefreshRateTool(object):
                 flags = int(settings.DisplayFlags)
         elif macosx:
             main_display = Quartz.CGMainDisplayID()
-            current_display = Quartz.CGDisplayPrimaryDisplay(
-                main_display)
+            current_display = Quartz.CGDisplayPrimaryDisplay(main_display)
             current_mode = Quartz.CGDisplayCopyDisplayMode(current_display)
             width = Quartz.CGDisplayModeGetWidth(current_mode)
             height = Quartz.CGDisplayModeGetHeight(current_mode)
@@ -176,16 +180,23 @@ class RefreshRateTool(object):
                 refresh = 60
             # A bit weird that it crashes, since this is supposed to be a
             # copy of the mode...?
-            print("FIXME: Not calling Quartz.CGDisplayModeRelease("
-                  "current_mode), seems to crash pygame on exit...")
+            print(
+                "FIXME: Not calling Quartz.CGDisplayModeRelease("
+                "current_mode), seems to crash pygame on exit..."
+            )
             # Quartz.CGDisplayModeRelease(current_mode)
             flags = 0
             bpp = None
         else:
             return self._get_current_mode_x()
 
-        return {"width": width, "height": height, "refresh": refresh,
-                "bpp": bpp, "flags": flags}
+        return {
+            "width": width,
+            "height": height,
+            "refresh": refresh,
+            "bpp": bpp,
+            "flags": flags,
+        }
 
     def get_all_modes(self):
         modes = []
@@ -194,7 +205,8 @@ class RefreshRateTool(object):
             while True:
                 try:
                     settings = win32api.EnumDisplaySettingsEx(
-                        None, k, EDS_RAWMODE)
+                        None, k, EDS_RAWMODE
+                    )
                 except win32api.error:
                     break
                 refresh = float(settings.DisplayFrequency)
@@ -203,8 +215,15 @@ class RefreshRateTool(object):
                 bpp = int(settings.BitsPerPel)
                 flags = int(settings.DisplayFlags)
                 # print(width, height, refresh, bpp, flags)
-                modes.append({'width': width, 'height': height,
-                              'refresh': refresh, 'bpp': bpp, 'flags': flags})
+                modes.append(
+                    {
+                        "width": width,
+                        "height": height,
+                        "refresh": refresh,
+                        "bpp": bpp,
+                        "flags": flags,
+                    }
+                )
                 k += 1
         elif macosx:
             # FIXME:
@@ -268,11 +287,13 @@ class RefreshRateTool(object):
             # print(width, height, refresh, bpp, flags)
             # modes.append({'width': width, 'height': height,
             #        'refresh': refresh, 'bpp': bpp, 'flags': flags})
-            if width == mode['width'] and \
-                    height == mode['height'] and \
-                    refresh == mode['refresh'] and \
-                    bpp == mode['bpp'] and \
-                    flags == mode['flags']:
+            if (
+                width == mode["width"]
+                and height == mode["height"]
+                and refresh == mode["refresh"]
+                and bpp == mode["bpp"]
+                and flags == mode["flags"]
+            ):
 
                 # print("trying to override with refresh", int(round(self.game_refresh)))
                 # #refresh == mode['refresh'] and \
@@ -287,7 +308,8 @@ class RefreshRateTool(object):
                 # settings.DisplayFrequency = mode['refresh']
                 print("found windows mode, changing display settings")
                 result = win32api.ChangeDisplaySettings(
-                    settings, win32con.CDS_UPDATEREGISTRY)
+                    settings, win32con.CDS_UPDATEREGISTRY
+                )
                 # win32con.CDS_FULLSCREEN)
 
                 if result == win32con.DISP_CHANGE_SUCCESSFUL:
@@ -323,9 +345,14 @@ class RefreshRateTool(object):
 
     def _set_mode_x(self, mode):
         print("REFRESH RATE TOOL: setting mode", mode)
-        args = ['/usr/bin/env', 'xrandr', '-s', '{0}x{1}'.format(
-                mode['width'], mode['height']), '-r',
-                str(mode['refresh'])]
+        args = [
+            "/usr/bin/env",
+            "xrandr",
+            "-s",
+            "{0}x{1}".format(mode["width"], mode["height"]),
+            "-r",
+            str(mode["refresh"]),
+        ]
         p = subprocess.Popen(args)
         p.wait()
 
@@ -336,38 +363,49 @@ class RefreshRateTool(object):
 
     def _get_current_mode_x(self, modes=[]):
         modes[:] = []
-        mode = {'width': 0, 'height': 0, 'refresh': 0.0, 'bpp': 0,
-                'flags': 0} 
-        args = ['/usr/bin/env', 'xrandr', '-q']
+        mode = {"width": 0, "height": 0, "refresh": 0.0, "bpp": 0, "flags": 0}
+        args = ["/usr/bin/env", "xrandr", "-q"]
         p = subprocess.Popen(args, stdout=subprocess.PIPE)
         for line in p.stdout:
             line = line.decode("ISO-8859-1")
-            if not line.startswith(' '):
+            if not line.startswith(" "):
                 continue
             line = line.strip()
             line = line.replace("+", "")
             # collapse multiple spaces
-            line = re.sub(' +', ' ', line).strip()
-            parts = line.split(' ')
+            line = re.sub(" +", " ", line).strip()
+            parts = line.split(" ")
             resolution = parts[0]
             rates = parts[1:]
-            width, height = resolution.split('x')
+            width, height = resolution.split("x")
             width = int(width)
             height = int(height)
             print(rates)
             for rate in rates:
-                if rate[-1] == '*':
+                if rate[-1] == "*":
                     refresh = float(rate[:-1])
-                    mode['width'] = width
-                    mode['height'] = height
-                    mode['refresh'] = refresh
-                    modes.append({'width': width, 'height': height,
-                                  'refresh': float(rate[:-1]), 'bpp': 0,
-                                  'flags': 0})
+                    mode["width"] = width
+                    mode["height"] = height
+                    mode["refresh"] = refresh
+                    modes.append(
+                        {
+                            "width": width,
+                            "height": height,
+                            "refresh": float(rate[:-1]),
+                            "bpp": 0,
+                            "flags": 0,
+                        }
+                    )
                 else:
-                    modes.append({'width': width, 'height': height,
-                                  'refresh': float(rate), 'bpp': 0,
-                                  'flags': 0})
+                    modes.append(
+                        {
+                            "width": width,
+                            "height": height,
+                            "refresh": float(rate),
+                            "bpp": 0,
+                            "flags": 0,
+                        }
+                    )
         return mode
 
     def screens_xrandr(self):
@@ -380,9 +418,7 @@ class RefreshRateTool(object):
     @staticmethod
     def _screens_xrandr():
         screens = {}
-        screen = {
-            "modes": []
-        }
+        screen = {"modes": []}
         args = ["/usr/bin/env", "xrandr", "-q"]
         p = subprocess.Popen(args, stdout=subprocess.PIPE)
         data = p.stdout.read().decode("ISO-8859-1")

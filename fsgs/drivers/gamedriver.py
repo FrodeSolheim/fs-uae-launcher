@@ -21,7 +21,6 @@ from fsgs.util.gamenameutil import GameNameUtil
 
 
 class GameDriverLogger:
-
     def debug(self, message):
         print("[DEBUG]", message)
 
@@ -60,7 +59,8 @@ class GameDriver:
         self.__game_temp_file = None
 
         self.temp_root = TemporaryItem(
-            root=None, prefix="fsgs-", suffix="tmp", directory=True)
+            root=None, prefix="fsgs-", suffix="tmp", directory=True
+        )
         # # Default current working directory for the emulator.
         self.cwd = self.temp_dir("cwd")
         # # Fake home directory for the emulator.
@@ -82,14 +82,16 @@ class GameDriver:
 
     def run(self):
         executable = PluginManager.instance().find_executable(
-            self.emulator.name)
+            self.emulator.name
+        )
         if executable is None and self.emulator.allow_system_emulator:
             executable_path = shutil.which(self.emulator.name)
             if executable_path is not None:
                 executable = Executable(executable_path)
         if executable is None:
             raise LookupError(
-                "Could not find emulator " + repr(self.emulator.name))
+                "Could not find emulator " + repr(self.emulator.name)
+            )
         self.emulator.process = self.start_emulator(executable)
 
     def emulator_pid_file(self):
@@ -149,8 +151,12 @@ class GameDriver:
         if port.type_option:
             type_value = self.options[port.type_option]
             if type_value:
-                print("[INPUT] Port option", port.type_option,
-                      "was set to", type_value)
+                print(
+                    "[INPUT] Port option",
+                    port.type_option,
+                    "was set to",
+                    type_value,
+                )
             else:
                 print("[INPUT] No value specified for", port.type_option)
 
@@ -165,8 +171,9 @@ class GameDriver:
                 try:
                     type_value = Option.get(port.type_option)["default"]
                 except Exception:
-                    print("[INPUT] Could not find default for",
-                          port.type_option)
+                    print(
+                        "[INPUT] Could not find default for", port.type_option
+                    )
             for j, port_type in enumerate(port.types):
                 print("[INPUT]", j, port_type["type"])
                 if type_value == port_type["type"]:
@@ -174,8 +181,10 @@ class GameDriver:
                     port.index = j
                     break
             else:
-                print("[INPUT] WARNING: Could not find index for type",
-                      type_value)
+                print(
+                    "[INPUT] WARNING: Could not find index for type",
+                    type_value,
+                )
         self.ports.append(port)
 
     def set_allow_gsync(self, allow):
@@ -360,6 +369,7 @@ class GameDriver:
         screens = []
         try:
             from fsui.qt import init_qt
+
             qapplication = init_qt()
             desktop = qapplication.desktop()
         except AttributeError:
@@ -376,13 +386,17 @@ class GameDriver:
     def screen_refresh_rate_for_monitor(cls, monitor):
         try:
             from fsui.qt import init_qt
+
             qapplication = init_qt()
         except AttributeError:
             return 0
         else:
             for i, screen in enumerate(qapplication.screens()):
-                print("Screen {0} refresh rate (Qt) = {1}".format(
-                    i, screen.refreshRate()))
+                print(
+                    "Screen {0} refresh rate (Qt) = {1}".format(
+                        i, screen.refreshRate()
+                    )
+                )
             index = cls.screen_index_for_monitor(monitor)
             screen = qapplication.screens()[index]
 
@@ -393,8 +407,11 @@ class GameDriver:
             screens = refresh_rate_tool.screens_xrandr()
             rect = cls.screen_rect_for_monitor(monitor)
             for screen in screens:
-                print("Screen {} refresh rate (Xrandr) = {}".format(
-                    screen, screens[screen]["refresh_rate"]))
+                print(
+                    "Screen {} refresh rate (Xrandr) = {}".format(
+                        screen, screens[screen]["refresh_rate"]
+                    )
+                )
             for screen in screens:
                 if rect == screen:
                     return screens[screen]["refresh_rate"]
@@ -457,15 +474,18 @@ class GameDriver:
         #     self.get_game_name(), self.get_platform_name(),
         #     self.get_variant_name())
         return "{0} ({1}, {2})".format(
-            self.fsgc.game.name, self.fsgc.game.platform.name,
-            self.fsgc.game.variant.name)
+            self.fsgc.game.name,
+            self.fsgc.game.platform.name,
+            self.fsgc.game.variant.name,
+        )
 
     def save_dir(self, create=False):
         """Uses the new saves layout."""
         uuid = self.fsgc.game.variant.uuid
         if uuid:
             path = os.path.join(
-                FSGSDirectories.saves_dir, "UUID", uuid[:3], uuid)
+                FSGSDirectories.saves_dir, "UUID", uuid[:3], uuid
+            )
             if create and not os.path.exists(path):
                 os.makedirs(path)
             return path
@@ -476,7 +496,8 @@ class GameDriver:
         """This is the old deprecated save sate directory for games."""
         state_dir = os.path.join(
             FSGSDirectories.get_save_states_dir(),
-            GameNameUtil.create_fs_name(self.get_name()))
+            GameNameUtil.create_fs_name(self.get_name()),
+        )
         if not os.path.exists(state_dir):
             os.makedirs(state_dir)
         if self.fsgc.game.variant.uuid:
@@ -506,7 +527,8 @@ class GameDriver:
 
         # self.__game_temp_file = self.fsgc.temp_file(file_uri.split("/")[-1])
         self.__game_temp_file = TemporaryNamedItem(
-            self.temp_root, file_uri.split("/")[-1])
+            self.temp_root, file_uri.split("/")[-1]
+        )
 
         with open(self.__game_temp_file.path, "wb") as f:
             while True:
@@ -518,14 +540,17 @@ class GameDriver:
 
     def temp_dir(self, name):
         return TemporaryNamedItem(
-            root=self.temp_root, name=name, directory=True)
+            root=self.temp_root, name=name, directory=True
+        )
 
     def temp_file(self, name):
         return TemporaryNamedItem(
-            root=self.temp_root, name=name, directory=False)
+            root=self.temp_root, name=name, directory=False
+        )
 
     def start_emulator_from_plugin_resource(
-            self, provide_name, args=None, env_vars=None):
+        self, provide_name, args=None, env_vars=None
+    ):
         resource = self.fsgc.plugins.find_executable(provide_name)
         if resource is None:
             raise Exception("Could not find emulator " + repr(provide_name))
@@ -535,8 +560,9 @@ class GameDriver:
         # EDIT: No longer doing, can cause problems for OpenGL drivers.
         # Instead, use the standalone-linux.py script with rpath fixing.
         # env_vars["LD_LIBRARY_PATH"] = os.path.dirname(resource.path)
-        return self.start_emulator("", args=args, env_vars=env_vars,
-                                   executable=resource.path)
+        return self.start_emulator(
+            "", args=args, env_vars=env_vars, executable=resource.path
+        )
 
     def set_environment_path(self, env, key, value):
         """Supports exporting paths with MBCS encoding as well on Windows."""
@@ -614,9 +640,11 @@ class GameDriver:
 
         # env["FSGS_WINDOW_TITLE"] = ""
         self.set_environment_path(
-            env, "FSGS_SCREENSHOTS_DIR", self.screenshots_dir())
+            env, "FSGS_SCREENSHOTS_DIR", self.screenshots_dir()
+        )
         self.set_environment_path(
-            env, "FSGS_SCREENSHOTS_BASE", self.screenshots_base())
+            env, "FSGS_SCREENSHOTS_BASE", self.screenshots_base()
+        )
         if self._model_name:
             env["FSGS_WINDOW_TITLE"] = self._model_name
 
@@ -649,10 +677,13 @@ class GameDriver:
         # FIXME: does not really belong here (dependency loop)
         from launcher.launcher_config import LauncherConfig
         from launcher.launcher_settings import LauncherSettings
-        width = (LauncherConfig.get("window_width") or
-                 LauncherSettings.get("window_width"))
-        height = (LauncherConfig.get("window_height") or
-                  LauncherSettings.get("window_height"))
+
+        width = LauncherConfig.get("window_width") or LauncherSettings.get(
+            "window_width"
+        )
+        height = LauncherConfig.get("window_height") or LauncherSettings.get(
+            "window_height"
+        )
         try:
             width = int(width)
         except:
@@ -662,6 +693,7 @@ class GameDriver:
         except:
             height = 540
         from launcher.ui.launcherwindow import LauncherWindow
+
         if LauncherWindow.current() is None:
             return
 
@@ -680,7 +712,8 @@ class GameDriver:
         env["FSGS_WINDOW_POS"] = str("{0},{1}".format(x, y))
 
         env["FSGS_WINDOW_CENTER"] = "{0},{1}".format(
-            main_x + main_w // 2, main_y + main_h // 2)
+            main_x + main_w // 2, main_y + main_h // 2
+        )
 
         # args.append("--window-x={0}".format(x))
         # args.append("--window-y={0}".format(y))
@@ -711,8 +744,9 @@ class GameDriver:
             env["FSGS_SKIN_LEFT"] = paths["left"]
         if "left-overlay" in paths:
             with open(paths["left-overlay"], "wb") as f:
-                f.write(Resources("fsgs").stream(
-                    "res/emu/left-overlay.png").read())
+                f.write(
+                    Resources("fsgs").stream("res/emu/left-overlay.png").read()
+                )
             if env is not None:
                 env["FSGS_BEZEL_LEFT_OVERLAY"] = paths["left-overlay"]
         with open(paths["right"], "wb") as f:
@@ -722,16 +756,19 @@ class GameDriver:
             env["FSGS_SKIN_RIGHT"] = paths["right"]
         if "right-overlay" in paths:
             with open(paths["right-overlay"], "wb") as f:
-                f.write(Resources("fsgs").stream(
-                    "res/emu/right-overlay.png").read())
+                f.write(
+                    Resources("fsgs")
+                    .stream("res/emu/right-overlay.png")
+                    .read()
+                )
             if env is not None:
                 env["FSGS_BEZEL_RIGHT_OVERLAY"] = paths["right-overlay"]
         self._emulator_skin_prepared = paths
         return self._emulator_skin_prepared
 
     def start_emulator(
-            self, emulator, args=None, env_vars=None, executable=None,
-            cwd=None):
+        self, emulator, args=None, env_vars=None, executable=None, cwd=None
+    ):
         # if "/" in emulator:
         #     if not executable:
         #         executable = self.find_emulator_executable(emulator)
@@ -781,7 +818,8 @@ class GameDriver:
             kwargs["close_fds"] = True
         # print(" ".join(args))
         current_task.set_progress(
-            "Starting {emulator}".format(emulator=emulator))
+            "Starting {emulator}".format(emulator=emulator)
+        )
         # import subprocess
         # return subprocess.Popen(["strace", emulator.path] + args, **kwargs)
         process = emulator.popen(args, **kwargs)
@@ -807,33 +845,50 @@ class GameDriver:
         if System.windows:
             # first we check if the emulator is bundled inside the launcher
             # directory
-            exe = os.path.join(
-                fsboot.executable_dir(), package, name + ".exe")
+            exe = os.path.join(fsboot.executable_dir(), package, name + ".exe")
             if not os.path.exists(exe):
                 # for when the emulators are placed alongside the launcher /
                 # game center directory
                 exe = os.path.join(
-                    fsboot.executable_dir(), "..", package, name + ".exe")
+                    fsboot.executable_dir(), "..", package, name + ".exe"
+                )
             if not os.path.exists(exe):
                 # when the emulators are placed alongside the fs-uae/ directory
                 # containing launcher/, for FS-UAE Launcher & FS-UAE Arcade
                 exe = os.path.join(
-                    fsboot.executable_dir(), "..", "..", package, name + ".exe")
+                    fsboot.executable_dir(), "..", "..", package, name + ".exe"
+                )
             if not os.path.exists(exe):
                 return None
             return exe
         elif System.macos:
             exe = os.path.join(
-                fsboot.executable_dir(), "..",
-                package + ".app", "Contents", "MacOS", name)
+                fsboot.executable_dir(),
+                "..",
+                package + ".app",
+                "Contents",
+                "MacOS",
+                name,
+            )
             if not os.path.exists(exe):
                 exe = os.path.join(
-                    fsboot.executable_dir(), "..", "..", "..",
-                    package + ".app", "Contents", "MacOS", name)
+                    fsboot.executable_dir(),
+                    "..",
+                    "..",
+                    "..",
+                    package + ".app",
+                    "Contents",
+                    "MacOS",
+                    name,
+                )
             if not os.path.exists(exe):
                 exe = os.path.join(
                     "/Applications",
-                    package + ".app", "Contents", "MacOS", name)
+                    package + ".app",
+                    "Contents",
+                    "MacOS",
+                    name,
+                )
             if not os.path.exists(exe):
                 return None
             return exe
@@ -897,7 +952,8 @@ class GameDriver:
             if self.options[Option.ASSUME_REFRESH_RATE]:
                 try:
                     screen_refresh = float(
-                        self.options[Option.ASSUME_REFRESH_RATE])
+                        self.options[Option.ASSUME_REFRESH_RATE]
+                    )
                 except ValueError:
                     print("Could not parse 'assume_refresh_rate' value")
                 else:
@@ -1033,10 +1089,12 @@ class TemporaryItem:
                 root = self.root
             if self.directory:
                 self._path = tempfile.mkdtemp(
-                    prefix=self.prefix, suffix=self.suffix, dir=root)
+                    prefix=self.prefix, suffix=self.suffix, dir=root
+                )
             else:
                 fd, self._path = tempfile.mkstemp(
-                    prefix=self.prefix, suffix=self.suffix, dir=root)
+                    prefix=self.prefix, suffix=self.suffix, dir=root
+                )
                 os.close(fd)
         return self._path
 
@@ -1078,12 +1136,14 @@ class GameFiles:
         self._files = []
 
     def add(self, dest, source=None, sha1=None, description=None):
-        self._files.append({
-            "source": source,
-            "sha1": sha1,
-            "dest": dest,
-            "description": description,
-        })
+        self._files.append(
+            {
+                "source": source,
+                "sha1": sha1,
+                "dest": dest,
+                "description": description,
+            }
+        )
 
     def install(self):
         for file in self._files:
@@ -1099,9 +1159,12 @@ class GameFiles:
                 assert file["sha1"]
                 uri = self.fsgc.file.find_by_sha1(file["sha1"])
                 if not uri:
-                    description = file["description"] or \
-                                  os.path.basename(file["dest"])
+                    description = file["description"] or os.path.basename(
+                        file["dest"]
+                    )
                     raise Exception(
                         "Could not find {} (SHA-1: {})".format(
-                            description, file["sha1"]))
+                            description, file["sha1"]
+                        )
+                    )
                 self.fsgc.file.copy_game_file(uri, file["dest"])

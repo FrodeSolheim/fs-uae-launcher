@@ -8,7 +8,6 @@ from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 
 
 class EventHelper(Thread):
-
     def __init__(self):
         Thread.__init__(self, name="EventHelperThread")
         self.setDaemon(True)
@@ -33,12 +32,18 @@ class EventHelper(Thread):
         self.stopping = True
 
     def is_add_event(self, event):
-        return event["type"] in ["joy-device-added", "mouse-device-added",
-                                 "keyboard-device-added"]
+        return event["type"] in [
+            "joy-device-added",
+            "mouse-device-added",
+            "keyboard-device-added",
+        ]
 
     def is_remove_event(self, event):
-        return event["type"] in ["joy-device-removed", "mouse-device-removed",
-                                 "keyboard-device-removed"]
+        return event["type"] in [
+            "joy-device-removed",
+            "mouse-device-removed",
+            "keyboard-device-removed",
+        ]
 
     def get_next_event(self):
         try:
@@ -83,7 +88,8 @@ class EventHelper(Thread):
         print("EventHelper.init_device_helper")
         try:
             self.process = FSUAEDeviceHelper.start_with_args(
-                ["--events"], stdout=subprocess.PIPE)
+                ["--events"], stdout=subprocess.PIPE
+            )
         except Exception:
             print("exception while listing joysticks and devices")
             traceback.print_exc()

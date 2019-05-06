@@ -5,7 +5,7 @@ import unittest
 import itertools
 
 
-QUOTED_TERMS_RE = re.compile("[\"].*?[\"]")
+QUOTED_TERMS_RE = re.compile('["].*?["]')
 
 
 class GameNameUtil(object):
@@ -33,17 +33,17 @@ class GameNameUtil(object):
 
     @classmethod
     def create_fs_name(cls, name):
-        name = name.replace(':', ' - ')
-        name = name.replace('*', '-')
-        name = name.replace('?', '')
-        name = name.replace('/', '-')
+        name = name.replace(":", " - ")
+        name = name.replace("*", "-")
+        name = name.replace("?", "")
+        name = name.replace("/", "-")
         name = name.replace('"', "'")
-        name = name.replace('>>>', " ")
-        name = name.replace('<<<', " ")
+        name = name.replace(">>>", " ")
+        name = name.replace("<<<", " ")
         # FIXME: regular expression instead
         for i in range(3):
             name = name.replace("  ", " ")
-        while name.endswith('.'):
+        while name.endswith("."):
             name = name[:-1]
         name = name.strip()
         return name
@@ -51,7 +51,7 @@ class GameNameUtil(object):
     @classmethod
     def create_cmp_name(cls, name):
         name = str(name)
-        decomposed = unicodedata.normalize('NFD', name)
+        decomposed = unicodedata.normalize("NFD", name)
         result = []
         for c in decomposed.lower():
             if c in "abcdefghijklmnopqrstuvwxyz0123456789+":
@@ -66,7 +66,7 @@ class GameNameUtil(object):
     @classmethod
     def create_link_name(cls, name):
         name = str(name)
-        decomposed = unicodedata.normalize('NFD', name)
+        decomposed = unicodedata.normalize("NFD", name)
         result = []
         for c in decomposed.lower():
             if c in "abcdefghijklmnopqrstuvwxyz0123456789+-":
@@ -75,15 +75,15 @@ class GameNameUtil(object):
                 c = "-"
             if c != "-" or not result or result[-1] != "-":
                 result.append(c)
-        if result and result[-1] == '-':
+        if result and result[-1] == "-":
             result = result[:-1]
         return "".join(result)
 
     @classmethod
     def is_bad_dump(cls, path):
-        if '[b]' in path:
+        if "[b]" in path:
             return True
-        m = re.search('\\[b[0-9]? [^\\]]*\\]', path, re.IGNORECASE)
+        m = re.search("\\[b[0-9]? [^\\]]*\\]", path, re.IGNORECASE)
         if m is not None:
             return True
         return False
@@ -93,17 +93,17 @@ class GameNameUtil(object):
         p = path.upper()
         n = os.path.basename(p)
         for alias, platform in GamePlatform.aliases.items():
-            if '(' + alias + ',' in n:
+            if "(" + alias + "," in n:
                 return platform
-            if '(' + alias + ')' in n:
+            if "(" + alias + ")" in n:
                 return platform
         while os.path.dirname(p) != p:
             p = os.path.dirname(p)
             n = os.path.basename(p)
             for alias, platform in GamePlatform.aliases.items():
-                if '(' + alias + ',' in n:
+                if "(" + alias + "," in n:
                     return platform
-                if '(' + alias + ')' in n:
+                if "(" + alias + ")" in n:
                     return platform
             if n in GamePlatform.aliases:
                 return GamePlatform.aliases[n]
@@ -114,7 +114,7 @@ class GameNameUtil(object):
     def find_base_name(cls, path):
         name = os.path.basename(path)
         # name = os.path.normcase(name)
-        pos_list = [name.find('('), name.find('['), name.rfind('.'), len(name)]
+        pos_list = [name.find("("), name.find("["), name.rfind("."), len(name)]
         for pos in sorted(pos_list):
             if pos > -1:
                 return name[:pos].strip().lower()
@@ -122,7 +122,7 @@ class GameNameUtil(object):
 
     @classmethod
     def find_alt(cls, path):
-        m = re.search('\\[a([0-9]*)\\]', path, re.IGNORECASE)
+        m = re.search("\\[a([0-9]*)\\]", path, re.IGNORECASE)
         if m is not None:
             if not m.group(1):
                 return 1
@@ -131,7 +131,7 @@ class GameNameUtil(object):
 
     @classmethod
     def strip_alt(cls, path):
-        path = re.sub('\\[a([0-9]*)\\]', '', path)
+        path = re.sub("\\[a([0-9]*)\\]", "", path)
         return path
 
     @classmethod
@@ -147,20 +147,20 @@ class GameNameUtil(object):
 
         # number = None
         lname = name.lower()
-        for prefix in 'reel', 'disk', 'cd':
+        for prefix in "reel", "disk", "cd":
             # print(prefix)
-            pprefix = '(' + prefix + ' '
+            pprefix = "(" + prefix + " "
             index = lname.find(pprefix)
             # print(index)
             if index >= 0:
-                rname = lname[index+len(pprefix):].strip()
+                rname = lname[index + len(pprefix) :].strip()
                 # print(rname)
-                num = ''
+                num = ""
                 onlydigits = True
                 for c in rname:
-                    if c in '0123456789':
+                    if c in "0123456789":
                         num += c
-                    elif c in 'abcdefghijklmnopqrstuvwxyz':
+                    elif c in "abcdefghijklmnopqrstuvwxyz":
                         onlydigits = False
                         num += c
                     else:
@@ -172,28 +172,28 @@ class GameNameUtil(object):
                     return int(num)
                 else:
                     num = num.lower()
-                    if num == 'i':
+                    if num == "i":
                         return 1
-                    elif num == 'ii':
+                    elif num == "ii":
                         return 2
-                    elif num == 'iii':
+                    elif num == "iii":
                         return 3
-                    elif num == 'iv':
+                    elif num == "iv":
                         return 4
-                    elif num == 'v':
+                    elif num == "v":
                         return 5
-                    elif num == 'vi':
+                    elif num == "vi":
                         return 6
-                    elif num == 'vii':
+                    elif num == "vii":
                         return 7
-                    elif num == 'viii':
+                    elif num == "viii":
                         return 8
-                    elif num == 'ix':
+                    elif num == "ix":
                         return 9
-                    elif num == 'x':
+                    elif num == "x":
                         return 10
                     elif len(num) == 1:
-                        return 1 + ord(num) - ord('a')
+                        return 1 + ord(num) - ord("a")
                     else:
                         return num
                 # print(' ----------- ', rname, '---', num, number)
@@ -203,15 +203,15 @@ class GameNameUtil(object):
     def strip_number(cls, name):
         # remove '(disk xxx)' from name
         # and also (disk xxx)(yyy)
-        name = re.sub('\\([Dd][Ii][Ss][Kk][^)]*\\)(\\([^\\)]*\\))?', '', name)
+        name = re.sub("\\([Dd][Ii][Ss][Kk][^)]*\\)(\\([^\\)]*\\))?", "", name)
         # remove 'disc x' from name
-        name = re.sub('\\([Dd][Ii][Ss][Cc][^)]*\\)', '', name)
+        name = re.sub("\\([Dd][Ii][Ss][Cc][^)]*\\)", "", name)
         # 'reel x' is used by Cinemaware games
-        name = re.sub('\\([Rr][Ee][Ee][Ll][^)]*\\)', '', name)
+        name = re.sub("\\([Rr][Ee][Ee][Ll][^)]*\\)", "", name)
         # remove 'cd x'
-        name = re.sub('\\([Cc][Dd][^)]*\\)', '', name)
+        name = re.sub("\\([Cc][Dd][^)]*\\)", "", name)
         # remove 'track x' from multi-part bin files
-        name = re.sub('\\([Tt][Tr][Aa][Cc][Kk][^)]*\\)', '', name)
+        name = re.sub("\\([Tt][Tr][Aa][Cc][Kk][^)]*\\)", "", name)
         # remove 'xxx disk' from name
         # name = re.sub('\\([^\\(]* [Dd][Ii][Ss][Kk]\\)', '', name)
         return name
@@ -223,7 +223,7 @@ class GameNameUtil(object):
         base_name = ""
         primary = ""
 
-        m = re.search('\\([Dd][Ii][Ss][Kk]([^)]*)\\)(\\([^\\)]*\\))?', name)
+        m = re.search("\\([Dd][Ii][Ss][Kk]([^)]*)\\)(\\([^\\)]*\\))?", name)
         if m:
             base_name = "Disk "
         else:
@@ -289,7 +289,7 @@ class GameNameUtil(object):
 
     @classmethod
     def strip_flags(cls, name):
-        name = re.sub('\\[[^\\]]*\\]', '', name)
+        name = re.sub("\\[[^\\]]*\\]", "", name)
         # name = name.replace('(Boot)', '')
         return name
 
@@ -297,7 +297,6 @@ class GameNameUtil(object):
     @classmethod
     def extract_names(cls, path, info=None, style=TOSEC):
         return cls.extract_names_from_file_name(path, info=info, style=style)
-
 
     @classmethod
     def extract_names_from_file_name(cls, path, info=None, style=TOSEC):
@@ -309,8 +308,10 @@ class GameNameUtil(object):
         name = os.path.basename(path)
         # FIXME: no longer allowed to send in paths!
         if "/" in path or "\\" in path:
-            print("WARNING: slash (or backslash in extract_names arg:",
-                  repr(path))
+            print(
+                "WARNING: slash (or backslash in extract_names arg:",
+                repr(path),
+            )
 
         # name = path
         # print(name)
@@ -338,13 +339,13 @@ class GameNameUtil(object):
         # without paranthesis - put paranthesis around version
 
         # print(name)
-        name = re.sub('( v[0-9A-Z][^ ]*) \\(', '(\\1) (', name)
+        name = re.sub("( v[0-9A-Z][^ ]*) \\(", "(\\1) (", name)
         # also sometimes rXX where XX is the revision
-        name = re.sub('( r[0-9A-Z][^ ]*) \\(', '(\\1) (', name)
+        name = re.sub("( r[0-9A-Z][^ ]*) \\(", "(\\1) (", name)
         # print("...", name)
 
         # remove adjacent spaces
-        name = re.sub('[ ]+', ' ', name)
+        name = re.sub("[ ]+", " ", name)
 
         name = name.replace("[", "(")
         name = name.replace("]", ")")
@@ -369,23 +370,23 @@ class GameNameUtil(object):
         name = "(".join(parts)
 
         # find end of name (and start of config name)
-        pos = name.find('(')
-        pos2 = name.find('[')
+        pos = name.find("(")
+        pos2 = name.find("[")
         if pos > 0:
             if 0 < pos2 < pos:
                 pos = pos2
         if pos > 0:
             game_name = name[:pos].strip()
             config_name = name[pos:]
-            config_name = config_name.replace('[!]', ' ')
-            config_name = config_name.replace(',', ', ')
-            config_name = config_name.replace(')', ', ')
+            config_name = config_name.replace("[!]", " ")
+            config_name = config_name.replace(",", ", ")
+            config_name = config_name.replace(")", ", ")
             # config_name = config_name.replace(']', ', ')
-            config_name = config_name.replace('(', '')
+            config_name = config_name.replace("(", "")
             # config_name = config_name.replace('[', '')
-            config_name = config_name.replace(' ,', ',')
-            config_name = config_name.strip(' ,')
-            config_name = re.sub('[ ]+', ' ', config_name)
+            config_name = config_name.replace(" ,", ",")
+            config_name = config_name.strip(" ,")
+            config_name = re.sub("[ ]+", " ", config_name)
         else:
             game_name = name.strip()
         # if game_name.lower().endswith(', the'):
@@ -412,7 +413,7 @@ class GameNameUtil(object):
             print("word:", word)
             letters = [" "]
             for letter in word:
-                decomposed = unicodedata.normalize('NFD', letter)
+                decomposed = unicodedata.normalize("NFD", letter)
                 if len(decomposed) > 1:
                     for c in decomposed:
                         if c in "abcdefghijklmnopqrstuvwxyz0123456789+":
@@ -437,7 +438,8 @@ class GameNameUtil(object):
                 if len(sub_words) > 0:
                     for i in range(1, len(sub_words)):
                         combinations.extend(
-                            itertools.combinations(sub_words, i))
+                            itertools.combinations(sub_words, i)
+                        )
                 print("- combinations:")
                 for combination in combinations:
                     print(" ", combination)
@@ -475,7 +477,8 @@ class GameNameUtil(object):
 
         stripped_name = QUOTED_TERMS_RE.sub(callback, name)
         result = cls.extract_index_terms(
-            stripped_name, include_combinations=False, expand=False)
+            stripped_name, include_combinations=False, expand=False
+        )
         for term in quoted_terms:
             result.add(term)
         return result
@@ -586,7 +589,6 @@ for _year_i in range(1980, 2000):
 
 
 class TestGameNameUtil(unittest.TestCase):
-
     def test_already_commaed_name(self):
         full_name = "Name (A, B, C).adf"
         name, variant = GameNameUtil.extract_names(full_name)
@@ -608,8 +610,10 @@ class TestGameNameUtil(unittest.TestCase):
         self.assertEquals(variant, "")
 
     def test_tosec_name(self):
-        full_name = ("Lotus Turbo Challenge 2 (1991)(Gremlin)[cr CPY]"
-                     "[t +4 Goonies].adf")
+        full_name = (
+            "Lotus Turbo Challenge 2 (1991)(Gremlin)[cr CPY]"
+            "[t +4 Goonies].adf"
+        )
         name, variant = GameNameUtil.extract_names(full_name)
         self.assertEquals(name, "Lotus Turbo Challenge 2")
         self.assertEquals(variant, "1991, Gremlin, cr CPY, t +4 Goonies")
@@ -633,137 +637,161 @@ class TestGameNameUtil(unittest.TestCase):
         self.assertEquals(variant, "r59, 1986, Infocom")
 
     def test_leather_goddesses_of_phobos(self):
-        full_name = ("Hitchhiker's Guide to the Galaxy, The r58 "
-                     "(1986)(Infocom).adf")
+        full_name = (
+            "Hitchhiker's Guide to the Galaxy, The r58 " "(1986)(Infocom).adf"
+        )
         name, variant = GameNameUtil.extract_names(full_name)
         self.assertEquals(name, "Hitchhiker's Guide to the Galaxy, The")
         self.assertEquals(variant, "r58, 1986, Infocom")
 
     def test_deep_core(self):
-        full_name =  "Deep Core (Europe)(v1.00).dummy"
+        full_name = "Deep Core (Europe)(v1.00).dummy"
         name, variant = GameNameUtil.extract_names_from_file_name(
-            full_name, style=GameNameUtil.NOINTRO)
+            full_name, style=GameNameUtil.NOINTRO
+        )
         self.assertEquals(name, "Deep Core")
         self.assertEquals(variant, "Europe, v1.00")
 
     def test_extract_index_terms_kings_quest(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("King's Quest IV"),
-            set(["king", "kings", "s", "quest", "4"]))
+            set(["king", "kings", "s", "quest", "4"]),
+        )
 
     def test_extract_index_terms_alien_breed_2(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Alien Breed II"),
-            set(["alieng", "breed", "2"]))
+            set(["alieng", "breed", "2"]),
+        )
 
         self.assertEqual(
             GameNameUtil.extract_index_terms("Alien Breed 2"),
-            set(["alieng", "breed", "2"]))
+            set(["alieng", "breed", "2"]),
+        )
 
     def test_extract_index_terms_project_x_se_92(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Project-X SE '92"),
-            set(["projectx", "project", "10", "special",
-                 "editiong", "1992"]))
+            set(["projectx", "project", "10", "special", "editiong", "1992"]),
+        )
 
     def test_extract_index_terms_leaving_teramis(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Leavin' Teramis"),
-            set(["leaving", "teramis"]))
+            set(["leaving", "teramis"]),
+        )
 
     def test_extract_index_terms_fa_18_interceptor(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("F/A-18 Interceptor"),
-            set(["f", "fa", "fa18", "f18", "a18", "f", "18",
-                 "interceptor"]))
+            set(["f", "fa", "fa18", "f18", "a18", "f", "18", "interceptor"]),
+        )
 
     def test_extract_index_sensible_soccer_95_96(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Sensible Soccer '95/'96"),
-            set(["sensible", "soccer", "1995", "1996", "9596"]))
+            set(["sensible", "soccer", "1995", "1996", "9596"]),
+        )
 
         self.assertEqual(
             GameNameUtil.extract_index_terms("Sensible Soccer 1995-96"),
-            set(["sensible", "soccer", "1995", "1996", "199596"]))
+            set(["sensible", "soccer", "1995", "1996", "199596"]),
+        )
 
     def test_extract_index_bump_n_burn(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Bump 'n' Burn"),
-            set(["bump", "burng"]))
+            set(["bump", "burng"]),
+        )
 
     def test_extract_index_bump_n_burn_2(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Bump'n' Burn"),
-            set(["bump", "burng", "bumpng"]))
+            set(["bump", "burng", "bumpng"]),
+        )
 
     def test_extract_index_bump_n_burn_3(self):
         self.assertEqual(
             GameNameUtil.extract_index_terms("Bump'n Burn"),
-            set(["bump", "burng", "bumpng"]))
+            set(["bump", "burng", "bumpng"]),
+        )
 
     def test_search_bump_n_burn(self):
         self.assertTrue(
             GameNameUtil.extract_index_terms("Bump 'n' Burn").issuperset(
-                GameNameUtil.extract_search_terms("Bump'n Burn")))
+                GameNameUtil.extract_search_terms("Bump'n Burn")
+            )
+        )
 
     def test_search_bump_n_burn_2(self):
         self.assertTrue(
             GameNameUtil.extract_index_terms("Bump 'n' Burn").issuperset(
-                GameNameUtil.extract_search_terms("Bump and Burn")))
+                GameNameUtil.extract_search_terms("Bump and Burn")
+            )
+        )
 
     def test_search_bump_n_burn_3(self):
         self.assertTrue(
-            GameNameUtil.extract_index_terms("Lotus Turbo Challenge 2")
-            .issuperset(
-                GameNameUtil.extract_search_terms("Lotus II")))
+            GameNameUtil.extract_index_terms(
+                "Lotus Turbo Challenge 2"
+            ).issuperset(GameNameUtil.extract_search_terms("Lotus II"))
+        )
 
     def test_search_sensible_1(self):
         self.assertTrue(
-            GameNameUtil.extract_index_terms("Sensible Soccer '95/'96")
-            .issuperset(
-                GameNameUtil.extract_search_terms("soccer 95/96")))
+            GameNameUtil.extract_index_terms(
+                "Sensible Soccer '95/'96"
+            ).issuperset(GameNameUtil.extract_search_terms("soccer 95/96"))
+        )
 
     def test_search_fa_18(self):
         self.assertTrue(
-            GameNameUtil.extract_index_terms("F/A-18 Interceptor")
-            .issuperset(
-                GameNameUtil.extract_search_terms("fa 18")))
+            GameNameUtil.extract_index_terms("F/A-18 Interceptor").issuperset(
+                GameNameUtil.extract_search_terms("fa 18")
+            )
+        )
 
     def test_search_formula_1(self):
         self.assertTrue(
-            GameNameUtil.extract_index_terms("Formula 1")
-            .issuperset(
-                GameNameUtil.extract_search_terms("formula one")))
+            GameNameUtil.extract_index_terms("Formula 1").issuperset(
+                GameNameUtil.extract_search_terms("formula one")
+            )
+        )
 
     def test_search_formula_1_2(self):
         self.assertTrue(
-            GameNameUtil.extract_index_terms("Formula one")
-            .issuperset(
-                GameNameUtil.extract_search_terms("formula 1")))
+            GameNameUtil.extract_index_terms("Formula one").issuperset(
+                GameNameUtil.extract_search_terms("formula 1")
+            )
+        )
 
     def test_search_projectx_1(self):
         self.assertTrue(
-            GameNameUtil.extract_index_terms("Project-X SE")
-            .issuperset(
-                GameNameUtil.extract_search_terms("project x special")))
+            GameNameUtil.extract_index_terms("Project-X SE").issuperset(
+                GameNameUtil.extract_search_terms("project x special")
+            )
+        )
 
     def test_search_projectx_2(self):
         self.assertTrue(
-            GameNameUtil.extract_index_terms("Project-X Special Edition")
-            .issuperset(
-                GameNameUtil.extract_search_terms("projectx se")))
+            GameNameUtil.extract_index_terms(
+                "Project-X Special Edition"
+            ).issuperset(GameNameUtil.extract_search_terms("projectx se"))
+        )
 
     def test_search_yo_joe(self):
         self.assertTrue(
-            GameNameUtil.extract_index_terms("Yo! Joe!")
-            .issuperset(
-                GameNameUtil.extract_search_terms("yo joe")))
+            GameNameUtil.extract_index_terms("Yo! Joe!").issuperset(
+                GameNameUtil.extract_search_terms("yo joe")
+            )
+        )
 
     def test_search_alien3(self):
         self.assertTrue(
-            GameNameUtil.extract_index_terms("Alien 3")
-            .issuperset(
-                GameNameUtil.extract_search_terms("Alien\u00b3")))
+            GameNameUtil.extract_index_terms("Alien 3").issuperset(
+                GameNameUtil.extract_search_terms("Alien\u00b3")
+            )
+        )
 
 
 if __name__ == "__main__":

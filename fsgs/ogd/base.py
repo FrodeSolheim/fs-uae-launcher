@@ -4,14 +4,18 @@ from gzip import GzipFile
 from io import StringIO
 from urllib.request import Request
 import requests
-from fsgs.network import openretro_url_prefix, opener_for_url_prefix, \
-    is_http_url
+from fsgs.network import (
+    openretro_url_prefix,
+    opener_for_url_prefix,
+    is_http_url,
+)
 from fsgs.res import gettext
 
 USE_REQUESTS = True
 
 
 # FIXME: Overlap in code/functionality with GameDatabaseSynchronizer
+
 
 class SynchronizerBase(object):
     def __init__(self, context, on_status=None, stop_check=None):
@@ -47,8 +51,11 @@ class SynchronizerBase(object):
 
     def opener(self):
         return opener_for_url_prefix(
-            self.url_prefix(), self.context.username, self.context.password,
-            cache_dict=self.opener_cache_dict)
+            self.url_prefix(),
+            self.context.username,
+            self.context.password,
+            cache_dict=self.opener_cache_dict,
+        )
 
     def fetch_json_attempt(self, url):
         if USE_REQUESTS:
@@ -89,15 +96,20 @@ class SynchronizerBase(object):
                 sleep_time = 2.0 + i * 0.3
                 # FIXME: change second {0} to {1}
                 self.set_status(
-                    gettext("Download failed (attempt {0}) - retrying in {0} "
-                            "seconds").format(i + 1, int(sleep_time)))
+                    gettext(
+                        "Download failed (attempt {0}) - retrying in {0} "
+                        "seconds"
+                    ).format(i + 1, int(sleep_time))
+                )
                 for _ in range(int(sleep_time) * 10):
                     time.sleep(0.1)
                     if self.stop_check():
                         return
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
-                        i + 1))
+                        i + 1
+                    )
+                )
         return self.fetch_json_attempt(url)
 
     def fetch_data(self, url):
@@ -109,13 +121,18 @@ class SynchronizerBase(object):
                 sleep_time = 2.0 + i * 0.3
                 # FIXME: change second {0} to {1}
                 self.set_status(
-                    gettext("Download failed (attempt {0}) - retrying in {0} "
-                            "seconds").format(i + 1, int(sleep_time)))
+                    gettext(
+                        "Download failed (attempt {0}) - retrying in {0} "
+                        "seconds"
+                    ).format(i + 1, int(sleep_time))
+                )
                 for _ in range(int(sleep_time) * 10):
                     time.sleep(0.1)
                     if self.stop_check():
                         return
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
-                        i + 1))
+                        i + 1
+                    )
+                )
         return self.fetch_data_attempt(url)

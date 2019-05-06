@@ -28,7 +28,8 @@ AMIGA_PORTS = [
         "types": [AMIGA_JOYSTICK, AMIGA_MOUSE, CD32_CONTROLLER],
         "type_option": "joystick_port_1_mode",
         "device_option": "joystick_port_1",
-    }, {
+    },
+    {
         "description": "Mouse Port",
         "types": [AMIGA_JOYSTICK, AMIGA_MOUSE, CD32_CONTROLLER],
         "type_option": "joystick_port_0_mode",
@@ -70,18 +71,31 @@ class FSUAEAmigaDriver(GameDriver):
         # uuid = None
 
         from fsgs.saves import SaveHandler
+
         save_state_handler = SaveHandler(self.fsgc, self.get_name(), platform)
 
-        print("[INPUT] joystick_port_1", self.options["joystick_port_1"],
-              "->", self.ports[0].device_id or "none")
-        print("[INPUT] joystick_port_0", self.options["joystick_port_0"],
-              "->", self.ports[1].device_id or "none")
+        print(
+            "[INPUT] joystick_port_1",
+            self.options["joystick_port_1"],
+            "->",
+            self.ports[0].device_id or "none",
+        )
+        print(
+            "[INPUT] joystick_port_0",
+            self.options["joystick_port_0"],
+            "->",
+            self.ports[1].device_id or "none",
+        )
         self.options["joystick_port_1"] = self.ports[0].device_id or "none"
         self.options["joystick_port_0"] = self.ports[1].device_id or "none"
 
         self.launch_handler = LaunchHandler(
-            self.fsgc, self.get_name(), self.options, save_state_handler,
-            temp_dir=self.cwd.path)
+            self.fsgc,
+            self.get_name(),
+            self.options,
+            save_state_handler,
+            temp_dir=self.cwd.path,
+        )
 
         # self.change_handler.init(self.fsgc.get_game_state_dir(),
         #         ignore=["*.uss", "*.sdf"])
@@ -96,8 +110,9 @@ class FSUAEAmigaDriver(GameDriver):
             if not self.launch_handler.config.get("fullscreen_mode", ""):
                 # Check if fullscreen mode is overridden by temporary setting.
                 if Settings.instance()["__fullscreen_mode"]:
-                    self.launch_handler.config["fullscreen_mode"] = \
-                        Settings.instance()["__fullscreen_mode"]
+                    self.launch_handler.config[
+                        "fullscreen_mode"
+                    ] = Settings.instance()["__fullscreen_mode"]
             if Settings.instance()["__arcade"]:
                 # Remove window border when launched from FS-UAE Arcade in
                 # order to reduce flickering
@@ -139,9 +154,11 @@ class FSUAEAmigaDriver(GameDriver):
         print("FSUAEAmigaDriver.run, cwd =", self.cwd.path)
         config = self.launch_handler.create_config()
         self.emulator.process, self.temp_config_file = FSUAE.start_with_config(
-            config, cwd=self.cwd.path)
+            config, cwd=self.cwd.path
+        )
         self.write_emulator_pid_file(
-            self.emulator_pid_file(), self.emulator.process)
+            self.emulator_pid_file(), self.emulator.process
+        )
 
     def finish(self):
         print("FSUAEAmigaDriver.finish: Removing", self.temp_config_file)

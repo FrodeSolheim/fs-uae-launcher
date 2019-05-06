@@ -59,14 +59,15 @@ class Device(object):
             host_platform = "other"
 
         config_name = "{0}_{1}_{2}_{3}_{4}_{5}".format(
-            name, self.buttons, self.axes, self.hats, self.balls,
-            host_platform)
+            name, self.buttons, self.axes, self.hats, self.balls, host_platform
+        )
         return config_name
 
     def configure(self, system, multiple=True):
         # name = self.name.rsplit("#", 1)[0]
         name = self.name
         from fsgs.input.inputdevice import InputDevice
+
         try:
             # device id must end with #something (really a device number,
             # but can be anything
@@ -75,13 +76,23 @@ class Device(object):
             else:
                 name_with_hash = name + " #DUMMY"
             device = InputDevice(
-                system, name_with_hash, [], version=2, axes=self.axes,
-                hats=self.hats, buttons=self.buttons, balls=self.balls,
-                multiple=multiple)
+                system,
+                name_with_hash,
+                [],
+                version=2,
+                axes=self.axes,
+                hats=self.hats,
+                buttons=self.buttons,
+                balls=self.balls,
+                multiple=multiple,
+            )
             config = device.get_config()
         except Exception as e:
-            print("error initializing device {0} for {1}".format(
-                self.name, system))
+            print(
+                "error initializing device {0} for {1}".format(
+                    self.name, system
+                )
+            )
             print(repr(e))
             # return {}
             raise e

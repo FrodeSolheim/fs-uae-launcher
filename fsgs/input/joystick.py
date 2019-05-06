@@ -5,7 +5,6 @@ from fsbc.system import windows, macosx
 
 
 class Joystick(object):
-
     @classmethod
     def _get_joystick_hash(cls):
 
@@ -49,8 +48,8 @@ class Joystick(object):
             return hash("FIXME")
 
         else:
-            if os.path.exists('/dev/input'):
-                return hash(tuple(os.listdir('/dev/input')))
+            if os.path.exists("/dev/input"):
+                return hash(tuple(os.listdir("/dev/input")))
             return hash("FIXME")
 
     _hash = None
@@ -73,6 +72,7 @@ class Joystick(object):
             cls._thread()
         except Exception:
             import traceback
+
             traceback.print_exc()
 
     @classmethod

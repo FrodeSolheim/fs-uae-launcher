@@ -29,19 +29,10 @@ class GameCubeLoader(SimpleLoader):
 
 class GameCubeDriver(DolphinDriver):
     PORTS = [
-        {
-            "description": "Controller 1",
-            "types": [NGC_CONTROLLER]
-        }, {
-            "description": "Controller 2",
-            "types": [NGC_CONTROLLER]
-        }, {
-            "description": "Controller 3",
-            "types": [NGC_CONTROLLER]
-        }, {
-            "description": "Controller 4",
-            "types": [NGC_CONTROLLER]
-        },
+        {"description": "Controller 1", "types": [NGC_CONTROLLER]},
+        {"description": "Controller 2", "types": [NGC_CONTROLLER]},
+        {"description": "Controller 3", "types": [NGC_CONTROLLER]},
+        {"description": "Controller 4", "types": [NGC_CONTROLLER]},
     ]
 
     def __init__(self, fsgs):
@@ -63,10 +54,16 @@ class GameCubeDriver(DolphinDriver):
         # FIXME:
         memcard_region = "USA"
 
-        f.write("MemcardA = {dir}/MemoryCardA.{region}.raw\n".format(
-            dir=self.get_state_dir(), region=memcard_region))
-        f.write("MemcardB = {dir}/MemoryCardB.{region}.raw\n".format(
-            dir=self.get_state_dir(), region=memcard_region))
+        f.write(
+            "MemcardA = {dir}/MemoryCardA.{region}.raw\n".format(
+                dir=self.get_state_dir(), region=memcard_region
+            )
+        )
+        f.write(
+            "MemcardB = {dir}/MemoryCardB.{region}.raw\n".format(
+                dir=self.get_state_dir(), region=memcard_region
+            )
+        )
 
     def dolphin_configure_input(self):
         # devices = self.context.input.get_devices(1, 4)
@@ -97,7 +94,8 @@ class GameCubeDriver(DolphinDriver):
         }
         temp_dir = self.temp_dir("dolphin")
         input_config_file = os.path.join(
-            temp_dir.path, "user", "Config", "GCPadNew.ini")
+            temp_dir.path, "user", "Config", "GCPadNew.ini"
+        )
         f = open(input_config_file, "w")
         for i, port in enumerate(self.ports):
             if not port.device:
@@ -107,17 +105,18 @@ class GameCubeDriver(DolphinDriver):
                 f.write("Device = DInput/0/Keyboard Mouse\n")
             else:
                 type_index = int(port.device.id.rsplit("#", 1)[1]) - 1
-                f.write("Device = SDL/{index}/{name}\n".format(
-                    index=type_index, name=port.device.sdl_name))
+                f.write(
+                    "Device = SDL/{index}/{name}\n".format(
+                        index=type_index, name=port.device.sdl_name
+                    )
+                )
             mapper = DolphinInputMapper(port, input_mapping)
             for key, value in mapper.items():
                 if isinstance(key, tuple):
                     for k in key:
-                        f.write("{key} = {value}\n".format(
-                            key=k, value=value))
+                        f.write("{key} = {value}\n".format(key=k, value=value))
                 else:
-                    f.write("{key} = {value}\n".format(
-                        key=key, value=value))
+                    f.write("{key} = {value}\n".format(key=key, value=value))
 
 
 class GameCubeHelper:

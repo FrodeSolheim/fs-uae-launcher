@@ -15,7 +15,8 @@ class DolphinDriver(GameDriver):
         # configure dolphin.ini
         temp_dir = self.temp_dir("dolphin")
         dolphin_config_file = os.path.join(
-            temp_dir.path, "user", "Config", "Dolphin.ini")
+            temp_dir.path, "user", "Config", "Dolphin.ini"
+        )
         if not os.path.exists(os.path.dirname(dolphin_config_file)):
             os.makedirs(os.path.dirname(dolphin_config_file))
 
@@ -46,8 +47,11 @@ class DolphinDriver(GameDriver):
         f.write("HideCursor = True\n")
         f.write("[Display]\n")
         f.write("RenderToMain = True\n")
-        f.write("FullscreenResolution = {w}x{h}\n".format(
-            w=self.screen_size()[0], h=self.screen_size()[1]))
+        f.write(
+            "FullscreenResolution = {w}x{h}\n".format(
+                w=self.screen_size()[0], h=self.screen_size()[1]
+            )
+        )
         if self.use_fullscreen():
             f.write("Fullscreen = True\n")
         else:
@@ -70,7 +74,8 @@ class DolphinDriver(GameDriver):
             vsync = False
         if System.windows:
             graphics_config_file = os.path.join(
-                temp_dir, "user", "Config", "gfx_dx9.ini")
+                temp_dir, "user", "Config", "gfx_dx9.ini"
+            )
             with open(graphics_config_file, "w") as f:
                 f.write("[Hardware]\n")
                 if vsync:
@@ -83,7 +88,8 @@ class DolphinDriver(GameDriver):
                 f.write("EFBToTextureEnable = True\n")
         else:
             graphics_config_file = os.path.join(
-                temp_dir.path, "user", "Config", "gfx_opengl.ini")
+                temp_dir.path, "user", "Config", "gfx_opengl.ini"
+            )
             with open(graphics_config_file, "w") as f:
                 f.write("[Hardware]\n")
                 if vsync:
@@ -141,12 +147,9 @@ class DolphinInputMapper(InputMapper):
         return "Axis " + str(axis) + dir_str
 
     def hat(self, hat, direction):
-        dir_str = {
-            "left": "W",
-            "right": "E",
-            "up": "N",
-            "down": "S",
-        }[direction]
+        dir_str = {"left": "W", "right": "E", "up": "N", "down": "S"}[
+            direction
+        ]
         return "Hat " + str(hat) + " " + dir_str
 
     def button(self, button):

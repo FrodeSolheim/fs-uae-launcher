@@ -55,7 +55,6 @@ CONFIG_KEY_BLACKLIST = [
 
 
 class ConfigWriter(object):
-
     def __init__(self, config):
         self.config = config
 
@@ -86,8 +85,9 @@ class ConfigWriter(object):
             normalized_key = key.lower().replace("-", "_")
             for ignore_key in CONFIG_KEY_BLACKLIST:
                 if ignore_key == normalized_key or (
-                    ignore_key.endswith("*") and
-                        normalized_key.startswith(ignore_key[:-1])):
+                    ignore_key.endswith("*")
+                    and normalized_key.startswith(ignore_key[:-1])
+                ):
                     ignore = True
             if ignore:
                 continue

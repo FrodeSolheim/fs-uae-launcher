@@ -9,13 +9,8 @@ class MessNesDriver(MessDriver):
     }
 
     PORTS = [
-        {
-            "description": "1st Controller",
-            "types": [CONTROLLER]
-        }, {
-            "description": "2nd Controller",
-            "types": [CONTROLLER]
-        },
+        {"description": "1st Controller", "types": [CONTROLLER]},
+        {"description": "2nd Controller", "types": [CONTROLLER]},
     ]
 
     def mess_input_mapping(self, _):

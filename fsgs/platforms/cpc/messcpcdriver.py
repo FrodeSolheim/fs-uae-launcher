@@ -9,13 +9,8 @@ class MessCpcDriver(MessDriver):
     }
 
     PORTS = [
-        {
-            "description": "1st Controller",
-            "types": [CONTROLLER]
-        }, {
-            "description": "2nd Controller",
-            "types": [CONTROLLER]
-        },
+        {"description": "1st Controller", "types": [CONTROLLER]},
+        {"description": "2nd Controller", "types": [CONTROLLER]},
     ]
 
     def mess_configure(self):
@@ -26,7 +21,8 @@ class MessCpcDriver(MessDriver):
             #     self.config["command"]))
             # self.args.extend(["-autoboot_delay", ""])
             self.args.extend(
-                ["-autoboot_command", self.config["command"] + r"\n"])
+                ["-autoboot_command", self.config["command"] + r"\n"]
+            )
 
     def mess_full_keyboard(self):
         return True

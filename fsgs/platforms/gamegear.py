@@ -27,12 +27,7 @@ class MednafenGameGearDriver(MednafenDriver):
         "mapping_name": "gamegear",
     }
 
-    PORTS = [
-        {
-            "description": "Controller",
-            "types": [CONTROLLER]
-        },
-    ]
+    PORTS = [{"description": "Controller", "types": [CONTROLLER]}]
 
     def __init__(self, fsgc):
         super().__init__(fsgc)
@@ -104,6 +99,7 @@ class GameGearHelper:
                 f.write(data)
                 sha1_obj.update(data)
         new_path = os.path.join(
-            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext)
+            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext
+        )
         os.rename(path, new_path)
         return new_path

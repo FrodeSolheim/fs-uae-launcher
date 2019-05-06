@@ -2,7 +2,6 @@ import weakref
 
 
 class ContextAware(object):
-
     def __init__(self, context):
         self.__context = weakref.ref(context)
 

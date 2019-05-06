@@ -18,7 +18,6 @@ class ArcadePlatformHandler(PlatformHandler):
 
 
 class ArcadeLoader(SimpleLoader):
-
     def load_files(self, values):
         # file_list = json.loads(values["file_list"])
         # assert len(file_list) == 1

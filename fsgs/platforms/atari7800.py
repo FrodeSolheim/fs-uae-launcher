@@ -28,7 +28,8 @@ A7800_PORTS = [
         "types": [A7800_JOYSTICK, NO_CONTROLLER],
         "type_option": "a7800_port_1_type",
         "device_option": "a7800_port_1",
-    }, {
+    },
+    {
         "description": "Port 2",
         "types": [A7800_JOYSTICK, NO_CONTROLLER],
         "type_option": "a7800_port_2_type",
@@ -42,9 +43,7 @@ A7800_ROMS = {
 }
 
 # noinspection SpellCheckingInspection
-A7800P_ROMS = {
-    "5a140136a16d1d83e4ff32a19409ca376a8df874": "7800pal.rom",
-}
+A7800P_ROMS = {"5a140136a16d1d83e4ff32a19409ca376a8df874": "7800pal.rom"}
 
 
 class Atari7800PlatformHandler(Platform):
@@ -153,6 +152,7 @@ class Atari7800Helper:
                 f.write(data)
                 sha1_obj.update(data)
         new_path = os.path.join(
-            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext)
+            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext
+        )
         os.rename(path, new_path)
         return new_path

@@ -79,7 +79,8 @@ class DosBoxDosDriver(GameDriver):
             # print(drive)
             # print(drive_path)
             self.save_handler.register_changes(
-                drive_path, os.path.join(self.save_handler.save_dir(), drive))
+                drive_path, os.path.join(self.save_handler.save_dir(), drive)
+            )
         self.save_handler.prepare()
 
     def finish(self):
@@ -92,8 +93,9 @@ class DosBoxDosDriver(GameDriver):
         if self.options["cue_sheets"]:
             cue_sheets = json.loads(self.options["cue_sheets"])
             for cue_sheet in cue_sheets:
-                with open(os.path.join(self.drives_dir.path,
-                                       cue_sheet["name"]), "wb") as f:
+                with open(
+                    os.path.join(self.drives_dir.path, cue_sheet["name"]), "wb"
+                ) as f:
                     f.write(cue_sheet["data"].encode("UTF-8"))
 
     def unpack_game_hard_drives(self, file_list):
@@ -197,8 +199,9 @@ class DosBoxDosDriver(GameDriver):
         f.write("core={0}\n".format(cpu_core))
         cpu_cycles = "auto"
         if self.options[Option.DOSBOX_CPU_CPUTYPE]:
-            f.write("cputype={0}\n".format(
-                self.options[Option.DOSBOX_CPU_CPUTYPE]))
+            f.write(
+                "cputype={0}\n".format(self.options[Option.DOSBOX_CPU_CPUTYPE])
+            )
         if self.options[Option.DOSBOX_CPU_CYCLES]:
             cpu_cycles = self.options[Option.DOSBOX_CPU_CYCLES]
             if cpu_cycles.startswith("max "):
@@ -235,25 +238,36 @@ class DosBoxDosDriver(GameDriver):
                     f.write('IMGMOUNT {0} "{1}" -t iso\n'.format(name, p))
                     continue
                 if name in "DEF":
-                    f.write('MOUNT {0} "{1}" -t cdrom\n'.format(
-                        name, os.path.join(self.drives_dir.path, name)))
+                    f.write(
+                        'MOUNT {0} "{1}" -t cdrom\n'.format(
+                            name, os.path.join(self.drives_dir.path, name)
+                        )
+                    )
                     continue
-                f.write('MOUNT {0} "{1}"\n'.format(
-                    name, os.path.join(self.drives_dir.path, name)))
+                f.write(
+                    'MOUNT {0} "{1}"\n'.format(
+                        name, os.path.join(self.drives_dir.path, name)
+                    )
+                )
         f.write("C:\n")
         f.write("CLS\n")
         # for i in range(25):
         #     f.write("echo.\n")
         if self.options[Option.AUTO_LOAD] == "0":
-            f.write("@echo Auto-load is disabled. The following is the "
-                    "normal commands to start this game:\n")
+            f.write(
+                "@echo Auto-load is disabled. The following is the "
+                "normal commands to start this game:\n"
+            )
             f.write("@echo.\n")
         for command in self.options[Option.COMMAND].split(";"):
             command = command.strip()
             command = command.replace("$DRIVES", self.drives_dir.path)
-            if not self.options[Option.AUTO_LOAD] == "0" or \
-                    command.lower().split(" ")[0].strip("@") in [
-                    "imgmount", "mount"]:
+            if not self.options[
+                Option.AUTO_LOAD
+            ] == "0" or command.lower().split(" ")[0].strip("@") in [
+                "imgmount",
+                "mount",
+            ]:
                 f.write("{0}\n".format(command))
             else:
                 f.write("@echo {0}\n".format(command))
@@ -274,7 +288,8 @@ class DosBoxDosDriver(GameDriver):
             f.write("ultradir=U:\\ULTRASND\n")
             ultrasnd_drive = os.path.join(self.drives_dir.path, "U")
             source_dir = os.path.join(
-                FSGSDirectories.get_data_dir(), "ULTRASND")
+                FSGSDirectories.get_data_dir(), "ULTRASND"
+            )
             dest_dir = os.path.join(ultrasnd_drive, "ULTRASND")
             if os.path.exists(source_dir):
                 shutil.copytree(source_dir, dest_dir)
@@ -298,13 +313,24 @@ class DosBoxDosDriver(GameDriver):
     def configure_sblaster(self, f):
         f.write("\n[sblaster]\n")
         if self.options[Option.DOSBOX_SBLASTER_SBTYPE]:
-            f.write("sbtype={}\n".format(
-                self.options[Option.DOSBOX_SBLASTER_SBTYPE]))
+            f.write(
+                "sbtype={}\n".format(
+                    self.options[Option.DOSBOX_SBLASTER_SBTYPE]
+                )
+            )
         if self.options[Option.DOSBOX_SBLASTER_SBBASE]:
-            f.write("sbbase={}\n".format(
-                self.options[Option.DOSBOX_SBLASTER_SBBASE]))
+            f.write(
+                "sbbase={}\n".format(
+                    self.options[Option.DOSBOX_SBLASTER_SBBASE]
+                )
+            )
         if self.options[Option.DOSBOX_SBLASTER_IRQ]:
-            f.write("irq={}\n".format(self.options[Option.DOSBOX_SBLASTER_IRQ]))
+            f.write(
+                "irq={}\n".format(self.options[Option.DOSBOX_SBLASTER_IRQ])
+            )
         if self.options[Option.DOSBOX_SBLASTER_OPLRATE]:
-            f.write("oplrate={}\n".format(
-                self.options[Option.DOSBOX_SBLASTER_OPLRATE]))
+            f.write(
+                "oplrate={}\n".format(
+                    self.options[Option.DOSBOX_SBLASTER_OPLRATE]
+                )
+            )

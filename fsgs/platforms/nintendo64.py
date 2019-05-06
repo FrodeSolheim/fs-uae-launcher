@@ -14,19 +14,10 @@ N64_CONTROLLER = {
     "mapping_name": "nintendo64",
 }
 N64_PORTS = [
-    {
-        "description": "Input Port 1",
-        "types": [N64_CONTROLLER]
-    }, {
-        "description": "Input Port 2",
-        "types": [N64_CONTROLLER]
-    }, {
-        "description": "Input Port 3",
-        "types": [N64_CONTROLLER]
-    }, {
-        "description": "Input Port 4",
-        "types": [N64_CONTROLLER]
-    },
+    {"description": "Input Port 1", "types": [N64_CONTROLLER]},
+    {"description": "Input Port 2", "types": [N64_CONTROLLER]},
+    {"description": "Input Port 3", "types": [N64_CONTROLLER]},
+    {"description": "Input Port 4", "types": [N64_CONTROLLER]},
 ]
 
 
@@ -47,19 +38,10 @@ class Nintendo64Loader(SimpleLoader):
 
 class Nintendo64MupenDriver(GameDriver):
     PORTS = [
-        {
-            "description": "Input Port 1",
-            "types": [N64_CONTROLLER]
-        }, {
-            "description": "Input Port 2",
-            "types": [N64_CONTROLLER]
-        }, {
-            "description": "Input Port 3",
-            "types": [N64_CONTROLLER]
-        }, {
-            "description": "Input Port 4",
-            "types": [N64_CONTROLLER]
-        },
+        {"description": "Input Port 1", "types": [N64_CONTROLLER]},
+        {"description": "Input Port 2", "types": [N64_CONTROLLER]},
+        {"description": "Input Port 3", "types": [N64_CONTROLLER]},
+        {"description": "Input Port 4", "types": [N64_CONTROLLER]},
     ]
 
     def __init__(self, fsgs):
@@ -118,8 +100,11 @@ class Nintendo64MupenDriver(GameDriver):
         # -stuff are saved to default dir in AppData/Roaming/Mupen64Plus/save
         # instead...
         # FIXME: Might work now with updated mupen64plus
-        f.write("SaveStatePath = '{path}'\n".format(
-            path=self.get_state_dir() + os.sep))
+        f.write(
+            "SaveStatePath = '{path}'\n".format(
+                path=self.get_state_dir() + os.sep
+            )
+        )
         self.configure_audio(f)
         self.configure_input(f)
         self.configure_video(f)
@@ -177,8 +162,8 @@ class Nintendo64MupenDriver(GameDriver):
             f.write("mode = 0\n")
             if port.device.type == "joystick":
                 f.write("device = {0}\n".format(port.device.index))
-                f.write("AnalogDeadZone = \"512,512\"\n")
-                f.write("AnalogPeak = \"32767,32767\"\n")
+                f.write('AnalogDeadZone = "512,512"\n')
+                f.write('AnalogPeak = "32767,32767"\n')
             else:
                 # -2 means keyboard/mouse
                 f.write("device = -2\n")
@@ -187,10 +172,16 @@ class Nintendo64MupenDriver(GameDriver):
                 type = value[0][0]
                 values = [x[1][1] for x in sorted(list(value.items()))]
                 values_str = ",".join(values)
-                f.write("{key} = \"{type}({values})\"\n".format(
-                    key=key, type=type, values=values_str))
-                print("{key} = \"{type}({values})\"\n".format(
-                    key=key, type=type, values=values_str))
+                f.write(
+                    '{key} = "{type}({values})"\n'.format(
+                        key=key, type=type, values=values_str
+                    )
+                )
+                print(
+                    '{key} = "{type}({values})"\n'.format(
+                        key=key, type=type, values=values_str
+                    )
+                )
 
     def configure_video(self, f):
         f.write("[Video-General]\n")
@@ -208,7 +199,7 @@ class Nintendo64MupenDriver(GameDriver):
         video_plugin = "glide64mk2"
         # video_plugin = "glide64"
         video_plugin = "rice"
-        f.write("VideoPlugin = \"mupen64plus-video-{}\"\n".format(video_plugin))
+        f.write('VideoPlugin = "mupen64plus-video-{}"\n'.format(video_plugin))
 
         if self.configure_vsync():
             # cannot find config for vsync in rice video plugin,
@@ -325,25 +316,25 @@ class Nintendo64RetroArchDriver(RetroArchDriver):
 
     def retroarch_input_mapping(self, port):
         input_mapping = {
-                "A": "input_player{n}_b",
-                "B": "input_player{n}_y",
-                "DPAD_UP": "input_player{n}_up",
-                "DPAD_DOWN": "input_player{n}_down",
-                "DPAD_LEFT": "input_player{n}_left",
-                "DPAD_RIGHT": "input_player{n}_right",
-                "STICK_UP": "input_player{n}_l_y_minus",
-                "STICK_DOWN": "input_player{n}_l_y_plus",
-                "STICK_LEFT": "input_player{n}_l_x_minus",
-                "STICK_RIGHT": "input_player{n}_l_x_plus",
-                "C_UP": "input_player{n}_r_y_plus",
-                "C_DOWN": "input_player{n}_r_y_minus",
-                "C_LEFT": "input_player{n}_r_x_minus",
-                "C_RIGHT": "input_player{n}_r_x_plus",
-                "RUMBLEPAK": "input_player{n}_select", # ???
-                "START": "input_player{n}_start",
-                "L": "input_player{n}_l",
-                "R": "input_player{n}_r",
-                "Z": "input_player{n}_l2",
+            "A": "input_player{n}_b",
+            "B": "input_player{n}_y",
+            "DPAD_UP": "input_player{n}_up",
+            "DPAD_DOWN": "input_player{n}_down",
+            "DPAD_LEFT": "input_player{n}_left",
+            "DPAD_RIGHT": "input_player{n}_right",
+            "STICK_UP": "input_player{n}_l_y_minus",
+            "STICK_DOWN": "input_player{n}_l_y_plus",
+            "STICK_LEFT": "input_player{n}_l_x_minus",
+            "STICK_RIGHT": "input_player{n}_l_x_plus",
+            "C_UP": "input_player{n}_r_y_plus",
+            "C_DOWN": "input_player{n}_r_y_minus",
+            "C_LEFT": "input_player{n}_r_x_minus",
+            "C_RIGHT": "input_player{n}_r_x_plus",
+            "RUMBLEPAK": "input_player{n}_select",  # ???
+            "START": "input_player{n}_start",
+            "L": "input_player{n}_l",
+            "R": "input_player{n}_r",
+            "Z": "input_player{n}_l2",
         }
         return {k: v.format(n=port + 1) for k, v in input_mapping.items()}
 

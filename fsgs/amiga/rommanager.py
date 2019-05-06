@@ -4,7 +4,6 @@ from fsgs.archive import Archive
 
 
 class ROMManager(object):
-
     @classmethod
     def add_rom_to_database(cls, path, database, log_function=None):
         if log_function is None:
@@ -14,6 +13,7 @@ class ROMManager(object):
             rom = ROMManager.decrypt_archive_rom(archive, path)
         except Exception:
             import traceback
+
             traceback.print_exc()
             return
         try:
@@ -23,8 +23,11 @@ class ROMManager(object):
             return
         size = st.st_size
         mtime = int(st.st_mtime)
-        log_function("Adding ROM \"{0}\" to database (SHA-1: {1})".format(
-                     path, rom["sha1"]))
+        log_function(
+            'Adding ROM "{0}" to database (SHA-1: {1})'.format(
+                path, rom["sha1"]
+            )
+        )
         database.delete_file(path=path)
         database.add_file(path=path, sha1=rom["sha1"], mtime=mtime, size=size)
 

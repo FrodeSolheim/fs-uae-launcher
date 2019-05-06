@@ -76,7 +76,8 @@ class FileDatabase(BaseDatabase):
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT id FROM file WHERE path >= ? AND path < ?",
-            (a_path, b_path))
+            (a_path, b_path),
+        )
         return set([row[0] for row in cursor.fetchall()])
 
     def encode_path(self, path):
@@ -85,7 +86,7 @@ class FileDatabase(BaseDatabase):
         path = path.replace("\\", "/")
         base_dir = FSGSDirectories.get_base_dir()
         if path.startswith(base_dir):
-            path = path[len(base_dir):]
+            path = path[len(base_dir) :]
             if path.startswith("/"):
                 path = path[1:]
             path = "$/" + path
@@ -124,7 +125,8 @@ class FileDatabase(BaseDatabase):
                 delete_ids.append(row[0])
         for id in delete_ids:
             cursor.execute(
-                "DELETE FROM file WHERE id = ? OR parent = ?", (id, id))
+                "DELETE FROM file WHERE id = ? OR parent = ?", (id, id)
+            )
         self.last_file_delete = int(time.time())
 
     def check_sha1(self, sha1):
@@ -135,8 +137,9 @@ class FileDatabase(BaseDatabase):
             return True
         cursor = self.internal_cursor()
         cursor.execute(
-            "SELECT count(*) FROM file WHERE sha1 = ?", (
-                sqlite3.Binary(unhexlify(sha1)),))
+            "SELECT count(*) FROM file WHERE sha1 = ?",
+            (sqlite3.Binary(unhexlify(sha1)),),
+        )
         return cursor.fetchone()[0]
 
     def find_file(self, name="", sha1="", path=""):
@@ -153,25 +156,28 @@ class FileDatabase(BaseDatabase):
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size, parent "
                 "FROM file WHERE sha1 = ? LIMIT 1",
-                (sqlite3.Binary(sha1),))
+                (sqlite3.Binary(sha1),),
+            )
         elif name:
             # noinspection SpellCheckingInspection
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size, parent "
                 "FROM file WHERE name = ? COLLATE NOCASE LIMIT 1",
-                (name.lower(),))
+                (name.lower(),),
+            )
         else:
             path = self.encode_path(path)
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size, parent "
-                "FROM file WHERE path = ? LIMIT 1", (path,))
+                "FROM file WHERE path = ? LIMIT 1",
+                (path,),
+            )
         row = cursor.fetchone()
         result = File()
         if row:
             if row[5]:
                 # parent
-                cursor.execute(
-                    "SELECT path FROM file WHERE id = ?", (row[5],))
+                cursor.execute("SELECT path FROM file WHERE id = ?", (row[5],))
                 path = cursor.fetchone()[0] + row[1]
             else:
                 path = row[1]
@@ -202,9 +208,7 @@ class FileDatabase(BaseDatabase):
         cursor.execute(query, args)
         results = []
         for row in cursor:
-            data = {
-                "path": self.decode_path(row[0]),
-            }
+            data = {"path": self.decode_path(row[0])}
             results.append(data)
         return results
 
@@ -212,26 +216,31 @@ class FileDatabase(BaseDatabase):
         self.init()
         path = self.encode_path(path)
         cursor = self.internal_cursor()
-        print("[FILES] Add file", repr(path), repr(sha1), repr(mtime),
-              repr(size), repr(parent))
+        print(
+            "[FILES] Add file",
+            repr(path),
+            repr(sha1),
+            repr(mtime),
+            repr(size),
+            repr(parent),
+        )
         if sha1:
             sha1 = unhexlify(sha1)
         cursor.execute(
             "INSERT INTO file (path, sha1, mtime, size, parent) "
             "VALUES (?, ?, ?, ?, ?)",
-            (path, sqlite3.Binary(sha1), mtime, size, parent))
+            (path, sqlite3.Binary(sha1), mtime, size, parent),
+        )
         self.last_file_insert = int(time.time())
         return cursor.lastrowid
 
     def get_last_event_stamps(self):
         cursor = self.internal_cursor()
         cursor.execute(
-            "SELECT last_file_insert, last_file_delete FROM metadata")
+            "SELECT last_file_insert, last_file_delete FROM metadata"
+        )
         row = cursor.fetchone()
-        result = {
-            "last_file_insert": row[0],
-            "last_file_delete": row[0],
-        }
+        result = {"last_file_insert": row[0], "last_file_delete": row[0]}
         return result
 
     def update_last_event_stamps(self):
@@ -239,13 +248,15 @@ class FileDatabase(BaseDatabase):
             cursor = self.internal_cursor()
             cursor.execute(
                 "UPDATE metadata set last_file_insert = ?",
-                (self.last_file_insert,))
+                (self.last_file_insert,),
+            )
             self.last_file_insert = None
         if self.last_file_delete:
             cursor = self.internal_cursor()
             cursor.execute(
                 "UPDATE metadata set last_file_delete = ?",
-                (self.last_file_delete,))
+                (self.last_file_delete,),
+            )
             self.last_file_delete = None
 
     def clear(self):
@@ -259,19 +270,23 @@ class FileDatabase(BaseDatabase):
         try:
             cursor.execute("SELECT count(*) FROM file")
         except sqlite3.OperationalError:
-            cursor.execute("""CREATE TABLE file (
+            cursor.execute(
+                """CREATE TABLE file (
                     id INTEGER PRIMARY KEY,
                     sha1 BLOB,
                     path TEXT,
                     size INTEGER,
                     mtime INTEGER,
                     parent INTEGER
-                    )""")
+                    )"""
+            )
             cursor.execute("CREATE INDEX file_sha1 ON file(sha1)")
             cursor.execute("CREATE INDEX file_path ON file(path)")
             cursor.execute("CREATE INDEX file_parent ON file(parent)")
 
         cursor.execute(
-            "ALTER TABLE metadata ADD COLUMN last_file_insert INTEGER")
+            "ALTER TABLE metadata ADD COLUMN last_file_insert INTEGER"
+        )
         cursor.execute(
-            "ALTER TABLE metadata ADD COLUMN last_file_delete INTEGER")
+            "ALTER TABLE metadata ADD COLUMN last_file_delete INTEGER"
+        )

@@ -25,8 +25,11 @@ def open_locker_uri(uri, opener_cache_dict=None):
     assert len(sha1) == 40
     context = SynchronizerContext()
     opener = opener_for_url_prefix(
-        openretro_url_prefix(), username=context.username,
-        password=context.password, cache_dict=opener_cache_dict)
+        openretro_url_prefix(),
+        username=context.username,
+        password=context.password,
+        cache_dict=opener_cache_dict,
+    )
     url = "{0}/api/locker/{1}".format(openretro_url_prefix(), sha1)
     path = Downloader.cache_file_from_url(url, opener=opener)
     return path
@@ -59,7 +62,7 @@ class LockerSynchronizer(SynchronizerBase):
         database.clear()
         k = 0
         while k < len(data):
-            sha1_bytes = data[k:k + 20]
+            sha1_bytes = data[k : k + 20]
             database.add_sha1_binary(sha1_bytes)
             k += 20
 

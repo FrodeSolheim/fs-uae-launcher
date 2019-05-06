@@ -2,30 +2,37 @@ import random
 
 
 class GameDatabaseClient(object):
-
     def __init__(self, database):
         self.database = database
 
     def get_or_create_game_id(self, game_uuid):
         cursor = self.database.cursor()
-        cursor.execute(self.database.query(
-            "SELECT id FROM game WHERE uuid = %s"), (game_uuid,))
+        cursor.execute(
+            self.database.query("SELECT id FROM game WHERE uuid = %s"),
+            (game_uuid,),
+        )
         row = cursor.fetchone()
         if row is None:
             # cursor.execute("INSERT INTO game (uuid, updated) "
             #         "VALUES (%s, utc_timestamp())",
             #         (game_uuid,))
-            cursor.execute(self.database.query(
-                "INSERT INTO game (uuid) VALUES (%s)"), (game_uuid,))
-            cursor.execute(self.database.query(
-                "SELECT id FROM game WHERE uuid = %s"), (game_uuid,))
+            cursor.execute(
+                self.database.query("INSERT INTO game (uuid) VALUES (%s)"),
+                (game_uuid,),
+            )
+            cursor.execute(
+                self.database.query("SELECT id FROM game WHERE uuid = %s"),
+                (game_uuid,),
+            )
             row = cursor.fetchone()
         return row[0]
 
     def get_game_id(self, game_uuid):
         cursor = self.database.cursor()
-        cursor.execute(self.database.query(
-            "SELECT id FROM game WHERE uuid = %s"), (game_uuid,))
+        cursor.execute(
+            self.database.query("SELECT id FROM game WHERE uuid = %s"),
+            (game_uuid,),
+        )
         row = cursor.fetchone()
         if row is None:
             raise Exception("game {0} not found".format(game_uuid))
@@ -33,8 +40,10 @@ class GameDatabaseClient(object):
 
     def get_ancestor_game_id(self, game_uuid):
         cursor = self.database.cursor()
-        cursor.execute(self.database.query(
-            "SELECT id, parent FROM game WHERE uuid = %s"), (game_uuid,))
+        cursor.execute(
+            self.database.query("SELECT id, parent FROM game WHERE uuid = %s"),
+            (game_uuid,),
+        )
         row = cursor.fetchone()
         if row is None:
             raise Exception("game {0} not found".format(game_uuid))
@@ -42,28 +51,47 @@ class GameDatabaseClient(object):
 
     def get_or_create_user_id(self, username):
         cursor = self.database.cursor()
-        cursor.execute(self.database.query(
-            "SELECT id FROM user WHERE username = %s"), (username,))
+        cursor.execute(
+            self.database.query("SELECT id FROM user WHERE username = %s"),
+            (username,),
+        )
         row = cursor.fetchone()
         if row is None:
-            cursor.execute(self.database.query(
-                "INSERT INTO user (username) VALUES (%s)"), (username,))
-            cursor.execute(self.database.query(
-                "SELECT id FROM user WHERE username = %s"), (username,))
+            cursor.execute(
+                self.database.query("INSERT INTO user (username) VALUES (%s)"),
+                (username,),
+            )
+            cursor.execute(
+                self.database.query("SELECT id FROM user WHERE username = %s"),
+                (username,),
+            )
             row = cursor.fetchone()
         return row[0]
 
     def insert_game_value(
-            self, game_id, key, value, status, user=1, submitted=None,
-            update_games=True, value_id=None, reviewer=None):
+        self,
+        game_id,
+        key,
+        value,
+        status,
+        user=1,
+        submitted=None,
+        update_games=True,
+        value_id=None,
+        reviewer=None,
+    ):
         key = key.strip().lower().replace("-", "_")
         value = value.strip()
 
         cursor = self.database.cursor()
         # print((game_id, key, value))
-        cursor.execute(self.database.query(
-            "SELECT value FROM value WHERE game = %s AND name = %s AND "
-            "status = 1"), (game_id, key))
+        cursor.execute(
+            self.database.query(
+                "SELECT value FROM value WHERE game = %s AND name = %s AND "
+                "status = 1"
+            ),
+            (game_id, key),
+        )
         row = cursor.fetchone()
         # if row is not None and row[0].decode("UTF-8") == value:
         if row is not None and row[0] == value:
@@ -75,35 +103,66 @@ class GameDatabaseClient(object):
             else:
                 return
         if status == 1:
-            cursor.execute(self.database.query(
-                "UPDATE value SET status = 0 WHERE game = %s AND name = %s "
-                "AND status = %s"), (game_id, key, status))
+            cursor.execute(
+                self.database.query(
+                    "UPDATE value SET status = 0 WHERE game = %s AND name = %s "
+                    "AND status = %s"
+                ),
+                (game_id, key, status),
+            )
         if submitted and value_id:
-            cursor.execute(self.database.query(
-                "INSERT INTO value (id, game, name, value, submitted, "
-                "submitter, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"),
-                (value_id, game_id, key, value, submitted, user, status))
-            cursor.execute(self.database.query(
-                "SELECT max(id) from value"))
+            cursor.execute(
+                self.database.query(
+                    "INSERT INTO value (id, game, name, value, submitted, "
+                    "submitter, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                ),
+                (value_id, game_id, key, value, submitted, user, status),
+            )
+            cursor.execute(self.database.query("SELECT max(id) from value"))
         elif reviewer is not None:
-            cursor.execute(self.database.query(
-                "INSERT INTO value (game, name, value, submitted, "
-                "submitter, status, reviewer, reviewed) VALUES (%s, %s, "
-                "%s, %s, %s, %s, %s, utc_timestamp())"),
-                (game_id, key, value, submitted, user, status, reviewer))
+            cursor.execute(
+                self.database.query(
+                    "INSERT INTO value (game, name, value, submitted, "
+                    "submitter, status, reviewer, reviewed) VALUES (%s, %s, "
+                    "%s, %s, %s, %s, %s, utc_timestamp())"
+                ),
+                (game_id, key, value, submitted, user, status, reviewer),
+            )
         else:
-            cursor.execute(self.database.query(
-                "INSERT INTO value (game, name, value, submitted, "
-                "submitter, status) VALUES (%s, %s, %s, utc_timestamp(), "
-                "%s, %s)"), (game_id, key, value, user, status))
+            cursor.execute(
+                self.database.query(
+                    "INSERT INTO value (game, name, value, submitted, "
+                    "submitter, status) VALUES (%s, %s, %s, utc_timestamp(), "
+                    "%s, %s)"
+                ),
+                (game_id, key, value, user, status),
+            )
 
-        if update_games and status == 1 and key in [
-                "game_name", "sort_key",
-                "variant_name", "x_name", "parent_uuid", "file_list",
-                "_status", "__source", "_downloadable",
-                "year", "publisher", "front_sha1", "title_sha1",
-                "screen1_sha1", "screen2_sha1", "screen3_sha1",
-                "screen4_sha1", "screen5_sha1"]:
+        if (
+            update_games
+            and status == 1
+            and key
+            in [
+                "game_name",
+                "sort_key",
+                "variant_name",
+                "x_name",
+                "parent_uuid",
+                "file_list",
+                "_status",
+                "__source",
+                "_downloadable",
+                "year",
+                "publisher",
+                "front_sha1",
+                "title_sha1",
+                "screen1_sha1",
+                "screen2_sha1",
+                "screen3_sha1",
+                "screen4_sha1",
+                "screen5_sha1",
+            ]
+        ):
             self.update_game(game_id)
         else:
             self.update_game_stamp(game_id)
@@ -113,15 +172,19 @@ class GameDatabaseClient(object):
         values = {}
         original_game_id = game_id
         while game_id:
-            cursor.execute(self.database.query(
-                "SELECT name, value FROM value WHERE game = %s AND "
-                "status = 1"), (game_id,))
+            cursor.execute(
+                self.database.query(
+                    "SELECT name, value FROM value WHERE game = %s AND "
+                    "status = 1"
+                ),
+                (game_id,),
+            )
             parent_uuid = ""
             for row in cursor:
                 name, value = row
                 if not value:
                     continue
-                if name[0] == '_':
+                if name[0] == "_":
                     # non-inheritable variables
                     if game_id != original_game_id:
                         continue
@@ -135,8 +198,10 @@ class GameDatabaseClient(object):
                 return values
             if parent_uuid:
                 print("cannot find parent for", game_id, parent_uuid)
-                cursor.execute(self.database.query(
-                    "SELECT id FROM game WHERE uuid = %s"), (parent_uuid,))
+                cursor.execute(
+                    self.database.query("SELECT id FROM game WHERE uuid = %s"),
+                    (parent_uuid,),
+                )
                 game_id = cursor.fetchone()[0]
             else:
                 game_id = None
@@ -148,9 +213,12 @@ class GameDatabaseClient(object):
     def get_pending_game_values(self, game_id):
         cursor = self.database.cursor()
         values = []
-        cursor.execute(self.database.query(
-            "SELECT name, value FROM value WHERE game = %s and status = -1"),
-            (game_id,))
+        cursor.execute(
+            self.database.query(
+                "SELECT name, value FROM value WHERE game = %s and status = -1"
+            ),
+            (game_id,),
+        )
         for row in cursor:
             name, value = row
             values.append((name, value))
@@ -159,11 +227,14 @@ class GameDatabaseClient(object):
     def get_game_value_data(self, game_id):
         cursor = self.database.cursor()
         values = []
-        cursor.execute(self.database.query(
-            "SELECT value.id, status, name, value, username FROM value, user "
-            "WHERE value.submitter = user.id AND game = %s AND "
-            "(status = 1 OR status = -1) ORDER BY status DESC, name"),
-            (game_id,))
+        cursor.execute(
+            self.database.query(
+                "SELECT value.id, status, name, value, username FROM value, user "
+                "WHERE value.submitter = user.id AND game = %s AND "
+                "(status = 1 OR status = -1) ORDER BY status DESC, name"
+            ),
+            (game_id,),
+        )
         for row in cursor:
             id, status, name, value, username = row
             values.append((id, status, name, value, username))
@@ -201,8 +272,10 @@ class GameDatabaseClient(object):
 
         parent = None
         if parent_uuid:
-            cursor.execute(self.database.query(
-                "SELECT id FROM game WHERE uuid = %s"), (parent_uuid,))
+            cursor.execute(
+                self.database.query("SELECT id FROM game WHERE uuid = %s"),
+                (parent_uuid,),
+            )
             row = cursor.fetchone()
             if row is not None:
                 parent = row[0]
@@ -222,26 +295,46 @@ class GameDatabaseClient(object):
         sort_key = sort_key.lower()
 
         search = name.lower()
-        cursor.execute(self.database.query(
-            "UPDATE game SET game = %s, "
-            "variant = %s, name = %s, search = %s, platform = %s, "
-            "files = %s, parent = %s, sort_key = %s, status = %s, "
-            "downloadable = %s, year = %s, "
-            "publisher = %s, front_sha1 = %s, title_sha1 = %s, "
-            "screen1_sha1 = %s, screen2_sha1 = %s, screen3_sha1 = %s, "
-            "screen4_sha1 = %s, screen5_sha1 = %s, "
-            "update_stamp = %s WHERE id = %s"),
-            (game, variant, name, search, platform, files, parent,
-             sort_key, status, downloadable,
-             values.get("year", ""), values.get("publisher", ""),
-             values.get("front_sha1", ""), values.get("title_sha1", ""),
-             values.get("screen1_sha1", ""), values.get("screen2_sha1", ""),
-             values.get("screen3_sha1", ""), values.get("screen4_sha1", ""),
-             values.get("screen5_sha1", ""),
-             create_update_stamp(), game_id))
+        cursor.execute(
+            self.database.query(
+                "UPDATE game SET game = %s, "
+                "variant = %s, name = %s, search = %s, platform = %s, "
+                "files = %s, parent = %s, sort_key = %s, status = %s, "
+                "downloadable = %s, year = %s, "
+                "publisher = %s, front_sha1 = %s, title_sha1 = %s, "
+                "screen1_sha1 = %s, screen2_sha1 = %s, screen3_sha1 = %s, "
+                "screen4_sha1 = %s, screen5_sha1 = %s, "
+                "update_stamp = %s WHERE id = %s"
+            ),
+            (
+                game,
+                variant,
+                name,
+                search,
+                platform,
+                files,
+                parent,
+                sort_key,
+                status,
+                downloadable,
+                values.get("year", ""),
+                values.get("publisher", ""),
+                values.get("front_sha1", ""),
+                values.get("title_sha1", ""),
+                values.get("screen1_sha1", ""),
+                values.get("screen2_sha1", ""),
+                values.get("screen3_sha1", ""),
+                values.get("screen4_sha1", ""),
+                values.get("screen5_sha1", ""),
+                create_update_stamp(),
+                game_id,
+            ),
+        )
 
-        cursor.execute(self.database.query(
-            "SELECT id FROM game WHERE parent = %s"), (game_id,))
+        cursor.execute(
+            self.database.query("SELECT id FROM game WHERE parent = %s"),
+            (game_id,),
+        )
         game_ids = []
         for row in cursor:
             game_ids.append(row[0])
@@ -250,18 +343,24 @@ class GameDatabaseClient(object):
 
     def update_game_stamp(self, game_id):
         cursor = self.database.cursor()
-        cursor.execute(self.database.query(
-            "UPDATE game SET update_stamp = %s WHERE id = %s"),
-            (create_update_stamp(), game_id))
+        cursor.execute(
+            self.database.query(
+                "UPDATE game SET update_stamp = %s WHERE id = %s"
+            ),
+            (create_update_stamp(), game_id),
+        )
 
     def get_changes(self, start, limit):
         cursor = self.database.cursor()
-        cursor.execute(self.database.query(
-            "SELECT value.id, value.name, value, user.username, submitted, "
-            "game.uuid FROM value, user, game WHERE "
-            "value.submitter = user.id AND value.game = game.id AND "
-            "status = 1 AND value.id >= %s ORDER BY value.id LIMIT %s"),
-            (start, limit))
+        cursor.execute(
+            self.database.query(
+                "SELECT value.id, value.name, value, user.username, submitted, "
+                "game.uuid FROM value, user, game WHERE "
+                "value.submitter = user.id AND value.game = game.id AND "
+                "status = 1 AND value.id >= %s ORDER BY value.id LIMIT %s"
+            ),
+            (start, limit),
+        )
         for row in cursor:
             yield {
                 "id": row[0],
@@ -276,16 +375,24 @@ class GameDatabaseClient(object):
     def get_ratings(self, start, limit, user_id=None):
         cursor = self.database.cursor()
         if user_id is not None:
-            cursor.execute(self.database.query(
-                "SELECT game.uuid, game_rating.work_rating, "
-                "game_rating.like_rating, game_rating.updated FROM game, "
-                "game_rating WHERE game_rating.game = game.id AND "
-                "game_rating.updated >= %s AND game_rating.user = %s "
-                "LIMIT %s"), (start, user_id, limit))
+            cursor.execute(
+                self.database.query(
+                    "SELECT game.uuid, game_rating.work_rating, "
+                    "game_rating.like_rating, game_rating.updated FROM game, "
+                    "game_rating WHERE game_rating.game = game.id AND "
+                    "game_rating.updated >= %s AND game_rating.user = %s "
+                    "LIMIT %s"
+                ),
+                (start, user_id, limit),
+            )
         else:
-            cursor.execute(self.database.query(
-                "SELECT uuid, work_rating, like_rating, updated FROM game "
-                "WHERE updated >= %s LIMIT %s"), (start, limit))
+            cursor.execute(
+                self.database.query(
+                    "SELECT uuid, work_rating, like_rating, updated FROM game "
+                    "WHERE updated >= %s LIMIT %s"
+                ),
+                (start, limit),
+            )
         for row in cursor:
             yield {
                 "game": row[0],
@@ -296,9 +403,12 @@ class GameDatabaseClient(object):
 
     def get_user_id(self, username, password):
         cursor = self.database.cursor()
-        cursor.execute(self.database.query(
-            "SELECT id FROM user WHERE username = %s and password = %s"),
-            (username, password))
+        cursor.execute(
+            self.database.query(
+                "SELECT id FROM user WHERE username = %s and password = %s"
+            ),
+            (username, password),
+        )
         row = cursor.fetchone()
         if row is None:
             return None
@@ -314,8 +424,9 @@ class GameDatabaseClient(object):
 
     def get_game_database_version(self):
         cursor = self.database.cursor()
-        result = cursor.execute(self.database.query(
-            "SELECT games_version from metadata"))
+        result = cursor.execute(
+            self.database.query("SELECT games_version from metadata")
+        )
         return result.fetchone()[0]
 
     def set_game_database_version(self, version):
@@ -323,13 +434,16 @@ class GameDatabaseClient(object):
         if self.get_game_database_version() == version:
             # already correct version
             return
-        cursor.execute(self.database.query(
-            "UPDATE metadata SET games_version = %s"), (version,))
+        cursor.execute(
+            self.database.query("UPDATE metadata SET games_version = %s"),
+            (version,),
+        )
 
     def delete_old_values(self):
         cursor = self.database.cursor()
-        cursor.execute(self.database.query(
-            "DELETE FROM value WHERE status = 0"))
+        cursor.execute(
+            self.database.query("DELETE FROM value WHERE status = 0")
+        )
 
     def clear_database(self):
         cursor = self.database.cursor()
@@ -339,4 +453,4 @@ class GameDatabaseClient(object):
 
 
 def create_update_stamp():
-    return random.randint(0, 2**32-1)
+    return random.randint(0, 2 ** 32 - 1)

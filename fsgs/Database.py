@@ -9,7 +9,7 @@ import threading
 thread_local = threading.local()
 VERSION = 40
 RESET_VERSION = 39
-QUOTED_TERMS_RE = re.compile("[\"].*?[\"]")
+QUOTED_TERMS_RE = re.compile('["].*?["]')
 
 
 class Database(BaseDatabase):
@@ -70,10 +70,7 @@ class Database(BaseDatabase):
         cursor.execute(query, args)
         results = []
         for row in cursor:
-            data = {
-                "path": self.decode_path(row[0]),
-                "name": row[1]
-            }
+            data = {"path": self.decode_path(row[0]), "name": row[1]}
             results.append(data)
         return results
 
@@ -118,7 +115,7 @@ class Database(BaseDatabase):
         path = path.replace("\\", "/")
         base_dir = FSGSDirectories.get_base_dir()
         if path.startswith(base_dir):
-            path = path[len(base_dir):]
+            path = path[len(base_dir) :]
             if path.startswith("/"):
                 path = path[1:]
             path = "$/" + path
@@ -139,8 +136,7 @@ class Database(BaseDatabase):
         # self._cursor.execute(query, args)
         a = "$/Configurations/"
         b = "$/Configurations" + "\u0030"  # one more than forward slash
-        query = "SELECT id, path FROM game WHERE " \
-                "path >= ? AND path < ?"
+        query = "SELECT id, path FROM game WHERE " "path >= ? AND path < ?"
         cursor.execute(query, (a, b))
         result = {}
         for row in cursor.fetchall():
@@ -216,8 +212,8 @@ class Database(BaseDatabase):
     def find_game_database_for_game_variant(self, uuid):
         cursor = self.internal_cursor()
         cursor.execute(
-            "SELECT database FROM game_variant WHERE "
-            "uuid = ?", (uuid,))
+            "SELECT database FROM game_variant WHERE " "uuid = ?", (uuid,)
+        )
         row = cursor.fetchone()
         if row is None:
             raise LookupError("game variant not found")
@@ -229,15 +225,16 @@ class Database(BaseDatabase):
             include_unpublished = True
         cursor = self.internal_cursor()
         print("FIXME: not looking up ratings yet!")
-        query = ("SELECT uuid, name, game_uuid, 0 as like_rating, "
-                 "0 as work_rating, have, database, published "
-                 "FROM game_variant WHERE "
-                 "game_uuid = ? AND have >= ?")
+        query = (
+            "SELECT uuid, name, game_uuid, 0 as like_rating, "
+            "0 as work_rating, have, database, published "
+            "FROM game_variant WHERE "
+            "game_uuid = ? AND have >= ?"
+        )
         if not include_unpublished:
             query += " AND (published = 1 OR published IS NULL)"
         query += " ORDER BY like_rating DESC, work_rating DESC, name"
-        cursor.execute(
-            query, (game_uuid, have))
+        cursor.execute(query, (game_uuid, have))
         result = []
         for row in cursor:
             result.append(dict(row))
@@ -254,11 +251,14 @@ class Database(BaseDatabase):
 
     def set_last_game_variant(self, game_uuid, variant_uuid):
         cursor = self.internal_cursor()
-        cursor.execute("DELETE FROM last_variant WHERE game_uuid = ?",
-                       (game_uuid,))
+        cursor.execute(
+            "DELETE FROM last_variant WHERE game_uuid = ?", (game_uuid,)
+        )
         cursor.execute(
             "INSERT INTO last_variant (game_uuid, variant_uuid) "
-            "VALUES (?, ?)", (game_uuid, variant_uuid))
+            "VALUES (?, ?)",
+            (game_uuid, variant_uuid),
+        )
 
     def search_games(self, search):
         self.init()
@@ -282,7 +282,8 @@ class Database(BaseDatabase):
         cursor = self.internal_cursor()
         if uuid:
             cursor.execute(
-                "SELECT path FROM game WHERE uuid = ? LIMIT 1", (uuid,))
+                "SELECT path FROM game WHERE uuid = ? LIMIT 1", (uuid,)
+            )
         row = cursor.fetchone()
         if row:
             path = self.decode_path(row[0])
@@ -303,17 +304,23 @@ class Database(BaseDatabase):
             # print("check sha1")
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size FROM file "
-                "WHERE sha1 = ? LIMIT 1", (sha1,))
+                "WHERE sha1 = ? LIMIT 1",
+                (sha1,),
+            )
         elif name:
             # print("check name")
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size FROM file "
-                "WHERE name = ? COLLATE NOCASE LIMIT 1", (name.lower(),))
+                "WHERE name = ? COLLATE NOCASE LIMIT 1",
+                (name.lower(),),
+            )
         else:
             path = self.encode_path(path)
             cursor.execute(
                 "SELECT id, path, sha1, mtime, size FROM file "
-                "WHERE path = ? LIMIT 1", (path,))
+                "WHERE path = ? LIMIT 1",
+                (path,),
+            )
         row = cursor.fetchone()
         # print("---------", row)
         if row:
@@ -334,8 +341,17 @@ class Database(BaseDatabase):
                 result["size"] = None
             return None
 
-    def add_file(self, path="", sha1=None, md5=None, crc32=None, mtime=0,
-                 size=0, scan=0, name=""):
+    def add_file(
+        self,
+        path="",
+        sha1=None,
+        md5=None,
+        crc32=None,
+        mtime=0,
+        size=0,
+        scan=0,
+        name="",
+    ):
         cursor = self.internal_cursor()
         if not name:
             name = os.path.basename(path)
@@ -346,7 +362,8 @@ class Database(BaseDatabase):
         cursor.execute(
             "INSERT INTO file (path, sha1, mtime, size, "
             "md5, crc32, name, scan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (path, sha1, mtime, size, md5, crc32, name, scan))
+            (path, sha1, mtime, size, md5, crc32, name, scan),
+        )
 
     # def add_configuration(
     #         self, path="", uuid="", data="", name="", search="", scan=0,
@@ -385,8 +402,8 @@ class Database(BaseDatabase):
         if not sort_key:
             sort_key = name.lower()
         cursor.execute(
-            "SELECT id, have, name, sort_key FROM game WHERE path = ?",
-            (path,))
+            "SELECT id, have, name, sort_key FROM game WHERE path = ?", (path,)
+        )
         row = cursor.fetchone()
         if row:
             game_id = row[0]
@@ -396,9 +413,11 @@ class Database(BaseDatabase):
         else:
             cursor.execute("INSERT INTO game (path) VALUES (?)", (path,))
             game_id = cursor.lastrowid
-        cursor.execute("UPDATE game SET have = 5, name = ?, sort_key = ?, "
-                       "published = 1, adult = 0 WHERE id = ?",
-                       (name, sort_key, game_id))
+        cursor.execute(
+            "UPDATE game SET have = 5, name = ?, sort_key = ?, "
+            "published = 1, adult = 0 WHERE id = ?",
+            (name, sort_key, game_id),
+        )
         return game_id
 
     def delete_game(self, id):
@@ -409,15 +428,19 @@ class Database(BaseDatabase):
     def update_game_search_terms(self, game_id, search_terms):
         cursor = self.internal_cursor()
         search_terms = sorted(search_terms)
-        cursor.execute("SELECT term FROM search_term WHERE game = ?",
-                       (game_id,))
+        cursor.execute(
+            "SELECT term FROM search_term WHERE game = ?", (game_id,)
+        )
         existing_terms = sorted(x[0] for x in cursor)
         if search_terms != existing_terms:
-            cursor.execute("DELETE FROM search_term WHERE game = ?",
-                           (game_id,))
+            cursor.execute(
+                "DELETE FROM search_term WHERE game = ?", (game_id,)
+            )
             for term in search_terms:
-                cursor.execute("INSERT INTO search_term (game, "
-                               "term) VALUES (?, ?)", (game_id, term))
+                cursor.execute(
+                    "INSERT INTO search_term (game, " "term) VALUES (?, ?)",
+                    (game_id, term),
+                )
 
     # def remove_unscanned_configurations(self, scan):
     #     cursor = self.internal_cursor()
@@ -432,14 +455,17 @@ class Database(BaseDatabase):
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT variant_uuid FROM game_list_game WHERE "
-            "list_uuid = ? AND game_uuid = ?", (list_uuid, game_uuid))
+            "list_uuid = ? AND game_uuid = ?",
+            (list_uuid, game_uuid),
+        )
         row = cursor.fetchone()
         if row is None:
             return None
         return row[0]
 
-    def find_games_new(self, search="", have=3, list_uuid="",
-                       database_only=False):
+    def find_games_new(
+        self, search="", have=3, list_uuid="", database_only=False
+    ):
         print("Database.find_games_new search = {0}".format(repr(search)))
         non_database_only = False
         if list_uuid == self.GAME_LIST_GAMES:
@@ -452,16 +478,20 @@ class Database(BaseDatabase):
             have = 0
 
         cursor = self.internal_cursor()
-        query = "SELECT DISTINCT uuid, name, platform, year, publisher, " \
-                "front_image, title_image, screen1_image, screen2_image, " \
-                "screen3_image, screen4_image, screen5_image, have, path, " \
-                "sort_key, subtitle, thumb_image, backdrop_image, " \
-                "published FROM game"
+        query = (
+            "SELECT DISTINCT uuid, name, platform, year, publisher, "
+            "front_image, title_image, screen1_image, screen2_image, "
+            "screen3_image, screen4_image, screen5_image, have, path, "
+            "sort_key, subtitle, thumb_image, backdrop_image, "
+            "published FROM game"
+        )
 
         args = []
         if list_uuid:
-            query += (" INNER JOIN game_list_game "
-                      "ON game.uuid = game_list_game.game_uuid ")
+            query += (
+                " INNER JOIN game_list_game "
+                "ON game.uuid = game_list_game.game_uuid "
+            )
 
         have_false = False
         published_false = False
@@ -487,10 +517,10 @@ class Database(BaseDatabase):
         for i, term in enumerate(terms):
             term = term.strip().lower()
             exact_term = False
-            if term.startswith("\""):
+            if term.startswith('"'):
                 exact_term = True
                 term = term[1:]
-            if term.endswith("\""):
+            if term.endswith('"'):
                 term = term[:-1]
 
             if term.startswith("platform:"):
@@ -521,6 +551,7 @@ class Database(BaseDatabase):
 
             if term.startswith("s:"):
                 from fsgs.platform import normalize_platform_id
+
                 term = "s:" + normalize_platform_id(term[2:])
 
             if term:
@@ -529,14 +560,18 @@ class Database(BaseDatabase):
                 #     #additional_clauses.append(" AND search like ?")
                 #     #additional_args.append("%" + term + "%")
                 if exact_term:
-                    query += (" INNER JOIN search_term as st{0} ON "
-                              "game.id = st{0}.game AND "
-                              "st{0}.term = ?".format(i))
+                    query += (
+                        " INNER JOIN search_term as st{0} ON "
+                        "game.id = st{0}.game AND "
+                        "st{0}.term = ?".format(i)
+                    )
                     args.append(term)
                 else:
-                    query += (" INNER JOIN search_term as st{0} ON "
-                              "game.id = st{0}.game AND "
-                              "st{0}.term like ?".format(i))
+                    query += (
+                        " INNER JOIN search_term as st{0} ON "
+                        "game.id = st{0}.game AND "
+                        "st{0}.term like ?".format(i)
+                    )
                     args.append(term + "%")
 
         if have_false:
@@ -610,7 +645,9 @@ class Database(BaseDatabase):
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT like_rating, work_rating FROM rating WHERE "
-            "game_uuid = ?", (game_uuid,))
+            "game_uuid = ?",
+            (game_uuid,),
+        )
         row = cursor.fetchone()
         if row is not None:
             return row[0], row[1]
@@ -621,7 +658,8 @@ class Database(BaseDatabase):
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT last_file_insert, last_file_delete, "
-            "database_locker FROM metadata")
+            "database_locker FROM metadata"
+        )
         row = cursor.fetchone()
         result = {
             "last_file_insert": row[0],
@@ -636,15 +674,18 @@ class Database(BaseDatabase):
         if stamps["last_file_insert"] != last_stamps["last_file_insert"]:
             cursor.execute(
                 "UPDATE metadata set last_file_insert = ?",
-                (stamps["last_file_insert"],))
+                (stamps["last_file_insert"],),
+            )
         if stamps["last_file_delete"] != last_stamps["last_file_delete"]:
             cursor.execute(
                 "UPDATE metadata set last_file_delete = ?",
-                (stamps["last_file_delete"],))
+                (stamps["last_file_delete"],),
+            )
         if stamps["database_locker"] != last_stamps["database_locker"]:
             cursor.execute(
                 "UPDATE metadata set database_locker = ?",
-                (stamps["database_locker"],))
+                (stamps["database_locker"],),
+            )
 
     def get_game_lists(self):
         cursor = self.internal_cursor()
@@ -653,7 +694,8 @@ class Database(BaseDatabase):
 
     def update_database_to_version_39(self):
         cursor = self.internal_cursor()
-        cursor.execute("""CREATE TABLE game (
+        cursor.execute(
+            """CREATE TABLE game (
                 id INTEGER PRIMARY KEY,
                 uuid TEXT,
                 name TEXT,
@@ -676,10 +718,12 @@ class Database(BaseDatabase):
                 adult INTEGER,
                 published INTEGER,
                 update_stamp INTEGER
-        )""")
+        )"""
+        )
         cursor.execute("CREATE INDEX game_uuid ON game(uuid)")
         cursor.execute("CREATE INDEX game_sort_key ON game(sort_key)")
-        cursor.execute("""CREATE TABLE game_variant (
+        cursor.execute(
+            """CREATE TABLE game_variant (
                 id INTEGER PRIMARY KEY,
                 database TEXT,
                 uuid TEXT,
@@ -690,47 +734,63 @@ class Database(BaseDatabase):
                 have INTEGER,
                 published INTEGER,
                 update_stamp INTEGER
-        )""")
+        )"""
+        )
+        cursor.execute("CREATE INDEX game_variant_uuid ON game_variant(uuid)")
         cursor.execute(
-            "CREATE INDEX game_variant_uuid ON game_variant(uuid)")
-        cursor.execute("CREATE INDEX game_variant_game_uuid "
-                       "ON game_variant(game_uuid)")
+            "CREATE INDEX game_variant_game_uuid " "ON game_variant(game_uuid)"
+        )
         cursor.execute("CREATE INDEX game_path ON game(path)")
         cursor.execute(
-            "ALTER TABLE metadata ADD COLUMN last_file_insert INTEGER")
+            "ALTER TABLE metadata ADD COLUMN last_file_insert INTEGER"
+        )
         cursor.execute(
-            "ALTER TABLE metadata ADD COLUMN last_file_delete INTEGER")
-        cursor.execute("""CREATE TABLE search_term (
+            "ALTER TABLE metadata ADD COLUMN last_file_delete INTEGER"
+        )
+        cursor.execute(
+            """CREATE TABLE search_term (
                 game INTEGER,
                 term TEXT
-        )""")
-        cursor.execute("""
+        )"""
+        )
+        cursor.execute(
+            """
             CREATE TABLE rating (
                 game_uuid VARCHAR(36) PRIMARY KEY NOT NULL,
                 work_rating INT NOT NULL,
                 like_rating INT NOT NULL,
                 updated TIMESTAMP NULL
             );
-        """)
-        cursor.execute("""CREATE TABLE last_variant (
+        """
+        )
+        cursor.execute(
+            """CREATE TABLE last_variant (
             game_uuid CHAR(36) PRIMARY KEY,
             variant_uuid CHAR(36) NOT NULL
-            )""")
-        cursor.execute("""CREATE TABLE game_list (
+            )"""
+        )
+        cursor.execute(
+            """CREATE TABLE game_list (
             uuid CHAR(36) PRIMARY KEY,
             name TEXT,
             sync VARCHAR(36)
-            )""")
-        cursor.execute("""CREATE TABLE game_list_game (
+            )"""
+        )
+        cursor.execute(
+            """CREATE TABLE game_list_game (
             list_uuid CHAR(36),
             game_uuid CHAR(36),
             variant_uuid CHAR(36),
             position DOUBLE
-            )""")
-        cursor.execute("""CREATE INDEX game_list_game_list_uuid
-            ON  game_list_game(list_uuid)""")
+            )"""
+        )
+        cursor.execute(
+            """CREATE INDEX game_list_game_list_uuid
+            ON  game_list_game(list_uuid)"""
+        )
 
     def update_database_to_version_40(self):
         cursor = self.internal_cursor()
         cursor.execute(
-            "ALTER TABLE metadata ADD COLUMN database_locker INTEGER")
+            "ALTER TABLE metadata ADD COLUMN database_locker INTEGER"
+        )

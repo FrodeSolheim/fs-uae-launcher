@@ -20,7 +20,6 @@ GET /sessions
 
 
 class ClientError(Exception):
-
     def __init__(self, message, code=400):
         Exception.__init__(self, message)
         self.code = code
@@ -45,57 +44,41 @@ def configure_session(request, session_id):
 
 
 def json_list(the_list):
-    return {
-        "list_hack": the_list
-    }
+    return {"list_hack": the_list}
 
 
 def get_platforms_handler(request):
-    return json_list([
-        {
-            "id": "amiga",
-            "name": "Amiga",
-            "type": "Home Computer",
-        },
-        {
-            "id": "arcade",
-            "name": "Arcade",
-            "type": "Arcade Machines",
-        },
-        {
-            "id": "cd32",
-            "name": "CD32",
-            # "name": "Amiga CD32",
-            "type": "TV Console",
-        },
-        {
-            "id": "cdtv",
-            "name": "CDTV",
-            # "name": "Commodore CDTV",
-            "type": "TV Console",
-        },
-        {
-            "id": "dos",
-            "name": "DOS",
-            # "name": "DOS (PC)",
-            "type": "Home Computer",
-        },
-        {
-            "id": "gba",
-            "name": "Game Boy Advance",
-            "type": "Handheld Console",
-        },
-        {
-            "id": "nes",
-            "name": "Nintendo (NES)",
-            "type": "TV Console",
-        },
-        {
-            "id": "snes",
-            "name": "Super Nintendo",
-            "type": "TV Console",
-        },
-    ])
+    return json_list(
+        [
+            {"id": "amiga", "name": "Amiga", "type": "Home Computer"},
+            {"id": "arcade", "name": "Arcade", "type": "Arcade Machines"},
+            {
+                "id": "cd32",
+                "name": "CD32",
+                # "name": "Amiga CD32",
+                "type": "TV Console",
+            },
+            {
+                "id": "cdtv",
+                "name": "CDTV",
+                # "name": "Commodore CDTV",
+                "type": "TV Console",
+            },
+            {
+                "id": "dos",
+                "name": "DOS",
+                # "name": "DOS (PC)",
+                "type": "Home Computer",
+            },
+            {
+                "id": "gba",
+                "name": "Game Boy Advance",
+                "type": "Handheld Console",
+            },
+            {"id": "nes", "name": "Nintendo (NES)", "type": "TV Console"},
+            {"id": "snes", "name": "Super Nintendo", "type": "TV Console"},
+        ]
+    )
 
 
 def get_games_handler(request):
@@ -124,24 +107,25 @@ def get_games_handler(request):
         #         "screen3_image, screen4_image, screen5_image, have, path, " \
         #         "sort_key, subtitle FROM game"
 
-        #backdrop = item[17].replace("sha1:", "")
-        #if backdrop:
+        # backdrop = item[17].replace("sha1:", "")
+        # if backdrop:
         #    # backdrop, hs, vs, ha, va = backdrop.split("/")
 
-        result.append({
-            "uuid": item[0],
-            "platform": item[2],
-            "name": item[1],
-            "subtitle": item[15],
-            "year": item[3],
-            "publisher": item[4],
-            # "title_image": item[6].replace("sha1:", ""),
-            # "screen1_image": item[7].replace("sha1:", ""),
-
-            "thumb": item[16].replace("sha1:", ""),
-            # "backdrop": backdrop,
-            "backdrop": item[17],
-        })
+        result.append(
+            {
+                "uuid": item[0],
+                "platform": item[2],
+                "name": item[1],
+                "subtitle": item[15],
+                "year": item[3],
+                "publisher": item[4],
+                # "title_image": item[6].replace("sha1:", ""),
+                # "screen1_image": item[7].replace("sha1:", ""),
+                "thumb": item[16].replace("sha1:", ""),
+                # "backdrop": backdrop,
+                "backdrop": item[17],
+            }
+        )
     return json_list(result)
 
 
@@ -156,6 +140,7 @@ def post_session_init_handler(request, session_id):
     request.fsgs.load_game_by_uuid(request.params.game_uuid)
 
     from fsbc.application import app
+
     if request.params.fullscreen:
         # print("setting fullscreen to", repr(request.params.fullscreen))
         # request.fsgs.config.set("fullscreen", request.params.fullscreen)
@@ -167,9 +152,7 @@ def post_session_init_handler(request, session_id):
     return {}
 
 
-instances = {
-
-}
+instances = {}
 
 
 def post_session_instances_handler(request, session_id):
@@ -191,10 +174,7 @@ def get_instance_handler(request, session_id, instance_id):
         instance = instances[instance_id]
     except KeyError:
         raise ClientError("Instance not found", code=404)
-    return {
-        "instance_id": instance.uuid,
-        "state": instance.state
-    }
+    return {"instance_id": instance.uuid, "state": instance.state}
 
 
 def put_instance_handler(request, session_id, instance_id):
@@ -215,10 +195,7 @@ def put_instance_handler(request, session_id, instance_id):
             instance.state = new
         else:
             raise ClientError("Illegal state change")
-    return {
-        "instance_id": instance.uuid,
-        "state": instance.state
-    }
+    return {"instance_id": instance.uuid, "state": instance.state}
 
 
 def delete_instance_handler(request, session_id, instance_id):
@@ -235,7 +212,6 @@ def delete_instance_handler(request, session_id, instance_id):
 
 
 class URLMapping:
-
     def __init__(self, method, path, handler):
         self.method = method
         self.path = path
@@ -275,21 +251,32 @@ class URLMapping:
 
 url_map = [
     URLMapping("GET", "/games", get_games_handler),
-
     URLMapping("GET", "/platforms", get_platforms_handler),
-
     # URLMapping("GET", "/sessions", get_sessions_handler),
     URLMapping("GET", "/sessions/{session_id}", get_session_handler),
-    URLMapping("POST", "/sessions/{session_id}/init",
-               post_session_init_handler),
-    URLMapping("POST", "/sessions/{session_id}/instances",
-               post_session_instances_handler),
-    URLMapping("GET", "/sessions/{session_id}/instances/{instance_id}",
-               get_instance_handler),
-    URLMapping("PUT", "/sessions/{session_id}/instances/{instance_id}",
-               put_instance_handler),
-    URLMapping("DELETE", "/sessions/{session_id}/instances/{instance_id}",
-               delete_instance_handler),
+    URLMapping(
+        "POST", "/sessions/{session_id}/init", post_session_init_handler
+    ),
+    URLMapping(
+        "POST",
+        "/sessions/{session_id}/instances",
+        post_session_instances_handler,
+    ),
+    URLMapping(
+        "GET",
+        "/sessions/{session_id}/instances/{instance_id}",
+        get_instance_handler,
+    ),
+    URLMapping(
+        "PUT",
+        "/sessions/{session_id}/instances/{instance_id}",
+        put_instance_handler,
+    ),
+    URLMapping(
+        "DELETE",
+        "/sessions/{session_id}/instances/{instance_id}",
+        delete_instance_handler,
+    ),
 ]
 
 

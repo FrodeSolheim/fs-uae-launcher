@@ -37,7 +37,8 @@ class EnumerateHelper(object):
         print("[INPUT] EnumerateHelper: Finding connected joysticks")
         try:
             p = FSUAEDeviceHelper.start_with_args(
-                ["list"], stdout=subprocess.PIPE)
+                ["list"], stdout=subprocess.PIPE
+            )
             joysticks = p.stdout.read()
             p.wait()
         except Exception:
@@ -112,8 +113,10 @@ class EnumerateHelper(object):
                 print("[INPUT] New-style port device selection:")
                 # Supports new-style port selection
                 port_devices = DeviceManager.get_non_amiga_devices_for_ports(
-                    options)
+                    options
+                )
                 from fsgs.platform import Platform
+
                 if ports[0].type_option == Option.C64_PORT_2_TYPE:
                     print("[INPUT] Hack for inverted C64 port order")
                     temp = port_devices[1]

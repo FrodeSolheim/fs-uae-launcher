@@ -44,22 +44,33 @@ NO_CONTROLLER = {
 NES_PORTS = [
     {
         "description": "Port 1",
-        "types": [NES_CONTROLLER, NES_ZAPPER_CONTROLLER,
-                  NES_ARKANOID_CONTROLLER, NO_CONTROLLER],
+        "types": [
+            NES_CONTROLLER,
+            NES_ZAPPER_CONTROLLER,
+            NES_ARKANOID_CONTROLLER,
+            NO_CONTROLLER,
+        ],
         "type_option": "nes_port_1_type",
         "device_option": "nes_port_1",
-    }, {
+    },
+    {
         "description": "Port 2",
-        "types": [NES_CONTROLLER, NES_ZAPPER_CONTROLLER,
-                  NES_ARKANOID_CONTROLLER, NO_CONTROLLER],
+        "types": [
+            NES_CONTROLLER,
+            NES_ZAPPER_CONTROLLER,
+            NES_ARKANOID_CONTROLLER,
+            NO_CONTROLLER,
+        ],
         "type_option": "nes_port_2_type",
         "device_option": "nes_port_2",
-    }, {
+    },
+    {
         "description": "Port 3",
         "types": [NES_CONTROLLER, NO_CONTROLLER],
         "type_option": "nes_port_3_type",
         "device_option": "nes_port_3",
-    }, {
+    },
+    {
         "description": "Port 4",
         "types": [NES_CONTROLLER, NO_CONTROLLER],
         "type_option": "nes_port_4_type",
@@ -130,9 +141,11 @@ class NintendoMednafenDriver(MednafenDriver):
         pfx = self.mednafen_system_prefix()
 
         self.emulator.args.extend(
-            ["-{}.input.port1".format(pfx), self.ports[0].type])
+            ["-{}.input.port1".format(pfx), self.ports[0].type]
+        )
         self.emulator.args.extend(
-            ["-{}.input.port2".format(pfx), self.ports[1].type])
+            ["-{}.input.port2".format(pfx), self.ports[1].type]
+        )
 
         if self.helper.model() == NES_MODEL_PAL:
             self.set_model_name("Nintendo (PAL)")
@@ -386,6 +399,7 @@ class NintendoHelper:
                 f.write(data)
                 sha1_obj.update(data)
         new_path = os.path.join(
-            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext)
+            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext
+        )
         os.rename(path, new_path)
         return new_path

@@ -9,13 +9,8 @@ class MessA2600Driver(MessDriver):
     }
 
     PORTS = [
-        {
-            "description": "1st Controller",
-            "types": [CONTROLLER]
-        }, {
-            "description": "2nd Controller",
-            "types": [CONTROLLER]
-        },
+        {"description": "1st Controller", "types": [CONTROLLER]},
+        {"description": "2nd Controller", "types": [CONTROLLER]},
     ]
 
     def mess_configure(self):

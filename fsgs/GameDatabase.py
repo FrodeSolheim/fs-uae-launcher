@@ -15,7 +15,6 @@ class IncompleteGameException(Exception):
 
 
 class GameDatabase(BaseDatabase):
-
     def __init__(self, path):
         BaseDatabase.__init__(self, BaseDatabase.SENTINEL)
         self._path = path
@@ -43,7 +42,9 @@ class GameDatabase(BaseDatabase):
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT like_rating, work_rating FROM rating WHERE "
-            "game_uuid = ?", (game_uuid,))
+            "game_uuid = ?",
+            (game_uuid,),
+        )
         row = cursor.fetchone()
         if row is not None:
             return row[0], row[1]
@@ -65,29 +66,32 @@ class GameDatabase(BaseDatabase):
     def add_game(self, game_id, game_uuid, game_data):
         cursor = self.internal_cursor()
         cursor.execute(
-            "DELETE FROM game WHERE uuid = ?",
-            (sqlite3.Binary(game_uuid),))
+            "DELETE FROM game WHERE uuid = ?", (sqlite3.Binary(game_uuid),)
+        )
         cursor.execute(
             "INSERT INTO game (id, uuid, data) VALUES (?, ?, ?)",
-            (game_id, sqlite3.Binary(game_uuid), sqlite3.Binary(game_data)))
+            (game_id, sqlite3.Binary(game_uuid), sqlite3.Binary(game_data)),
+        )
 
     def delete_game(self, game_id, game_uuid):
         cursor = self.internal_cursor()
         cursor.execute(
-            "DELETE FROM game WHERE uuid = ?",
-            (sqlite3.Binary(game_uuid),))
+            "DELETE FROM game WHERE uuid = ?", (sqlite3.Binary(game_uuid),)
+        )
         cursor.execute(
-            "DELETE FROM game WHERE uuid = ?",
-            (sqlite3.Binary(DUMMY_UUID),))
+            "DELETE FROM game WHERE uuid = ?", (sqlite3.Binary(DUMMY_UUID),)
+        )
         cursor.execute(
             "INSERT INTO game (id, uuid, data) VALUES (?, ?, ?)",
-            (game_id, sqlite3.Binary(DUMMY_UUID), ""))
+            (game_id, sqlite3.Binary(DUMMY_UUID), ""),
+        )
 
     @staticmethod
     def binary_uuid_to_str(data):
         s = hexlify(data).decode("ASCII")
         return "{}-{}-{}-{}-{}".format(
-            s[0:8], s[8:12], s[12:16], s[16:20], s[20:32])
+            s[0:8], s[8:12], s[12:16], s[16:20], s[20:32]
+        )
 
     def get_all_uuids(self):
         cursor = self.internal_cursor()
@@ -96,8 +100,11 @@ class GameDatabase(BaseDatabase):
         for row in cursor:
             data = row[0]
             if len(data) != 16:
-                print("WARNING: Invalid UUID ({} bytes) found: {}".format(
-                      len(data), repr(data)))
+                print(
+                    "WARNING: Invalid UUID ({} bytes) found: {}".format(
+                        len(data), repr(data)
+                    )
+                )
                 continue
             result.add(self.binary_uuid_to_str(data))
         return result
@@ -113,13 +120,15 @@ class GameDatabase(BaseDatabase):
         if game_uuid is not None:
             cursor.execute(
                 "SELECT uuid, data FROM game WHERE uuid = ?",
-                (sqlite3.Binary(unhexlify(game_uuid.replace("-", ""))),))
+                (sqlite3.Binary(unhexlify(game_uuid.replace("-", ""))),),
+            )
             row = cursor.fetchone()
             if not row:
                 raise LookupError("Cannot find game uuid {}".format(game_uuid))
         else:
             cursor.execute(
-                "SELECT uuid, data FROM game WHERE id = ?", (game_id,))
+                "SELECT uuid, data FROM game WHERE id = ?", (game_id,)
+            )
             row = cursor.fetchone()
             if not row:
                 raise LookupError("Cannot find game id {}".format(game_id))
@@ -149,13 +158,19 @@ class GameDatabase(BaseDatabase):
             else:
                 cursor.execute(
                     "SELECT data FROM game WHERE uuid = ?",
-                    (sqlite3.Binary(
-                        unhexlify(next_parent_uuid.replace("-", ""))),))
+                    (
+                        sqlite3.Binary(
+                            unhexlify(next_parent_uuid.replace("-", ""))
+                        ),
+                    ),
+                )
                 row = cursor.fetchone()
                 if not row:
                     raise IncompleteGameException(
                         "Could not find parent {0} of game {1}".format(
-                            next_parent_uuid, game_uuid))
+                            next_parent_uuid, game_uuid
+                        )
+                    )
                 data = zlib.decompress(row[0])
                 data = data.decode("UTF-8")
                 next_doc = json.loads(data)
@@ -184,29 +199,39 @@ class GameDatabase(BaseDatabase):
 
     def update_database_to_version_19(self):
         cursor = self.internal_cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             ALTER TABLE metadata ADD COLUMN games_version
             INTEGER NOT NULL DEFAULT 0;
-        """)
-        cursor.execute("""
+        """
+        )
+        cursor.execute(
+            """
             CREATE TABLE game (
                 id INTEGER PRIMARY KEY,
                 uuid BLOB,
                 data BLOB
             );
-        """)
-        cursor.execute("""
+        """
+        )
+        cursor.execute(
+            """
             CREATE INDEX game_uuid ON game (uuid);
-        """)
-        cursor.execute("""
+        """
+        )
+        cursor.execute(
+            """
             CREATE TABLE rating (
                 game_uuid VARCHAR(36) PRIMARY KEY NOT NULL,
                 work_rating INT NOT NULL,
                 like_rating INT NOT NULL,
                 updated TIMESTAMP NULL
             );
-        """)
-        cursor.execute("""
+        """
+        )
+        cursor.execute(
+            """
             ALTER TABLE metadata ADD COLUMN database_version
             INTEGER NOT NULL DEFAULT 0;
-        """)
+        """
+        )

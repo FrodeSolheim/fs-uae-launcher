@@ -18,7 +18,8 @@ class RetroArchDriver(GameDriver):
         # self.libretro_core = "no_core_specified"
         self.system_dir = self.temp_dir("system")
         self.save_handler = RetroArchSaveHandler(
-            self.fsgc, options=self.options, emulator=retroarch_state_dir)
+            self.fsgc, options=self.options, emulator=retroarch_state_dir
+        )
         # self.retroarch_state_dir = None
 
         self.libretro_core = libretro_core
@@ -46,14 +47,16 @@ class RetroArchDriver(GameDriver):
             self.write_retroarch_video_config(f)
 
         self.emulator.args.append(
-            "--appendconfig=" + self.retroarch_config_file.path)
+            "--appendconfig=" + self.retroarch_config_file.path
+        )
         if self.use_fullscreen():
             self.emulator.args.append("--fullscreen")
 
         libretro_core = self.find_libretro_core(self.libretro_core)
         if not libretro_core:
-            raise Exception("Could not find libretro core {0!r}".format(
-                self.libretro_core))
+            raise Exception(
+                "Could not find libretro core {0!r}".format(self.libretro_core)
+            )
         self.emulator.args.extend(["-L", libretro_core])
 
         # Verbose logging
@@ -62,7 +65,7 @@ class RetroArchDriver(GameDriver):
     def run(self):
         with open(self.retroarch_config_file.path, "a", encoding="UTF-8") as f:
             for key, value in self.retroarch_config.items():
-                f.write("{} = \"{}\"\n".format(key, value))
+                f.write('{} = "{}"\n'.format(key, value))
         super().run()
 
     def finish(self):
@@ -104,15 +107,24 @@ class RetroArchDriver(GameDriver):
         """
         joypad_autoconfig_dir = "~/.config/retroarch/autoconfig"
         """
-        f.write("screenshot_directory = \"{}\"\n".format(
-            FSGSDirectories.screenshots_output_dir()))
-        f.write("system_directory = \"{}\"\n".format(self.system_dir.path))
+        f.write(
+            'screenshot_directory = "{}"\n'.format(
+                FSGSDirectories.screenshots_output_dir()
+            )
+        )
+        f.write('system_directory = "{}"\n'.format(self.system_dir.path))
         # noinspection SpellCheckingInspection
 
-        f.write("savefile_directory = \"{}\"\n".format(
-            self.save_handler.emulator_save_dir()))
-        f.write("savestate_directory = \"{}\"\n".format(
-            self.save_handler.emulator_state_dir()))
+        f.write(
+            'savefile_directory = "{}"\n'.format(
+                self.save_handler.emulator_save_dir()
+            )
+        )
+        f.write(
+            'savestate_directory = "{}"\n'.format(
+                self.save_handler.emulator_state_dir()
+            )
+        )
 
         # FIXME: Maybe enable autosave to save .srm while running the emulator
         # and not only on shutdown?
@@ -154,16 +166,16 @@ class RetroArchDriver(GameDriver):
         f.write("audio_latency = {}\n".format(buffer_size))
 
     def write_retroarch_input_config(self, f):
-        f.write("input_driver = \"sdl2\"\n")
-        f.write("input_enable_hotkey = \"alt\"\n")
-        f.write("input_exit_emulator = \"q\"\n")
-        f.write("input_toggle_fast_forward = \"w\"\n")
-        f.write("input_screenshot = \"s\"\n")
+        f.write('input_driver = "sdl2"\n')
+        f.write('input_enable_hotkey = "alt"\n')
+        f.write('input_exit_emulator = "q"\n')
+        f.write('input_toggle_fast_forward = "w"\n')
+        f.write('input_screenshot = "s"\n')
         # f.write("input_toggle_fullscreen = \"enter\"\n")
-        f.write("input_toggle_fullscreen = \"f\"\n")
-        f.write("input_audio_mute = \"m\"\n")
-        f.write("input_menu_toggle = \"f12\"\n")
-        f.write("input_pause_toggle = \"p\"\n")
+        f.write('input_toggle_fullscreen = "f"\n')
+        f.write('input_audio_mute = "m"\n')
+        f.write('input_menu_toggle = "f12"\n')
+        f.write('input_pause_toggle = "p"\n')
 
         for i, port in enumerate(self.ports):
             if port.device is None:
@@ -172,8 +184,8 @@ class RetroArchDriver(GameDriver):
             # FIXME: EXCLUDE DUPLICATE ITEMS IN INPUT MAPPING???
             mapper = RetroArchInputMapper(port, input_mapping)
 
-            f.write("input_player1_joypad_index = \"0\"\n")
-            f.write("input_player1_analog_dpad_mode = \"0\"\n")
+            f.write('input_player1_joypad_index = "0"\n')
+            f.write('input_player1_analog_dpad_mode = "0"\n')
             if port.device.type == "joystick":
                 pass
             else:
@@ -182,11 +194,11 @@ class RetroArchDriver(GameDriver):
             for key, value in mapper.items():
                 # print("---->", key, value)
                 postfix, value = value
-                f.write("{}{} = \"{}\"\n".format(key, postfix, value))
+                f.write('{}{} = "{}"\n'.format(key, postfix, value))
                 postfixes = ["", "_btn", "_axis"]
                 postfixes.remove(postfix)
                 for postfix in postfixes:
-                    f.write("{}{} = \"{}\"\n".format(key, postfix, "nul"))
+                    f.write('{}{} = "{}"\n'.format(key, postfix, "nul"))
 
     def write_retroarch_video_config(self, f):
         # f.write("video_driver = \"gl\"\n")
@@ -226,7 +238,7 @@ class RetroArchDriver(GameDriver):
             video_shader_path = self.find_retroarch_shader(video_shader)
             print("[DRIVER] Video shader path:", video_shader_path)
             if video_shader_path:
-                f.write("video_shader = \"{}\"\n".format(video_shader_path))
+                f.write('video_shader = "{}"\n'.format(video_shader_path))
                 f.write("video_shader_enable = true\n")
 
         # FIXME: video_monitor_index = 0
@@ -265,8 +277,8 @@ class RetroArchDriver(GameDriver):
         # f.write("input_osk_toggle = \"nul\"\n")
         overlay_path = self.create_retroarch_layout()
         if overlay_path:
-            f.write("input_overlay = \"{}\"\n".format(overlay_path))
-            f.write("input_overlay_opacity = \"1.000000\"\n")
+            f.write('input_overlay = "{}"\n'.format(overlay_path))
+            f.write('input_overlay_opacity = "1.000000"\n')
 
     def retroarch_input_mapping(self, port):
         return {}
@@ -327,8 +339,10 @@ class RetroArchDriver(GameDriver):
         game_x, game_y, game_w, game_h = self.display_rect_fullscreen()
 
         from fsui.qt import Qt, QImage, QPainter, QRect, QSize
+
         image = QImage(
-            QSize(screen_width, screen_height), QImage.Format_RGBA8888)
+            QSize(screen_width, screen_height), QImage.Format_RGBA8888
+        )
         image.fill(Qt.transparent)
         # painter = image.paintEngine()
         painter = QPainter(image)
@@ -346,25 +360,26 @@ class RetroArchDriver(GameDriver):
         image.save(overlay_png_file)
 
         # noinspection SpellCheckingInspection
-        overlay_config = (
-            """overlays = 1
+        overlay_config = """overlays = 1
 overlay0_overlay = {overlay}
 overlay0_full_screen = true
 overlay0_rect = "0.0,0.0,1.0,1.0"
 overlay0_descs = 0
-""".format(overlay=overlay_png_file))
-#         overlay_config = (
-#             """overlays = 2
-# overlay0_overlay = {left}
-# overlay0_full_screen = true
-# overlay0_rect = "0.0,0.0,0.12,1.0"
-# overlay0_descs = 0
-# overlay1_overlay = {right}
-# overlay1_full_screen = true
-# overlay1_rect = "0.8,0.0,0.2,1.0"
-# overlay1_descs = 0
-#
-# """.format(left=paths["left"], right=paths["right"]))
+""".format(
+            overlay=overlay_png_file
+        )
+        #         overlay_config = (
+        #             """overlays = 2
+        # overlay0_overlay = {left}
+        # overlay0_full_screen = true
+        # overlay0_rect = "0.0,0.0,0.12,1.0"
+        # overlay0_descs = 0
+        # overlay1_overlay = {right}
+        # overlay1_full_screen = true
+        # overlay1_rect = "0.8,0.0,0.2,1.0"
+        # overlay1_descs = 0
+        #
+        # """.format(left=paths["left"], right=paths["right"]))
         overlay_config_file = self.temp_file("overlay.cfg")
         with open(overlay_config_file.path, "w") as f:
             f.write(overlay_config)

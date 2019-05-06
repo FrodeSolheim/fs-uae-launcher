@@ -5,8 +5,11 @@ from io import StringIO
 from urllib.parse import quote_plus
 from urllib.request import Request
 
-from fsgs.network import openretro_url_prefix, opener_for_url_prefix, \
-    is_http_url
+from fsgs.network import (
+    openretro_url_prefix,
+    opener_for_url_prefix,
+    is_http_url,
+)
 from fsgs.res import gettext
 
 
@@ -18,8 +21,14 @@ class GameDatabaseSynchronizer(object):
     username = ""
     password = ""
 
-    def __init__(self, context, client, on_status=None, stop_check=None,
-                 platform_id="amiga"):
+    def __init__(
+        self,
+        context,
+        client,
+        on_status=None,
+        stop_check=None,
+        platform_id="amiga",
+    ):
         self.context = context
         if client:
             self.client = client
@@ -54,18 +63,22 @@ class GameDatabaseSynchronizer(object):
             self.client.database.rollback()
         else:
             print("committing data")
-            self.set_status(gettext("Updating database"),
-                            gettext("Committing data..."))
+            self.set_status(
+                gettext("Updating database"), gettext("Committing data...")
+            )
             self.database.commit()
             print("done")
 
     def _synchronize(self):
-        if self.context.meta["database"]["version"] != \
-                self.database.get_game_database_version():
+        if (
+            self.context.meta["database"]["version"]
+            != self.database.get_game_database_version()
+        ):
             self.set_status(gettext("Resetting game database..."))
             self.database.clear()
             self.database.set_game_database_version(
-                self.context.meta["database"]["version"])
+                self.context.meta["database"]["version"]
+            )
 
         self.set_status(gettext("Synchronizing game database..."))
 
@@ -82,13 +95,13 @@ class GameDatabaseSynchronizer(object):
             t1 = time.time()
             k = 0
             while k < len(data):
-                game_sync_id = bytes_to_int(data[k:k + 4])
+                game_sync_id = bytes_to_int(data[k : k + 4])
                 k += 4
-                game_uuid = data[k:k + 16]
+                game_uuid = data[k : k + 16]
                 k += 16
-                game_data_size = bytes_to_int(data[k:k + 4])
+                game_data_size = bytes_to_int(data[k : k + 4])
                 k += 4
-                game_data = data[k:k + game_data_size]
+                game_data = data[k : k + game_data_size]
                 k += game_data_size
                 # print("game data len:", len(game_data))
                 if len(game_data) > 0:
@@ -117,23 +130,38 @@ class GameDatabaseSynchronizer(object):
                 cursor.execute(
                     "SELECT count(*) FROM rating WHERE game_uuid = "
                     "? AND work_rating = ? AND like_rating = ? "
-                    "AND updated = ?", (update["game"], update["work"],
-                                        update["like"], update["updated"]))
+                    "AND updated = ?",
+                    (
+                        update["game"],
+                        update["work"],
+                        update["like"],
+                        update["updated"],
+                    ),
+                )
                 if cursor.fetchone()[0] == 1:
                     # we want to avoid needlessly creating update transactions
                     continue
-                cursor.execute("DELETE FROM rating WHERE game_uuid = ?",
-                               (update["game"],))
+                cursor.execute(
+                    "DELETE FROM rating WHERE game_uuid = ?", (update["game"],)
+                )
                 cursor.execute(
                     "INSERT INTO rating (game_uuid, work_rating, "
                     "like_rating, updated) VALUES (?, ?, ?, ?)",
-                    (update["game"], update["work"], update["like"],
-                     update["updated"]))
+                    (
+                        update["game"],
+                        update["work"],
+                        update["like"],
+                        update["updated"],
+                    ),
+                )
             t2 = time.time()
             print("  {0:0.2f} seconds".format(t2 - t1))
 
-        print("downloaded size: {0:0.2f} MiB".format(
-            self.downloaded_size / (1024 * 1024)))
+        print(
+            "downloaded size: {0:0.2f} MiB".format(
+                self.downloaded_size / (1024 * 1024)
+            )
+        )
 
     def url_prefix(self):
         if self.host:
@@ -147,8 +175,11 @@ class GameDatabaseSynchronizer(object):
 
     def opener(self):
         return opener_for_url_prefix(
-            self.url_prefix(), self.username, self.password,
-            cache_dict=self.opener_cache_dict)
+            self.url_prefix(),
+            self.username,
+            self.password,
+            cache_dict=self.opener_cache_dict,
+        )
 
     def fetch_game_sync_data(self):
         last_id = self.database.get_last_game_id()
@@ -156,9 +187,11 @@ class GameDatabaseSynchronizer(object):
             print("[SYNC] Platform {} already synced".format(self.platform_id))
             return b""
         self.set_status(
-            gettext("Fetching database entries ({0})").format(last_id + 1))
+            gettext("Fetching database entries ({0})").format(last_id + 1)
+        )
         url = "{0}/api/sync/{1}/games?v=3&sync={2}".format(
-            self.url_prefix(), self.platform_id, last_id)
+            self.url_prefix(), self.platform_id, last_id
+        )
         print(url)
         data = self.fetch_data(url)
         self.downloaded_size += len(data)
@@ -172,9 +205,11 @@ class GameDatabaseSynchronizer(object):
         if not last_time:
             last_time = "2012-01-01 00:00:00"
         self.set_status(
-            gettext("Fetching game ratings ({0})").format(last_time))
+            gettext("Fetching game ratings ({0})").format(last_time)
+        )
         url = "{0}/api/sync/{1}/ratings?from={2}".format(
-            self.url_prefix(), self.platform_id, quote_plus(last_time))
+            self.url_prefix(), self.platform_id, quote_plus(last_time)
+        )
         print(url)
         data, json_data = self.fetch_json(url)
         self.downloaded_size += len(data)
@@ -220,16 +255,21 @@ class GameDatabaseSynchronizer(object):
                 print(e)
                 sleep_time = 2.0 + i * 0.3
                 # FIXME: change second {0} to {1}
-                self.set_status(gettext("Download failed (attempt {0}) - "
-                                        "retrying in {1} seconds").format(
-                    i + 1, int(sleep_time)))
+                self.set_status(
+                    gettext(
+                        "Download failed (attempt {0}) - "
+                        "retrying in {1} seconds"
+                    ).format(i + 1, int(sleep_time))
+                )
                 for _ in range(int(sleep_time) * 10):
                     time.sleep(0.1)
                     if self.stop_check():
                         return
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
-                        i + 1))
+                        i + 1
+                    )
+                )
         return self.fetch_json_attempt(url)
 
     def fetch_data(self, url):
@@ -240,14 +280,19 @@ class GameDatabaseSynchronizer(object):
                 print(e)
                 sleep_time = 2.0 + i * 0.3
                 # FIXME: change second {0} to {1}
-                self.set_status(gettext("Download failed (attempt {0}) - "
-                                        "retrying in {1} seconds").format(
-                    i + 1, int(sleep_time)))
+                self.set_status(
+                    gettext(
+                        "Download failed (attempt {0}) - "
+                        "retrying in {1} seconds"
+                    ).format(i + 1, int(sleep_time))
+                )
                 for _ in range(int(sleep_time) * 10):
                     time.sleep(0.1)
                     if self.stop_check():
                         return
                 self.set_status(
                     gettext("Retrying last operation (attempt {0})").format(
-                        i + 1))
+                        i + 1
+                    )
+                )
         return self.fetch_data_attempt(url)

@@ -9,11 +9,11 @@ from fsgs.network import fs_uae_url_from_sha1_and_name
 
 
 class Downloader(object):
-
     @classmethod
     def check_terms_accepted(cls, download_file, download_terms):
-        print("[DOWNLOADER] check_terms_accepted",
-              download_file, download_terms)
+        print(
+            "[DOWNLOADER] check_terms_accepted", download_file, download_terms
+        )
         uuid = str(uuid5(NAMESPACE_URL, download_file + download_terms))
         path = cls.get_cache_path(uuid)
         print("[DOWNLOADER] check_terms_accepted", path)
@@ -21,8 +21,11 @@ class Downloader(object):
 
     @classmethod
     def set_terms_accepted(cls, download_file, download_terms):
-        print("[DOWNLOADER] set_terms_accepted",
-              repr(download_file), repr(download_terms))
+        print(
+            "[DOWNLOADER] set_terms_accepted",
+            repr(download_file),
+            repr(download_terms),
+        )
         uuid = str(uuid5(NAMESPACE_URL, download_file + download_terms))
         path = cls.get_cache_path(uuid)
         print("[DOWNLOADER] set_terms_accepted", path)
@@ -122,7 +125,8 @@ class Downloader(object):
     @classmethod
     def get_cache_path(cls, sha1_or_uuid):
         path = os.path.join(
-            FSGSDirectories.get_cache_dir(), "Downloads", sha1_or_uuid[:3])
+            FSGSDirectories.get_cache_dir(), "Downloads", sha1_or_uuid[:3]
+        )
         if not os.path.exists(path):
             os.makedirs(path)
         return os.path.join(path, sha1_or_uuid)

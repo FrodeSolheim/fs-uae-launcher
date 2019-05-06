@@ -2,7 +2,6 @@ from .contextaware import ContextAware
 
 
 class BaseContext(ContextAware):
-
     def __init__(self, main_context):
         ContextAware.__init__(self, main_context)
 

@@ -4,6 +4,7 @@ import os
 import sys
 import hashlib
 from io import BytesIO
+
 # noinspection PyUnresolvedReferences
 from typing import List, Dict
 
@@ -15,11 +16,11 @@ T_DATA = 8
 T_LIST = 16
 ST_ROOT = 1
 ST_USERDIR = 2
-ST_FILE = 0xffffffff - 3 + 1
+ST_FILE = 0xFFFFFFFF - 3 + 1
 
 
 def char(block: bytes, pos: int) -> str:
-    return block[pos:pos + 1].decode("ISO-8859-1")
+    return block[pos : pos + 1].decode("ISO-8859-1")
 
 
 def ubyte(block: bytes, pos: int) -> int:
@@ -40,9 +41,9 @@ def checksum_block(block: bytes) -> int:
     sum = 0
     for pos in range(0, B_SIZE, 4):
         sum += ulong(data, pos)
-        sum &= 0xffffffff
+        sum &= 0xFFFFFFFF
     sum = -sum
-    sum &= 0xffffffff
+    sum &= 0xFFFFFFFF
     return sum
 
 
@@ -50,12 +51,11 @@ def verify_block(data: bytes) -> bool:
     sum = 0
     for pos in range(0, B_SIZE, 4):
         sum += ulong(data, pos)
-        sum &= 0xffffffff
+        sum &= 0xFFFFFFFF
     return sum == 0
 
 
 class Block(object):
-
     def __init__(self, data: bytes) -> None:
         self.data = data
 
@@ -63,7 +63,7 @@ class Block(object):
         return char(self.data, pos)
 
     def string(self, pos: int, len: int) -> str:
-        return self.data[pos:pos + len].decode("ISO-8859-1")
+        return self.data[pos : pos + len].decode("ISO-8859-1")
 
     def ubyte(self, pos: int) -> int:
         return ubyte(self.data, pos)
@@ -73,7 +73,6 @@ class Block(object):
 
 
 class FileInfo(object):
-
     def __init__(self):
         self.block_list = []
         self.header_block = -1
@@ -104,7 +103,7 @@ class ADFFile(object):
         assert len(data) == B_SIZE * B_COUNT
         self.blocks = []  # type: List[Block]
         for i in range(0, B_SIZE * B_COUNT, B_SIZE):
-            self.blocks.append(Block(data[i:i + B_SIZE]))
+            self.blocks.append(Block(data[i : i + B_SIZE]))
         assert len(self.blocks) == B_COUNT
         self.block_usage = [["block"] for _ in range(B_COUNT)]
         self.dos = False
@@ -132,8 +131,10 @@ class ADFFile(object):
         self.root_block_number = b.ulong(8)
         self.bitmap_pages = []
         if self.root_block_number != 880:
-            self.warnings.append("Root block is at position {0}, "
-                                 "not 880".format(self.root_block_number))
+            self.warnings.append(
+                "Root block is at position {0}, "
+                "not 880".format(self.root_block_number)
+            )
             self.root_block_number = 880
             self.warnings.append("Trying 880 anyway...")
 
@@ -145,12 +146,16 @@ class ADFFile(object):
                 if usage == ["block", "used"]:
                     self.warnings.append(
                         "block {0} marked as used but no actual usage".format(
-                            i))
+                            i
+                        )
+                    )
             if "free" in usage:
                 if usage != ["block", "free"]:
                     self.warnings.append(
                         "block {0} marked as used but used for {1}".format(
-                            i, repr(usage)))
+                            i, repr(usage)
+                        )
+                    )
 
     def _parse_root_block(self) -> None:
         b = self.root_block()
@@ -160,8 +165,9 @@ class ADFFile(object):
             print(type, T_HEADER)
             self.warnings.append("root block does not have T_HEADER type")
         if secondary_type != ST_ROOT:
-            self.warnings.append("root block does not have ST_ROOT secondary "
-                                 "type")
+            self.warnings.append(
+                "root block does not have ST_ROOT secondary " "type"
+            )
 
         days = b.ulong(B_SIZE - 92)
         mins = b.ulong(B_SIZE - 88)
@@ -179,9 +185,10 @@ class ADFFile(object):
         self.disk_ctime = "{0:05d}:{1:04d}:{2:03d}".format(days, mins, ticks)
 
         bm_flag = b.ulong(B_SIZE - 200)
-        if bm_flag != 0xffffffff:
-            self.warnings.append("bm_flag != 0xffffffff ({0:8x})".format(
-                bm_flag))
+        if bm_flag != 0xFFFFFFFF:
+            self.warnings.append(
+                "bm_flag != 0xffffffff ({0:8x})".format(bm_flag)
+            )
             if bm_flag == 0:
                 self.warnings.append("bm_flag is ZERO")
         for i in range(25):
@@ -202,7 +209,9 @@ class ADFFile(object):
                 if block_number >= B_COUNT:
                     self.warnings.append(
                         "invalid block number {0} in bitmap pages".format(
-                            block_number))
+                            block_number
+                        )
+                    )
                     continue
                 self.block_usage[block_number].append("bitmap block")
 
@@ -213,13 +222,15 @@ class ADFFile(object):
             else:
                 if block_number:
                     self.warnings.append(
-                        "unexpected additional bitmap block...")
+                        "unexpected additional bitmap block..."
+                    )
                 continue
 
             b = self.blocks[block_number]
             if not verify_block(b.data):
-                self.warnings.append("bitmap block checksum is invalid ("
-                                     "ignoring this block)")
+                self.warnings.append(
+                    "bitmap block checksum is invalid (" "ignoring this block)"
+                )
                 continue
             for bit_index in range(1758):
                 long_index = bit_index // 32
@@ -245,7 +256,8 @@ class ADFFile(object):
                 if entry >= B_COUNT:
                     self.warnings.append(
                         "directory entry refers to an invalid block "
-                        "number {0}".format(entry))
+                        "number {0}".format(entry)
+                    )
                     entry = 0
                     continue
                 b = self.blocks[entry]
@@ -279,15 +291,18 @@ class ADFFile(object):
         # print(file_info.path)
         file_key = file_info.path.lower()
         if file_key in self.file_map:
-            self.warnings.append("duplicate entries for file name "
-                                 "{0}".format(file_key))
+            self.warnings.append(
+                "duplicate entries for file name " "{0}".format(file_key)
+            )
         self.file_map[file_key] = file_info
 
         self.block_usage[block_number].append(
-            "header block for file " + file_info.path)
+            "header block for file " + file_info.path
+        )
         if not verify_block(b.data):
-            self.warnings.append("bad checksum for header for " +
-                                 file_info.path)
+            self.warnings.append(
+                "bad checksum for header for " + file_info.path
+            )
 
         file_info.mode = b.ulong(B_SIZE - 192)
         file_info.size = b.ulong(B_SIZE - 188)
@@ -318,15 +333,18 @@ class ADFFile(object):
             if seq_num != len(file_blocks_1):
                 self.warnings.append(
                     "block {0:04d} expected seq_num {1} (found {2}) for "
-                    "file {3}".format(next_data, len(file_blocks_1), seq_num,
-                                      file_info.path))
+                    "file {3}".format(
+                        next_data, len(file_blocks_1), seq_num, file_info.path
+                    )
+                )
             data_size = data_b.ulong(12)
             ofs_accum_size += data_size
 
             if not verify_block(data_b.data):
                 self.warnings.append(
                     "block {1:04d} - bad checksum for data block #{0} for "
-                    "file {2}".format(k + 1, next_data, file_info.path))
+                    "file {2}".format(k + 1, next_data, file_info.path)
+                )
             # self.block_usage[next_data].append(
             #     "block {2:04d} - data block #{0} for file {1}".format(
             #         k + 1, file_info.path, next_data))
@@ -353,43 +371,53 @@ class ADFFile(object):
                 self.warnings.append(
                     "block {3:04d} - expected parent {0} (found {1} for OFS "
                     "extension block #{2} for file {4}".format(
-                        block_number, parent, k, extension,
-                        file_info.path))
+                        block_number, parent, k, extension, file_info.path
+                    )
+                )
 
             if not verify_block(ext_b.data):
                 self.warnings.append(
                     "block {2:04d} - bad checksum for extension block #{0} "
-                    "for file {1}".format(k, file_info.path, extension))
+                    "for file {1}".format(k, file_info.path, extension)
+                )
             extension = ext_b.ulong(B_SIZE - 8)
             if extension:
                 self.block_usage[extension].append(
                     "file extension block #{0} for file {1}".format(
-                        k, file_info.path))
+                        k, file_info.path
+                    )
+                )
             k += 1
 
         if self.ofs:
             if file_blocks_1 != file_blocks_2:
                 self.warnings.append(
                     "block list mismatch (extension vs OFS headers) for "
-                    "file {0}".format(file_info.path))
+                    "file {0}".format(file_info.path)
+                )
             if len(file_blocks_1) != len(file_blocks_2):
                 self.warnings.append(
                     "block list length mismatch (extension {0} vs OFS "
                     "headers {1}) for file {2}".format(
-                        len(file_blocks_2), len(file_blocks_1),
-                        file_info.path))
+                        len(file_blocks_2), len(file_blocks_1), file_info.path
+                    )
+                )
             if ofs_accum_size != file_info.size:
                 self.warnings.append(
                     "file size mismatch (file header {0} vs OFS data block "
                     "headers {1}) for file {2}".format(
-                        file_info.size, ofs_accum_size, file_info.path))
+                        file_info.size, ofs_accum_size, file_info.path
+                    )
+                )
 
         file_info.block_list = file_blocks_2
 
         for i, bn in enumerate(file_blocks_2):
             self.block_usage[bn].append(
                 "data block #{0} for file {1}".format(
-                    i + 1, file_info.path, bn))
+                    i + 1, file_info.path, bn
+                )
+            )
 
     def _parse_directory(self, path: str, block_number: int) -> None:
         b = self.blocks[block_number]
@@ -405,15 +433,18 @@ class ADFFile(object):
         # print(file_info.path)
         file_key = file_info.path.lower()
         if file_key[:-1] in self.file_map:
-            self.warnings.append("Duplicate entries for file name "
-                                 "{0}".format(file_key))
+            self.warnings.append(
+                "Duplicate entries for file name " "{0}".format(file_key)
+            )
         self.file_map[file_key] = file_info
 
         self.block_usage[block_number].append(
-            "header block for file " + file_info.path)
+            "header block for file " + file_info.path
+        )
         if not verify_block(b.data):
-            self.warnings.append("bad checksum for header for " +
-                                 file_info.path)
+            self.warnings.append(
+                "bad checksum for header for " + file_info.path
+            )
 
         file_info.mode = b.ulong(B_SIZE - 192)
         file_info.size = 0
@@ -438,11 +469,11 @@ class ADFFile(object):
         name = name.lower()
         return self.file_map[name]
 
-    def open(self, name: str, mode: str="r") -> BytesIO:
+    def open(self, name: str, mode: str = "r") -> BytesIO:
         assert mode == "r"
         return BytesIO(self.read(name))
 
-    def read(self, name: str)-> bytes:
+    def read(self, name: str) -> bytes:
         name = name.lower()
         # print(repr(self.file_map))
         # print(repr(name))
@@ -457,7 +488,8 @@ class ADFFile(object):
             max_bsize = B_SIZE - start_index
             read_size = min(bytes_left, max_bsize)
             block_data = self.blocks[block_number].data[
-                start_index:start_index + read_size]
+                start_index : start_index + read_size
+            ]
             bytes_left -= len(block_data)
             data.append(block_data)
         assert bytes_left == 0

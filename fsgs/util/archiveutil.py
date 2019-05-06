@@ -27,6 +27,7 @@ class ArchiveUtil:
             # continue
         elif archive_ext == ".lha":
             from lhafile import Lhafile
+
             class_ = Lhafile
         else:
             print("skipping", archive_name)
@@ -122,9 +123,7 @@ class ArchiveUtil:
 
             if list_name.endswith("/"):
                 # Directory entry
-                file_list.append({
-                    "name": list_name,
-                })
+                file_list.append({"name": list_name})
                 continue
 
             # FIXME: encoding

@@ -37,7 +37,8 @@ SMD_PORTS = [
         "types": [SMD_CONTROLLER, SMD_6BUTTON_CONTROLLER, NO_CONTROLLER],
         "type_option": "smd_port_1_type",
         "device_option": "smd_port_1",
-    }, {
+    },
+    {
         "description": "Port 2",
         "types": [SMD_CONTROLLER, SMD_6BUTTON_CONTROLLER, NO_CONTROLLER],
         "type_option": "smd_port_2_type",
@@ -192,7 +193,8 @@ class MegaDriveMednafenDriver(MednafenDriver):
             t = "none"
         else:
             self.logger.warning(
-                "Unknown port type '{}' for Mega Drive port {}".format(t, n))
+                "Unknown port type '{}' for Mega Drive port {}".format(t, n)
+            )
             t = "gamepad"
         self.emulator.args.extend(["-md.input.port{}".format(n), t])
 
@@ -202,7 +204,8 @@ class MegaDriveMednafenDriver(MednafenDriver):
             if viewport.startswith("0 0 320 240 ="):
                 viewport_src, viewport = self.mednafen_viewport()
                 self.emulator.env["FSGS_CROP"] = "{},{},{},{}".format(
-                    viewport[0], viewport[1], viewport[2], viewport[3])
+                    viewport[0], viewport[1], viewport[2], viewport[3]
+                )
         else:
             if self.scaling == self.NO_SCALING:
                 if self.helper.model() == SMD_MODEL_PAL:
@@ -262,7 +265,8 @@ class MegaDriveRetroArchDriver(RetroArchDriver):
 
     def __init__(self, fsgc):
         super().__init__(
-            fsgc, "genesis_plus_gx_libretro", "RetroArch/GenesisPlusGX")
+            fsgc, "genesis_plus_gx_libretro", "RetroArch/GenesisPlusGX"
+        )
         self.helper = MegaDriveHelper(self.options)
         self.save_handler.set_save_data_is_emulator_specific(True)
 
@@ -274,7 +278,7 @@ class MegaDriveRetroArchDriver(RetroArchDriver):
         for i in range(len(self.PORTS)):
             self.init_mega_drive_port(i)
         with self.open_retroarch_core_options() as f:
-            f.write("genesis_plus_gx_system_hw = \"{}\"\n".format(hw))
+            f.write('genesis_plus_gx_system_hw = "{}"\n'.format(hw))
             f.write("genesis_plus_gx_region_detect = {}\n".format(region))
         self.emulator.args.append(self.helper.prepare_rom(self))
 
@@ -299,7 +303,8 @@ class MegaDriveRetroArchDriver(RetroArchDriver):
             t = "0"
         else:
             self.logger.warning(
-                "Unknown port type '{}' for Mega Drive port {}".format(t, n))
+                "Unknown port type '{}' for Mega Drive port {}".format(t, n)
+            )
             t = "gamepad"
         # FIXME: Note, this only works for p1 and p2. Port 3 and beyond
         # supports RetroPad only?
@@ -382,11 +387,11 @@ class MegaDriveHelper:
         if not len(data) == 0x200:
             print("[SMD] Did not read 0x200 header bytes")
             return
-        region = data[0x200 - 16:]
+        region = data[0x200 - 16 :]
         # notes = data[0x200 - 16 - 52]
-        sram_end = data[0x200 - 16 - 52 - 4 * 1: 0x200 - 16 - 52 - 4 * 0]
-        sram_start = data[0x200 - 16 - 52 - 4 * 2:0x200 - 16 - 52 - 4 * 1]
-        sram_type = data[0x200 - 16 - 52 - 4 * 3:0x200 - 16 - 52 - 4 * 2]
+        sram_end = data[0x200 - 16 - 52 - 4 * 1 : 0x200 - 16 - 52 - 4 * 0]
+        sram_start = data[0x200 - 16 - 52 - 4 * 2 : 0x200 - 16 - 52 - 4 * 1]
+        sram_type = data[0x200 - 16 - 52 - 4 * 3 : 0x200 - 16 - 52 - 4 * 2]
 
         sram_end = hexlify(sram_end)
         sram_start = hexlify(sram_start)
@@ -436,7 +441,8 @@ class MegaDriveHelper:
                 f.write(data)
                 sha1_obj.update(data)
         new_path = os.path.join(
-            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext)
+            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext
+        )
         os.rename(path, new_path)
         return new_path
 

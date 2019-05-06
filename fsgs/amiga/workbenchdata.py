@@ -292,8 +292,7 @@ wb_133_files = {
     "libs/icon.library": "4c9b95e6f786f707aa51b2483a9f21ac5e66d7c9",
     "libs/info.library": "aa46c186d762dc68d2e799a5d13cad6745b55d10",
     "libs/mathieeedoubbas.library": "cf565b2b7a9f6e8aae030e32490346589f90b780",
-    "libs/mathieeedoubtrans.library":
-    "29f906dc50594aca3a91cfb69bd3f332fdb1671f",
+    "libs/mathieeedoubtrans.library": "29f906dc50594aca3a91cfb69bd3f332fdb1671f",
     "libs/mathtrans.library": "65bae4aac804fb4db79a427f12b6ef1e16d22882",
     "libs/translator.library": "6ddc4462f261317a61f3c371091021b243df562c",
     "libs/version.library": "8f062571cac294bf5556b5bdc9d48da2c2f21fae",
@@ -407,10 +406,8 @@ wb_204_files = {
     "Libs/diskfont.library": "97022049498794fe8f6135b53ed01d0688903499",
     "Libs/iffparse.library": "32eb189c8c003e8bdb1c836fa0ffd12a5d2c9f17",
     "Libs/mathieeedoubbas.library": "ce7888086d9749d738e1141e7b7e200f5eb780a9",
-    "Libs/mathieeedoubtrans.library":
-    "6d6e29a25f7bc87d26a56d437441d3a2c789b126",
-    "Libs/mathieeesingtrans.library":
-    "b9b164b6a7bff61ffd703999c93f756ea447452f",
+    "Libs/mathieeedoubtrans.library": "6d6e29a25f7bc87d26a56d437441d3a2c789b126",
+    "Libs/mathieeesingtrans.library": "b9b164b6a7bff61ffd703999c93f756ea447452f",
     "Libs/mathtrans.library": "92d5888b3d2d3bb83c66cc6e486d303821c518c9",
     "Libs/rexxsupport.library": "7ae7acdd99a89d00b706060f818ad340869827a2",
     "Libs/rexxsyslib.library": "b74995c09a0d6350498579b8ff406477ae5b9566",
@@ -420,8 +417,7 @@ wb_204_files = {
     "Prefs/": "",
     "Prefs/Env-Archive/": "",
     "Prefs/Env-Archive/sys/": "",
-    "Prefs/Env-Archive/sys/wbconfig.prefs":
-    "9658314fdb2a32286dba8830cf701469ac0089d3",
+    "Prefs/Env-Archive/sys/wbconfig.prefs": "9658314fdb2a32286dba8830cf701469ac0089d3",
     "Prefs/Font": "c8d0f7bd565fb151ff0738e9df9f063cd43cf244",
     "Prefs/IControl": "c3d984f4ca7213194c8bfa5cb20ef8487c107e7a",
     "Prefs/Input": "37b19e8dd679c1d901c6620d0635cd9a56b92ab9",
@@ -531,25 +527,16 @@ wb_300_files = {
     "C/Which": "22952cce8446a1405b1b22d057ec19614e38c366",
     "Classes/": "",
     "Classes/DataTypes/": "",
-    "Classes/DataTypes/8svx.datatype":
-    "dae1f0ff6171479b27c21d3e32f7d4e383f969ab",
-    "Classes/DataTypes/amigaguide.datatype":
-    "d53c3e6abd119a3ca7c15805642a1e6ec96d374c",
-    "Classes/DataTypes/ascii.datatype":
-    "6f54362a5ce75221a62e0f1fd3a5d23fabc0f2bd",
-    "Classes/DataTypes/ilbm.datatype":
-    "c8251ed31ad79aa71cf6d3c134815c8f38c70226",
-    "Classes/DataTypes/picture.datatype":
-    "8028e6782c4069c45ffc4b51cef493f8339a1be9",
-    "Classes/DataTypes/sound.datatype":
-    "e4fbdbc5e55ddc4635dcd2e76e5623217c4a41a2",
-    "Classes/DataTypes/text.datatype":
-    "e6b80a188123cb397f7a79a1b580206bb369f2e2",
+    "Classes/DataTypes/8svx.datatype": "dae1f0ff6171479b27c21d3e32f7d4e383f969ab",
+    "Classes/DataTypes/amigaguide.datatype": "d53c3e6abd119a3ca7c15805642a1e6ec96d374c",
+    "Classes/DataTypes/ascii.datatype": "6f54362a5ce75221a62e0f1fd3a5d23fabc0f2bd",
+    "Classes/DataTypes/ilbm.datatype": "c8251ed31ad79aa71cf6d3c134815c8f38c70226",
+    "Classes/DataTypes/picture.datatype": "8028e6782c4069c45ffc4b51cef493f8339a1be9",
+    "Classes/DataTypes/sound.datatype": "e4fbdbc5e55ddc4635dcd2e76e5623217c4a41a2",
+    "Classes/DataTypes/text.datatype": "e6b80a188123cb397f7a79a1b580206bb369f2e2",
     "Classes/Gadgets/": "",
-    "Classes/Gadgets/colorwheel.gadget":
-    "7bbfccb8fd5d68b2ae8aac226eff877e8ebc9734",
-    "Classes/Gadgets/gradientslider.gadget":
-    "a54f39e9098f2c58e892b9183b555fe0a8574191",
+    "Classes/Gadgets/colorwheel.gadget": "7bbfccb8fd5d68b2ae8aac226eff877e8ebc9734",
+    "Classes/Gadgets/gradientslider.gadget": "a54f39e9098f2c58e892b9183b555fe0a8574191",
     "Devs/": "",
     "Devs/clipboard.device": "c8d85bd384ea5033d5474283e83c02ad6cdaf32b",
     "Devs/DataTypes/": "",
@@ -590,10 +577,8 @@ wb_300_files = {
     "Libs/iffparse.library": "946ef60b4ba9f63593dbadfbc447546d7ab9725c",
     "Libs/locale.library": "a12b91f662a1c527ff6411b43555bc7eaeb370b4",
     "Libs/mathieeedoubbas.library": "08d8508cdcb77ad421a6dd6f80721b727c09d96b",
-    "Libs/mathieeedoubtrans.library":
-    "6d6e29a25f7bc87d26a56d437441d3a2c789b126",
-    "Libs/mathieeesingtrans.library":
-    "b9b164b6a7bff61ffd703999c93f756ea447452f",
+    "Libs/mathieeedoubtrans.library": "6d6e29a25f7bc87d26a56d437441d3a2c789b126",
+    "Libs/mathieeesingtrans.library": "b9b164b6a7bff61ffd703999c93f756ea447452f",
     "Libs/mathtrans.library": "92d5888b3d2d3bb83c66cc6e486d303821c518c9",
     "Libs/rexxsupport.library": "7ae7acdd99a89d00b706060f818ad340869827a2",
     "Libs/rexxsyslib.library": "b74995c09a0d6350498579b8ff406477ae5b9566",
@@ -601,8 +586,7 @@ wb_300_files = {
     "Prefs/": "",
     "Prefs/Env-Archive/": "",
     "Prefs/Env-Archive/Sys/": "",
-    "Prefs/Env-Archive/Sys/wbconfig.prefs":
-    "9658314fdb2a32286dba8830cf701469ac0089d3",
+    "Prefs/Env-Archive/Sys/wbconfig.prefs": "9658314fdb2a32286dba8830cf701469ac0089d3",
     "Prefs/Presets/": "",
     "Rexxc/": "",
     "Rexxc/HI": "d3934c81b5a7832f0cdd64650f7c74eacc608a0a",
@@ -739,16 +723,17 @@ def update_files():
     # print("")
 
     for name, file_map in [
-            ("wb_133_floppies", wb_133_files),
-            ("wb_204_floppies", wb_204_files),
-            ("wb_300_floppies", wb_300_files)]:
+        ("wb_133_floppies", wb_133_files),
+        ("wb_204_floppies", wb_204_files),
+        ("wb_300_floppies", wb_300_files),
+    ]:
         print("\n" + name + " = [")
         file_set = set([x for x in file_map.values() if x])
         for floppy_data, floppy_file_set in floppy_file_sets.items():
             floppy_name, floppy_sha1 = floppy_data
             if floppy_file_set.issuperset(file_set):
                 print("    # {0}".format(floppy_name))
-                print("    \"{0}\",".format(floppy_sha1))
+                print('    "{0}",'.format(floppy_sha1))
         print("]")
 
 
@@ -781,11 +766,11 @@ def main():
             sha1 = hashlib.sha1(data).hexdigest()
         if sha1:
             if len(name) > (80 - 4 - 2 - 1 - 2 - 2 - 40):
-                print("    \"{0}\":\n    \"{1}\",".format(name, sha1))
+                print('    "{0}":\n    "{1}",'.format(name, sha1))
             else:
-                print("    \"{0}\": \"{1}\",".format(name, sha1))
+                print('    "{0}": "{1}",'.format(name, sha1))
         else:
-            print("    \"{0}\": \"\",".format(name))
+            print('    "{0}": "",'.format(name))
     print("")
     print(startup_sequence)
 

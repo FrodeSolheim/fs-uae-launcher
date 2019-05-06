@@ -15,7 +15,6 @@ import fsgs.web.handlers
 
 
 class FSGSWebServer(object):
-
     def run(self):
         # server_class = http.server.HTTPServer
         # handler_class = FSGSWebServerHandler
@@ -25,4 +24,5 @@ class FSGSWebServer(object):
         # httpd.serve_forever()
 
         from bottle import run
+
         run(host=DEFAULT_ADDRESS, port=DEFAULT_PORT)

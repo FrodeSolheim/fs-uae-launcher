@@ -57,7 +57,8 @@ class FSUAE(object):
         # args += ["--fullscreen-mode", "desktop"]
         if windows:
             p = subprocess.Popen(
-                args, cwd=cwd, env=env, close_fds=True, **kwargs)
+                args, cwd=cwd, env=env, close_fds=True, **kwargs
+            )
         else:
             p = subprocess.Popen(args, cwd=cwd, env=env, **kwargs)
         return p
@@ -84,10 +85,13 @@ class FSUAE(object):
         # FIXME: does not really belong here (dependency loop)
         from launcher.launcher_config import LauncherConfig
         from launcher.launcher_settings import LauncherSettings
-        width = (LauncherConfig.get("window_width") or
-                 LauncherSettings.get("window_width"))
-        height = (LauncherConfig.get("window_height") or
-                  LauncherSettings.get("window_height"))
+
+        width = LauncherConfig.get("window_width") or LauncherSettings.get(
+            "window_width"
+        )
+        height = LauncherConfig.get("window_height") or LauncherSettings.get(
+            "window_height"
+        )
         try:
             width = int(width)
         except:
@@ -97,6 +101,7 @@ class FSUAE(object):
         except:
             height = 540
         from launcher.ui.launcherwindow import LauncherWindow
+
         if LauncherWindow.current() is None:
             return
 
@@ -133,16 +138,16 @@ class FSUAE(object):
 
         if windows:
             exe = os.path.join(
-                application.executable_dir(), executable + ".exe")
+                application.executable_dir(), executable + ".exe"
+            )
             if not os.path.exists(exe):
                 exe = os.path.join(
-                    application.executable_dir(),
-                    "fs-uae",
-                    executable + ".exe")
+                    application.executable_dir(), "fs-uae", executable + ".exe"
+                )
             if not os.path.exists(exe):
                 exe = os.path.join(
-                    application.executable_dir(),
-                    "..", executable + ".exe")
+                    application.executable_dir(), "..", executable + ".exe"
+                )
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
@@ -152,34 +157,40 @@ class FSUAE(object):
                     "FS-UAE",
                     Plugin.os_name(True),
                     Plugin.arch_name(True),
-                    executable + ".exe")
+                    executable + ".exe",
+                )
         elif macosx:
             exe = os.path.join(application.executable_dir(), executable)
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
-                    "../FS-UAE.app/Contents/MacOS/" + executable)
+                    "../FS-UAE.app/Contents/MacOS/" + executable,
+                )
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
-                    "../../../FS-UAE.app/Contents/MacOS/" + executable)
+                    "../../../FS-UAE.app/Contents/MacOS/" + executable,
+                )
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
-                    "../../../Programs/Mac OS X/FS-UAE.app/Contents/MacOS/" +
-                    executable)
+                    "../../../Programs/Mac OS X/FS-UAE.app/Contents/MacOS/"
+                    + executable,
+                )
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
                     "../../../FS-UAE Launcher.app/Contents/Resources/"
-                    "FS-UAE.app/Contents/MacOS/" + executable)
+                    "FS-UAE.app/Contents/MacOS/" + executable,
+                )
         else:
             print("application executable dir", application.executable_dir())
             exe = os.path.join(application.executable_dir(), executable)
             print("checking", exe)
             if not os.path.exists(exe):
                 exe = os.path.join(
-                    application.executable_dir(), "..", "bin", executable)
+                    application.executable_dir(), "..", "bin", executable
+                )
                 print("checking", exe)
             if not os.path.exists(exe):
                 exe = os.path.join(
@@ -190,12 +201,14 @@ class FSUAE(object):
                     "FS-UAE",
                     Plugin.os_name(True),
                     Plugin.arch_name(True),
-                    executable)
+                    executable,
+                )
                 print("checking", exe)
             if not os.path.exists(exe):
                 return executable
 
         if not os.path.exists(exe):
-            raise Exception("Could not find {0} executable".format(
-                repr(executable)))
+            raise Exception(
+                "Could not find {0} executable".format(repr(executable))
+            )
         return exe

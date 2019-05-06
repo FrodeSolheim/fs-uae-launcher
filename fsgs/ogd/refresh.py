@@ -27,30 +27,34 @@ class DatabaseRefreshTask(Task):
         # FIXME, dependency on fs_uae_launcher
         # from fs_uae_launcher.Scanner import Scanner
         # Scanner.start([], scan_for_files=False, update_game_database=True)
-        from fsgs.ogd.game_rating_synchronizer \
-            import GameRatingSynchronizer
+        from fsgs.ogd.game_rating_synchronizer import GameRatingSynchronizer
         from launcher.gamescanner import GameScanner
 
         context = SynchronizerContext()
 
         synchronizer = MetaSynchronizer(
-            context, on_status=self.on_status, stop_check=self.stop_check)
+            context, on_status=self.on_status, stop_check=self.stop_check
+        )
         synchronizer.synchronize()
 
         synchronizer = GameRatingSynchronizer(
-            context, database, on_status=self.on_status,
-            stop_check=self.stop_check)
+            context,
+            database,
+            on_status=self.on_status,
+            stop_check=self.stop_check,
+        )
         synchronizer.username = "auth_token"
         synchronizer.password = app.settings["database_auth"]
         synchronizer.synchronize()
 
         synchronizer = ListsSynchronizer(
-            context, on_status=self.on_status, stop_check=self.stop_check)
+            context, on_status=self.on_status, stop_check=self.stop_check
+        )
         synchronizer.synchronize()
 
         scanner = GameScanner(
-            context, None, on_status=self.on_status,
-            stop_check=self.stop_check)
+            context, None, on_status=self.on_status, stop_check=self.stop_check
+        )
         scanner.update_game_database()
         scanner.scan(database)
 

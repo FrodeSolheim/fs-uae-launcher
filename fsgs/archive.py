@@ -27,7 +27,6 @@ else:
 
 
 class ZipHandler(object):
-
     def __init__(self, path):
         self.path = path
         self.zip = ZipFile(self.path, "r")
@@ -72,7 +71,6 @@ class ZipHandler(object):
 
 
 class SevenZipHandler(object):
-
     def __init__(self, path):
         self.path = path
         self.zip = SevenZipFile(self.path, "r")
@@ -99,7 +97,6 @@ class SevenZipHandler(object):
 
 
 class LhaHandler(object):
-
     def __init__(self, path):
         self.path = path
         self.zip = LhaFile(self.path, "r")
@@ -160,7 +157,6 @@ class LhaHandler(object):
 
 
 class NullHandler(object):
-
     def __init__(self, path):
         self.path = path
 
@@ -185,7 +181,8 @@ def filter_open(path, stream=None):
             return ByteSwapWordsFilter(stream)
         else:
             raise Exception(
-                "Unrecognized file filter: " + path.split("#?")[-1])
+                "Unrecognized file filter: " + path.split("#?")[-1]
+            )
     return stream
 
 
@@ -217,8 +214,8 @@ class ByteSwapWordsFilter:
         assert len(data) % 2 == 0
         io = BytesIO()
         for i in range(0, len(data), 2):
-            io.write(data[i + 1:i + 2])
-            io.write(data[i:i + 1])
+            io.write(data[i + 1 : i + 2])
+            io.write(data[i : i + 1])
         io.seek(0)
         return io.getvalue()
 
@@ -253,8 +250,8 @@ class Archive(object):
             ext = ext.lower()
             if ext in archive_extensions:
                 # FIXME: should also check that it isn't a dir
-                path = str(os.sep).join(parts[:i + 1])
-                sub_path = str(os.sep).join(parts[i + 1:])
+                path = str(os.sep).join(parts[: i + 1])
+                sub_path = str(os.sep).join(parts[i + 1 :])
                 return path, sub_path
         return path, ""
 

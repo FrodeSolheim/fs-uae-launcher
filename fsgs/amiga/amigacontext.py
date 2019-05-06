@@ -19,8 +19,10 @@ class AmigaContext(BaseContext):
         self.clear_floppy_list()
 
     def eject_floppy(self, drive):
-        values = [("floppy_drive_{0}".format(drive), ""),
-                  ("x_floppy_drive_{0}_sha1".format(drive), "")]
+        values = [
+            ("floppy_drive_{0}".format(drive), ""),
+            ("x_floppy_drive_{0}_sha1".format(drive), ""),
+        ]
         self.set_config(values)
 
         # self.notify("fsgs:config:floppy_drive_{0}".format(drive), "")
@@ -46,9 +48,12 @@ class AmigaContext(BaseContext):
             sha1 = ChecksumTool().checksum(path)
         default_dir = FSGSDirectories.get_floppies_dir()
         path = Paths.contract_path(path, default_dir)
-        self.set_config([
-            ("floppy_drive_{0}".format(drive), path),
-            ("x_floppy_drive_{0}_sha1".format(drive), sha1)])
+        self.set_config(
+            [
+                ("floppy_drive_{0}".format(drive), path),
+                ("x_floppy_drive_{0}_sha1".format(drive), sha1),
+            ]
+        )
 
     def insert_cd(self, drive, path, sha1=None):
         if sha1 is None:
@@ -56,9 +61,12 @@ class AmigaContext(BaseContext):
             print("FIXME: not calculating CD checksum just yet")
         default_dir = FSGSDirectories.get_cdroms_dir()
         path = Paths.contract_path(path, default_dir)
-        self.set_config([
-            ("cdrom_drive_{0}".format(drive), path),
-            ("x_cdrom_drive_{0}_sha1".format(drive), sha1)])
+        self.set_config(
+            [
+                ("cdrom_drive_{0}".format(drive), path),
+                ("x_cdrom_drive_{0}_sha1".format(drive), sha1),
+            ]
+        )
 
     def insert_multiple_floppies(self, insert_paths):
         paths = []
@@ -89,23 +97,35 @@ class AmigaContext(BaseContext):
             path = Paths.contract_path(path, default_dir)
 
             if i < 4:
-                self.set_config([
-                    ("floppy_drive_{0}".format(i), path),
-                    ("x_floppy_drive_{0}_sha1".format(i), sha1)])
-            self.set_config([
-                ("floppy_image_{0}".format(i), path),
-                ("x_floppy_image_{0}_sha1".format(i), sha1)])
+                self.set_config(
+                    [
+                        ("floppy_drive_{0}".format(i), path),
+                        ("x_floppy_drive_{0}_sha1".format(i), sha1),
+                    ]
+                )
+            self.set_config(
+                [
+                    ("floppy_image_{0}".format(i), path),
+                    ("x_floppy_image_{0}_sha1".format(i), sha1),
+                ]
+            )
 
         # blank the rest of the drives
         for i in range(len(paths), 4):
-            self.set_config([
-                ("floppy_drive_{0}".format(i), ""),
-                ("x_floppy_drive_{0}_sha1".format(i), "")])
+            self.set_config(
+                [
+                    ("floppy_drive_{0}".format(i), ""),
+                    ("x_floppy_drive_{0}_sha1".format(i), ""),
+                ]
+            )
         # blank the rest of the image list
         for i in range(len(paths), 20):
-            self.set_config([
-                ("floppy_image_{0}".format(i), ""),
-                ("x_floppy_image_{0}_sha1".format(i), "")])
+            self.set_config(
+                [
+                    ("floppy_image_{0}".format(i), ""),
+                    ("x_floppy_image_{0}_sha1".format(i), ""),
+                ]
+            )
 
     def get_base_dir(self):
         # FIXME: dependency loop

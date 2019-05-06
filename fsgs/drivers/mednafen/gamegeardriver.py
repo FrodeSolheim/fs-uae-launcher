@@ -8,12 +8,7 @@ class MednafenGameGearDriver(MednafenDriver):
         "mapping_name": "gamegear",
     }
 
-    PORTS = [
-        {
-            "description": "Controller",
-            "types": [CONTROLLER]
-        },
-    ]
+    PORTS = [{"description": "Controller", "types": [CONTROLLER]}]
 
     def __init__(self, fsgs):
         super().__init__(fsgs)

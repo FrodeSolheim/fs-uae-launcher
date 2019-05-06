@@ -2,6 +2,7 @@ import os, sys
 from fsui.qt import QUrl, QLibraryInfo
 from fsui.qt import QMainWindow, QWidget, Qt
 from PyQt5.QtQuick import QQuickView
+
 # to make sure cxFreeze includes it
 import PyQt5.QtNetwork
 import PyQt5.QtQml
@@ -9,7 +10,6 @@ from fsbc.application import app
 
 
 class GameCenterView(QQuickView):
-
     def __init__(self, parent=None):
         QQuickView.__init__(self, parent)
 
@@ -31,9 +31,11 @@ class GameCenterView(QQuickView):
 
         # engine.addPluginPath(qml_path)
         # print("setImportPathList", [QUrl.fromLocalFile(qml_path)])
-        self.setSource(QUrl.fromLocalFile(
-            os.path.join(qml_path, "ScaledUserInterface.qml")))
-
+        self.setSource(
+            QUrl.fromLocalFile(
+                os.path.join(qml_path, "ScaledUserInterface.qml")
+            )
+        )
 
         # self.game_center_view = GameCenterView()
 

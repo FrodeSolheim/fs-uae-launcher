@@ -47,16 +47,22 @@ ATARI_WIDTH = 832
 ATARI_HEIGHT = 552
 # noinspection SpellCheckingInspection
 ATARI_TOS_102_UK = KnownFile(
-    "87900a40a890fdf03bd08be6c60cc645855cbce5", PLATFORM_ATARI,
-    "TOS v1.02 (1987)(Atari Corp)(Mega ST)(GB)[MEGA TOS].img")
+    "87900a40a890fdf03bd08be6c60cc645855cbce5",
+    PLATFORM_ATARI,
+    "TOS v1.02 (1987)(Atari Corp)(Mega ST)(GB)[MEGA TOS].img",
+)
 # noinspection SpellCheckingInspection
 ATARI_TOS_104_UK = KnownFile(
-    "9526ef63b9cb1d2a7109e278547ae78a5c1db6c6", PLATFORM_ATARI,
-    "TOS v1.04 (1989)(Atari Corp)(Mega ST)(GB)[Rainbow TOS].img")
+    "9526ef63b9cb1d2a7109e278547ae78a5c1db6c6",
+    PLATFORM_ATARI,
+    "TOS v1.04 (1989)(Atari Corp)(Mega ST)(GB)[Rainbow TOS].img",
+)
 # noinspection SpellCheckingInspection
 ATARI_TOS_1062_UK = KnownFile(
-    "70db24a7c252392755849f78940a41bfaebace71", PLATFORM_ATARI,
-    "TOS v1.62 (1990)(Atari)(GB)[STE TOS, Rev 2][STE].img")
+    "70db24a7c252392755849f78940a41bfaebace71",
+    PLATFORM_ATARI,
+    "TOS v1.62 (1990)(Atari)(GB)[STE TOS, Rev 2][STE].img",
+)
 
 
 class HatariAtariDriver(GameDriver):
@@ -93,15 +99,17 @@ class HatariAtariDriver(GameDriver):
         floppies = []
         for p in original_floppies:
             dest_path = os.path.join(
-                self.floppies_dir.path, os.path.basename(p))
+                self.floppies_dir.path, os.path.basename(p)
+            )
             self.files.add(dest_path, source=p)
             floppies.append(dest_path)
         self.floppies = floppies
 
     def prepare_tos(self):
         tos_file = self.helper.tos_file()
-        self.files.add(self.tos_file.path, sha1=tos_file.sha1,
-                       description=tos_file.name)
+        self.files.add(
+            self.tos_file.path, sha1=tos_file.sha1, description=tos_file.name
+        )
 
     def write_config_file(self, f):
         f.write("[Screen]\n")
@@ -139,11 +147,13 @@ class HatariAtariDriver(GameDriver):
         num_floppy_drives = 2
         inserted_floppies = self.floppies[:num_floppy_drives]
         if len(inserted_floppies) > 0:
-            f.write("szDiskAFileName = {path}\n".format(
-                path=inserted_floppies[0]))
+            f.write(
+                "szDiskAFileName = {path}\n".format(path=inserted_floppies[0])
+            )
         if len(inserted_floppies) > 1:
-            f.write("szDiskBFileName = {path}\n".format(
-                path=inserted_floppies[1]))
+            f.write(
+                "szDiskBFileName = {path}\n".format(path=inserted_floppies[1])
+            )
 
         f.write("[ROM]\n")
         f.write("szTosImageFileName = {}\n".format(self.tos_file.path))
@@ -195,8 +205,7 @@ class HatariAtariDriver(GameDriver):
         try:
             viewport = self.config["viewport"]
             if viewport:
-                sx, sy, sw, sh = viewport.rsplit(
-                    "=", 1)[-1].strip().split(" ")
+                sx, sy, sw, sh = viewport.rsplit("=", 1)[-1].strip().split(" ")
                 sx, sy, sw, sh = int(sx), int(sy), int(sw), int(sh)
         except Exception:
             traceback.print_exc("Could not get viewport information")
@@ -215,10 +224,10 @@ class HatariAtariDriver(GameDriver):
         orig_scale_x = min(screen_w / ATARI_WIDTH, screen_h / ATARI_HEIGHT)
         orig_scale_y = orig_scale_x
         print("org_scale = ", orig_scale_x, orig_scale_y)
-        offset_x = \
-            -(sx + (sw / 2.0) - ATARI_WIDTH / 2.0) / (ATARI_WIDTH / 2.0)
-        offset_y = \
-            -(sy + (sh / 2.0) - ATARI_HEIGHT / 2.0) / (ATARI_HEIGHT / 2.0)
+        offset_x = -(sx + (sw / 2.0) - ATARI_WIDTH / 2.0) / (ATARI_WIDTH / 2.0)
+        offset_y = -(sy + (sh / 2.0) - ATARI_HEIGHT / 2.0) / (
+            ATARI_HEIGHT / 2.0
+        )
         hz = scale_x / orig_scale_x
         vz = scale_y / orig_scale_y
         print("horizontal zoom:", hz / 100000000.0)

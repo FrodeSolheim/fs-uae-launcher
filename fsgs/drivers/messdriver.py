@@ -121,7 +121,6 @@ class MessDriver(MameDriver):
         self.set_env("FSGS_FAKE_INPUT", "".join(inject_string))
 
     def inject_fake_input_string(self, delay, inject_string):
-
         def inject(inject_key_code):
             s.append("1{0:03d}".format(inject_key_code))
             s.append("0{0:03d}".format(inject_key_code))
@@ -141,7 +140,7 @@ class MessDriver(MameDriver):
             elif c in "\n":
                 # inject(13)
                 inject(40)
-            elif c == '-':
+            elif c == "-":
                 # inject(45)
                 inject(45)
             elif c in "0123456789":
@@ -153,8 +152,10 @@ class MessDriver(MameDriver):
                 code = 4 + "abcdefghijklmnopqrstuvwxyz".index(c)
                 inject(code)
             else:
-                raise Exception("inject_fake_input_string cannot "
-                                "handle '{0}' yet".format(c))
+                raise Exception(
+                    "inject_fake_input_string cannot "
+                    "handle '{0}' yet".format(c)
+                )
         self.inject_fake_input_string_list(delay, s)
 
 

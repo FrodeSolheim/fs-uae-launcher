@@ -13,8 +13,11 @@ from uuid import uuid4
 from fsbc.application import app
 from fsbc.settings import Settings
 from fsbc.task import Task
-from fsgs.network import openretro_http_connection, openretro_url_prefix, \
-    opener_for_url_prefix
+from fsgs.network import (
+    openretro_http_connection,
+    openretro_url_prefix,
+    opener_for_url_prefix,
+)
 
 
 class NonRetryableHTTPError(HTTPError):
@@ -82,18 +85,22 @@ class OGDClient(object):
     @retry
     def auth(self, username, password, device_id, device_name):
         result = self.post(
-            "/api/auth", {"username": username,
-                          "password": password,
-                          "device_id": device_id,
-                          "device_name": device_name},
-            auth=False)
+            "/api/auth",
+            {
+                "username": username,
+                "password": password,
+                "device_id": device_id,
+                "device_name": device_name,
+            },
+            auth=False,
+        )
         return result
 
     @retry
     def deauth(self, auth_token):
         result = self.post(
-            "/api/deauth", {"auth_token": auth_token},
-            auth=False)
+            "/api/deauth", {"auth_token": auth_token}, auth=False
+        )
         return result
 
     @staticmethod
@@ -114,16 +121,21 @@ class OGDClient(object):
         headers = {}
         if auth:
             credentials = self.credentials()
-            headers[str("Authorization")] = str("Basic " + base64.b64encode(
-                "{0}:{1}".format(*credentials).encode("UTF-8")).decode("UTF-8"))
+            headers[str("Authorization")] = str(
+                "Basic "
+                + base64.b64encode(
+                    "{0}:{1}".format(*credentials).encode("UTF-8")
+                ).decode("UTF-8")
+            )
         connection = openretro_http_connection()
         url = "{0}{1}".format(openretro_url_prefix(), path)
         # if params:
         #     url += "?" + urlencode(params)
         if not data and params:
             data = urlencode(params)
-            headers[str("Content-Type")] = \
-                str("application/x-www-form-urlencoded")
+            headers[str("Content-Type")] = str(
+                "application/x-www-form-urlencoded"
+            )
         print(url, headers)
         if isinstance(data, dict):
             data = json.dumps(data)
@@ -142,8 +154,13 @@ class OGDClient(object):
                 class_ = NotFoundError
             else:
                 class_ = HTTPError
-            raise class_(url, response.status, response.reason,
-                         response.getheaders(), None)
+            raise class_(
+                url,
+                response.status,
+                response.reason,
+                response.getheaders(),
+                None,
+            )
         data = response.read()
         if len(data) > 0 and data[0:1] == b"{":
             doc = json.loads(data.decode("UTF-8"))
@@ -183,9 +200,7 @@ class OGDClient(object):
         return self._json
 
     def rate_variant(self, variant_uuid, like=None, work=None):
-        params = {
-            "game": variant_uuid,
-        }
+        params = {"game": variant_uuid}
         if like is not None:
             params["like"] = like
         if work is not None:
@@ -215,8 +230,11 @@ class LoginTask(Task):
             Settings.instance()["device_id"] = str(uuid4())
         try:
             result = self.client.auth(
-                self.username, self.password, Settings.instance()["device_id"],
-                get_device_name())
+                self.username,
+                self.password,
+                Settings.instance()["device_id"],
+                get_device_name(),
+            )
         except UnauthorizedError:
             raise Task.Failure("Wrong e-mail address or password")
 

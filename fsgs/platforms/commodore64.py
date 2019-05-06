@@ -102,15 +102,19 @@ class Commodore64Loader(SimpleLoader):
             if ext in [".TAP", ".T64"]:
                 if i == 0:
                     self.config["tape_drive_0"] = "sha1://{}/{}".format(
-                        item["sha1"], item["name"])
-                self.config["tape_image_{0}".format(i)] = \
-                    "sha1://{}/{}".format(item["sha1"], item["name"])
+                        item["sha1"], item["name"]
+                    )
+                self.config[
+                    "tape_image_{0}".format(i)
+                ] = "sha1://{}/{}".format(item["sha1"], item["name"])
             elif ext in [".D64"]:
                 if i == 0:
                     self.config["floppy_drive_0"] = "sha1://{}/{}".format(
-                        item["sha1"], item["name"])
-                self.config["floppy_image_{}".format(i)] = \
-                    "sha1://{0}/{1}".format(item["sha1"], item["name"])
+                        item["sha1"], item["name"]
+                    )
+                self.config[
+                    "floppy_image_{}".format(i)
+                ] = "sha1://{0}/{1}".format(item["sha1"], item["name"])
 
     def load_extra(self, values):
         # FIXME: Replace with c64_model?
@@ -319,8 +323,14 @@ class Commodore64ViceDriver(GameDriver):
             else:
                 vice_port_type = 0
             f.write("JoyDevice{0}={1}\n".format(vice_port, vice_port_type))
-            print("[INPUT] Port", port.type_option, "VicePort", vice_port,
-                  port.type, port.device)
+            print(
+                "[INPUT] Port",
+                port.type_option,
+                "VicePort",
+                vice_port,
+                port.type,
+                port.device,
+            )
 
             if port.device is None:
                 continue
@@ -349,7 +359,7 @@ class Commodore64ViceDriver(GameDriver):
             palette_file = "0"
         if palette_file != "0":
             f.write("VICIIExternalPalette=1\n")
-            f.write("VICIIPaletteFile=\"{}\"\n".format(palette_file))
+            f.write('VICIIPaletteFile="{}"\n'.format(palette_file))
 
         f.write("VICIIAudioLeak=1\n")
 
@@ -486,18 +496,12 @@ class Commodore64ViceDriver(GameDriver):
 
 
 class ViceInputMapper(InputMapper):
-
     def axis(self, axis, positive):
         offset = 0 if positive else 1
         return "{0} 0 {1}".format(self.device.index, axis * 2 + offset)
 
     def hat(self, hat, direction):
-        offset = {
-            "left": 2,
-            "right": 3,
-            "up": 0,
-            "down": 1,
-        }[direction]
+        offset = {"left": 2, "right": 3, "up": 0, "down": 1}[direction]
         return "{0} 2 {1}".format(self.device.index, hat * 4 + offset)
 
     def button(self, button):

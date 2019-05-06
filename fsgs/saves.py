@@ -15,8 +15,14 @@ copy of the state dir!
 
 class SaveHandler(object):
     def __init__(
-            self, fsgc, name="", platform="Unknown", uuid=None, options=None,
-            emulator=""):
+        self,
+        fsgc,
+        name="",
+        platform="Unknown",
+        uuid=None,
+        options=None,
+        emulator="",
+    ):
         self.fsgc = fsgc
         # FIXME: SaveHandler(fsgc, options=options) is new usage?
         self._options = options
@@ -54,7 +60,8 @@ class SaveHandler(object):
 
     def register_changes(self, original_dir, changes_dir):
         self.change_handlers.append(
-            (GameChangeHandler(original_dir), changes_dir))
+            (GameChangeHandler(original_dir), changes_dir)
+        )
 
     def prepare(self):
         self.create_save_ini()
@@ -113,7 +120,8 @@ class SaveHandler(object):
         variant_uuid = self.get("variant_uuid")
         if variant_uuid:
             save_dir = os.path.join(
-                saves_dir, "UUID", variant_uuid[:2], variant_uuid)
+                saves_dir, "UUID", variant_uuid[:2], variant_uuid
+            )
             return save_dir
         return None
 
@@ -204,12 +212,12 @@ class SaveHandler(object):
         # We use an existing state dir in a "letter" dir if it already
         # exists (legacy support).
         path = os.path.join(
-            FSGSDirectories.get_save_states_dir(), letter, config_name)
+            FSGSDirectories.get_save_states_dir(), letter, config_name
+        )
         if os.path.exists(path):
             return path
         # If not, we use a direct sub-folder of save states dir.
-        path = os.path.join(
-            FSGSDirectories.get_save_states_dir(), config_name)
+        path = os.path.join(FSGSDirectories.get_save_states_dir(), config_name)
         return path
 
     def get_state_dir(self):

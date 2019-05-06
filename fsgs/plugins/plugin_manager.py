@@ -276,7 +276,9 @@ class PluginManager:
         logger.info("Machine: %s", platform.machine().lower())
         logger.info("Architecture: %s", platform.architecture()[0])
         logger.info(
-            "Plugin OS/arch: %s/%s", Plugin.os_name(True), Plugin.arch_name(True)
+            "Plugin OS/arch: %s/%s",
+            Plugin.os_name(True),
+            Plugin.arch_name(True),
         )
 
         for dir_path in plugin_path:

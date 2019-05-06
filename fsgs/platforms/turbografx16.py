@@ -54,13 +54,8 @@ class TurboGrafx16Loader(CartridgePlatformLoader):
 
 class TurboGrafx16MednafenDriver(MednafenDriver):
     PORTS = [
-        {
-            "description": "Input Port 1",
-            "types": [TG16_CONTROLLER]
-        }, {
-            "description": "Input Port 2",
-            "types": [TG16_CONTROLLER]
-        },
+        {"description": "Input Port 1", "types": [TG16_CONTROLLER]},
+        {"description": "Input Port 2", "types": [TG16_CONTROLLER]},
     ]
 
     def __init__(self, fsgc):

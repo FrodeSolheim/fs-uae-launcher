@@ -23,7 +23,8 @@ class ValueConfigLoader(object):
         self._cue_sheets = None
         if uuid:
             self.options["database_url"] = "{0}/game/{1}".format(
-                openretro_url_prefix(), uuid)
+                openretro_url_prefix(), uuid
+            )
 
     def get_config(self):
         return self.config.copy()
@@ -35,9 +36,10 @@ class ValueConfigLoader(object):
             except ValueError:
                 version = 10000
             if version > self.DB_VERSION_MAX:
-                self.config["__config_name"] = \
-                    "Unsupported Database " \
+                self.config["__config_name"] = (
+                    "Unsupported Database "
                     "Version (Please upgrade FS-UAE Launcher)"
+                )
                 return self.get_config()
 
         self.values = values
@@ -122,8 +124,10 @@ class ValueConfigLoader(object):
         if self.config.get(Option.X_WHDLOAD_ARGS):
             whdload.override_config(self.config)
 
-        if (self.config.get("amiga_model", "") == "A500" and
-                    self.config.get("slow_memory") == "0"):
+        if (
+            self.config.get("amiga_model", "") == "A500"
+            and self.config.get("slow_memory") == "0"
+        ):
             self.config["amiga_model"] = "A500/512K"
             self.config["slow_memory"] = ""
 
@@ -149,7 +153,8 @@ class ValueConfigLoader(object):
         def fix(key):
             if self.config.get(key):
                 self.config[key] = Paths.contract_path(
-                    self.config.get(key), default_dir, force_real_case=False)
+                    self.config.get(key), default_dir, force_real_case=False
+                )
 
         default_dir = fsgs.amiga.get_floppies_dir()
         for i in range(Amiga.MAX_FLOPPY_DRIVES):
@@ -234,8 +239,14 @@ class ValueConfigLoader(object):
                 else:
                     self.options["amiga_model"] = "A600"
             elif value == "2.0+":
-                if model in ["A500+", "A600", "A1200", "A1200/020",
-                             "A3000", "A4000/040"]:
+                if model in [
+                    "A500+",
+                    "A600",
+                    "A1200",
+                    "A1200/020",
+                    "A3000",
+                    "A4000/040",
+                ]:
                     pass
                 else:
                     self.options["amiga_model"] = "A600"
@@ -295,19 +306,41 @@ class ValueConfigLoader(object):
             # FIXME: handle
             pass
         elif key in [
-            "joystick_port_0_mode", "joystick_port_1_mode",
-            "joystick_port_2_mode", "joystick_port_3_mode",
-            "joystick_port_4_mode"]:
+            "joystick_port_0_mode",
+            "joystick_port_1_mode",
+            "joystick_port_2_mode",
+            "joystick_port_3_mode",
+            "joystick_port_4_mode",
+        ]:
             self.load_joystick_port_x_mode_option(key, value)
         elif key in [
-            "amiga_model", "accuracy", "cdrom_drive_0_delay",
-            "floppy_drive_count", "slow_memory", "front_sha1",
-            "screen1_sha1", "screen2_sha1", "screen3_sha1",
-            "screen4_sha1", "screen5_sha1", "title_sha1",
-            "year", "publisher", "developer", "hol_url",
-            "lemon_url", "wikipedia_url", "mobygames_url",
-            "whdload_url", "amigamemo_url", "longplay_url",
-            "thelegacy_url", "homepage_url", "languages", "dongle_type"]:
+            "amiga_model",
+            "accuracy",
+            "cdrom_drive_0_delay",
+            "floppy_drive_count",
+            "slow_memory",
+            "front_sha1",
+            "screen1_sha1",
+            "screen2_sha1",
+            "screen3_sha1",
+            "screen4_sha1",
+            "screen5_sha1",
+            "title_sha1",
+            "year",
+            "publisher",
+            "developer",
+            "hol_url",
+            "lemon_url",
+            "wikipedia_url",
+            "mobygames_url",
+            "whdload_url",
+            "amigamemo_url",
+            "longplay_url",
+            "thelegacy_url",
+            "homepage_url",
+            "languages",
+            "dongle_type",
+        ]:
             self.options[key] = value
         elif key == "requirements":
             if "wb" in value.lower():

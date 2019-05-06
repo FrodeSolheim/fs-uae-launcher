@@ -13,13 +13,9 @@ NEOGEO_MODEL_MVS_JP = "mvs/jp"
 NEOGEO_MODEL_AES = "aes"
 NEOGEO_MODEL_AES_JP = "aes/jp"
 # noinspection SpellCheckingInspection
-NEOGEO_ASIA_BIOS = {
-    "neo-epo.bin": "1b3b22092f30c4d1b2c15f04d1670eb1e9fbea07"
-}
+NEOGEO_ASIA_BIOS = {"neo-epo.bin": "1b3b22092f30c4d1b2c15f04d1670eb1e9fbea07"}
 # noinspection SpellCheckingInspection
-NEOGEO_JAPAN_BIOS = {
-    "neo-po.bin": "4e4a440cae46f3889d20234aebd7f8d5f522e22c"
-}
+NEOGEO_JAPAN_BIOS = {"neo-po.bin": "4e4a440cae46f3889d20234aebd7f8d5f522e22c"}
 NEOGEO_CONTROLLER = {
     "type": "gamepad",
     "description": "Gamepad",
@@ -47,13 +43,8 @@ class NeoGeoLoader(ArcadeLoader):
 
 class NeoGeoDriver(MameDriver):
     PORTS = [
-        {
-            "description": "Input Port 1",
-            "types": [NEOGEO_CONTROLLER]
-        }, {
-            "description": "Input Port 2",
-            "types": [NEOGEO_CONTROLLER]
-        }
+        {"description": "Input Port 1", "types": [NEOGEO_CONTROLLER]},
+        {"description": "Input Port 2", "types": [NEOGEO_CONTROLLER]},
     ]
 
     def __init__(self, fsgc):
@@ -94,18 +85,18 @@ class NeoGeoDriver(MameDriver):
             romset[entry["name"]] = entry["sha1"]
 
         if self.helper.model() == NEOGEO_MODEL_MVS:
-            romset.update({
-                "sp-s2.sp1": "4f5ed7105b7128794654ce82b51723e16e389543",
-            })
+            romset.update(
+                {"sp-s2.sp1": "4f5ed7105b7128794654ce82b51723e16e389543"}
+            )
         elif self.helper.model() == NEOGEO_MODEL_MVS_JP:
             # noinspection SpellCheckingInspection
-            romset.update({
-                "vs-bios.rom": "ecf01eda815909f1facec62abf3594eaa8d11075",
-            })
+            romset.update(
+                {"vs-bios.rom": "ecf01eda815909f1facec62abf3594eaa8d11075"}
+            )
         elif self.helper.model() == NEOGEO_MODEL_MVS_US:
-            romset.update({
-                "sp-u2.sp1": "5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb",
-            })
+            romset.update(
+                {"sp-u2.sp1": "5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb"}
+            )
         elif self.helper.model() == NEOGEO_MODEL_AES:
             romset.update(NEOGEO_ASIA_BIOS)
         elif self.helper.model() == NEOGEO_MODEL_AES_JP:
@@ -114,17 +105,19 @@ class NeoGeoDriver(MameDriver):
         if self.helper.aes():
             machine = "aes"
             # noinspection SpellCheckingInspection
-            romset.update({
-                "000-lo.lo": "5992277debadeb64d1c1c64b0a92d9293eaf7e4a",
-            })
+            romset.update(
+                {"000-lo.lo": "5992277debadeb64d1c1c64b0a92d9293eaf7e4a"}
+            )
         else:
             machine = "neogeo"
             # noinspection SpellCheckingInspection
-            romset.update({
-                "000-lo.lo": "5992277debadeb64d1c1c64b0a92d9293eaf7e4a",
-                "sfix.sfix": "fd4a618cdcdbf849374f0a50dd8efe9dbab706c3",
-                "sm1.sm1": "42f9d7ddd6c0931fd64226a60dc73602b2819dcf",
-            })
+            romset.update(
+                {
+                    "000-lo.lo": "5992277debadeb64d1c1c64b0a92d9293eaf7e4a",
+                    "sfix.sfix": "fd4a618cdcdbf849374f0a50dd8efe9dbab706c3",
+                    "sm1.sm1": "42f9d7ddd6c0931fd64226a60dc73602b2819dcf",
+                }
+            )
 
         return machine, romset
 

@@ -24,13 +24,11 @@ class NotFoundError(RuntimeError):
 
 
 class File(object):
-
     def __init__(self, path):
         self.path = path
 
 
 class FileContext(BaseContext):
-
     def __init__(self, main_context):
         BaseContext.__init__(self, main_context)
         # FIXME: When using cache dict, should close/delete openers
@@ -80,7 +78,8 @@ class FileContext(BaseContext):
             return self.open_url(uri)
         elif uri.startswith("locker://"):
             return open_locker_uri(
-                uri, opener_cache_dict=self.opener_cache_dict)
+                uri, opener_cache_dict=self.opener_cache_dict
+            )
         else:
             if uri.startswith("$"):
                 uri = Paths.expand_path(uri)
@@ -118,16 +117,14 @@ class FileContext(BaseContext):
             hash_part = "#" + parts[1]
         if not Downloader.cache_file_from_url(url, download=False):
             license_code = self.get_license_code_for_url(original_url)
-            license_status = {
-                "accepted": False,
-                "done": False
-            }
+            license_status = {"accepted": False, "done": False}
 
             def show_license_code():
                 try:
                     try:
                         license_status["accepted"] = self.show_license_code(
-                            license_code)
+                            license_code
+                        )
                     except Exception:
                         traceback.print_exc()
                 finally:
@@ -137,13 +134,16 @@ class FileContext(BaseContext):
                 print("URL", url, "has license code", license_code)
                 # FIXME: remove direct dependency on fsui
                 import fsui as fsui
+
                 fsui.call_after(show_license_code)
                 while not license_status["done"]:
                     time.sleep(0.1)
                 if not license_status["accepted"]:
                     # FIXME: custom exception here
-                    raise Exception("Usage terms \"{0}\" was not "
-                                    "accepted".format(license_code))
+                    raise Exception(
+                        'Usage terms "{0}" was not '
+                        "accepted".format(license_code)
+                    )
         path = Downloader.cache_file_from_url(url)
         return path + hash_part
 
@@ -153,7 +153,8 @@ class FileContext(BaseContext):
                 "Files for this game are provided by back2roots.org.\n\n"
                 "By using back2roots.org or any of their services you "
                 "agree to their Acceptable Usage Policy:\n\n"
-                "http://www.back2roots.org/About/Project/Policy/")
+                "http://www.back2roots.org/About/Project/Policy/"
+            )
         else:
             license_text = license_code
         return self.on_show_license_information(license_text)
@@ -171,7 +172,8 @@ class FileContext(BaseContext):
                 # we should be able to find all missing files after we have
                 # downloaded and extracted this archive
                 self.download_game_file_archive(
-                    self.context.config.get("download_file"))
+                    self.context.config.get("download_file")
+                )
                 # now try to re-open the file (should be found in the cache
                 return self._copy_game_file(src, dst)
             raise e
@@ -232,7 +234,6 @@ class FileContext(BaseContext):
 
 
 class FSGameSystemContext(object):
-
     def __init__(self):
         self._amiga = None
         self._config = None
@@ -249,6 +250,7 @@ class FSGameSystemContext(object):
     def amiga(self):
         if self._amiga is None:
             from .amiga.amigacontext import AmigaContext
+
             self._amiga = AmigaContext(self)
         return self._amiga
 
@@ -256,6 +258,7 @@ class FSGameSystemContext(object):
     def config(self):
         if self._config is None:
             from .Config import Config
+
             self._config = Config(self)
         return self._config
 
@@ -263,6 +266,7 @@ class FSGameSystemContext(object):
     def settings(self):
         if self._settings is None:
             from fsbc.settings import Settings
+
             self._settings = Settings.instance()
         return self._settings
 
@@ -288,6 +292,7 @@ class FSGameSystemContext(object):
     def signal(self):
         if self._signal is None:
             from .SignalContext import SignalContext
+
             self._signal = SignalContext(self)
             # self._signal = Signal()
         return self._signal
@@ -296,6 +301,7 @@ class FSGameSystemContext(object):
     def netplay(self):
         if self._netplay is None:
             from .netplay.NetplayContext import NetplayContext
+
             self._netplay = NetplayContext(self)
         return self._netplay
 
@@ -313,11 +319,13 @@ class FSGameSystemContext(object):
         if not hasattr(self.thread_local, attr_name):
             # FIXME
             from fsgs.FSGSDirectories import FSGSDirectories
+
             # FIXME
             # path = os.path.join(
             #     FSGSDirectories.get_cache_dir(), "openretro.org")
-            path = os.path.join(FSGSDirectories.databases_dir(),
-                                database_name + ".sqlite")
+            path = os.path.join(
+                FSGSDirectories.databases_dir(), database_name + ".sqlite"
+            )
             if not os.path.exists(os.path.dirname(path)):
                 os.makedirs(os.path.dirname(path))
             # path = os.path.join(path, short_platform_id + ".sqlite")
@@ -329,6 +337,7 @@ class FSGameSystemContext(object):
     def cache_dir(self):
         # FIXME: remove dependency
         from fsgs.FSGSDirectories import FSGSDirectories
+
         return FSGSDirectories.get_cache_dir()
 
     # def temp_dir(self, suffix):
@@ -352,6 +361,7 @@ class FSGameSystemContext(object):
     def get_ordered_game_variants(self, game_uuid):
         print("get_ordered_game_variants game_uuid =", game_uuid)
         from .Database import Database
+
         database = Database.instance()
         variants = database.find_game_variants_new(game_uuid=game_uuid)
         print(variants)
@@ -360,10 +370,12 @@ class FSGameSystemContext(object):
         sortable_items = []
         for i, variant in enumerate(variants):
             game_database = self.game_database(variant["database"])
-            variant["like_rating"], variant["work_rating"] = \
-                game_database.get_ratings_for_game(variant["uuid"])
-            variant["personal_rating"], ignored = \
-                database.get_ratings_for_game(variant["uuid"])
+            variant["like_rating"], variant[
+                "work_rating"
+            ] = game_database.get_ratings_for_game(variant["uuid"])
+            variant[
+                "personal_rating"
+            ], ignored = database.get_ratings_for_game(variant["uuid"])
             # variant_uuid = variant["uuid"]
 
             name = variant["name"]
@@ -377,10 +389,13 @@ class FSGameSystemContext(object):
                 variant["name"] = "[UNPUBLISHED] " + variant["name"]
             else:
                 primary_sort = 0
-            sort_key = (primary_sort, 1000000 - variant["like_rating"],
-                        1000000 - variant["work_rating"], name)
-            sortable_items.append(
-                (sort_key, i, variant))
+            sort_key = (
+                primary_sort,
+                1000000 - variant["like_rating"],
+                1000000 - variant["work_rating"],
+                name,
+            )
+            sortable_items.append((sort_key, i, variant))
         ordered_list = [x[2] for x in sorted(sortable_items)]
         print("ordered variant list:")
         for variant in ordered_list:
@@ -416,10 +431,12 @@ class FSGameSystemContext(object):
         # values = game_database.get_game_values_for_uuid(variant_uuid)
 
         from .Database import Database
+
         database = Database.instance()
         try:
             database_name = database.find_game_database_for_game_variant(
-                variant_uuid)
+                variant_uuid
+            )
         except LookupError:
             return False
 
@@ -433,6 +450,7 @@ class FSGameSystemContext(object):
         # print("")
 
         from fsgs.platform import PlatformHandler
+
         platform_handler = PlatformHandler.create(self.game.platform.id)
         loader = platform_handler.get_loader(self)
         self.config.load(loader.load_values(values))
@@ -440,10 +458,12 @@ class FSGameSystemContext(object):
 
     def run_game(self):
         from fsgs.platform import PlatformHandler
+
         platform_handler = PlatformHandler.create(self.game.platform.id)
         runner = platform_handler.get_runner(self)
 
         from fsgs.input.enumeratehelper import EnumerateHelper
+
         device_helper = EnumerateHelper()
         device_helper.default_port_selection(runner.ports, runner.options)
 
@@ -493,7 +513,6 @@ class FSGameSystemContext(object):
 
 
 class GameContext(object):
-
     def __init__(self, context):
         self._context = weakref.ref(context)
         # FIXME: REMOVE? use config[game_name] instead?
@@ -521,11 +540,14 @@ class GameContext(object):
             parent_database = self.fsgs.game_database(parent_database_name)
             try:
                 parent_doc = parent_database.get_game_values(
-                    game_uuid=doc.get("parent_uuid", ""))
+                    game_uuid=doc.get("parent_uuid", "")
+                )
             except LookupError:
                 raise IncompleteGameException(
                     "Could not find parent {0} of game {1}".format(
-                        doc.get("parent_uuid", ""), doc.get("game_uuid")))
+                        doc.get("parent_uuid", ""), doc.get("game_uuid")
+                    )
+                )
             parent_doc.update(doc)
             doc = parent_doc
         return doc
@@ -553,7 +575,6 @@ class GameContext(object):
 
 
 class PluginsContext(object):
-
     def __init__(self, context):
         self._context = weakref.ref(context)
 
@@ -565,7 +586,6 @@ class PluginsContext(object):
 
 
 class GamePlatform(object):
-
     def __init__(self):
         self._id = ""
 
@@ -580,6 +600,7 @@ class GamePlatform(object):
     @property
     def name(self):
         from .platform import PlatformHandler
+
         return PlatformHandler.get_platform_name(self._id)
         # if self._id == "atari-7800":
         #     return "Atari 7800"
@@ -593,7 +614,6 @@ class GamePlatform(object):
 
 
 class VariantContext(object):
-
     def __init__(self):
         self.name = ""
         self.uuid = ""

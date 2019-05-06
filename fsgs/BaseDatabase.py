@@ -119,7 +119,8 @@ class BaseDatabase(object):
         if self.get_version() < version:
             raise Exception(
                 "The database has been created by a newer version of this "
-                "application. Have you started an older version?")
+                "application. Have you started an older version?"
+            )
         if 0 < version < self.get_reset_version():
             print(" -- resetting database -- ")
             self.connection.close()
@@ -128,8 +129,9 @@ class BaseDatabase(object):
             raise ResetException()
 
         if self.get_version() > version:
-            self.update_database(max(version, reset_version - 1),
-                                 self.get_version())
+            self.update_database(
+                max(version, reset_version - 1), self.get_version()
+            )
 
     def update_database(self, old, new):
         for i in range(old + 1, new + 1):
@@ -141,7 +143,6 @@ class BaseDatabase(object):
 
 
 class DebuggingCursor(object):
-
     def __init__(self, cursor):
         self._cursor = cursor
 
@@ -154,8 +155,9 @@ class DebuggingCursor(object):
     def execute(self, query, *args, **kwargs):
         print(query, args)
         if log_query_plans():
-            self._cursor.execute("EXPLAIN QUERY PLAN " + query,
-                                 *args, **kwargs)
+            self._cursor.execute(
+                "EXPLAIN QUERY PLAN " + query, *args, **kwargs
+            )
             for row in self._cursor:
                 print(row[0], row[1], row[2], row[3])
         return self._cursor.execute(query, *args, **kwargs)

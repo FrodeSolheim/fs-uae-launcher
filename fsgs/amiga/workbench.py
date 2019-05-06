@@ -9,14 +9,14 @@ from .workbenchdata import wb_300_floppies
 
 
 class WorkbenchExtractor(object):
-
     def __init__(self, fsgs):
         self.fsgs = fsgs
         self.cached_adf = None
         self.cached_adf_sha1 = None
 
-    def install_version(self, version, dest_dir, file_names=None,
-                        install_startup_sequence=True):
+    def install_version(
+        self, version, dest_dir, file_names=None, install_startup_sequence=True
+    ):
         if version == "2.04":
             startup_sequence = wb_204_startup_sequence
             files = wb_204_files
@@ -40,10 +40,12 @@ class WorkbenchExtractor(object):
             self.copy_workbench_file(name, sha1, dest_path, floppies)
 
         if install_startup_sequence:
-            with open(os.path.join(dest_dir, "S", "Startup-Sequence"),
-                      "wb") as f:
-                f.write(startup_sequence.replace("\r\n", "\n").encode(
-                    "ISO-8859-1"))
+            with open(
+                os.path.join(dest_dir, "S", "Startup-Sequence"), "wb"
+            ) as f:
+                f.write(
+                    startup_sequence.replace("\r\n", "\n").encode("ISO-8859-1")
+                )
 
     def copy_workbench_file(self, name, sha1, dest_path, floppies):
         print("copying workbench file", name)
@@ -55,8 +57,9 @@ class WorkbenchExtractor(object):
             # using a cached/in-memory ADF object is very efficient here
             # compared to parsing the ADF from scratch for every file
             if self.cached_adf_sha1 in floppies:
-                result = self.extract_workbench_file(self.cached_adf,
-                                                     name, dest_path)
+                result = self.extract_workbench_file(
+                    self.cached_adf, name, dest_path
+                )
                 assert result == sha1
                 return
 

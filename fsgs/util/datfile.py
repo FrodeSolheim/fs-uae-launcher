@@ -4,7 +4,6 @@ import xml.etree.cElementTree as ElementTree
 
 
 class DatFile(object):
-    
     def __init__(self, file=None):
         self.games = []
         self.description = ""
@@ -46,17 +45,16 @@ class DatFile(object):
         if description_node is not None:
             self.description = description_node.text.strip()
         for game_node in root.findall("game"):
-            game = {
-                "name": game_node.attrib["name"],
-                "files": [],
-            }
+            game = {"name": game_node.attrib["name"], "files": []}
             for rom_node in game_node.findall("rom"):
-                rom = {"name": rom_node.attrib["name"],
-                       "size": int(rom_node.attrib["size"])}
+                rom = {
+                    "name": rom_node.attrib["name"],
+                    "size": int(rom_node.attrib["size"]),
+                }
                 if "crc" in rom_node.attrib:
                     rom["crc32"] = rom_node.attrib["crc"].lower()
                 if "md5" in rom_node.attrib:
-                    rom["md5"] =rom_node.attrib["md5"].lower()
+                    rom["md5"] = rom_node.attrib["md5"].lower()
                 if "sha1" in rom_node.attrib:
                     rom["sha1"] = rom_node.attrib["sha1"].lower()
                 game["files"].append(rom)
@@ -70,10 +68,7 @@ class DatFile(object):
         for line in data.split("\n"):
             line = line.strip()
             if line.startswith("game ("):
-                game = {
-                    "name": "",
-                    "files": [],
-                }
+                game = {"name": "", "files": []}
                 self.games.append(game)
             if line.startswith("name "):
                 if game is not None:
@@ -94,7 +89,7 @@ class DatFile(object):
                 if len(parts) == 3:
                     rom["name"] = parts[1]
                 else:
-                    parts = line.split(' ')
+                    parts = line.split(" ")
                     rom["name"] = parts[3]
                 n, ext = os.path.splitext(rom["name"])
                 if self.extensions and ext.lower() not in self.extensions:

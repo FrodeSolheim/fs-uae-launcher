@@ -11,8 +11,10 @@ TGCD_CONTROLLER = {
     "mapping_name": "turbografx16",
 }
 SYSCARD3_PCE = KnownFile(
-    "1b4c260326d905bc718812dad0f68089977f427b", TGCD_PLATFORM_ID,
-    "syscard3.pce")
+    "1b4c260326d905bc718812dad0f68089977f427b",
+    TGCD_PLATFORM_ID,
+    "syscard3.pce",
+)
 
 
 class TurboGrafxCDPlatform(Platform):
@@ -35,13 +37,8 @@ class TurboGrafxCDLoader(CDPlatformLoader):
 
 class TurboGrafxCDMednafenDriver(TurboGrafx16MednafenDriver):
     PORTS = [
-        {
-            "description": "Input Port 1",
-            "types": [TGCD_CONTROLLER]
-        }, {
-            "description": "Input Port 2",
-            "types": [TGCD_CONTROLLER]
-        },
+        {"description": "Input Port 1", "types": [TGCD_CONTROLLER]},
+        {"description": "Input Port 2", "types": [TGCD_CONTROLLER]},
     ]
 
     def __init__(self, fsgc):

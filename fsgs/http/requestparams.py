@@ -1,5 +1,4 @@
 class RequestParams:
-
     def __init__(self):
         self.platform = ""
         self.game_uuid = ""

@@ -19,14 +19,16 @@ class DeviceManager(object):
         self.helper = helper
         self.devices = []
         if "--add-dummy-joystick" in sys.argv:
-            self.add_joystick_device({
-                "axes": 2,
-                "hats": 0,
-                "balls": 0,
-                "buttons": 1,
-                "name": "Dummy Joystick",
-                "id": "Dummy Joystick",
-            })
+            self.add_joystick_device(
+                {
+                    "axes": 2,
+                    "hats": 0,
+                    "balls": 0,
+                    "buttons": 1,
+                    "name": "Dummy Joystick",
+                    "id": "Dummy Joystick",
+                }
+            )
 
     def get_devices(self):
         print("DeviceManager.get_devices")

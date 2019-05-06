@@ -25,7 +25,8 @@ class MednafenDriver(GameDriver):
         else:
             self.emulator = Emulator("mednafen-fs")
         self.save_handler = MednafenSaveHandler(
-            self.fsgc, options=self.options)
+            self.fsgc, options=self.options
+        )
         # self._game_files_added = False
 
     def prepare(self):
@@ -106,25 +107,19 @@ class MednafenDriver(GameDriver):
             os.makedirs(os.path.dirname(bios_path))
         src = self.fsgc.file.find_by_sha1(known_file.sha1)
         if not src:
-            raise Exception("Could not find {} (SHA-1: {}".format(
-                known_file.name, known_file.sha1))
+            raise Exception(
+                "Could not find {} (SHA-1: {}".format(
+                    known_file.name, known_file.sha1
+                )
+            )
         self.fsgc.file.copy_game_file(src, bios_path)
 
     def get_supported_filters(self):
         supported = [
-            {
-                "name": "2x",
-                "special": "nn2x",
-            }, {
-                "name": "none",
-                "special": "none",
-            }, {
-                "name": "scale2x",
-                "special": "scale2x",
-            }, {
-                "name": "hq2x",
-                "special": "hq2x",
-            }
+            {"name": "2x", "special": "nn2x"},
+            {"name": "none", "special": "none"},
+            {"name": "scale2x", "special": "scale2x"},
+            {"name": "hq2x", "special": "hq2x"},
         ]
         return supported
 
@@ -172,16 +167,19 @@ class MednafenDriver(GameDriver):
             self.emulator.args.extend(["-cheats", "0"])
             cheats_dir = self.temp_dir("cheats").path
             shutil.copy(
-                cheats_file_path, os.path.join(cheats_dir, cheats_file_name))
+                cheats_file_path, os.path.join(cheats_dir, cheats_file_name)
+            )
             # self.emulator.args.extend(["-filesys.path_cheat", cheats_dir])
             self.emulator.args.extend(["-path_cheat", cheats_dir])
 
         print("\n" + "-" * 79 + "\n" + "CONFIGURE DIRS")
 
-        self.emulator.args.extend([
-            "-path_sav", self.save_handler.emulator_save_dir()])
-        self.emulator.args.extend([
-            "-path_state", self.save_handler.emulator_state_dir()])
+        self.emulator.args.extend(
+            ["-path_sav", self.save_handler.emulator_save_dir()]
+        )
+        self.emulator.args.extend(
+            ["-path_state", self.save_handler.emulator_state_dir()]
+        )
 
         # self.emulator.args.extend(["-filesys.fname_state", "%M%X"])
         # self.emulator.args.extend(["-filesys.fname_sav", "%M%x"])
@@ -191,14 +189,23 @@ class MednafenDriver(GameDriver):
 
         # docdir = pyapp.user.documents_dir()
         self.doc_dir = self.temp_dir("mednafen-docs")
-        self.emulator.args.extend([
-            "-path_movie", self.doc_dir.path,
-            # "-path_cheat", self.doc_dir.path,
-            "-path_palette", self.home.path])
+        self.emulator.args.extend(
+            [
+                "-path_movie",
+                self.doc_dir.path,
+                # "-path_cheat", self.doc_dir.path,
+                "-path_palette",
+                self.home.path,
+            ]
+        )
 
         self.emulator.args.extend(["-path_snap", self.screenshots_dir()])
-        self.emulator.args.extend([
-            "-filesys.fname_snap", "{0}-%p.%x".format(self.screenshots_name())])
+        self.emulator.args.extend(
+            [
+                "-filesys.fname_snap",
+                "{0}-%p.%x".format(self.screenshots_name()),
+            ]
+        )
 
         self.mednafen_post_configure()
 
@@ -219,7 +226,8 @@ class MednafenDriver(GameDriver):
             self.emulator.args.extend(["-sound.driver", "sdl"])
         elif audio_driver == "alsa":
             self.emulator.args.extend(
-                ["-sound.device", "sexyal-literal-default"])
+                ["-sound.device", "sexyal-literal-default"]
+            )
         else:
             # Use Mednafen default selection
             # self.emulator.args.extend(["-sound.device", "default"])
@@ -236,8 +244,7 @@ class MednafenDriver(GameDriver):
                 if buffer_size < 0 or buffer_size > 1000:
                     print("WARNING: Mednafen audio buffer size out of range")
                     buffer_size = default_buffer_size
-        self.emulator.args.extend(
-            ["-sound.buffer_time", str(buffer_size)])
+        self.emulator.args.extend(["-sound.buffer_time", str(buffer_size)])
 
     def configure_input(self, f):
         print("\n" + "-" * 79 + "\n" + "CONFIGURE PORTS")
@@ -249,8 +256,9 @@ class MednafenDriver(GameDriver):
                 keys.setdefault(key, []).append(value)
             for key, values in keys.items():
                 print(repr(key), repr(values))
-                f.write("{key} {value}\n".format(
-                    key=key, value="~".join(values)))
+                f.write(
+                    "{key} {value}\n".format(key=key, value="~".join(values))
+                )
 
     def configure_video(self, f):
         pfx = self.mednafen_system_prefix()
@@ -353,7 +361,9 @@ class MednafenDriver(GameDriver):
 
         if self.effect() == self.CRT_EFFECT:
             self.emulator.args.extend(["-{}.shader".format(pfx), "goat"])
-            self.emulator.args.extend(["-{}.shader.goat.slen".format(pfx), "1"])
+            self.emulator.args.extend(
+                ["-{}.shader.goat.slen".format(pfx), "1"]
+            )
             # self.emulator.args.extend(["-{}.tblur".format(pfx), "1"])
             special = "none"
             video_scale = 2
@@ -390,7 +400,8 @@ class MednafenDriver(GameDriver):
             window_w = game_w * video_scale
             window_h = game_h * video_scale
         self.emulator.env["FSGS_WINDOW_SIZE"] = "{},{}".format(
-            window_w, window_h)
+            window_w, window_h
+        )
 
         self.emulator.args.extend(["-{}.special".format(pfx), special])
         self.emulator.args.extend(self.mednafen_extra_graphics_options())
@@ -442,26 +453,18 @@ class MednafenInputMapper(InputMapper):
         if positive:
             offset = 0x8000
         else:
-            offset = 0xc000
+            offset = 0xC000
         joystick_id = self.unique_id(self.device, self.device.id)
-        return "joystick {0:x} {1:08x}".format(
-            joystick_id, axis + offset)
+        return "joystick {0:x} {1:08x}".format(joystick_id, axis + offset)
 
     def hat(self, _, direction):
-        offset = {
-            "left": 8,
-            "right": 2,
-            "up": 1,
-            "down": 4,
-        }[direction]
+        offset = {"left": 8, "right": 2, "up": 1, "down": 4}[direction]
         joystick_id = self.unique_id(self.device, self.device.id)
-        return "joystick {0:x} {1:08x}".format(
-            joystick_id, 0x2000 + offset)
+        return "joystick {0:x} {1:08x}".format(joystick_id, 0x2000 + offset)
 
     def button(self, button):
         joystick_id = self.unique_id(self.device, self.device.id)
-        return "joystick {0:x} {1:08x}".format(
-            joystick_id, int(button))
+        return "joystick {0:x} {1:08x}".format(joystick_id, int(button))
 
     def key(self, key):
         # FIXME: Need other key codes on Windows ... ?
@@ -485,8 +488,9 @@ class MednafenInputMapper(InputMapper):
         m = hashlib.md5()
         print(device.axes, device.balls, device.hats, device.buttons)
         # noinspection SpellCheckingInspection
-        buffer = struct.pack("iiii", device.axes, device.balls,
-                             device.hats, device.buttons)
+        buffer = struct.pack(
+            "iiii", device.axes, device.balls, device.hats, device.buttons
+        )
         m.update(buffer)
         digest = m.digest()
         ret = 0

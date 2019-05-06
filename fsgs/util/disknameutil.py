@@ -9,10 +9,10 @@ from fsgs.util.gamenameutil import GameNameUtil
 
 
 class DiskNameUtil(object):
-
     @classmethod
-    def find_disks(cls, path, base_names=None, script=None, file_list=None,
-                   black_list={}):
+    def find_disks(
+        cls, path, base_names=None, script=None, file_list=None, black_list={}
+    ):
         disks = [path]
         print("")
         print("FIRST DISK", path)
@@ -60,7 +60,8 @@ class DiskNameUtil(object):
                 n = 99
             if n:
                 candidates.setdefault(n, []).append(
-                    (use_name, os.path.join(dir, item)))
+                    (use_name, os.path.join(dir, item))
+                )
         # print(candidates)
         for n, items in candidates.items():
             if n == 1:
@@ -85,7 +86,7 @@ class DiskNameUtil(object):
                     # break
                 without_flags = GameNameUtil.strip_flags(without_number)
                 if without_flags == first_without_flags:
-                    
+
                     flags_1 = extract_flags(first_without_number)
                     cr_flag_1 = ""
                     for flag in flags_1:
@@ -117,7 +118,7 @@ class DiskNameUtil(object):
                     # score += len(extra_flags_in_1)
                     print(extra_flags_in_1)
                     for flag in extra_flags_in_1:
-                        score += (10 - flags_1.index(flag))
+                        score += 10 - flags_1.index(flag)
                     score += len(extra_flags_in_n) * 100
                     print(score, p)
                     matches.append((score, p))
@@ -140,7 +141,8 @@ class DiskNameUtil(object):
                 for item in items:
                     print("  ", item)
                 raise Exception(
-                    "Did not find good match for floppy {0}".format(n))
+                    "Did not find good match for floppy {0}".format(n)
+                )
             matches.sort()
 
             print("")
@@ -152,7 +154,7 @@ class DiskNameUtil(object):
             # if score == 2:
             disks.append(p)
             # TOSEC (x of y) disk number labelling format
-            if ' of {0})'.format(n) in path:
+            if " of {0})".format(n) in path:
                 # found the correct number of disks
                 break
         print("")
@@ -172,7 +174,6 @@ def extract_flags(name):
 
 
 class TestGameDiskUtil(unittest.TestCase):
-
     def set_disks(self, s):
         self.all_disks = [x.strip() for x in s.split("\n") if x.strip()]
 
@@ -181,18 +182,24 @@ class TestGameDiskUtil(unittest.TestCase):
 
     def test_batman_the_movie(self):
         self.set_disks(BATMAN_THE_MOVIE)
-        disks = self.find_disks("Batman - The Movie (1989)(Ocean)(PAL)"
-                                "(Disk 1 of 2)[cr Black Monks].adf")
+        disks = self.find_disks(
+            "Batman - The Movie (1989)(Ocean)(PAL)"
+            "(Disk 1 of 2)[cr Black Monks].adf"
+        )
         print(disks)
 
     def test_batman_the_movie_cr_qtx(self):
         self.set_disks(BATMAN_THE_MOVIE)
         disks = self.find_disks(
-            "Batman - The Movie (1989)(Ocean)(PAL)(Disk 1 of 2)[cr QTX].adf")
-        self.assertEquals(disks, [
-            "Batman - The Movie (1989)(Ocean)(PAL)(Disk 1 of 2)[cr QTX].adf",
-            "Batman - The Movie (1989)(Ocean)(PAL)(Disk 2 of 2)[cr QTX].adf"
-        ])
+            "Batman - The Movie (1989)(Ocean)(PAL)(Disk 1 of 2)[cr QTX].adf"
+        )
+        self.assertEquals(
+            disks,
+            [
+                "Batman - The Movie (1989)(Ocean)(PAL)(Disk 1 of 2)[cr QTX].adf",
+                "Batman - The Movie (1989)(Ocean)(PAL)(Disk 2 of 2)[cr QTX].adf",
+            ],
+        )
 
 
 BATMAN_THE_MOVIE = """

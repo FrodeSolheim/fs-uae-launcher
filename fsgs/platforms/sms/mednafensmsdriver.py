@@ -1,4 +1,5 @@
 from fsgs.drivers.mednafendriver import MednafenDriver
+
 """
 
 FIXME: Some PAL games are 256x240, e.g. Fantastic Dizzy
@@ -13,13 +14,8 @@ class MednafenSMSDriver(MednafenDriver):
     }
 
     PORTS = [
-        {
-            "description": "1st Controller",
-            "types": [CONTROLLER]
-        }, {
-            "description": "2nd Controller",
-            "types": [CONTROLLER]
-        },
+        {"description": "1st Controller", "types": [CONTROLLER]},
+        {"description": "2nd Controller", "types": [CONTROLLER]},
     ]
 
     def __init__(self, fsgs):

@@ -8,12 +8,7 @@ class MessMsxDriver(MessDriver):
         "mapping_name": "msx",
     }
 
-    PORTS = [
-        {
-            "description": "1st Controller",
-            "types": [CONTROLLER]
-        }
-    ]
+    PORTS = [{"description": "1st Controller", "types": [CONTROLLER]}]
 
     def mess_configure(self):
         self.mess_configure_cartridge()

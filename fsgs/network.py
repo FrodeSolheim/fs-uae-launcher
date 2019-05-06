@@ -12,7 +12,8 @@ from fsgs.FSGSDirectories import FSGSDirectories
 def default_openretro_server_from_file():
     server = None
     p = os.path.join(
-        FSGSDirectories.get_data_dir(), "Settings", "database-server")
+        FSGSDirectories.get_data_dir(), "Settings", "database-server"
+    )
     if os.path.exists(p):
         with open(p, "r", encoding="UTF-8") as f:
             server = f.read().strip()
@@ -62,7 +63,8 @@ def openretro_http_connection():
 
 
 def opener_for_url_prefix(
-        url_prefix, username=None, password=None, cache_dict=None):
+    url_prefix, username=None, password=None, cache_dict=None
+):
     if cache_dict is not None:
         cache_key = (url_prefix, username, password)
         try:
@@ -72,11 +74,17 @@ def opener_for_url_prefix(
     if username or password:
         auth_handler = HTTPBasicAuthHandler()
         auth_handler.add_password(
-            realm="Open Amiga Game Database", uri="{0}".format(url_prefix),
-            user=username, passwd=password)
+            realm="Open Amiga Game Database",
+            uri="{0}".format(url_prefix),
+            user=username,
+            passwd=password,
+        )
         auth_handler.add_password(
-            realm="OpenRetro", uri="{0}".format(url_prefix),
-            user=username, passwd=password)
+            realm="OpenRetro",
+            uri="{0}".format(url_prefix),
+            user=username,
+            passwd=password,
+        )
         opener = build_opener(auth_handler)
     else:
         opener = build_opener()

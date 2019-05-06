@@ -2,6 +2,7 @@ import os
 
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.option import Option
+
 # from fsgs.spectrum import ZXS_48_ROM, ZXS_128_0_ROM, ZXS_128_1_ROM, \
 #     ZXS_PLUS3_0_ROM, ZXS_PLUS3_1_ROM, ZXS_PLUS3_2_ROM, ZXS_PLUS3_3_ROM
 
@@ -18,12 +19,7 @@ class FuseSpectrumDriver(GameDriver):
         "mapping_name": "zx-spectrum-joystick",
     }
 
-    PORTS = [
-        {
-            "description": "Joystick Port",
-            "types": [JOYSTICK]
-        },
-    ]
+    PORTS = [{"description": "Joystick Port", "types": [JOYSTICK]}]
 
     def __init__(self, fsgs):
         super().__init__(fsgs)

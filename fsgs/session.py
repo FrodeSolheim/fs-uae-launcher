@@ -75,7 +75,6 @@ class Instance:
 
 
 class Session:
-
     def __init__(self, fsgs):
         self.fsgs = fsgs
 

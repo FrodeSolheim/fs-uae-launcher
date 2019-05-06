@@ -1,18 +1,25 @@
 from fsgs.drivers.messdriver import MessDriver
 from fsgs.option import Option
-from fsgs.spectrum import ZXS_48_ROM, ZXS_128_0_ROM, ZXS_128_1_ROM, \
-    ZXS_PLUS3_0_ROM, ZXS_PLUS3_1_ROM, ZXS_PLUS3_2_ROM, ZXS_PLUS3_3_ROM
+from fsgs.spectrum import (
+    ZXS_48_ROM,
+    ZXS_128_0_ROM,
+    ZXS_128_1_ROM,
+    ZXS_PLUS3_0_ROM,
+    ZXS_PLUS3_1_ROM,
+    ZXS_PLUS3_2_ROM,
+    ZXS_PLUS3_3_ROM,
+)
 
 MESS_SPECTRUM = "spectrum"  # ZX Spectrum
-MESS_SPEC128 = "spec128"    # ZX Spectrum 128
+MESS_SPEC128 = "spec128"  # ZX Spectrum 128
 MESS_SPECPLS3 = "specpls3"  # ZX Spectrum +3
 MESS_sp3e8bit = "sp3e8bit"  # ZX Spectrum +3e 8bit IDE
 # noinspection SpellCheckingInspection
-MESS_sp3eata = "sp3eata"    # ZX Spectrum +3e 8bit ZXATASP
+MESS_sp3eata = "sp3eata"  # ZX Spectrum +3e 8bit ZXATASP
 # noinspection SpellCheckingInspection
-MESS_sp3ezcf = "sp3ezcf"    # ZX Spectrum +3e 8bit ZXCF
-MESS_spec80k = "spec80k"    # ZX Spectrum 80K
-MESS_specide = "specide"    # ZX Spectrum IDE
+MESS_sp3ezcf = "sp3ezcf"  # ZX Spectrum +3e 8bit ZXCF
+MESS_spec80k = "spec80k"  # ZX Spectrum 80K
+MESS_specide = "specide"  # ZX Spectrum IDE
 MESS_specpl2a = "specpl2a"  # ZX Spectrum +2a
 MESS_specpl3e = "specpl3e"  # ZX Spectrum +3e
 MESS_specpls2 = "specpls2"  # ZX Spectrum +2
@@ -25,12 +32,7 @@ class MessSpectrumDriver(MessDriver):
         "mapping_name": "zx-spectrum-joystick",
     }
 
-    PORTS = [
-        {
-            "description": "Joystick Port",
-            "types": [JOYSTICK]
-        },
-    ]
+    PORTS = [{"description": "Joystick Port", "types": [JOYSTICK]}]
 
     def mess_configure(self):
         # FIXME: hack
@@ -39,40 +41,72 @@ class MessSpectrumDriver(MessDriver):
 
         if self.config[Option.SNAPSHOT_FILE]:
             # snapshot loads automatically, no need to do anything special
-            self.add_arg("-{0}".format("snapshot"),
-                         self.get_game_file(Option.SNAPSHOT_FILE))
+            self.add_arg(
+                "-{0}".format("snapshot"),
+                self.get_game_file(Option.SNAPSHOT_FILE),
+            )
         elif self.config[Option.FLOPPY_DRIVE_0]:
             # pressing enter to select "loader" in the menu
             self.inject_fake_input_string(160, "{0}\n".format(""))
-            self.add_arg("-{0}".format("floppydisk1"),
-                         self.get_game_file(Option.FLOPPY_DRIVE_0))
+            self.add_arg(
+                "-{0}".format("floppydisk1"),
+                self.get_game_file(Option.FLOPPY_DRIVE_0),
+            )
 
         elif self.config[Option.TAPE_DRIVE_0]:
             self.emulator.args.extend(
-                ["-cassette", self.get_game_file(Option.TAPE_DRIVE_0)])
+                ["-cassette", self.get_game_file(Option.TAPE_DRIVE_0)]
+            )
             if self.config[Option.ZXS_MODEL] == "spectrum128":
-                self.inject_fake_input_string_list(160, [
-                    "1040", "0040", "0000",  # Return
-                    "0000", "0000", "0000",
-                    "1059", "0059", "0000",  # F2 (Load tape)
-                ])
+                self.inject_fake_input_string_list(
+                    160,
+                    [
+                        "1040",
+                        "0040",
+                        "0000",  # Return
+                        "0000",
+                        "0000",
+                        "0000",
+                        "1059",
+                        "0059",
+                        "0000",  # F2 (Load tape)
+                    ],
+                )
             else:
-                self.inject_fake_input_string_list(160, [
-                    # Inject LOAD ""
-                    "1013", "0013", "0000",  # J (LOAD)
-                    "1229", "0000",  # Right Shift (press)
-                    "1019", "0019", "0000",  # P (with symbol shift = ")
-                    "0229", "0000",  # Right shift (release)
-                    "1229", "0000",  # Right shift (press)
-                    "1019", "0019", "0000",  # P (with symbol shift = ")
-                    "0299", "0000",  # Right shift (release)
-                    "1040", "0040", "0000",  # Return
-
-                    # "0000", "0000", "0000",
-                    # "1071", "0071", "0000",  # Scroll Lock
-                    "0000", "0000", "0000",
-                    "1059", "0059", "0000",  # F2 (Load tape)
-                ])
+                self.inject_fake_input_string_list(
+                    160,
+                    [
+                        # Inject LOAD ""
+                        "1013",
+                        "0013",
+                        "0000",  # J (LOAD)
+                        "1229",
+                        "0000",  # Right Shift (press)
+                        "1019",
+                        "0019",
+                        "0000",  # P (with symbol shift = ")
+                        "0229",
+                        "0000",  # Right shift (release)
+                        "1229",
+                        "0000",  # Right shift (press)
+                        "1019",
+                        "0019",
+                        "0000",  # P (with symbol shift = ")
+                        "0299",
+                        "0000",  # Right shift (release)
+                        "1040",
+                        "0040",
+                        "0000",  # Return
+                        # "0000", "0000", "0000",
+                        # "1071", "0071", "0000",  # Scroll Lock
+                        "0000",
+                        "0000",
+                        "0000",
+                        "1059",
+                        "0059",
+                        "0000",  # F2 (Load tape)
+                    ],
+                )
             # self.args.extend(
             #     ["-autoboot_command", 'j" "\\n'])
 

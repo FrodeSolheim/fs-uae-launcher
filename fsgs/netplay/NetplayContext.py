@@ -2,7 +2,6 @@ from ..BaseContext import BaseContext
 
 
 class NetplayContext(BaseContext):
-
     def __init__(self, main_context):
         BaseContext.__init__(self, main_context)
 

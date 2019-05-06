@@ -7,7 +7,6 @@ import hashlib
 
 
 class GameChangeHandler(object):
-
     def __init__(self, path):
         self._preserve_changes_dir = path
 
@@ -35,18 +34,20 @@ class GameChangeHandler(object):
                     if ignore_file:
                         continue
                     sourcepath = os.path.join(dirpath, file_name)
-                    destpath = os.path.join(path, sourcepath[lstate_dir+1:])
+                    destpath = os.path.join(path, sourcepath[lstate_dir + 1 :])
                     if os.path.getsize(sourcepath) == 17:
                         with open(sourcepath, "rb") as f:
                             if f.read() == "FILE_IS_DELETED":
-                                print("- removing file",
-                                        sourcepath[lstate_dir+1:])
+                                print(
+                                    "- removing file",
+                                    sourcepath[lstate_dir + 1 :],
+                                )
                                 if os.path.exists(destpath):
                                     os.remove(destpath)
                                 else:
                                     print("  (already gone)")
                                 continue
-                    print("- updating file", sourcepath[lstate_dir+1:])
+                    print("- updating file", sourcepath[lstate_dir + 1 :])
                     if not os.path.isdir(os.path.dirname(destpath)):
                         os.makedirs(os.path.dirname(destpath))
                     shutil.copyfile(sourcepath, destpath)
@@ -73,8 +74,7 @@ class GameChangeHandler(object):
                 print("File changed:", filename)
                 print("-", newcs, "vs", oldcs)
                 sourcepath = os.path.join(self._preserve_changes_dir, filename)
-                destpath = os.path.join(state_dir,
-                        filename)
+                destpath = os.path.join(state_dir, filename)
                 print("Writing file", destpath)
                 if not os.path.exists(os.path.dirname(destpath)):
                     os.makedirs(os.path.dirname(destpath))
@@ -100,8 +100,8 @@ class GameChangeHandler(object):
             for filename in filenames:
                 filepath = os.path.join(dirpath, filename)
                 checksum = self.md5file(filepath)
-                files[filepath[lpath+1:]] = checksum
-        print(" - found %d files (checksummed)" % len(files,))
+                files[filepath[lpath + 1 :]] = checksum
+        print(" - found %d files (checksummed)" % len(files))
         return files
 
     def md5file(self, file):

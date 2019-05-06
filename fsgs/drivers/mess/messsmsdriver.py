@@ -9,13 +9,8 @@ class MessSmsDriver(MessDriver):
     }
 
     PORTS = [
-        {
-            "description": "1st Controller",
-            "types": [CONTROLLER]
-        }, {
-            "description": "2nd Controller",
-            "types": [CONTROLLER]
-        },
+        {"description": "1st Controller", "types": [CONTROLLER]},
+        {"description": "2nd Controller", "types": [CONTROLLER]},
     ]
 
     def mess_configure(self):
@@ -49,9 +44,7 @@ class MessSmsDriver(MessDriver):
 
 
 # noinspection SpellCheckingInspection
-SMS_ROMS = {
-    "3af7b66248d34eb26da40c92bf2fa4c73a46a051": "mpr-12808.ic2",
-}
+SMS_ROMS = {"3af7b66248d34eb26da40c92bf2fa4c73a46a051": "mpr-12808.ic2"}
 
 # FIXME...
 # noinspection SpellCheckingInspection

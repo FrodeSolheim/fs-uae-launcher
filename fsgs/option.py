@@ -4,6 +4,7 @@
 # noinspection SpellCheckingInspection
 class Option(object):
     """Constants for option names."""
+
     CONFIG_REFRESH = "__config_refresh"
     NETPLAY_GAME = "__netplay_game"
     A2600_DATABASE = "a2600_database"

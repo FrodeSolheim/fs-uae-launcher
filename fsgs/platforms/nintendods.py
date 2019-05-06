@@ -28,12 +28,7 @@ class NintendoDSLoader(SimpleLoader):
 
 
 class NintendoDSDriver(GameDriver):
-    PORTS = [
-        {
-            "description": "Controller 1",
-            "types": [NDS_CONTROLLER]
-        },
-    ]
+    PORTS = [{"description": "Controller 1", "types": [NDS_CONTROLLER]}]
 
     def __init__(self, fsgc):
         super().__init__(fsgc)

@@ -18,15 +18,15 @@ PSX_GAMEPAD = {
     "mapping_name": "playstation",
 }
 PSX_SCPH5500_BIN = KnownFile(
-    "b05def971d8ec59f346f2d9ac21fb742e3eb6917", PSX_PLATFORM_ID,
-    "scph5500.bin")
+    "b05def971d8ec59f346f2d9ac21fb742e3eb6917", PSX_PLATFORM_ID, "scph5500.bin"
+)
 PSX_SCPH5501_BIN = KnownFile(
-    "0555c6fae8906f3f09baf5988f00e55f88e9f30b", PSX_PLATFORM_ID,
-    "scph5501.bin")
+    "0555c6fae8906f3f09baf5988f00e55f88e9f30b", PSX_PLATFORM_ID, "scph5501.bin"
+)
 # noinspection SpellCheckingInspection
 PSX_SCPH5502_BIN = KnownFile(
-    "f6bc2d1f5eb6593de7d089c425ac681d6fffd3f0", PSX_PLATFORM_ID,
-    "scph5502.bin")
+    "f6bc2d1f5eb6593de7d089c425ac681d6fffd3f0", PSX_PLATFORM_ID, "scph5502.bin"
+)
 PSX_ROMS_FOR_REGION = {
     "JA": ["scph5500.bin", PSX_SCPH5500_BIN.sha1],
     "US": ["scph5501.bin", PSX_SCPH5501_BIN.sha1],
@@ -66,7 +66,8 @@ PSX_PORTS = [
         "types": [PSX_GAMEPAD],
         "type_option": "psx_port_1_type",
         "device_option": "psx_port_1",
-    }, {
+    },
+    {
         "description": "Port 2",
         "types": [PSX_GAMEPAD],
         "type_option": "psx_port_2_type",

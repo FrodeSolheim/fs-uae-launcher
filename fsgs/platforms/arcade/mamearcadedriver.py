@@ -12,19 +12,10 @@ class MameArcadeDriver(MameDriver):
     }
 
     PORTS = [
-        {
-            "description": "Player 1",
-            "types": [CONTROLLER]
-        }, {
-            "description": "Player 2",
-            "types": [CONTROLLER]
-        }, {
-            "description": "Player 3",
-            "types": [CONTROLLER]
-        }, {
-            "description": "Player 4",
-            "types": [CONTROLLER]
-        },
+        {"description": "Player 1", "types": [CONTROLLER]},
+        {"description": "Player 2", "types": [CONTROLLER]},
+        {"description": "Player 3", "types": [CONTROLLER]},
+        {"description": "Player 4", "types": [CONTROLLER]},
     ]
 
     def mame_romset(self):
@@ -44,7 +35,8 @@ class MameArcadeDriver(MameDriver):
             "RIGHT": "P#_JOYSTICK_RIGHT",
         }
         button_order = self.config.get(
-            "button_order", "1 2 3 4 5 6 7 8 9 10 11 12")
+            "button_order", "1 2 3 4 5 6 7 8 9 10 11 12"
+        )
         b = 0
         for button in button_order.split(" "):
             button = button.strip()

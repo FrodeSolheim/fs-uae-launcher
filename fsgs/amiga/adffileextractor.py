@@ -5,16 +5,20 @@
 # ToDo: Convert functions to a class.
 # Version: 1.0
 
-BLOCK_SIZE = 512        # Size of a block on an ADos disk
-AMIGA_ULONG_SIZE = 4    # Size of an Amiga ULong variable
+BLOCK_SIZE = 512  # Size of a block on an ADos disk
+AMIGA_ULONG_SIZE = 4  # Size of an Amiga ULong variable
 
 
 if b"\0"[0] == 0:  # Python 3
+
     def byte_value(x):
         return x
+
+
 else:
+
     def byte_value(x):
-        return ord(x) 
+        return ord(x)
 
 
 def convert_big_endian(big_endian):
@@ -22,32 +26,38 @@ def convert_big_endian(big_endian):
     c = 1
     sum = 0
     for digit in big_endian:
-        sum += byte_value(digit) * 2**((length - c) * 8)
+        sum += byte_value(digit) * 2 ** ((length - c) * 8)
         c += 1
     return sum
 
 
 def adf_check_ffs(data):
-    return byte_value(data[3]) & 1 == 1    # Check if bit 1 is set = FFS
+    return byte_value(data[3]) & 1 == 1  # Check if bit 1 is set = FFS
 
 
 def adf_get_block(data, block_number):
-    return data[block_number * BLOCK_SIZE:block_number * BLOCK_SIZE + BLOCK_SIZE]
+    return data[
+        block_number * BLOCK_SIZE : block_number * BLOCK_SIZE + BLOCK_SIZE
+    ]
 
 
 def adf_get_block_name(block):
-    length = byte_value(block[432])  # The length of the block (file) name is stored at offset 432
-    return block[433:433 + length]
+    length = byte_value(
+        block[432]
+    )  # The length of the block (file) name is stored at offset 432
+    return block[433 : 433 + length]
 
 
 def adf_get_data_blocks(data, block, amount, ffs):
     c = 0
-    offset = 24        # For OFS disks we need to skip the data header
+    offset = 24  # For OFS disks we need to skip the data header
     if ffs:
-        offset = 0    # For FFS disks there is no header in a data block
+        offset = 0  # For FFS disks there is no header in a data block
     filedata = b""
     for i in range(amount):
-        data_block_number = convert_big_endian(block[308 - c:308 - c + AMIGA_ULONG_SIZE])    # The data block numbers are stored from offset 308 backwards
+        data_block_number = convert_big_endian(
+            block[308 - c : 308 - c + AMIGA_ULONG_SIZE]
+        )  # The data block numbers are stored from offset 308 backwards
         t_data = adf_get_block(data, data_block_number)
         filedata += t_data[offset:]
         c += 4
@@ -55,23 +65,31 @@ def adf_get_data_blocks(data, block, amount, ffs):
 
 
 def adf_get_file_block_count(block):
-    return convert_big_endian(block[8:8 + AMIGA_ULONG_SIZE])
+    return convert_big_endian(block[8 : 8 + AMIGA_ULONG_SIZE])
 
 
 def adf_get_file_size(block):
-    return convert_big_endian(block[324:324 + AMIGA_ULONG_SIZE])    # The next file size is stored at offset 324
+    return convert_big_endian(
+        block[324 : 324 + AMIGA_ULONG_SIZE]
+    )  # The next file size is stored at offset 324
 
 
 def adf_get_hashtable(block):
-    return block[24:24 + 72 * AMIGA_ULONG_SIZE]                        # The hashtable starts at offset 24 and is 72 * 4 (size_of ulong) big
+    return block[
+        24 : 24 + 72 * AMIGA_ULONG_SIZE
+    ]  # The hashtable starts at offset 24 and is 72 * 4 (size_of ulong) big
 
 
 def adf_get_next_hash(block):
-    return convert_big_endian(block[496:496 + AMIGA_ULONG_SIZE])    # The next file/directory/link info block hash is stored at offset 496
+    return convert_big_endian(
+        block[496 : 496 + AMIGA_ULONG_SIZE]
+    )  # The next file/directory/link info block hash is stored at offset 496
 
 
 def adf_get_rootblock(data):
-    return data[880 * BLOCK_SIZE:880 * BLOCK_SIZE + BLOCK_SIZE]        # Rootblock is block 880
+    return data[
+        880 * BLOCK_SIZE : 880 * BLOCK_SIZE + BLOCK_SIZE
+    ]  # Rootblock is block 880
 
 
 def adf_hash_name(name):
@@ -81,7 +99,7 @@ def adf_hash_name(name):
         hash *= 13
         # hash = hash + ord(char.upper())
         hash += byte_value(char)
-        hash &= 0x7ff
+        hash &= 0x7FF
     hash %= (BLOCK_SIZE // AMIGA_ULONG_SIZE) - 56
     return hash
 
@@ -91,7 +109,9 @@ def adf_find_file(name, hashtable, data):
     name = name.upper()
     index = hash * AMIGA_ULONG_SIZE
     print(repr(index))
-    sector_number = convert_big_endian(hashtable[index:index + AMIGA_ULONG_SIZE])
+    sector_number = convert_big_endian(
+        hashtable[index : index + AMIGA_ULONG_SIZE]
+    )
     if sector_number != 0:
         sector = adf_get_block(data, sector_number)
         sector_name = adf_get_block_name(sector)
@@ -124,12 +144,13 @@ def extract_file_from_adf_data(data, name):
         if block == -1:
             return -1
     fs = adf_get_file_size(block)
-    filedata = adf_get_data_blocks(data, block, adf_get_file_block_count(block), ffs)
+    filedata = adf_get_data_blocks(
+        data, block, adf_get_file_block_count(block), ffs
+    )
     return filedata[:fs]
 
 
 class ADFFileExtractor(object):
-    
     def __init__(self, data):
         self.data = data
 

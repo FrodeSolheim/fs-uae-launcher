@@ -19,8 +19,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A1000_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A500/512K",
@@ -30,22 +29,20 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A500_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A500",
             "title": "A500",
             # "subtitle": "1.3 ROM, 512 KB Chip  + 512 KB Slow RAM",
             # "subtitle": "1.3 ROM, 512 KB RAM Trapdoor Expansion",
-            "subtitle": "1.3 ROM, 512 KB \"Slow\" RAM",
+            "subtitle": '1.3 ROM, 512 KB "Slow" RAM',
             # "subtitle": "1.3 ROM, 512 KB  RAM",
             "cd_based": False,
             "kickstarts": A500_KICKSTARTS,
             # "kickstarts": ["0123456789012345678901234567890123456789"],
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A500+",
@@ -54,8 +51,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A500P_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A600",
@@ -64,8 +60,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A600_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A1200/3.0",
@@ -74,8 +69,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A1200_3_0_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A1200",
@@ -84,8 +78,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A1200/020",
@@ -94,8 +87,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A1200/1230",
@@ -104,8 +96,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A1200/1240",
@@ -114,8 +105,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A1200/1260",
@@ -124,8 +114,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A1200/PPC",
@@ -134,8 +123,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A1200_3_1_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A3000",
@@ -144,8 +132,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A3000_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A4000",
@@ -154,8 +141,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A4000_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A4000/040",
@@ -164,8 +150,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A4000_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "A4000/PPC",
@@ -174,9 +159,7 @@ class Amiga(object):
             "cd_based": False,
             "kickstarts": A4000_KICKSTARTS,
             "ext_roms": [],
-            "defaults": {
-                "accelerator": "cyberstorm-ppc",
-            }
+            "defaults": {"accelerator": "cyberstorm-ppc"},
         },
         {
             "id": "A4000/OS4",
@@ -187,8 +170,8 @@ class Amiga(object):
             "ext_roms": [],
             "defaults": {
                 "accelerator": "cyberstorm-ppc",
-                "graphics_card": "picasso-iv-z3"
-            }
+                "graphics_card": "picasso-iv-z3",
+            },
         },
         {
             "id": "CD32",
@@ -197,8 +180,7 @@ class Amiga(object):
             "cd_based": "CD32",
             "kickstarts": CD32_KICKSTARTS,
             "ext_roms": CD32_EXT_ROMS,
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "CD32/FMV",
@@ -207,8 +189,7 @@ class Amiga(object):
             "cd_based": "CD32",
             "kickstarts": CD32_KICKSTARTS,
             "ext_roms": CD32_EXT_ROMS,
-            "defaults": {
-            }
+            "defaults": {},
         },
         {
             "id": "CDTV",
@@ -217,9 +198,8 @@ class Amiga(object):
             "cd_based": "CDTV",
             "kickstarts": CDTV_KICKSTARTS,
             "ext_roms": CDTV_EXT_ROMS,
-            "defaults": {
-            }
-        }
+            "defaults": {},
+        },
     ]
 
     models_config = [model["id"] for model in models]
@@ -243,14 +223,12 @@ class Amiga(object):
         return {
             "title": "Dummy",
             "cd_based": False,
-            "kickstarts": [
-            ],
-            "ext_roms": [
-            ],
+            "kickstarts": [],
+            "ext_roms": [],
             "defaults": {
                 "chip_memory": "0",
                 "slow_memory": "0",
                 "fast_memory": "0",
                 "zorro_iii_memory": "0",
-            }
+            },
         }

@@ -341,42 +341,31 @@ class FSGSDirectories(object):
     @classmethod
     @functools.lru_cache()
     def get_files_dirs(cls):
-        paths = [
-            cls.get_floppies_dir(),
-            cls.get_cdroms_dir(),
-        ]
+        paths = [cls.get_floppies_dir(), cls.get_cdroms_dir()]
         return paths
 
     @classmethod
     @functools.lru_cache()
     def get_titles_dirs(cls):
-        paths = [
-            cls.get_titles_dir(),
-        ]
+        paths = [cls.get_titles_dir()]
         return paths
 
     @classmethod
     @functools.lru_cache()
     def get_screenshots_dirs(cls):
-        paths = [
-            cls.get_screenshots_dir(),
-        ]
+        paths = [cls.get_screenshots_dir()]
         return paths
 
     @classmethod
     @functools.lru_cache()
     def get_images_dirs(cls):
-        paths = [
-            cls.get_images_dir(),
-        ]
+        paths = [cls.get_images_dir()]
         return paths
 
     @classmethod
     @functools.lru_cache()
     def get_covers_dirs(cls):
-        paths = [
-            cls.get_covers_dir(),
-        ]
+        paths = [cls.get_covers_dir()]
         return paths
 
     @classmethod
@@ -400,7 +389,8 @@ class FSGSDirectories(object):
                     paths.append(path)
             else:
                 path = os.path.expanduser(
-                    "~/.wine/drive_c/users/Public/Documents/Amiga Files")
+                    "~/.wine/drive_c/users/Public/Documents/Amiga Files"
+                )
                 if os.path.exists(path):
                     paths.append(path)
         path = cls.get_base_dir()

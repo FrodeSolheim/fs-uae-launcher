@@ -21,7 +21,7 @@ GBA_PORTS = [
         "types": [GBA_CONTROLLER],
         "type_option": "gba_port_1_type",
         "device_option": "gba_port_1",
-    },
+    }
 ]
 
 
@@ -174,9 +174,9 @@ class GameBoyAdvanceMednafenDriver(MednafenDriver):
     def create_colormap(path, gamma):
         with open(path, "wb") as f:
             for x in range(32768):
-                r = (x & 0x1f) << 3
-                g = ((x & 0x3e0) >> 5) << 3
-                b = ((x & 0x7c00) >> 10) << 3
+                r = (x & 0x1F) << 3
+                g = ((x & 0x3E0) >> 5) << 3
+                b = ((x & 0x7C00) >> 10) << 3
                 r /= 255.0
                 g /= 255.0
                 b /= 255.0
@@ -215,6 +215,7 @@ class GameBoyAdvanceHelper:
                 f.write(data)
                 sha1_obj.update(data)
         new_path = os.path.join(
-            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext)
+            os.path.dirname(path), sha1_obj.hexdigest()[:8].upper() + ext
+        )
         os.rename(path, new_path)
         return new_path

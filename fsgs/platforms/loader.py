@@ -20,7 +20,8 @@ class SimpleLoader:
             self.config["x_variant_error"] = "Unsupported multi-file variant"
 
         self.config["cartridge_slot"] = "sha1://{0}/{1}".format(
-            file_list[0]["sha1"], file_list[0]["name"])
+            file_list[0]["sha1"], file_list[0]["name"]
+        )
 
         self.config["cue_sheets"] = values["cue_sheets"]
 
@@ -52,19 +53,30 @@ class SimpleLoader:
         self.config["x_variant_error"] = values["variant_error"]
 
         self.config["database_url"] = "{0}/game/{1}".format(
-            openretro_url_prefix(), values["parent_uuid"])
+            openretro_url_prefix(), values["parent_uuid"]
+        )
         for key in ["mobygames_url"]:
             self.config[key] = values[key]
 
-        for key in ["download_file", "download_page", "download_terms",
-                    "download_notice"]:
+        for key in [
+            "download_file",
+            "download_page",
+            "download_terms",
+            "download_notice",
+        ]:
             if key in values:
                 self.config[key] = values[key]
 
     def load_images(self, values):
-        for key in ["front_sha1", "screen1_sha1", "screen2_sha1",
-                    "screen3_sha1", "screen4_sha1", "screen5_sha1",
-                    "title_sha1"]:
+        for key in [
+            "front_sha1",
+            "screen1_sha1",
+            "screen2_sha1",
+            "screen3_sha1",
+            "screen4_sha1",
+            "screen5_sha1",
+            "title_sha1",
+        ]:
             self.config[key] = values[key]
 
     def load_values(self, key_values):

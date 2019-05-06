@@ -4,7 +4,6 @@ from .requestparams import RequestParams
 
 
 class Request:
-
     def __init__(self, environ):
         self.environ = environ
         self.session_id = ""
@@ -32,6 +31,7 @@ class Request:
 
         query_string = environ.get("QUERY_STRING", "")
         items = urllib.parse.parse_qsl(
-            query_string, keep_blank_values=False, strict_parsing=False)
+            query_string, keep_blank_values=False, strict_parsing=False
+        )
         for item in items:
             setattr(self.params, item[0], item[1])
