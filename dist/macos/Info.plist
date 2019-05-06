@@ -27,7 +27,7 @@
 	<key>LSHasLocalizedDisplayName</key>
 	<true/>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.7.0</string>
+	<string>10.11.0</string>
 	<key>LSUIPresentationMode</key>
 	<integer>0</integer>
 	<key>NSAppleScriptEnabled</key>
