@@ -677,6 +677,7 @@ class GameDriver:
 
         # FIXME: REMOVE
         env["SDL_VIDEO_WINDOW_POS"] = str("{0},{1}".format(x, y))
+        env["FSGS_WINDOW_POS"] = str("{0},{1}".format(x, y))
 
         env["FSGS_WINDOW_CENTER"] = "{0},{1}".format(
             main_x + main_w // 2, main_y + main_h // 2)

@@ -347,6 +347,8 @@ class Option(object):
     SEARCH_PATH = "search_path"
     SECONDARY_JOYSTICK = "secondary_joystick"
     SERIAL_PORT = "serial_port"
+    SGG_DATABASE = "sgg_database"
+    SGG_PORT_1_TYPE = "sgg_port_1_type"
     SHADER = "shader"
     SLOW_MEMORY = "slow_memory"
     SMD_DATABASE = "smd_database"

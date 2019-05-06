@@ -1,31 +1,30 @@
 import hashlib
 import os
-
 from fsgs import Option
 from fsgs.drivers.mednafendriver import MednafenDriver
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
 
 
-class GameBoyPlatform(Platform):
-    PLATFORM_NAME = "Game Boy"
+class GameGearPlatform(Platform):
+    PLATFORM_NAME = "Game Gear"
 
     def driver(self, fsgc):
-        return MednafenGbDriver(fsgc)
+        return MednafenGameGearDriver(fsgc)
 
     def loader(self, fsgc):
-        return GameBoyLoader(fsgc)
+        return GameGearLoader(fsgc)
 
 
-class GameBoyLoader(SimpleLoader):
+class GameGearLoader(SimpleLoader):
     pass
 
 
-class MednafenGbDriver(MednafenDriver):
+class MednafenGameGearDriver(MednafenDriver):
     CONTROLLER = {
         "type": "gamepad",
         "description": "Built-in Controller",
-        "mapping_name": "gameboy",
+        "mapping_name": "gamegear",
     }
 
     PORTS = [
@@ -37,11 +36,11 @@ class MednafenGbDriver(MednafenDriver):
 
     def __init__(self, fsgc):
         super().__init__(fsgc)
-        self.helper = GameBoyHelper(self.options)
+        self.helper = GameGearHelper(self.options)
 
     def prepare(self):
         super().prepare()
-        self.set_mednafen_aspect(47, 43)
+        self.set_mednafen_aspect(66, 50)
         # We do aspect calculation separately. Must not be done twice.
         # self.emulator.args.extend(["-snes.correct_aspect", "0"])
         rom_path = self.helper.prepare_rom(self)
@@ -63,7 +62,7 @@ class MednafenGbDriver(MednafenDriver):
         }
 
     def mednafen_rom_extensions(self):
-        return [".gb"]
+        return [".gg"]
 
     def mednafen_scanlines_setting(self):
         return 0
@@ -72,12 +71,10 @@ class MednafenGbDriver(MednafenDriver):
         return "nn2x"
 
     def mednafen_system_prefix(self):
-        return "gb"
+        return "gg"
 
     def game_video_par(self):
-        # return (4.7 / 4.3) / (160 / 144)
-        # Close enough to 1.0, might just as well go with that.
-        return 1.0
+        return (6.6 / 5.0) / (160 / 144)
 
     def game_video_size(self):
         return 160, 144
@@ -86,7 +83,7 @@ class MednafenGbDriver(MednafenDriver):
         return None
 
 
-class GameBoyHelper:
+class GameGearHelper:
     def __init__(self, options):
         self.options = options
 

@@ -1,3 +1,18 @@
+# Copyright © 2012–2019 Frode Solheim <frode@fs-uae.net>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 %define name fs-uae-launcher
 %define version 2.9.8dev2
 %define unmangled_version 2.9.8dev2
@@ -15,7 +30,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Prefix: %{_prefix}
 BuildArch: noarch
 Vendor: Frode Solheim <frode@fs-uae.net>
-Requires: python3-qt5 fs-uae python3-setuptools
+Requires: python3-qt5 fs-uae python3-setuptools python3-lhafile
 BuildRequires: python3-devel python3-setuptools
 
 %if 0%{?suse_version}

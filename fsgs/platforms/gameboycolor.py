@@ -42,6 +42,9 @@ class MednafenGbcDriver(MednafenDriver):
 
     def prepare(self):
         super().prepare()
+        self.set_mednafen_aspect(47, 43)
+        # We do aspect calculation separately. Must not be done twice.
+        # self.emulator.args.extend(["-snes.correct_aspect", "0"])
         rom_path = self.helper.prepare_rom(self)
         self.emulator.args.append(rom_path)
 

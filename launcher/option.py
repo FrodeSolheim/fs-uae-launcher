@@ -1232,6 +1232,19 @@ options = {
         "description": N_("Render scan lines"),
         "type": "boolean",
     },
+    Option.SGG_DATABASE: {
+        "default": "0",
+        "description": ("Enable/disable use of the Sega Game Gear database"),
+        "type": "Boolean",
+    },
+    Option.SGG_PORT_1_TYPE: {
+        "default": "builtin",
+        "description": ("Game Gear Port 1"),
+        "type": "Choice",
+        "values": [
+            ("builtin", N_("Built-in")),
+        ]
+    },
     Option.SLOW_MEMORY: {
         "default": "",
         "description": N_("Slow RAM"),
@@ -1717,7 +1730,6 @@ options = {
             ("57", "F8"),
             ("58", "F9"),
             ("59", "F10"),
-            ("9a", "HELP"),
         ]
     },
     Option.WHDLOAD_SPLASH_DELAY: {

@@ -63,7 +63,6 @@ class Platform(PlatformHandler):
     GB = "gb"
     GBA = "gba"
     GBC = "gbc"
-    GAME_GEAR = "game-gear"
     LYNX = "lynx"
     MSX = "msx"
     N64 = "n64"
@@ -73,6 +72,7 @@ class Platform(PlatformHandler):
     NGC = "ngc"
     PSX = "psx"
     SNES = "snes"
+    SGG = "sgg"
     SMD = "smd"
     SMS = "sms"
     TG16 = "tg16"
@@ -106,7 +106,7 @@ from fsgs.platforms.dos.dosplatform import DOSPlatformHandler
 from fsgs.platforms.gameboy import GameBoyPlatform
 from fsgs.platforms.gameboyadvance import GameBoyAdvancePlatform
 from fsgs.platforms.gameboycolor import GameBoyColorPlatform
-from fsgs.platforms.game_gear import GameGearPlatformHandler
+from fsgs.platforms.gamegear import GameGearPlatform
 from fsgs.platforms.lynx import LynxPlatformHandler
 from fsgs.platforms.master_system import MasterSystemPlatformHandler
 from fsgs.platforms.megadrive import MegaDrivePlatform
@@ -142,7 +142,6 @@ platforms = {
     Platform.GB: GameBoyPlatform,
     Platform.GBA: GameBoyAdvancePlatform,
     Platform.GBC: GameBoyColorPlatform,
-    Platform.GAME_GEAR: GameGearPlatformHandler,
     Platform.LYNX: LynxPlatformHandler,
     Platform.MSX: MsxPlatformHandler,
     Platform.N64: Nintendo64Platform,
@@ -152,6 +151,7 @@ platforms = {
     Platform.NGC: GameCubePlatform,
     Platform.SNES: SuperNintendoPlatformHandler,
     Platform.PSX: PlayStationPlatform,
+    Platform.SGG: GameGearPlatform,
     Platform.SMD: MegaDrivePlatform,
     Platform.SMS: MasterSystemPlatformHandler,
     Platform.TG16: TurboGrafx16Platform,
@@ -204,4 +204,6 @@ def normalize_platform_id(platform_id):
         return Platform.A7800
     elif platform_id in ["turbografx16"]:
         return Platform.TG16
+    elif platform_id in ["gamegear", "sgg"]:
+        return Platform.SGG
     return platform_id

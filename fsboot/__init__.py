@@ -281,6 +281,6 @@ def base_dir():
 
 @functools.lru_cache()
 def development():
-    result = os.path.exists(os.path.join(executable_dir(), ".git"))
+    result = os.path.exists(os.path.join(executable_dir(), "setup.py"))
     logger.info("Development mode: %s", result)
     return result

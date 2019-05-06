@@ -82,6 +82,8 @@ class GameDatabaseIterator:
             yield "NGC", self.fsgc.game_database("NGC")
         if self._check_platform(Option.PSX_DATABASE):
             yield "PSX", self.fsgc.game_database("PSX")
+        if self._check_platform(Option.SGG_DATABASE):
+            yield "SGG", self.fsgc.game_database("SGG")
         if self._check_platform(Option.SMD_DATABASE):
             yield "SMD", self.fsgc.game_database("SMD")
         if self._check_platform(Option.SMS_DATABASE):
