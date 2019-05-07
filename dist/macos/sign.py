@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 import time
 import subprocess
@@ -8,6 +10,7 @@ tries = 0
 while do_sign:
     args = [
         "codesign",
+        "--verbose",
         "-f",
         "--deep",
         "-s",

@@ -14,8 +14,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 %define name fs-uae-launcher
-%define version 2.9.8dev2
-%define unmangled_version 2.9.8dev2
+%define version 2.9.8dev3
+%define unmangled_version 2.9.8dev3
 %define release 1%{?dist}
 
 Summary: Graphical configuration frontend and launcher for FS-UAE

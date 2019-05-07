@@ -303,7 +303,7 @@ copy_files = [
     "dist/linux/Makefile",
     "dist/linux/standalone-linux.py",
     "dist/macos/Makefile",
-    "dist/macos/fs-make-standalone-app.py",
+    "dist/macos/standalone.py",
     "dist/macos/Info.plist",
     "dist/macos/sign.py",
     "dist/python/Makefile",

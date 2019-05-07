@@ -56,9 +56,25 @@ def initialize_locale(language=None):
         locale_base = os.path.join(dir_, "locale")
         break
     if not locale_base and getattr(sys, "frozen", False):
-        locale_base = os.path.abspath(
-            os.path.join(
-                fsboot.executable_dir(), "..", "..", "Data", "Locale"))
+        if not locale_base:
+            p = os.path.abspath(
+                os.path.join(
+                    fsboot.executable_dir(), "..", "..", "Locale"))
+            if os.path.exists(p):
+                locale_base = p
+        if not locale_base:
+            p = os.path.abspath(
+                os.path.join(
+                    fsboot.executable_dir(), "..", "..", "Data", "Locale"))
+            if os.path.exists(p):
+                locale_base = p
+        if sys.platform == "darwin":
+            # .app/Contents/Locale
+            p = os.path.abspath(
+                os.path.join(
+                    fsboot.executable_dir(), "..", "Locale"))
+            if os.path.exists(p):
+                locale_base = p
 
     if locale_base:
         print("[I18N] bindtextdomain fs-uae-launcher:", locale_base)

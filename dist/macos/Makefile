@@ -1,62 +1,70 @@
 version = $(strip $(shell cat ../../VERSION))
 arch = $(strip $(shell python3 ../arch.py))
-
 ver_os_arch = $(version)_macos_$(arch)
+
 dname = fs-uae-launcher_$(ver_os_arch)
-app = $(dname)/"FS-UAE Launcher.app"
-macos =  $(app)/Contents/MacOS/
-frameworks = $(app)/Contents/Frameworks/
-resources = $(app)/Contents/Resources/
+macos =  Launcher.app/Contents/MacOS
+frameworks = Launcher.app/Contents/Frameworks
+resources = Launcher.app/Contents/Resources
+locale = Launcher.app/Contents/Locale
+pylib = /Library/Frameworks/Python.framework/Versions/3.6/lib
+qtdir = $(pylib)/python3.6/site-packages/PyQt5/Qt
 
 all: bindist-launcher
 
 clean:
-	rm -Rf ../macos/fs-uae-launcher*
+	rm -Rf Launcher.app "FS-UAE Launcher.app"
 
-launcher:
+cxfreeze: clean
 	make -C ../..
-	rm -Rf $(dname)
-	mkdir -p $(dname)
 	rm -Rf ../../build
+	ln -fs $(qtdir)/lib/Qt*.framework $(pylib)
 	cd ../.. && PYTHONHASHSEED=1 python3 setup.py build_exe
-
-	#mv ../dist/"FS-UAE Launcher.app" $(dname)/
-	# cp -pPR fs-uae_$(ver_os_arch)/FS-UAE.app $(app)/Contents/Resources/
+	rm  $(pylib)/Qt*.framework
 
 	mkdir -p $(macos)
 	mkdir -p $(resources)
-	cp -pPR ../../share/* $(resources)/
+	mkdir -p $(locale)
+	cp -pPR ../../share/locale/* $(locale)/
 	cp ../../requests/cacert.pem $(macos)
 	rm -Rf $(resources)/applications
 	rm -Rf $(resources)/icons
 	mv ../../build/*/* $(macos)
-	find $(dname)/ -name *_debug.dylib -delete
-	mv $(app) $(dname)/temp.app
 
-	rm -f $(dname)/temp.app/Contents/MacOS/platforms/libqminimal.dylib
-	rm -f $(dname)/temp.app/Contents/MacOS/platforms/libqoffscreen.dylib
+	rm -Rf $(macos)/Qt*
 
-	rm -f $(dname)/temp.app/Contents/MacOS/imageformats/libqdds.dylib
-	rm -f $(dname)/temp.app/Contents/MacOS/imageformats/libqjp2.dylib
-	rm -f $(dname)/temp.app/Contents/MacOS/imageformats/libqmng.dylib
-	rm -f $(dname)/temp.app/Contents/MacOS/imageformats/libqsvg.dylib
-	rm -f $(dname)/temp.app/Contents/MacOS/imageformats/libqtga.dylib
-	rm -f $(dname)/temp.app/Contents/MacOS/imageformats/libqtiff.dylib
-	rm -f $(dname)/temp.app/Contents/MacOS/imageformats/libqwbmp.dylib
-	rm -f $(dname)/temp.app/Contents/MacOS/imageformats/libqwebp.dylib
+addqt:
+	mkdir -p Launcher.app/Contents/PlugIns/platforms
+	cp $(qtdir)/plugins/platforms/libqcocoa.dylib Launcher.app/Contents/PlugIns/platforms/
 
-	# mv $(dname)/temp.app/Contents/MacOS/platforms/* \
-	# 	$(dname)/temp.app/Contents/MacOS
-	# rm -Rf $(dname)/temp.app/Contents/MacOS/platforms
-	# mv $(dname)/temp.app/Contents/MacOS/imageformats/* \
-	# 	$(dname)/temp.app/Contents/MacOS
-	# rm -Rf $(dname)/temp.app/Contents/MacOS/imageformats
+	mkdir -p Launcher.app/Contents/PlugIns/imageformats
+	cp $(qtdir)/plugins/imageformats/libqgif.dylib Launcher.app/Contents/PlugIns/imageformats/
+	cp $(qtdir)/plugins/imageformats/libqicns.dylib Launcher.app/Contents/PlugIns/imageformats/
+	cp $(qtdir)/plugins/imageformats/libqjpeg.dylib Launcher.app/Contents/PlugIns/imageformats/
 
-	# cp -pPR `qtpaths --install-prefix`/qml/* $(dname)/temp.app/Contents/MacOS
-	python3 fs-make-standalone-app.py $(dname)/temp.app
+	mkdir -p $(frameworks)
+	cp -r $(qtdir)/lib/QtCore.framework $(frameworks)/
+	cp -r $(qtdir)/lib/QtGui.framework $(frameworks)/
+	cp -r $(qtdir)/lib/QtWidgets.framework $(frameworks)/
+	cp -r $(qtdir)/lib/QtOpenGL.framework $(frameworks)/
+	cp -r $(qtdir)/lib/QtDBus.framework $(frameworks)/
+	cp -r $(qtdir)/lib/QtPrintSupport.framework $(frameworks)/
 
-	mv $(dname)/temp.app $(app)
-	cp Info.plist $(app)/Contents/
+launcher: cxfreeze addqt
+	find Launcher.app -name *_debug.dylib -delete
+
+	rm -Rf $(macos)/imageformats
+	rm -Rf $(macos)/platforms
+
+	rm -f $(macos)/PyQt5.QtNetwork.so
+	rm -f $(macos)/PyQt5.QtQml.so
+	rm -f $(macos)/PyQt5.QtQuick.so
+
+	python3 standalone.py Launcher.app
+
+	# rm -f $(macos)/libncursesw.5.dylib
+
+	cp Info.plist Launcher.app/Contents/
 	cp ../../icon/fs-uae-launcher.icns $(resources)/fs-uae-launcher.icns
 
 	make -C ../python
@@ -90,13 +98,15 @@ launcher:
 	# Remove wrong-cased members from the archive
 	zip -d $(macos)/library.zip ConfigParser.pyc || true
 	zip -d $(macos)/library.zip Queue.pyc || true
-	PYTHONPATH=../.. python3 -m fspy.zipfile deterministic \
+	PYTHONPATH=../.. \
+		python3 -m fspy.zipfile deterministic \
 		--fix-pyc-timestamps $(macos)/library.zip
 
-	cp -a ../python/*.zip $(macos)
-
-	# cp -pPR `qtpaths --install-prefix`/qml $(app)/Contents/MacOS
-	# python3 sign.py $(app)
+	mkdir -p Launcher.app/Contents/Python
+	cp -a ../python/*.zip Launcher.app/Contents/Python/
 
 bindist-launcher: launcher
-	cd $(dname) && GZIP=-9 tar Jcfv ../../../$(dname).tar.xz *
+	rm -Rf "FS-UAE Launcher.app"
+	mv Launcher.app "FS-UAE Launcher.app"
+	# python3 sign.py "FS-UAE Launcher.app"
+	GZIP=-9 tar Jcfv ../../$(dname).tar.xz "FS-UAE Launcher.app"

@@ -19,13 +19,25 @@ def print_version():
 
 def frozen_qpa_platform_plugin_path():
     import fsboot
-    os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
-        fsboot.executable_dir(), "platforms")
+    if sys.platform == "darwin":
+        os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
+            fsboot.executable_dir(), "..", "PlugIns", "platforms")
+        pass
+    else:
+        os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
+            fsboot.executable_dir(), "platforms")
 
 
 def frozen_python_libs():
     import fsboot
     libs_dirs = [fsboot.executable_dir()]
+    if sys.platform == "darwin":
+        # Add .app/Contents/Python to libs_dirs
+        libs_dir = os.path.abspath(
+            os.path.join(fsboot.executable_dir(), "..", "Python"))
+        print(libs_dir, os.path.exists(libs_dir))
+        if os.path.exists(libs_dir):
+            libs_dirs.append(libs_dir)
     libs_dir = os.path.abspath(
         os.path.join(fsboot.executable_dir(), "..", "..", "Python"))
     print(libs_dir, os.path.exists(libs_dir))
@@ -101,3 +113,5 @@ import pkg_resources._vendor.pyparsing
 import pkg_resources._vendor.six
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import PyQt5.sip
+# noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
+import _sysconfigdata_m_darwin_darwin
