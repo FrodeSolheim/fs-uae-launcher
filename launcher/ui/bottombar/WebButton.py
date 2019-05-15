@@ -15,7 +15,7 @@ class WebButton(Panel):
         Panel.__init__(self, parent, paintable=True)
         # self.set_tooltip(tooltip)
         LauncherConfig.add_listener(self)
-        self.on_config("variant_rating", "")
+        self.on_config("variant_uuid", "")
 
     def on_destroy(self):
         LauncherConfig.remove_listener(self)

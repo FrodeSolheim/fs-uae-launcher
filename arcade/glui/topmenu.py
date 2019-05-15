@@ -118,7 +118,7 @@ class AspectItem(TopMenuItem):
 
     def update_texture(self):
         # TODO: Ideally, this class should listen for settings changes.
-        if Settings.instance()["keep_aspect"] == "0":
+        if Settings.instance()["keep_aspect"] in ["0", ""]:
             texture = Texture.stretch
         else:
             texture = Texture.aspect
@@ -126,10 +126,10 @@ class AspectItem(TopMenuItem):
         self.selected_texture = texture
 
     def activate(self, menu):
-        if Settings.instance()["keep_aspect"] == "0":
+        if Settings.instance()["keep_aspect"] == "1":
             Settings.instance()["keep_aspect"] = ""
         else:
-            Settings.instance()["keep_aspect"] = "0"
+            Settings.instance()["keep_aspect"] = "1"
         self.update_texture()
 
 

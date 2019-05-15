@@ -1,3 +1,7 @@
+Version 2.8.4:
+
+* Fixed a bug where rating icons could disappear from variants list.
+
 Version 2.8.3:
 
 * Show error message when version started is too old (cannot read databases).

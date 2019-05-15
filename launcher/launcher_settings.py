@@ -84,6 +84,7 @@ class LauncherSettings(object):
         "swap_ctrl_keys": "",
         "texture_filter": "",
         "texture_format": "",
+        "__variant_rating": "",
         "video_format": "",
         "video_sync": "",
         "video_sync_method": "",

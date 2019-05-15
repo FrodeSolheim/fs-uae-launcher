@@ -1,6 +1,6 @@
 %define name fs-uae-launcher
-%define version 2.8.3
-%define unmangled_version 2.8.3
+%define version 2.8.4
+%define unmangled_version 2.8.4
 %define release 1%{?dist}
 
 Summary: Graphical configuration frontend and launcher for FS-UAE
@@ -60,6 +60,10 @@ rm -rf %{buildroot}
 %dir %_datadir/icons/hicolor/16x16/apps
 %dir %_datadir/icons/hicolor/256x256
 %dir %_datadir/icons/hicolor/256x256/apps
+%dir %_datadir/icons/hicolor/22x22
+%dir %_datadir/icons/hicolor/22x22/apps
+%dir %_datadir/icons/hicolor/24x24
+%dir %_datadir/icons/hicolor/24x24/apps
 %dir %_datadir/icons/hicolor/32x32
 %dir %_datadir/icons/hicolor/32x32/apps
 %dir %_datadir/icons/hicolor/48x48
