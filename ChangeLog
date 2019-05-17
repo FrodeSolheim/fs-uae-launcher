@@ -1,3 +1,7 @@
+Version 2.9.9dev:
+
+* Ignore .lha files when lhafile extension is not present.
+
 Version 2.9.8dev:
 
 * Support new whdload_quit_key option with online game database.

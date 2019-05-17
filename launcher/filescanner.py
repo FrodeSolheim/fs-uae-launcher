@@ -3,7 +3,7 @@ import os
 import traceback
 
 from fsbc.paths import Paths
-from fsgs.archive import Archive
+from fsgs.archive import Archive, archive_extensions
 from fsgs.filedatabase import FileDatabase
 from fsgs.amiga.rommanager import ROMManager
 from .i18n import gettext
@@ -25,6 +25,10 @@ class FileScanner(object):
         self.bytes_added = 0
 
         self.extensions = set()
+
+        # This will add .zip, .rp9 and .lha, .7z (if extensions are present)
+        self.extensions.update(archive_extensions)
+
         self.extensions.add(".rom")
         self.extensions.add(".adf")
         self.extensions.add(".adz")
@@ -34,11 +38,7 @@ class FileScanner(object):
         self.extensions.add(".cue")
         self.extensions.add(".iso")
         self.extensions.add(".wav")
-        self.extensions.add(".zip")
-        self.extensions.add(".lha")
-        self.extensions.add(".rp9")
         self.extensions.add(".fs-uae")
-        self.extensions.add(".7z")
 
         # if OGDClient.get_server() != "oagd.net":
         if True:

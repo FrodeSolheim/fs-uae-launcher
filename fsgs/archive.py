@@ -5,8 +5,9 @@ from io import BytesIO
 
 from fspy.zipfile import ZipFile
 
+# This list is also used by the filescanner to add to recognized file
+# extensions.
 archive_extensions = [".zip", ".rp9"]
-
 try:
     from lhafile import LhaFile
 except ImportError:
@@ -15,7 +16,6 @@ except ImportError:
     LhaFile = None
 else:
     archive_extensions.append(".lha")
-
 try:
     from fsbc.seven_zip_file import SevenZipFile
 except ImportError:
