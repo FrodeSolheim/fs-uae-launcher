@@ -1,5 +1,6 @@
 Version 2.9.9dev:
 
+* Index uncompressed content of .gz/.adz/.roz files.
 * Ignore .lha files when lhafile extension is not present.
 
 Version 2.9.8dev:

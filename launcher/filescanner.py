@@ -31,7 +31,6 @@ class FileScanner(object):
 
         self.extensions.add(".rom")
         self.extensions.add(".adf")
-        self.extensions.add(".adz")
         self.extensions.add(".ipf")
         self.extensions.add(".dms")
         self.extensions.add(".bin")

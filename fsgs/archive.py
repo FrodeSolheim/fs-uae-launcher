@@ -1,3 +1,4 @@
+import gzip
 import io
 import os
 import traceback
@@ -8,6 +9,7 @@ from fspy.zipfile import ZipFile
 # This list is also used by the filescanner to add to recognized file
 # extensions.
 archive_extensions = [".zip", ".rp9"]
+
 try:
     from lhafile import LhaFile
 except ImportError:
@@ -16,6 +18,7 @@ except ImportError:
     LhaFile = None
 else:
     archive_extensions.append(".lha")
+
 try:
     from fsbc.seven_zip_file import SevenZipFile
 except ImportError:
@@ -24,6 +27,9 @@ except ImportError:
     SevenZipFile = None
 else:
     archive_extensions.append(".7z")
+
+archive_extensions_gzip = [".gz", ".adz", ".roz"]
+archive_extensions.extend(archive_extensions_gzip)
 
 
 class ZipHandler(object):
@@ -68,6 +74,40 @@ class ZipHandler(object):
     #     name = name.replace("\\", "%5f")
     #     name = name.replace("/", os.sep)
     #     return name
+
+
+class GzipHandler(object):
+    def __init__(self, path):
+        self.path = path
+        name = os.path.basename(path)
+        _, ext = os.path.splitext(name)
+        ext = ext.lower()
+        if ext == ".gz":
+            self.name = name[:-3]
+        elif ext == ".adz":
+            self.name = name + ".adf"
+        elif ext == ".roz":
+            self.name = name + ".rom"
+        else:
+            raise Exception(
+                "Unexpected extension {} in GzipHandler".format(ext)
+            )
+
+    def list_files(self, sub_path):
+        return [self.name]
+
+    def read(self, name):
+        if name != self.name:
+            raise Exception("File not found")
+        return gzip.open(self.path, "rb").read()
+
+    def open(self, name):
+        if name != self.name:
+            raise Exception("File not found")
+        return gzip.open(self.path, "rb")
+
+    def exists(self, name):
+        return name == self.name
 
 
 class SevenZipHandler(object):
@@ -264,7 +304,9 @@ class Archive(object):
         if ext == ".7z" and SevenZipFile is not None:
             self._handler = SevenZipHandler(self.path)
             return self._handler
-
+        if ext in archive_extensions_gzip:
+            self._handler = GzipHandler(self.path)
+            return self._handler
         try:
             self._handler = ZipHandler(self.path)
         except Exception as e:
