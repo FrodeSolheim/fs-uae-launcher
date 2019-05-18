@@ -79,11 +79,10 @@ class ZipHandler(object):
 class GzipHandler(object):
     def __init__(self, path):
         self.path = path
-        name = os.path.basename(path)
-        _, ext = os.path.splitext(name)
+        name, ext = os.path.splitext(os.path.basename(path))
         ext = ext.lower()
         if ext == ".gz":
-            self.name = name[:-3]
+            self.name = name
         elif ext == ".adz":
             self.name = name + ".adf"
         elif ext == ".roz":
