@@ -20,16 +20,6 @@ class DolphinDriver(GameDriver):
         if not os.path.exists(os.path.dirname(dolphin_config_file)):
             os.makedirs(os.path.dirname(dolphin_config_file))
 
-        # dest = os.path.join(temp_dir, "User", "Wii", "title")
-        # dest = os.path.join(temp_dir, "user")
-        # if not os.path.exists(dest):
-        #     os.makedirs(dest)
-        # plugin = pyapp.plugins.get_plugin("no.fengestad.emulator.dolphin")
-        # GameCenterUtil.copy_folder_tree(os.path.join(plugin.get_bin_dir(),
-        #                                              "user"), dest)
-        # self.changes = ChangeHandler(dest)
-        # self.changes.init(self.context.game.state_dir)
-
         with open(dolphin_config_file, "w", encoding="UTF-8") as f:
             self.configure(f)
 
@@ -97,42 +87,6 @@ class DolphinDriver(GameDriver):
                 else:
                     f.write("VSync = False\n")
                 f.write("[Settings]\n")
-
-    # def run(self):
-    #     plugin = pyapp.plug.get_plugin("no.fengestad.emulator.dolphin")
-    #     if fs.windows:
-    #         temp_dir = self.context.temp.dir("dolphin")
-    #         GameCenterUtil.copy_folder_tree(plugin.get_bin_dir(), temp_dir)
-    #         args = self.args[:]
-    #         args.insert(0, os.path.join(temp_dir, "Dolphin.exe"))
-    #         return subprocess.Popen(args, env=self.env, cwd=temp_dir,
-    #                                 close_fds=True)
-    #     else:
-    #         temp_dir = self.context.temp.dir("dolphin")
-    #         GameCenterUtil.copy_folder_tree(plugin.get_bin_dir(), temp_dir)
-    #         args = self.args[:]
-    #         args.insert(0, os.path.join(temp_dir, "dolphin-emu"))
-    #         return subprocess.Popen(args, env=self.env, cwd=temp_dir,
-    #                                 close_fds=True)
-
-    # def cleanup(self):
-    #     # remove some dirs and recopy config files, etc to
-    #     # clean up the list of changed files
-    #     temp_dir = self.temp_dir("dolphin")
-    #     paths = [
-    #         os.path.join(temp_dir, "user", "Config"),
-    #         os.path.join(temp_dir, "user", "GC"),
-    #         os.path.join(temp_dir, "user", "Logs"),
-    #     ]
-    #     for p in paths:
-    #         if os.path.exists(p):
-    #             shutil.rmtree(p)
-    #     plugin = pyapp.plug.get_plugin("no.fengestad.emulator.dolphin")
-    #     GameCenterUtil.copy_folder_tree(os.path.join(plugin.get_bin_dir(),
-    #                                                  "user"),
-    #                                     os.path.join(temp_dir, "user"))
-    #     # now take backup of the real changes
-    #     self.changes.update(self.context.game.state_dir)
 
     def dolphin_configure_core(self, f):
         pass

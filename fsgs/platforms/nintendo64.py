@@ -80,19 +80,6 @@ class Nintendo64MupenDriver(GameDriver):
     def finish(self):
         pass
 
-    # def run(self):
-    #     plugin = pyapp.plug.get_plugin("no.fengestad.emulator.mupen64plus")
-    #     if fs.windows:
-    #         temp_dir = self.context.temp.dir("mupen64plus")
-    #         GameCenterUtil.copy_folder_tree(plugin.get_bin_dir(), temp_dir)
-    #         args = self.args[:]
-    #         args.insert(0, os.path.join(temp_dir,
-    #                     "mupen64plus-ui-console.exe"))
-    #         return subprocess.Popen(args, env=self.env, cwd=temp_dir,
-    #                 close_fds=True)
-    #     return plugin.mupen64plus(self.args, env=self.env,
-    #             cwd=plugin.get_bin_dir(), close_fds=True)
-
     def write_config(self, f):
         f.write("[Core]\n")
         f.write("OnScreenDisplay = False\n")
