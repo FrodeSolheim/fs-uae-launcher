@@ -1,5 +1,7 @@
 Version 2.9.9dev:
 
+* Support hd_requirements = xpkmaster.library.
+* Use https:// for more fs-uae.net and openretro.org communication.
 * Only preselect the favorite variant if the files are found.
 * Added 8BitDo controller configurations, updated dualshock 3 for Linux.
 * Index uncompressed content of .gz/.adz/.roz files.

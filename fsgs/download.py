@@ -88,6 +88,7 @@ class Downloader(object):
     @classmethod
     def install_file_by_sha1(cls, sha1, name, path):
         print("[DOWNLOADER] install_file_by_sha1", sha1)
+        # FIXME: Also find files from file database / plugins
         print(repr(path))
         if not os.path.exists(os.path.dirname(path)):
             os.makedirs(os.path.dirname(path))
@@ -100,6 +101,7 @@ class Downloader(object):
             return
         url = cls.sha1_to_url(sha1, name)
         print("[DOWNLOADER]", url)
+        # FIXME: Convert to use requests library
         input = urlopen(url)
         temp_path = path + ".partial." + str(uuid4())
         h = hashlib.sha1()
