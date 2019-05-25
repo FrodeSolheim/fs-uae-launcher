@@ -1,2 +1,2 @@
 #!/bin/sh
-exec ./fs-uae-launcher --openretro
+exec ./fs-uae-launcher --openretro "$@"

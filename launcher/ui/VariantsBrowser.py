@@ -230,8 +230,13 @@ class VariantsBrowser(fsui.ItemChoice):
             # default index selection
             for i, variant in enumerate(self.items):
                 if variant["personal_rating"] == 5:
-                    select_index = i
-                    break
+                    if variant["have"] >= 3:
+                        select_index = i
+                        break
+                    else:
+                        # FIXME: Add warning here that the favorite variant
+                        # could not be selected.
+                        pass
             else:
                 for i, variant in enumerate(self.items):
                     if variant["have"] >= 3:
