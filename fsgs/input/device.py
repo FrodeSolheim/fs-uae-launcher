@@ -10,6 +10,8 @@ class Device(object):
     def __init__(self):
         self.id = ""
         self.name = ""
+        # The unmodified sdl_name of the device (non-stripped)
+        self.sdl_name = ""
         self.type = ""
         # self.port = None
         # self.cmp_id = create_cmp_id(id)
@@ -26,10 +28,10 @@ class Device(object):
             return True
         return self.name < other.name
 
-    @property
-    def sdl_name(self):
-        # FIXME: check sdl_name usage
-        return self.name
+    # Returns the unmodified sdl_name of the device (non-stripped)
+    # @property
+    # def sdl_name(self):
+    #     return self.sdl_name
 
     def is_keyboard(self):
         # print("id:", self.id)

@@ -1,5 +1,5 @@
 # FSGS - Common functionality for FS Game System.
-# Copyright (C) 2013-2017  Frode Solheim <frode@openretro.org>
+# Copyright (C) 2013-2019  Frode Solheim <frode@solheim.dev>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -44,7 +44,7 @@ import shutil
 from fsbc.system import windows, macosx
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.input.mapper import InputMapper
-from fsgs.input.sdlkeycodes import SDLK_LAST
+from fsgs.util import sdl2
 from fsgs.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
@@ -140,6 +140,10 @@ class Commodore64ViceDriver(GameDriver):
         if os.path.exists(dot_vice_dir):
             shutil.rmtree(dot_vice_dir)
         os.makedirs(dot_vice_dir)
+        dot_vice_dir = os.path.join(self.home.path, ".config", ".vice")
+        if os.path.exists(dot_vice_dir):
+            shutil.rmtree(dot_vice_dir)
+        os.makedirs(dot_vice_dir)
 
         # noinspection SpellCheckingInspection
         joymap_file = self.temp_file("joymap.vjm").path
@@ -168,6 +172,7 @@ class Commodore64ViceDriver(GameDriver):
             self.configure_video(f)
         self.emulator.args.extend(["-config", config_file])
 
+        # self.emulator.args.extend(["-model", "c64"])
         if self.helper.model() == C64_MODEL_C64:
             self.set_model_name("Commodore C64")
             self.emulator.args.extend(["-model", "c64"])
@@ -212,7 +217,8 @@ class Commodore64ViceDriver(GameDriver):
         # f.write("KeepAspectRatio=1\n")
         f.write("VICIIDoubleScan=1\n")
         f.write("HwScalePossible=1\n")
-        f.write("VICIISDLFullscreenMode=1\n")
+        # 0 means SDL_FULLSCREEN_DESKTOP - 1 means SDL_FULLSCREEN
+        f.write("VICIISDLFullscreenMode=0\n")
         f.write("AutostartWarp=0\n")
         f.write("\n")
 
@@ -286,7 +292,13 @@ class Commodore64ViceDriver(GameDriver):
     #     return floppies
 
     def configure_audio(self, f):
+        # Seems to be some issues with sound in VICE (buffers filling up,
+        # slowing down the emulation?). Using defaults for now (uses big
+        # buffers by default, only seems to delay the problem).
+        # return
         audio_driver = self.options[Option.VICE_AUDIO_DRIVER]
+        audio_driver = "sdl"
+        f.write("SoundBufferSize={0}\n".format(50))
         if audio_driver:
             print("[VICE] Using audio driver", repr(audio_driver))
             f.write("SoundDeviceName={0}\n".format(audio_driver))
@@ -298,7 +310,9 @@ class Commodore64ViceDriver(GameDriver):
         if self.use_audio_frequency():
             f.write("SoundSampleRate={0}\n".format(self.use_audio_frequency()))
         # default buffer size for vice is 100ms, that's far too much...
-        f.write("SoundBufferSize={0}\n".format(50))
+        # EDIT: Lowering the sound buffer size seems to cause FPS problems
+        # Maybe due to buffer filling up and emu running slower (??)
+        # f.write("SoundBufferSize={0}\n".format(50))
         if self.options[Option.FLOPPY_DRIVE_VOLUME] == 0:
             f.write("DriveSoundEmulation=0\n")
         else:
@@ -380,11 +394,11 @@ class Commodore64ViceDriver(GameDriver):
 
         if self.use_fullscreen():
             f.write("VICIIFullscreen=1\n")
-            f.write("SDLCustomWidth={w}\n".format(w=screen_w))
-            f.write("SDLCustomHeight={h}\n".format(h=screen_h))
-        else:
-            f.write("SDLWindowWidth={w}\n".format(w=960))
-            f.write("SDLWindowHeight={h}\n".format(h=540))
+
+        f.write("SDLWindowWidth={w}\n".format(w=960))
+        f.write("SDLWindowHeight={h}\n".format(h=540))
+        f.write("SDLCustomWidth={w}\n".format(w=screen_w))
+        f.write("SDLCustomHeight={h}\n".format(h=screen_h))
 
         if self.scaling() == self.MAX_SCALING:
             f.write("VICIIHwScale=1\n")
@@ -401,13 +415,16 @@ class Commodore64ViceDriver(GameDriver):
         else:
             f.write("SDLGLAspectMode=1\n")
 
-        if self.border() == self.LARGE_BORDER:
-            f.write("VICIIBorderMode=1\n")
-        elif self.border() == self.SMALL_BORDER:
-            # Value 4 is an FSGS extension in Vice-FS.
-            f.write("VICIIBorderMode=4\n")
-        else:
-            f.write("VICIIBorderMode=3\n")
+        # if self.border() == self.LARGE_BORDER:
+        #     f.write("VICIIBorderMode=1\n")
+        # elif self.border() == self.SMALL_BORDER:
+        #     # Value 4 is an FSGS extension in Vice-FS.
+        #     f.write("VICIIBorderMode=4\n")
+        # else:
+        #     f.write("VICIIBorderMode=3\n")
+
+        # Experimental "540 border mode"
+        f.write("VICIIBorderMode=5\n")
 
         # # Disable scanlines in CRT mode
         # f.write("VICIIPALScanLineShade=1000\n")
@@ -427,18 +444,18 @@ class Commodore64ViceDriver(GameDriver):
         # File format:
         # - comment lines start with '#'
         # - keyword lines start with '!keyword'
-        # - normal line has 'joy_num input_type input_index action'
+        # - normal line has 'joynum inputtype inputindex action'
         #
         # Keywords and their lines are:
         # '!CLEAR'    clear all mappings
         #
-        # input_type:
+        # inputtype:
         # 0      axis
         # 1      button
         # 2      hat
         # 3      ball
         #
-        # Note that each axis has 2 input_index entries and each hat has 4.
+        # Note that each axis has 2 inputindex entries and each hat has 4.
         #
         # action [action_parameters]:
         # 0               none
@@ -447,6 +464,7 @@ class Commodore64ViceDriver(GameDriver):
         # 3               map
         # 4               UI activate
         # 5 path&to&item  UI function
+        #
         f.write("!CLEAR\n")
         for i, port in enumerate(self.ports):
             if port.device is None:
@@ -480,19 +498,28 @@ class Commodore64ViceDriver(GameDriver):
     def create_hotkey_file(self, f):
         # noinspection SpellCheckingInspection
         hotkeys = [
-            (105, "Statusbar"),  # Mod+I
-            (112, "Pause"),  # Mod+Pause
-            (113, "Quit emulator"),  # Mod+Q
-            (115, "Screenshot&Save PNG screenshot"),  # Mod+S
-            (119, "Speed settings&Warp mode"),  # Mod+W
+            (sdl2.SDLK_i, "Statusbar"),
+            # (112, "Pause"),  # Mod+Pause
+            # (113, "Quit emulator"),  # Mod+Q
+            # ALT+S
+            # (115, "Snapshot&Save snapshot image"),
+            # (115, "Screenshot&Save PNG screenshot"),  # Mod+S
+            (
+                sdl2.SDLK_s,
+                "Save media file&Create screenshot&Save PNG screenshot",
+            ),
+            (sdl2.SDLK_RETURN, "Video settings&Size settings&Fullscreen"),
+            # (119, "Speed settings&Warp mode"),  # Mod+W
         ]
         if macosx:
-            mod = 8  # Mod = Cmd
+            mod = 8  # Cmd key
         else:
-            mod = 2  # Mod = Alt
-        f.write("!CLEAR\n")
+            mod = 2  # Left alt key
+        # f.write("!CLEAR\n")
         for key, action in hotkeys:
-            f.write("{0} {1}\n".format(SDLK_LAST * mod + key, action))
+            f.write(
+                "{0} {1}\n".format(sdl2.SDL_NUM_SCANCODES * mod + key, action)
+            )
 
 
 class ViceInputMapper(InputMapper):

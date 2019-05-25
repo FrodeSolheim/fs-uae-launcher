@@ -1,4 +1,4 @@
-import fsgs.util.sdl2constants as sdl2
+from fsgs.util import sdl2
 
 # with open(os.expanduser('~/Desktop/keys.txt'), 'wb') as f:
 #     for key in sorted(sdl_key_codes.keys()):
@@ -24,17 +24,29 @@ class Key(object):
     def sdl_name(self):
         return self.name
 
+    # Deprecated
     @property
     def sdl_code(self):
         return key_table[self.name][0]
+
+    @property
+    def sdl2_key_code(self):
+        return key_table[self.name][0]
+
+    @property
+    def dinput_name(self):
+        return key_table[self.name][1]
 
     @property
     def dinput_code(self):
         return key_table[self.name][2]
 
     @property
-    def dinput_name(self):
-        return key_table[self.name][1]
+    def sdl2_scan_code(self):
+        return key_table[self.name][3]
+
+    def __str__(self):
+        return "<Key {}>".format(self.name)
 
 
 class Keyboard(object):
@@ -47,7 +59,7 @@ class Keyboard(object):
         print("key({})".format(name))
         try:
             code = name["key"]
-        except KeyError:
+        except (KeyError, TypeError):
             pass
         else:
             name = sdl_key_code_to_name[code]
@@ -61,19 +73,32 @@ class Keyboard(object):
         return Key(name)
 
 
+# class Keyboard(object):
+#     @staticmethod
+#     def key(name):
+#         if isinstance(name, int):
+#             name = sdl_key_code_to_name[name]
+#         name = name.upper()
+#         if name.startswith("SDLK_"):
+#             pass
+#         else:
+#             name = "SDLK_" + name
+#         return Key(name)
+
+
 key_table = {
-    "SDLK_NO_KEY": (0, "DIK_NO_KEY", 0),
-    "SDLK_0": (48, "DIK_0", 11),
-    "SDLK_1": (49, "DIK_1", 2),
-    "SDLK_2": (50, "DIK_2", 3),
-    "SDLK_3": (51, "DIK_3", 4),
-    "SDLK_4": (52, "DIK_4", 5),
-    "SDLK_5": (53, "DIK_5", 6),
-    "SDLK_6": (54, "DIK_6", 7),
-    "SDLK_7": (55, "DIK_7", 8),
-    "SDLK_8": (56, "DIK_8", 9),
-    "SDLK_9": (57, "DIK_9", 10),
-    "SDLK_A": (97, "DIK_A", 30),
+    "SDLK_NO_KEY": (0, "DIK_NO_KEY", 0, 0),
+    "SDLK_0": (48, "DIK_0", 11, sdl2.SDL_SCANCODE_0),
+    "SDLK_1": (49, "DIK_1", 2, sdl2.SDL_SCANCODE_1),
+    "SDLK_2": (50, "DIK_2", 3, sdl2.SDL_SCANCODE_2),
+    "SDLK_3": (51, "DIK_3", 4, sdl2.SDL_SCANCODE_3),
+    "SDLK_4": (52, "DIK_4", 5, sdl2.SDL_SCANCODE_4),
+    "SDLK_5": (53, "DIK_5", 6, sdl2.SDL_SCANCODE_5),
+    "SDLK_6": (54, "DIK_6", 7, sdl2.SDL_SCANCODE_6),
+    "SDLK_7": (55, "DIK_7", 8, sdl2.SDL_SCANCODE_7),
+    "SDLK_8": (56, "DIK_8", 9, sdl2.SDL_SCANCODE_8),
+    "SDLK_9": (57, "DIK_9", 10, sdl2.SDL_SCANCODE_9),
+    "SDLK_A": (97, "DIK_A", 30, sdl2.SDL_SCANCODE_A),
     "SDLK_AMPERSAND": (38, "", 0),
     "SDLK_ASTERISK": (42, "", 0),
     "SDLK_AT": (64, "DIK_AT", 145),
@@ -82,17 +107,17 @@ key_table = {
     "SDLK_BACKSLASH": (92, "DIK_BACKSLASH", 43),
     "SDLK_BACKSPACE": (sdl2.SDLK_BACKSPACE, "DIK_BACK", 14),
     "SDLK_BREAK": (318, "", 0),
-    "SDLK_C": (99, "DIK_C", 46),
+    "SDLK_C": (99, "DIK_C", 46, sdl2.SDL_SCANCODE_C),
     "SDLK_CAPSLOCK": (301, "DIK_CAPITAL", 58),
     "SDLK_CARET": (94, "", 0),
     "SDLK_CLEAR": (12, "", 0),
     "SDLK_COLON": (58, "DIK_COLON", 146),
     "SDLK_COMMA": (44, "DIK_COMMA", 51),
     "SDLK_COMPOSE": (314, "", 0),
-    "SDLK_D": (100, "DIK_D", 32),
+    "SDLK_D": (100, "DIK_D", 32, sdl2.SDL_SCANCODE_D),
     "SDLK_DELETE": (sdl2.SDLK_DELETE, "DIK_DELETE", 211),
     "SDLK_DOLLAR": (36, "", 0),
-    "SDLK_DOWN": (sdl2.SDLK_DOWN, "DIK_DOWN", 208),
+    "SDLK_DOWN": (sdl2.SDLK_DOWN, "DIK_DOWN", 208, sdl2.SDL_SCANCODE_DOWN),
     "SDLK_E": (101, "DIK_E", 18),
     "SDLK_END": (sdl2.SDLK_END, "DIK_END", 207),
     "SDLK_EQUALS": (61, "DIK_EQUALS", 13),
@@ -145,7 +170,7 @@ key_table = {
     "SDLK_L": (108, "DIK_L", 38),
     "SDLK_LALT": (308, "DIK_LMENU", 56),
     "SDLK_LCTRL": (sdl2.SDLK_LCTRL, "DIK_LCONTROL", 29),
-    "SDLK_LEFT": (sdl2.SDLK_LEFT, "DIK_LEFT", 203),
+    "SDLK_LEFT": (sdl2.SDLK_LEFT, "DIK_LEFT", 203, sdl2.SDL_SCANCODE_LEFT),
     "SDLK_LEFTBRACKET": (91, "DIK_LBRACKET", 26),
     "SDLK_LEFTPAREN": (40, "", 0),
     "SDLK_LESS": (60, "", 0),
@@ -173,26 +198,41 @@ key_table = {
     "SDLK_QUOTEDBL": (34, "", 0),
     "SDLK_R": (114, "DIK_R", 19),
     "SDLK_RALT": (307, "DIK_RMENU", 184),
-    "SDLK_RCTRL": (sdl2.SDLK_RCTRL, "DIK_RCONTROL", 157),
-    "SDLK_RETURN": (sdl2.SDLK_RETURN, "DIK_RETURN", 28),
-    "SDLK_RIGHT": (sdl2.SDLK_RIGHT, "DIK_RIGHT", 205),
+    "SDLK_RCTRL": (
+        sdl2.SDLK_RCTRL,
+        "DIK_RCONTROL",
+        157,
+        sdl2.SDL_SCANCODE_RCTRL,
+    ),
+    "SDLK_RETURN": (
+        sdl2.SDLK_RETURN,
+        "DIK_RETURN",
+        28,
+        sdl2.SDL_SCANCODE_RETURN,
+    ),
+    "SDLK_RIGHT": (sdl2.SDLK_RIGHT, "DIK_RIGHT", 205, sdl2.SDL_SCANCODE_RIGHT),
     "SDLK_RIGHTBRACKET": (93, "DIK_RBRACKET", 27),
     "SDLK_RIGHTPAREN": (41, "", 0),
     "SDLK_RMETA": (309, "", 0),
-    "SDLK_RSHIFT": (sdl2.SDLK_RSHIFT, "DIK_RSHIFT", 54),
+    "SDLK_RSHIFT": (
+        sdl2.SDLK_RSHIFT,
+        "DIK_RSHIFT",
+        54,
+        sdl2.SDL_SCANCODE_RSHIFT,
+    ),
     "SDLK_RSUPER": (312, "DIK_RWIN", 220),
-    "SDLK_S": (115, "DIK_S", 31),
+    "SDLK_S": (115, "DIK_S", 31, sdl2.SDL_SCANCODE_S),
     "SDLK_SCROLLOCK": (302, "DIK_SCROLL", 70),
     "SDLK_SEMICOLON": (59, "DIK_SEMICOLON", 39),
     "SDLK_SLASH": (47, "DIK_SLASH", 53),
-    "SDLK_SPACE": (sdl2.SDLK_SPACE, "DIK_SPACE", 57),
+    "SDLK_SPACE": (sdl2.SDLK_SPACE, "DIK_SPACE", 57, sdl2.SDL_SCANCODE_SPACE),
     "SDLK_SYSREQ": (317, "DIK_SYSRQ", 183),
     "SDLK_T": (116, "DIK_T", 20),
     "SDLK_TAB": (9, "DIK_TAB", 15),
     "SDLK_U": (117, "DIK_U", 22),
     "SDLK_UNDERSCORE": (95, "", 147),
     "SDLK_UNDO": (322, "", 0),
-    "SDLK_UP": (sdl2.SDLK_UP, "DIK_UP", 200),
+    "SDLK_UP": (sdl2.SDLK_UP, "DIK_UP", 200, sdl2.SDL_SCANCODE_UP),
     "SDLK_V": (118, "DIK_V", 47),
     "SDLK_W": (119, "DIK_W", 17),
     "SDLK_WORLD_0": (160, ""),
@@ -291,9 +331,9 @@ key_table = {
     "SDLK_WORLD_93": (253, ""),
     "SDLK_WORLD_94": (254, ""),
     "SDLK_WORLD_95": (255, ""),
-    "SDLK_X": (120, "DIK_X", 45),
-    "SDLK_Y": (121, "DIK_Y", 21),
-    "SDLK_Z": (122, "DIK_Z", 44),
+    "SDLK_X": (120, "DIK_X", 45, sdl2.SDL_SCANCODE_X),
+    "SDLK_Y": (121, "DIK_Y", 21, sdl2.SDL_SCANCODE_Y),
+    "SDLK_Z": (122, "DIK_Z", 44, sdl2.SDL_SCANCODE_Z),
 }
 
 sdl_key_code_to_name = {}

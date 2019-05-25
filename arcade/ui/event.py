@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-import fsgs.util.sdl2constants as sdl2
+from fsgs.util import sdl2
 from fsbc.system import macosx
 from fsui.qt import Qt, QEvent
 

@@ -154,6 +154,7 @@ cfg = [
     (Option.SMD_PORT_2_TYPE, "", "checksum", "sync"),
     ("refresh_rate", "", "custom", "checksum", "sync"),
     (Option.TAPE_DRIVE_0, "", "checksum", "sync"),
+    ("tape_image_0", "", "checksum", "sync"),
     (Option.VARIANT_NAME, ""),
     (Option.ZXS_MODEL, "", "checksum", "sync"),
 ]

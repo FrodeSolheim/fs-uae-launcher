@@ -1,3 +1,4 @@
+from binascii import hexlify
 import hashlib
 import json
 import os
@@ -257,7 +258,9 @@ class MednafenDriver(GameDriver):
             for key, values in keys.items():
                 print(repr(key), repr(values))
                 f.write(
-                    "{key} {value}\n".format(key=key, value="~".join(values))
+                    "{key} {value}\n".format(
+                        key=key, value=" || ".join(values)
+                    )
                 )
 
     def configure_video(self, f):
@@ -421,7 +424,8 @@ class MednafenDriver(GameDriver):
     def mednafen_cfg_path(self):
         if not os.path.exists(os.path.join(self.home.path, ".mednafen")):
             os.makedirs(os.path.join(self.home.path, ".mednafen"))
-        return os.path.join(self.home.path, ".mednafen", "mednafen-09x.cfg")
+        # return os.path.join(self.home.path, ".mednafen", "mednafen-09x.cfg")
+        return os.path.join(self.home.path, ".mednafen", "mednafen.cfg")
 
     def is_pal(self):
         # return self.config.get("ntsc_mode") != "1"
@@ -444,31 +448,34 @@ class MednafenInputMapper(InputMapper):
                 uid += 1
             seen_ids.add(uid)
             self.id_map[device.id] = uid
-            # self.id_map[device.id.upper()] = uid
         print("MednafenInputMapper device map")
         for id, uid in self.id_map.items():
             print(uid, id)
 
     def axis(self, axis, positive):
         if positive:
-            offset = 0x8000
+            sign = "+"
         else:
-            offset = 0xC000
+            sign = "-"
         joystick_id = self.unique_id(self.device, self.device.id)
-        return "joystick {0:x} {1:08x}".format(joystick_id, axis + offset)
+        return "joystick 0x{:032x} abs_{}{}".format(joystick_id, axis, sign)
 
-    def hat(self, _, direction):
-        offset = {"left": 8, "right": 2, "up": 1, "down": 4}[direction]
+    def hat(self, hat, direction):
+        offset = {"left": 3, "right": 1, "up": 0, "down": 2}[direction]
         joystick_id = self.unique_id(self.device, self.device.id)
-        return "joystick {0:x} {1:08x}".format(joystick_id, 0x2000 + offset)
+        # Hats after buttons, order: up, right, down, left
+        return "joystick 0x{:032x} button_{}".format(
+            joystick_id, self.device.buttons + hat * 4 + offset
+        )
 
     def button(self, button):
         joystick_id = self.unique_id(self.device, self.device.id)
-        return "joystick {0:x} {1:08x}".format(joystick_id, int(button))
+        return "joystick 0x{:032x} button_{}".format(joystick_id, button)
 
     def key(self, key):
         # FIXME: Need other key codes on Windows ... ?
-        return "keyboard {0}".format(key.sdl_code)
+        # print(key)
+        return "keyboard 0x0 {}".format(key.sdl2_scan_code)
 
     @lru_cache()
     def unique_id(self, device, _):
@@ -479,25 +486,46 @@ class MednafenInputMapper(InputMapper):
             raise
 
     @lru_cache()
-    def calculate_unique_id(self, device):
+    def calculate_unique_id(self, device, version=2):
         """Implements the joystick ID algorithm in mednafen.
         Was src/drivers/joystick.cpp:GetJoystickUniqueID
-        Now src/drivers/Joystick.cpp:CalcOldStyleID.
+        Now src/drivers/Joystick.cpp:Calc09xID.
         """
         print("get_unique_id for", device.id)
-        m = hashlib.md5()
-        print(device.axes, device.balls, device.hats, device.buttons)
-        # noinspection SpellCheckingInspection
-        buffer = struct.pack(
-            "iiii", device.axes, device.balls, device.hats, device.buttons
-        )
-        m.update(buffer)
-        digest = m.digest()
-        ret = 0
-        for x in range(16):
-            # ret ^= ord(digest[x]) << ((x & 7) * 8)
-            ret ^= digest[x] << ((x & 7) * 8)
-        return ret
+        if version == 2:
+            print(device)
+            m = hashlib.md5()
+            print("--------------{}----------------".format(device.sdl_name))
+            m.update((device.sdl_name).encode("UTF-8"))
+            # print(m.hexdigest()[:16], device.axes, device.buttons, device.hats, device.balls)
+
+            buffer = struct.pack(
+                ">HHHH", device.axes, device.buttons, device.hats, device.balls
+            )
+            return int(
+                "{}{}".format(
+                    hexlify(m.digest()[:8]).decode("ASCII"),
+                    hexlify(buffer).decode("ASCII"),
+                ),
+                16,
+            )
+            # return "0x{}{:02x}{:02x}{:02x}{:02x}".format(
+            #     m.hexdigest()[:16], device.axes, device.buttons, device.hats, device.balls)
+        else:
+            m = hashlib.md5()
+            print(device.axes, device.balls, device.hats, device.buttons)
+            # noinspection SpellCheckingInspection
+            buffer = struct.pack(
+                "iiii", device.axes, device.balls, device.hats, device.buttons
+            )
+            m.update(buffer)
+            digest = m.digest()
+            ret = 0
+            for x in range(16):
+                # ret ^= ord(digest[x]) << ((x & 7) * 8)
+                ret ^= digest[x] << ((x & 7) * 8)
+            # return "{:x}".format(ret)
+            return ret
 
 
 class MednafenSaveHandler(SaveHandler):

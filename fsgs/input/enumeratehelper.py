@@ -37,7 +37,7 @@ class EnumerateHelper(object):
         print("[INPUT] EnumerateHelper: Finding connected joysticks")
         try:
             p = FSUAEDeviceHelper.start_with_args(
-                ["list"], stdout=subprocess.PIPE
+                ["--list"], stdout=subprocess.PIPE
             )
             joysticks = p.stdout.read()
             p.wait()
@@ -62,12 +62,17 @@ class EnumerateHelper(object):
         for line in joysticks:
             if line.startswith("#"):
                 continue
-            if line.startswith("Buttons:"):
+            elif line.startswith("Buttons:"):
                 parts = line.split(" ")
                 last_joystick.buttons = int(parts[1])
                 last_joystick.hats = int(parts[3])
                 last_joystick.axes = int(parts[5])
                 last_joystick.balls = int(parts[7])
+                continue
+            elif line.startswith("SDLName:"):
+                value = line.split(" ", 1)[1]
+                # Strip quotes
+                last_joystick.sdl_name = value[1:-1]
                 continue
 
             device = Device()

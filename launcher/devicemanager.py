@@ -35,6 +35,7 @@ class DeviceManager:
     device_name_count = {}
 
     joystick_data = {}
+    sdl_names = {}
 
     @classmethod
     def joystick_buttons(cls, device):
@@ -83,6 +84,9 @@ class DeviceManager:
     def refresh(cls):
         cls.initialized = False
         cls.init()
+
+        # FIXME: REPLACE WITH EnumerateHelper!!!
+
         LauncherSignal.broadcast("device_list_updated")
 
     @classmethod
@@ -117,8 +121,12 @@ class DeviceManager:
                 guid = parts[9]
                 cls.joystick_data[last_joystick] = \
                     buttons, hats, axes, balls, guid
-
                 continue
+            if line.startswith("SDLName:"):
+                value = line.split(" ")[1]
+                 # Strip quotes
+                cls.sdl_names[last_joystick] = value[1:-1]
+
             device_type, name = line.split(" ", 1)
             # if name.lower() in ["keyboard", "mouse"]:
             #     # these are automatically added
