@@ -47,14 +47,18 @@ class ConfigChecker:
             if not LauncherConfig.get("x_kickstart_ext_file_sha1"):
                 print("")
                 traceback.print_stack()
-                print("(kickstart_ext_file set without"
-                      " x_kickstart_ext_file_sha1)")
+                print(
+                    "(kickstart_ext_file set without"
+                    " x_kickstart_ext_file_sha1)"
+                )
                 print("")
 
         elif key == "x_kickstart_ext_file" and value:
             if not LauncherConfig.get("x_kickstart_ext_file_sha1"):
                 print("")
                 traceback.print_stack()
-                print("(x_kickstart_ext_file set without"
-                      " x_kickstart_ext_file_sha1)")
+                print(
+                    "(x_kickstart_ext_file set without"
+                    " x_kickstart_ext_file_sha1)"
+                )
                 print("")

@@ -14,7 +14,8 @@ class AdditionalConfigPanel(ConfigPanel):
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
         heading_label = fsui.HeadingLabel(
-            self, gettext("Additional Configuration"))
+            self, gettext("Additional Configuration")
+        )
         hori_layout.add(heading_label, margin=10)
         hori_layout.add_spacer(0, expand=True)
         hori_layout.add(CustomConfigButton(self), margin_right=10)
@@ -27,7 +28,8 @@ class AdditionalConfigPanel(ConfigPanel):
         self.add_amiga_option(Option.JIT_COMPILER, parent=amiga_panel)
         self.add_amiga_option(Option.FLOPPY_DRIVE_SPEED, parent=amiga_panel)
         self.add_amiga_option(
-            Option.FLOPPY_DRIVE_VOLUME_EMPTY, parent=amiga_panel)
+            Option.FLOPPY_DRIVE_VOLUME_EMPTY, parent=amiga_panel
+        )
         self.add_amiga_option(Option.FREEZER_CARTRIDGE, parent=amiga_panel)
         self.add_amiga_option(Option.DONGLE_TYPE, parent=amiga_panel)
 

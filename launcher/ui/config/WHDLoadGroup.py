@@ -6,7 +6,6 @@ from ..HelpButton import HelpButton
 
 
 class WHDLoadGroup(fsui.Panel):
-
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         AmigaEnableBehavior(self)
@@ -16,7 +15,8 @@ class WHDLoadGroup(fsui.Panel):
         self.layout.add(hori_layout, fill=True, margin=10)
         hori_layout.add(self.text_field, expand=True)
         self.help_button = HelpButton(
-            self, "https://fs-uae.net/whdload-support")
+            self, "https://fs-uae.net/whdload-support"
+        )
         hori_layout.add(self.help_button, margin_left=10)
         self.initialize_from_config()
         self.set_config_handlers()

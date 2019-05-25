@@ -98,8 +98,10 @@ class FloppySelector(fsui.Panel):
             else:
                 self.text_field.enable(self.config_value_implicit != "-1")
         else:
-            if self.__platform == PLATFORM_ATARI and \
-                            self.mode == self.FLOPPY_MODE:
+            if (
+                self.__platform == PLATFORM_ATARI
+                and self.mode == self.FLOPPY_MODE
+            ):
                 self.text_field.enable(self.drive < 2)
             else:
                 self.text_field.enable(self.drive == 0)
@@ -120,16 +122,20 @@ class FloppySelector(fsui.Panel):
             else:
                 self.config_key = "cartridge_drive_{}".format(self.drive)
                 self.config_key_sha1 = "x_cartridge_drive_{}_sha1".format(
-                    self.drive)
+                    self.drive
+                )
             self.config_key_implicit = "__implicit_cartridge_drive_count"
         else:
             self.config_key = "floppy_drive_{}".format(self.drive)
             self.config_key_sha1 = "x_floppy_drive_{}_sha1".format(self.drive)
-            self.config_key_implicit = \
-                "__implicit_uae_floppy{}type".format(self.drive)
+            self.config_key_implicit = "__implicit_uae_floppy{}type".format(
+                self.drive
+            )
         self.on_config(self.config_key, LauncherConfig.get(self.config_key))
-        self.on_config(self.config_key_implicit,
-                       LauncherConfig.get(self.config_key_implicit))
+        self.on_config(
+            self.config_key_implicit,
+            LauncherConfig.get(self.config_key_implicit),
+        )
 
     def set_mode(self, mode):
         self.mode = mode
@@ -159,7 +165,8 @@ class FloppySelector(fsui.Panel):
             # default_dir = FSGSDirectories.get_floppies_dir()
             media_type = "floppy"
         dialog = LauncherFilePicker(
-            self.window, title, media_type, LauncherConfig.get(self.config_key))
+            self.window, title, media_type, LauncherConfig.get(self.config_key)
+        )
 
         if not dialog.show_modal():
             return

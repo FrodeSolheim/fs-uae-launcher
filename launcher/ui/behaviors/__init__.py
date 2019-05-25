@@ -2,7 +2,6 @@ import weakref
 
 
 class OptionsBehavior:
-
     def __init__(self, parent, options, names):
         """
 

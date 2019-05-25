@@ -33,6 +33,7 @@ def initialize_locale(language=None):
         try:
             # noinspection PyUnresolvedReferences
             import CoreFoundation
+
             c_loc = CoreFoundation.CFLocaleCopyCurrent()
             loc = CoreFoundation.CFLocaleGetIdentifier(c_loc)
         except Exception:
@@ -45,7 +46,8 @@ def initialize_locale(language=None):
     ]
     if sys.platform == "darwin":
         dirs.insert(
-            0, os.path.join(fsboot.executable_dir(), "..", "Resources"))
+            0, os.path.join(fsboot.executable_dir(), "..", "Resources")
+        )
 
     locale_base = None
     for dir_ in dirs:
@@ -58,21 +60,23 @@ def initialize_locale(language=None):
     if not locale_base and getattr(sys, "frozen", False):
         if not locale_base:
             p = os.path.abspath(
-                os.path.join(
-                    fsboot.executable_dir(), "..", "..", "Locale"))
+                os.path.join(fsboot.executable_dir(), "..", "..", "Locale")
+            )
             if os.path.exists(p):
                 locale_base = p
         if not locale_base:
             p = os.path.abspath(
                 os.path.join(
-                    fsboot.executable_dir(), "..", "..", "Data", "Locale"))
+                    fsboot.executable_dir(), "..", "..", "Data", "Locale"
+                )
+            )
             if os.path.exists(p):
                 locale_base = p
         if sys.platform == "darwin":
             # .app/Contents/Locale
             p = os.path.abspath(
-                os.path.join(
-                    fsboot.executable_dir(), "..", "Locale"))
+                os.path.join(fsboot.executable_dir(), "..", "Locale")
+            )
             if os.path.exists(p):
                 locale_base = p
 
@@ -82,11 +86,16 @@ def initialize_locale(language=None):
 
     mo_path = None
     if locale_base:
-        print("[I18N] find translations for", loc,
-              "in local directory", locale_base)
+        print(
+            "[I18N] find translations for",
+            loc,
+            "in local directory",
+            locale_base,
+        )
         try:
             mo_path = gettext_module.find(
-                "fs-uae-launcher", locale_base, [loc])
+                "fs-uae-launcher", locale_base, [loc]
+            )
         except Exception as e:
             # a bug in openSUSE 12.2's gettext.py can cause an exception
             # in gettext.find (checking len of None).
@@ -96,7 +105,8 @@ def initialize_locale(language=None):
     print("[I18N] Path to mo file:", mo_path)
 
     translations = gettext_module.translation(
-        "fs-uae-launcher", locale_base, [loc], fallback=True)
+        "fs-uae-launcher", locale_base, [loc], fallback=True
+    )
     print("[I18N] Translations object:", translations)
 
 

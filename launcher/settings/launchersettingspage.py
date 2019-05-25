@@ -35,10 +35,15 @@ class LauncherSettingsPage(SettingsPage):
         # self.add_option(Option.LAUNCHER_SETUP_WIZARD_FEATURE)
 
         self.add_section(gettext("Maintenance"))
-        label = fsui.MultiLineLabel(self, gettext(
-            "Defragmenting the databases will improve performance "
-            "by ensuring that tables and indices are stored contiguously "
-            "on disk. It will also reclaim some storage space."), 640)
+        label = fsui.MultiLineLabel(
+            self,
+            gettext(
+                "Defragmenting the databases will improve performance "
+                "by ensuring that tables and indices are stored contiguously "
+                "on disk. It will also reclaim some storage space."
+            ),
+            640,
+        )
         self.layout.add(label, fill=True, margin_top=20)
         button = fsui.Button(self, gettext("Defragment Databases"))
         button.activated.connect(self.on_defragment_button)

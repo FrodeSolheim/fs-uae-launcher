@@ -45,10 +45,12 @@ class ConfigurationScanner:
             # search = self.create_configuration_search(name)
             name = self.create_configuration_name(name)
 
-            game_id = database.add_configuration(path=path, name=name,
-                                        sort_key=sort_key)
+            game_id = database.add_configuration(
+                path=path, name=name, sort_key=sort_key
+            )
             database.update_game_search_terms(
-                game_id, self.create_search_terms(name))
+                game_id, self.create_search_terms(name)
+            )
 
             print(config_path_ids)
             try:
@@ -64,11 +66,14 @@ class ConfigurationScanner:
             database.delete_game(id=id)
 
     def scan(self, database):
-        self.set_status(gettext("Scanning configurations"),
-                        gettext("Please wait..."))
+        self.set_status(
+            gettext("Scanning configurations"), gettext("Please wait...")
+        )
 
-        self.set_status(gettext("Scanning configurations"),
-                        gettext("Scanning .fs-uae files..."))
+        self.set_status(
+            gettext("Scanning configurations"),
+            gettext("Scanning .fs-uae files..."),
+        )
         self.scan_fs_uae_files(database)
 
         if self.stop_check():

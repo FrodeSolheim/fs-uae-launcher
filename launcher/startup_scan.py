@@ -58,9 +58,11 @@ class StartupScan:
                 file_database.add_file(path=path, sha1=sha1)
 
                 game_id = database.add_configuration(
-                    path=path, name=scanner.create_configuration_name(name))
+                    path=path, name=scanner.create_configuration_name(name)
+                )
                 database.update_game_search_terms(
-                    game_id, scanner.create_search_terms(name))
+                    game_id, scanner.create_search_terms(name)
+                )
 
         for path, config_id in local_configs.items():
             if config_id is not None:
@@ -72,8 +74,8 @@ class StartupScan:
 
         LauncherSettings.set(
             "configurations_dir_mtime",
-            cls.get_dir_mtime_str(configs_dir) + "+" + str(
-                Database.VERSION))
+            cls.get_dir_mtime_str(configs_dir) + "+" + str(Database.VERSION),
+        )
 
     @classmethod
     def kickstart_startup_scan(cls):
@@ -83,8 +85,9 @@ class StartupScan:
 
         print("kickstart_startup_scan")
         kickstarts_dir = FSGSDirectories.get_kickstarts_dir()
-        if LauncherSettings.get("kickstarts_dir_mtime") == \
-                cls.get_dir_mtime_str(kickstarts_dir):
+        if LauncherSettings.get(
+            "kickstarts_dir_mtime"
+        ) == cls.get_dir_mtime_str(kickstarts_dir):
             print("... mtime not changed")
         else:
             file_database = FileDatabase.get_instance()
@@ -93,8 +96,9 @@ class StartupScan:
             print("... walk kickstarts_dir")
             for dir_path, dir_names, file_names in os.walk(kickstarts_dir):
                 for file_name in file_names:
-                    if not file_name.lower().endswith(".rom") and not \
-                            file_name.lower().endswith(".bin"):
+                    if not file_name.lower().endswith(
+                        ".rom"
+                    ) and not file_name.lower().endswith(".bin"):
                         continue
                     path = Paths.join(dir_path, file_name)
                     if path in local_roms:
@@ -111,8 +115,8 @@ class StartupScan:
             print("... commit")
             file_database.commit()
             LauncherSettings.set(
-                "kickstarts_dir_mtime",
-                cls.get_dir_mtime_str(kickstarts_dir))
+                "kickstarts_dir_mtime", cls.get_dir_mtime_str(kickstarts_dir)
+            )
 
         amiga = Amiga.get_model_config("A500")
         for sha1 in amiga["kickstarts"]:

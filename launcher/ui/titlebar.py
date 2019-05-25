@@ -2,11 +2,10 @@ import fsui
 
 
 class TitleBar(fsui.Panel):
-
     def __init__(self, parent):
         super().__init__(parent, paintable=True)
         self.set_min_height(40)
-        self.set_background_color(fsui.Color(0xff, 0xff, 0xff))
+        self.set_background_color(fsui.Color(0xFF, 0xFF, 0xFF))
 
         self.menu_button = fsui.Button(self, "=")
         self.minimize_button = fsui.Button(self, "_")
@@ -47,8 +46,10 @@ class TitleBar(fsui.Panel):
 
     def on_mouse_motion(self):
         mouse_pos = fsui.get_mouse_position()
-        window_pos = (self.window_pos[0] + mouse_pos[0] - self.mouse_pos[0],
-                      self.window_pos[1] + mouse_pos[1] - self.mouse_pos[1])
+        window_pos = (
+            self.window_pos[0] + mouse_pos[0] - self.mouse_pos[0],
+            self.window_pos[1] + mouse_pos[1] - self.mouse_pos[1],
+        )
         self.parent().set_position(window_pos)
 
     # def on_left_up(self):

@@ -9,15 +9,25 @@ class CustomOptionsPage(fsui.Panel):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
-        label = fsui.MultiLineLabel(self, gettext(
-            "You can write key = value pairs here to set FS-UAE options "
-            "not currently supported by the user interface. This is only a "
-            "temporary feature until the GUI supports all options "
-            "directly."), 760)
+        label = fsui.MultiLineLabel(
+            self,
+            gettext(
+                "You can write key = value pairs here to set FS-UAE options "
+                "not currently supported by the user interface. This is only a "
+                "temporary feature until the GUI supports all options "
+                "directly."
+            ),
+            760,
+        )
         self.layout.add(label, fill=True, margin_bottom=10)
-        label = fsui.MultiLineLabel(self, gettext(
-            "The options specified here will apply to this configuration "
-            "only."), 760)
+        label = fsui.MultiLineLabel(
+            self,
+            gettext(
+                "The options specified here will apply to this configuration "
+                "only."
+            ),
+            760,
+        )
         self.layout.add(label, fill=True, margin_bottom=10)
 
         hor_layout = fsui.HorizontalLayout()

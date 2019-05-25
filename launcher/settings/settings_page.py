@@ -5,7 +5,6 @@ from launcher.settings.settings_header import SettingsHeader
 
 
 class SettingsPage(fsui.Panel):
-
     def __init__(self, parent):
         super().__init__(parent)
         self.layout = fsui.VerticalLayout()

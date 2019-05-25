@@ -11,6 +11,7 @@ except ImportError:
     # Workaround to make import typing work without having it on the
     # default python path (would confuse mypy).
     import fstd.typing
+
     sys.modules["typing"] = fstd.typing
 
 
@@ -27,6 +28,7 @@ def find_app(app):
         from launcher.apps.fs_game_center import app_main
     elif app in ["dump-game-database", "game-database-dumper"]:
         from fsgs.gamedb.game_database_dumper import game_database_dumper_main
+
         app_main = game_database_dumper_main
     elif app in ["fsgs", "fs-game-runner"]:
         from launcher.apps.fsgs import app_main
@@ -81,6 +83,7 @@ def main():
             sys.argv.remove(arg)
 
     import fsgs
+
     if "--openretro" in sys.argv:
         sys.argv.remove("--openretro")
         fsgs.product = "OpenRetro"
@@ -99,6 +102,7 @@ def main():
     if app_name == "xdftool":
         sys.argv[0] = "xdftool"
         import amitools.tols.xdftool
+
         sys.exit(amitools.tools.xdftool.main())
 
     app_main = None
@@ -121,8 +125,10 @@ def main():
     #         app_name = "openretro-arcade"
 
     import socket
+
     socket.setdefaulttimeout(30.0)
     from fsbc.init import initialize_application
+
     initialize_application(app_name, version=launcher.version.VERSION)
 
     if app_main is None:

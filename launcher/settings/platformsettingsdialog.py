@@ -5,7 +5,6 @@ from launcher.settings.option_ui import OptionUI
 
 
 class PlatformSettingsDialog(fsui.Window):
-
     @classmethod
     def open(cls, parent, platform):
         # return fsui.open_window_instance(cls, parent)
@@ -33,8 +32,10 @@ class PlatformSettingsDialog(fsui.Window):
         panel.layout = fsui.VerticalLayout()
         panel.layout.add(
             OptionUI.create_group(
-                panel, option, text, thin=False, help_button=True),
-            fill=True)
+                panel, option, text, thin=False, help_button=True
+            ),
+            fill=True,
+        )
         layout.add(panel, fill=True, margin_bottom=10)
 
     @staticmethod
@@ -75,15 +76,9 @@ class PlatformSettingsDialog(fsui.Window):
             options.extend(mednafen_options)
         return options
 
-mame_options = [
 
-]
+mame_options = []
 
-mednafen_options = [
-    Option.MEDNAFEN_AUDIO_DRIVER,
-    Option.MEDNAFEN_AUDIO_BUFFER,
-]
+mednafen_options = [Option.MEDNAFEN_AUDIO_DRIVER, Option.MEDNAFEN_AUDIO_BUFFER]
 
-retroarch_options = [
-    Option.RETROARCH_AUDIO_BUFFER,
-]
+retroarch_options = [Option.RETROARCH_AUDIO_BUFFER]

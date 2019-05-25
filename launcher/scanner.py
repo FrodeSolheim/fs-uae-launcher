@@ -63,8 +63,11 @@ class Scanner:
     def _scan_thread(cls, database):
         if cls.scan_for_files:
             scanner = FileScanner(
-                cls.paths, cls.purge_other_dirs, on_status=cls.on_status,
-                stop_check=cls.stop_check)
+                cls.paths,
+                cls.purge_other_dirs,
+                on_status=cls.on_status,
+                stop_check=cls.stop_check,
+            )
             scanner.scan()
             if cls.stop_check():
                 return
@@ -72,7 +75,8 @@ class Scanner:
         # if cls.scan_for_configs or
         # if cls.update_game_database:
         scanner = ConfigurationScanner(
-            cls.paths, on_status=cls.on_status, stop_check=cls.stop_check)
+            cls.paths, on_status=cls.on_status, stop_check=cls.stop_check
+        )
         scanner.scan(database)
 
         if cls.update_game_database:
@@ -80,33 +84,46 @@ class Scanner:
             context = SynchronizerContext()
 
             synchronizer = MetaSynchronizer(
-                context, on_status=cls.on_status, stop_check=cls.stop_check)
+                context, on_status=cls.on_status, stop_check=cls.stop_check
+            )
             synchronizer.synchronize()
 
             synchronizer = GameRatingSynchronizer(
-                context, database, on_status=cls.on_status,
-                stop_check=cls.stop_check)
+                context,
+                database,
+                on_status=cls.on_status,
+                stop_check=cls.stop_check,
+            )
             synchronizer.username = "auth_token"
             synchronizer.password = LauncherSettings.get("database_auth")
             synchronizer.synchronize()
 
             synchronizer = ListsSynchronizer(
-                context, on_status=cls.on_status, stop_check=cls.stop_check)
+                context, on_status=cls.on_status, stop_check=cls.stop_check
+            )
             synchronizer.synchronize()
 
             scanner = GameScanner(
-                context, cls.paths, on_status=cls.on_status,
-                stop_check=cls.stop_check)
+                context,
+                cls.paths,
+                on_status=cls.on_status,
+                stop_check=cls.stop_check,
+            )
             scanner.update_game_database()
 
         scanner = GameScanner(
-            None, cls.paths, on_status=cls.on_status,
-            stop_check=cls.stop_check)
+            None, cls.paths, on_status=cls.on_status, stop_check=cls.stop_check
+        )
         scanner.scan(database)
 
     @classmethod
-    def start(cls, paths, scan_for_files=True, update_game_database=False,
-              purge_other_dirs=False):
+    def start(
+        cls,
+        paths,
+        scan_for_files=True,
+        update_game_database=False,
+        purge_other_dirs=False,
+    ):
         print("Scanner.start")
         if cls.running:
             print("scan already in progress")

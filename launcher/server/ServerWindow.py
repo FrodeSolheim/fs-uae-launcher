@@ -3,7 +3,6 @@ import fsui
 
 
 class ServerWindow(fsui.Window):
-
     def __init__(self, parent, server):
         fsui.Window.__init__(self, parent, "FS-UAE Net Play Server")
         self.layout = fsui.VerticalLayout()

@@ -69,6 +69,7 @@ class Netplay:
             return self.players[nick]
         except Exception:
             from .player import Player
+
             self.players[nick] = Player(nick)
             print("players are now", self.players)
             return self.players[nick]
@@ -77,19 +78,25 @@ class Netplay:
         try:
             del self.players[nick]
         except Exception:
-            print("[NETPLAY] Warning, tried to remove player "
-                  "(but wasn't in list):", nick)
+            print(
+                "[NETPLAY] Warning, tried to remove player "
+                "(but wasn't in list):",
+                nick,
+            )
         else:
             print("[NETPLAY] Players are now", self.players)
 
     def start_netplay_game(self):
         if self.set_ready():
             if self.is_op():
-                self.game_info("you are marked as ready, initiating game start")
+                self.game_info(
+                    "you are marked as ready, initiating game start"
+                )
                 self.initiate_start_sequence()
             else:
                 self.game_info(
-                        "you are marked as ready (only ops can start game)")
+                    "you are marked as ready (only ops can start game)"
+                )
         else:
             self.game_info("you are not ready")
 
@@ -103,7 +110,8 @@ class Netplay:
             self.game_info("cannot start - no game channel")
         self.start_sequence = str(uuid.uuid4())
         message = "__prestart {0} {1}".format(
-                self.start_sequence, self.get_config_hash())
+            self.start_sequence, self.get_config_hash()
+        )
         self.irc.channel(self.game_channel).privmsg(message)
         # in case one wants to try a single-player game for testing
         self.on_ackstart()
@@ -124,12 +132,15 @@ class Netplay:
                 return
         want_players = int(LauncherConfig.get("__netplay_players") or "0")
         if player_count != want_players:
-            self.game_warning("cannot start game, wanted {0} players, "
-                              "has {1}".format(want_players, player_count))
+            self.game_warning(
+                "cannot start game, wanted {0} players, "
+                "has {1}".format(want_players, player_count)
+            )
             return
         self.game_info("sending game start command to all clients!")
         message = "__start {0} {1}".format(
-                self.start_sequence, self.get_config_hash())
+            self.start_sequence, self.get_config_hash()
+        )
         self.irc.channel(self.game_channel).privmsg(message)
         self.do_start_game()
 
@@ -141,6 +152,7 @@ class Netplay:
         # does not connect to the game in progress
         LauncherConfig.set("__netplay_addresses", "")
         from ..launcherapp import LauncherApp
+
         LauncherApp.start_local_game()
 
         # game done, resetting config as the same game server cannot be
@@ -160,12 +172,15 @@ class Netplay:
             return False
         if not LauncherConfig.get("__netplay_addresses"):
             self.game_warning("cannot set ready - no server configured")
-            self.game_info("an operator needs to use /startgame or "
-                           "/hostgame (or /customgame) first")
+            self.game_info(
+                "an operator needs to use /startgame or "
+                "/hostgame (or /customgame) first"
+            )
             return False
         if not LauncherConfig.get("__netplay_host"):
-            self.game_warning("cannot set ready - no connection to game "
-                              "server")
+            self.game_warning(
+                "cannot set ready - no connection to game " "server"
+            )
             return False
         LauncherConfig.set("__netplay_ready", "1")
         # check in case an component has force __netplay_ready back to 0
@@ -176,8 +191,9 @@ class Netplay:
             self.game_warning("problem connecting to game server: " + value)
         elif key == "__netplay_host":
             if value:
-                self.game_info("successfully connected to net play host: " +
-                               value)
+                self.game_info(
+                    "successfully connected to net play host: " + value
+                )
         if not self.irc.running:
             return
         if not self.game_channel:
@@ -188,8 +204,10 @@ class Netplay:
 
     def game_message(self, message, color=None):
         if not self.game_channel:
-            self.irc.warning("game message received (but not "
-                             "currently in a game channel): " + message)
+            self.irc.warning(
+                "game message received (but not "
+                "currently in a game channel): " + message
+            )
             return
         self.irc.channel(self.game_channel).message(message, color)
         if self.game_channel != self.irc.active_channel_name:
@@ -234,9 +252,9 @@ class Netplay:
                 if args["nick"] != self.irc.my_nick:
                     if self.is_op():
                         # operator - send config to new player(s)
-                        self.irc.channel(
-                                self.game_channel).action(
-                                "sends config on arrival of new player")
+                        self.irc.channel(self.game_channel).action(
+                            "sends config on arrival of new player"
+                        )
                         self.send_config()
         elif key == "part":
             if args["channel"] == self.game_channel:
@@ -259,13 +277,16 @@ class Netplay:
 
     @staticmethod
     def reset_netplay_config():
-        LauncherConfig.set_multiple([
-            ("__netplay_id", ""),
-            ("__netplay_password", ""),
-            ("__netplay_players", ""),
-            ("__netplay_port", ""),
-            ("__netplay_addresses", ""),
-            ("__netplay_host", "")])
+        LauncherConfig.set_multiple(
+            [
+                ("__netplay_id", ""),
+                ("__netplay_password", ""),
+                ("__netplay_players", ""),
+                ("__netplay_port", ""),
+                ("__netplay_addresses", ""),
+                ("__netplay_host", ""),
+            ]
+        )
 
     def handle_command(self, command):
         if not command.startswith("/"):
@@ -311,8 +332,9 @@ class Netplay:
             self.irc.warning("check: you need to be an operator")
             return
         for arg in args:
-            self.print_check_request(self.irc.my_nick, arg,
-                                     LauncherConfig.get(arg))
+            self.print_check_request(
+                self.irc.my_nick, arg, LauncherConfig.get(arg)
+            )
             message = "__check {0} {1}".format(arg, LauncherConfig.get(arg))
             self.irc.channel(self.game_channel).privmsg(message)
 
@@ -417,8 +439,9 @@ class Netplay:
             return
         result = self.parse_server_args(args, 25101)
         if not result:
-            self.irc.warning("usage: /startgame <host>[:<port>] "
-                             "[<players>] [<password>]")
+            self.irc.warning(
+                "usage: /startgame <host>[:<port>] " "[<players>] [<password>]"
+            )
             return
         host, port, players, password = result
 
@@ -427,14 +450,17 @@ class Netplay:
             return
 
         url = "http://{0}:{1}/game/create?players={2}&password={3}".format(
-                host, port, players, password)
+            host, port, players, password
+        )
         try:
             f = urlopen(url)
             result = f.read()
         except URLError:
             channel.warning(
-                    "Problem starting game server: {0}".format(
-                            traceback.format_exc()))
+                "Problem starting game server: {0}".format(
+                    traceback.format_exc()
+                )
+            )
         else:
             result = result.decode("UTF-8")
             print(result)
@@ -444,18 +470,22 @@ class Netplay:
             game_password = result_dict["password"][0]
             game_port = result_dict["port"][0]
             game_addresses = result_dict["addresses"][0]
-            LauncherConfig.set_multiple([
-                ("__netplay_game", game_id),
-                ("__netplay_password", game_password),
-                ("__netplay_players", str(players)),
-                ("__netplay_port", game_port),
-                ("__netplay_host", ""),
-                ("__netplay_addresses", game_addresses)])
+            LauncherConfig.set_multiple(
+                [
+                    ("__netplay_game", game_id),
+                    ("__netplay_password", game_password),
+                    ("__netplay_players", str(players)),
+                    ("__netplay_port", game_port),
+                    ("__netplay_host", ""),
+                    ("__netplay_addresses", game_addresses),
+                ]
+            )
             channel.info(
-                    "started game id: {0} password: {1} "
-                    "server: {2} port: {3}".format(
-                            game_id, game_password, game_addresses,
-                            game_port))
+                "started game id: {0} password: {1} "
+                "server: {2} port: {3}".format(
+                    game_id, game_password, game_addresses, game_port
+                )
+            )
 
     def command_hostgame(self, args):
         channel = self.irc.active_channel()
@@ -463,8 +493,10 @@ class Netplay:
             return
         result = self.parse_server_args(args, self.new_host_port())
         if not result:
-            self.irc.warning("usage: /hostgame <address>[,<address2>][:<port>] "
-                             "[<players>] [<password>]")
+            self.irc.warning(
+                "usage: /hostgame <address>[,<address2>][:<port>] "
+                "[<players>] [<password>]"
+            )
             return
         addresses, port, players, password = result
 
@@ -476,21 +508,25 @@ class Netplay:
         server.start()
 
         from ..server.ServerWindow import ServerWindow
+
         window = ServerWindow(None, server)
         window.show()
 
         game_id = str(uuid.uuid4())
-        LauncherConfig.set_multiple([
-            ("__netplay_game", game_id),
-            ("__netplay_password", password),
-            ("__netplay_players", str(players)),
-            ("__netplay_port", str(port)),
-            ("__netplay_host", ""),
-            ("__netplay_addresses", addresses)])
+        LauncherConfig.set_multiple(
+            [
+                ("__netplay_game", game_id),
+                ("__netplay_password", password),
+                ("__netplay_players", str(players)),
+                ("__netplay_port", str(port)),
+                ("__netplay_host", ""),
+                ("__netplay_addresses", addresses),
+            ]
+        )
         channel.info(
-                "started game id: {0} password: {1} "
-                "server: {2} port: {3}".format(
-                        game_id, password, addresses, port))
+            "started game id: {0} password: {1} "
+            "server: {2} port: {3}".format(game_id, password, addresses, port)
+        )
 
     # noinspection SpellCheckingInspection
     def command_setserver(self, args):
@@ -504,8 +540,9 @@ class Netplay:
         result = self.parse_server_args(args, 25100)
         if not result:
             self.irc.warning(
-                    "usage: /customgame <address>[,<address2>][:<port>] "
-                    "[<players>] [<password>]")
+                "usage: /customgame <address>[,<address2>][:<port>] "
+                "[<players>] [<password>]"
+            )
             return
         addresses, port, players, password = result
 
@@ -514,17 +551,20 @@ class Netplay:
             return
 
         game_id = str(uuid.uuid4())
-        LauncherConfig.set_multiple([
-            ("__netplay_game", game_id),
-            ("__netplay_password", password),
-            ("__netplay_players", str(players)),
-            ("__netplay_port", str(port)),
-            ("__netplay_host", ""),
-            ("__netplay_addresses", addresses)])
+        LauncherConfig.set_multiple(
+            [
+                ("__netplay_game", game_id),
+                ("__netplay_password", password),
+                ("__netplay_players", str(players)),
+                ("__netplay_port", str(port)),
+                ("__netplay_host", ""),
+                ("__netplay_addresses", addresses),
+            ]
+        )
         channel.info(
-                "started game id: {0} password: {1} "
-                "server: {2} port: {3}".format(
-                        game_id, password, addresses, port))
+            "started game id: {0} password: {1} "
+            "server: {2} port: {3}".format(game_id, password, addresses, port)
+        )
 
     def command_set(self, args):
         channel = self.irc.active_channel()
@@ -540,7 +580,7 @@ class Netplay:
         key = args[0]
         value = " ".join(args[1:])
         print("config, setting", key, "to", value)
-        channel.action("set option {0} to \"{1}\"".format(key, value))
+        channel.action('set option {0} to "{1}"'.format(key, value))
         LauncherConfig.set(key, value)
 
     # noinspection SpellCheckingInspection
@@ -570,11 +610,13 @@ class Netplay:
                     channel.privmsg("not the same config hash")
                     return
                 if LauncherConfig.get("__netplay_ready") != "1":
-                    channel.privmsg("(op tried to start game, "
-                                    "but I am not ready)")
+                    channel.privmsg(
+                        "(op tried to start game, " "but I am not ready)"
+                    )
                     return
-                channel.privmsg("__ackstart {0} {1}".format(
-                        seq, my_config_hash))
+                channel.privmsg(
+                    "__ackstart {0} {1}".format(seq, my_config_hash)
+                )
         elif command == "__ackstart":
             start_sequence, config_hash = arg.split(" ")
             self.player(nick).set("start_sequence", start_sequence)
@@ -586,8 +628,9 @@ class Netplay:
                 start_sequence, config_hash = arg.split(" ")
                 my_config_hash = self.get_config_hash()
                 if my_config_hash != config_hash:
-                    channel.action("could not start game "
-                                   "(mismatching config hash)")
+                    channel.action(
+                        "could not start game " "(mismatching config hash)"
+                    )
                     return
                 self.do_start_game()
         elif command == "__resetconfig":
@@ -601,8 +644,9 @@ class Netplay:
                 value = " ".join(args[1:])
                 my_value = LauncherConfig.get(key)
                 self.print_check_request(nick, key, value)
-                self.print_check_response(self.irc.my_nick, key, my_value,
-                                          value)
+                self.print_check_response(
+                    self.irc.my_nick, key, my_value, value
+                )
                 channel.privmsg("__ackcheck {0} {1}".format(key, my_value))
         elif command == "__beginverify":
             if channel.is_op(nick):
@@ -614,9 +658,13 @@ class Netplay:
                 value = " ".join(args[1:])
                 if LauncherConfig.get(key) != value:
                     self.print_verify_response(
-                            self.irc.my_nick, key, LauncherConfig.get(key))
-                    channel.privmsg("__ackverify {0} {1}".format(
-                            key, LauncherConfig.get(key)))
+                        self.irc.my_nick, key, LauncherConfig.get(key)
+                    )
+                    channel.privmsg(
+                        "__ackverify {0} {1}".format(
+                            key, LauncherConfig.get(key)
+                        )
+                    )
         elif command == "__endverify":
             pass
         elif command == "__ackcheck":
@@ -629,33 +677,31 @@ class Netplay:
             args = arg.split(" ", 1)
             self.print_verify_response(nick, args[0], " ".join(args[1:]))
         else:
-            channel.warning(
-                    "unknown command received: {0}".format(command))
+            channel.warning("unknown command received: {0}".format(command))
 
     def print_check_request(self, nick, key, value):
-        self.irc.channel(
-                self.game_channel).info(
-                "* {0} requested check of {1} ({2})".format(
-                        nick, key, value))
+        self.irc.channel(self.game_channel).info(
+            "* {0} requested check of {1} ({2})".format(nick, key, value)
+        )
 
     def print_check_response(self, nick, key, value, check_value):
         if value == check_value:
             color = IRCColor.INFO
         else:
             color = IRCColor.WARNING
-        self.irc.channel(
-                self.game_channel).message(
-                "{0} = {1} ({2})".format(key, value, nick), color)
+        self.irc.channel(self.game_channel).message(
+            "{0} = {1} ({2})".format(key, value, nick), color
+        )
 
     def print_verify_request(self, nick):
-        self.irc.channel(
-                self.game_channel).info(
-                "* {0} requested automatic config verification".format(nick))
+        self.irc.channel(self.game_channel).info(
+            "* {0} requested automatic config verification".format(nick)
+        )
 
     def print_verify_response(self, nick, key, value):
-        self.irc.channel(
-                self.game_channel).warning(
-                "{0} = {1} ({2})".format(key, value, nick))
+        self.irc.channel(self.game_channel).warning(
+            "{0} = {1} ({2})".format(key, value, nick)
+        )
 
     def set_config(self, key, value):
         # this config was received from a game channel operator
@@ -676,36 +722,51 @@ class Netplay:
         channel = self.irc.channel(self.game_channel)
         if key == "x_kickstart_file_sha1":
             if value == Amiga.INTERNAL_ROM_SHA1:
-                LauncherConfig.set_multiple([
-                    ("kickstart_file", "internal"),
-                    ("x_kickstart_file", "internal"),
-                    (key, value)])
+                LauncherConfig.set_multiple(
+                    [
+                        ("kickstart_file", "internal"),
+                        ("x_kickstart_file", "internal"),
+                        (key, value),
+                    ]
+                )
             else:
                 path = fsgs.file.find_by_sha1(sha1=value)
                 if path:
-                    LauncherConfig.set_multiple([
-                        ("kickstart_file", path),
-                        ("x_kickstart_file", path),
-                        (key, value)])
+                    LauncherConfig.set_multiple(
+                        [
+                            ("kickstart_file", path),
+                            ("x_kickstart_file", path),
+                            (key, value),
+                        ]
+                    )
                 else:
-                    channel.action("could not find kickstart for {0}".format(
-                            repr(value)))
+                    channel.action(
+                        "could not find kickstart for {0}".format(repr(value))
+                    )
         elif key == "x_kickstart_ext_file_sha1":
             if not value:
-                LauncherConfig.set_multiple([
-                    ("kickstart_ext_file", ""),
-                    ("x_kickstart_ext_file", ""),
-                    (key, "")])
+                LauncherConfig.set_multiple(
+                    [
+                        ("kickstart_ext_file", ""),
+                        ("x_kickstart_ext_file", ""),
+                        (key, ""),
+                    ]
+                )
                 return
             path = fsgs.file.find_by_sha1(sha1=value)
             if path:
-                LauncherConfig.set_multiple([
-                    ("kickstart_ext_file", path),
-                    ("x_kickstart_ext_file", path),
-                    (key, value)])
+                LauncherConfig.set_multiple(
+                    [
+                        ("kickstart_ext_file", path),
+                        ("x_kickstart_ext_file", path),
+                        (key, value),
+                    ]
+                )
             else:
-                channel.action("could not find (ext) kickstart "
-                               "for {0}".format(repr(value)))
+                channel.action(
+                    "could not find (ext) kickstart "
+                    "for {0}".format(repr(value))
+                )
 
     def set_file_config(self, key, value):
         channel = self.irc.channel(self.game_channel)
@@ -724,23 +785,28 @@ class Netplay:
             LauncherConfig.set_multiple([(set_key, path), (key, value)])
         else:
             LauncherConfig.set_multiple([(set_key, ""), (key, "")])
-            channel.action("could not find {1} for "
-                           "for {0}".format(value, set_key))
+            channel.action(
+                "could not find {1} for " "for {0}".format(value, set_key)
+            )
 
-    file_config = {
-    }
+    file_config = {}
     for i in range(Amiga.MAX_FLOPPY_DRIVES):
-        file_config["x_floppy_drive_{0}_sha1".format(i)] = \
-            "floppy_drive_{0}".format(i)
+        file_config[
+            "x_floppy_drive_{0}_sha1".format(i)
+        ] = "floppy_drive_{0}".format(i)
     for i in range(Amiga.MAX_FLOPPY_IMAGES):
-        file_config["x_floppy_image_{0}_sha1".format(i)] = \
-            "floppy_image_{0}".format(i)
+        file_config[
+            "x_floppy_image_{0}_sha1".format(i)
+        ] = "floppy_image_{0}".format(i)
     for i in range(Amiga.MAX_CDROM_DRIVES):
-        file_config["x_cdrom_drive_{0}_sha1".format(i)] = \
-            "cdrom_drive_{0}".format(i)
+        file_config[
+            "x_cdrom_drive_{0}_sha1".format(i)
+        ] = "cdrom_drive_{0}".format(i)
     for i in range(Amiga.MAX_CDROM_IMAGES):
-        file_config["x_cdrom_image_{0}_sha1".format(i)] = \
-            "cdrom_image_{0}".format(i)
+        file_config[
+            "x_cdrom_image_{0}_sha1".format(i)
+        ] = "cdrom_image_{0}".format(i)
     for i in range(Amiga.MAX_HARD_DRIVES):
-        file_config["x_hard_drive_{0}_sha1".format(i)] = \
-            "hard_drive_{0}".format(i)
+        file_config[
+            "x_hard_drive_{0}_sha1".format(i)
+        ] = "hard_drive_{0}".format(i)

@@ -5,6 +5,7 @@ def app_main():
     print("FS Game Center")
 
     from fsui import Application
+
     application = Application("fs-game-center")
 
     from fsgs.http.server import http_server_main
@@ -19,16 +20,21 @@ def app_main():
         # Must load OpenGL to work around crash with Qt Quick on
         # Nvidia / Linux (due to libgl.so from mesa being loaded).
         import ctypes
+
         ctypes.CDLL("libGL.so.1", ctypes.RTLD_GLOBAL)
 
     from fsgs.ui.qwindow import GameCenterView
+
     window = GameCenterView()
     from fsui.qt import Qt
+
     # window.setFlags(Qt.FramelessWindowHint)
-    window.setFlags(Qt.Window |
-                    Qt.FramelessWindowHint |
-                    Qt.WindowMinimizeButtonHint |
-                    Qt.WindowSystemMenuHint)
+    window.setFlags(
+        Qt.Window
+        | Qt.FramelessWindowHint
+        | Qt.WindowMinimizeButtonHint
+        | Qt.WindowSystemMenuHint
+    )
     # window.show()
     window.showMaximized()
     # window.showFullScreen()
@@ -43,4 +49,5 @@ def app_main():
     # application.save_settings()
 
     from fsbc.signal import Signal
+
     Signal("quit").notify()

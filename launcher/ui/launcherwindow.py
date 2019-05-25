@@ -57,15 +57,16 @@ SCREENSHOT_WIDTH = 212
 SCREENSHOT_SPACING = 20
 MARGIN = 20
 CONFIGURATIONS_PANEL_WIDTH_1 = (
-    SCREENSHOT_WIDTH * 2 + SCREENSHOT_SPACING * 1 + MARGIN)
+    SCREENSHOT_WIDTH * 2 + SCREENSHOT_SPACING * 1 + MARGIN
+)
 CONFIGURATIONS_PANEL_WIDTH_2 = (
-    SCREENSHOT_WIDTH * 3 + SCREENSHOT_SPACING * 2 + MARGIN)
+    SCREENSHOT_WIDTH * 3 + SCREENSHOT_SPACING * 2 + MARGIN
+)
 CONFIGURATIONS_PANEL_WIDTH_THRESHOLD_2 = 1600
 
 
 # noinspection PyMethodMayBeStatic
 class LauncherWindow(WindowWithTabs):
-
     @classmethod
     def open(cls, parent=None):
         return fsui.open_window_instance(cls, parent)
@@ -85,6 +86,7 @@ class LauncherWindow(WindowWithTabs):
         self.gsc = self.fsgs
 
         from launcher.launcherapp import LauncherApp
+
         LauncherApp.pre_start()
 
         border = True
@@ -135,7 +137,8 @@ class LauncherWindow(WindowWithTabs):
 
         # left border
         self.create_column(
-            0, min_width=Skin.get_window_padding_left(), content=False)
+            0, min_width=Skin.get_window_padding_left(), content=False
+        )
         # left content
         # if fs_uae_launcher.ui.get_screen_size()[0] > 1024:
         #     left_width = 518
@@ -169,8 +172,9 @@ class LauncherWindow(WindowWithTabs):
         self.create_column(2, min_width=right_width, expand=True)
 
         # right border
-        self.create_column(3, min_width=Skin.get_window_padding_right(),
-                           content=False)
+        self.create_column(
+            3, min_width=Skin.get_window_padding_right(), content=False
+        )
 
         # if self.is_editor_enabled():
         #     from ..editor.EditorGroup import EditorGroup
@@ -195,7 +199,9 @@ class LauncherWindow(WindowWithTabs):
 
             self.game_info_panel = GameInfoPanel(self)
             self.game_info_panel.set_min_width(GAME_INFO_PANEL_MIN_WIDTH)
-            self.bottom_layout.add(self.game_info_panel, fill=True, expand=True)
+            self.bottom_layout.add(
+                self.game_info_panel, fill=True, expand=True
+            )
 
             bottom_panel = BottomPanel(self)
             bottom_panel.set_min_width(10)
@@ -221,7 +227,7 @@ class LauncherWindow(WindowWithTabs):
 
         self.realize_tabs()
         # self._menu = self.create_menu()
-        if fsui.System.macosx and fsui.toolkit == 'wx':
+        if fsui.System.macosx and fsui.toolkit == "wx":
             # import wx
             # self.tools_menu = self.create_menu()
             # menu_bar = wx.MenuBar()
@@ -287,10 +293,13 @@ class LauncherWindow(WindowWithTabs):
         if not icon:
             # FIXME: this encoding / decoding is a bit ridiculous, but, this is
             # for Python 2.x..
-            icon = check_icon(os.path.expanduser(
-                "~/.local/share/fs-uae-launcher".encode(
-                    sys.getfilesystemencoding())).decode(
-                sys.getfilesystemencoding()))
+            icon = check_icon(
+                os.path.expanduser(
+                    "~/.local/share/fs-uae-launcher".encode(
+                        sys.getfilesystemencoding()
+                    )
+                ).decode(sys.getfilesystemencoding())
+            )
 
         # FIXME: Check relative to executable instead
         if not icon:
@@ -322,7 +331,8 @@ class LauncherWindow(WindowWithTabs):
         else:
             app_name = "FS-UAE Launcher"
         title = "{} {} ({})".format(
-            app_name, Application.instance().version, login_info)
+            app_name, Application.instance().version, login_info
+        )
         self.set_title(title)
 
     def on_setting(self, key, value):
@@ -340,21 +350,26 @@ class LauncherWindow(WindowWithTabs):
             if LauncherSettings.get("maximized") != "0":
                 LauncherSettings.set("maximized", "0")
         if self.screenshots_panel is not None:
-            available = (width - 2 * 10 - self.game_info_panel.get_min_width())
-            num_screenshots = int((available - 22 + 22) /
-                                  (Constants.SCREEN_SIZE[0] + 22))
+            available = width - 2 * 10 - self.game_info_panel.get_min_width()
+            num_screenshots = int(
+                (available - 22 + 22) / (Constants.SCREEN_SIZE[0] + 22)
+            )
             # print("Screenshots count:", num_screenshots)
-            screenshots_panel_width = \
+            screenshots_panel_width = (
                 (Constants.SCREEN_SIZE[0] + 22) * num_screenshots - 22 + 22
+            )
             self.screenshots_panel.set_min_width(screenshots_panel_width)
         if width > CONFIGURATIONS_PANEL_WIDTH_THRESHOLD_2:
             configurations_width = (
-                SCREENSHOT_WIDTH * 3 + SCREENSHOT_SPACING * 2 + MARGIN)
+                SCREENSHOT_WIDTH * 3 + SCREENSHOT_SPACING * 2 + MARGIN
+            )
             self.configurations_panel.set_min_width(
-                CONFIGURATIONS_PANEL_WIDTH_2)
+                CONFIGURATIONS_PANEL_WIDTH_2
+            )
         else:
             self.configurations_panel.set_min_width(
-                CONFIGURATIONS_PANEL_WIDTH_1)
+                CONFIGURATIONS_PANEL_WIDTH_1
+            )
         super().on_resize()
 
     def is_editor_enabled(self):
@@ -380,13 +395,18 @@ class LauncherWindow(WindowWithTabs):
                 expand = True
             hor_layout = fsui.HorizontalLayout()
             layout.add(
-                hor_layout, fill=True, expand=expand, margin_right=margin_right)
+                hor_layout, fill=True, expand=expand, margin_right=margin_right
+            )
             # hor_layout.add(
             #     book, fill=True, expand=expand, margin_right=margin_right)
 
             vert_layout = fsui.VerticalLayout()
-            hor_layout.add(vert_layout, fill=True, expand=expand,
-                           margin_right=margin_right)
+            hor_layout.add(
+                vert_layout,
+                fill=True,
+                expand=expand,
+                margin_right=margin_right,
+            )
 
             hor_layout_2 = fsui.HorizontalLayout()
             vert_layout.add(hor_layout_2, fill=True, expand=True)
@@ -394,7 +414,7 @@ class LauncherWindow(WindowWithTabs):
             # vert_layout.add(book, fill=True, expand=True)
             hor_layout_2.add(book, fill=True, expand=True)
 
-#                        self.add_tab_panel(LaunchGroup, expand=False)
+            #                        self.add_tab_panel(LaunchGroup, expand=False)
 
             # if column == 2 and \
             #         LauncherSettings.get(
@@ -420,10 +440,8 @@ class LauncherWindow(WindowWithTabs):
 
             if column == 2:
                 # hor_layout.add_spacer(10)
-                self.quick_settings_panel = QuickSettingsPanel(
-                    self, self.fsgs)
-                self.quick_settings_panel.set_min_width(
-                    QUICK_SETTINGS_WIDTH)
+                self.quick_settings_panel = QuickSettingsPanel(self, self.fsgs)
+                self.quick_settings_panel.set_min_width(QUICK_SETTINGS_WIDTH)
                 # hor_layout.add(self.quick_settings_panel, fill=True,
                 #                expand=0.5, margin=-10, margin_left=0)
                 # hor_layout.add(self.quick_settings_panel, fill=True,
@@ -436,8 +454,12 @@ class LauncherWindow(WindowWithTabs):
                 if LauncherSettings.get(Option.QUICK_SETTINGS) != "1":
                     self.quick_settings_panel.hide()
 
-                hor_layout.add(self.quick_settings_panel, fill=True,
-                               margin=0, margin_top=0)
+                hor_layout.add(
+                    self.quick_settings_panel,
+                    fill=True,
+                    margin=0,
+                    margin_top=0,
+                )
 
             if column == 2:
                 # if fs_uae_launcher.ui.get_screen_size()[1] >= 1024:
@@ -495,8 +517,12 @@ class LauncherWindow(WindowWithTabs):
                 # if USE_MAIN_MENU:
                 icon = fsui.Image("launcher:res/32/main-menu.png")
                 self.menu_button = self.add_tab_button(
-                    None, icon, gettext("Main Menu"),
-                    menu_function=self.open_main_menu, left_padding=5)
+                    None,
+                    icon,
+                    gettext("Main Menu"),
+                    menu_function=self.open_main_menu,
+                    left_padding=5,
+                )
             # default_tab_index_offset = 1
             # self.add_tab_spacer(60)
             # else:
@@ -504,8 +530,12 @@ class LauncherWindow(WindowWithTabs):
 
             # page_index = 0
             self.configurations_panel = self.add_page(
-                column, ConfigurationsPanel, "",
-                gettext("Configurations"), gettext("Configuration Browser"))
+                column,
+                ConfigurationsPanel,
+                "",
+                gettext("Configurations"),
+                gettext("Configuration Browser"),
+            )
 
             self.add_tab_spacer(0, expand=True)
 
@@ -514,60 +544,87 @@ class LauncherWindow(WindowWithTabs):
 
             self.add_tab_spacer(10)
             self.add_page(
-                column, MainPanel,
+                column,
+                MainPanel,
                 "32x32/go-home",
-                gettext("Config"), gettext("Main Configuration Options"))
+                gettext("Config"),
+                gettext("Main Configuration Options"),
+            )
             self.add_page(
-                column, FloppiesPanel,
+                column,
+                FloppiesPanel,
                 "32x32/media-floppy",
-                gettext("Floppies"), gettext("Floppy Drives"))
+                gettext("Floppies"),
+                gettext("Floppy Drives"),
+            )
             self.add_page(
-                column, CDPanel,
+                column,
+                CDPanel,
                 "32x32/media-optical",
-                gettext("CD-ROMs"), gettext("CD-ROM Drives"))
+                gettext("CD-ROMs"),
+                gettext("CD-ROM Drives"),
+            )
             # noinspection SpellCheckingInspection
             self.add_page(
-                column, HardDrivesPanel,
+                column,
+                HardDrivesPanel,
                 "32x32/drive-harddisk",
-                gettext("Hard Drives"))
+                gettext("Hard Drives"),
+            )
             self.add_scroll_page(
-                column, RomRamPanel,
+                column,
+                RomRamPanel,
                 "32x32/application-x-firmware",
-                gettext("Hardware"), gettext("ROM and RAM"))
+                gettext("Hardware"),
+                gettext("ROM and RAM"),
+            )
             self.add_page(
-                column, InputPanel,
+                column,
+                InputPanel,
                 "32x32/applications-games",
-                gettext("Input"), gettext("Input Options"))
+                gettext("Input"),
+                gettext("Input Options"),
+            )
             self.add_scroll_page(
-                column, ExpansionsPanel,
+                column,
+                ExpansionsPanel,
                 "32x32/audio-card",
-                gettext("Expansions"), gettext("Expansions"))
+                gettext("Expansions"),
+                gettext("Expansions"),
+            )
             self.add_scroll_page(
-                column, AdditionalConfigPanel,
+                column,
+                AdditionalConfigPanel,
                 "32x32/system-shutdown",
                 gettext("Additional Configuration"),
-                gettext("Additional Configuration"))
+                gettext("Additional Configuration"),
+            )
 
             self.add_tab_spacer(0, expand=True)
             self.add_tab_spacer(10)
             self.add_tab_button(
                 self.toggle_quick_settings_sidebar,
                 fsui.Image("launcher:res/32/quick-settings-sidebar.png"),
-                gettext("Toggle quick settings sidebar"), right_padding=5)
+                gettext("Toggle quick settings sidebar"),
+                right_padding=5,
+            )
 
-        # column - 1 is the group id of the tab group
+            # column - 1 is the group id of the tab group
             self.select_tab(
-                default_page_index + default_tab_index_offset, column - 1)
+                default_page_index + default_tab_index_offset, column - 1
+            )
         self.books[column].set_page(default_page_index)
 
     def create_menu(self):
         menu = fsui.PopupMenu()
 
         if LauncherSettings.get(Option.DATABASE_AUTH):
-            menu.add_item(gettext("Update Game Database"),
-                          self.on_update_game_database)
-        menu.add_item(gettext("Update File Database"),
-                      self.on_update_file_database)
+            menu.add_item(
+                gettext("Update Game Database"), self.on_update_game_database
+            )
+        menu.add_item(
+            gettext("Update File Database"), self.on_update_file_database
+        )
 
         menu.add_separator()
 
@@ -577,10 +634,12 @@ class LauncherWindow(WindowWithTabs):
             menu.add_item(gettext("Net Play"), self.on_net_play)
 
         menu.add_separator()
-        menu.add_item(gettext("Import Kickstarts") + "...",
-                      self.on_import_kickstarts)
-        menu.add_item(gettext("Amiga Forever Import") + "...",
-                      self.on_import_kickstarts)
+        menu.add_item(
+            gettext("Import Kickstarts") + "...", self.on_import_kickstarts
+        )
+        menu.add_item(
+            gettext("Amiga Forever Import") + "...", self.on_import_kickstarts
+        )
 
         menu.add_separator()
         self.add_user_menu_content(menu)
@@ -591,20 +650,23 @@ class LauncherWindow(WindowWithTabs):
 
         if LauncherSettings.get(Option.LAUNCHER_SETUP_WIZARD_FEATURE):
             menu.add_item(
-                gettext("Setup Wizard") + "...", self.on_setup_wizard)
+                gettext("Setup Wizard") + "...", self.on_setup_wizard
+            )
 
-        menu.add_preferences_item(
-            gettext("Settings"), self.on_settings_button)
+        menu.add_preferences_item(gettext("Settings"), self.on_settings_button)
 
         menu.add_separator()
-        menu.add_item(gettext("About {name}").format(
-            name="OpenRetro.org"), self.on_what_is_this)
+        menu.add_item(
+            gettext("About {name}").format(name="OpenRetro.org"),
+            self.on_what_is_this,
+        )
         if fsgs_module.product == "OpenRetro":
             app_name = "OpenRetro Launcher"
         else:
             app_name = "FS-UAE Launcher"
-        menu.add_about_item(gettext("About {name}").format(
-            name=app_name), self.on_about)
+        menu.add_about_item(
+            gettext("About {name}").format(name=app_name), self.on_about
+        )
 
         menu.add_separator()
         menu.add_about_item(gettext("Quit"), self.on_quit)
@@ -631,8 +693,9 @@ class LauncherWindow(WindowWithTabs):
             self.main_panel = instance
         return self._add_page(book, instance, icon_name, title, tooltip)
 
-    def add_scroll_page(self, column, content_class, icon_name, title,
-                        tooltip=""):
+    def add_scroll_page(
+        self, column, content_class, icon_name, title, tooltip=""
+    ):
         book = self.books[column]
         instance = ConfigScrollArea(book)
         content_instance = content_class(instance)
@@ -643,6 +706,7 @@ class LauncherWindow(WindowWithTabs):
 
     def on_custom_button(self):
         from .config.configdialog import ConfigDialog
+
         ConfigDialog.run(self.get_window())
 
     def menu(self):
@@ -658,7 +722,8 @@ class LauncherWindow(WindowWithTabs):
             self.popup_menu(self._menu, (0, -2))
         else:
             self.menu_button.popup_menu(
-                self._menu, (0, self.menu_button.size()[1] - 2))
+                self._menu, (0, self.menu_button.size()[1] - 2)
+            )
         if fsui.System.windows:
             self.main_menu_close_time = time.time()
         return self._menu
@@ -688,8 +753,10 @@ class LauncherWindow(WindowWithTabs):
             # menu.add_item(_("Log In / Register"), self.on_log_in)
             # menu.add_item(gettext("Update Game Database"),
             #               self.on_game_database_refresh)
-            menu.add_item(gettext("Upload Files to OpenRetro Locker"),
-                          self.on_upload_locker_files)
+            menu.add_item(
+                gettext("Upload Files to OpenRetro Locker"),
+                self.on_upload_locker_files,
+            )
             # menu.add_separator()
             menu.add_item(gettext("Log Out"), self.on_log_out)
         else:
@@ -714,14 +781,17 @@ class LauncherWindow(WindowWithTabs):
 
     def on_scan_button(self):
         from .scan import ScanDialog
+
         ScanDialog(self.get_window()).show()
 
     def on_settings_button(self):
         from launcher.settings.settings_dialog import SettingsDialog
+
         SettingsDialog.open(self)
 
     def on_setup_wizard(self):
         from launcher.setup.setupwizarddialog import SetupWizardDialog
+
         SetupWizardDialog.open(self)
 
     def on_about(self):

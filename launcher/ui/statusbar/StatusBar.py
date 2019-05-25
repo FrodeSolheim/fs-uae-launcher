@@ -20,8 +20,12 @@ class StatusBar(Panel):
             self.top_border_size = 2
         else:
             self.top_border_size = 1
-        self.layout.add(self.hori_layout, fill=True, expand=True,
-                        margin_top=self.top_border_size)
+        self.layout.add(
+            self.hori_layout,
+            fill=True,
+            expand=True,
+            margin_top=self.top_border_size,
+        )
 
         element = ProtectionElement(self)
         self.hori_layout.add(element, fill=True)
@@ -30,22 +34,24 @@ class StatusBar(Panel):
         self.hori_layout.add(element, fill=True, expand=True)
         self.hori_layout.add_spacer(16)
 
-        for language, icon_name in reversed([
-            ("en", "flag-gb"),
-            ("de", "flag-de"),
-            ("fr", "flag-fr"),
-            ("es", "flag-es"),
-            ("it", "flag-it"),
-            ("pl", "flag-pl"),
-            ("sv", "flag-se"),
-            ("da", "flag-dk"),
-            ("nb", "flag-no"),
-            ("nn", "flag-no"),
-            ("no", "flag-no"),
-            ("fi", "flag-fi"),
-            ("ja", "flag-jp"),
-            # ("", "flag-unknown"),
-        ]):
+        for language, icon_name in reversed(
+            [
+                ("en", "flag-gb"),
+                ("de", "flag-de"),
+                ("fr", "flag-fr"),
+                ("es", "flag-es"),
+                ("it", "flag-it"),
+                ("pl", "flag-pl"),
+                ("sv", "flag-se"),
+                ("da", "flag-dk"),
+                ("nb", "flag-no"),
+                ("nn", "flag-no"),
+                ("no", "flag-no"),
+                ("fi", "flag-fi"),
+                ("ja", "flag-jp"),
+                # ("", "flag-unknown"),
+            ]
+        ):
             icon = Image("workspace:res/16x16/" + icon_name + ".png")
             element = LanguageElement(self, language, icon)
             self.hori_layout.add(element, fill=True)
@@ -87,8 +93,7 @@ class StatusBar(Panel):
         dc = self.create_dc()
         size = self.size()
         if Skin.fws():
-            dc.draw_rectangle(
-                0, 0, size[0], 2, Color(0xe5, 0xe5, 0xe5, 0xff))
+            dc.draw_rectangle(0, 0, size[0], 2, Color(0xE5, 0xE5, 0xE5, 0xFF))
             return
         color_1 = Skin.get_background_color()
         if color_1 is not None:

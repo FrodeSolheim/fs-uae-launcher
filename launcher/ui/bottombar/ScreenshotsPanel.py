@@ -11,7 +11,6 @@ BORDER = 20
 
 
 class ScreenshotsPanel(BottomPanel):
-
     def __init__(self, parent):
         BottomPanel.__init__(self, parent)
         Skin.set_background_color(self)
@@ -20,6 +19,7 @@ class ScreenshotsPanel(BottomPanel):
 
         def get_min_width():
             return 0
+
         # def get_min_height():
         #     return Constants.SCREEN_SIZE[1] + 2 * BORDER
         self.layout.get_min_width = get_min_width
@@ -32,7 +32,8 @@ class ScreenshotsPanel(BottomPanel):
         self.default_image = fsui.Image("launcher:res/screenshot.png")
         # self.default_image.resize(Constants.SCREEN_SIZE)
         self.screenshot_overlay = fsui.Image(
-            "launcher:res/screenshot_overlay.png")
+            "launcher:res/screenshot_overlay.png"
+        )
 
         self.images = [self.default_image for _ in range(6)]
         self.image_paths = ["" for _ in range(6)]
@@ -49,7 +50,11 @@ class ScreenshotsPanel(BottomPanel):
 
     def set_min_screenshots(self, count):
         # w = SCREEN_SIZE[0] * count + BORDER * 2 + (BORDER + 1) * (count - 1)
-        w = Constants.SCREEN_SIZE[0] * count + BORDER * 2 + BORDER * (count - 1)
+        w = (
+            Constants.SCREEN_SIZE[0] * count
+            + BORDER * 2
+            + BORDER * (count - 1)
+        )
         self.set_min_width(w)
 
     def load_images(self):
@@ -72,7 +77,8 @@ class ScreenshotsPanel(BottomPanel):
                 self.refresh()
 
             self.requests[i] = self.image_loader.load_image(
-                path, size=Constants.SCREEN_SIZE, on_load=on_load, index=i)
+                path, size=Constants.SCREEN_SIZE, on_load=on_load, index=i
+            )
             self.images[i] = self.default_image
             self.refresh()
 

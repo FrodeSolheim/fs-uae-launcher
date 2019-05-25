@@ -126,9 +126,12 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             archive_name = os.path.basename(archive_path)
             # We want to exclude pure directory entries when checking for
             # archives with only floppies.
-            arc_files = [x for x in archive.list_files() if not x.endswith("/")]
-            if all(map(lambda f: f.lower().endswith(floppy_extensions),
-                       arc_files)):
+            arc_files = [
+                x for x in archive.list_files() if not x.endswith("/")
+            ]
+            if all(
+                map(lambda f: f.lower().endswith(floppy_extensions), arc_files)
+            ):
                 print("[STARTUP] Archive contains floppy disk images only")
                 floppy_image_paths = arc_files
             else:
@@ -136,8 +139,10 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                     # FIXME: Could also do this for floppy file archives.
                     archive_util = ArchiveUtil(archive_path)
                     archive_uuid = archive_util.create_variant_uuid()
-                    print("[STARTUP] Try auto-detecting variant, uuid =",
-                          archive_uuid)
+                    print(
+                        "[STARTUP] Try auto-detecting variant, uuid =",
+                        archive_uuid,
+                    )
                     if fsgs.load_game_variant(archive_uuid):
                         print("[STARTUP] Auto-detected variant", archive_uuid)
                         print("[STARTUP] Adding archive files to file index")
@@ -147,14 +152,14 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                             size = len(data)
                             sha1 = hashlib.sha1(data).hexdigest()
                             FileDatabase.add_static_file(
-                                archive_file, size=size, sha1=sha1)
+                                archive_file, size=size, sha1=sha1
+                            )
                         fsgs.config.add_from_argv()
                         fsgs.config.set("__config_name", archive_name)
                         LauncherConfig.post_load_values(fsgs.config)
                         return cls.run_config_directly()
 
-                values = whdload.generate_config_for_archive(
-                    archive_path)
+                values = whdload.generate_config_for_archive(archive_path)
                 values["hard_drive_0"] = archive_path
                 values.update(fsgs.config.config_from_argv())
                 # archive_name, archive_ext = os.path.splitext(archive_name)
@@ -166,10 +171,15 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             values = {}
             values.update(fsgs.config.config_from_argv())
             max_drives = int(values.get("floppy_drive_count", "4"))
-            values.update({"floppy_drive_{0}".format(k): v
-                           for k, v in enum_paths[:max_drives]})
-            values.update({"floppy_image_{0}".format(k): v
-                           for k, v in enum_paths[:20]})
+            values.update(
+                {
+                    "floppy_drive_{0}".format(k): v
+                    for k, v in enum_paths[:max_drives]
+                }
+            )
+            values.update(
+                {"floppy_image_{0}".format(k): v for k, v in enum_paths[:20]}
+            )
             # FIXME: Generate a better config name for save dir?
             values["__config_name"] = "Default"
             return cls.run_config_directly_with_values(values)
@@ -179,10 +189,15 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             values = {"amiga_model": "CD32"}
             values.update(fsgs.config.config_from_argv())
             max_drives = int(values.get("cdrom_drive_count", "1"))
-            values.update({"cdrom_drive_{0}".format(k): v
-                           for k, v in enum_paths[:max_drives]})
-            values.update({"cdrom_image_{0}".format(k): v
-                           for k, v in enum_paths[:20]})
+            values.update(
+                {
+                    "cdrom_drive_{0}".format(k): v
+                    for k, v in enum_paths[:max_drives]
+                }
+            )
+            values.update(
+                {"cdrom_image_{0}".format(k): v for k, v in enum_paths[:20]}
+            )
             # FIXME: Generate a better config name for save dir?
             values["__config_name"] = "Default"
             return cls.run_config_directly_with_values(values)
@@ -243,6 +258,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             print(name)
             # noinspection PyDeprecation
             import imp
+
             try:
                 # noinspection PyDeprecation
                 plugin = imp.load_source(name, path)
@@ -333,6 +349,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
     @classmethod
     def start_game(cls):
         from .netplay.netplay import Netplay
+
         if Netplay.current() and Netplay.current().game_channel:
             Netplay.current().start_netplay_game()
         else:
@@ -345,24 +362,33 @@ class LauncherApp(ApplicationMixin, fsui.Application):
 
         if LauncherConfig.get("x_missing_files"):
             if LauncherConfig.get("download_file"):
-                if LauncherConfig.get("download_terms") and not \
-                        Downloader.check_terms_accepted(
-                            LauncherConfig.get("download_file"),
-                            LauncherConfig.get("download_terms")):
+                if LauncherConfig.get(
+                    "download_terms"
+                ) and not Downloader.check_terms_accepted(
+                    LauncherConfig.get("download_file"),
+                    LauncherConfig.get("download_terms"),
+                ):
                     from .ui.launcherwindow import LauncherWindow
-                    dialog = DownloadTermsDialog(LauncherWindow.current(), fsgs)
+
+                    dialog = DownloadTermsDialog(
+                        LauncherWindow.current(), fsgs
+                    )
                     if not dialog.show_modal():
                         return
 
             elif LauncherConfig.get("download_page"):
                 from .ui.launcherwindow import LauncherWindow
+
                 # fsui.show_error(_("This game must be downloaded first."))
                 DownloadGameWindow(LauncherWindow.current(), fsgs).show()
                 return
             else:
                 fsui.show_error(
-                    gettext("This game variant cannot be started "
-                            "because you don't have all required files."))
+                    gettext(
+                        "This game variant cannot be started "
+                        "because you don't have all required files."
+                    )
+                )
                 return
 
         platform_id = LauncherConfig.get(Option.PLATFORM).lower()
@@ -386,8 +412,10 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         runner = platform_handler.get_runner(fsgs)
         task = RunnerTask(runner)
         from .ui.launcherwindow import LauncherWindow
+
         dialog = LaunchDialog(
-            LauncherWindow.current(), gettext("Launching Game"), task)
+            LauncherWindow.current(), gettext("Launching Game"), task
+        )
         dialog.show()
         LauncherConfig.set("__running", "1")
         task.start()
@@ -405,14 +433,18 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         #         gettext("No kickstart found for this model. Use the 'Import "
         #                 "Kickstarts' function from the menu."))
         #     return
-        cs = Amiga.get_model_config(
-            LauncherConfig.get("amiga_model"))["ext_roms"]
+        cs = Amiga.get_model_config(LauncherConfig.get("amiga_model"))[
+            "ext_roms"
+        ]
         if len(cs) > 0:
             # extended kickstart ROM is needed
             if not LauncherConfig.get("x_kickstart_ext_file"):
                 fsui.show_error(
-                    gettext("No extended kickstart found for this model. "
-                            "Try 'scan' function."))
+                    gettext(
+                        "No extended kickstart found for this model. "
+                        "Try 'scan' function."
+                    )
+                )
                 return
 
         config = LauncherConfig.copy()
@@ -429,17 +461,22 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         uuid = LauncherConfig.get("x_game_uuid")
 
         from fsgs.saves import SaveHandler
+
         save_state_handler = SaveHandler(fsgs, name, platform, uuid)
 
         from fsgs.amiga.launchhandler import LaunchHandler
+
         launch_handler = LaunchHandler(
-            fsgs, name, prepared_config, save_state_handler)
+            fsgs, name, prepared_config, save_state_handler
+        )
 
         from .ui.launcherwindow import LauncherWindow
+
         task = AmigaLaunchTask(launch_handler)
         # dialog = LaunchDialog(MainWindow.instance, launch_handler)
         dialog = LaunchDialog(
-            LauncherWindow.current(), gettext("Launching FS-UAE"), task)
+            LauncherWindow.current(), gettext("Launching FS-UAE"), task
+        )
         dialog.show()
 
         def on_show_license_information(license_text):
@@ -492,6 +529,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             config["joystick_port_3_mode"] = "none"
 
         from .devicemanager import DeviceManager
+
         devices = DeviceManager.get_devices_for_ports(config)
         for port in range(4):
             key = "joystick_port_{0}".format(port)
@@ -499,9 +537,14 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                 # key not set, use calculated default value
                 config[key] = devices[port].id
 
-        for remove_key in ["database_username", "database_password",
-                           "database_username", "database_email",
-                           "database_auth", "device_id"]:
+        for remove_key in [
+            "database_username",
+            "database_password",
+            "database_username",
+            "database_email",
+            "database_auth",
+            "device_id",
+        ]:
             if remove_key in config:
                 del config[remove_key]
 
@@ -585,7 +628,8 @@ class RunnerTask(Task):
     def run(self):
         device_helper = EnumerateHelper()
         device_helper.default_port_selection(
-            self.driver.ports, self.driver.options)
+            self.driver.ports, self.driver.options
+        )
 
         self.driver.prepare()
         self.driver.install()

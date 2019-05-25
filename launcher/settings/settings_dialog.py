@@ -12,7 +12,9 @@ from launcher.settings.audio_settings_page import AudioSettingsPage
 from launcher.settings.directories_settings_page import DirectoriesSettingsPage
 from launcher.settings.fs_uae_settings_page import FSUAESettingsPage
 from launcher.settings.gamedatabasesettingspage import GameDatabaseSettingsPage
-from launcher.settings.gameplatformssettingspage import GamePlatformsSettingsPage
+from launcher.settings.gameplatformssettingspage import (
+    GamePlatformsSettingsPage,
+)
 from launcher.settings.joystick_settings_page import JoystickSettingsPage
 from launcher.settings.keyboard_settings_page import KeyboardSettingsPage
 from launcher.settings.language_settings_page import LanguageSettingsPage
@@ -29,14 +31,16 @@ SPACE = ""
 
 
 class SettingsDialog(PagedDialog):
-
     @classmethod
     def open(cls, parent=None):
         return fsui.open_window_instance(cls, parent)
 
     def __init__(self, parent, index=0):
-        PagedDialog.__init__(self, parent, "{} - {} Launcher".format(
-                gettext("Settings"), fsgs.product))
+        PagedDialog.__init__(
+            self,
+            parent,
+            "{} - {} Launcher".format(gettext("Settings"), fsgs.product),
+        )
 
         # FIXME: remove this once the dialog uses Window as base class
         # self.setAttribute(Qt.WA_DeleteOnClose, True)
@@ -46,38 +50,62 @@ class SettingsDialog(PagedDialog):
         #     gettext("Language"), LanguageSettingsPage,
         #     fsui.Icon("language-settings", "pkg:workspace"))
         self.add_page(
-            gettext("Common"), LanguageSettingsPage,
-            fsui.Icon("language-settings", "pkg:workspace"), bold=True)
+            gettext("Common"),
+            LanguageSettingsPage,
+            fsui.Icon("language-settings", "pkg:workspace"),
+            bold=True,
+        )
         self.add_page(
-            gettext("Controllers"), JoystickSettingsPage,
-            fsui.Icon("gamepad", "pkg:workspace"))
+            gettext("Controllers"),
+            JoystickSettingsPage,
+            fsui.Icon("gamepad", "pkg:workspace"),
+        )
         self.add_page(
-            gettext("Plugins"), PluginsSettingsPage,
-            fsui.Icon("settings", "pkg:workspace"))
+            gettext("Plugins"),
+            PluginsSettingsPage,
+            fsui.Icon("settings", "pkg:workspace"),
+        )
         self.add_page(
-            gettext("Directories"), DirectoriesSettingsPage,
-            fsui.Icon("folder", "pkg:launcher"))
+            gettext("Directories"),
+            DirectoriesSettingsPage,
+            fsui.Icon("folder", "pkg:launcher"),
+        )
         self.add_page(
-            gettext("Advanced"), AdvancedSettingsPage,
-            fsui.Icon("settings", "pkg:workspace"))
+            gettext("Advanced"),
+            AdvancedSettingsPage,
+            fsui.Icon("settings", "pkg:workspace"),
+        )
         self.add_page(
-            "FS-UAE", FSUAESettingsPage,
-            fsui.Icon("fs-uae", "pkg:launcher"), bold=True)
+            "FS-UAE",
+            FSUAESettingsPage,
+            fsui.Icon("fs-uae", "pkg:launcher"),
+            bold=True,
+        )
         self.add_page(
-            gettext("Keyboard"), KeyboardSettingsPage,
-            fsui.Icon("keyboard-settings", "pkg:workspace"))
+            gettext("Keyboard"),
+            KeyboardSettingsPage,
+            fsui.Icon("keyboard-settings", "pkg:workspace"),
+        )
         self.add_page(
-            gettext("Mouse"), MouseSettingsPage,
-            fsui.Icon("mouse-settings", "pkg:workspace"))
+            gettext("Mouse"),
+            MouseSettingsPage,
+            fsui.Icon("mouse-settings", "pkg:workspace"),
+        )
         self.add_page(
-            gettext("Audio"), AudioSettingsPage,
-            fsui.Icon("audio-settings", "pkg:workspace"))
+            gettext("Audio"),
+            AudioSettingsPage,
+            fsui.Icon("audio-settings", "pkg:workspace"),
+        )
         self.add_page(
-            gettext("Video"), VideoSettingsPage,
-            fsui.Icon("video-settings", "pkg:workspace"))
+            gettext("Video"),
+            VideoSettingsPage,
+            fsui.Icon("video-settings", "pkg:workspace"),
+        )
         self.add_page(
-            gettext("Advanced Video"), AdvancedVideoSettingsPage,
-            fsui.Icon("video-settings", "pkg:workspace"))
+            gettext("Advanced Video"),
+            AdvancedVideoSettingsPage,
+            fsui.Icon("video-settings", "pkg:workspace"),
+        )
         # self.add_page(
         #     gettext("Synchronization"), VideoSyncSettingsPage,
         #     fsui.Icon("video-settings", "pkg:workspace"))
@@ -90,26 +118,37 @@ class SettingsDialog(PagedDialog):
         #     gettext("Logging"), LoggingSettingsPage,
         #     fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
-            "{} Launcher".format(fsgs.product), LauncherSettingsPage,
-            fsui.Icon("fs-uae-launcher", "pkg:launcher"), bold=True)
+            "{} Launcher".format(fsgs.product),
+            LauncherSettingsPage,
+            fsui.Icon("fs-uae-launcher", "pkg:launcher"),
+            bold=True,
+        )
         self.add_page(
-            gettext("File Database"), ScanSettingsPage,
-            fsui.Icon("indexing-settings", "pkg:workspace"))
+            gettext("File Database"),
+            ScanSettingsPage,
+            fsui.Icon("indexing-settings", "pkg:workspace"),
+        )
         self.add_page(
-            gettext("Game Database"), GameDatabaseSettingsPage,
-            fsui.Icon("database-settings", "pkg:workspace"))
+            gettext("Game Database"),
+            GameDatabaseSettingsPage,
+            fsui.Icon("database-settings", "pkg:workspace"),
+        )
         if fsgs.openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
             self.add_page(
-                gettext("Game Platforms"), GamePlatformsSettingsPage,
-                fsui.Icon("database-settings", "pkg:workspace"))
+                gettext("Game Platforms"),
+                GamePlatformsSettingsPage,
+                fsui.Icon("database-settings", "pkg:workspace"),
+            )
         # self.add_page(gettext("Custom Settings"), CustomSettingsPage)
         if LauncherSettings.get(Option.NETPLAY_FEATURE) != "0":
             self.add_page(
-                gettext("Net Play"), NetplaySettingsPage,
-                fsui.Icon("netplay-settings", "pkg:workspace"))
+                gettext("Net Play"),
+                NetplaySettingsPage,
+                fsui.Icon("netplay-settings", "pkg:workspace"),
+            )
         self.add_page(
-            "WHDLoad", WHDLoadSettingsPage,
-            fsui.Icon("hd", "pkg:launcher"))
+            "WHDLoad", WHDLoadSettingsPage, fsui.Icon("hd", "pkg:launcher")
+        )
         # self.add_page(
         #     gettext("Experimental Features"), ExperimentalFeaturesPage,
         #     fsui.Icon("settings", "pkg:workspace"))
@@ -117,8 +156,11 @@ class SettingsDialog(PagedDialog):
         #     gettext("Maintenance"), MaintenanceSettingsPage,
         #     fsui.Icon("maintenance", "pkg:workspace"))
         self.add_page(
-            "{} Arcade".format(fsgs.product), ArcadeSettingsPage,
-            fsui.Icon("fs-uae-arcade", "pkg:launcher"), bold=True)
+            "{} Arcade".format(fsgs.product),
+            ArcadeSettingsPage,
+            fsui.Icon("fs-uae-arcade", "pkg:launcher"),
+            bold=True,
+        )
 
         # Old texts
         # gettext("Video Synchronization")
@@ -126,7 +168,8 @@ class SettingsDialog(PagedDialog):
         gettext("Advanced")
 
         last_index = self.get_page_index_by_title(
-            LauncherSettings.get("last_settings_page"))
+            LauncherSettings.get("last_settings_page")
+        )
         index = last_index or index
         self.list_view.set_index(index)
 
@@ -135,7 +178,8 @@ class SettingsDialog(PagedDialog):
         self.button_layout.insert(0, defaults_button, fill=True)
 
         defaults_label = fsui.Label(
-            self, gettext("Choices marked with (*) is the default setting"))
+            self, gettext("Choices marked with (*) is the default setting")
+        )
         self.button_layout.insert(1, defaults_label, margin_left=20)
 
         self.set_size((940, 560))

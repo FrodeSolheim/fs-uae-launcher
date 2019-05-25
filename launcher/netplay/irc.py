@@ -45,6 +45,7 @@ class IRC:
             name = self.default_channel
 
         from .channel import Channel
+
         try:
             return self.channels[name]
         except KeyError:
@@ -70,8 +71,7 @@ class IRC:
         if self.running:
             print("IRC.start - already running")
             return
-        threading.Thread(target=self.irc_thread,
-                         name="IRCThread").start()
+        threading.Thread(target=self.irc_thread, name="IRCThread").start()
         self.running = True
 
     def stop(self):
@@ -86,6 +86,7 @@ class IRC:
             self.irc_main()
         except Exception as e:
             import traceback
+
             traceback.print_exc()
             # Bind exception to local variable, so the inline function below
             # can access it.
@@ -113,18 +114,20 @@ class IRC:
 
     def irc_main(self):
         def func():
-            self.message("connecting to {0}...".format(
-                    self.get_irc_server_host()))
+            self.message(
+                "connecting to {0}...".format(self.get_irc_server_host())
+            )
 
         call_after(func)
 
         self.client = IRCClient(
-                CommandHandler,
-                host=self.get_irc_server_host(),
-                port=6667,
-                nick=self.generate_nick(True),
-                blocking=True,
-                connect_cb=self.connect_callback)
+            CommandHandler,
+            host=self.get_irc_server_host(),
+            port=6667,
+            nick=self.generate_nick(True),
+            blocking=True,
+            connect_cb=self.connect_callback,
+        )
         self.client.handler = self
         self.connection = self.client.connect()
 
@@ -269,7 +272,8 @@ class IRC:
     def command_slap(self, args):
         if len(args) == 1:
             message = "slaps {0} around a bit with a large trout".format(
-                    args[0])
+                args[0]
+            )
             self.channel(self.active_channel_name).action(message)
         else:
             self.warning("usage: /slap <nick>")
@@ -323,9 +327,18 @@ class IRC:
     # noinspection SpellCheckingInspection
     def irc_server_message(self, command, args):
         commands = [
-            "yourhost", "created", "luserclient", "luserchannels",
-            "luserme", "n_local", "n_global", "luserconns", "motdstart",
-            "motd", "nomotd", "endofmotd"
+            "yourhost",
+            "created",
+            "luserclient",
+            "luserchannels",
+            "luserme",
+            "n_local",
+            "n_global",
+            "luserconns",
+            "motdstart",
+            "motd",
+            "nomotd",
+            "endofmotd",
         ]
         if command in commands:
             self.message(args[2])
@@ -363,8 +376,9 @@ class IRC:
         else:
             channel = self.filter_nick(sender)
         self.channel(channel).on_privmsg(nick, message)
-        IRCBroadcaster.broadcast("privmsg", {
-            "channel": channel, "message": message, "nick": nick})
+        IRCBroadcaster.broadcast(
+            "privmsg", {"channel": channel, "message": message, "nick": nick}
+        )
 
     def irc_notice(self, sender, destination, message):
         if sender:
@@ -376,8 +390,9 @@ class IRC:
         else:
             channel = self.active_channel_name
         self.channel(channel).on_notice(nick, message)
-        IRCBroadcaster.broadcast("notice", {
-            "channel": channel, "message": message, "nick": nick})
+        IRCBroadcaster.broadcast(
+            "notice", {"channel": channel, "message": message, "nick": nick}
+        )
 
     def irc_kick(self, kicker, channel, who, why):
         self.channel(channel).on_kick(self.filter_nick(kicker), who, why)
@@ -415,8 +430,9 @@ class IRC:
         if self.is_channel(destination):
             self.channel(destination).on_mode(self.filter_nick(who), args)
         else:
-            self.message("{0} set mode {1} {2}".format(
-                    who, destination, " ".join(args)))
+            self.message(
+                "{0} set mode {1} {2}".format(who, destination, " ".join(args))
+            )
 
     def irc_quit(self, who, reason):
         for name in self.channels:

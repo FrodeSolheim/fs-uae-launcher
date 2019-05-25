@@ -12,7 +12,8 @@ class NetplayDialog(fsui.Window):
 
     def __init__(self, parent=None):
         super().__init__(
-                parent, "{} - FS-UAE Launcher".format(gettext("Net Play")))
+            parent, "{} - FS-UAE Launcher".format(gettext("Net Play"))
+        )
         self.layout = fsui.VerticalLayout()
         self.panel = NetplayPanel(self, header=False)
         self.layout.add(self.panel, expand=True, fill=True)

@@ -3,8 +3,11 @@ from launcher.cd_manager import CDManager
 from launcher.floppy_manager import FloppyManager
 from launcher.i18n import gettext
 from launcher.option import Option
-from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS, \
-    CDEnableBehavior, FloppyEnableBehavior
+from launcher.ui.behaviors.platformbehavior import (
+    AMIGA_PLATFORMS,
+    CDEnableBehavior,
+    FloppyEnableBehavior,
+)
 from launcher.ui.floppyselector import FloppySelector
 from launcher.ui.options import ConfigWidgetFactory
 
@@ -15,8 +18,7 @@ class FloppiesGroup(fsui.Group):
     TAPE_MODE = FloppySelector.TAPE_MODE
     CARTRIDGE_MODE = FloppySelector.CARTRIDGE_MODE
 
-    def __init__(self, parent, drives=2, cd_mode=False,
-                 removable_media=False):
+    def __init__(self, parent, drives=2, cd_mode=False, removable_media=False):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
@@ -58,19 +60,28 @@ class FloppiesGroup(fsui.Group):
         if drive_count_option and not removable_media:
             # FIXME: Drive count option does not work on the main page when
             # changing to CD mode. Workaround for now is to not include it.
-            hori_layout.add(ConfigWidgetFactory().create(
-                self, drive_count_option, text=gettext("Drive Count"),
-                platforms=AMIGA_PLATFORMS),
-                fill=True, margin_right=20)
+            hori_layout.add(
+                ConfigWidgetFactory().create(
+                    self,
+                    drive_count_option,
+                    text=gettext("Drive Count"),
+                    platforms=AMIGA_PLATFORMS,
+                ),
+                fill=True,
+                margin_right=20,
+            )
 
         self.multi_select_button = fsui.Button(
-            self, gettext("Multi-Select..."))
+            self, gettext("Multi-Select...")
+        )
         if self.cd_mode:
             self.multi_select_button.set_tooltip(
-                gettext("Add Multiple CD-ROMs at Once"))
+                gettext("Add Multiple CD-ROMs at Once")
+            )
         else:
             self.multi_select_button.set_tooltip(
-                gettext("Add Multiple Floppies at Once"))
+                gettext("Add Multiple Floppies at Once")
+            )
         if behavior_class:
             behavior_class(self.multi_select_button)
         self.multi_select_button.activated.connect(self.on_multi_select_button)

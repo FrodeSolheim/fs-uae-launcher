@@ -30,8 +30,9 @@ class ConnectionTester:
             if host_info != self.host_info:
                 self.host_info = host_info
             if not self.running:
-                threading.Thread(target=self.thread_main,
-                                 name="ConnectionTesterThread").start()
+                threading.Thread(
+                    target=self.thread_main, name="ConnectionTesterThread"
+                ).start()
                 self.running = True
 
     def thread_main(self):
@@ -43,9 +44,12 @@ class ConnectionTester:
     def set_host(self, host, last_error):
         if last_error:
             last_error = "attempt {1} {0}".format(
-                    last_error, self.connection_attempt)
-        values = [("__netplay_host", host),
-                  ("__netplay_host_last_error", last_error)]
+                last_error, self.connection_attempt
+            )
+        values = [
+            ("__netplay_host", host),
+            ("__netplay_host_last_error", last_error),
+        ]
         if last_error or not host:
             # force not ready when we cannot connect to server
             values.append(("__netplay_ready", "0"))

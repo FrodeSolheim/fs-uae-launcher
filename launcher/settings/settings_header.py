@@ -8,8 +8,9 @@ class SettingsHeader(fsui.Group):
     ICON_LEFT = 0
     ICON_RIGHT = 1
 
-    def __init__(self, parent, icon, title, subtitle="",
-                 icon_position=ICON_RIGHT):
+    def __init__(
+        self, parent, icon, title, subtitle="", icon_position=ICON_RIGHT
+    ):
         unused(subtitle)
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
@@ -28,13 +29,15 @@ class SettingsHeader(fsui.Group):
             font = fsui.Font("Roboto", 26)
             self.title_label.set_font(font)
             self.layout.add(
-                self.title_label, expand=True, fill=False, valign=0.0)
+                self.title_label, expand=True, fill=False, valign=0.0
+            )
         else:
             font = self.title_label.get_font()
             font.increase_size(3)
             self.title_label.set_font(font)
             self.layout.add(
-                self.title_label, expand=True, fill=False, valign=0.5)
+                self.title_label, expand=True, fill=False, valign=0.5
+            )
 
         if icon_position == self.ICON_RIGHT:
             self.layout.add_spacer(20)

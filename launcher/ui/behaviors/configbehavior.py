@@ -3,7 +3,6 @@ from launcher.launcher_config import LauncherConfig
 
 
 class ConfigBehavior:
-
     def __init__(self, parent, names):
         parent.__config_enable_behavior = self
         self._parent = weakref.ref(parent)
@@ -12,8 +11,10 @@ class ConfigBehavior:
         try:
             parent.destroyed.connect(self.on_parent_destroyed)
         except AttributeError:
-            print("WARNING: ConfigBehavior without remove_listener "
-                  "implementation")
+            print(
+                "WARNING: ConfigBehavior without remove_listener "
+                "implementation"
+            )
         for name in names:
             # Broadcast initial value
             self.on_config(name, LauncherConfig.get(name))

@@ -21,8 +21,13 @@ class ConfigGroup(fsui.Group):
 
             hori_layout.add(NewButton(self), margin_left=10, margin_right=10)
         self.config_name_field = fsui.TextField(self)
-        hori_layout.add(self.config_name_field, expand=True, margin=10,
-                        margin_top=0, margin_bottom=0)
+        hori_layout.add(
+            self.config_name_field,
+            expand=True,
+            margin=10,
+            margin_top=0,
+            margin_bottom=0,
+        )
         hori_layout.add(SaveButton(self), margin_left=10, margin_right=10)
         self.config_name_field.on_changed = self.on_config_name_changed
         SettingsBehavior(self, ["config_name"])

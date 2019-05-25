@@ -5,7 +5,6 @@ from launcher.settings.settings_page import SettingsPage
 
 
 class PluginsSettingsPage(SettingsPage):
-
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("plugins", "pkg:workspace")

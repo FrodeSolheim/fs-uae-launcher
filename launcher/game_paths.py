@@ -75,12 +75,24 @@ class GamePaths(object):
                 name = "screen{0}.png".format(number)
             paths = FSGSDirectories.get_images_dirs()
             for dir_ in paths:
-                p = os.path.join(dir_, self.platform, "Images",
-                                 self.uuid[:2], self.uuid, name)
+                p = os.path.join(
+                    dir_,
+                    self.platform,
+                    "Images",
+                    self.uuid[:2],
+                    self.uuid,
+                    name,
+                )
                 if os.path.exists(p):
                     return p
-                p = os.path.join(dir_, self.platform, "Thumbnails",
-                                 self.uuid[:2], self.uuid, name)
+                p = os.path.join(
+                    dir_,
+                    self.platform,
+                    "Thumbnails",
+                    self.uuid[:2],
+                    self.uuid,
+                    name,
+                )
                 if os.path.exists(p):
                     return p
         letter = self.get_letter(self.name)
@@ -128,8 +140,9 @@ class GamePaths(object):
         if image.size == Constants.SCREEN_SIZE:
             return image
         if image.size[0] < 400:
-            image.resize((image.size[0] * 2, image.size[1] * 2),
-                         fsui.Image.NEAREST)
+            image.resize(
+                (image.size[0] * 2, image.size[1] * 2), fsui.Image.NEAREST
+            )
         image.resize(Constants.SCREEN_SIZE)
         return image
 
@@ -144,12 +157,24 @@ class GamePaths(object):
         if self.uuid:
             paths = FSGSDirectories.get_images_dirs()
             for dir_ in paths:
-                p = os.path.join(dir_, self.platform, "Images",
-                                 self.uuid[:2], self.uuid, "front.png")
+                p = os.path.join(
+                    dir_,
+                    self.platform,
+                    "Images",
+                    self.uuid[:2],
+                    self.uuid,
+                    "front.png",
+                )
                 if os.path.exists(p):
                     return p
-                p = os.path.join(dir_, self.platform, "Thumbnails",
-                                 self.uuid[:2], self.uuid, "front.png")
+                p = os.path.join(
+                    dir_,
+                    self.platform,
+                    "Thumbnails",
+                    self.uuid[:2],
+                    self.uuid,
+                    "front.png",
+                )
                 if os.path.exists(p):
                     return p
         letter = self.get_letter(self.name)
@@ -208,6 +233,7 @@ class GamePaths(object):
         # use a temporary state dir, for now, to avoid problems with
         # floppy overlays etc interfering with net play
         from .netplay.netplay import Netplay
+
         if Netplay.current():
             # it is possible to manually specify the state dir
             config_name = LauncherConfig.get("__netplay_state_dir_name")
@@ -224,13 +250,13 @@ class GamePaths(object):
             letter = self.get_letter(config_name)
         # we use an existing state dir in a "letter" dir if it exists
         # (legacy support).
-        path = os.path.join(FSGSDirectories.get_save_states_dir(), letter,
-                            config_name)
+        path = os.path.join(
+            FSGSDirectories.get_save_states_dir(), letter, config_name
+        )
         if os.path.exists(path):
             return path
         # if not, we use a direct sub-folder of save states dir
-        path = os.path.join(FSGSDirectories.get_save_states_dir(),
-                            config_name)
+        path = os.path.join(FSGSDirectories.get_save_states_dir(), config_name)
         return path
 
     def get_state_dir(self):

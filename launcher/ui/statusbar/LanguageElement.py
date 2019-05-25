@@ -3,7 +3,6 @@ from .StatusElement import StatusElement
 
 
 class LanguageElement(StatusElement):
-
     def __init__(self, parent, language, icon, tool_tip=""):
         StatusElement.__init__(self, parent)
         self.set_min_width(32)

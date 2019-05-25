@@ -4,7 +4,6 @@ from launcher.settings.settings_page import SettingsPage
 
 
 class KeyboardSettingsPage(SettingsPage):
-
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("keyboard-settings", "pkg:workspace")

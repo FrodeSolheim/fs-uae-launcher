@@ -1,5 +1,6 @@
 import sys
 from fsgs.plugins.plugin_manager import PluginManager
+
 """
 RetroArch launcher script used for testing.
 """

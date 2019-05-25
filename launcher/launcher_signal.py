@@ -21,8 +21,9 @@ class LauncherSignal(object):
     @classmethod
     def broadcast(cls, signal, *args):
         if signal == "config":
-            # temporary, while restructuring        
+            # temporary, while restructuring
             from fsgs.context import fsgs
+
             key, value = args
             fsgs.signal.notify("fsgs:config:" + key, value)
 

@@ -8,7 +8,6 @@ from launcher.ui.widgets import CloseButton
 
 
 class AboutDialog(fsui.Window):
-
     def __init__(self, parent):
         if fsgs.product == "OpenRetro":
             app_name = "OpenRetro Launcher"
@@ -21,14 +20,16 @@ class AboutDialog(fsui.Window):
         self.layout.set_padding(20)
 
         self.icon_header = IconHeader(
-            self, fsui.Icon("fs-uae-launcher", "pkg:launcher"),
-            "{name} {version}".format(name=app_name,
-                                      version=app.version),
-            "Copyright © 2012-2017 Frode Solheim")
+            self,
+            fsui.Icon("fs-uae-launcher", "pkg:launcher"),
+            "{name} {version}".format(name=app_name, version=app.version),
+            "Copyright © 2012-2017 Frode Solheim",
+        )
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         self.text_area = fsui.TextArea(
-            self, about_message, read_only=True, font_family="monospace")
+            self, about_message, read_only=True, font_family="monospace"
+        )
         self.text_area.scroll_to_start()
         self.text_area.set_min_width(760)
         self.text_area.set_min_height(340)

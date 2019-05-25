@@ -7,7 +7,6 @@ from launcher.ui.skin import Skin
 
 
 class CDPanel(ConfigPanel):
-
     def __init__(self, parent):
         super().__init__(parent)
         Skin.set_background_color(self)

@@ -41,19 +41,28 @@ class ConfigurationsPanel(fsui.Panel):
         hor_layout.add(game_list_selector, expand=False, margin_left=10)
 
         self.text_field = fsui.TextField(
-            self, LauncherSettings.get("config_search"))
+            self, LauncherSettings.get("config_search")
+        )
         self.text_field.on_changed = self.on_search_changed
         if VariantsBrowser.use_horizontal_layout():
             # window is big enough to use fixed size
             # self.text_field.set_min_width(210)
             self.text_field.set_min_width(229)
             hor_layout.add(
-                self.text_field, expand=False, margin=10, margin_top=0,
-                margin_bottom=0)
+                self.text_field,
+                expand=False,
+                margin=10,
+                margin_top=0,
+                margin_bottom=0,
+            )
         else:
             hor_layout.add(
-                self.text_field, expand=True, margin=10, margin_top=0,
-                margin_bottom=0)
+                self.text_field,
+                expand=True,
+                margin=10,
+                margin_top=0,
+                margin_bottom=0,
+            )
 
         # self.refresh_button = IconButton(self, "refresh_button.png")
         # self.refresh_button.set_tooltip(
@@ -65,29 +74,42 @@ class ConfigurationsPanel(fsui.Panel):
         self.configurations_browser = ConfigurationsBrowser(self)
 
         vert_layout.add(
-            self.configurations_browser, fill=True, expand=3, margin=10)
+            self.configurations_browser, fill=True, expand=3, margin=10
+        )
 
         self.variants_panel = fsui.Panel(self)
-        vert_layout.add(self.variants_panel, fill=True, expand=False,
-                        margin=10, margin_top=20)
+        vert_layout.add(
+            self.variants_panel,
+            fill=True,
+            expand=False,
+            margin=10,
+            margin_top=20,
+        )
 
         self.variants_panel.layout = fsui.HorizontalLayout()
         self.variants_browser = VariantsBrowser(self.variants_panel)
         # Do not use fill=True with the default OS X theme at least,
         # if you do the item will be rendered with the old Aqua look
         self.variants_panel.layout.add(
-            self.variants_browser, fill=False, expand=True)
+            self.variants_browser, fill=False, expand=True
+        )
 
         # for rating in [1, 4, 5]:
         #     button = RatingButton(self.variants_panel, rating)
         #     self.variants_panel.layout.add(button, margin_left=5, fill=True)
 
         self.variants_panel.layout.add(
-            RatingChoice(self.variants_panel), margin_left=5, fill=True)
+            RatingChoice(self.variants_panel), margin_left=5, fill=True
+        )
 
         self.config_panel = fsui.Panel(self)
-        vert_layout.add(self.config_panel, fill=True, expand=False,
-                        margin_bottom=10, margin_top=20)
+        vert_layout.add(
+            self.config_panel,
+            fill=True,
+            expand=False,
+            margin_bottom=10,
+            margin_top=20,
+        )
 
         self.config_panel.layout = fsui.VerticalLayout()
         self.config_group = ConfigGroup(self.config_panel, new_button=False)
@@ -126,18 +148,26 @@ class RatingChoice(Choice):
     The control disallows the use of cursor keys for directly changing
     the selected item, to avoid accidental ratings.
     """
+
     def __init__(self, parent):
         self.active_icon = 1
         super().__init__(parent, [], cursor_keys=False)
         with self.changed.inhibit:
-            self.add_item(gettext("Rate Variant"),
-                          Image("launcher:res/16x16/bullet.png"))
-            self.add_item(gettext("Best Variant"),
-                          Image("launcher:res/16x16/rating_fav_2.png"))
-            self.add_item(gettext("Good Variant"),
-                          Image("launcher:res/16x16/thumb_up_2.png"))
-            self.add_item(gettext("Bad Variant"),
-                          Image("launcher:res/16x16/thumb_down_2.png"))
+            self.add_item(
+                gettext("Rate Variant"), Image("launcher:res/16x16/bullet.png")
+            )
+            self.add_item(
+                gettext("Best Variant"),
+                Image("launcher:res/16x16/rating_fav_2.png"),
+            )
+            self.add_item(
+                gettext("Good Variant"),
+                Image("launcher:res/16x16/thumb_up_2.png"),
+            )
+            self.add_item(
+                gettext("Bad Variant"),
+                Image("launcher:res/16x16/thumb_down_2.png"),
+            )
         ConfigBehavior(self, ["variant_uuid"])
         SettingsBehavior(self, ["__variant_rating"])
 
@@ -166,10 +196,13 @@ class RatingChoice(Choice):
         database = Database.instance()
         cursor = database.cursor()
         cursor.execute(
-            "DELETE FROM rating WHERE game_uuid = ?", (variant_uuid,))
+            "DELETE FROM rating WHERE game_uuid = ?", (variant_uuid,)
+        )
         cursor.execute(
             "INSERT INTO rating (game_uuid, work_rating, like_rating) "
-            "VALUES (?, ?, ?)", (variant_uuid, work_rating, like_rating))
+            "VALUES (?, ?, ?)",
+            (variant_uuid, work_rating, like_rating),
+        )
         database.commit()
         LauncherSettings.set("__variant_rating", str(like_rating))
 

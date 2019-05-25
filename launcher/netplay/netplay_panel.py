@@ -65,8 +65,9 @@ class NetplayPanel(fsui.Panel):
         ver_layout.add(self.nick_list, fill=True, expand=True, margin=10)
 
         self.text_area = fsui.TextArea(self, font_family="monospace")
-        hori_layout.add(self.text_area, fill=True, expand=True, margin=10,
-                        margin_left=0)
+        hori_layout.add(
+            self.text_area, fill=True, expand=True, margin=10, margin_left=0
+        )
 
         self.input_field = fsui.TextField(self)
         self.input_field.activated.connect(self.on_input)
@@ -147,6 +148,7 @@ class NetplayPanel(fsui.Panel):
             self.update_channel_list()
         elif key == "message":
             if args["channel"] == self.active_channel:
-                self.text_area.append_text(args["message"],
-                                           color=args["color"])
+                self.text_area.append_text(
+                    args["message"], color=args["color"]
+                )
             self.window.alert()

@@ -5,7 +5,6 @@ from ..i18n import gettext
 
 
 class ChecksumDialog(fsui.Window):
-
     def __init__(self, parent, path):
         unused(path)
         fsui.Window.__init__(self, parent, gettext("Checksumming"))

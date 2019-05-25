@@ -3,7 +3,6 @@ from ...launcher_config import LauncherConfig
 
 
 class ConfigCheckBox(fsui.CheckBox):
-
     def __init__(self, parent, label, config_key):
         fsui.CheckBox.__init__(self, parent, label)
         self.config_key = config_key

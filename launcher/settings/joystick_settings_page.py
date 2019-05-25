@@ -13,12 +13,14 @@ class JoystickSettingsPage(SettingsPage):
         icon = fsui.Icon("joystick-settings", "pkg:workspace")
         # gettext("Joystick Settings")
         title = gettext("Controllers")
-        subtitle = gettext("Configure joysticks and set preferred joystick "
-                           "devices")
+        subtitle = gettext(
+            "Configure joysticks and set preferred joystick " "devices"
+        )
         self.add_header(icon, title, subtitle)
 
         label = fsui.Label(
-            self, gettext("Double-click a controller to configure it:"))
+            self, gettext("Double-click a controller to configure it:")
+        )
         self.layout.add(label, margin_bottom=10)
 
         self.list_view = fsui.ListView(self)
@@ -51,7 +53,6 @@ joystick_values = ["none", "mouse", "keyboard"]
 
 
 class PreferredJoysticksGroup(fsui.Group):
-
     def __init__(self, parent):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
@@ -72,8 +73,7 @@ class PreferredJoysticksGroup(fsui.Group):
         self.layout2.add(label)
 
         self.layout2.add_spacer(20)
-        label = fsui.Label(
-            self, gettext("Preferred controller (if present):"))
+        label = fsui.Label(self, gettext("Preferred controller (if present):"))
         self.layout2.add(label)
 
         self.layout2.add_spacer(6)
@@ -82,7 +82,8 @@ class PreferredJoysticksGroup(fsui.Group):
 
         self.layout2.add_spacer(20)
         label = fsui.Label(
-            self, gettext("Preferred device for secondary controller:"))
+            self, gettext("Preferred device for secondary controller:")
+        )
         self.layout2.add(label)
 
         self.layout2.add_spacer(6)
@@ -91,7 +92,6 @@ class PreferredJoysticksGroup(fsui.Group):
 
 
 class PreferredJoystickSelector(fsui.Group):
-
     def __init__(self, parent, index):
         self.index = index
         if index:

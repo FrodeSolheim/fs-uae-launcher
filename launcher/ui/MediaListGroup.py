@@ -14,8 +14,10 @@ from launcher.option import Option
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS, \
-    PlatformEnableBehavior
+from launcher.ui.behaviors.platformbehavior import (
+    AMIGA_PLATFORMS,
+    PlatformEnableBehavior,
+)
 
 
 class MediaListGroup(fsui.Group):
@@ -38,9 +40,11 @@ class MediaListGroup(fsui.Group):
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, expand=False, fill=True)
         self.heading_label = fsui.HeadingLabel(
-            self, gettext("Media Swap List"))
+            self, gettext("Media Swap List")
+        )
         hori_layout.add(
-            self.heading_label, margin=10, margin_top=20, margin_bottom=20)
+            self.heading_label, margin=10, margin_top=20, margin_bottom=20
+        )
         hori_layout.add_spacer(0, expand=True)
 
         if not self.cd_mode:
@@ -75,7 +79,8 @@ class MediaListGroup(fsui.Group):
             self.default_icon = fsui.Image("launcher:res/floppy_16.png")
         # hori_layout.add(self.list_view, expand=True, fill=True, margin=10)
         self.layout.add(
-            self.list_view, expand=True, fill=True, margin=10, margin_top=0)
+            self.list_view, expand=True, fill=True, margin=10, margin_top=0
+        )
 
         # vert_layout = fsui.VerticalLayout()
         # hori_layout.add(vert_layout, fill=True)
@@ -158,12 +163,18 @@ class MediaListGroup(fsui.Group):
         default_dir = FSGSDirectories.get_floppies_dir()
         if self.cd_mode:
             dialog = LauncherFilePicker(
-                self.get_window(), gettext("Select Multiple CD-ROMs"),
-                "cd", multiple=True)
+                self.get_window(),
+                gettext("Select Multiple CD-ROMs"),
+                "cd",
+                multiple=True,
+            )
         else:
             dialog = LauncherFilePicker(
-                self.get_window(), gettext("Select Multiple Floppies"),
-                "floppy", multiple=True)
+                self.get_window(),
+                gettext("Select Multiple Floppies"),
+                "floppy",
+                multiple=True,
+            )
         if not dialog.show_modal():
             print("dialog.show returned false")
             return
@@ -178,8 +189,9 @@ class MediaListGroup(fsui.Group):
             path = Paths.contract_path(path, default_dir)
 
             dir_path, file = os.path.split(path)
-            if os.path.normcase(os.path.normpath(dir_path)) == \
-                    os.path.normcase(os.path.normpath(default_dir)):
+            if os.path.normcase(
+                os.path.normpath(dir_path)
+            ) == os.path.normcase(os.path.normpath(default_dir)):
                 path = file
 
             existing_items.append((path, sha1))
@@ -206,8 +218,11 @@ class MediaListGroup(fsui.Group):
 class SaveDiskCheckBox(fsui.CheckBox):
     def __init__(self, parent):
         super().__init__(parent, gettext("Include Save Disk"))
-        self.set_tooltip(gettext(
-            "When checked, include a save disk in FS-UAE's floppy swap list"))
+        self.set_tooltip(
+            gettext(
+                "When checked, include a save disk in FS-UAE's floppy swap list"
+            )
+        )
         ConfigBehavior(self, [Option.SAVE_DISK])
 
     def on_changed(self):

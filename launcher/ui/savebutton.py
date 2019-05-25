@@ -15,7 +15,6 @@ from fsgs.context import fsgs
 
 
 class SaveButton(IconButton):
-
     def __init__(self, parent):
         super().__init__(parent, "save_button.png")
         self.set_tooltip(gettext("Save Config"))
@@ -50,11 +49,15 @@ class SaveButton(IconButton):
 
         file_name = name + ".fs-uae"
         path = os.path.join(
-            FSGSDirectories.get_configurations_dir(), file_name)
+            FSGSDirectories.get_configurations_dir(), file_name
+        )
         with io.open(path, "w", encoding="UTF-8") as f:
             f.write("# FS-UAE configuration saved by FS-UAE Launcher\n")
-            f.write("# Last saved: {0}\n".format(
-                    datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")))
+            f.write(
+                "# Last saved: {0}\n".format(
+                    datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+                )
+            )
             f.write("\n[fs-uae]\n")
             keys = sorted(fsgs.config.values.keys())
             for key in keys:
@@ -92,9 +95,11 @@ class SaveButton(IconButton):
         file_database.add_file(path=path, sha1=sha1)
 
         game_id = database.add_configuration(
-            path=path, name=scanner.create_configuration_name(name))
+            path=path, name=scanner.create_configuration_name(name)
+        )
         database.update_game_search_terms(
-            game_id, scanner.create_search_terms(name))
+            game_id, scanner.create_search_terms(name)
+        )
 
         database.commit()
         file_database.commit()

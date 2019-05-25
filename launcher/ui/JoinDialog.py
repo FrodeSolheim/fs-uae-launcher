@@ -2,7 +2,6 @@ import fsui
 
 
 class JoinDialog(fsui.LegacyDialog):
-
     def __init__(self):
         fsui.LegacyDialog.__init__(self, None, "Create/Join Game")
         self.layout = fsui.VerticalLayout()

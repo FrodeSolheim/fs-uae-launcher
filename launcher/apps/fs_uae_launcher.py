@@ -20,6 +20,7 @@ def app_main():
             sys.argv[i] = "--settings:fullscreen=0"
 
     from launcher.launcherapp import LauncherApp
+
     app = LauncherApp()
     if "--no-auto-detect-game" in sys.argv:
         sys.argv.remove("--no-auto-detect-game")
@@ -29,13 +30,17 @@ def app_main():
     except Exception as e:
         traceback.print_exc(file=sys.stderr)
         import fsui
+
         if "--no-gui" in sys.argv:
             pass
         else:
             fsui.show_error(
-                "An error occurred starting FS-UAE Launcher:\n\n" +
-                repr(e) + "\n\nFS-UAE Launcher cannot start "
-                "because of this.", "FS-UAE Launcher")
+                "An error occurred starting FS-UAE Launcher:\n\n"
+                + repr(e)
+                + "\n\nFS-UAE Launcher cannot start "
+                "because of this.",
+                "FS-UAE Launcher",
+            )
             fsui.show_error(traceback.format_exc())
     else:
         app.run()
@@ -45,6 +50,7 @@ def app_main():
     # IRC.stop()
 
     from fsbc.signal import Signal
+
     Signal("quit").notify()
     print("app_main done")
 
@@ -68,4 +74,6 @@ Or you can execute fs-uae-launcher <command> - where command is one of:
   * fs-uae-netplay-server              Run netplay server
   * list-dirs                          List directories used by the Launcher
   * list-plugins                       List installed plugins
-""".format(version=VERSION)
+""".format(
+    version=VERSION
+)

@@ -6,7 +6,6 @@ from .skin import Skin
 
 
 class TabPanel(fsui.Panel):
-
     def __init__(self, parent, spacing=10):
         unused(spacing)
         fsui.Panel.__init__(self, parent, paintable=True)
@@ -60,14 +59,15 @@ class TabPanel(fsui.Panel):
         line_color_1 = Skin.get_background_color()
         if Skin.fws() or Skin.windows_10():
             from workspace.ui.theme import WorkspaceTheme
+
             theme = WorkspaceTheme.instance()
             line_color_1 = theme.title_separator_color
             line_color_2 = line_color_1
         elif line_color_1 is not None:
-            line_color_1 = line_color_1.mix(fsui.Color(0xff, 0xff, 0xff))
+            line_color_1 = line_color_1.mix(fsui.Color(0xFF, 0xFF, 0xFF))
             line_color_2 = line_color_1
         else:
-            line_color_1 = fsui.Color(0xff, 0xff, 0xff, 0xa0)
+            line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0xA0)
             line_color_2 = line_color_1
 
         # line_color_1 = fsui.Color(0xff, 0x00, 0x00, 0xff)
@@ -78,7 +78,8 @@ class TabPanel(fsui.Panel):
 
     @classmethod
     def draw_background(
-            cls, widget, dc, selected=False, hover=False, button_style=True):
+        cls, widget, dc, selected=False, hover=False, button_style=True
+    ):
         unused(button_style)
         if selected:
             cls.draw_selected_tab(widget, dc)
@@ -93,16 +94,19 @@ class TabPanel(fsui.Panel):
 
         if Skin.fws() or Skin.windows_10():
             from workspace.ui.theme import WorkspaceTheme
+
             theme = WorkspaceTheme.instance()
-            white = fsui.Color(0xff, 0xff, 0xff)
+            white = fsui.Color(0xFF, 0xFF, 0xFF)
             if selected:
                 bg_color = theme.window_background
                 bd_color = theme.title_separator_color
             elif hover:
                 bg_color = theme.window_background.copy().mix(
-                        theme.title_background)
+                    theme.title_background
+                )
                 bd_color = theme.title_separator_color.copy().mix(
-                        theme.title_background)
+                    theme.title_background
+                )
             else:
                 bg_color = theme.title_background
                 bd_color = theme.title_background
@@ -110,14 +114,27 @@ class TabPanel(fsui.Panel):
             # dc.draw_rectangle(0, 0, w, h, bd_color)
             if selected or hover:
                 dc.draw_vertical_gradient(0, 0, 2, size[1], white, bd_color)
-                dc.draw_vertical_gradient(size[0] - 2, 0, 2, size[1],
-                                          theme.title_background, bd_color)
+                dc.draw_vertical_gradient(
+                    size[0] - 2,
+                    0,
+                    2,
+                    size[1],
+                    theme.title_background,
+                    bd_color,
+                )
                 # dc.draw_rectangle(2, 2, w - 4, h - 2, bg_color)
-                dc.draw_vertical_gradient(2, 0, size[0] - 4, size[1],
-                                          theme.title_background, bg_color)
+                dc.draw_vertical_gradient(
+                    2,
+                    0,
+                    size[0] - 4,
+                    size[1],
+                    theme.title_background,
+                    bg_color,
+                )
                 if hover and not selected:
-                    dc.draw_rectangle(0, size[1] - 2, size[0], 2,
-                                      theme.title_separator_color)
+                    dc.draw_rectangle(
+                        0, size[1] - 2, size[0], 2, theme.title_separator_color
+                    )
             else:
                 dc.draw_rectangle(0, 0, w, h, bd_color)
             return
@@ -144,13 +161,13 @@ class TabPanel(fsui.Panel):
         if fsbc.system.macosx and False:
             if selected:
                 color_2 = color_1
-                color_1 = fsui.Color(0xa7, 0xa7, 0xa7)
+                color_1 = fsui.Color(0xA7, 0xA7, 0xA7)
             elif hover:
-                color_1 = fsui.Color(0xa7, 0xa7, 0xa7)
-                color_2 = fsui.Color(0xef, 0xef, 0xef)
+                color_1 = fsui.Color(0xA7, 0xA7, 0xA7)
+                color_2 = fsui.Color(0xEF, 0xEF, 0xEF)
             else:
-                color_1 = fsui.Color(0xa7, 0xa7, 0xa7)
-                color_2 = fsui.Color(0xc0, 0xc0, 0xc0)
+                color_1 = fsui.Color(0xA7, 0xA7, 0xA7)
+                color_2 = fsui.Color(0xC0, 0xC0, 0xC0)
         elif color_1 is not None:
             if selected:
                 color_2 = color_1
@@ -164,38 +181,42 @@ class TabPanel(fsui.Panel):
                 # color_1 = fsui.Color(0x00, 0x00, 0x00, 0x00)
                 # color_2 = color_1
             elif hover:
-                color_1 = fsui.Color(0xff, 0xff, 0xff, 0x00)
-                color_2 = fsui.Color(0xff, 0xff, 0xff, 0x40)
+                color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x00)
+                color_2 = fsui.Color(0xFF, 0xFF, 0xFF, 0x40)
             else:
                 color_1 = fsui.Color(0x00, 0x00, 0x00, 0x00)
                 color_2 = fsui.Color(0x00, 0x00, 0x00, 0x20)
         dc.draw_vertical_gradient(x, y, w, h, color_1, color_2)
 
         if fsbc.system.macosx and False and not selected and not hover:
-            dc.draw_line(x, y + h - 1, x + w, y + h - 1,
-                         fsui.Color(0xa8, 0xa8, 0xa8))
+            dc.draw_line(
+                x, y + h - 1, x + w, y + h - 1, fsui.Color(0xA8, 0xA8, 0xA8)
+            )
 
     @classmethod
     def draw_selected_tab(cls, widget, dc):
         line_color_1 = Skin.get_background_color()
         if Skin.fws() or Skin.windows_10():
             from workspace.ui.theme import WorkspaceTheme
+
             theme = WorkspaceTheme.instance()
             line_color_1 = theme.title_separator_color
             line_color_2 = line_color_1
         elif fsbc.system.macosx and False:
-            line_color_1 = fsui.Color(0xa7, 0xa7, 0xa7)
+            line_color_1 = fsui.Color(0xA7, 0xA7, 0xA7)
             line_color_2 = Skin.get_background_color().mix(
-                fsui.Color(0xff, 0xff, 0xff))
+                fsui.Color(0xFF, 0xFF, 0xFF)
+            )
         elif line_color_1 is not None:
             line_color_2 = Skin.get_background_color().mix(
-                fsui.Color(0xff, 0xff, 0xff))
+                fsui.Color(0xFF, 0xFF, 0xFF)
+            )
         else:
-            line_color_1 = fsui.Color(0xff, 0xff, 0xff, 0x00)
-            line_color_2 = fsui.Color(0xff, 0xff, 0xff, 0xa0)
+            line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x00)
+            line_color_2 = fsui.Color(0xFF, 0xFF, 0xFF, 0xA0)
 
         size = widget.size()
-        dc.draw_vertical_gradient(0, 0, 2, size[1],
-                                  line_color_1, line_color_2)
-        dc.draw_vertical_gradient(size[0] - 2, 0, 2, size[1],
-                                  line_color_1, line_color_2)
+        dc.draw_vertical_gradient(0, 0, 2, size[1], line_color_1, line_color_2)
+        dc.draw_vertical_gradient(
+            size[0] - 2, 0, 2, size[1], line_color_1, line_color_2
+        )

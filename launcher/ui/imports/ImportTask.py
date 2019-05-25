@@ -72,16 +72,18 @@ class ImportTask(threading.Thread):
         return self.copy_roms(self.path, FSGSDirectories.get_kickstarts_dir())
 
     def import_amiga_forever(self):
-        return self.copy_roms(os.path.join(
-            self.path, "Amiga Files", "Shared", "rom"),
-            FSGSDirectories.get_kickstarts_dir())
+        return self.copy_roms(
+            os.path.join(self.path, "Amiga Files", "Shared", "rom"),
+            FSGSDirectories.get_kickstarts_dir(),
+        )
 
     def copy_file(self, src, dst):
         with self.log_lock:
             self.log_lines.append(gettext("Copy {0}\nto {1}").format(src, dst))
         if is_same_file(src, dst):
             self.log_lines.append(
-                "- source and destination are the same, skipping...")
+                "- source and destination are the same, skipping..."
+            )
             return
         if not os.path.exists(os.path.dirname(dst)):
             os.makedirs(os.path.dirname(dst))

@@ -34,11 +34,15 @@ class ImportGroup(fsui.Group):
         icon_layout.add(vert_layout, fill=True, expand=True)
 
         if self.type == self.AMIGA_FOREVER:
-            text = gettext("If you own Amiga Forever, select the drive/folder "
-                           "and click \"{0}\"").format(gettext("Import"))
+            text = gettext(
+                "If you own Amiga Forever, select the drive/folder "
+                'and click "{0}"'
+            ).format(gettext("Import"))
         else:
-            text = gettext("Select a folder containing Amiga kickstart files "
-                           "and click \"{0}\"").format(gettext("Import"))
+            text = gettext(
+                "Select a folder containing Amiga kickstart files "
+                'and click "{0}"'
+            ).format(gettext("Import"))
         label = fsui.Label(self, text)
         vert_layout.add(label, margin_bottom=10)
 
@@ -61,7 +65,8 @@ class ImportGroup(fsui.Group):
 
     def on_browse(self):
         path = fsui.pick_directory(
-            self.get_window(), gettext("Select Source Directory"))
+            self.get_window(), gettext("Select Source Directory")
+        )
         if path:
             self.set_path(path)
 

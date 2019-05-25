@@ -9,8 +9,9 @@ from launcher.ui.HelpButton import HelpButton
 
 class OptionUI(object):
     @classmethod
-    def create_group(cls, parent, name, description=None, help_button=True,
-                     thin=False):
+    def create_group(
+        cls, parent, name, description=None, help_button=True, thin=False
+    ):
         group = fsui.Group(parent)
         group.layout = fsui.HorizontalLayout()
         if thin:
@@ -55,7 +56,8 @@ class OptionUI(object):
             for i, value in enumerate(option["values"]):
                 if option["default"] == value[0]:
                     default_desc = gettext(default_tmpl).format(
-                        gettext(value[1]))
+                        gettext(value[1])
+                    )
                     break
             else:
                 default_desc = gettext("Default")
@@ -75,14 +77,18 @@ class OptionUI(object):
             text_field.on_changed = on_changed
             group.layout.add(text_field, expand=True)
 
-        elif option["type"].lower() == "integer" and "min" in option \
-                and "max" in option:
+        elif (
+            option["type"].lower() == "integer"
+            and "min" in option
+            and "max" in option
+        ):
             current = LauncherSettings.get(name)
 
             if name == Option.LAUNCHER_FONT_SIZE:
                 font = app.qapplication.font()
-                Option.get(Option.LAUNCHER_FONT_SIZE)["default"] = \
-                    font.pointSize()
+                Option.get(Option.LAUNCHER_FONT_SIZE)[
+                    "default"
+                ] = font.pointSize()
 
             current_int = int(option["default"])
             if current:
@@ -92,8 +98,9 @@ class OptionUI(object):
                     pass
             current_int = max(option["min"], min(option["max"], current_int))
             check_box = fsui.CheckBox(group, gettext("Default"))
-            spin_ctrl = fsui.SpinCtrl(group, option["min"],
-                                      option["max"], current_int)
+            spin_ctrl = fsui.SpinCtrl(
+                group, option["min"], option["max"], current_int
+            )
             if current == "":
                 check_box.check()
                 spin_ctrl.disable()
@@ -140,10 +147,10 @@ class OptionUI(object):
             group.widget = choice
 
         if help_button:
-            option_url = (
-                "https://fs-uae.net/docs/options/" + name.replace("_", "-"))
-            group.help_button = HelpButton(
-                parent, option_url)
+            option_url = "https://fs-uae.net/docs/options/" + name.replace(
+                "_", "-"
+            )
+            group.help_button = HelpButton(parent, option_url)
             group.layout.add(group.help_button, margin_left=10)
 
         if thin:

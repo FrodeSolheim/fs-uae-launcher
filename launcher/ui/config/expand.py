@@ -1798,7 +1798,6 @@ def _zorro_iii_memory(c, f):
 
 
 class AbstractExpandFunctions:
-
     @staticmethod
     def matches(a, b):
         pass

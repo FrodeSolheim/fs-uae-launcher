@@ -6,10 +6,10 @@ from .skin import Skin
 
 
 class WindowWithTabs(fsui.Window):
-
     def __init__(self, parent, title, border=True, menu=False):
         fsui.Window.__init__(
-            self, parent, title, border=border, separator=False, menu=menu)
+            self, parent, title, border=border, separator=False, menu=menu
+        )
         Skin.set_background_color(self)
         self.toolbar = None
         self.tab_panel = TabPanel(self)
@@ -58,13 +58,25 @@ class WindowWithTabs(fsui.Window):
         # noinspection PyTypeChecker
         self.tab_groups[self.current_tab_group_id].append(button)
 
-    def add_tab_button(self, function, icon, title="", tooltip="",
-                       menu_function=None, left_padding=0, right_padding=0):
+    def add_tab_button(
+        self,
+        function,
+        icon,
+        title="",
+        tooltip="",
+        menu_function=None,
+        left_padding=0,
+        right_padding=0,
+    ):
         if not tooltip:
             tooltip = title
         button = TabButton(
-            self.tab_panel, icon, button_type=TabButton.TYPE_BUTTON,
-            left_padding=left_padding, right_padding=right_padding)
+            self.tab_panel,
+            icon,
+            button_type=TabButton.TYPE_BUTTON,
+            left_padding=left_padding,
+            right_padding=right_padding,
+        )
         button.set_tooltip(tooltip)
         button.group_id = self.current_tab_group_id
         menu_data = [None]

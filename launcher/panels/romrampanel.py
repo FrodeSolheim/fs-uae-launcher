@@ -39,8 +39,11 @@ class KickstartGroup(fsui.Panel):
         label = fsui.Label(self, gettext("Kickstart ROM") + ":")
         hori_layout.add(label, margin_left=10, margin_right=10)
 
-        kickstart_types = [gettext("Default"), gettext("Custom"),
-                           gettext("Internal")]
+        kickstart_types = [
+            gettext("Default"),
+            gettext("Custom"),
+            gettext("Internal"),
+        ]
         self.kickstart_type_choice = fsui.Choice(self, kickstart_types)
         hori_layout.add(self.kickstart_type_choice, margin=10)
 
@@ -77,7 +80,8 @@ class KickstartGroup(fsui.Panel):
     def initialize_from_config(self):
         self.on_config("kickstart_file", LauncherConfig.get("kickstart_file"))
         self.on_config(
-            "kickstart_ext_file", LauncherConfig.get("kickstart_ext_file"))
+            "kickstart_ext_file", LauncherConfig.get("kickstart_ext_file")
+        )
 
     def set_config_handlers(self):
         self.kickstart_type_choice.on_changed = self.on_kickstart_type_changed
@@ -100,7 +104,8 @@ class KickstartGroup(fsui.Panel):
             LauncherConfig.set("kickstart_file", "internal")
         else:
             LauncherConfig.set(
-                "kickstart_file", LauncherConfig.get("x_kickstart_file"))
+                "kickstart_file", LauncherConfig.get("x_kickstart_file")
+            )
         LauncherConfig.update_kickstart()
 
     def on_ext_rom_type_changed(self):
@@ -110,8 +115,10 @@ class KickstartGroup(fsui.Panel):
                 return
             LauncherConfig.set("kickstart_ext_file", "")
         else:
-            LauncherConfig.set("kickstart_ext_file",
-                               LauncherConfig.get("x_kickstart_ext_file"))
+            LauncherConfig.set(
+                "kickstart_ext_file",
+                LauncherConfig.get("x_kickstart_ext_file"),
+            )
         LauncherConfig.update_kickstart()
 
     def on_browse_button(self, extended=False):
@@ -122,8 +129,9 @@ class KickstartGroup(fsui.Panel):
         else:
             title = gettext("Choose Kickstart ROM")
             key = "kickstart_file"
-        dialog = LauncherFilePicker(self.get_window(), title, "rom",
-                                    LauncherConfig.get(key))
+        dialog = LauncherFilePicker(
+            self.get_window(), title, "rom", LauncherConfig.get(key)
+        )
         if not dialog.show_modal():
             return
         path = dialog.get_path()
@@ -136,20 +144,27 @@ class KickstartGroup(fsui.Panel):
             self.ext_text_field.set_text(file)
         else:
             self.text_field.set_text(file)
-        if os.path.normcase(os.path.normpath(dir_path)) == \
-                os.path.normcase(os.path.normpath(default_dir)):
+        if os.path.normcase(os.path.normpath(dir_path)) == os.path.normcase(
+            os.path.normpath(default_dir)
+        ):
             path = file
 
         if extended:
-            LauncherConfig.set_multiple([
-                ("kickstart_ext_file", path),
-                ("x_kickstart_ext_file", path),
-                ("x_kickstart_ext_file_sha1", sha1)])
+            LauncherConfig.set_multiple(
+                [
+                    ("kickstart_ext_file", path),
+                    ("x_kickstart_ext_file", path),
+                    ("x_kickstart_ext_file_sha1", sha1),
+                ]
+            )
         else:
-            LauncherConfig.set_multiple([
-                ("kickstart_file", path),
-                ("x_kickstart_file", path),
-                ("x_kickstart_file_sha1", sha1)])
+            LauncherConfig.set_multiple(
+                [
+                    ("kickstart_file", path),
+                    ("x_kickstart_file", path),
+                    ("x_kickstart_file_sha1", sha1),
+                ]
+            )
 
     def on_ext_browse_button(self):
         return self.on_browse_button(extended=True)
@@ -184,28 +199,30 @@ class MemoryGroup(fsui.Panel):
         self.hori_layout = None
         self.hori_counter = 0
         config_widget_factory = ConfigWidgetFactory()
+        self.add_widget(config_widget_factory.create(self, Option.CHIP_MEMORY))
         self.add_widget(
-            config_widget_factory.create(self, Option.CHIP_MEMORY))
+            config_widget_factory.create(self, Option.MOTHERBOARD_RAM)
+        )
+        self.add_widget(config_widget_factory.create(self, Option.SLOW_MEMORY))
         self.add_widget(
-            config_widget_factory.create(self, Option.MOTHERBOARD_RAM))
+            config_widget_factory.create(self, Option.ZORRO_III_MEMORY)
+        )
+        self.add_widget(config_widget_factory.create(self, Option.FAST_MEMORY))
         self.add_widget(
-            config_widget_factory.create(self, Option.SLOW_MEMORY))
-        self.add_widget(
-            config_widget_factory.create(self, Option.ZORRO_III_MEMORY))
-        self.add_widget(
-            config_widget_factory.create(self, Option.FAST_MEMORY))
-        self.add_widget(
-            config_widget_factory.create(self, Option.ACCELERATOR_MEMORY))
+            config_widget_factory.create(self, Option.ACCELERATOR_MEMORY)
+        )
         self.add_widget(fsui.Label(self, ""))
         self.add_widget(
-            config_widget_factory.create(self, Option.GRAPHICS_MEMORY))
+            config_widget_factory.create(self, Option.GRAPHICS_MEMORY)
+        )
 
     def add_widget(self, widget):
         if self.hori_counter % 2 == 0:
             self.hori_layout = fsui.HorizontalLayout()
             self.layout.add(self.hori_layout, fill=True)
         self.hori_layout.add(
-            widget, fill=True, expand=-1, margin=10, margin_bottom=0)
+            widget, fill=True, expand=-1, margin=10, margin_bottom=0
+        )
         if self.hori_counter % 2 == 0:
             self.hori_layout.add_spacer(10)
         self.hori_counter += 1

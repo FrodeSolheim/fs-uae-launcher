@@ -26,47 +26,67 @@ class GamePlatformsSettingsPage(SettingsPage):
             # self.add_section(gettext("Game Databases"))
 
             label = fsui.MultiLineLabel(
-                self, gettext(
+                self,
+                gettext(
                     "Note: This is an experimental feature. "
-                    "Additional plugins are needed."), 640)
+                    "Additional plugins are needed."
+                ),
+                640,
+            )
             self.layout.add(label, margin_top=20, margin_bottom=20)
 
             self.add_database_option(
-                Platform.CPC, Option.CPC_DATABASE, "Amstrad CPC")
+                Platform.CPC, Option.CPC_DATABASE, "Amstrad CPC"
+            )
             self.add_database_option(
-                Platform.ARCADE, Option.ARCADE_DATABASE, "Arcade")
+                Platform.ARCADE, Option.ARCADE_DATABASE, "Arcade"
+            )
             self.add_database_option(
-                Platform.A7800, Option.A7800_DATABASE, "Atari 7800")
+                Platform.A7800, Option.A7800_DATABASE, "Atari 7800"
+            )
             self.add_database_option(
-                Platform.ATARI, Option.ATARI_DATABASE, "Atari ST")
+                Platform.ATARI, Option.ATARI_DATABASE, "Atari ST"
+            )
             self.add_database_option(
-                Platform.C64, Option.C64_DATABASE, "Commodore 64")
+                Platform.C64, Option.C64_DATABASE, "Commodore 64"
+            )
+            self.add_database_option(Platform.DOS, Option.DOS_DATABASE, "DOS")
             self.add_database_option(
-                Platform.DOS, Option.DOS_DATABASE, "DOS")
+                Platform.GB, Option.GB_DATABASE, "Game Boy"
+            )
             self.add_database_option(
-                Platform.GB, Option.GB_DATABASE, "Game Boy")
+                Platform.GBA, Option.GBA_DATABASE, "Game Boy Advance"
+            )
             self.add_database_option(
-                Platform.GBA, Option.GBA_DATABASE, "Game Boy Advance")
+                Platform.GBC, Option.GBC_DATABASE, "Game Boy Color"
+            )
             self.add_database_option(
-                Platform.GBC, Option.GBC_DATABASE, "Game Boy Color")
+                Platform.SMS, Option.SMS_DATABASE, "Master System"
+            )
             self.add_database_option(
-                Platform.SMS, Option.SMS_DATABASE, "Master System")
+                Platform.SMD, Option.SMD_DATABASE, "Mega Drive"
+            )
             self.add_database_option(
-                Platform.SMD, Option.SMD_DATABASE, "Mega Drive")
+                Platform.NEOGEO, Option.NEOGEO_DATABASE, "Neo-Geo"
+            )
             self.add_database_option(
-                Platform.NEOGEO, Option.NEOGEO_DATABASE, "Neo-Geo")
+                Platform.NES, Option.NES_DATABASE, "Nintendo"
+            )
             self.add_database_option(
-                Platform.NES, Option.NES_DATABASE, "Nintendo")
+                Platform.PSX, Option.PSX_DATABASE, "PlayStation"
+            )
             self.add_database_option(
-                Platform.PSX, Option.PSX_DATABASE, "PlayStation")
+                Platform.SNES, Option.SNES_DATABASE, "Super Nintendo"
+            )
             self.add_database_option(
-                Platform.SNES, Option.SNES_DATABASE, "Super Nintendo")
+                Platform.TG16, Option.TG16_DATABASE, "TurboGrafx-16"
+            )
             self.add_database_option(
-                Platform.TG16, Option.TG16_DATABASE, "TurboGrafx-16")
+                Platform.TGCD, Option.TGCD_DATABASE, "TurboGrafx-CD"
+            )
             self.add_database_option(
-                Platform.TGCD, Option.TGCD_DATABASE, "TurboGrafx-CD")
-            self.add_database_option(
-                Platform.ZXS, Option.ZXS_DATABASE, "ZX Spectrum")
+                Platform.ZXS, Option.ZXS_DATABASE, "ZX Spectrum"
+            )
 
             # label = fsui.MultiLineLabel(
             #     self, gettext(
@@ -80,18 +100,31 @@ class GamePlatformsSettingsPage(SettingsPage):
     def add_database_option(self, platform, name, description=""):
         self.options_on_page.add(name)
         group = OptionUI.create_group(
-            self, name, description=description, help_button=False)
+            self, name, description=description, help_button=False
+        )
 
         if self.hori_counter % 2 == 0:
             self.hori_layout = fsui.HorizontalLayout()
             self.layout.add(
-                self.hori_layout, fill=True, margin_top=10, margin_bottom=10,
-                margin_left=-10, margin_right=-10)
+                self.hori_layout,
+                fill=True,
+                margin_top=10,
+                margin_bottom=10,
+                margin_left=-10,
+                margin_right=-10,
+            )
 
-        self.hori_layout.add(group, fill=True, expand=-1, margin=10,
-                             margin_top=0, margin_bottom=0)
         self.hori_layout.add(
-            PlatformSettingsButton(self, platform), margin_right=10)
+            group,
+            fill=True,
+            expand=-1,
+            margin=10,
+            margin_top=0,
+            margin_bottom=0,
+        )
+        self.hori_layout.add(
+            PlatformSettingsButton(self, platform), margin_right=10
+        )
 
         if self.hori_counter % 2 == 0:
             self.hori_layout.add_spacer(0)
@@ -103,7 +136,8 @@ class PlatformSettingsButton(IconButton):
         super().__init__(parent, "16x16/settings.png")
         self.platform = platform
         self.enable(
-            len(PlatformSettingsDialog.option_list_for_platform(platform)) > 0)
+            len(PlatformSettingsDialog.option_list_for_platform(platform)) > 0
+        )
 
     def on_activate(self):
         PlatformSettingsDialog.open(self.window, self.platform)

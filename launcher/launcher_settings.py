@@ -9,10 +9,7 @@ class LauncherSettings(object):
 
     # These are not used any more, and should be removed from settings if
     # found.
-    old_keys = {
-        "config_base",
-        "config_refresh",
-    }
+    old_keys = {"config_base", "config_refresh"}
 
     # The main use of default_settings is actually to hide the corresponding
     # options from advanced settings (because there is UI for them, or
@@ -154,9 +151,9 @@ class LauncherSettings(object):
         if not value:
             value = get_user_name()
         # these are probably valid too: \`
-        valid_chars = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                       "abcdefghijklmnopqrstuvwxyz"
-                       "_[]{}|^")
+        valid_chars = (
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "abcdefghijklmnopqrstuvwxyz" "_[]{}|^"
+        )
         extra_valid_chars = "0123456789-"
         nick = ""
         for c in value:

@@ -5,7 +5,6 @@ from launcher.ui.config.configpanel import ConfigPanel
 
 
 class ExpansionsPanel(ConfigPanel):
-
     def __init__(self, parent):
         ConfigPanel.__init__(self, parent)
 

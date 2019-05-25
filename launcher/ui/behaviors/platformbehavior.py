@@ -7,7 +7,6 @@ CD_PLATFORMS = AMIGA_PLATFORMS + ["psx"]
 
 
 class PlatformBehavior:
-
     def __init__(self, parent, platforms):
         self.platforms = set(platforms)
         parent.__platform_behavior = self
@@ -31,7 +30,6 @@ class PlatformBehavior:
 
 
 class PlatformEnableBehavior(PlatformBehavior):
-
     def __init__(self, parent, platforms):
         super().__init__(parent, platforms)
 
@@ -59,7 +57,6 @@ class CDEnableBehavior(PlatformEnableBehavior):
 
 
 class PlatformShowBehavior(PlatformBehavior):
-
     def __init__(self, parent, platforms):
         super().__init__(parent, platforms)
 

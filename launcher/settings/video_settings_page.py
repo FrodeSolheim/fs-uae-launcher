@@ -25,9 +25,14 @@ class VideoSettingsPage(SettingsPage):
 
         self.add_section(gettext("Video Synchronization"))
         # FIXME: Move 640 to constants
-        label = fsui.MultiLineLabel(self, gettext(
-            "Enabling the following option will synchronize the emulation "
-            "to the display when the emulation refresh rate matches the "
-            "screen refresh rate."), 640)
+        label = fsui.MultiLineLabel(
+            self,
+            gettext(
+                "Enabling the following option will synchronize the emulation "
+                "to the display when the emulation refresh rate matches the "
+                "screen refresh rate."
+            ),
+            640,
+        )
         self.layout.add(label, fill=True, margin_top=0)
         self.video_sync_group = self.add_option("video_sync")

@@ -12,12 +12,21 @@ class ConfigPanel(Panel):
         self.config_widget_factory = ConfigWidgetFactory()
 
     def add_option(self, name, fill=True):
-        self.layout.add(self.config_widget_factory.create(
-            self, name), fill=fill, margin=10, margin_bottom=0)
+        self.layout.add(
+            self.config_widget_factory.create(self, name),
+            fill=fill,
+            margin=10,
+            margin_bottom=0,
+        )
 
     def add_amiga_option(self, name, fill=True, parent=None):
         if parent is None:
             parent = self
-        parent.layout.add(self.config_widget_factory.create(
-            parent, name, platforms=AMIGA_PLATFORMS),
-            fill=fill, margin=10, margin_bottom=0)
+        parent.layout.add(
+            self.config_widget_factory.create(
+                parent, name, platforms=AMIGA_PLATFORMS
+            ),
+            fill=fill,
+            margin=10,
+            margin_bottom=0,
+        )

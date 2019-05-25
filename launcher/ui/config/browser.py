@@ -4,29 +4,30 @@ import traceback
 
 
 class ConfigBrowser(fsui.VerticalItemView):
-
     def __init__(self, parent):
         # fsui.VerticalItemView.__init__(self, parent, border=(not Skin.fws()))
         fsui.VerticalItemView.__init__(self, parent, border=False)
         self.items = []
         self.game_icon = fsui.Image("launcher:res/16x16/controller.png")
-        self.config_icon = fsui.Image(
-            "launcher:res/fsuae_config_16.png")
+        self.config_icon = fsui.Image("launcher:res/fsuae_config_16.png")
 
         self.manual_download_icon = fsui.Image(
-            "launcher:res/16x16/arrow_down_yellow.png")
+            "launcher:res/16x16/arrow_down_yellow.png"
+        )
         self.auto_download_icon = fsui.Image(
-            "launcher:res/16x16/arrow_down_green.png")
-        self.blank_icon = fsui.Image(
-            "launcher:res/16x16/blank.png")
-        self.missing_color = fsui.Color(0xa8, 0xa8, 0xa8)
+            "launcher:res/16x16/arrow_down_green.png"
+        )
+        self.blank_icon = fsui.Image("launcher:res/16x16/blank.png")
+        self.missing_color = fsui.Color(0xA8, 0xA8, 0xA8)
         self.platform_icons = {}
 
         from workspace.ui.theme import WorkspaceTheme
+
         theme = WorkspaceTheme.instance()
         self.set_row_height(28)
         # self.list_view.set_background_color(fsui.Color(0xeb, 0xeb, 0xeb))
-        self.setStyleSheet("""
+        self.setStyleSheet(
+            """
         QListView {{
             background-color: {0};
             outline: none;
@@ -38,11 +39,13 @@ class ConfigBrowser(fsui.VerticalItemView):
         QListView::item:selected {{
             background-color: {1};
         }}
-        """.format(theme.sidebar_background.to_hex(),
-                   theme.selection_background.to_hex()))
+        """.format(
+                theme.sidebar_background.to_hex(),
+                theme.selection_background.to_hex(),
+            )
+        )
 
     def update_from_implicit(self, implicit):
-
         def flatten(item_list, level):
 
             for model_item in item_list:

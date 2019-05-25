@@ -7,14 +7,18 @@ from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 class FullscreenModeButton(fsui.ImageButton):
     def __init__(self, parent):
         self.window_icon = fsui.Image(
-            "launcher:res/16x16/fullscreen_window.png")
+            "launcher:res/16x16/fullscreen_window.png"
+        )
         self.fullscreen_icon = fsui.Image(
-            "launcher:res/16x16/fullscreen_fullscreen.png")
+            "launcher:res/16x16/fullscreen_fullscreen.png"
+        )
         self.desktop_icon = fsui.Image(
-            "launcher:res/16x16/fullscreen_desktop.png")
+            "launcher:res/16x16/fullscreen_desktop.png"
+        )
         super().__init__(parent, self.desktop_icon)
-        self.set_tooltip(gettext(
-            "Change fullscreen mode (desktop, fullscreen, window)"))
+        self.set_tooltip(
+            gettext("Change fullscreen mode (desktop, fullscreen, window)")
+        )
         self.set_min_width(40)
         self.fullscreen_mode = "desktop"
         SettingsBehavior(self, ["fullscreen", "fullscreen_mode"])

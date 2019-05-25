@@ -11,22 +11,34 @@ class AdvancedSettingsPage(SettingsPage):
         super().__init__(parent)
         icon = fsui.Icon("settings", "pkg:workspace")
         title = gettext("Advanced")
-        subtitle = gettext("Specify global options and settings which does "
-                           "not have UI controls")
+        subtitle = gettext(
+            "Specify global options and settings which does "
+            "not have UI controls"
+        )
         self.add_header(icon, title, subtitle)
 
-        label = fsui.MultiLineLabel(self, gettext(
-            "You can write key = value pairs here to set FS-UAE options "
-            "not currently supported by the user interface. This is only a "
-            "temporary feature until the GUI supports all options "
-            "directly."), 640)
+        label = fsui.MultiLineLabel(
+            self,
+            gettext(
+                "You can write key = value pairs here to set FS-UAE options "
+                "not currently supported by the user interface. This is only a "
+                "temporary feature until the GUI supports all options "
+                "directly."
+            ),
+            640,
+        )
         self.layout.add(label, fill=True, margin_bottom=10)
 
-        label = fsui.MultiLineLabel(self, gettext(
-            "The options specified here are global and will apply to all "
-            "configurations. Config options such as hardware and memory "
-            "options will be ignored. Options suitable here are options "
-            "like theme options."), 640)
+        label = fsui.MultiLineLabel(
+            self,
+            gettext(
+                "The options specified here are global and will apply to all "
+                "configurations. Config options such as hardware and memory "
+                "options will be ignored. Options suitable here are options "
+                "like theme options."
+            ),
+            640,
+        )
         self.layout.add(label, fill=True, margin_bottom=10)
 
         self.text_area = fsui.TextArea(self, font_family="monospace")
@@ -66,14 +78,18 @@ class AdvancedSettingsPage(SettingsPage):
             #     text += "\n# {0} is ignored here " \
             #             "(use config dialog instead)\n".format(key)
             if LauncherConfig.is_config_only_option(key):
-                text += ("\n# {0} will here function as a global config "
-                         "default and may cause\nunexpected problems. It is "
-                         "recommended to only use this as a per-config "
-                         "option.\n".format(key))
+                text += (
+                    "\n# {0} will here function as a global config "
+                    "default and may cause\nunexpected problems. It is "
+                    "recommended to only use this as a per-config "
+                    "option.\n".format(key)
+                )
             value = app.settings[key]
             if LauncherConfig.get(key):
-                text += "\n# {0} is overridden by current " \
-                        "configuration\n".format(key)
+                text += (
+                    "\n# {0} is overridden by current "
+                    "configuration\n".format(key)
+                )
             text += "{0} = {1}\n".format(key, value)
             if LauncherConfig.get(key):
                 text += "\n"

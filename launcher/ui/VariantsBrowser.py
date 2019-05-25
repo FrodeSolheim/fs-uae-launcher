@@ -9,7 +9,6 @@ from ..launcher_settings import LauncherSettings
 
 
 class LastVariants(object):
-
     def __init__(self):
         self.cache = {}
         LauncherSignal.add_listener("quit", self)
@@ -23,7 +22,6 @@ class LastVariants(object):
 
 # class VariantsBrowser(fsui.VerticalItemView):
 class VariantsBrowser(fsui.ItemChoice):
-
     @staticmethod
     def use_horizontal_layout():
         # return fsui.get_screen_size()[0] > 1024
@@ -44,24 +42,21 @@ class VariantsBrowser(fsui.ItemChoice):
         self.hd_icon = fsui.Image("launcher:res/hd_game_16.png")
         # self.missing_icon = fsui.Image(
         #     "launcher:res/missing_game_16.png")
-        self.missing_icon = fsui.Image(
-            "launcher:res/16x16/delete_grey.png")
-        self.missing_color = fsui.Color(0xa8, 0xa8, 0xa8)
+        self.missing_icon = fsui.Image("launcher:res/16x16/delete_grey.png")
+        self.missing_color = fsui.Color(0xA8, 0xA8, 0xA8)
 
-        self.blank_icon = fsui.Image(
-            "launcher:res/16x16/blank.png")
-        self.bullet_icon = fsui.Image(
-            "launcher:res/16x16/bullet.png")
+        self.blank_icon = fsui.Image("launcher:res/16x16/blank.png")
+        self.bullet_icon = fsui.Image("launcher:res/16x16/bullet.png")
 
         self.manual_download_icon = fsui.Image(
-            "launcher:res/16x16/arrow_down_yellow.png")
+            "launcher:res/16x16/arrow_down_yellow.png"
+        )
         self.auto_download_icon = fsui.Image(
-            "launcher:res/16x16/arrow_down_green.png")
+            "launcher:res/16x16/arrow_down_green.png"
+        )
 
-        self.up_icon = fsui.Image(
-            "launcher:res/16x16/thumb_up_mod.png")
-        self.down_icon = fsui.Image(
-            "launcher:res/16x16/thumb_down_mod.png")
+        self.up_icon = fsui.Image("launcher:res/16x16/thumb_up_mod.png")
+        self.down_icon = fsui.Image("launcher:res/16x16/thumb_down_mod.png")
         self.fav_icon = fsui.Image("launcher:res/rating_fav_16.png")
 
         LauncherSettings.add_listener(self)
@@ -80,6 +75,7 @@ class VariantsBrowser(fsui.ItemChoice):
     # noinspection PyMethodMayBeStatic
     def on_activate_item(self, _):
         from ..launcherapp import LauncherApp
+
         LauncherApp.start_game()
 
     def on_setting(self, key, value):
@@ -184,20 +180,25 @@ class VariantsBrowser(fsui.ItemChoice):
             # name = name.split("\n", 1)[-1]
 
             game_database = fsgs.game_database(variant["database"])
-            variant["like_rating"], variant["work_rating"] = \
-                game_database.get_ratings_for_game(variant["uuid"])
-            variant["personal_rating"], ignored = \
-                database.get_ratings_for_game(variant["uuid"])
+            variant["like_rating"], variant[
+                "work_rating"
+            ] = game_database.get_ratings_for_game(variant["uuid"])
+            variant[
+                "personal_rating"
+            ], ignored = database.get_ratings_for_game(variant["uuid"])
 
             if variant["published"] == 0:
                 primary_sort = 1
                 variant["name"] = "[UNPUBLISHED] " + variant["name"]
             else:
                 primary_sort = 0
-            sort_key = (primary_sort, 1000000 - variant["like_rating"],
-                        1000000 - variant["work_rating"], name)
-            sortable_items.append(
-                (sort_key, i, variant))
+            sort_key = (
+                primary_sort,
+                1000000 - variant["like_rating"],
+                1000000 - variant["work_rating"],
+                name,
+            )
+            sortable_items.append((sort_key, i, variant))
         # print(sortable_items)
         self.items = [x[2] for x in sorted(sortable_items)]
         self.update()
@@ -210,9 +211,11 @@ class VariantsBrowser(fsui.ItemChoice):
         list_uuid = LauncherSettings.get("game_list_uuid")
         if list_uuid:
             list_variant_uuid = database.get_variant_for_list_and_game(
-                list_uuid, game_uuid)
-            print("game list", list_uuid, "override variant",
-                  list_variant_uuid)
+                list_uuid, game_uuid
+            )
+            print(
+                "game list", list_uuid, "override variant", list_variant_uuid
+            )
         else:
             list_variant_uuid = None
         if list_variant_uuid:
@@ -273,9 +276,7 @@ class VariantsBrowser(fsui.ItemChoice):
         except Exception:
             traceback.print_exc()
             LauncherConfig.load_default_config()
-            LauncherConfig.load({
-                "__error": "Error Loading Configuration"
-            })
+            LauncherConfig.load({"__error": "Error Loading Configuration"})
             self.select_item(None)
 
     def _load_variant(self, item):
@@ -285,10 +286,12 @@ class VariantsBrowser(fsui.ItemChoice):
         personal_rating = item["personal_rating"]
         have = item["have"]
         self._load_variant_2(
-                variant_uuid, database_name, personal_rating, have)
+            variant_uuid, database_name, personal_rating, have
+        )
 
     def _load_variant_2(
-            self, variant_uuid, database_name, personal_rating, have):
+        self, variant_uuid, database_name, personal_rating, have
+    ):
         if LauncherConfig.get("variant_uuid") == variant_uuid:
             print("Variant {} is already loaded".format(variant_uuid))
         game_database = fsgs.game_database(database_name)

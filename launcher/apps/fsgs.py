@@ -27,10 +27,12 @@ def app_main():
     # fsgc.run_game()
 
     from fsgs.platform import Platform
+
     platform = Platform.create(fsgc.game.platform.id)
     driver = platform.driver(fsgc)
 
     from fsgs.input.enumeratehelper import EnumerateHelper
+
     device_helper = EnumerateHelper()
     device_helper.default_port_selection(driver.ports, driver.options)
 

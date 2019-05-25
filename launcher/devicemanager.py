@@ -72,8 +72,9 @@ class DeviceManager:
         cls.devices.append(Device("none", gettext("No Host Device"), "none"))
         # cls.devices.append(Device("mouse", _("Mouse"), "mouse"))
         cls.init_fsuae()
-        for id, name, type in zip(cls.device_ids, cls.device_names,
-                                  cls.device_types):
+        for id, name, type in zip(
+            cls.device_ids, cls.device_names, cls.device_types
+        ):
             cls.devices.append(Device(id, name, type))
         # cls.devices.append(
         #     Device("keyboard", _("Cursor Keys and Right Ctrl/Alt"),
@@ -94,7 +95,8 @@ class DeviceManager:
         print("DeviceManager: finding connected joysticks")
         try:
             p = FSUAEDeviceHelper.start_with_args(
-                ["--list"], stdout=subprocess.PIPE)
+                ["--list"], stdout=subprocess.PIPE
+            )
             joysticks = p.stdout.read()
             p.wait()
         except Exception:
@@ -119,12 +121,17 @@ class DeviceManager:
                 axes = int(parts[5])
                 balls = int(parts[7])
                 guid = parts[9]
-                cls.joystick_data[last_joystick] = \
-                    buttons, hats, axes, balls, guid
+                cls.joystick_data[last_joystick] = (
+                    buttons,
+                    hats,
+                    axes,
+                    balls,
+                    guid,
+                )
                 continue
             if line.startswith("SDLName:"):
                 value = line.split(" ")[1]
-                 # Strip quotes
+                # Strip quotes
                 cls.sdl_names[last_joystick] = value[1:-1]
 
             device_type, name = line.split(" ", 1)
@@ -153,8 +160,13 @@ class DeviceManager:
             cls.device_ids.append("Dummy Joystick")
             cls.device_names.append("Dummy Joystick")
             cls.device_types.append("joystick")
-            cls.joystick_data["Dummy Joystick"] = \
-                1, 0, 2, 0, "c6c1bc29b0124fe6890757bb09ef006f"
+            cls.joystick_data["Dummy Joystick"] = (
+                1,
+                0,
+                2,
+                0,
+                "c6c1bc29b0124fe6890757bb09ef006f",
+            )
 
     @classmethod
     def get_joystick_names(cls):
@@ -183,11 +195,14 @@ class DeviceManager:
         prefs = []
         if LauncherSettings.get("primary_joystick"):
             prefs.append(
-                Device.create_cmp_id(LauncherSettings.get("primary_joystick")))
+                Device.create_cmp_id(LauncherSettings.get("primary_joystick"))
+            )
         if LauncherSettings.get("secondary_joystick"):
             prefs.append(
                 Device.create_cmp_id(
-                    LauncherSettings.get("secondary_joystick")))
+                    LauncherSettings.get("secondary_joystick")
+                )
+            )
         return prefs
 
     @classmethod
@@ -322,8 +337,9 @@ class DeviceManager:
                 # mode = cls.get_calculated_port_mode(config, port)
                 # mode = "gamepad"
                 try:
-                    option = Option.get("{}_port_{}_type".format(
-                        platform, port))
+                    option = Option.get(
+                        "{}_port_{}_type".format(platform, port)
+                    )
                     mode = option["default"]
                 except KeyError:
                     # FIXME: How to handle?
@@ -391,6 +407,7 @@ class DeviceManager:
             auto_fill(p, "mouse")
         # FIXME: Hack, circular dependency
         from fsgs.platform import Platform
+
         if platform == Platform.C64:
             port_order = [2, 1, 3, 4]
         else:

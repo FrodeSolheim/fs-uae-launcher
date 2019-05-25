@@ -16,8 +16,9 @@ class ImageLoader(object):
         self.requests = []
         self.requests_lock = threading.Lock()
         self.requests_condition = threading.Condition(self.requests_lock)
-        threading.Thread(target=self.image_loader_thread,
-                         name="ImageLoaderThread").start()
+        threading.Thread(
+            target=self.image_loader_thread, name="ImageLoaderThread"
+        ).start()
         LauncherSignal.add_listener("quit", self)
 
     def stop(self):
@@ -79,9 +80,11 @@ class ImageLoader(object):
         cover = request.args.get("is_cover", False)
         if cover:
             size_arg = "?w={0}&h={1}&t=lbcover".format(
-                Constants.COVER_SIZE[0], Constants.COVER_SIZE[1])
+                Constants.COVER_SIZE[0], Constants.COVER_SIZE[1]
+            )
             cache_ext = "_{0}x{1}_lbcover.png".format(
-                Constants.COVER_SIZE[0], Constants.COVER_SIZE[1])
+                Constants.COVER_SIZE[0], Constants.COVER_SIZE[1]
+            )
         elif request.size:
             size_arg = "?s=1x"
             cache_ext = "_1x.png"
@@ -124,7 +127,8 @@ class ImageLoader(object):
 
         if double_size and image.size[0] < 400:
             image.resize(
-                (image.size[0] * 2, image.size[1] * 2), fsui.Image.NEAREST)
+                (image.size[0] * 2, image.size[1] * 2), fsui.Image.NEAREST
+            )
         image.resize(dest_size)
         request.image = image
 

@@ -14,8 +14,11 @@ from launcher.launcher_config import LauncherConfig
 from launcher.panels.additionalconfigpanel import CustomConfigButton
 from launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS, \
-    PlatformShowBehavior, AmigaShowBehavior
+from launcher.ui.behaviors.platformbehavior import (
+    AMIGA_PLATFORMS,
+    PlatformShowBehavior,
+    AmigaShowBehavior,
+)
 from launcher.ui.config.ConfigCheckBox import ConfigCheckBox
 from launcher.ui.options import ConfigWidgetFactory
 
@@ -28,10 +31,10 @@ class ModelGroup(fsui.Group):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
-        self.model_ids = [
-            x["id"] for x in Amiga.models if "/" not in x["id"]]
+        self.model_ids = [x["id"] for x in Amiga.models if "/" not in x["id"]]
         self.model_titles = [
-            x["title"] for x in Amiga.models if "/" not in x["id"]]
+            x["title"] for x in Amiga.models if "/" not in x["id"]
+        ]
 
         self.sub_model_ids = []
         self.sub_model_titles = []
@@ -42,10 +45,9 @@ class ModelGroup(fsui.Group):
         self.sub_model_choice = fsui.Choice(self, self.sub_model_titles)
         # AmigaEnableBehavior(self.sub_model_choice)
         self.accuracy_label = fsui.Label(self, gettext("Accuracy:"))
-        self.accuracy_choice = fsui.Choice(self, [
-            gettext("High"),
-            gettext("Medium"),
-            gettext("Low")])
+        self.accuracy_choice = fsui.Choice(
+            self, [gettext("High"), gettext("Medium"), gettext("Low")]
+        )
         # AmigaEnableBehavior(self.accuracy_choice)
         self.ntsc_checkbox = ConfigCheckBox(self, "NTSC", Option.NTSC_MODE)
 
@@ -61,7 +63,9 @@ class ModelGroup(fsui.Group):
         self.layout.add(self.model_title_layout, fill=True)
 
         if openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
-            heading_label = fsui.HeadingLabel(self, gettext("Platform & Model"))
+            heading_label = fsui.HeadingLabel(
+                self, gettext("Platform & Model")
+            )
             self.model_title_layout.add(heading_label, margin=10)
             # platform_group = ConfigWidgetFactory(
             #     check=False, label=False).create(self, Option.PLATFORM)
@@ -74,8 +78,9 @@ class ModelGroup(fsui.Group):
             self.model_title_layout.add(heading_label, margin=10)
 
         self.model_title_layout.add_spacer(0, expand=True)
-        self.model_title_layout.add(self.ntsc_checkbox, expand=False,
-                        margin_left=10, margin_right=10)
+        self.model_title_layout.add(
+            self.ntsc_checkbox, expand=False, margin_left=10, margin_right=10
+        )
         self.model_title_layout.add_spacer(20)
 
         self.model_title_layout.add(self.accuracy_label, margin_right=10)
@@ -94,7 +99,8 @@ class ModelGroup(fsui.Group):
 
         if openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
             platform_group = ConfigWidgetFactory(
-                check=False, label=False).create(self, Option.PLATFORM)
+                check=False, label=False
+            ).create(self, Option.PLATFORM)
             self.model_layout.add(platform_group, margin=10)
             pass
 
@@ -107,7 +113,8 @@ class ModelGroup(fsui.Group):
         AmigaShowBehavior(self.sub_model_choice)
 
         ConfigBehavior(
-            self, [Option.ACCURACY, Option.AMIGA_MODEL, Option.PLATFORM])
+            self, [Option.ACCURACY, Option.AMIGA_MODEL, Option.PLATFORM]
+        )
 
         self.model_choice.on_changed = self.on_model_changed
         self.sub_model_choice.on_changed = self.on_sub_model_changed
@@ -183,8 +190,9 @@ class ModelGroup(fsui.Group):
         for title in self.sub_model_titles:
             self.sub_model_choice.add_item(title)
         self.sub_model_choice.enable(
-            LauncherConfig.get(Option.PLATFORM) in AMIGA_PLATFORMS and
-            len(self.sub_model_ids) > 1)
+            LauncherConfig.get(Option.PLATFORM) in AMIGA_PLATFORMS
+            and len(self.sub_model_ids) > 1
+        )
         return sub_model_index
 
     def on_amiga_model_config(self, value):
@@ -205,7 +213,9 @@ class ModelGroup(fsui.Group):
                 # self.model_choice.set_index(i)
                 # find main model index
                 model_index = self.model_ids.index(model_id)
-                sub_model_index = self.update_sub_models(model_id, sub_model_id)
+                sub_model_index = self.update_sub_models(
+                    model_id, sub_model_id
+                )
                 # model_index = i
                 break
         # else:

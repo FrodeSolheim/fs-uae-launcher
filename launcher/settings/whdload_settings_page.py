@@ -12,10 +12,15 @@ class WHDLoadSettingsPage(SettingsPage):
         subtitle = gettext("Options for WHDLoad support in FS-UAE Launcher")
         self.add_header(icon, title, subtitle)
 
-        label = fsui.MultiLineLabel(self, gettext(
-            "The following options only apply when you use the automatic "
-            "WHDLoad support in FS-UAE Launcher, for example in relation with "
-            "the online game database."), 640)
+        label = fsui.MultiLineLabel(
+            self,
+            gettext(
+                "The following options only apply when you use the automatic "
+                "WHDLoad support in FS-UAE Launcher, for example in relation with "
+                "the online game database."
+            ),
+            640,
+        )
         self.layout.add(label, fill=True, margin_top=0)
 
         self.add_option("whdload_preload")

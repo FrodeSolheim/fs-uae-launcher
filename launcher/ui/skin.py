@@ -5,13 +5,14 @@ from .Constants import Constants
 from ..option import Option
 from ..launcher_settings import LauncherSettings
 import fsboot
+
 try:
     import workspace
 except ImportError:
     workspace = None
 
 # LEVEL = 0xce
-LEVEL = 0xeb
+LEVEL = 0xEB
 # LEVEL = 0xe4
 
 
@@ -26,23 +27,26 @@ class LauncherTheme(object):
 
     def __init__(self):
         from fsui.qt import QPalette
+
         palette = QPalette()
-        self.sidebar_list_background = fsui.Color(
-            palette.color(QPalette.Base))
+        self.sidebar_list_background = fsui.Color(palette.color(QPalette.Base))
         self.sidebar_list_row_height = 28
         self.sidebar_list_row_text = fsui.Color(
-            palette.color(QPalette.HighlightedText))
+            palette.color(QPalette.HighlightedText)
+        )
         self.sidebar_list_row_background = fsui.Color(
-            palette.color(QPalette.Highlight))
+            palette.color(QPalette.Highlight)
+        )
 
         if Skin.fws():
             from workspace.ui.theme import WorkspaceTheme as WorkspaceTheme
+
             ws_theme = WorkspaceTheme.instance()
             self.sidebar_list_background = ws_theme.sidebar_background
-            self.sidebar_list_row_text = fsui.Color(0xff, 0xff, 0xff)
+            self.sidebar_list_row_text = fsui.Color(0xFF, 0xFF, 0xFF)
             self.sidebar_list_row_background = ws_theme.selection_background
         elif Skin.windows_10():
-            self.sidebar_list_background = fsui.Color(0xe2, 0xe2, 0xe2)
+            self.sidebar_list_background = fsui.Color(0xE2, 0xE2, 0xE2)
 
     @property
     def has_close_buttons(self):
@@ -71,8 +75,10 @@ class Skin(object):
         # FIXME: Rename to launcher_bg/background_color and document.
         value = LauncherSettings.get("ui_background_color")
         if len(value) == 7 and value[0] == "#":
+
             def convert(s):
                 return int(s, 16)
+
             r = convert(value[1:3])
             g = convert(value[3:5])
             b = convert(value[5:7])
@@ -113,8 +119,9 @@ class Skin(object):
 
     @classmethod
     def get_bottom_panel_height(cls):
-        return (Constants.SCREEN_SIZE[1] + 20 + 2 + 1 + 1 +
-                cls.get_bottom_margin())
+        return (
+            Constants.SCREEN_SIZE[1] + 20 + 2 + 1 + 1 + cls.get_bottom_margin()
+        )
 
     @classmethod
     def windows_10(cls):

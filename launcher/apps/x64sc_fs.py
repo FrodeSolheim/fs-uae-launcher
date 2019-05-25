@@ -1,5 +1,6 @@
 import sys
 from fsgs.plugins.plugin_manager import PluginManager
+
 """
 Vice-FS launcher script used for testing.
 """

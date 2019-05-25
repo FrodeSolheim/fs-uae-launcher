@@ -21,6 +21,7 @@ def app_main():
 
     app = RunApplication()
     import workspace.shell
+
     if len(sys.argv) == 1:
         workspace.shell.workspace_open("SYS:System/FileManager", ["VOLUMES:"])
     else:
@@ -28,4 +29,5 @@ def app_main():
     app.run()
 
     from fsbc.application import Application
+
     Application.wait_for_threads()

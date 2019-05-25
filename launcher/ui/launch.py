@@ -36,8 +36,9 @@ class LaunchGroup(fsui.Group):
         #     self.monitor_button, fill=True, margin_right=10)
 
         self.screen_info_label = ScreenInfoLabel(self)
-        self.hori_layout.add(self.screen_info_label, fill=True,
-                             expand=True, margin_right=10)
+        self.hori_layout.add(
+            self.screen_info_label, fill=True, expand=True, margin_right=10
+        )
         # self.video_sync_checkbox = VideoSyncCheckBox(self)
         # self.hori_layout.add(self.video_sync_checkbox, margin_right=10)
         self.override_warning = OverrideWarning(self, Option.FULLSCREEN)
@@ -48,7 +49,8 @@ class LaunchGroup(fsui.Group):
         self.hori_layout.add(start_button, fill=True, margin_left=10)
         # ConfigBehavior(self, [Option.FULLSCREEN])
         gsc.config.add_behavior(
-            self, [Option.FULLSCREEN, "__running", "__progress"])
+            self, [Option.FULLSCREEN, "__running", "__progress"]
+        )
 
     def on___running_config(self, value):
         widgets = [
@@ -83,6 +85,7 @@ class StartButton(fsui.Button):
 
     def on_activated(self):
         from launcher.launcherapp import LauncherApp
+
         LauncherApp.start_game()
 
     def on___running_config(self, value):
@@ -97,6 +100,7 @@ class ScreenInfoLabel(fsui.Label):
         super().__init__(parent, "")
         try:
             from fsui.qt import init_qt
+
             qapplication = init_qt()
         except AttributeError:
             pass
@@ -105,7 +109,9 @@ class ScreenInfoLabel(fsui.Label):
                 screen.geometryChanged.connect(self.on_screen_change)
                 screen.refreshRateChanged.connect(self.on_screen_change)
             qapplication.screenAdded.connect(self.on_screen_added)
-        SettingsBehavior(self, ["fullscreen", "monitor", "assume_refresh_rate"])
+        SettingsBehavior(
+            self, ["fullscreen", "monitor", "assume_refresh_rate"]
+        )
 
     def on_fullscreen_setting(self, _):
         self.update_info()
@@ -148,19 +154,21 @@ class ScreenInfoLabel(fsui.Label):
             pos_str = " ({}, {})".format(x, y)
         else:
             pos_str = ""
-        self.set_text("{}x{}{} @ {}Hz{}".format(
-            w, h, pos_str, refresh_rate, refresh_rate_override))
+        self.set_text(
+            "{}x{}{} @ {}Hz{}".format(
+                w, h, pos_str, refresh_rate, refresh_rate_override
+            )
+        )
 
 
 class FullscreenToggleButton(fsui.ImageButton):
     def __init__(self, parent):
-        self.windowed_icon = fsui.Image(
-            "launcher:res/windowed_16.png")
-        self.fullscreen_icon = fsui.Image(
-            "launcher:res/fullscreen_16.png")
+        self.windowed_icon = fsui.Image("launcher:res/windowed_16.png")
+        self.fullscreen_icon = fsui.Image("launcher:res/fullscreen_16.png")
         fsui.ImageButton.__init__(self, parent, self.windowed_icon)
         self.set_tooltip(
-            gettext("Toggle Between Windowed and Full-Screen Mode"))
+            gettext("Toggle Between Windowed and Full-Screen Mode")
+        )
         self.set_min_width(40)
         self.fullscreen_mode = False
         self.on_setting("fullscreen", app.settings["fullscreen"])
@@ -252,7 +260,6 @@ class LaunchDialog(fsui.Window):
         return False
 
     def on_progress(self, progress):
-
         def hide_function():
             self.visible = False
 
@@ -264,15 +271,15 @@ class LaunchDialog(fsui.Window):
                 # only shown for a split second.
                 if self.is_shown():
                     fsui.call_later(1500, hide_function)
-                LauncherConfig.set(
-                    "__progress", gettext("Running: Emulator"))
+                LauncherConfig.set("__progress", gettext("Running: Emulator"))
             else:
                 if self.no_gui:
                     print("[PROGRESS]", progress)
                 else:
                     self.sub_title_label.set_text(progress)
                 LauncherConfig.set(
-                    "__progress", "Preparing: {}".format(progress))
+                    "__progress", "Preparing: {}".format(progress)
+                )
 
         fsui.call_after(function)
 
@@ -285,7 +292,6 @@ class LaunchDialog(fsui.Window):
             super().show()
 
     def on_complete(self):
-
         def function():
             self.complete()
 

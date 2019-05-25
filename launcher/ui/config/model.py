@@ -13,7 +13,6 @@ class StrWithExplicit(str):
 
 
 class ImplicitConfig:
-
     def __init__(self, config, settings):
         self._values = {}
         self._config = config
@@ -67,7 +66,6 @@ class ImplicitConfig:
 
 
 class NoParent:
-
     def __call__(self):
         return None
 
@@ -76,7 +74,6 @@ class NoParent:
 
 
 class Item:
-
     def __init__(self, text, active=True):
         self.text = text
         self.extra = ""
@@ -112,7 +109,6 @@ class ContainerItem(Item):
 
 
 class InactiveItem(Item):
-
     def __init__(self, text):
         super().__init__(text, active=False)
 
@@ -121,7 +117,6 @@ class InactiveItem(Item):
 
 
 class Model:
-
     def __init__(self, show_all=False):
         self.items = []
         self.show_all = show_all
@@ -131,8 +126,10 @@ class Model:
         if True:
             if item.parent:
                 for i in range(len(self.items) - 1, -1, -1):
-                    if self.items[0].parent == item.parent or \
-                            self.items[0] == item.parent:
+                    if (
+                        self.items[0].parent == item.parent
+                        or self.items[0] == item.parent
+                    ):
                         self.items.insert(i + 1, item)
                         break
                 else:
@@ -224,8 +221,11 @@ def create_model(c, show_all=False):
     else:
         text += " PAL"
     chipset_item = Item(text)
-    chipset_item.represents = ["uae_chipset", "uae_chipset_compatible",
-                               "ntsc_mode"]
+    chipset_item.represents = [
+        "uae_chipset",
+        "uae_chipset_compatible",
+        "ntsc_mode",
+    ]
     model.add(chipset_item)
 
     if c.uae_chipset == "aga":
@@ -267,13 +267,18 @@ def create_model(c, show_all=False):
     #     kickstart_item = Item("Custom Kickstart [FIXME]")
     # else:
     #     kickstart_item = Item("Default Kickstart [FIXME]")
-    kickstart_item = Item("Kickstart {} Rev {}".format(
-        c.int_kickstart_version, c.int_kickstart_revision))
+    kickstart_item = Item(
+        "Kickstart {} Rev {}".format(
+            c.int_kickstart_version, c.int_kickstart_revision
+        )
+    )
     model.add(kickstart_item)
 
     if c.int_kickstart_ext_sha1 == "5bef3d628ce59cc02a66e6e4ae0da48f60e78f7f":
         kickstart_ext_item = Item("CD32 Extended ROM")
-    elif c.int_kickstart_ext_sha1 == "7ba40ffa17e500ed9fed041f3424bd81d9c907be":
+    elif (
+        c.int_kickstart_ext_sha1 == "7ba40ffa17e500ed9fed041f3424bd81d9c907be"
+    ):
         kickstart_ext_item = Item("CDTV Extended ROM")
     else:
         kickstart_ext_item = InactiveItem("Extended ROM")
@@ -311,8 +316,9 @@ def create_model(c, show_all=False):
         # model.add(cpu_item)
 
         if c.int_cpuboardmem1_size:
-            size = "{0} MB".format(int(c.int_cpuboardmem1_size) //
-                                   (1024 * 1024))
+            size = "{0} MB".format(
+                int(c.int_cpuboardmem1_size) // (1024 * 1024)
+            )
             item = Item("{0} RAM".format(size))
             item.represents = ["uae_cpuboard1mem_size"]
             accelerator_item.add(item)
@@ -452,16 +458,17 @@ def create_model(c, show_all=False):
             bsdsocket_item = Item("UAE bsdsocket.library")
         else:
             bsdsocket_item = InactiveItem("No bsdsocket.library")
-        bsdsocket_item.represents = ["bsdsocket_library",
-                                     "uae_bsdsocket_emu"]
+        bsdsocket_item.represents = ["bsdsocket_library", "uae_bsdsocket_emu"]
         resident_item.add(bsdsocket_item)
 
         if c.uae_native_code == "true":
             uaenative_library_item = Item("UAE uaenative.library")
         else:
             uaenative_library_item = InactiveItem("No uaenative.library")
-        uaenative_library_item.represents = ["uaenative.library",
-                                             "uae_native_code"]
+        uaenative_library_item.represents = [
+            "uaenative.library",
+            "uae_native_code",
+        ]
         resident_item.add(uaenative_library_item)
 
         if c.uae_sana2 == "true":
@@ -481,8 +488,9 @@ def create_model(c, show_all=False):
     #         a2065_item.add(slirp_item)
 
     if c.uae_gfxcard_type:
-        graphics_card_item = Item("{} {} MB".format(
-            c.int_graphics_card_name, c.uae_gfxcard_size))
+        graphics_card_item = Item(
+            "{} {} MB".format(c.int_graphics_card_name, c.uae_gfxcard_size)
+        )
         if flatten:
             if c.int_graphics_card_bus == "zorro-ii":
                 graphics_card_item.extra = "Zorro II"
@@ -535,18 +543,19 @@ def create_model(c, show_all=False):
     for i in range(4):
         drive_type = getattr(c, "uae_floppy{0}type".format(i))
         if drive_type == "0":
-            description = "3.5\" DD"
+            description = '3.5" DD'
         elif drive_type == "1":
-            description = "3.5\" HD"
+            description = '3.5" HD'
         elif drive_type == "2":
-            description = "5.25\" SD"
+            description = '5.25" SD'
         elif drive_type == "3":
-            description = "3.5\" DD (ESCOM)"
+            description = '3.5" DD (ESCOM)'
         else:
             description = None
         if description:
-            drive_item = Item("{0} Floppy Drive [DF{1}]".format(
-                description, i))
+            drive_item = Item(
+                "{0} Floppy Drive [DF{1}]".format(description, i)
+            )
         else:
             drive_item = InactiveItem("No Floppy Drive [DF{0}]".format(i))
         drive_item.represents = [

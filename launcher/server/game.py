@@ -27,8 +27,14 @@ from hashlib import sha1
 
 
 def int_to_bytes(number):
-    return bytes([(number & 0xff000000) >> 24, (number & 0x00ff0000) >> 16,
-                  (number & 0x0000ff00) >> 8, (number & 0x000000ff)])
+    return bytes(
+        [
+            (number & 0xFF000000) >> 24,
+            (number & 0x00FF0000) >> 16,
+            (number & 0x0000FF00) >> 8,
+            (number & 0x000000FF),
+        ]
+    )
 
 
 def bytes_to_int(m):
@@ -101,8 +107,8 @@ MESSAGE_SESSION_KEY = 22
 # MESSAGE_RND_CHECK = 6
 # MESSAGE_PING = 7
 
-MESSAGE_MEM_CHECK_MASK = (0x80000000 | (MESSAGE_MEM_CHECK << 24))
-MESSAGE_RND_CHECK_MASK = (0x80000000 | (MESSAGE_RND_CHECK << 24))
+MESSAGE_MEM_CHECK_MASK = 0x80000000 | (MESSAGE_MEM_CHECK << 24)
+MESSAGE_RND_CHECK_MASK = 0x80000000 | (MESSAGE_RND_CHECK << 24)
 
 ERROR_PROTOCOL_MISMATCH = 1
 ERROR_WRONG_PASSWORD = 2
@@ -118,11 +124,10 @@ ERROR_GAME_STOPPED = 99
 
 
 def create_ext_message(ext, data):
-    return 0x80000000 | ext << 24 | (data & 0xffffff)
+    return 0x80000000 | ext << 24 | (data & 0xFFFFFF)
 
 
 class Client:
-
     def __init__(self, sock, address):
         # self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket = sock
@@ -331,8 +336,8 @@ class Client:
 
         if message & 0x80000000:
             # ext message
-            command = (message & 0x7f000000) >> 24
-            data = message & 0x00ffffff
+            command = (message & 0x7F000000) >> 24
+            data = message & 0x00FFFFFF
             if command == MESSAGE_MEM_CHECK:
                 self.mem_check[self.frame % 100] = (data, self.frame)
             elif command == MESSAGE_RND_CHECK:
@@ -354,7 +359,7 @@ class Client:
                         break
 
         elif message & (1 << 30):
-            frame = message & 0x3fffffff
+            frame = message & 0x3FFFFFFF
             # print("received frame", frame)
             if frame != self.frame + 1:
                 print("error, expected frame", self.frame + 1, "got", frame)
@@ -366,22 +371,22 @@ class Client:
             self.lag = t - game_t
 
         elif message & (1 << 29):
-            game.add_input_event(self, message & 0x00ffffff)
+            game.add_input_event(self, message & 0x00FFFFFF)
 
         else:
             print("warning: unknown command received %x" % (message,))
 
     def __str__(self):
-        return "<Client {0}:{1} {2}>".format(self.player, self.tag,
-                                             self.address)
+        return "<Client {0}:{1} {2}>".format(
+            self.player, self.tag, self.address
+        )
 
 
 def create_session_key():
-    return random.randint(0, 2**24 - 1)
+    return random.randint(0, 2 ** 24 - 1)
 
 
 class Game:
-
     def __init__(self):
         self.started = False
         self.frame = 0
@@ -404,7 +409,7 @@ class Game:
 
     def add_client(self, client):
         with self.lock:
-            if client.player == 0xff:
+            if client.player == 0xFF:
                 if client.resume_from_packet != 0:
                     return ERROR_CLIENT_ERROR
                 if self.started:
@@ -543,24 +548,32 @@ class Game:
 
     def __print_status(self):
         for i, client in enumerate(self.clients):
-            print("{0} f {1:6d} p avg: {2:3d} {3:3d}".format(
-                i, client.frame, int(client.pings_avg * 1000),
-                int(client.lag * 1000)))
+            print(
+                "{0} f {1:6d} p avg: {2:3d} {3:3d}".format(
+                    i,
+                    client.frame,
+                    int(client.pings_avg * 1000),
+                    int(client.lag * 1000),
+                )
+            )
 
     def __send_status(self):
         for i, client in enumerate(self.clients):
-            v = int(client.lag * 1000) & 0x0000ffff
+            v = int(client.lag * 1000) & 0x0000FFFF
             message = 0x80000000 | MESSAGE_PLAYER_LAG << 24 | i << 16 | v
             self.__send_to_clients(message)
-            v = int(client.pings_avg * 1000) & 0x0000ffff
+            v = int(client.pings_avg * 1000) & 0x0000FFFF
             message = 0x80000000 | MESSAGE_PLAYER_PING << 24 | i << 16 | v
             self.__send_to_clients(message)
 
     def add_input_event(self, client, input_event):
         if not self.started:
             # game was not started - ignoring input event
-            print("game not started, ignoring input event {0:08x}".format(
-                input_event))
+            print(
+                "game not started, ignoring input event {0:08x}".format(
+                    input_event
+                )
+            )
             return
         with self.lock:
             if not client.playing:
@@ -576,8 +589,12 @@ class Game:
             for client in self.clients:
                 # if from_client == client:
                 #     continue
-                message = (0x80000000 | MESSAGE_TEXT << 24 |
-                           from_client.player << 16 | len(text))
+                message = (
+                    0x80000000
+                    | MESSAGE_TEXT << 24
+                    | from_client.player << 16
+                    | len(text)
+                )
                 message = int_to_bytes(message) + text
                 print("send", repr(message), "to", client)
                 client.queue_bytes(message)
@@ -638,9 +655,8 @@ class Game:
                         c.send_queued_messages()
                     raise Exception("rnd check failed")
 
-address_map = {
 
-}
+address_map = {}
 
 
 def accept_client(server_socket):

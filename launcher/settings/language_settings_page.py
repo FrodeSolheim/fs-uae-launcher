@@ -32,15 +32,19 @@ class LanguageSettingsPage(SettingsPage):
         information += gettext(
             "When Automatic is specified, your preferred language is set "
             "based on information from the operating system (or English, "
-            "if a supported language is not detected).")
-        self.layout.add(
-            fsui.MultiLineLabel(self, information, 640))
+            "if a supported language is not detected)."
+        )
+        self.layout.add(fsui.MultiLineLabel(self, information, 640))
 
         label = fsui.Label(
-            self, "You can help translate FS-UAE on crowdin.net:")
+            self, "You can help translate FS-UAE on crowdin.net:"
+        )
         self.layout.add(label, margin_top=20)
-        label = fsui.URLLabel(self, "https://crowdin.com/project/fs-uae",
-                              "https://crowdin.com/project/fs-uae")
+        label = fsui.URLLabel(
+            self,
+            "https://crowdin.com/project/fs-uae",
+            "https://crowdin.com/project/fs-uae",
+        )
         self.layout.add(label, margin_top=5)
 
 
@@ -53,8 +57,12 @@ class LanguageSettingChoice(fsui.Choice):
         k = 0
         selected_index = 0
         for label, language_key, icon_name in LANGUAGE_ITEMS:
-            self.add_item(label, fsui.Image(
-                "workspace:res/16x16/flag-{0}.png".format(icon_name)))
+            self.add_item(
+                label,
+                fsui.Image(
+                    "workspace:res/16x16/flag-{0}.png".format(icon_name)
+                ),
+            )
             if language_key == selected_language:
                 selected_index = k
             k += 1

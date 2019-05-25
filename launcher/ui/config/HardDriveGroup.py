@@ -12,7 +12,6 @@ from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
 
 
 class HardDriveGroup(fsui.Panel):
-
     def __init__(self, parent, index):
         fsui.Panel.__init__(self, parent)
         AmigaEnableBehavior(self)
@@ -75,8 +74,9 @@ class HardDriveGroup(fsui.Panel):
         self.eject_button.enable(bool(value))
 
     def on_eject_button(self):
-        LauncherConfig.set_multiple([(self.config_key, ""),
-                                     (self.config_key_sha1, "")])
+        LauncherConfig.set_multiple(
+            [(self.config_key, ""), (self.config_key_sha1, "")]
+        )
 
     def on_browse_folder_button(self):
         self.browse(dir_mode=True)
@@ -87,8 +87,12 @@ class HardDriveGroup(fsui.Panel):
     def browse(self, dir_mode):
         default_dir = FSGSDirectories.get_hard_drives_dir()
         dialog = LauncherFilePicker(
-            self.get_window(), gettext("Choose Hard Drive"), "hd",
-            LauncherConfig.get(self.config_key), dir_mode=dir_mode)
+            self.get_window(),
+            gettext("Choose Hard Drive"),
+            "hd",
+            LauncherConfig.get(self.config_key),
+            dir_mode=dir_mode,
+        )
         if not dialog.show_modal():
             dialog.destroy()
             return
@@ -110,13 +114,13 @@ class HardDriveGroup(fsui.Panel):
         # FIXME: use contract function
         dir_path, file = os.path.split(path)
         self.text_field.set_text(file)
-        if os.path.normcase(os.path.normpath(dir_path)) == \
-                os.path.normcase(os.path.normpath(default_dir)):
+        if os.path.normcase(os.path.normpath(dir_path)) == os.path.normcase(
+            os.path.normpath(default_dir)
+        ):
             path = file
 
         self.text_field.set_text(path)
-        values = [(self.config_key, path),
-                  (self.config_key_sha1, sha1)]
+        values = [(self.config_key, path), (self.config_key_sha1, sha1)]
         if self.index == 0:
             # whdload_args = ""
             # dummy, ext = os.path.splitext(path)
@@ -126,6 +130,9 @@ class HardDriveGroup(fsui.Panel):
             #     except Exception:
             #         traceback.print_exc()
             # values.append(("x_whdload_args", whdload_args))
-            values.extend(whdload.generate_config_for_archive(
-                full_path, model_config=False).items())
+            values.extend(
+                whdload.generate_config_for_archive(
+                    full_path, model_config=False
+                ).items()
+            )
         LauncherConfig.set_multiple(values)

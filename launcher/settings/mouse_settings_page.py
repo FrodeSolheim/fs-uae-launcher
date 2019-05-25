@@ -4,7 +4,6 @@ from launcher.settings.settings_page import SettingsPage
 
 
 class MouseSettingsPage(SettingsPage):
-
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("mouse-settings", "pkg:workspace")

@@ -10,8 +10,14 @@ from .i18n import gettext
 
 
 class FileScanner(object):
-    def __init__(self, paths, purge_other_dirs,
-                 on_status=None, on_rom_found=None, stop_check=None):
+    def __init__(
+        self,
+        paths,
+        purge_other_dirs,
+        on_status=None,
+        on_rom_found=None,
+        stop_check=None,
+    ):
         self.paths = paths
 
         self.purge_other_dirs = purge_other_dirs
@@ -124,15 +130,15 @@ class FileScanner(object):
         return self.paths
 
     def purge_file_ids(self, file_ids):
-        self.set_status(gettext("Scanning files"),
-                        gettext("Purging old entries..."))
+        self.set_status(
+            gettext("Scanning files"), gettext("Purging old entries...")
+        )
         database = FileDatabase.get_instance()
         for file_id in file_ids:
             database.delete_file(id=file_id)
 
     def scan(self):
-        self.set_status(gettext("Scanning files"),
-                        gettext("Scanning files"))
+        self.set_status(gettext("Scanning files"), gettext("Scanning files"))
         file_database = FileDatabase.get_instance()
         # database.clear()
         scan_dirs = self.get_scan_dirs()
@@ -152,16 +158,16 @@ class FileScanner(object):
 
             self.database_file_ids = file_database.get_file_hierarchy_ids(dir_)
             if self.purge_other_dirs:
-                all_database_file_ids.difference_update(
-                    self.database_file_ids)
+                all_database_file_ids.difference_update(self.database_file_ids)
 
             self.scan_dir(file_database, dir_)
 
             print("Remaining files:", self.database_file_ids)
             self.purge_file_ids(self.database_file_ids)
 
-            self.set_status(gettext("Scanning files"),
-                            gettext("Committing data..."))
+            self.set_status(
+                gettext("Scanning files"), gettext("Committing data...")
+            )
             # update last_file_insert and last_file_delete
             file_database.update_last_event_stamps()
             print("[FILES] FileScanner.scan - committing data")
@@ -173,8 +179,9 @@ class FileScanner(object):
         if self.stop_check():
             file_database.rollback()
         else:
-            self.set_status(gettext("Scanning files"),
-                            gettext("Committing data..."))
+            self.set_status(
+                gettext("Scanning files"), gettext("Committing data...")
+            )
             print("[FILES] FileScanner.scan - committing data")
             file_database.commit()
 
@@ -220,7 +227,10 @@ class FileScanner(object):
         self.scan_count += 1
         self.set_status(
             gettext("Scanning files ({count} scanned)").format(
-                count=self.scan_count), name)
+                count=self.scan_count
+            ),
+            name,
+        )
 
         try:
             st = os.stat(path)
@@ -239,7 +249,8 @@ class FileScanner(object):
 
         archive = Archive(path)
         file_id = self.scan_archive_stream(
-            file_database, archive, path, name, size, mtime)
+            file_database, archive, path, name, size, mtime
+        )
         for p in archive.list_files():
             if p.endswith("/"):
                 # don't index archive directory entries
@@ -251,15 +262,20 @@ class FileScanner(object):
             n = os.path.basename(p)
             self.scan_count += 1
             self.scan_archive_stream(
-                file_database, archive, p, n, size, mtime, parent=file_id)
+                file_database, archive, p, n, size, mtime, parent=file_id
+            )
         if self.stop_check():
             return
 
     def scan_archive_stream(
-            self, database, archive, path, name, size, mtime, parent=None):
+        self, database, archive, path, name, size, mtime, parent=None
+    ):
         self.set_status(
             gettext("Scanning files ({count} scanned)").format(
-                count=self.scan_count), name)
+                count=self.scan_count
+            ),
+            name,
+        )
 
         f = archive.open(path)
         raw_sha1_obj = hashlib.sha1()
@@ -309,8 +325,8 @@ class FileScanner(object):
                 filter_size += len(data)
             elif filter_name == "ByteSwapWords":
                 for i in range(0, len(data), 2):
-                    filter_sha1_obj.update(data[i+1:i+2])
-                    filter_sha1_obj.update(data[i:i+1])
+                    filter_sha1_obj.update(data[i + 1 : i + 2])
+                    filter_sha1_obj.update(data[i : i + 1])
                     filter_size += 2
                 # FIXME: Handle it when we get an odd number of bytes..
                 assert len(data) % 2 == 0
@@ -324,12 +340,16 @@ class FileScanner(object):
                 filter_size = len(filter_data["data"])
             except Exception:
                 import traceback
+
                 traceback.print_exc()
                 filter_sha1 = None
             if filter_sha1:
                 if filter_sha1 != sha1:
-                    print("[Files] Found encrypted rom {0} => {1}".format(
-                        sha1, filter_sha1))
+                    print(
+                        "[Files] Found encrypted rom {0} => {1}".format(
+                            sha1, filter_sha1
+                        )
+                    )
                     # sha1 is now the decrypted sha1, not the actual sha1 of the
                     # file itself, a bit ugly, since md5 and crc32 are still
                     # encrypted hashes, but it works well with the kickstart
@@ -347,7 +367,8 @@ class FileScanner(object):
         if parent:
             path = "#/" + path.rsplit("#/", 1)[1]
         file_id = database.add_file(
-            path=path, sha1=sha1, mtime=mtime, size=size, parent=parent)
+            path=path, sha1=sha1, mtime=mtime, size=size, parent=parent
+        )
         self.files_added += 1
         self.bytes_added += size
 
@@ -362,8 +383,12 @@ class FileScanner(object):
             # If not already in an archive (has a real file parent), set
             # parent to the real file
             database.add_file(
-                path=path, sha1=filter_sha1,
-                mtime=mtime, size=filter_size, parent=(parent or file_id))
+                path=path,
+                sha1=filter_sha1,
+                mtime=mtime,
+                size=filter_size,
+                parent=(parent or file_id),
+            )
 
         if ext == ".rom":
             if self.on_rom_found:

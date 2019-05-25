@@ -10,8 +10,10 @@ from launcher.launcher_config import LauncherConfig
 from launcher.launcher_signal import LauncherSignal
 from launcher.ui.HelpButton import HelpButton
 from launcher.ui.IconButton import IconButton
-from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS, \
-    AmigaShowBehavior
+from launcher.ui.behaviors.platformbehavior import (
+    AMIGA_PLATFORMS,
+    AmigaShowBehavior,
+)
 
 MIN_TYPE_CHOICE_WIDTH = 200
 
@@ -22,7 +24,8 @@ class InputSelector(fsui.Group):
         self.device_option_key = "joystick_port_{0}".format(port)
         self.mode_option_key = "joystick_port_{0}_mode".format(port)
         self.autofire_mode_option_key = "joystick_port_{0}_autofire".format(
-            port)
+            port
+        )
 
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
@@ -33,15 +36,22 @@ class InputSelector(fsui.Group):
             non_amiga_port_gui_index = 1
         else:
             non_amiga_port_gui_index = port
-        self.layout.add(InputPortTypeChoice(
-            self, fsgs, non_amiga_port_gui_index))
+        self.layout.add(
+            InputPortTypeChoice(self, fsgs, non_amiga_port_gui_index)
+        )
 
-        self.joystick_mode_values = ["nothing", "mouse", "joystick",
-                                     "cd32 gamepad"]
-        self.joystick_mode_titles = [gettext("No Amiga Device"),
-                                     gettext("Amiga Mouse"),
-                                     gettext("Amiga Joystick"),
-                                     gettext("CD32 Pad")]
+        self.joystick_mode_values = [
+            "nothing",
+            "mouse",
+            "joystick",
+            "cd32 gamepad",
+        ]
+        self.joystick_mode_titles = [
+            gettext("No Amiga Device"),
+            gettext("Amiga Mouse"),
+            gettext("Amiga Joystick"),
+            gettext("CD32 Pad"),
+        ]
 
         self.mode_choice = fsui.Choice(self, self.joystick_mode_titles)
         self.mode_choice.set_min_width(MIN_TYPE_CHOICE_WIDTH)
@@ -72,8 +82,10 @@ class InputSelector(fsui.Group):
         AmigaShowBehavior(self.device_choice)
         self.layout.add(self.device_choice, expand=True)
 
-        self.layout.add(InputPortDeviceChoice(
-            self, fsgs, non_amiga_port_gui_index), expand=True)
+        self.layout.add(
+            InputPortDeviceChoice(self, fsgs, non_amiga_port_gui_index),
+            expand=True,
+        )
 
         if port < 4 and autofire_button:
             self.autofire_button = IconButton(self, "16x16/lightning_off.png")
@@ -85,7 +97,8 @@ class InputSelector(fsui.Group):
 
         if port == 4:
             self.help_button = HelpButton(
-                self, "https://fs-uae.net/custom-joystick-port")
+                self, "https://fs-uae.net/custom-joystick-port"
+            )
             self.layout.add(self.help_button, margin_left=10)
 
         self.initialize_from_config()
@@ -101,12 +114,15 @@ class InputSelector(fsui.Group):
 
     def initialize_from_config(self):
         self.on_config(
-            self.device_option_key, LauncherConfig.get(self.device_option_key))
+            self.device_option_key, LauncherConfig.get(self.device_option_key)
+        )
         self.on_config(
-            self.mode_option_key, LauncherConfig.get(self.mode_option_key))
+            self.mode_option_key, LauncherConfig.get(self.mode_option_key)
+        )
         self.on_config(
             self.autofire_mode_option_key,
-            LauncherConfig.get(self.autofire_mode_option_key))
+            LauncherConfig.get(self.autofire_mode_option_key),
+        )
 
     def set_config_handlers(self):
         if self.mode_choice is not None:
@@ -172,12 +188,14 @@ class InputSelector(fsui.Group):
 
         if key == "amiga_model":
             value = LauncherConfig.get(
-                "joystick_port_{0}_mode".format(self.port))
+                "joystick_port_{0}_mode".format(self.port)
+            )
             self.set_value_or_default(value)
 
         if key == self.mode_option_key or key == "amiga_model":
             value = DeviceManager.get_calculated_port_mode(
-                LauncherConfig, self.port)
+                LauncherConfig, self.port
+            )
             for i, config in enumerate(self.joystick_mode_values):
                 if config == value:
                     if self.mode_choice is not None:
@@ -198,14 +216,18 @@ class InputSelector(fsui.Group):
             if self.autofire_button is not None:
                 if value == "1":
                     self.autofire_button.set_tooltip(
-                        gettext("Auto-Fire is On"))
+                        gettext("Auto-Fire is On")
+                    )
                     self.autofire_button.set_icon_name(
-                        "16x16/lightning_red.png")
+                        "16x16/lightning_red.png"
+                    )
                 else:
                     self.autofire_button.set_tooltip(
-                        gettext("Auto-Fire is Off"))
+                        gettext("Auto-Fire is Off")
+                    )
                     self.autofire_button.set_icon_name(
-                        "16x16/lightning_off.png")
+                        "16x16/lightning_off.png"
+                    )
 
         # this is intended to catch all config changes for all ports (both
         # mode and device) to update the defaults
@@ -214,7 +236,7 @@ class InputSelector(fsui.Group):
 
     def on_device_list_updated_signal(self):
         # print(self.device_choice.get_index())
-        had_default = (self.device_choice.get_index() == 0)
+        had_default = self.device_choice.get_index() == 0
         self.rebuild_device_list()
         self.update_default_device(had_default=had_default)
 
@@ -231,14 +253,16 @@ class InputSelector(fsui.Group):
                 config[key] = LauncherConfig.get(key)
             key = "joystick_port_{0}_mode".format(port)
             config[key] = DeviceManager.get_calculated_port_mode(
-                LauncherConfig, port)
+                LauncherConfig, port
+            )
         device = DeviceManager.get_device_for_port(config, self.port)
         default_description = gettext("Default ({0})").format(
-            fix_device_name(device.name))
+            fix_device_name(device.name)
+        )
         # print("default_description = ", default_description)
 
         if had_default is None:
-            had_default = (self.device_choice.get_index() == 0)
+            had_default = self.device_choice.get_index() == 0
         # print("had default", had_default, self.device_choice.get_index())
         self.device_choice.set_item_text(0, default_description)
         # print("had_default", had_default)
@@ -270,7 +294,8 @@ class InputPortTypeChoice(fsui.Choice):
 
     def __changed(self):
         self.fsgc.config.set(
-            self._config_key, self._choice_values[self.get_index()])
+            self._config_key, self._choice_values[self.get_index()]
+        )
 
     def on_config(self, key, value):
         if key == Option.PLATFORM:
@@ -344,7 +369,8 @@ class InputPortDeviceChoice(fsui.ComboBox):
         # Must check platform before device option key
         self.on_config(Option.PLATFORM, self.fsgc.config.get(Option.PLATFORM))
         self.on_config(
-            self.device_option_key, LauncherConfig.get(self.device_option_key))
+            self.device_option_key, LauncherConfig.get(self.device_option_key)
+        )
         # self.changed.connect(self.__changed)
         self.set_index(0)
 
@@ -394,7 +420,8 @@ class InputPortDeviceChoice(fsui.ComboBox):
             self._platform = value
             self.update_enabled()
             self.device_option_key = "{}_port_{}".format(
-                self._platform, self.port)
+                self._platform, self.port
+            )
             # Disable the control if the type option does not exist
             try:
                 Option.get("{}_port_{}_type".format(self._platform, self.port))
@@ -436,7 +463,7 @@ class InputPortDeviceChoice(fsui.ComboBox):
 
     def on_device_list_updated_signal(self):
         # print(self.get_index())
-        had_default = (self.get_index() == 0)
+        had_default = self.get_index() == 0
         self.rebuild_device_list()
         self.update_default_device(had_default=had_default)
 
@@ -456,15 +483,13 @@ class InputPortDeviceChoice(fsui.ComboBox):
             # config[key] = DeviceManager.get_calculated_port_mode(
             #     LauncherConfig, port)
 
-        device = DeviceManager.get_non_amiga_device_for_port(
-            config, self.port)
+        device = DeviceManager.get_non_amiga_device_for_port(config, self.port)
 
-        default_description = "{} (*)".format(
-            fix_device_name(device.name))
+        default_description = "{} (*)".format(fix_device_name(device.name))
         # print("default_description = ", default_description)
 
         if had_default is None:
-            had_default = (self.get_index() == 0)
+            had_default = self.get_index() == 0
         # print("had default", had_default, self.get_index())
         self.set_item_text(0, default_description)
         # print("had_default", had_default)

@@ -2,7 +2,6 @@ import fsui
 
 
 class Book(fsui.Panel):
-
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()

@@ -1,4 +1,5 @@
 from fsgs.plugins.plugin_manager import PluginManager
+
 """
 Debug script used to dump information about detected plugins
 """

@@ -2,7 +2,6 @@ from fsui import Panel, Color
 
 
 class StatusElement(Panel):
-
     def __init__(self, parent):
         """
 
@@ -20,6 +19,7 @@ class StatusElement(Panel):
     def on_paint(self):
         dc = self.create_dc()
         from .StatusBar import StatusBar
+
         StatusBar.draw_element_background(self, dc)
         self.paint_element(dc)
 

@@ -23,18 +23,21 @@ class GameListSelector(fsui.Choice):
                 logging.debug("GameListSelector on config_refresh")
                 old_list_uuid = self.selected_list_uuid()
                 logging.debug(
-                    "GameListSelector old list uuid %s", repr(old_list_uuid))
+                    "GameListSelector old list uuid %s", repr(old_list_uuid)
+                )
                 logging.debug("GameListSelector Set choice index to None")
                 self.set_index(None)
                 self.populate_list()
                 logging.debug(
-                    "GameListSelector game lists: %s", repr(self.game_lists))
+                    "GameListSelector game lists: %s", repr(self.game_lists)
+                )
                 for i, item in enumerate(self.game_lists):
                     logging.debug("GameListSelector - %s", repr(item[0]))
                     if item[0] == old_list_uuid:
                         if self.get_index() != i:
                             logging.debug(
-                                "GameListSelector Set choice index to %d", i)
+                                "GameListSelector Set choice index to %d", i
+                            )
                             self.set_index(i)
                         list_found = True
                         break
@@ -61,12 +64,11 @@ class GameListSelector(fsui.Choice):
         self.game_lists = database.get_game_lists()
         if len(self.game_lists) > 0:
             self.game_lists.insert(0, ["", self.ITEM_SEPARATOR])
+        self.game_lists.insert(0, [Database.GAME_LIST_GAMES, gettext("Games")])
         self.game_lists.insert(
-            0, [Database.GAME_LIST_GAMES, gettext("Games")])
-        self.game_lists.insert(
-            0, [Database.GAME_LIST_CONFIGS, gettext("Configs")])
-        self.game_lists.insert(
-            0, ["", gettext("Configs and Games")])
+            0, [Database.GAME_LIST_CONFIGS, gettext("Configs")]
+        )
+        self.game_lists.insert(0, ["", gettext("Configs and Games")])
         self.clear()
         for item in self.game_lists:
             list_name = item[1]

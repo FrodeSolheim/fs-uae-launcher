@@ -23,10 +23,15 @@ class AdvancedVideoSettingsPage(SettingsPage):
         self.add_option(Option.TEXTURE_FORMAT)
 
         # self.add_section(gettext("Video Synchronization"))
-        self.sync_method_label = fsui.MultiLineLabel(self, gettext(
-            "Depending on your OS and OpenGL drivers, video synchronization "
-            "can use needlessly much CPU (esp. applies to "
-            "Linux). You can experiment with different sync methods "
-            "to improve performance."), 640)
+        self.sync_method_label = fsui.MultiLineLabel(
+            self,
+            gettext(
+                "Depending on your OS and OpenGL drivers, video synchronization "
+                "can use needlessly much CPU (esp. applies to "
+                "Linux). You can experiment with different sync methods "
+                "to improve performance."
+            ),
+            640,
+        )
         self.layout.add(self.sync_method_label, fill=True, margin_top=20)
         self.sync_method_group = self.add_option(Option.VIDEO_SYNC_METHOD)

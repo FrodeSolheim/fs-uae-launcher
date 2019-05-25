@@ -12,8 +12,12 @@ class OpenGLSettingsPage(fsui.Panel):
         self.layout.add(label, margin=10, margin_bottom=20)
 
         def add_option(name):
-            self.layout.add(OptionUI.create_group(self, name), fill=True,
-                            margin_top=10, margin_bottom=10)
+            self.layout.add(
+                OptionUI.create_group(self, name),
+                fill=True,
+                margin_top=10,
+                margin_bottom=10,
+            )
 
         add_option("fsaa")
         add_option("texture_filter")

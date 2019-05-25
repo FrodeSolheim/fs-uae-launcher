@@ -28,8 +28,11 @@ class GameDatabaseIterator:
     def _check_platform(self, platform_option):
         if LauncherSettings.get(platform_option) == "1":
             return True
-        if platform_option in [Option.AMIGA_DATABASE, Option.CD32_DATABASE,
-                               Option.CDTV_DATABASE]:
+        if platform_option in [
+            Option.AMIGA_DATABASE,
+            Option.CD32_DATABASE,
+            Option.CDTV_DATABASE,
+        ]:
             if LauncherSettings.get(platform_option) != "0":
                 return True
             return False
@@ -138,8 +141,9 @@ class GameScanner(object):
             self.on_status((title, status))
 
     def update_game_database(self):
-        for database_name, game_database in (
-                GameDatabaseIterator(self.fsgc).game_databases(custom=False)):
+        for database_name, game_database in GameDatabaseIterator(
+            self.fsgc
+        ).game_databases(custom=False):
             with game_database:
                 self._update_game_database(database_name, game_database)
             if self.stop_check():
@@ -150,28 +154,35 @@ class GameScanner(object):
         #         return
 
         synchronizer = LockerSynchronizer(
-            self.context, on_status=self.on_status, stop_check=self.stop_check)
+            self.context, on_status=self.on_status, stop_check=self.stop_check
+        )
         synchronizer.synchronize()
 
     def _update_game_database(self, database_name, game_database):
         game_database_client = GameDatabaseClient(game_database)
         synchronizer = GameDatabaseSynchronizer(
-            self.context, game_database_client, on_status=self.on_status,
-            stop_check=self.stop_check, platform_id=database_name)
+            self.context,
+            game_database_client,
+            on_status=self.on_status,
+            stop_check=self.stop_check,
+            platform_id=database_name,
+        )
         synchronizer.username = "auth_token"
         synchronizer.password = LauncherSettings.get("database_auth")
         synchronizer.synchronize()
 
     def scan(self, database):
-        self.set_status(
-            gettext("Scanning games"), gettext("Please wait..."))
+        self.set_status(gettext("Scanning games"), gettext("Please wait..."))
 
-        self.set_status(gettext("Scanning configurations"),
-                        gettext("Scanning game database entries..."))
+        self.set_status(
+            gettext("Scanning configurations"),
+            gettext("Scanning game database entries..."),
+        )
 
         helper = ScanHelper(database)
-        for database_name, game_database in (
-                GameDatabaseIterator(self.fsgc).game_databases()):
+        for database_name, game_database in GameDatabaseIterator(
+            self.fsgc
+        ).game_databases():
             with game_database:
                 self.scan_game_database(helper, database_name, game_database)
             if self.stop_check():
@@ -207,7 +218,8 @@ class GameScanner(object):
         game_rows = []
 
         game_database_cursor.execute(
-            "SELECT id, uuid FROM game WHERE data != ''")
+            "SELECT id, uuid FROM game WHERE data != ''"
+        )
         for row in game_database_cursor:
             if self.stop_check():
                 return
@@ -217,10 +229,12 @@ class GameScanner(object):
             update_stamp = variant_id
 
             existing_variant = helper.existing_variants.get(
-                variant_uuid, (None, None, None))
+                variant_uuid, (None, None, None)
+            )
 
             existing_game = helper.existing_games.get(
-                variant_uuid, (None, None, None))
+                variant_uuid, (None, None, None)
+            )
             if update_stamp == existing_game[0]:
                 # Game entry, not updated.
                 game_rows.append(row)
@@ -253,11 +267,15 @@ class GameScanner(object):
             self.scan_count += 1
             self.set_status(
                 gettext("Scanning game variants ({count} scanned)").format(
-                    count=self.scan_count), variant_uuid)
+                    count=self.scan_count
+                ),
+                variant_uuid,
+            )
 
             try:
                 doc = self.fsgs.game.get_game_values_for_id(
-                    game_database, variant_id)
+                    game_database, variant_id
+                )
             except IncompleteGameException as e:
                 print("[SCANNER]", repr(e))
                 continue
@@ -320,14 +338,23 @@ class GameScanner(object):
                 # variant is not in database
                 database_cursor.execute(
                     "INSERT INTO game_variant (uuid) VALUES (?)",
-                    (variant_uuid,))
+                    (variant_uuid,),
+                )
                 game_variant_id = database_cursor.lastrowid
 
             database_cursor.execute(
                 "UPDATE game_variant SET name = ?, game_uuid = ?, have = ?, "
                 "update_stamp = ?, database = ?, published = ? WHERE id = ?",
-                (variant_name, parent_uuid, have_variant, update_stamp,
-                 database_name, published_variant, game_variant_id))
+                (
+                    variant_name,
+                    parent_uuid,
+                    have_variant,
+                    update_stamp,
+                    database_name,
+                    published_variant,
+                    game_variant_id,
+                ),
+            )
 
             # ensure_updated_games.add(parent_uuid)
 
@@ -340,7 +367,8 @@ class GameScanner(object):
             update_stamp = game_id
 
             existing_game = helper.existing_games.get(
-                game_uuid, (None, None, None))
+                game_uuid, (None, None, None)
+            )
 
             if update_stamp == existing_game[0]:
                 # after the loop has run its course, games to be removed
@@ -349,8 +377,12 @@ class GameScanner(object):
                 continue
 
             self.scan_count += 1
-            self.set_status(gettext("Scanning games ({count} scanned)").format(
-                count=self.scan_count), game_uuid)
+            self.set_status(
+                gettext("Scanning games ({count} scanned)").format(
+                    count=self.scan_count
+                ),
+                game_uuid,
+            )
 
             doc = game_database.get_game_values(game_id)
 
@@ -392,16 +424,23 @@ class GameScanner(object):
             if not game_id:
                 # game is not in database
                 database_cursor.execute(
-                    "INSERT INTO game (uuid) VALUES (?)", (game_uuid,))
+                    "INSERT INTO game (uuid) VALUES (?)", (game_uuid,)
+                )
                 game_id = database_cursor.lastrowid
 
             search_terms = set()
-            for key in ["game_name", "full_name", "game_name_alt",
-                        "search_terms", "game_subtitle"]:
+            for key in [
+                "game_name",
+                "full_name",
+                "game_name_alt",
+                "search_terms",
+                "game_subtitle",
+            ]:
                 value = doc.get(key, "")
                 if value:
-                    search_terms.update(GameNameUtil.extract_index_terms(
-                        value))
+                    search_terms.update(
+                        GameNameUtil.extract_index_terms(value)
+                    )
 
             letter = ""
             if len(sort_key) > 0:
@@ -430,7 +469,8 @@ class GameScanner(object):
                     doc.get("backdrop_zoom", "1.0"),
                     doc.get("backdrop_zoom", "1.0"),
                     doc.get("backdrop_halign", "0.5"),
-                    doc.get("backdrop_valign", "0.5"))
+                    doc.get("backdrop_valign", "0.5"),
+                )
             else:
                 backdrop_image = ""
             # if published:
@@ -476,21 +516,28 @@ class GameScanner(object):
                 "screen4_image = ?, screen5_image = ?, "
                 "thumb_image = ?, backdrop_image = ?, "
                 "adult = ?, published = ?, subtitle = ? WHERE id = ?",
-                (game_name, update_stamp, sort_key, platform,
-                 publisher or "", year or 0,
-                 "sha1:" + front_sha1 if front_sha1 else "",
-                 "sha1:" + title_sha1 if title_sha1 else "",
-                 "sha1:" + screen1_sha1 if screen1_sha1 else "",
-                 "sha1:" + screen2_sha1 if screen2_sha1 else "",
-                 "sha1:" + screen3_sha1 if screen3_sha1 else "",
-                 "sha1:" + screen4_sha1 if screen4_sha1 else "",
-                 "sha1:" + screen5_sha1 if screen5_sha1 else "",
-                 "sha1:" + thumb_sha1 if thumb_sha1 else "",
-                 backdrop_image,
-                 1 if "t:adult" in search_terms else 0,
-                 1 if published == "1" else 0,
-                 game_subtitle,
-                 game_id))
+                (
+                    game_name,
+                    update_stamp,
+                    sort_key,
+                    platform,
+                    publisher or "",
+                    year or 0,
+                    "sha1:" + front_sha1 if front_sha1 else "",
+                    "sha1:" + title_sha1 if title_sha1 else "",
+                    "sha1:" + screen1_sha1 if screen1_sha1 else "",
+                    "sha1:" + screen2_sha1 if screen2_sha1 else "",
+                    "sha1:" + screen3_sha1 if screen3_sha1 else "",
+                    "sha1:" + screen4_sha1 if screen4_sha1 else "",
+                    "sha1:" + screen5_sha1 if screen5_sha1 else "",
+                    "sha1:" + thumb_sha1 if thumb_sha1 else "",
+                    backdrop_image,
+                    1 if "t:adult" in search_terms else 0,
+                    1 if published == "1" else 0,
+                    game_subtitle,
+                    game_id,
+                ),
+            )
 
             helper.database.update_game_search_terms(game_id, search_terms)
 
@@ -502,27 +549,35 @@ class ScanHelper(object):
 
         database_cursor.execute(
             "SELECT uuid, update_stamp, have, id FROM game "
-            "WHERE uuid IS NOT NULL")
+            "WHERE uuid IS NOT NULL"
+        )
         self.existing_games = {}
         for row in database_cursor:
             self.existing_games[row[0]] = row[1], row[2], row[3]
         database_cursor.execute(
-            "SELECT uuid, update_stamp, have, id FROM game_variant")
+            "SELECT uuid, update_stamp, have, id FROM game_variant"
+        )
         self.existing_variants = {}
         for row in database_cursor:
             self.existing_variants[row[0]] = row[1], row[2], row[3]
 
         self.file_stamps = FileDatabase.get_instance().get_last_event_stamps()
         cached_file_stamps = self.database.get_last_file_event_stamps()
-        self.added_files = (self.file_stamps["last_file_insert"] !=
-                            cached_file_stamps["last_file_insert"])
-        self.deleted_files = (self.file_stamps["last_file_delete"] !=
-                              cached_file_stamps["last_file_delete"])
+        self.added_files = (
+            self.file_stamps["last_file_insert"]
+            != cached_file_stamps["last_file_insert"]
+        )
+        self.deleted_files = (
+            self.file_stamps["last_file_delete"]
+            != cached_file_stamps["last_file_delete"]
+        )
         # print(LauncherSettings.get(Option.DATABASE_LOCKER),
         #         cached_file_stamps["database_locker"])
         # assert 0
-        if LauncherSettings.get(Option.DATABASE_LOCKER) != \
-                cached_file_stamps["database_locker"]:
+        if (
+            LauncherSettings.get(Option.DATABASE_LOCKER)
+            != cached_file_stamps["database_locker"]
+        ):
             # Assume that files could be deleted or removed...
             if LauncherSettings.get(Option.DATABASE_LOCKER) == "0":
                 self.deleted_files = True
@@ -552,18 +607,21 @@ class ScanHelper(object):
         for row in self.existing_variants.values():
             variant_id = row[2]
             database_cursor.execute(
-                "DELETE FROM game_variant WHERE id = ?", (variant_id,))
+                "DELETE FROM game_variant WHERE id = ?", (variant_id,)
+            )
 
         # games left in this list must now be deleted
         for row in self.existing_games.values():
             game_id = row[2]
             database_cursor.execute(
-                "DELETE FROM game WHERE id = ?", (game_id,))
+                "DELETE FROM game WHERE id = ?", (game_id,)
+            )
 
         database_cursor.execute(
             "SELECT count(*) FROM game WHERE uuid IS NOT NULL "
             "AND (have IS NULL OR have != (SELECT coalesce(max(have), 0) "
-            "FROM game_variant WHERE game_uuid = game.uuid))")
+            "FROM game_variant WHERE game_uuid = game.uuid))"
+        )
         update_rows = database_cursor.fetchone()[0]
         print(update_rows, "game entries need update for have field")
         if update_rows > 0:
@@ -571,15 +629,18 @@ class ScanHelper(object):
                 "UPDATE game SET have = (SELECT coalesce(max(have), 0) FROM "
                 "game_variant WHERE game_uuid = game.uuid) WHERE uuid IS NOT "
                 "NULL AND (have IS NULL OR have != (SELECT coalesce(max("
-                "have), 0) FROM game_variant WHERE game_uuid = game.uuid))")
+                "have), 0) FROM game_variant WHERE game_uuid = game.uuid))"
+            )
         # FIXME: Remove this line?
         FileDatabase.get_instance().get_last_event_stamps()
-        self.file_stamps["database_locker"] = \
-            LauncherSettings.get(Option.DATABASE_LOCKER)
+        self.file_stamps["database_locker"] = LauncherSettings.get(
+            Option.DATABASE_LOCKER
+        )
         self.database.update_last_file_event_stamps(self.file_stamps)
 
 
 def binary_to_uuid(v):
     v = hexlify(v).decode("ASCII")
     return "{0}-{1}-{2}-{3}-{4}".format(
-        v[0:8], v[8:12], v[12:16], v[16:20], v[20:32])
+        v[0:8], v[8:12], v[12:16], v[16:20], v[20:32]
+    )

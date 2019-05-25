@@ -12,8 +12,7 @@ from launcher.ui.floppiesgroup import FloppiesGroup
 
 class RemovableMediaGroup(FloppiesGroup):
     def __init__(self, parent, drives, main=False):
-        FloppiesGroup.__init__(
-            self, parent, drives, removable_media=True)
+        FloppiesGroup.__init__(self, parent, drives, removable_media=True)
         self.layout3 = fsui.HorizontalLayout()
         self.layout.add(self.layout3, fill=True)
         self.layout3.add_spacer(0, expand=True)
@@ -34,8 +33,14 @@ class RemovableMediaGroup(FloppiesGroup):
         self.update_media_type()
 
         ConfigBehavior(
-            self, [Option.PLATFORM, Option.AMIGA_MODEL,
-                   Option.C64_MODEL, Option.ZXS_MODEL])
+            self,
+            [
+                Option.PLATFORM,
+                Option.AMIGA_MODEL,
+                Option.C64_MODEL,
+                Option.ZXS_MODEL,
+            ],
+        )
 
     def on_platform_config(self, value):
         self.__platform = value
@@ -113,7 +118,6 @@ class RemovableMediaGroup(FloppiesGroup):
 
 
 class INesHeaderWidget(fsui.Panel):
-
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
@@ -142,7 +146,6 @@ class INesHeaderWidget(fsui.Panel):
 
 
 class A78HeaderWidget(fsui.Panel):
-
     def __init__(self, parent):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()

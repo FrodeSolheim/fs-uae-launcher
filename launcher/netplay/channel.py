@@ -33,8 +33,8 @@ class Channel:
         self.lines.append(line)
         self.colors.append(color)
         IRCBroadcaster.broadcast(
-                "message",
-                {"channel": self.name, "message": line, "color": color})
+            "message", {"channel": self.name, "message": line, "color": color}
+        )
 
     def info(self, message):
         return self.message(message, color=IRCColor.INFO)
@@ -81,12 +81,10 @@ class Channel:
 
     def add_nick(self, nick):
         self.nicks.add(nick)
-        IRCBroadcaster.broadcast(
-                "join", {"channel": self.name, "nick": nick})
+        IRCBroadcaster.broadcast("join", {"channel": self.name, "nick": nick})
 
     def remove_nick(self, nick):
-        IRCBroadcaster.broadcast(
-                "part", {"channel": self.name, "nick": nick})
+        IRCBroadcaster.broadcast("part", {"channel": self.name, "nick": nick})
         if nick not in self.nicks:
             # print("Channel.parted - warning, nick not in list", nick)
             pass
@@ -138,8 +136,9 @@ class Channel:
             self.irc.set_active_channel_name(self.name)
             IRCBroadcaster.broadcast("joined", {"channel": self.name})
         else:
-            self.message("* {0} joined ({1}) ".format(
-                    nick, self.name), IRCColor.JOIN)
+            self.message(
+                "* {0} joined ({1}) ".format(nick, self.name), IRCColor.JOIN
+            )
             if nick in self.nicks:
                 print("Channel.joined - warning, nick already in list", nick)
             else:
@@ -149,14 +148,17 @@ class Channel:
 
     # noinspection SpellCheckingInspection
     def on_kick(self, kicker, kickee, reason):
-        self.message("* {0} kicked {1} ({2})".format(
-                kicker, kickee, reason), IRCColor.KICK)
+        self.message(
+            "* {0} kicked {1} ({2})".format(kicker, kickee, reason),
+            IRCColor.KICK,
+        )
         if self.irc.me(kickee):
             self.handle_leave_channel()
 
     def on_topic(self, who, topic):
-        self.message("* {0} changed topic to:\n{1} ".format(
-                who, topic), IRCColor.TOPIC)
+        self.message(
+            "* {0} changed topic to:\n{1} ".format(who, topic), IRCColor.TOPIC
+        )
 
     def on_mode(self, who, args):
         if args[0] == "+o":
@@ -184,18 +186,17 @@ class Channel:
             color = IRCColor.POS_MODE
         else:
             color = IRCColor.NEG_MODE
-        self.message("* {0} sets mode {1}".format(
-                who, " ".join(args)), color)
+        self.message("* {0} sets mode {1}".format(who, " ".join(args)), color)
         IRCBroadcaster.broadcast("nick_list", {"channel": self.name})
 
     # noinspection SpellCheckingInspection
     def on_namreply(self, nicks):
         for nick in nicks:
-            if nick.startswith('@'):
+            if nick.startswith("@"):
                 # self.nicks.add(nick[1:])
                 self.ops.add(nick[1:])
                 self.add_nick(nick[1:])
-            elif nick.startswith('+'):
+            elif nick.startswith("+"):
                 # self.nicks.add(nick[1:])
                 self.voices.add(nick[1:])
                 self.add_nick(nick[1:])
@@ -209,13 +210,15 @@ class Channel:
             self.message("* you left " + self.name, IRCColor.PART)
             self.handle_leave_channel()
         else:
-            self.message("* {0} left {1}".format(
-                    nick, self.name), IRCColor.PART)
+            self.message(
+                "* {0} left {1}".format(nick, self.name), IRCColor.PART
+            )
             self.remove_nick(nick)
         IRCBroadcaster.broadcast("nick_list", {"channel": self.name})
 
     def on_quit(self, nick, reason):
         if nick in self.nicks or self.name == nick or not self.name:
-            self.message("* {0} quit ({1}) ".format(
-                    nick, reason), IRCColor.PART)
+            self.message(
+                "* {0} quit ({1}) ".format(nick, reason), IRCColor.PART
+            )
         self.remove_nick(nick)

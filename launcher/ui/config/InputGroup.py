@@ -6,9 +6,14 @@ from .InputSelector import InputSelector
 
 
 class InputGroup(fsui.Group):
-
-    def __init__(self, parent, autofire_button=True, refresh_button=False,
-                 parallel_ports=False, custom_ports=False):
+    def __init__(
+        self,
+        parent,
+        autofire_button=True,
+        refresh_button=False,
+        parallel_ports=False,
+        custom_ports=False,
+    ):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
 
@@ -32,7 +37,8 @@ class InputGroup(fsui.Group):
         if refresh_button:
             self.refresh_button = IconButton(self, "refresh_button.png")
             self.refresh_button.set_tooltip(
-                gettext("Refresh List of Connected Joystick Devices"))
+                gettext("Refresh List of Connected Joystick Devices")
+            )
             self.refresh_button.activated.connect(self.on_refresh_button)
             hori_layout.add(self.refresh_button, margin_right=10)
 
@@ -48,7 +54,7 @@ class InputGroup(fsui.Group):
             count = 1
 
         input_ports = [1, 0, 2, 3, 4]
-        for i in input_ports[offset:offset + count]:
+        for i in input_ports[offset : offset + count]:
             # self.layout.add_spacer(10)
             selector = InputSelector(self, i, autofire_button=autofire_button)
             self.layout.add(selector, fill=True, margin=10)

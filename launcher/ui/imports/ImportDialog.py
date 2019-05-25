@@ -31,7 +31,8 @@ class ImportDialog(fsui.Window):
         self.layout.add(self.text_area)
 
         self.close_button = CloseButton.add_to_layout(
-            self, self.layout, margin_top=20)
+            self, self.layout, margin_top=20
+        )
         if self.close_button:
             self.close_button.disable()
 

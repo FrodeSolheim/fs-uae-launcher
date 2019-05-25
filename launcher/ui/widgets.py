@@ -25,8 +25,9 @@ class CloseButton(fsui.Button):
         if parent.window.theme.has_close_buttons:
             button_layout = fsui.HorizontalLayout()
             assert isinstance(layout, fsui.Layout)
-            layout.add(button_layout, fill=True, margin=margin,
-                       margin_top=margin_top)
+            layout.add(
+                button_layout, fill=True, margin=margin, margin_top=margin_top
+            )
             button_layout.add_spacer(expand=True)
             close_button = CloseButton(parent)
             button_layout.add(close_button, fill=True)

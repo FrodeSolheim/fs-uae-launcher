@@ -5,7 +5,6 @@ import subprocess
 
 
 class Server:
-
     def __init__(self, port, players, password):
         self.port = port
         self.players = players

@@ -6,14 +6,17 @@ from launcher.ui.widgets import PrevButton, NextButton, CloseButton
 
 
 class SetupWizardDialog(fsui.Window):
-
     @classmethod
     def open(cls, parent=None):
         return fsui.open_window_instance(cls, parent)
 
     def __init__(self, parent):
-        super().__init__(parent, gettext("Setup Wizard"),
-                         minimizable=False, maximizable=False)
+        super().__init__(
+            parent,
+            gettext("Setup Wizard"),
+            minimizable=False,
+            maximizable=False,
+        )
         self.theme = LauncherTheme.get()
         self.layout = fsui.VerticalLayout()
 

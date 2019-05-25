@@ -14,13 +14,25 @@ from launcher.settings.settings_dialog import SettingsDialog
 from launcher.settings.videosynccheckbox import VideoSyncCheckBox
 from launcher.ui.IconButton import IconButton
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.behaviors.platformbehavior import PlatformShowBehavior, \
-    AMIGA_PLATFORMS, PlatformEnableBehavior
+from launcher.ui.behaviors.platformbehavior import (
+    PlatformShowBehavior,
+    AMIGA_PLATFORMS,
+    PlatformEnableBehavior,
+)
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
 MEDNAFEN = [
-    Platform.SNES, Platform.NES, Platform.GB, Platform.GBA, Platform.GBC,
-    Platform.PSX, Platform.SMD, Platform.SMS, Platform.TG16, Platform.TGCD]
+    Platform.SNES,
+    Platform.NES,
+    Platform.GB,
+    Platform.GBA,
+    Platform.GBC,
+    Platform.PSX,
+    Platform.SMD,
+    Platform.SMS,
+    Platform.TG16,
+    Platform.TGCD,
+]
 SCALING = [Platform.C64] + MEDNAFEN
 STRETCHING = [Platform.C64, Platform.DOS, Platform.ZXS] + MEDNAFEN
 EFFECTS = [Platform.C64, Platform.DOS, Platform.ZXS] + MEDNAFEN
@@ -33,9 +45,17 @@ SCALING += AMIGA_PLATFORMS
 STRETCHING += AMIGA_PLATFORMS
 STRETCHING += [Platform.ARCADE, Platform.NEOGEO]
 
-BEZEL = AMIGA_PLATFORMS + MEDNAFEN + [
-    Platform.ARCADE, Platform.NEOGEO, Platform.ZXS, Platform.DOS,
-    Platform.C64]
+BEZEL = (
+    AMIGA_PLATFORMS
+    + MEDNAFEN
+    + [
+        Platform.ARCADE,
+        Platform.NEOGEO,
+        Platform.ZXS,
+        Platform.DOS,
+        Platform.C64,
+    ]
+)
 CHEATS = MEDNAFEN + [Platform.ARCADE, Platform.NEOGEO]
 
 
@@ -111,7 +131,8 @@ class QuickSettingsPanel(fsui.Panel):
         hori_layout.add_spacer(expand=True)
         self.platform_settings_button = fsui.Button(self, "Platform Settings")
         self.platform_settings_button.activated.connect(
-            self.on_platform_settings_button)
+            self.on_platform_settings_button
+        )
         hori_layout.add(self.platform_settings_button, margin=10)
         self.layout.add(hori_layout, fill=True)
 
@@ -123,7 +144,9 @@ class QuickSettingsPanel(fsui.Panel):
         self.monitor_button = MonitorButton(self)
         hori_layout.add(self.monitor_button, fill=True, margin_right=10)
         self.fullscreen_mode_button = FullscreenModeButton(self)
-        hori_layout.add(self.fullscreen_mode_button, fill=True, margin_right=10)
+        hori_layout.add(
+            self.fullscreen_mode_button, fill=True, margin_right=10
+        )
         self.layout.add_spacer(10)
 
         ConfigBehavior(self, [Option.PLATFORM])
@@ -134,8 +157,10 @@ class QuickSettingsPanel(fsui.Panel):
         panel.layout = fsui.VerticalLayout()
         panel.layout.add(
             OptionUI.create_group(
-                panel, option, text, thin=True, help_button=False),
-            fill=True)
+                panel, option, text, thin=True, help_button=False
+            ),
+            fill=True,
+        )
         self.layout.add(panel, fill=True, margin=10)
         if platforms:
             PlatformShowBehavior(panel, platforms)
@@ -145,7 +170,8 @@ class QuickSettingsPanel(fsui.Panel):
     def on_platform_config(self, value):
         self.layout.update()
         self.platform_settings_button.enable(
-            len(PlatformSettingsDialog.option_list_for_platform(value)) > 0)
+            len(PlatformSettingsDialog.option_list_for_platform(value)) > 0
+        )
 
     def on_g_sync_setting(self, value):
         self.video_sync_checkbox.enable(value != "1")

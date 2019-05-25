@@ -13,7 +13,6 @@ BORDER = 20
 
 
 class GameInfoPanel(BottomPanel):
-
     def __init__(self, parent, cover_on_right=True):
         BottomPanel.__init__(self, parent)
         Skin.set_background_color(self)
@@ -36,10 +35,10 @@ class GameInfoPanel(BottomPanel):
 
         self.default_image = fsui.Image("launcher:res/cover.png")
         # self.default_image.resize(Constants.COVER_SIZE)
-        self.cover_overlay = fsui.Image(
-            "launcher:res/cover_overlay.png")
+        self.cover_overlay = fsui.Image("launcher:res/cover_overlay.png")
         self.cover_overlay_square = fsui.Image(
-            "launcher:res/cover_overlay_square.png")
+            "launcher:res/cover_overlay_square.png"
+        )
 
         if not self.cover_on_right:
             self.layout.add_spacer(Constants.COVER_SIZE[0])
@@ -108,8 +107,16 @@ class GameInfoPanel(BottomPanel):
         LauncherSettings.add_listener(self)
         LauncherConfig.add_listener(self)
 
-        for key in ["database_url", "hol_url", "lemon_url", "mobygames_url",
-                    "wikipedia_url", "year", "publisher", "developer"]:
+        for key in [
+            "database_url",
+            "hol_url",
+            "lemon_url",
+            "mobygames_url",
+            "wikipedia_url",
+            "year",
+            "publisher",
+            "developer",
+        ]:
             self.on_config(key, LauncherConfig.get(key))
 
     def on_destroy(self):
@@ -142,8 +149,8 @@ class GameInfoPanel(BottomPanel):
                 self.refresh()
 
             self.requests = self.image_loader.load_image(
-                path, size=Constants.COVER_SIZE, on_load=on_load,
-                is_cover=True)
+                path, size=Constants.COVER_SIZE, on_load=on_load, is_cover=True
+            )
             self.image = self.default_image
 
         self.refresh()
@@ -199,8 +206,12 @@ class GameInfoPanel(BottomPanel):
 
         if image.size[0] == image.size[1]:
             dc.draw_rectangle(
-                x + 1, y + 1, Constants.COVER_SIZE[0],
-                Constants.COVER_SIZE[1], fsui.Color(0x0, 0x0, 0x0))
+                x + 1,
+                y + 1,
+                Constants.COVER_SIZE[0],
+                Constants.COVER_SIZE[1],
+                fsui.Color(0x0, 0x0, 0x0),
+            )
         dc.draw_image(image, x + 1, y + 1 + y_offset)
         dc.draw_image(cover_overlay, x - 10, y - 10)
 
@@ -236,10 +247,15 @@ class GameInfoPanel(BottomPanel):
         tw, th = dc.measure_text(self.sub_title)
         if self.cover_on_right:
             dc.draw_rectangle(
-                text_x, y, size[0] - Constants.COVER_SIZE[0] - 20 - 20, h,
-                background)
+                text_x,
+                y,
+                size[0] - Constants.COVER_SIZE[0] - 20 - 20,
+                h,
+                background,
+            )
             dc.draw_text(self.sub_title, text_x + 6, y + (h - th) // 2)
         else:
             dc.draw_rectangle(
-                text_x - 18, y, size[0] - text_x + 18, h, background)
+                text_x - 18, y, size[0] - text_x + 18, h, background
+            )
             dc.draw_text(self.sub_title, text_x, y + (h - th) // 2)
