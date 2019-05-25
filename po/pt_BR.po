@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2017-10-20 10:14+0200\n"
-"PO-Revision-Date: 2017-10-20 05:21-0400\n"
-"Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
+"POT-Creation-Date: 2019-05-25 13:30+0200\n"
+"PO-Revision-Date: 2019-05-25 11:31\n"
+"Last-Translator: Frode Solheim (FrodeSolheim)\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -307,20 +307,20 @@ msgid "Common"
 msgstr "Idioma"
 
 msgid "Config"
-msgstr "Ajuste"
+msgstr "Definição"
 
 #, python-brace-format
 msgid "Config in settings: {name}"
-msgstr "Ajuste nas configurações: {name}"
+msgstr "Definição nas configurações: {name}"
 
 msgid "Config options in settings"
-msgstr "Opções de ajustes nas configurações"
+msgstr "Opções de definições nas configurações"
 
 msgid "Configs"
-msgstr "Ajustes"
+msgstr "Definições"
 
 msgid "Configs and Games"
-msgstr "Ajustes e Jogos"
+msgstr "Definições e Jogos"
 
 msgid "Configuration"
 msgstr "Configuração"
@@ -707,7 +707,7 @@ msgid "Input Options"
 msgstr "Opções de Dispositivos de Entrada"
 
 msgid "Integer Scaling"
-msgstr "Escala de Números Inteiros"
+msgstr "Redimensionamento Inteiro"
 
 msgid "Internal"
 msgstr "Interno"
@@ -836,10 +836,10 @@ msgid "Maintenance"
 msgstr "Manutenção"
 
 msgid "Make:"
-msgstr "Fabricação:"
+msgstr "Tipo:"
 
 msgid "Max Scaling"
-msgstr "Redimensionamento Máximo"
+msgstr "Escalonamento Máximo"
 
 msgid "Media Swap List"
 msgstr "Lista de Mídias para Reproduzir"
@@ -900,7 +900,7 @@ msgid "Network Card"
 msgstr "Placa de Rede"
 
 msgid "New Config"
-msgstr "Nova Configuração"
+msgstr "Nova Definição"
 
 msgid "Next"
 msgstr "Próximo"
@@ -927,7 +927,7 @@ msgid "No Protection"
 msgstr "Sem Proteção"
 
 msgid "No Scaling"
-msgstr "Sem Escala"
+msgstr "Sem Redimensionamento"
 
 msgid "No Smoothing"
 msgstr "Sem Suavização"
@@ -1112,7 +1112,7 @@ msgid "Save"
 msgstr "Salvar"
 
 msgid "Save Config"
-msgstr "Salvar Ajuste"
+msgstr "Salvar Definição"
 
 msgid "Save to directory:"
 msgstr "Salvar para o diretório:"
@@ -1124,7 +1124,7 @@ msgid "Scaling & Filters"
 msgstr "Redimensionamento e Filtros"
 
 msgid "Scaling Options"
-msgstr "Opções de Escala"
+msgstr "Opções de Redimensionamento"
 
 msgid "Scan"
 msgstr "Verificar"
@@ -1213,6 +1213,9 @@ msgstr "Exibir Moldura"
 
 msgid "Shuffle"
 msgstr "Aleatório"
+
+msgid "Six Button Control Pad"
+msgstr ""
 
 msgid "Size:"
 msgstr "Tamanho:"

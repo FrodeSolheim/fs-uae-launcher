@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2017-10-20 10:14+0200\n"
-"PO-Revision-Date: 2017-10-20 05:21-0400\n"
-"Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
+"POT-Creation-Date: 2019-05-25 13:30+0200\n"
+"PO-Revision-Date: 2019-05-25 11:31\n"
+"Last-Translator: Frode Solheim (FrodeSolheim)\n"
 "Language-Team: Portuguese\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
@@ -105,7 +105,7 @@ msgid "All"
 msgstr "Tudo"
 
 msgid "All Games"
-msgstr "Todos os jogos"
+msgstr "Todos os Jogos"
 
 msgid "Amiga Forever Import"
 msgstr "Importar do Amiga Forever"
@@ -135,16 +135,16 @@ msgid "Arcade theme"
 msgstr "Tema do Arcade"
 
 msgid "Audio"
-msgstr "Som"
+msgstr "Áudio"
 
 msgid "Audio Settings"
-msgstr "Opções de Som"
+msgstr "Definições de Áudio"
 
 msgid "Audio buffer target size (ms)"
 msgstr "Tamanho do buffer do som (ms)"
 
 msgid "Audio output frequency"
-msgstr "Frequência da saída de som"
+msgstr "Frequência de saída áudio"
 
 msgid "Auto"
 msgstr "Automático"
@@ -165,7 +165,7 @@ msgid "Auto-Fire is On"
 msgstr "Auto-Disparo Ligado"
 
 msgid "Auto-download"
-msgstr ""
+msgstr "Auto-transferir"
 
 msgid "Automatic"
 msgstr "Automático"
@@ -207,7 +207,7 @@ msgid "Browse for Folder"
 msgstr "Procurar por uma Pasta"
 
 msgid "Built-in"
-msgstr ""
+msgstr "Embutido"
 
 msgid "CD-ROM Drive"
 msgstr "Unidade de CD-ROM"
@@ -250,7 +250,7 @@ msgid "Chip RAM"
 msgstr "Chip de RAM"
 
 msgid "Choices marked with (*) is the default setting"
-msgstr ""
+msgstr "Escolhas marcadas com (*) são a definição padrão"
 
 msgid "Choose CD-ROM Image"
 msgstr "Escolha uma Imagem de CD-ROM"
@@ -311,10 +311,10 @@ msgstr "Configuração"
 
 #, python-brace-format
 msgid "Config in settings: {name}"
-msgstr ""
+msgstr "Configuração nas definições: {name}"
 
 msgid "Config options in settings"
-msgstr ""
+msgstr "Opções de configuração nas definições"
 
 msgid "Configs"
 msgstr "Configuração"
@@ -391,10 +391,10 @@ msgstr "Porta de Joystick Costumisada"
 
 #, python-brace-format
 msgid "Custom option: {name}"
-msgstr ""
+msgstr "Opção personalizada: {name}"
 
 msgid "Custom options"
-msgstr ""
+msgstr "Opções personalizadas"
 
 msgid "Custom uae_ Options"
 msgstr "Opções Costumisadas do uae_"
@@ -467,7 +467,7 @@ msgid "Download failed (attempt {0}) - retrying in {1} seconds"
 msgstr "Falha no download (tentativa {0}) - tentar repetir em {1} segundos"
 
 msgid "Download game"
-msgstr ""
+msgstr "Transferir jogo"
 
 #, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
@@ -610,7 +610,7 @@ msgid "Game Database Settings"
 msgstr "Definições da Base de Dados de Jogos"
 
 msgid "Game Platforms"
-msgstr ""
+msgstr "Plataformas de Jogos"
 
 msgid "Gamepad"
 msgstr "Gamepad"
@@ -661,7 +661,7 @@ msgid "Hardware Dongle"
 msgstr "Dongle Hardware"
 
 msgid "Hide Bezel"
-msgstr ""
+msgstr "Ocultar Moldura"
 
 msgid "High"
 msgstr "Alta"
@@ -722,7 +722,7 @@ msgid "JIT compiler with a PPC-only OS is not recommended"
 msgstr "O compilador JIT com um sistema operacional só PPC não é recomendado"
 
 msgid "Joystick"
-msgstr ""
+msgstr "Joystick"
 
 msgid "Joystick & Mouse Port"
 msgstr "Porta do Joystick e Rato"
@@ -857,7 +857,7 @@ msgid "Missing Files"
 msgstr "Falta de Ficheiros"
 
 msgid "Missing game files"
-msgstr ""
+msgstr "Ficheiros de jogo em falta"
 
 msgid "Model:"
 msgstr "Modelo:"
@@ -995,7 +995,7 @@ msgid "Password:"
 msgstr "Palavra passe:"
 
 msgid "Pixel Doubling"
-msgstr ""
+msgstr "Dobragem de pixel"
 
 msgid "Platform"
 msgstr "Plataforma"
@@ -1209,10 +1209,13 @@ msgid "Setup Wizard"
 msgstr "Assistente de Configuração"
 
 msgid "Show Bezel"
-msgstr ""
+msgstr "Mostrar Moldura"
 
 msgid "Shuffle"
 msgstr "Aleatório"
+
+msgid "Six Button Control Pad"
+msgstr ""
 
 msgid "Size:"
 msgstr "Tamanho:"

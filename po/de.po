@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2017-10-20 10:14+0200\n"
-"PO-Revision-Date: 2017-10-20 05:21-0400\n"
-"Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
+"POT-Creation-Date: 2019-05-25 13:30+0200\n"
+"PO-Revision-Date: 2019-05-25 11:31\n"
+"Last-Translator: Frode Solheim (FrodeSolheim)\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,7 @@ msgid "About {name}"
 msgstr "Über {name}"
 
 msgid "Accelerator Board"
-msgstr "Beschleunigerkarte"
+msgstr "Turbokarte"
 
 msgid "Accelerator RAM"
 msgstr "Turbokarten-RAM"
@@ -165,7 +165,7 @@ msgid "Auto-Fire is On"
 msgstr "Dauerfeuer ist eingeschaltet"
 
 msgid "Auto-download"
-msgstr ""
+msgstr "Automatischer Download"
 
 msgid "Automatic"
 msgstr "Automatisch"
@@ -207,7 +207,7 @@ msgid "Browse for Folder"
 msgstr "Ordner öffnen"
 
 msgid "Built-in"
-msgstr ""
+msgstr "Eingebaut"
 
 msgid "CD-ROM Drive"
 msgstr "CD-ROM-Laufwerk"
@@ -250,7 +250,7 @@ msgid "Chip RAM"
 msgstr "Chip-RAM"
 
 msgid "Choices marked with (*) is the default setting"
-msgstr ""
+msgstr "Die mit (*) markierte Auswahl ist die Standardeinstellung"
 
 msgid "Choose CD-ROM Image"
 msgstr "CD-Abbild auswählen"
@@ -311,10 +311,10 @@ msgstr "Konfiguration"
 
 #, python-brace-format
 msgid "Config in settings: {name}"
-msgstr ""
+msgstr "Konfiguration in Einstellungen: {name}"
 
 msgid "Config options in settings"
-msgstr ""
+msgstr "Konfigurationsoptionen in Einstellungen"
 
 msgid "Configs"
 msgstr "Konfigurationen"
@@ -391,10 +391,10 @@ msgstr "Benutzerdef. Joystick-Anschluss"
 
 #, python-brace-format
 msgid "Custom option: {name}"
-msgstr ""
+msgstr "Benutzerdef. Option: {name}"
 
 msgid "Custom options"
-msgstr ""
+msgstr "Benutzerdefinierte Optionen"
 
 msgid "Custom uae_ Options"
 msgstr "Benutzerdef. uae_Optionen"
@@ -467,7 +467,7 @@ msgid "Download failed (attempt {0}) - retrying in {1} seconds"
 msgstr "Download fehlgeschlagen (Versuch {0}) - erneut in {1} Sekunden"
 
 msgid "Download game"
-msgstr ""
+msgstr "Spiel herunterladen"
 
 #, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
@@ -610,7 +610,7 @@ msgid "Game Database Settings"
 msgstr "Spiele-Datenbank Einstellungen"
 
 msgid "Game Platforms"
-msgstr ""
+msgstr "Spiel-Plattformen"
 
 msgid "Gamepad"
 msgstr "Gamepad"
@@ -649,7 +649,7 @@ msgid "HDF Disk Image Creator"
 msgstr "HDF-Festplattenabbild-Ersteller"
 
 msgid "HRTMon v2.36 (Built-in)"
-msgstr "HRTMon v2.36 (Built-in)"
+msgstr "HRTMon v2.36 (integriert)"
 
 msgid "Hard Drives"
 msgstr "Festplatten"
@@ -661,7 +661,7 @@ msgid "Hardware Dongle"
 msgstr "Hardware-Dongle"
 
 msgid "Hide Bezel"
-msgstr ""
+msgstr "Rahmen verstecken"
 
 msgid "High"
 msgstr "Hoch"
@@ -707,7 +707,7 @@ msgid "Input Options"
 msgstr "Eingabeoptionen"
 
 msgid "Integer Scaling"
-msgstr "Nummernskalierung"
+msgstr "Ganzzahlige Skalierung"
 
 msgid "Internal"
 msgstr "Intern"
@@ -722,7 +722,7 @@ msgid "JIT compiler with a PPC-only OS is not recommended"
 msgstr "Für ein reines PPC-Betriebssystem wird der JIT-Compiler nicht empfohlen"
 
 msgid "Joystick"
-msgstr ""
+msgstr "Joystick"
 
 msgid "Joystick & Mouse Port"
 msgstr "Joystick- & Maus-Anschluss"
@@ -857,7 +857,7 @@ msgid "Missing Files"
 msgstr "Fehlende Dateien"
 
 msgid "Missing game files"
-msgstr ""
+msgstr "Fehlende Spiele-Dateien"
 
 msgid "Model:"
 msgstr "Modell:"
@@ -995,7 +995,7 @@ msgid "Password:"
 msgstr "Passwort:"
 
 msgid "Pixel Doubling"
-msgstr ""
+msgstr "Pixel-Verdopplung"
 
 msgid "Platform"
 msgstr "Plattform"
@@ -1209,10 +1209,13 @@ msgid "Setup Wizard"
 msgstr "Einrichtungsassistent"
 
 msgid "Show Bezel"
-msgstr ""
+msgstr "Rahmen anzeigen"
 
 msgid "Shuffle"
 msgstr "Zufall"
+
+msgid "Six Button Control Pad"
+msgstr ""
 
 msgid "Size:"
 msgstr "Größe:"

@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2017-10-20 10:14+0200\n"
-"PO-Revision-Date: 2017-10-20 05:21-0400\n"
-"Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
+"POT-Creation-Date: 2019-05-25 13:30+0200\n"
+"PO-Revision-Date: 2019-05-25 11:31\n"
+"Last-Translator: Frode Solheim (FrodeSolheim)\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
@@ -165,7 +165,7 @@ msgid "Auto-Fire is On"
 msgstr "Otomatik Ateş Açık"
 
 msgid "Auto-download"
-msgstr ""
+msgstr "Otomatik indir"
 
 msgid "Automatic"
 msgstr "Otomatik"
@@ -207,7 +207,7 @@ msgid "Browse for Folder"
 msgstr "Klasör için Gözat"
 
 msgid "Built-in"
-msgstr ""
+msgstr "Dahili"
 
 msgid "CD-ROM Drive"
 msgstr "CD-ROM Sürücü"
@@ -250,7 +250,7 @@ msgid "Chip RAM"
 msgstr "Grafik Belleği"
 
 msgid "Choices marked with (*) is the default setting"
-msgstr ""
+msgstr "(*) işaretli olan seçimler varsayılan ayarlardır"
 
 msgid "Choose CD-ROM Image"
 msgstr "CD-ROM İmajını Seçin"
@@ -311,10 +311,10 @@ msgstr "Konfig"
 
 #, python-brace-format
 msgid "Config in settings: {name}"
-msgstr ""
+msgstr "Ayarlardaki konfigürasyon: {name}"
 
 msgid "Config options in settings"
-msgstr ""
+msgstr "Ayarlardaki konfigürasyon seçenekleri"
 
 msgid "Configs"
 msgstr "Konfigürasyonlar"
@@ -391,10 +391,10 @@ msgstr "Özel Joystick Portu"
 
 #, python-brace-format
 msgid "Custom option: {name}"
-msgstr ""
+msgstr "Özel Seçenek: {name}"
 
 msgid "Custom options"
-msgstr ""
+msgstr "Özel seçenekler"
 
 msgid "Custom uae_ Options"
 msgstr "Özel uae_ Ayarları"
@@ -467,7 +467,7 @@ msgid "Download failed (attempt {0}) - retrying in {1} seconds"
 msgstr "İndirme başarısız (deneme {0}) - {1} saniye içinde tekrar denenecek"
 
 msgid "Download game"
-msgstr ""
+msgstr "Oyunu indir"
 
 #, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
@@ -610,7 +610,7 @@ msgid "Game Database Settings"
 msgstr "Oyun Veritabanı Ayarları"
 
 msgid "Game Platforms"
-msgstr ""
+msgstr "Oyun Platformları"
 
 msgid "Gamepad"
 msgstr "Gamepad"
@@ -661,7 +661,7 @@ msgid "Hardware Dongle"
 msgstr "Donanım Kilidi"
 
 msgid "Hide Bezel"
-msgstr ""
+msgstr "Çerçeveyi Gizle"
 
 msgid "High"
 msgstr "Yüksek"
@@ -722,7 +722,7 @@ msgid "JIT compiler with a PPC-only OS is not recommended"
 msgstr "PPC kullanan OS ile JIT derleyicisi önerilmez"
 
 msgid "Joystick"
-msgstr ""
+msgstr "Joystick"
 
 msgid "Joystick & Mouse Port"
 msgstr "Joystick & Fare Portu"
@@ -857,7 +857,7 @@ msgid "Missing Files"
 msgstr "Eksik Dosyalar"
 
 msgid "Missing game files"
-msgstr ""
+msgstr "Eksik Oyun Dosyaları"
 
 msgid "Model:"
 msgstr "Model:"
@@ -995,7 +995,7 @@ msgid "Password:"
 msgstr "Şifre:"
 
 msgid "Pixel Doubling"
-msgstr ""
+msgstr "Piksel İkileme"
 
 msgid "Platform"
 msgstr "Platform"
@@ -1209,10 +1209,13 @@ msgid "Setup Wizard"
 msgstr "Kurulum Sihirbazı"
 
 msgid "Show Bezel"
-msgstr ""
+msgstr "Çerçeveyi Göster"
 
 msgid "Shuffle"
 msgstr "Karıştır"
+
+msgid "Six Button Control Pad"
+msgstr ""
 
 msgid "Size:"
 msgstr "Boyut:"

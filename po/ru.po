@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2017-10-20 10:14+0200\n"
-"PO-Revision-Date: 2017-10-20 05:21-0400\n"
-"Last-Translator: FrodeSolheim <frode-crowdin@fsolheim.net>\n"
+"POT-Creation-Date: 2019-05-25 13:30+0200\n"
+"PO-Revision-Date: 2019-05-25 11:31\n"
+"Last-Translator: Frode Solheim (FrodeSolheim)\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: fs-uae\n"
 "X-Crowdin-Language: ru\n"
@@ -129,10 +129,10 @@ msgid "Arcade Fullscreen"
 msgstr "Полноэкранный режим"
 
 msgid "Arcade starts with favorites filter"
-msgstr ""
+msgstr "Аркада начинается с избранного фильтра"
 
 msgid "Arcade theme"
-msgstr ""
+msgstr "Аркада тема"
 
 msgid "Audio"
 msgstr "Аудио"
@@ -156,7 +156,7 @@ msgid "Auto - {}"
 msgstr "Автоматич. - {}"
 
 msgid "Auto Smoothing"
-msgstr ""
+msgstr "Автоматическое сглаживание"
 
 msgid "Auto-Fire is Off"
 msgstr "Авто-огонь выкл"
@@ -165,13 +165,13 @@ msgid "Auto-Fire is On"
 msgstr "Авто-огонь вкл"
 
 msgid "Auto-download"
-msgstr ""
+msgstr "Автозакачка"
 
 msgid "Automatic"
 msgstr "Автоматически"
 
 msgid "Automatic mouse/joystick mode for mouse port"
-msgstr ""
+msgstr "Режим автоматической мышь/джойстик для порта мыши"
 
 msgid "Available Games"
 msgstr "Доступные Игры"
@@ -195,7 +195,7 @@ msgid "Blizzard SCSI Kit"
 msgstr "Набор Blizzard SCSI"
 
 msgid "Blue"
-msgstr ""
+msgstr "Синий"
 
 msgid "Browse"
 msgstr "Обзор"
@@ -207,7 +207,7 @@ msgid "Browse for Folder"
 msgstr "Найти папку"
 
 msgid "Built-in"
-msgstr ""
+msgstr "Встроенный"
 
 msgid "CD-ROM Drive"
 msgstr "Привод CD-ROM"
@@ -225,7 +225,7 @@ msgid "CPU"
 msgstr "ЦП"
 
 msgid "CRT Emulation"
-msgstr ""
+msgstr "Эмуляция CRT"
 
 msgid "Cancel"
 msgstr "Отмена"
@@ -235,7 +235,7 @@ msgid "Cannot find required ROM file: {name}"
 msgstr "Невозможно найти необходимый файл ROM: {name}"
 
 msgid "Cartridge"
-msgstr ""
+msgstr "Картридж"
 
 msgid "Change fullscreen mode (desktop, fullscreen, window)"
 msgstr "Сменить полноэкранный режим (Полный экран, Окно)"
@@ -250,13 +250,13 @@ msgid "Chip RAM"
 msgstr "Чиповая ОЗУ"
 
 msgid "Choices marked with (*) is the default setting"
-msgstr ""
+msgstr "Выбор, отмеченные (*) является параметром по умолчанию"
 
 msgid "Choose CD-ROM Image"
 msgstr "Выберите образ CD-ROM"
 
 msgid "Choose Cartridge Image"
-msgstr ""
+msgstr "Выбрать изображение картриджа"
 
 msgid "Choose Extended ROM"
 msgstr "Выберите расширенный ROM"
@@ -271,7 +271,7 @@ msgid "Choose Kickstart ROM"
 msgstr "Выберите Kickstart ROM"
 
 msgid "Choose Tape Image"
-msgstr ""
+msgstr "Выберите образ дискеты"
 
 msgid "Choose Type"
 msgstr "Выберите тип"
@@ -298,23 +298,23 @@ msgid "Close"
 msgstr "Закрыть"
 
 msgid "Committing data..."
-msgstr ""
+msgstr "Отправка данных..."
 
 msgid "Committing locker data..."
-msgstr ""
+msgstr "Отправка закрытых данных..."
 
 msgid "Common"
-msgstr ""
+msgstr "Общие"
 
 msgid "Config"
 msgstr "Конфигурация"
 
 #, python-brace-format
 msgid "Config in settings: {name}"
-msgstr ""
+msgstr "Конфигурации в настройках: {name}"
 
 msgid "Config options in settings"
-msgstr ""
+msgstr "Параметры конфигурации в настройках"
 
 msgid "Configs"
 msgstr "Конфигурации"
@@ -342,7 +342,7 @@ msgid "Connect"
 msgstr "Соединиться"
 
 msgid "Controllers"
-msgstr ""
+msgstr "Контроллеры"
 
 #, python-brace-format
 msgid "Copy {0}\n"
@@ -351,7 +351,7 @@ msgstr "Копировать {0}\n"
 "в {1}"
 
 msgid "Correct Aspect"
-msgstr ""
+msgstr "Правильный аспект"
 
 msgid "Could not open file for writing"
 msgstr "Невозможно открыть файл для записи"
@@ -372,7 +372,7 @@ msgid "Create disk image of type:"
 msgstr "Создать образ ЖД следующего типа:"
 
 msgid "Crop"
-msgstr ""
+msgstr "Обрезка"
 
 msgid "Cursor Keys and Right Ctrl/Alt"
 msgstr "Клавиши со стрелками и правые Ctrl/Alt"
@@ -391,10 +391,10 @@ msgstr "Польз. порт для джойстика"
 
 #, python-brace-format
 msgid "Custom option: {name}"
-msgstr ""
+msgstr "Пользовательские опции: {name}"
 
 msgid "Custom options"
-msgstr ""
+msgstr "Пользовательские параметры"
 
 msgid "Custom uae_ Options"
 msgstr "Польз. параметры uae_"
@@ -435,7 +435,7 @@ msgid "Digital Joystick"
 msgstr "Цифровой джойстик"
 
 msgid "Directories"
-msgstr ""
+msgstr "Каталоги"
 
 msgid "Disabled"
 msgstr "Отключено"
@@ -453,7 +453,7 @@ msgid "Dongle"
 msgstr "Донгл"
 
 msgid "Double-click a controller to configure it:"
-msgstr ""
+msgstr "Дважды щелкните значок контроллера для его настройки:"
 
 msgid "Download Game Manually"
 msgstr "Скачать игру самостоятельно"
@@ -467,7 +467,7 @@ msgid "Download failed (attempt {0}) - retrying in {1} seconds"
 msgstr "Скачка не удалась (попытка {0}) - повтор через {1} сек."
 
 msgid "Download game"
-msgstr ""
+msgstr "Скачать игру"
 
 #, python-brace-format
 msgid "Download to the following directory, and then click '{0}':"
@@ -490,7 +490,7 @@ msgid "Empty Floppy Drive Volume"
 msgstr "Пустой том привода дискет"
 
 msgid "Enable Additional Platforms (Requires Restart)"
-msgstr ""
+msgstr "Включение дополнительных платформ (требуется перезапуск)"
 
 msgid "Enabled"
 msgstr "Включено"
@@ -556,13 +556,13 @@ msgid "Files for this game are still missing. Did you download the game and put 
 msgstr "Файлы для этой игры все еще отсутствуют. Загрузили ли вы игру и поместили ли файл(ы) в каталог Downloads?"
 
 msgid "Fill Screen"
-msgstr ""
+msgstr "Во весь экран"
 
 msgid "Filters"
 msgstr "Фильтры"
 
 msgid "Finding files eligible for OAGD.net Locker"
-msgstr ""
+msgstr "Поиск файлов, подходящих для OAGD.net Locker"
 
 msgid "Floppies"
 msgstr "Дискеты"
@@ -610,7 +610,7 @@ msgid "Game Database Settings"
 msgstr "Настройки игровой БД"
 
 msgid "Game Platforms"
-msgstr ""
+msgstr "Платформа Игры"
 
 msgid "Gamepad"
 msgstr "Геймпад"
@@ -640,16 +640,16 @@ msgid "HDF - Partitionable Hard Drive Image (RDB)"
 msgstr "HDF - Разбиваемый образ жесткого диска (RDB)"
 
 msgid "HDF - Single Partition Hard Disk File"
-msgstr ""
+msgstr "HDF - Файл жесткого диска с одним разделом"
 
 msgid "HDF Creator"
-msgstr ""
+msgstr "Создание HDF"
 
 msgid "HDF Disk Image Creator"
-msgstr ""
+msgstr "Создание образа диска HDF"
 
 msgid "HRTMon v2.36 (Built-in)"
-msgstr ""
+msgstr "HRTMon v2.36 (встроенный)"
 
 msgid "Hard Drives"
 msgstr "Жесткие диски"
@@ -661,7 +661,7 @@ msgid "Hardware Dongle"
 msgstr "Аппаратный донгл"
 
 msgid "Hide Bezel"
-msgstr ""
+msgstr "Скрыть панель"
 
 msgid "High"
 msgstr "Высокий"
@@ -680,355 +680,355 @@ msgid "If you own Amiga Forever, select the drive/folder and click \"{0}\""
 msgstr "Если вы владеете Amiga Forever, выберите диск/папку и кликните \"{0}\""
 
 msgid "Import"
-msgstr ""
+msgstr "Импорт"
 
 msgid "Import From Amiga Forever CD/DVD"
-msgstr ""
+msgstr "Импорт из Amiga Forever CD/DVD"
 
 msgid "Import Kickstarts"
-msgstr ""
+msgstr "Импорт кикстарта"
 
 msgid "Import Kickstarts and ROMs"
-msgstr ""
+msgstr "Импорт кикстарта и ромов"
 
 msgid "Import task is done"
-msgstr ""
+msgstr "Задача импорта выполнена"
 
 msgid "Include Save Disk"
-msgstr ""
+msgstr "Включить сохранение диска"
 
 msgid "Include close buttons in dialogs"
-msgstr ""
+msgstr "Включить кнопки закрытия в диалоговых окнах"
 
 msgid "Input"
-msgstr ""
+msgstr "Ввод"
 
 msgid "Input Options"
-msgstr ""
+msgstr "Варианты ввода"
 
 msgid "Integer Scaling"
-msgstr ""
+msgstr "Целочисленное масштабирование"
 
 msgid "Internal"
-msgstr ""
+msgstr "Внутренний"
 
 msgid "Invalid size specified"
-msgstr ""
+msgstr "Указан недопустимый размер"
 
 msgid "JIT Compiler"
-msgstr ""
+msgstr "JIT-компилятор"
 
 msgid "JIT compiler with a PPC-only OS is not recommended"
-msgstr ""
+msgstr "Не рекомендуется использовать JIT-компилятор в PPC системах"
 
 msgid "Joystick"
-msgstr ""
+msgstr "Джойстик"
 
 msgid "Joystick & Mouse Port"
-msgstr ""
+msgstr "Джойстик & Мыши"
 
 msgid "Joystick Ports"
-msgstr ""
+msgstr "Порт джойстика"
 
 msgid "Keep aspect ratio when scaling (do not stretch)"
-msgstr ""
+msgstr "Сохраняйте пропорции при масштабировании (не растягивайте)"
 
 msgid "Key Mapping"
-msgstr ""
+msgstr "Сочетание клавиш"
 
 msgid "Keyboard"
-msgstr ""
+msgstr "Клавиатура"
 
 msgid "Keyboard Settings"
-msgstr ""
+msgstr "Настройки клавиатуры"
 
 msgid "Keyword"
-msgstr ""
+msgstr "Ключевое слово"
 
 msgid "Kickstart ROM"
-msgstr ""
+msgstr "Kickstart ROM"
 
 msgid "Kickstart import task started"
-msgstr ""
+msgstr "Начат импорт Kickstarts"
 
 msgid "Language"
-msgstr ""
+msgstr "Язык"
 
 msgid "Language:"
-msgstr ""
+msgstr "Язык:"
 
 msgid "Large Border"
-msgstr ""
+msgstr "Большая граница"
 
 msgid "Launcher Font Size"
-msgstr ""
+msgstr "Launcher Размер шрифта"
 
 msgid "Launcher Theme"
-msgstr ""
+msgstr "Launcher Тема"
 
 msgid "Launching FS-UAE"
-msgstr ""
+msgstr "Запуск FS-UAE"
 
 msgid "Launching Game"
-msgstr ""
+msgstr "Запуск Игры"
 
 msgid "Left"
-msgstr ""
+msgstr "Левая"
 
 msgid "Legacy Scaling"
-msgstr ""
+msgstr "Наследственное масштабирование"
 
 msgid "Letter"
-msgstr ""
+msgstr "Письмо"
 
 msgid "List"
-msgstr ""
+msgstr "Список"
 
 msgid "Loading..."
-msgstr ""
+msgstr "Загрузка..."
 
 msgid "Log Autoscale Changes"
-msgstr ""
+msgstr "Изменения в Autoscale журнала"
 
 msgid "Log In"
-msgstr ""
+msgstr "Войти"
 
 msgid "Log In / Register"
-msgstr ""
+msgstr "Вход / регистрация"
 
 msgid "Log In to Your OAGD.net Account"
-msgstr ""
+msgstr "Войдите в ваш OAGD.net аккаунт"
 
 msgid "Log Input Events"
-msgstr ""
+msgstr "События входа в журнал"
 
 msgid "Log Out"
-msgstr ""
+msgstr "Выйти"
 
 msgid "Log Out from Your OAGD.net Account"
-msgstr ""
+msgstr "Войдите в ваш OAGD.net аккаунт"
 
 msgid "Logging"
-msgstr ""
+msgstr "Логирование"
 
 msgid "Logging in will enable the online game database and more"
-msgstr ""
+msgstr "Вход в систему позволит включить онлайн-базу данных и многое другое"
 
 msgid "Low"
-msgstr ""
+msgstr "Низкий"
 
 msgid "Low latency video sync"
-msgstr ""
+msgstr "Синхронизация видео с низкой задержкой"
 
 msgid "MB"
-msgstr ""
+msgstr "МБ"
 
 msgid "Main Configuration Options"
-msgstr ""
+msgstr "Основные параметры конфигурации"
 
 msgid "Main Menu"
-msgstr ""
+msgstr "Главное меню"
 
 msgid "Main Volume"
-msgstr ""
+msgstr "Громкость музыки"
 
 msgid "Maintenance"
-msgstr ""
+msgstr "Поддержка"
 
 msgid "Make:"
-msgstr ""
+msgstr "Статус:"
 
 msgid "Max Scaling"
-msgstr ""
+msgstr "Без масштабирования"
 
 msgid "Media Swap List"
 msgstr ""
 
 msgid "Medium"
-msgstr ""
+msgstr "Средний"
 
 msgid "Middle Left"
-msgstr ""
+msgstr "Средний левый"
 
 msgid "Middle Right"
-msgstr ""
+msgstr "Посередине справа"
 
 msgid "Missing Files"
-msgstr ""
+msgstr "Отсутствующие файлы"
 
 msgid "Missing game files"
-msgstr ""
+msgstr "Недостающие файлы игры"
 
 msgid "Model:"
-msgstr ""
+msgstr "Модель:"
 
 msgid "Monitor to display FS-UAE on (fullscreen)"
-msgstr ""
+msgstr "Монитор для отображения FS-UAE (полноэкранный режим)"
 
 msgid "Monitor to display FS-UAE on (left, middle-left, middle-right, right)"
-msgstr ""
+msgstr "Монитор для отображения FS-UAE (левый, средний левый, средний правый, правый)"
 
 msgid "Mouse"
-msgstr ""
+msgstr "Мышь"
 
 msgid "Mouse Settings"
-msgstr ""
+msgstr "Параметры мыши"
 
 msgid "Mouse Speed (%)"
-msgstr ""
+msgstr "Скорость Мыши (%)"
 
 #, python-brace-format
 msgid "Mouse: {system} Mouse"
-msgstr ""
+msgstr "Мышь: {system} Мышь"
 
 msgid "Multi-Select..."
-msgstr ""
+msgstr "Множественный выбор..."
 
 msgid "N/A"
-msgstr ""
+msgstr "Не доступно"
 
 msgid "Net Play"
-msgstr ""
+msgstr "Net Play"
 
 msgid "Net Play Settings"
-msgstr ""
+msgstr "Параметры Net Play"
 
 msgid "Net play tag (max 3 characters)"
-msgstr ""
+msgstr "Net Play тег (не более 3 символов)"
 
 msgid "Network Card"
-msgstr ""
+msgstr "Сетевая карта"
 
 msgid "New Config"
-msgstr ""
+msgstr "Новая Конфигурация"
 
 msgid "Next"
-msgstr ""
+msgstr "Далее"
 
 msgid "Nick:"
-msgstr ""
+msgstr "Ник:"
 
 msgid "No Amiga Device"
-msgstr ""
+msgstr "Нет устройства Amiga"
 
 msgid "No Border"
-msgstr ""
+msgstr "Без границ"
 
 msgid "No Effect"
-msgstr ""
+msgstr "Без эффектов"
 
 msgid "No Host Device"
-msgstr ""
+msgstr "Нет хост-устройства"
 
 msgid "No Last Played"
-msgstr ""
+msgstr "Нет Последней Игры"
 
 msgid "No Protection"
-msgstr ""
+msgstr "Без защиты"
 
 msgid "No Scaling"
-msgstr ""
+msgstr "Без масштабирования"
 
 msgid "No Smoothing"
-msgstr ""
+msgstr "Без сглаживания"
 
 msgid "No extended kickstart found for this model. Try 'scan' function."
-msgstr ""
+msgstr "Нет ромов кикстарта для этой модели. Попробуйте запустить \"Сканировать\"."
 
 msgid "No scan in progress"
-msgstr ""
+msgstr "Нет сканирования"
 
 msgid "None"
-msgstr ""
+msgstr "Нет"
 
 msgid "Not logged in"
-msgstr ""
+msgstr "Не вошли в систему"
 
 msgid "Note: This is an experimental feature. Additional plugins are needed."
-msgstr ""
+msgstr "Примечание: Это экспериментальная функция. Необходимы дополнительные плагины."
 
 msgid "OAGD.net Locker Uploader"
-msgstr ""
+msgstr "Загрузить на OAGD.net Locker"
 
 msgid "OAGD.net Locker is not enabled for your user. It may be available only to a few select beta users."
-msgstr ""
+msgstr "OAGD.net Locker не разрешено для вашего пользователя. Он может быть доступен только для бета-пользователям."
 
 msgid "OAGD.net upload task completed successfully"
-msgstr ""
+msgstr "OAGD.net успешно загружено"
 
 msgid "Off"
-msgstr ""
+msgstr "Выкл"
 
 msgid "On"
-msgstr ""
+msgstr "Вкл"
 
 msgid "OpenGL Settings"
-msgstr ""
+msgstr "Настройка OpenGL"
 
 #, python-brace-format
 msgid "Option {name} is overridden by current configuration"
-msgstr ""
+msgstr "Опия {name} переопределяется текущей конфигурацией"
 
 msgid "Options for WHDLoad support in FS-UAE Launcher"
-msgstr ""
+msgstr "Опции WHDLoad для FS-UAE Launcher"
 
 msgid "Other Device"
-msgstr ""
+msgstr "Другое устройство"
 
 #, python-brace-format
 msgid "Outdated plugins: {0}"
-msgstr ""
+msgstr "Устаревшие плагины: {0}"
 
 msgid "Override WHDLoad preload option"
-msgstr ""
+msgstr "Переопределить опцию предварительной загрузки WHDLoad"
 
 msgid "Override WHDLoad quit key"
-msgstr ""
+msgstr "Переопределить кнопку закрытия WHDLoad"
 
 msgid "Override WHDLoad splash delay"
-msgstr ""
+msgstr "Переопределить задержку заставки WHDLoad"
 
 msgid "Parallel Port Joysticks"
-msgstr ""
+msgstr "Параллельный порт джойстика"
 
 msgid "Password:"
-msgstr ""
+msgstr "Пароль:"
 
 msgid "Pixel Doubling"
-msgstr ""
+msgstr "Дублирование пикселей"
 
 msgid "Platform"
-msgstr ""
+msgstr "Платформа"
 
 msgid "Platform & Model"
-msgstr ""
+msgstr "Платформа & Модель"
 
 msgid "Please open the following web page and download the game from there:"
-msgstr ""
+msgstr "Откройте следующую веб-страницу и загрузите игру оттуда:"
 
 msgid "Please wait..."
-msgstr ""
+msgstr "Подождите пожалуйста..."
 
 msgid "Plugins"
-msgstr ""
+msgstr "Плагины"
 
 msgid "Preferred Controllers"
-msgstr ""
+msgstr "Предпочтительные контроллеры"
 
 msgid "Preferred controller (if present):"
-msgstr ""
+msgstr "Предпочтительные контроллеры (если имеется):"
 
 msgid "Preferred device for secondary controller:"
-msgstr ""
+msgstr "Предпочтительное устройство для второго контроллера:"
 
 msgid "Preparing WHDLoad..."
-msgstr ""
+msgstr "Подготовка WHDLoad..."
 
 msgid "Preparing floppy images..."
-msgstr ""
+msgstr "Подготовка флоппи образов..."
 
 msgid "Preparing hard drives..."
-msgstr ""
+msgstr "Подготовка жестких дисков..."
 
 msgid "Preparing kickstart ROMs..."
 msgstr ""
@@ -1184,255 +1184,258 @@ msgid "Select Multiple CD-ROMs"
 msgstr ""
 
 msgid "Select Multiple Floppies"
-msgstr ""
+msgstr "Выберите несколько дискет"
 
 msgid "Select Platform"
-msgstr ""
+msgstr "Выберите платформу"
 
 msgid "Select Source Directory"
-msgstr ""
+msgstr "Выберите исходный каталог"
 
 msgid "Select Year"
-msgstr ""
+msgstr "Выберите год"
 
 #, python-brace-format
 msgid "Select a folder containing Amiga kickstart files and click \"{0}\""
-msgstr ""
+msgstr "Выберите папку, содержащую файлы Amiga kickstart и нажмите кнопку «{0}»"
 
 msgid "Set language for FS-UAE applications"
-msgstr ""
+msgstr "Выбрать язык для FS-UAE приложения"
 
 msgid "Settings"
-msgstr ""
+msgstr "Настройки"
 
 msgid "Setup Wizard"
-msgstr ""
+msgstr "Мастер настройки"
 
 msgid "Show Bezel"
-msgstr ""
+msgstr "Показать панель"
 
 msgid "Shuffle"
+msgstr "Перемешать"
+
+msgid "Six Button Control Pad"
 msgstr ""
 
 msgid "Size:"
-msgstr ""
+msgstr "Размер:"
 
 msgid "Slow RAM"
-msgstr ""
+msgstr "Медленное ОЗУ"
 
 msgid "Small Border"
-msgstr ""
+msgstr "Небольшая граница"
 
 msgid "Smoothing"
-msgstr ""
+msgstr "Сглаживание"
 
 msgid "Sound Card"
-msgstr ""
+msgstr "Звуковая карта"
 
 msgid "Specified directory does not exist"
-msgstr ""
+msgstr "Указанный каталог не существует"
 
 msgid "Specify global options and settings which does not have UI controls"
-msgstr ""
+msgstr "Укажите глобальные параметры и параметры, которые не имеют элементов управления пользовательского интерфейса"
 
 msgid "Square Pixels"
-msgstr ""
+msgstr "Квадратные Пиксели"
 
 msgid "Standard Qt Theme"
-msgstr ""
+msgstr "Стандартная тема Qt"
 
 msgid "Start"
-msgstr ""
+msgstr "Старт"
 
 msgid "Start FS-UAE in fullscreen mode"
-msgstr ""
+msgstr "Старт FS-UAE в полном экране"
 
 msgid "Start with full keyboard emulation"
-msgstr ""
+msgstr "Начать с полной клавиатурной эмуляцией"
 
 msgid "Starting scan"
-msgstr ""
+msgstr "Начало сканирования"
 
 msgid "Stereo Separation"
-msgstr ""
+msgstr "Расширение стерео"
 
 msgid "Stop"
-msgstr ""
+msgstr "Стоп"
 
 msgid "Stopped by user"
-msgstr ""
+msgstr "Прервано пользователем"
 
 msgid "Swap left and right CTRL keys"
-msgstr ""
+msgstr "Поменять местами левую и правую клавиши CTRL"
 
 msgid "Synchronization"
-msgstr ""
+msgstr "Синхронизация"
 
 msgid "Synchronize FS-UAE with your display for smooth video"
-msgstr ""
+msgstr "Синхронизировать FS-UAE с дисплеем для плавного воспроизведения видео"
 
 msgid "Synchronizing game database..."
-msgstr ""
+msgstr "Синхронизация базы данных игры..."
 
 msgid "Synchronizing personal ratings..."
-msgstr ""
+msgstr "Синхронизация личных рейтингов..."
 
 msgid "Synchronizing with the display can in some cases cause increased stuttering and low frame rates (esp. in some Linux desktop environments with compositing enabled)."
-msgstr ""
+msgstr "Синхронизация с дисплеем может в некоторых случаях вызвать повышенное искажение и низкую частоту кадров (особенно в некоторых настольных компьютеров Linux с включенным размытием)."
 
 msgid "System"
-msgstr ""
+msgstr "Система"
 
 msgid "Tape Drive"
-msgstr ""
+msgstr "Ленточный накопитель"
 
 msgid "Terms of Download"
-msgstr ""
+msgstr "Условия загрузки"
 
 msgid "Texture filter"
-msgstr ""
+msgstr "Фильтр текстуры"
 
 msgid "The following options may affect performance, so only enable them when needed for testing or debugging purposes."
-msgstr ""
+msgstr "Следующие параметры могут повлиять на производительность, поэтому их можно использовать только при необходимости для тестирования или отладки."
 
 msgid "The following options only apply when you use the automatic WHDLoad support in FS-UAE Launcher, for example in relation with the online game database."
-msgstr ""
+msgstr "Следующие параметры применяются только при использовании автоматической поддержки WHDLoad в FS-UAE Launcher, например, по отношению к базе данных онлайн-игр."
 
 msgid "The options specified here are global and will apply to all configurations. Config options such as hardware and memory options will be ignored. Options suitable here are options like theme options."
-msgstr ""
+msgstr "Параметры, указанные здесь, являются глобальными и будут применяться ко всем конфигурациям. Параметры конфигурации, такие как параметры аппаратного обеспечения и памяти, будут игнорироваться. Возможные варианты: опции, темы."
 
 msgid "The options specified here will apply to this configuration only."
-msgstr ""
+msgstr "Параметры, указанные здесь, будут применяться только к этой конфигурации."
 
 msgid "This game can be automatically downloaded if you accept the terms"
-msgstr ""
+msgstr "Эта игра может быть автоматически загружена, если вы соглашаетесь с условиями"
 
 msgid "This game must be downloaded before you can play it"
-msgstr ""
+msgstr "Эта игра должна быть загружена, прежде чем вы сможете ее воспроизвести"
 
 msgid "This game variant cannot be started because you don't have all required files."
-msgstr ""
+msgstr "Этот вариант игры не может быть запущен, потому что у вас нет всех необходимых файлов."
 
 msgid "This plugin is outdated"
-msgstr ""
+msgstr "Этот плагин устарел"
 
 msgid "Toggle Between Windowed and Full-Screen Mode"
-msgstr ""
+msgstr "Переключение между оконным и полноэкранным режимами"
 
 msgid "Toggle quick settings sidebar"
-msgstr ""
+msgstr "Переключение быстрых настроек"
 
 msgid "Turbo"
-msgstr ""
+msgstr "Турбо"
 
 msgid "Ungrab Input on Middle Mouse Button"
-msgstr ""
+msgstr "Ungrab Input на средней кнопке мыши"
 
 msgid "Unpublished Games"
-msgstr ""
+msgstr "Неопубликованные игры"
 
 msgid "Update File Database"
-msgstr ""
+msgstr "Обновить базу данных"
 
 msgid "Update Game Database"
-msgstr ""
+msgstr "Обновить Базу Данных Игр"
 
 #, python-brace-format
 msgid "Update available: {version}"
-msgstr ""
+msgstr "Обновление: {version}"
 
 msgid "Updating Database"
-msgstr ""
+msgstr "Обновление Базы данных"
 
 msgid "Updating database"
-msgstr ""
+msgstr "Обновление Базы данных"
 
 msgid "Updating game lists..."
-msgstr ""
+msgstr "Обновление списка игр..."
 
 #, python-brace-format
 msgid "Updating list '{0}'..."
-msgstr ""
+msgstr "Обновление списка '{0}'..."
 
 msgid "Updating locker data..."
-msgstr ""
+msgstr "Отправка закрытых данных..."
 
 msgid "Upload"
-msgstr ""
+msgstr "Отправить"
 
 msgid "Upload Files to OpenRetro Locker"
-msgstr ""
+msgstr "Отправить файлы на OpenRetro Locker"
 
 msgid "Upload recognized Amiga files to your OAGD.net locker"
-msgstr ""
+msgstr "Отправка записанных файлов Amiga в ваш OAGD.net locker"
 
 #, python-brace-format
 msgid "Uploading {name}"
-msgstr ""
+msgstr "Отправка {name}"
 
 #, python-brace-format
 msgid "Use RDB disk images for size >= {0}"
-msgstr ""
+msgstr "Используйте образы дисков RDB для размера > = {0}"
 
 msgid "Use keyboard raw input (Windows)"
-msgstr ""
+msgstr "Использовать ввод с клавиатуры (Windows)"
 
 msgid "Using Kickstart ROM Replacement"
-msgstr ""
+msgstr "Использование замены Kickstart ROM"
 
 msgid "Using Kickstart ROM replacement"
-msgstr ""
+msgstr "Использование замены Kickstart ROM"
 
 msgid "V-Sync"
-msgstr ""
+msgstr "Вертикальная синхронизация"
 
 msgid "Video"
-msgstr ""
+msgstr "Видео"
 
 msgid "Video Settings"
-msgstr ""
+msgstr "Настройки видео"
 
 msgid "Video Synchronization"
-msgstr ""
+msgstr "Видео синхронизация"
 
 msgid "Video Synchronization Settings"
-msgstr ""
+msgstr "Параметры видео синхронизации"
 
 msgid "Video buffer format and color depth"
-msgstr ""
+msgstr "Видео буфер формат и глубина цвета"
 
 msgid "Video synchronization"
-msgstr ""
+msgstr "Видео синхронизация"
 
 msgid "Video synchronization method"
-msgstr ""
+msgstr "Метод синхронизации видео"
 
 msgid "Video texture format (on the GPU)"
-msgstr ""
+msgstr "Формат видео текстуры (на графическом процессоре)"
 
 msgid "WHDLoad"
-msgstr ""
+msgstr "WHDLoad"
 
 msgid "WHDLoad Arguments"
-msgstr ""
+msgstr "WHDLoad Аргументы"
 
 msgid "Warning"
-msgstr ""
+msgstr "Предупреждение"
 
 msgid "Warning: No ROM files were found!"
-msgstr ""
+msgstr "Предупреждение: ROM файлы не найдены!"
 
 msgid "Web Links"
-msgstr ""
+msgstr "Веб-адрес"
 
 msgid "Welcome to the setup wizard for FS-UAE Launcher!"
-msgstr ""
+msgstr "Добро пожаловать в мастер настроек для FS-UAE Launcher!"
 
 msgid "When Automatic is specified, your preferred language is set based on information from the operating system (or English, if a supported language is not detected)."
-msgstr ""
+msgstr "Когда указан параметр «Автоматически», ваш предпочтительный язык устанавливается на основе информации из операционной системы (или на английском языке, если поддерживаемый язык не обнаружен)."
 
 msgid "When checked, enable video synchronization whenever possible"
-msgstr ""
+msgstr "Если флажок установлен, будет включена синхронизация видео по возможности"
 
 msgid "When checked, include a save disk in FS-UAE's floppy swap list"
 msgstr ""
