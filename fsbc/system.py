@@ -22,8 +22,15 @@ class System:
     platform = platform
 
     x86_64 = False
-    if _platform.machine().lower() in ["x86_64", "x86-64", "amd64",
-                                      "i386", "i486", "i586", "i686"]:
+    if _platform.machine().lower() in [
+        "x86_64",
+        "x86-64",
+        "amd64",
+        "i386",
+        "i486",
+        "i586",
+        "i686",
+    ]:
         if _platform.architecture()[0] == "64bit":
             x86_64 = True
         # else:

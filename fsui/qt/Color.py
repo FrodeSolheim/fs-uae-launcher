@@ -2,7 +2,6 @@ from fsui.qt import QColor
 
 
 class BaseColor(object):
-
     def mix(self, color, opacity=0.5):
         # print("mix", color)
         """Mixes this color with another color and returns the result.
@@ -19,12 +18,12 @@ class BaseColor(object):
         self.set_components(
             int(self[0] * iopacity + color[0] * opacity),
             int(self[1] * iopacity + color[1] * opacity),
-            int(self[2] * iopacity + color[2] * opacity))
+            int(self[2] * iopacity + color[2] * opacity),
+        )
         return self
 
 
 class Color(QColor, BaseColor):
-
     def __init__(self, *args):
         QColor.__init__(self)
 
@@ -48,7 +47,7 @@ class Color(QColor, BaseColor):
             raise TypeError("Color object is not initialized")
 
     @staticmethod
-    def mix_colors (basecolor, overlaycolor, opacity=0.5):
+    def mix_colors(basecolor, overlaycolor, opacity=0.5):
         c = Color(basecolor)
         return c.mix(overlaycolor, opacity)
 
@@ -68,9 +67,11 @@ class Color(QColor, BaseColor):
     def to_hex(self):
         if self.alpha() != 255:
             return "#{:02x}{:02x}{:02x}{:02x}".format(
-                    self.red(), self.green(), self.blue(), self.alpha())
+                self.red(), self.green(), self.blue(), self.alpha()
+            )
         return "#{:02x}{:02x}{:02x}".format(
-                self.red(), self.green(), self.blue())
+            self.red(), self.green(), self.blue()
+        )
 
     def to_hsl(self):
         return HSLColor.from_rgb(self.red(), self.green(), self.blue())
@@ -116,8 +117,9 @@ class Color(QColor, BaseColor):
     def complement(self):
         r, g, b = self.Red(), self.Green(), self.Blue()
         baseval = max(r, max(g, b)) + min(r, min(g, b))
-        self.Set(baseval - self.Red(), baseval - self.Green(),
-                baseval - self.Blue())
+        self.Set(
+            baseval - self.Red(), baseval - self.Green(), baseval - self.Blue()
+        )
         return self
 
     def complemented(self):
@@ -129,7 +131,6 @@ class Color(QColor, BaseColor):
 
 
 class HSLColor(BaseColor):
-
     def __init__(self):
         self.h = 0.0
         self.s = 0.0
@@ -152,7 +153,7 @@ class HSLColor(BaseColor):
         else:
             c.h = (60 * (r - g) / (ma - mi)) + 240
 
-        c.l = (ma + mi)/2
+        c.l = (ma + mi) / 2
 
         if ma == mi:
             c.s = 0
@@ -174,13 +175,13 @@ class HSLColor(BaseColor):
 
         if self.l < 0.5:
             q = self.l * (1 + self.s)
-        else: # c.l >= 0.5
+        else:  # c.l >= 0.5
             q = self.l + self.s - (self.l * self.s)
         p = 2 * self.l - q
         hk = self.h / 360
 
         # t = [tr, tg, tb]
-        t = [hk + 1/3, hk, hk - 1/3]
+        t = [hk + 1 / 3, hk, hk - 1 / 3]
 
         for i in range(3):
             if t[i] < 0.0:
@@ -189,12 +190,12 @@ class HSLColor(BaseColor):
                 t[i] -= 1.0
 
         for i in range(3):
-            if t[i] < 1/6:
+            if t[i] < 1 / 6:
                 t[i] = int(round(255 * (p + ((q - p) * 6 * t[i]))))
-            elif 1/6 <= t[i] < 1/2:
+            elif 1 / 6 <= t[i] < 1 / 2:
                 t[i] = int(round(255 * q))
-            elif 1/2 <= t[i] < 2/3:
-                t[i] = int(round(255 * (p + ((q - p) * 6 * (2/3 - t[i])))))
+            elif 1 / 2 <= t[i] < 2 / 3:
+                t[i] = int(round(255 * (p + ((q - p) * 6 * (2 / 3 - t[i])))))
             else:
                 t[i] = int(round(255 * p))
         return Color(t)

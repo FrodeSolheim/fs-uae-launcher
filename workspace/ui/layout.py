@@ -2,7 +2,6 @@ import fsui
 
 
 class Column(fsui.VerticalLayout):
-
     def __init__(self, parent=None, padding=0):
         super().__init__(padding)
         if parent is not None:
@@ -11,12 +10,31 @@ class Column(fsui.VerticalLayout):
             else:
                 parent.layout = self
 
-    def add(self, element, spacing=0, expand=False, fill=True, valign=0.5,
-            margin=0, left=None, right=None,
-            top=None, bottom=None):
-        super().add(element, spacing=spacing, expand=expand, fill=fill,
-                    valign=valign, margin=margin, margin_left=left,
-                    margin_right=right, margin_top=top, margin_bottom=bottom)
+    def add(
+        self,
+        element,
+        spacing=0,
+        expand=False,
+        fill=True,
+        valign=0.5,
+        margin=0,
+        left=None,
+        right=None,
+        top=None,
+        bottom=None,
+    ):
+        super().add(
+            element,
+            spacing=spacing,
+            expand=expand,
+            fill=fill,
+            valign=valign,
+            margin=margin,
+            margin_left=left,
+            margin_right=right,
+            margin_top=top,
+            margin_bottom=bottom,
+        )
 
     def expand(self):
         return self.spacer(0, expand=True)
@@ -35,7 +53,6 @@ class Column(fsui.VerticalLayout):
 
 
 class Row(fsui.HorizontalLayout):
-
     def __init__(self, parent=None, padding=0):
         super().__init__(padding)
         if parent is not None:
@@ -44,12 +61,31 @@ class Row(fsui.HorizontalLayout):
             else:
                 parent.layout = self
 
-    def add(self, element, spacing=0, expand=False, fill=True, valign=0.5,
-            margin=0, left=None, right=None,
-            top=None, bottom=None):
-        super().add(element, spacing=spacing, expand=expand, fill=fill,
-                    valign=valign, margin=0, margin_left=left,
-                    margin_right=right, margin_top=top, margin_bottom=bottom)
+    def add(
+        self,
+        element,
+        spacing=0,
+        expand=False,
+        fill=True,
+        valign=0.5,
+        margin=0,
+        left=None,
+        right=None,
+        top=None,
+        bottom=None,
+    ):
+        super().add(
+            element,
+            spacing=spacing,
+            expand=expand,
+            fill=fill,
+            valign=valign,
+            margin=0,
+            margin_left=left,
+            margin_right=right,
+            margin_top=top,
+            margin_bottom=bottom,
+        )
 
     def column(self, **kwargs):
         column = Column()

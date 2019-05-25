@@ -3,13 +3,13 @@ import fsui
 from fsbc.application import app
 from launcher.ui.widgets import CloseButton
 from workspace.apps.refresh import RefreshWindow
+
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
 from workspace.ui.theme import WorkspaceTheme
 
 
 class LoginWindow(fsui.Window):
-
     @classmethod
     def open(cls, parent=None):
         return fsui.open_window_instance(cls, parent)
@@ -25,21 +25,31 @@ class LoginWindow(fsui.Window):
 
         heading_layout = fsui.HorizontalLayout()
         self.layout.add(heading_layout)
-        heading_layout.add(fsui.ImageView(
-            self, fsui.Image("workspace:res/48/password.png")))
+        heading_layout.add(
+            fsui.ImageView(self, fsui.Image("workspace:res/48/password.png"))
+        )
         heading_layout.add_spacer(20)
         heading_layout_2 = fsui.VerticalLayout()
         heading_layout.add(
-            heading_layout_2, expand=True, fill=False, valign=0.5)
-        heading_layout_2.add(fsui.HeadingLabel(
-            self, gettext("Log In to Your OAGD.net Account")))
+            heading_layout_2, expand=True, fill=False, valign=0.5
+        )
+        heading_layout_2.add(
+            fsui.HeadingLabel(self, gettext("Log In to Your OAGD.net Account"))
+        )
         heading_layout_2.add_spacer(2)
-        heading_layout_2.add(fsui.Label(
-            self, gettext("Logging in will enable the online game database "
-                          "and more")))
+        heading_layout_2.add(
+            fsui.Label(
+                self,
+                gettext(
+                    "Logging in will enable the online game database "
+                    "and more"
+                ),
+            )
+        )
 
         self.username_field = fsui.TextField(
-            self, app.settings["database_email"].strip())
+            self, app.settings["database_email"].strip()
+        )
         self.password_field = fsui.PasswordField(self)
         if self.username_field.get_text():
             self.password_field.focus()
@@ -74,20 +84,23 @@ class LoginWindow(fsui.Window):
         hori_layout.add(label)
         hori_layout.add_spacer(20)
         label = fsui.URLLabel(
-            self, gettext("Create an account now"),
-            "https://oagd.net/user/register?referrer=fs-uae-launcher")
+            self,
+            gettext("Create an account now"),
+            "https://oagd.net/user/register?referrer=fs-uae-launcher",
+        )
         hori_layout.add(label, expand=True)
 
         self.layout.add_spacer(6)
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
-        label = fsui.Label(self,
-                           gettext("Forgot your password?"))
+        label = fsui.Label(self, gettext("Forgot your password?"))
         hori_layout.add(label)
         hori_layout.add_spacer(20)
         self.reset_label = fsui.URLLabel(
-            self, gettext("Reset password via e-mail"),
-            "https://oagd.net/user/reset?referrer=fs-uae-launcher")
+            self,
+            gettext("Reset password via e-mail"),
+            "https://oagd.net/user/reset?referrer=fs-uae-launcher",
+        )
         hori_layout.add(self.reset_label, expand=True)
 
         self.layout.add_spacer(20)
@@ -104,8 +117,7 @@ class LoginWindow(fsui.Window):
 
         if self.window.theme.has_close_buttons:
             self.close_button = CloseButton(self)
-            hori_layout.add(
-                self.close_button, fill=True, margin_left=10)
+            hori_layout.add(self.close_button, fill=True, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
@@ -124,7 +136,8 @@ class LoginWindow(fsui.Window):
         self.login_button.enable(bool(email) and bool(password))
         self.reset_label.set_url(
             "https://oagd.net/user/reset?referrer=fs-uae-launcher"
-            "&email={0}".format(email))
+            "&email={0}".format(email)
+        )
 
     def on_username_activated(self):
         if self.username_field.get_text().strip():

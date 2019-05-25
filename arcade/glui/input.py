@@ -17,8 +17,16 @@ def get_controller_config(name, sdl_name, axes=0, hats=0, buttons=0, balls=0):
         # device id must end with #something (really a device number,
         # but can be anything
         device = InputDevice(
-            "menu", name + " #MENU", [], sdl_name=sdl_name,
-            version=2, axes=axes, hats=hats, buttons=buttons, balls=balls)
+            "menu",
+            name + " #MENU",
+            [],
+            sdl_name=sdl_name,
+            version=2,
+            axes=axes,
+            hats=hats,
+            buttons=buttons,
+            balls=balls,
+        )
         config = device.get_config()
     except Exception:
         print("error initializing device " + repr(name) + " for menu")
@@ -79,8 +87,12 @@ class InputHandler(object):
             #     cls.last_device = device_id
             # print("get_virtual_button", button, cls.last_device)
             return button, device_id
-        elif event["type"] in ["joy-button-down", "joy-button-up",
-                               "joy-axis-motion", "joy-hat-motion"]:
+        elif event["type"] in [
+            "joy-button-down",
+            "joy-button-up",
+            "joy-axis-motion",
+            "joy-hat-motion",
+        ]:
             if event["type"] == "joy-axis-motion":
                 # print(event)
                 # if event.value > -0.5 and event.value < 0.5:
@@ -178,9 +190,13 @@ class InputHandler(object):
             return None
 
         return get_controller_config(
-            joystick["name"], joystick["name"], axes=joystick["axes"],
-            hats=joystick["hats"], buttons=joystick["buttons"],
-            balls=joystick["balls"])
+            joystick["name"],
+            joystick["name"],
+            axes=joystick["axes"],
+            hats=joystick["hats"],
+            buttons=joystick["buttons"],
+            balls=joystick["balls"],
+        )
 
     @classmethod
     def handle_device_event(cls, event):
@@ -359,16 +375,22 @@ class InputHandler(object):
             if not device.is_keyboard():
                 continue
             config = get_controller_config(
-                device.name, device.sdl_name,
-                axes=device.axes, hats=device.hats,
-                buttons=device.buttons, balls=device.balls)
+                device.name,
+                device.sdl_name,
+                axes=device.axes,
+                hats=device.hats,
+                buttons=device.buttons,
+                balls=device.balls,
+            )
             print(config)
             if not config:
                 continue
             for key, value in config.items():
                 if key.startswith("key_"):
-                    cls.key_table["SDLK_" + key[4:].upper()] = \
-                        (value.upper(), device.id)
+                    cls.key_table["SDLK_" + key[4:].upper()] = (
+                        value.upper(),
+                        device.id,
+                    )
         print("[INPUT] Key table:", cls.key_table)
 
     @classmethod

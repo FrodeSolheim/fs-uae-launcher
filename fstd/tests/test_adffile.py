@@ -6,8 +6,9 @@ from nose.tools import *
 
 
 def get_transplant_adf() -> fstd.adffile.ADFFile:
-    adf = fstd.adffile.ADFFile(os.path.join(os.path.dirname(__file__),
-                                            "adffile", "transplant.adf"))
+    adf = fstd.adffile.ADFFile(
+        os.path.join(os.path.dirname(__file__), "adffile", "transplant.adf")
+    )
     return adf
 
 

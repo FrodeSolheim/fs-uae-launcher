@@ -40,6 +40,7 @@ def workspace_open(path, args=None):
         # FIXME: Spawn via "FS-UAE Launcher" instead, respecting Launcher
         # settings, etc.
         from fsgs.amiga.fsuae import FSUAE
+
         # FIXME: Other args
         FSUAE.start_with_args([workspace.path.host(args[0])])
 
@@ -54,12 +55,14 @@ def open_app(path, args=None):
     # FIXME: Not a nice method, requires globally unique module names for
     # applications
     import importlib
+
     host_path = workspace.path.host(path)
     host_dir = os.path.dirname(host_path)
     if host_dir not in sys.path:
         sys.path.insert(0, host_dir)
     module = importlib.import_module(
-            os.path.splitext(os.path.basename(host_path))[0])
+        os.path.splitext(os.path.basename(host_path))[0]
+    )
     print(module.__file__)
     if hasattr(module, "workspace_open"):
         module.workspace_open(args)
@@ -76,7 +79,8 @@ def file_type_icon(file_type, state=STATE_NORMAL):
         icon_name = "selected.png"
     try:
         return icon_from_zip(
-            "SYS:Icons/FileTypes/{}.fs-info".format(file_type), icon_name)
+            "SYS:Icons/FileTypes/{}.fs-info".format(file_type), icon_name
+        )
     except LookupError:
         pass
     p = "SYS:Icons/FileTypes/{}.fs-info/{}".format(file_type, icon_name)
@@ -167,12 +171,12 @@ def default_tool(path):
 
 
 def tool(path):
-    p = workspace.path.host(
-        workspace.path.join(path + ".fs-info", "tool.txt"))
+    p = workspace.path.host(workspace.path.join(path + ".fs-info", "tool.txt"))
     print(p, os.path.exists(p))
     if not os.path.exists(p):
         p = workspace.path.host(
-            workspace.path.join(path, ".fs-info", "tool.txt"))
+            workspace.path.join(path, ".fs-info", "tool.txt")
+        )
         print(p, os.path.exists(p))
     if os.path.exists(p):
         with builtins.open(p, "r", encoding="UTF-8") as f:

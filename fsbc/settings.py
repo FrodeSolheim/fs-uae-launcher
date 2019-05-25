@@ -6,6 +6,7 @@ from configparser import ConfigParser, NoSectionError
 
 import fsboot
 from .signal import Signal
+
 # noinspection PyUnresolvedReferences
 from typing import Dict, Tuple
 
@@ -78,8 +79,12 @@ class Settings(object):
         self._provider.save(self, extra)
 
     def log_key_value(self, key, value, extra=""):
-        if "username" in key or "password" in key or "auth" in key \
-                or "email" in key:
+        if (
+            "username" in key
+            or "password" in key
+            or "auth" in key
+            or "email" in key
+        ):
             value = "*CENSORED*"
         if extra:
             extra = " " + extra

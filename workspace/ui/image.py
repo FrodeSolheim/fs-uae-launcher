@@ -4,7 +4,6 @@ import workspace.path
 
 
 class Image(fsui.Image):
-
     def __init__(self, path):
         if hasattr(path, "read"):
             # Stream

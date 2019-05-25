@@ -32,9 +32,11 @@ class LockerUploaderWindow(fsui.DialogWindow):
         self.layout.set_padding(20, 20, 20, 20)
 
         self.icon_header = IconHeader(
-            self, fsui.Icon("refresh", "pkg:workspace"),
+            self,
+            fsui.Icon("refresh", "pkg:workspace"),
             gettext("OAGD.net Locker Uploader"),
-            gettext("Upload recognized Amiga files to your OAGD.net locker"))
+            gettext("Upload recognized Amiga files to your OAGD.net locker"),
+        )
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         hori_layout = fsui.HorizontalLayout()
@@ -132,7 +134,7 @@ class LockerUploaderTask(Task):
         for k in range(0, len(result), 20):
             self.stop_check()
 
-            sha1 = result[k:k + 20]
+            sha1 = result[k : k + 20]
             path = fsgs.file.find_by_sha1(bytes_to_hex(sha1))
             if not path:
                 continue
@@ -157,9 +159,11 @@ class LockerUploaderTask(Task):
 
             # self.progressed(gettext("Verifying {name}").format(
             #                 name=bytes_to_hex(sha1)))
-            self.progressed(gettext("Uploading {name}").format(
-                name=bytes_to_hex(sha1)))
+            self.progressed(
+                gettext("Uploading {name}").format(name=bytes_to_hex(sha1))
+            )
             import hashlib
+
             new_hash = hashlib.sha1(data).hexdigest()
             print(new_hash, "vs", bytes_to_hex(sha1))
             if hashlib.sha1(data).hexdigest() != bytes_to_hex(sha1):
@@ -174,8 +178,11 @@ class LockerUploaderTask(Task):
                     raise e
                 except Exception:
                     traceback.print_exc()
-                    self.progressed(gettext(
-                        "Re-trying in {0} seconds...").format(retry_seconds))
+                    self.progressed(
+                        gettext("Re-trying in {0} seconds...").format(
+                            retry_seconds
+                        )
+                    )
                     for _ in range(retry_seconds):
                         self.stop_check()
                         time.sleep(1.0)
@@ -185,14 +192,17 @@ class LockerUploaderTask(Task):
 
     def upload_check(self, prefix):
         self.progressed(
-            gettext("Finding files eligible for OAGD.net Locker") +
-            " ({:0.0%})".format((prefix / 16.0)))
+            gettext("Finding files eligible for OAGD.net Locker")
+            + " ({:0.0%})".format((prefix / 16.0))
+        )
         file_database = FileDatabase.instance()
         cursor = file_database.cursor()
         # FIXME: prefix
         p = "0123456789ABCDEF"[prefix]
-        cursor.execute("SELECT DISTINCT sha1 FROM file "
-                       "WHERE hex(sha1) LIKE ?", (p + "%",))
+        cursor.execute(
+            "SELECT DISTINCT sha1 FROM file " "WHERE hex(sha1) LIKE ?",
+            (p + "%",),
+        )
         string_io = StringIO()
         for row in cursor:
             string_io.write(row[0])
@@ -202,24 +212,32 @@ class LockerUploaderTask(Task):
         retry_seconds = 1
         while True:
             try:
-                result = self.client.post("/api/locker-upload-check",
-                                          data=string_io.getvalue())
+                result = self.client.post(
+                    "/api/locker-upload-check", data=string_io.getvalue()
+                )
             except OGDClient.ForbiddenError:
                 raise Task.Failure(
-                    gettext("OAGD.net Locker is not enabled for your user. "
-                            "It may be available only to a few select beta "
-                            "users."))
+                    gettext(
+                        "OAGD.net Locker is not enabled for your user. "
+                        "It may be available only to a few select beta "
+                        "users."
+                    )
+                )
             except OGDClient.NonRetryableHTTPError as e:
                 raise e
             except Exception:
                 traceback.print_exc()
-                self.progressed(gettext(
-                    "Re-trying in {0} seconds...").format(retry_seconds))
+                self.progressed(
+                    gettext("Re-trying in {0} seconds...").format(
+                        retry_seconds
+                    )
+                )
                 for _ in range(retry_seconds):
                     self.stop_check()
                     time.sleep(1.0)
                 retry_seconds = min(retry_seconds * 2, 60 * 10)
             else:
                 return result
+
 
 # application = SimpleApplication(LockerUploaderWindow)

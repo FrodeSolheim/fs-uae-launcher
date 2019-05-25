@@ -12,7 +12,6 @@ lock = threading.Lock()
 
 
 class MultiplexedOutput:
-
     def __init__(self, *files):
         self.files = files
 
@@ -37,7 +36,6 @@ class MultiplexedOutput:
 
 
 class FileOutput(object):
-
     def __init__(self, file_obj):
         self.file = file_obj
         self.new_line = False
@@ -65,7 +63,6 @@ class FileOutput(object):
 
 
 class NullOutput(object):
-
     def flush(self):
         pass
 
@@ -87,6 +84,7 @@ def setup_logging(log_name):
 
     # FIXME: remove dependency on fsgs here!
     from fsgs.FSGSDirectories import FSGSDirectories
+
     logs_dir = FSGSDirectories.get_logs_dir()
     log_file = os.path.join(logs_dir, log_name)
     print("[LOGGING] Logging to", log_file)

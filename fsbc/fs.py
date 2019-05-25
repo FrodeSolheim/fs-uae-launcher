@@ -4,8 +4,10 @@ import functools
 
 # noinspection PyUnresolvedReferences
 from fsbc.system import windows, macosx
+
 # noinspection PyUnresolvedReferences
 from fsbc.user import get_data_dir
+
 # noinspection PyUnresolvedReferences
 from .util import memoize
 
@@ -25,7 +27,7 @@ def cache(func):
 
 @cache
 def get_lib_dir():
-    lib_dir = os.environ.get('LIB_DIR', '').decode('UTF-8')
+    lib_dir = os.environ.get("LIB_DIR", "").decode("UTF-8")
     if lib_dir:
         return unicode_path(lib_dir)
     lib_dir = os.path.join(os.getcwdu(), "lib")
@@ -68,7 +70,7 @@ def get_app_config_dir(app=None):
         path = os.path.join(get_home_dir(), "Library", "Preferences", app)
     else:
         path = os.path.join(get_home_dir(), ".config")
-        path = os.environ.get('XDG_CONFIG_HOME', path)
+        path = os.environ.get("XDG_CONFIG_HOME", path)
         path = os.path.join(path, app)
         path = unicode_path(path)
     if not os.path.isdir(path):
@@ -101,11 +103,11 @@ def to_utf8_str(obj):
 
 
 def utf8(obj):
-    return unicode_safe(obj, 'utf-8').encode('utf-8')
+    return unicode_safe(obj, "utf-8").encode("utf-8")
 
 
 def utf8_safe(obj):
-    return unicode_safe(obj, 'utf-8').encode('utf-8')
+    return unicode_safe(obj, "utf-8").encode("utf-8")
 
 
 def unicode_safe(obj, encoding="ASCII"):
@@ -114,11 +116,11 @@ def unicode_safe(obj, encoding="ASCII"):
     except Exception:
         pass
     try:
-        return str(obj, encoding, 'replace')
+        return str(obj, encoding, "replace")
     except Exception:
         pass
     try:
-        return str(str(obj), encoding, 'replace')
+        return str(str(obj), encoding, "replace")
     except Exception:
         # logger.exception("Error in unicode_safe")
         return "String returned from unicode_safe (problem logged)"
@@ -131,9 +133,12 @@ def normalize_path(path):
 
 # noinspection PyUnresolvedReferences
 from .user import get_home_dir
+
 # noinspection PyUnresolvedReferences
 from .util import Version
+
 # noinspection PyUnresolvedReferences
 from .util import split_version
+
 # noinspection PyUnresolvedReferences
 from .util import compare_versions

@@ -33,7 +33,6 @@ class CheckBox(QCheckBox, WidgetMixin):
 
 
 class HeadingCheckBox(CheckBox):
-
     def __init__(self, parent, text=""):
         CheckBox.__init__(self, parent, text)
         font = self.get_font()

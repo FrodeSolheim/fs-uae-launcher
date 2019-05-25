@@ -2,8 +2,8 @@ import os
 
 from PIL import Image
 
-for item in os.listdir('.'):
-    if not item.endswith('.png'):
+for item in os.listdir("."):
+    if not item.endswith(".png"):
         continue
     im = Image.open(item)
     if im.mode != "RGB":

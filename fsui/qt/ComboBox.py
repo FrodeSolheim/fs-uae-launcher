@@ -3,15 +3,16 @@ from .widget_mixin import WidgetMixin
 
 
 class ComboBox(QComboBox, WidgetMixin):
-
     def __init__(self, parent, items=[], read_only=False):
         QComboBox.__init__(self, parent.get_container())
         # self = QComboBox(parent.get_container())
         # Widget.__init__(self, parent)
         self.init_widget(parent)
         # self.setEditable(not read_only)
-        print("FIXME: ComboBox not respecting read_only"
-              "(because of missing lineEdit then")
+        print(
+            "FIXME: ComboBox not respecting read_only"
+            "(because of missing lineEdit then"
+        )
         self.setEditable(True)
         self.lineEdit().installEventFilter(self.get_window())
 

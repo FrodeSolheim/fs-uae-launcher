@@ -41,6 +41,7 @@ class Paths(object):
                 # FIXME: dependency loop, have FS-UAE Launcher register
                 # this prefix with this class instead
                 from launcher.launcher_settings import LauncherSettings
+
                 config_path = LauncherSettings.get("config_path")
                 if config_path:
                     return cls.join(os.path.dirname(config_path), path[8:])
@@ -69,7 +70,7 @@ class Paths(object):
         if default_dir is not None:
             default_dir += "/"
             if path.startswith(default_dir):
-                return path[len(default_dir):]
+                return path[len(default_dir) :]
         base_dir = cls.get_base_dir(slash=True)
         if path.startswith(base_dir):
             path = path.replace(base_dir, "$BASE/")
@@ -151,7 +152,8 @@ class Paths(object):
                     name_compare = name_compare.lower()
                     if macosx:
                         name_compare = unicodedata.normalize(
-                                "NFC", name_compare)
+                            "NFC", name_compare
+                        )
                     if name_compare == part_compare:
                         # print("found case =", name)
                         if not combined.endswith("/"):

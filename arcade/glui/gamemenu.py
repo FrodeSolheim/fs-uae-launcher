@@ -12,9 +12,9 @@ from fsgs.context import fsgs
 from fsgs.platform import PlatformHandler
 
 GROUP_SPACING = 26
-HEADING_TEXT_LEFT = (1920 - 560 + 40 + 20 - 28)
-ITEM_TEXT_LEFT = (1920 - 560 + 40 + 20)
-SIDEBAR_START_Y = (1080 - 90 - 50)
+HEADING_TEXT_LEFT = 1920 - 560 + 40 + 20 - 28
+ITEM_TEXT_LEFT = 1920 - 560 + 40 + 20
+SIDEBAR_START_Y = 1080 - 90 - 50
 
 
 # FIXME: REMOVE?
@@ -99,7 +99,8 @@ class GameMenu(Menu):
         # self.top.left.append(HomeItem())
         # self.top.left.append(MenuItem(item.title))
         self.top.set_selected_index(
-            len(self.top.left) + len(self.top.right) - 1)
+            len(self.top.left) + len(self.top.right) - 1
+        )
 
         self.context = None
         self.controller = None
@@ -164,8 +165,13 @@ class GameMenu(Menu):
         item.configurations = []
         for variant in variants:
             item.configurations.append(
-                (variant["uuid"], variant["name"], variant["database"],
-                 variant["have"]))
+                (
+                    variant["uuid"],
+                    variant["name"],
+                    variant["database"],
+                    variant["have"],
+                )
+            )
 
     def create_context(self):
         item = self.items[0]
@@ -215,8 +221,8 @@ class GameMenu(Menu):
         enter_transition.value = 1.0
         if enter_transition.start > 0:
             enter_transition.value = (
-                (State.get().time - enter_transition.start) /
-                (enter_transition.end - enter_transition.start))
+                State.get().time - enter_transition.start
+            ) / (enter_transition.end - enter_transition.start)
             # prevent render from stopping when animating
             Render.get().dirty = True
         # transition goes from 1.0 ... 0.0
@@ -232,8 +238,8 @@ class GameMenu(Menu):
         exit_transition.value = 0.0
         if exit_transition.start > 0:
             exit_transition.value = (
-                (State.get().time - exit_transition.start) /
-                (exit_transition.end - exit_transition.start))
+                State.get().time - exit_transition.start
+            ) / (exit_transition.end - exit_transition.start)
             # prevent render from stopping when animating
             Render.get().dirty = True
         # transition goes from 1.0 ... 0.0
@@ -396,8 +402,9 @@ class GameConfigList(Navigatable):
         old_index = self.index
         if self.index < len(self.items) - 1:
             new_index = self.index + 1
-            while new_index < len(self.items) - 1 and \
-                    self.items[new_index].group:
+            while (
+                new_index < len(self.items) - 1 and self.items[new_index].group
+            ):
                 new_index += 1
         else:
             new_index = len(self.items) - 1
@@ -417,8 +424,9 @@ class GameConfigList(Navigatable):
             # Put chosen configuration at the top
             temp_config = self.game_item.configurations[0]
             # temp_config = self.game_item.configurations[self.index - 4 + 1]
-            self.game_item.configurations[0] = (
-                self.game_item.configurations[self.index - 4])
+            self.game_item.configurations[0] = self.game_item.configurations[
+                self.index - 4
+            ]
             self.game_item.configurations[self.index - 4] = temp_config
             # Put chosen variant item at the top
             temp = self.items[3]
@@ -450,6 +458,7 @@ class GameConfigList(Navigatable):
                 State.get().history.append(new_menu)
                 # FIXME
                 from arcade.glui.window import set_current_menu
+
                 set_current_menu(new_menu)
 
             exit_transition.start = State.get().time
@@ -486,14 +495,20 @@ class GameConfigList(Navigatable):
         gl.glDepthMask(False)
         Texture.sidebar_background_shadow.render(
             1920 - Texture.sidebar_background_shadow.w * transition,
-            0, Texture.sidebar_background_shadow.w,
-            Texture.sidebar_background_shadow.h)
+            0,
+            Texture.sidebar_background_shadow.w,
+            Texture.sidebar_background_shadow.h,
+        )
         if transition > 1.0:
             padding = 1920
             Texture.sidebar_background.render(
-                1920 - Texture.sidebar_background_shadow.w * transition +
-                Texture.sidebar_background_shadow.w, 0, 1920 + padding,
-                Texture.sidebar_background.h)
+                1920
+                - Texture.sidebar_background_shadow.w * transition
+                + Texture.sidebar_background_shadow.w,
+                0,
+                1920 + padding,
+                Texture.sidebar_background.h,
+            )
         gl.glDepthMask(True)
         gl.glPopMatrix()
 
@@ -550,8 +565,13 @@ class GameConfigList(Navigatable):
 
             if item.group:
                 BitmapFont.menu_font.render(
-                    text, HEADING_TEXT_LEFT + dx, y + 14,
-                    r=0.0, g=0x99 / 0xff, b=0xcc / 0xff)
+                    text,
+                    HEADING_TEXT_LEFT + dx,
+                    y + 14,
+                    r=0.0,
+                    g=0x99 / 0xFF,
+                    b=0xCC / 0xFF,
+                )
                 x, _ = BitmapFont.menu_font.measure(text)
                 x += HEADING_TEXT_LEFT + 12
                 fs_emu_blending(True)
@@ -578,7 +598,11 @@ class GameConfigList(Navigatable):
             alpha = max(0.0, (transition - 1.0) / 2.0)
             Texture.sidebar_background.render(
                 1920 - Texture.sidebar_background_shadow.w * transition + 200,
-                0, 1920, Texture.sidebar_background.h, opacity=alpha)
+                0,
+                1920,
+                Texture.sidebar_background.h,
+                opacity=alpha,
+            )
             gl.glEnable(gl.GL_DEPTH_TEST)
 
 

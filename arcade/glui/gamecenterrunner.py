@@ -7,8 +7,9 @@ from fsui.qt import QCursor
 
 
 class GameCenterRunner(object):
-    def __init__(self, controller=None, platform=None, name=None,
-                 config=None, **_):
+    def __init__(
+        self, controller=None, platform=None, name=None, config=None, **_
+    ):
         self.controller = controller
         self.platform_name = platform
         self.game_name = name
@@ -20,14 +21,16 @@ class GameCenterRunner(object):
 
     def prepare(self):
         self.done = False
-        threading.Thread(target=self._prepare_thread,
-                         name="GameRunnerPrepareThread").start()
+        threading.Thread(
+            target=self._prepare_thread, name="GameRunnerPrepareThread"
+        ).start()
 
     def _prepare_thread(self):
         try:
             self._do_prepare()
         except Exception as e:
             import traceback
+
             traceback.print_exc()
             self.error = repr(e)
             self.backtrace = traceback.format_exc()
@@ -88,8 +91,9 @@ class GameCenterRunner(object):
         # else:
         #     QCursor.setPos(cursor_x, cursor_y)
 
-        threading.Thread(target=self._run_thread,
-                         name="GameRunnerRunThread").start()
+        threading.Thread(
+            target=self._run_thread, name="GameRunnerRunThread"
+        ).start()
 
     def abort(self):
         self.controller.abort()
@@ -99,6 +103,7 @@ class GameCenterRunner(object):
             self._do_run()
         except Exception as e:
             import traceback
+
             traceback.print_exc()
             self.error = repr(e)
             self.backtrace = traceback.format_exc()

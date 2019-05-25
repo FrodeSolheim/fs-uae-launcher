@@ -5,7 +5,6 @@ from fsui.qt import Signal
 
 
 class SignalInhibitor:
-
     def __init__(self):
         self._inhibited = False
 
@@ -20,7 +19,6 @@ class SignalInhibitor:
 
 
 class SignalWrapper:
-
     def __init__(self, parent, name):
         self.parent = weakref.ref(parent)
         self.name = name

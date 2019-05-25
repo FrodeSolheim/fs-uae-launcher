@@ -75,8 +75,9 @@ class NotificationRender(object):
         for line in lines:
             tw, th = Render.get().measure_text(line, cls.font)
             y -= th
-            Render.get().text(line, cls.font, x + 23, y,
-                              color=(0.2, 0.2, 0.0, 1.0))
+            Render.get().text(
+                line, cls.font, x + 23, y, color=(0.2, 0.2, 0.0, 1.0)
+            )
             y -= 2
         # cls.y += h + 15
         cls.y -= h + 20

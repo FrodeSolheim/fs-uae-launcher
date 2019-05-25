@@ -60,7 +60,8 @@ def _get_compressor(compress_type):
 
 
 def create_deterministic_archive(
-        src, dst, fix_pyc_timestamps=False, torrentzip=False):
+    src, dst, fix_pyc_timestamps=False, torrentzip=False
+):
     sz = ZipFile(src, "r")
     # Sort and remove duplicates
     names = sorted(set(sz.namelist()), key=str.lower)
@@ -105,10 +106,18 @@ def create_deterministic_archive(
     if torrentzip:
         with open(dst, "r+b") as f:
             f.seek(-22 - 2 - 4 - 4, 2)
-            size = (f.read(1)[0] + f.read(1)[0] * 256 +
-                    f.read(1)[0] * 256 ** 2 + f.read(1)[0] * 256 ** 2)
-            socd = (f.read(1)[0] + f.read(1)[0] * 256 +
-                    f.read(1)[0] * 256 ** 2 + f.read(1)[0] * 256 ** 2)
+            size = (
+                f.read(1)[0]
+                + f.read(1)[0] * 256
+                + f.read(1)[0] * 256 ** 2
+                + f.read(1)[0] * 256 ** 2
+            )
+            socd = (
+                f.read(1)[0]
+                + f.read(1)[0] * 256
+                + f.read(1)[0] * 256 ** 2
+                + f.read(1)[0] * 256 ** 2
+            )
             f.seek(socd)
             data = f.read(size)
             checksum = zlib.crc32(data)
@@ -117,13 +126,18 @@ def create_deterministic_archive(
 
 
 def convert_deterministic_archive(
-        src, fix_pyc_timestamps=False, torrentzip=False):
+    src, fix_pyc_timestamps=False, torrentzip=False
+):
     tmp = os.path.join(
-        os.path.dirname(src), ".~" + os.path.basename(src) + ".tmp")
+        os.path.dirname(src), ".~" + os.path.basename(src) + ".tmp"
+    )
     try:
         create_deterministic_archive(
-            src, tmp, fix_pyc_timestamps=fix_pyc_timestamps,
-            torrentzip=torrentzip)
+            src,
+            tmp,
+            fix_pyc_timestamps=fix_pyc_timestamps,
+            torrentzip=torrentzip,
+        )
         os.remove(src)
         os.rename(tmp, src)
     finally:
@@ -144,12 +158,17 @@ def main():
                 torrentzip = True
             if len(sys.argv) == 3:
                 convert_deterministic_archive(
-                    sys.argv[2], torrentzip=torrentzip,
-                    fix_pyc_timestamps=fix_pyc_timestamps)
+                    sys.argv[2],
+                    torrentzip=torrentzip,
+                    fix_pyc_timestamps=fix_pyc_timestamps,
+                )
             else:
                 create_deterministic_archive(
-                    sys.argv[2], sys.argv[3], torrentzip=torrentzip,
-                    fix_pyc_timestamps=fix_pyc_timestamps)
+                    sys.argv[2],
+                    sys.argv[3],
+                    torrentzip=torrentzip,
+                    fix_pyc_timestamps=fix_pyc_timestamps,
+                )
 
 
 if __name__ == "__main__":

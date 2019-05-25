@@ -12,16 +12,19 @@ MAX_LINE = 30
 
 def show_exception():
     import traceback
+
     backtrace = traceback.format_exc()
     State.get().dialog = ErrorDialog(sys.exc_info()[1], backtrace)
     show_error_state = {"stop": False}
     while not show_error_state["stop"]:
+
         def input_func(button):
             if button == "BACK":
                 show_error_state["stop"] = True
 
         # FIXME
         from arcade.glui.window import main_loop_iteration
+
         if main_loop_iteration(input_func=input_func):
             break
     State.get().dialog.destroy()
@@ -41,11 +44,14 @@ class ErrorDialog(Dialog):
 
         self.background_color = (0.0, 0.0, 0.0, 1.0)
         liberation_mono_bold = resources.resource_filename(
-            "LiberationMono-Regular.ttf")
+            "LiberationMono-Regular.ttf"
+        )
         self.detail_font = pygame.font.Font(
-            liberation_mono_bold, int(0.021 * Render.get().display_height))
+            liberation_mono_bold, int(0.021 * Render.get().display_height)
+        )
         self.guru_font = pygame.font.Font(
-            liberation_mono_bold, int(0.03 * Render.get().display_height))
+            liberation_mono_bold, int(0.03 * Render.get().display_height)
+        )
         self.start_time = time.time()
 
     def render_content(self):
@@ -107,5 +113,6 @@ class ErrorDialog(Dialog):
                 break
             s = (MAX_LINE - i) / MAX_LINE
             tw, th = Render.get().text(
-                line, self.detail_font, x, y, color=(s, s, s, 1.0))
+                line, self.detail_font, x, y, color=(s, s, s, 1.0)
+            )
             y += th

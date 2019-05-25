@@ -1,5 +1,6 @@
 from weakref import ref
 from .qt import Qt, QDesktopWidget, QSignal
+
 # from .. import default_window_center, default_window_parent
 
 
@@ -23,8 +24,8 @@ def WindowBase(BaseClass):
             super().__init__(parent, *args, **kwargs)
             # MixinBase.__init__(self)
 
-        # noinspection PyUnusedLocal
-        # def init_window(self, parent, title):
+            # noinspection PyUnusedLocal
+            # def init_window(self, parent, title):
             # self.init_mixin_base()
             self.setWindowTitle(title)
 
@@ -38,8 +39,9 @@ def WindowBase(BaseClass):
             self._window = ref(self)
             self.setAttribute(Qt.WA_DeleteOnClose, True)
             if not border:
-                self.setWindowFlags(Qt.FramelessWindowHint |
-                                    Qt.NoDropShadowWindowHint)
+                self.setWindowFlags(
+                    Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint
+                )
                 # self.setWindowFlags(Qt.FramelessWindowHint)
             self._centered_on_initial_show = False
             if hasattr(self, "accepted"):
@@ -127,8 +129,9 @@ def WindowBase(BaseClass):
                 pp = real_parent.x(), real_parent.y()
                 ps = real_parent.width(), real_parent.height()
                 ss = self.get_size()
-                self.move(pp[0] + (ps[0] - ss[0]) // 2,
-                          pp[1] + (ps[1] - ss[1]) // 2)
+                self.move(
+                    pp[0] + (ps[0] - ss[0]) // 2, pp[1] + (ps[1] - ss[1]) // 2
+                )
             # elif len(default_window_center) > 0:
             #     x, y = default_window_center[-1]
             #     ss = self.get_size()

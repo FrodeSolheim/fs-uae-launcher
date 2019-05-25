@@ -78,17 +78,23 @@ if sys.platform == "win32":
     CSIDL_PROFILE = 40
     CSIDL_COMMON_DOCUMENTS = 46
     from ctypes import windll, wintypes
+
     _SHGetFolderPath = windll.shell32.SHGetFolderPathW
     _SHGetFolderPath.argtypes = [
-        wintypes.HWND, ctypes.c_int, wintypes.HANDLE, wintypes.DWORD,
-        wintypes.LPCWSTR]
+        wintypes.HWND,
+        ctypes.c_int,
+        wintypes.HANDLE,
+        wintypes.DWORD,
+        wintypes.LPCWSTR,
+    ]
 
     def csidl_dir(csidl):
         path_buf = ctypes.create_unicode_buffer(wintypes.MAX_PATH)
         result = _SHGetFolderPath(0, csidl, 0, 0, path_buf)
         if result != S_OK:
             raise RuntimeError(
-                "Could not find common directory for CSIDL {}".format(csidl))
+                "Could not find common directory for CSIDL {}".format(csidl)
+            )
         return path_buf.value
 
     class WinPathsException(Exception):
@@ -99,7 +105,8 @@ if sys.platform == "win32":
             return result
         else:
             raise WinPathsException(
-                "Failed to retrieve windows path: %s" % result)
+                "Failed to retrieve windows path: %s" % result
+            )
 
     _SHGetFolderPath.restype = err_unless_zero
 
@@ -114,7 +121,8 @@ def user_name():
 def xdg_user_dir(name):
     try:
         process = subprocess.Popen(
-                ["xdg-user-dir", name], stdout=subprocess.PIPE)
+            ["xdg-user-dir", name], stdout=subprocess.PIPE
+        )
         path = process.stdout.read().strip()
         path = path.decode("UTF-8")
         logger.debug("XDG user dir %s => %s", name, repr(path))
@@ -252,7 +260,9 @@ def base_dir():
         logger.debug("Checking OPENRETRO_BASE_DIR")
         path = os.environ.get("OPENRETRO_BASE_DIR", "")
         if path:
-            logger.debug("Base directory via OPENRETRO_BASE_DIR: %s", repr(path))
+            logger.debug(
+                "Base directory via OPENRETRO_BASE_DIR: %s", repr(path)
+            )
             return path
 
     else:

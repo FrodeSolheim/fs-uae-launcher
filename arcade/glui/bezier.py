@@ -37,8 +37,8 @@ class Bezier(object):
         x2, y2 = p2
         x3, y3 = p3
 
-        ax = - x0 + 3 * x1 - 3 * x2 + x3
-        ay = - y0 + 3 * y1 - 3 * y2 + y3
+        ax = -x0 + 3 * x1 - 3 * x2 + x3
+        ay = -y0 + 3 * y1 - 3 * y2 + y3
         bx = 3 * x0 - 6 * x1 + 3 * x2
         by = 3 * y0 - 6 * y1 + 3 * y2
         cx = -3 * x0 + 3 * x1

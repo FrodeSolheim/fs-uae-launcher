@@ -17,8 +17,7 @@ error_set = set()
 
 @lru_cache()
 def get_cache_zip_for_sha1(sha1):
-    zip_path = os.path.join(
-        FSGSDirectories.images_dir(), sha1[:2] + ".zip")
+    zip_path = os.path.join(FSGSDirectories.images_dir(), sha1[:2] + ".zip")
     try:
         return ZipFile(zip_path, "r")
     except Exception:
@@ -29,8 +28,7 @@ def get_file_for_sha1_cached(sha1, size_arg, cache_ext):
     cache_zip = get_cache_zip_for_sha1(sha1)
     if cache_zip is not None:
         try:
-            return cache_zip.open("{}/{}{}".format(
-                sha1[:2], sha1, cache_ext))
+            return cache_zip.open("{}/{}{}".format(sha1[:2], sha1, cache_ext))
         except KeyError:
             pass
     cache_dir = FSGSDirectories.images_dir_for_sha1(sha1)
@@ -45,8 +43,7 @@ def get_file_for_sha1_cached(sha1, size_arg, cache_ext):
     print("[IMAGES]", url)
     r = urlopen(url)
     data = r.read()
-    cache_file_partial = "{}.{}.partial".format(
-        cache_file, str(uuid4())[:8])
+    cache_file_partial = "{}.{}.partial".format(cache_file, str(uuid4())[:8])
     if not os.path.exists(os.path.dirname(cache_file_partial)):
         os.makedirs(os.path.dirname(cache_file_partial))
     with open(cache_file_partial, "wb") as f:
@@ -99,8 +96,9 @@ def load_image(relative_path):
         return pixels, (im.width(), im.height())
 
     except Exception as e:
-        print("[IMAGES] Error loading",
-              repr(relative_path), repr(path), repr(e))
+        print(
+            "[IMAGES] Error loading", repr(relative_path), repr(path), repr(e)
+        )
         error_set.add(relative_path)
         return None, (0, 0)
 
@@ -119,8 +117,9 @@ class ImageLoader(object):
 
     def start(self):
         self._stop_flag = False
-        threading.Thread(target=self.image_loader_thread,
-                         name="GameCenterImageLoaderThread").start()
+        threading.Thread(
+            target=self.image_loader_thread, name="GameCenterImageLoaderThread"
+        ).start()
         pass
 
     def image_loader_thread(self):

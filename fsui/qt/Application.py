@@ -3,7 +3,6 @@ from fsbc.application import Application as FSBCApplication
 
 
 class Application(FSBCApplication):
-
     def __init__(self, name):
         super().__init__(name)
         self.qapplication = init_qt()
@@ -21,4 +20,5 @@ class Application(FSBCApplication):
 
     def run_in_main(self, function, *args, **kwargs):
         from fsui.qt import call_after
+
         call_after(function, *args, **kwargs)

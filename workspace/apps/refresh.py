@@ -1,6 +1,7 @@
 from fsgs.ogd.refresh import DatabaseRefreshTask
 import fsui
 from fsui.extra.iconheader import IconHeader
+
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
 from launcher.ui.widgets import CloseButton
@@ -8,7 +9,6 @@ from workspace.ui.theme import WorkspaceTheme
 
 
 class RefreshWindow(fsui.Window):
-
     @classmethod
     def open(cls, parent=None):
         return fsui.open_window_instance(cls, parent)
@@ -25,8 +25,11 @@ class RefreshWindow(fsui.Window):
         self.layout.set_padding(20, 20, 20, 20)
 
         self.icon_header = IconHeader(
-            self, fsui.Icon("refresh", "pkg:workspace"),
-            gettext("Updating Database"), "")
+            self,
+            fsui.Icon("refresh", "pkg:workspace"),
+            gettext("Updating Database"),
+            "",
+        )
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         hori_layout = fsui.HorizontalLayout()
@@ -40,8 +43,7 @@ class RefreshWindow(fsui.Window):
 
         if self.window.theme.has_close_buttons:
             self.close_button = CloseButton(self)
-            hori_layout.add(
-                self.close_button, fill=True, margin_left=10)
+            hori_layout.add(self.close_button, fill=True, margin_left=10)
 
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()

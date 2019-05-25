@@ -2,11 +2,11 @@ from fsui.qt import QUrl
 from fsui.qt.helpers import QParent
 from .widget import Widget
 from PyQt5.QtWebKitWidgets import QWebView
+
 # from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 
 class WebView(Widget):
-
     def __init__(self, parent):
         super().__init__()
         self.set_widget(QWebView(QParent(parent)))

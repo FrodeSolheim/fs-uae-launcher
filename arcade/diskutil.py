@@ -40,7 +40,8 @@ class DiskUtil(object):
                 n = 99
             if n:
                 candidates.setdefault(n, []).append(
-                    (use_name, os.path.join(dir, item)))
+                    (use_name, os.path.join(dir, item))
+                )
         # print(candidates)
         for n, items in candidates.items():
             print("")
@@ -83,14 +84,15 @@ class DiskUtil(object):
                 for item in items:
                     print("  ", item)
                 raise Exception(
-                    "Did not find good match for floppy {0}".format(n))
+                    "Did not find good match for floppy {0}".format(n)
+                )
             matches.sort()
             print(matches)
             score, p = matches[0]
             # if score == 2:
             disks.append(p)
             # TOSEC (x of y) disk number labelling format
-            if ' of {0})'.format(n) in path:
+            if " of {0})".format(n) in path:
                 # found the correct number of disks
                 break
         return disks

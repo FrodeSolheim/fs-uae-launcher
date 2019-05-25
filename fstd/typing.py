@@ -6,6 +6,7 @@ import functools
 import re as stdlib_re  # Avoid confusion with the re we export.
 import sys
 import types
+
 try:
     import collections.abc as collections_abc
 except ImportError:
@@ -13,7 +14,11 @@ except ImportError:
 if sys.version_info[:2] >= (3, 6):
     import _collections_abc  # Needed for private function _check_methods # noqa
 try:
-    from types import WrapperDescriptorType, MethodWrapperType, MethodDescriptorType
+    from types import (
+        WrapperDescriptorType,
+        MethodWrapperType,
+        MethodDescriptorType,
+    )
 except ImportError:
     WrapperDescriptorType = type(object.__init__)
     MethodWrapperType = type(object().__str__)
@@ -23,36 +28,35 @@ except ImportError:
 # Please keep __all__ alphabetized within each category.
 __all__ = [
     # Super-special typing primitives.
-    'Any',
-    'Callable',
-    'ClassVar',
-    'Generic',
-    'Optional',
-    'Tuple',
-    'Type',
-    'TypeVar',
-    'Union',
-
+    "Any",
+    "Callable",
+    "ClassVar",
+    "Generic",
+    "Optional",
+    "Tuple",
+    "Type",
+    "TypeVar",
+    "Union",
     # ABCs (from collections.abc).
-    'AbstractSet',  # collections.abc.Set.
-    'GenericMeta',  # subclass of abc.ABCMeta and a metaclass
-                    # for 'Generic' and ABCs below.
-    'ByteString',
-    'Container',
-    'ContextManager',
-    'Hashable',
-    'ItemsView',
-    'Iterable',
-    'Iterator',
-    'KeysView',
-    'Mapping',
-    'MappingView',
-    'MutableMapping',
-    'MutableSequence',
-    'MutableSet',
-    'Sequence',
-    'Sized',
-    'ValuesView',
+    "AbstractSet",  # collections.abc.Set.
+    "GenericMeta",  # subclass of abc.ABCMeta and a metaclass
+    # for 'Generic' and ABCs below.
+    "ByteString",
+    "Container",
+    "ContextManager",
+    "Hashable",
+    "ItemsView",
+    "Iterable",
+    "Iterator",
+    "KeysView",
+    "Mapping",
+    "MappingView",
+    "MutableMapping",
+    "MutableSequence",
+    "MutableSet",
+    "Sequence",
+    "Sized",
+    "ValuesView",
     # The following are added depending on presence
     # of their non-generic counterparts in stdlib:
     # Awaitable,
@@ -62,38 +66,35 @@ __all__ = [
     # Collection,
     # AsyncGenerator,
     # AsyncContextManager
-
     # Structural checks, a.k.a. protocols.
-    'Reversible',
-    'SupportsAbs',
-    'SupportsBytes',
-    'SupportsComplex',
-    'SupportsFloat',
-    'SupportsInt',
-    'SupportsRound',
-
+    "Reversible",
+    "SupportsAbs",
+    "SupportsBytes",
+    "SupportsComplex",
+    "SupportsFloat",
+    "SupportsInt",
+    "SupportsRound",
     # Concrete collection types.
-    'Counter',
-    'Deque',
-    'Dict',
-    'DefaultDict',
-    'List',
-    'Set',
-    'FrozenSet',
-    'NamedTuple',  # Not really a type.
-    'Generator',
-
+    "Counter",
+    "Deque",
+    "Dict",
+    "DefaultDict",
+    "List",
+    "Set",
+    "FrozenSet",
+    "NamedTuple",  # Not really a type.
+    "Generator",
     # One-off things.
-    'AnyStr',
-    'cast',
-    'get_type_hints',
-    'NewType',
-    'no_type_check',
-    'no_type_check_decorator',
-    'NoReturn',
-    'overload',
-    'Text',
-    'TYPE_CHECKING',
+    "AnyStr",
+    "cast",
+    "get_type_hints",
+    "NewType",
+    "no_type_check",
+    "no_type_check_decorator",
+    "NoReturn",
+    "overload",
+    "Text",
+    "TYPE_CHECKING",
 ]
 
 # The pseudo-submodules 're' and 'io' are part of the public
@@ -110,8 +111,13 @@ def _qualname(x):
 
 
 def _trim_name(nm):
-    whitelist = ('_TypeAlias', '_ForwardRef', '_TypingBase', '_FinalTypingBase')
-    if nm.startswith('_') and nm not in whitelist:
+    whitelist = (
+        "_TypeAlias",
+        "_ForwardRef",
+        "_TypingBase",
+        "_FinalTypingBase",
+    )
+    if nm.startswith("_") and nm not in whitelist:
         nm = nm[1:]
     return nm
 
@@ -133,8 +139,10 @@ class TypingMeta(type):
 
     def __new__(cls, name, bases, namespace, *, _root=False):
         if not _root:
-            raise TypeError("Cannot subclass %s" %
-                            (', '.join(map(_type_repr, bases)) or '()'))
+            raise TypeError(
+                "Cannot subclass %s"
+                % (", ".join(map(_type_repr, bases)) or "()")
+            )
         return super().__new__(cls, name, bases, namespace)
 
     def __init__(self, *args, **kwds):
@@ -155,13 +163,13 @@ class TypingMeta(type):
 
     def __repr__(self):
         qname = _trim_name(_qualname(self))
-        return '%s.%s' % (self.__module__, qname)
+        return "%s.%s" % (self.__module__, qname)
 
 
 class _TypingBase(metaclass=TypingMeta, _root=True):
     """Internal indicator of special typing constructs."""
 
-    __slots__ = ('__weakref__',)
+    __slots__ = ("__weakref__",)
 
     def __init__(self, *args, **kwds):
         pass
@@ -172,9 +180,11 @@ class _TypingBase(metaclass=TypingMeta, _root=True):
         This only exists to give a better error message in case
         someone tries to subclass a special typing object (not a good idea).
         """
-        if (len(args) == 3 and
-                isinstance(args[0], str) and
-                isinstance(args[1], tuple)):
+        if (
+            len(args) == 3
+            and isinstance(args[0], str)
+            and isinstance(args[1], tuple)
+        ):
             # Close enough.
             raise TypeError("Cannot subclass %r" % cls)
         return super().__new__(cls)
@@ -189,7 +199,7 @@ class _TypingBase(metaclass=TypingMeta, _root=True):
     def __repr__(self):
         cls = type(self)
         qname = _trim_name(_qualname(cls))
-        return '%s.%s' % (cls.__module__, qname)
+        return "%s.%s" % (cls.__module__, qname)
 
     def __call__(self, *args, **kwds):
         raise TypeError("Cannot instantiate %r" % type(self))
@@ -217,18 +227,25 @@ class _FinalTypingBase(_TypingBase, _root=True):
 class _ForwardRef(_TypingBase, _root=True):
     """Internal wrapper to hold a forward reference."""
 
-    __slots__ = ('__forward_arg__', '__forward_code__',
-                 '__forward_evaluated__', '__forward_value__')
+    __slots__ = (
+        "__forward_arg__",
+        "__forward_code__",
+        "__forward_evaluated__",
+        "__forward_value__",
+    )
 
     def __init__(self, arg):
         super().__init__(arg)
         if not isinstance(arg, str):
-            raise TypeError('Forward reference must be a string -- got %r' % (arg,))
+            raise TypeError(
+                "Forward reference must be a string -- got %r" % (arg,)
+            )
         try:
-            code = compile(arg, '<string>', 'eval')
+            code = compile(arg, "<string>", "eval")
         except SyntaxError:
-            raise SyntaxError('Forward reference must be an expression -- got %r' %
-                              (arg,))
+            raise SyntaxError(
+                "Forward reference must be an expression -- got %r" % (arg,)
+            )
         self.__forward_arg__ = arg
         self.__forward_code__ = code
         self.__forward_evaluated__ = False
@@ -244,15 +261,18 @@ class _ForwardRef(_TypingBase, _root=True):
                 localns = globalns
             self.__forward_value__ = _type_check(
                 eval(self.__forward_code__, globalns, localns),
-                "Forward references must evaluate to types.")
+                "Forward references must evaluate to types.",
+            )
             self.__forward_evaluated__ = True
         return self.__forward_value__
 
     def __eq__(self, other):
         if not isinstance(other, _ForwardRef):
             return NotImplemented
-        return (self.__forward_arg__ == other.__forward_arg__ and
-                self.__forward_value__ == other.__forward_value__)
+        return (
+            self.__forward_arg__ == other.__forward_arg__
+            and self.__forward_value__ == other.__forward_value__
+        )
 
     def __hash__(self):
         return hash((self.__forward_arg__, self.__forward_value__))
@@ -264,7 +284,7 @@ class _ForwardRef(_TypingBase, _root=True):
         raise TypeError("Forward references cannot be used with issubclass().")
 
     def __repr__(self):
-        return '_ForwardRef(%r)' % (self.__forward_arg__,)
+        return "_ForwardRef(%r)" % (self.__forward_arg__,)
 
 
 class _TypeAlias(_TypingBase, _root=True):
@@ -276,7 +296,7 @@ class _TypeAlias(_TypingBase, _root=True):
     ``False``.
     """
 
-    __slots__ = ('name', 'type_var', 'impl_type', 'type_checker')
+    __slots__ = ("name", "type_var", "impl_type", "type_checker")
 
     def __init__(self, name, type_var, impl_type, type_checker):
         """Initializer.
@@ -306,12 +326,15 @@ class _TypeAlias(_TypingBase, _root=True):
             raise TypeError("%s cannot be further parameterized." % self)
         if self.type_var.__constraints__ and isinstance(parameter, type):
             if not issubclass(parameter, self.type_var.__constraints__):
-                raise TypeError("%s is not a valid substitution for %s." %
-                                (parameter, self.type_var))
+                raise TypeError(
+                    "%s is not a valid substitution for %s."
+                    % (parameter, self.type_var)
+                )
         if isinstance(parameter, TypeVar) and parameter is not self.type_var:
             raise TypeError("%s cannot be re-parameterized." % self)
-        return self.__class__(self.name, parameter,
-                              self.impl_type, self.type_checker)
+        return self.__class__(
+            self.name, parameter, self.impl_type, self.type_checker
+        )
 
     def __eq__(self, other):
         if not isinstance(other, _TypeAlias):
@@ -323,14 +346,18 @@ class _TypeAlias(_TypingBase, _root=True):
 
     def __instancecheck__(self, obj):
         if not isinstance(self.type_var, TypeVar):
-            raise TypeError("Parameterized type aliases cannot be used "
-                            "with isinstance().")
+            raise TypeError(
+                "Parameterized type aliases cannot be used "
+                "with isinstance()."
+            )
         return isinstance(obj, self.impl_type)
 
     def __subclasscheck__(self, cls):
         if not isinstance(self.type_var, TypeVar):
-            raise TypeError("Parameterized type aliases cannot be used "
-                            "with issubclass().")
+            raise TypeError(
+                "Parameterized type aliases cannot be used "
+                "with issubclass()."
+            )
         return issubclass(cls, self.impl_type)
 
 
@@ -369,15 +396,18 @@ def _type_check(arg, msg):
     if isinstance(arg, str):
         arg = _ForwardRef(arg)
     if (
-        isinstance(arg, _TypingBase) and type(arg).__name__ == '_ClassVar' or
-        not isinstance(arg, (type, _TypingBase)) and not callable(arg)
+        isinstance(arg, _TypingBase)
+        and type(arg).__name__ == "_ClassVar"
+        or not isinstance(arg, (type, _TypingBase))
+        and not callable(arg)
     ):
         raise TypeError(msg + " Got %.100r." % (arg,))
     # Bare Union etc. are not valid as type arguments
     if (
-        type(arg).__name__ in ('_Union', '_Optional') and
-        not getattr(arg, '__origin__', None) or
-        isinstance(arg, TypingMeta) and arg._gorg in (Generic, _Protocol)
+        type(arg).__name__ in ("_Union", "_Optional")
+        and not getattr(arg, "__origin__", None)
+        or isinstance(arg, TypingMeta)
+        and arg._gorg in (Generic, _Protocol)
     ):
         raise TypeError("Plain %s is not valid as type argument" % arg)
     return arg
@@ -392,11 +422,11 @@ def _type_repr(obj):
     else, we fall back on repr(obj).
     """
     if isinstance(obj, type) and not isinstance(obj, TypingMeta):
-        if obj.__module__ == 'builtins':
+        if obj.__module__ == "builtins":
             return _qualname(obj)
-        return '%s.%s' % (obj.__module__, _qualname(obj))
+        return "%s.%s" % (obj.__module__, _qualname(obj))
     if obj is ...:
-        return('...')
+        return "..."
     if isinstance(obj, types.FunctionType):
         return obj.__name__
     return repr(obj)
@@ -493,13 +523,29 @@ class TypeVar(_TypingBase, _root=True):
       A.__constraints__ == (str, bytes)
     """
 
-    __slots__ = ('__name__', '__bound__', '__constraints__',
-                 '__covariant__', '__contravariant__')
+    __slots__ = (
+        "__name__",
+        "__bound__",
+        "__constraints__",
+        "__covariant__",
+        "__contravariant__",
+    )
 
-    def __init__(self, name, *constraints, bound=None,
-                 covariant=False, contravariant=False):
-        super().__init__(name, *constraints, bound=bound,
-                         covariant=covariant, contravariant=contravariant)
+    def __init__(
+        self,
+        name,
+        *constraints,
+        bound=None,
+        covariant=False,
+        contravariant=False
+    ):
+        super().__init__(
+            name,
+            *constraints,
+            bound=bound,
+            covariant=covariant,
+            contravariant=contravariant
+        )
         self.__name__ = name
         if covariant and contravariant:
             raise ValueError("Bivariant types are not supported.")
@@ -522,11 +568,11 @@ class TypeVar(_TypingBase, _root=True):
 
     def __repr__(self):
         if self.__covariant__:
-            prefix = '+'
+            prefix = "+"
         elif self.__contravariant__:
-            prefix = '-'
+            prefix = "-"
         else:
-            prefix = '~'
+            prefix = "~"
         return prefix + self.__name__
 
     def __instancecheck__(self, instance):
@@ -538,17 +584,17 @@ class TypeVar(_TypingBase, _root=True):
 
 # Some unconstrained type variables.  These are used by the container types.
 # (These are not for export.)
-T = TypeVar('T')  # Any type.
-KT = TypeVar('KT')  # Key type.
-VT = TypeVar('VT')  # Value type.
-T_co = TypeVar('T_co', covariant=True)  # Any type covariant containers.
-V_co = TypeVar('V_co', covariant=True)  # Any type covariant containers.
-VT_co = TypeVar('VT_co', covariant=True)  # Value type covariant containers.
-T_contra = TypeVar('T_contra', contravariant=True)  # Ditto contravariant.
+T = TypeVar("T")  # Any type.
+KT = TypeVar("KT")  # Key type.
+VT = TypeVar("VT")  # Value type.
+T_co = TypeVar("T_co", covariant=True)  # Any type covariant containers.
+V_co = TypeVar("V_co", covariant=True)  # Any type covariant containers.
+VT_co = TypeVar("VT_co", covariant=True)  # Value type covariant containers.
+T_contra = TypeVar("T_contra", contravariant=True)  # Ditto contravariant.
 
 # A useful type variable with constraints.  This represents string types.
 # (This one *is* for export!)
-AnyStr = TypeVar('AnyStr', bytes, str)
+AnyStr = TypeVar("AnyStr", bytes, str)
 
 
 def _replace_arg(arg, tvars, args):
@@ -559,7 +605,9 @@ def _replace_arg(arg, tvars, args):
 
     if tvars is None:
         tvars = []
-    if hasattr(arg, '_subs_tree') and isinstance(arg, (GenericMeta, _TypingBase)):
+    if hasattr(arg, "_subs_tree") and isinstance(
+        arg, (GenericMeta, _TypingBase)
+    ):
         return arg._subs_tree(tvars, args)
     if isinstance(arg, TypeVar):
         for i, tvar in enumerate(tvars):
@@ -606,7 +654,9 @@ def _subs_tree(cls, tvars=None, args=None):
     for ocls in orig_chain:
         new_tree_args = []
         for arg in ocls.__args__:
-            new_tree_args.append(_replace_arg(arg, ocls.__parameters__, tree_args))
+            new_tree_args.append(
+                _replace_arg(arg, ocls.__parameters__, tree_args)
+            )
         tree_args = new_tree_args
     return tree_args
 
@@ -644,10 +694,11 @@ def _remove_dups_flatten(parameters):
     for t1 in params:
         if not isinstance(t1, type):
             continue
-        if any(isinstance(t2, type) and issubclass(t1, t2)
-               for t2 in all_params - {t1}
-               if not (isinstance(t2, GenericMeta) and
-                       t2.__origin__ is not None)):
+        if any(
+            isinstance(t2, type) and issubclass(t1, t2)
+            for t2 in all_params - {t1}
+            if not (isinstance(t2, GenericMeta) and t2.__origin__ is not None)
+        ):
             all_params.remove(t1)
     return tuple(t for t in params if t in all_params)
 
@@ -659,8 +710,10 @@ def _check_generic(cls, parameters):
     alen = len(parameters)
     elen = len(cls.__parameters__)
     if alen != elen:
-        raise TypeError("Too %s parameters for %s; actual %s, expected %s" %
-                        ("many" if alen > elen else "few", repr(cls), alen, elen))
+        raise TypeError(
+            "Too %s parameters for %s; actual %s, expected %s"
+            % ("many" if alen > elen else "few", repr(cls), alen, elen)
+        )
 
 
 _cleanups = []
@@ -681,6 +734,7 @@ def _tp_cache(func):
         except TypeError:
             pass  # All real errors (not unhashable args) are raised below.
         return func(*args, **kwds)
+
     return inner
 
 
@@ -728,7 +782,7 @@ class _Union(_FinalTypingBase, _root=True):
     - You can use Optional[X] as a shorthand for Union[X, None].
     """
 
-    __slots__ = ('__parameters__', '__args__', '__origin__', '__tree_hash__')
+    __slots__ = ("__parameters__", "__args__", "__origin__", "__tree_hash__")
 
     def __new__(cls, parameters=None, origin=None, *args, _root=False):
         self = super().__new__(cls, parameters, origin, *args, _root=_root)
@@ -736,7 +790,7 @@ class _Union(_FinalTypingBase, _root=True):
             self.__parameters__ = None
             self.__args__ = None
             self.__origin__ = None
-            self.__tree_hash__ = hash(frozenset(('Union',)))
+            self.__tree_hash__ = hash(frozenset(("Union",)))
             return self
         if not isinstance(parameters, tuple):
             raise TypeError("Expected parameters=<tuple>")
@@ -760,7 +814,9 @@ class _Union(_FinalTypingBase, _root=True):
     def _eval_type(self, globalns, localns):
         if self.__args__ is None:
             return self
-        ev_args = tuple(_eval_type(t, globalns, localns) for t in self.__args__)
+        ev_args = tuple(
+            _eval_type(t, globalns, localns) for t in self.__args__
+        )
         ev_origin = _eval_type(self.__origin__, globalns, localns)
         if ev_args == self.__args__ and ev_origin == self.__origin__:
             # Everything is already evaluated.
@@ -786,7 +842,7 @@ class _Union(_FinalTypingBase, _root=True):
                 arg_list.append(_type_repr(arg))
             else:
                 arg_list.append(arg[0]._tree_repr(arg))
-        return super().__repr__() + '[%s]' % ', '.join(arg_list)
+        return super().__repr__() + "[%s]" % ", ".join(arg_list)
 
     @_tp_cache
     def __getitem__(self, parameters):
@@ -885,12 +941,14 @@ def _make_subclasshook(cls):
                 if issubclass(subclass, scls):
                     return True
             return NotImplemented
+
     else:
         # For non-ABC extras we'll just call issubclass().
         def __extrahook__(subclass):
             if cls.__extra__ and issubclass(subclass, cls.__extra__):
                 return True
             return NotImplemented
+
     return __extrahook__
 
 
@@ -899,8 +957,8 @@ def _no_slots_copy(dct):
     (They will be re-created if necessary by normal class machinery.)
     """
     dict_copy = dict(dct)
-    if '__slots__' in dict_copy:
-        for slot in dict_copy['__slots__']:
+    if "__slots__" in dict_copy:
+        for slot in dict_copy["__slots__"]:
             dict_copy.pop(slot, None)
     return dict_copy
 
@@ -920,8 +978,17 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
     stripped to plain C.
     """
 
-    def __new__(cls, name, bases, namespace,
-                tvars=None, args=None, origin=None, extra=None, orig_bases=None):
+    def __new__(
+        cls,
+        name,
+        bases,
+        namespace,
+        tvars=None,
+        args=None,
+        origin=None,
+        extra=None,
+        orig_bases=None,
+    ):
         """Create a new generic class. GenericMeta.__new__ accepts
         keyword arguments that are used for internal bookkeeping, therefore
         an override should pass unused keyword arguments to super().
@@ -947,11 +1014,14 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
             for base in bases:
                 if base is Generic:
                     raise TypeError("Cannot inherit from plain Generic")
-                if (isinstance(base, GenericMeta) and
-                        base.__origin__ is Generic):
+                if (
+                    isinstance(base, GenericMeta)
+                    and base.__origin__ is Generic
+                ):
                     if gvars is not None:
                         raise TypeError(
-                            "Cannot inherit from Generic[...] multiple types.")
+                            "Cannot inherit from Generic[...] multiple types."
+                        )
                     gvars = base.__parameters__
             if gvars is None:
                 gvars = tvars
@@ -961,30 +1031,52 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
                 if not tvarset <= gvarset:
                     raise TypeError(
                         "Some type variables (%s) "
-                        "are not listed in Generic[%s]" %
-                        (", ".join(str(t) for t in tvars if t not in gvarset),
-                         ", ".join(str(g) for g in gvars)))
+                        "are not listed in Generic[%s]"
+                        % (
+                            ", ".join(
+                                str(t) for t in tvars if t not in gvarset
+                            ),
+                            ", ".join(str(g) for g in gvars),
+                        )
+                    )
                 tvars = gvars
 
         initial_bases = bases
-        if extra is not None and type(extra) is abc.ABCMeta and extra not in bases:
+        if (
+            extra is not None
+            and type(extra) is abc.ABCMeta
+            and extra not in bases
+        ):
             bases = (extra,) + bases
-        bases = tuple(b._gorg if isinstance(b, GenericMeta) else b for b in bases)
+        bases = tuple(
+            b._gorg if isinstance(b, GenericMeta) else b for b in bases
+        )
 
         # remove bare Generic from bases if there are other generic bases
         if any(isinstance(b, GenericMeta) and b is not Generic for b in bases):
             bases = tuple(b for b in bases if b is not Generic)
-        namespace.update({'__origin__': origin, '__extra__': extra,
-                          '_gorg': None if not origin else origin._gorg})
+        namespace.update(
+            {
+                "__origin__": origin,
+                "__extra__": extra,
+                "_gorg": None if not origin else origin._gorg,
+            }
+        )
         self = super().__new__(cls, name, bases, namespace, _root=True)
-        super(GenericMeta, self).__setattr__('_gorg',
-                                             self if not origin else origin._gorg)
+        super(GenericMeta, self).__setattr__(
+            "_gorg", self if not origin else origin._gorg
+        )
         self.__parameters__ = tvars
         # Be prepared that GenericMeta will be subclassed by TupleMeta
         # and CallableMeta, those two allow ..., (), or [] in __args___.
-        self.__args__ = tuple(... if a is _TypingEllipsis else
-                              () if a is _TypingEmpty else
-                              a for a in args) if args else None
+        self.__args__ = (
+            tuple(
+                ... if a is _TypingEllipsis else () if a is _TypingEmpty else a
+                for a in args
+            )
+            if args
+            else None
+        )
         # Speed hack (https://github.com/python/typing/issues/196).
         self.__next_in_mro__ = _next_in_mro(self)
         # Preserve base classes on subclassing (__bases__ are type erased now).
@@ -995,9 +1087,11 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
         # with issubclass() and isinstance() in the same way as their
         # collections.abc counterparts (e.g., isinstance([], Iterable)).
         if (
-            '__subclasshook__' not in namespace and extra or
+            "__subclasshook__" not in namespace
+            and extra
+            or
             # allow overriding
-            getattr(self.__subclasshook__, '__name__', '') == '__extrahook__'
+            getattr(self.__subclasshook__, "__name__", "") == "__extrahook__"
         ):
             self.__subclasshook__ = _make_subclasshook(self)
         if isinstance(extra, abc.ABCMeta):
@@ -1007,10 +1101,13 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
             self._abc_registry = origin._abc_registry
             self._abc_cache = origin._abc_cache
 
-        if origin and hasattr(origin, '__qualname__'):  # Fix for Python 3.2.
+        if origin and hasattr(origin, "__qualname__"):  # Fix for Python 3.2.
             self.__qualname__ = origin.__qualname__
-        self.__tree_hash__ = (hash(self._subs_tree()) if origin else
-                              super(GenericMeta, self).__hash__())
+        self.__tree_hash__ = (
+            hash(self._subs_tree())
+            if origin
+            else super(GenericMeta, self).__hash__()
+        )
         return self
 
     # _abc_negative_cache and _abc_negative_cache_version
@@ -1050,20 +1147,28 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
             _get_type_vars(self.__parameters__, tvars)
 
     def _eval_type(self, globalns, localns):
-        ev_origin = (self.__origin__._eval_type(globalns, localns)
-                     if self.__origin__ else None)
-        ev_args = tuple(_eval_type(a, globalns, localns) for a
-                        in self.__args__) if self.__args__ else None
+        ev_origin = (
+            self.__origin__._eval_type(globalns, localns)
+            if self.__origin__
+            else None
+        )
+        ev_args = (
+            tuple(_eval_type(a, globalns, localns) for a in self.__args__)
+            if self.__args__
+            else None
+        )
         if ev_origin == self.__origin__ and ev_args == self.__args__:
             return self
-        return self.__class__(self.__name__,
-                              self.__bases__,
-                              _no_slots_copy(self.__dict__),
-                              tvars=_type_vars(ev_args) if ev_args else None,
-                              args=ev_args,
-                              origin=ev_origin,
-                              extra=self.__extra__,
-                              orig_bases=self.__orig_bases__)
+        return self.__class__(
+            self.__name__,
+            self.__bases__,
+            _no_slots_copy(self.__dict__),
+            tvars=_type_vars(ev_args) if ev_args else None,
+            args=ev_args,
+            origin=ev_origin,
+            extra=self.__extra__,
+            orig_bases=self.__orig_bases__,
+        )
 
     def __repr__(self):
         if self.__origin__ is None:
@@ -1074,12 +1179,12 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
         arg_list = []
         for arg in tree[1:]:
             if arg == ():
-                arg_list.append('()')
+                arg_list.append("()")
             elif not isinstance(arg, tuple):
                 arg_list.append(_type_repr(arg))
             else:
                 arg_list.append(arg[0]._tree_repr(arg))
-        return super().__repr__() + '[%s]' % ', '.join(arg_list)
+        return super().__repr__() + "[%s]" % ", ".join(arg_list)
 
     def _subs_tree(self, tvars=None, args=None):
         if self.__origin__ is None:
@@ -1103,17 +1208,20 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
             params = (params,)
         if not params and self._gorg is not Tuple:
             raise TypeError(
-                "Parameter list to %s[...] cannot be empty" % _qualname(self))
+                "Parameter list to %s[...] cannot be empty" % _qualname(self)
+            )
         msg = "Parameters to generic types must be types."
         params = tuple(_type_check(p, msg) for p in params)
         if self is Generic:
             # Generic can only be subscripted with unique type variables.
             if not all(isinstance(p, TypeVar) for p in params):
                 raise TypeError(
-                    "Parameters to Generic[...] must all be type variables")
+                    "Parameters to Generic[...] must all be type variables"
+                )
             if len(set(params)) != len(params):
                 raise TypeError(
-                    "Parameters to Generic[...] must all be unique")
+                    "Parameters to Generic[...] must all be unique"
+                )
             tvars = params
             args = params
         elif self in (Tuple, Callable):
@@ -1125,8 +1233,9 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
             args = params
         elif self.__origin__ in (Generic, _Protocol):
             # Can't subscript Generic[...] or _Protocol[...].
-            raise TypeError("Cannot subscript already-subscripted %s" %
-                            repr(self))
+            raise TypeError(
+                "Cannot subscript already-subscripted %s" % repr(self)
+            )
         else:
             # Subscripting a regular Generic subclass.
             _check_generic(self, params)
@@ -1134,24 +1243,33 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
             args = params
 
         prepend = (self,) if self.__origin__ is None else ()
-        return self.__class__(self.__name__,
-                              prepend + self.__bases__,
-                              _no_slots_copy(self.__dict__),
-                              tvars=tvars,
-                              args=args,
-                              origin=self,
-                              extra=self.__extra__,
-                              orig_bases=self.__orig_bases__)
+        return self.__class__(
+            self.__name__,
+            prepend + self.__bases__,
+            _no_slots_copy(self.__dict__),
+            tvars=tvars,
+            args=args,
+            origin=self,
+            extra=self.__extra__,
+            orig_bases=self.__orig_bases__,
+        )
 
     def __subclasscheck__(self, cls):
         if self.__origin__ is not None:
-            if sys._getframe(1).f_globals['__name__'] not in ['abc', 'functools']:
-                raise TypeError("Parameterized generics cannot be used with class "
-                                "or instance checks")
+            if sys._getframe(1).f_globals["__name__"] not in [
+                "abc",
+                "functools",
+            ]:
+                raise TypeError(
+                    "Parameterized generics cannot be used with class "
+                    "or instance checks"
+                )
             return False
         if self is Generic:
-            raise TypeError("Class %r cannot be used with class "
-                            "or instance checks" % self)
+            raise TypeError(
+                "Class %r cannot be used with class "
+                "or instance checks" % self
+            )
         return super().__subclasscheck__(cls)
 
     def __instancecheck__(self, instance):
@@ -1165,9 +1283,11 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
     def __setattr__(self, attr, value):
         # We consider all the subscripted generics as proxies for original class
         if (
-            attr.startswith('__') and attr.endswith('__') or
-            attr.startswith('_abc_') or
-            self._gorg is None  # The class is not fully created, see #typing/506
+            attr.startswith("__")
+            and attr.endswith("__")
+            or attr.startswith("_abc_")
+            or self._gorg
+            is None  # The class is not fully created, see #typing/506
         ):
             super(GenericMeta, self).__setattr__(attr, value)
         else:
@@ -1182,15 +1302,19 @@ def _generic_new(base_cls, cls, *args, **kwds):
     # Assure type is erased on instantiation,
     # but attempt to store it in __orig_class__
     if cls.__origin__ is None:
-        if (base_cls.__new__ is object.__new__ and
-                cls.__init__ is not object.__init__):
+        if (
+            base_cls.__new__ is object.__new__
+            and cls.__init__ is not object.__init__
+        ):
             return base_cls.__new__(cls)
         else:
             return base_cls.__new__(cls, *args, **kwds)
     else:
         origin = cls._gorg
-        if (base_cls.__new__ is object.__new__ and
-                cls.__init__ is not object.__init__):
+        if (
+            base_cls.__new__ is object.__new__
+            and cls.__init__ is not object.__init__
+        ):
             obj = base_cls.__new__(origin)
         else:
             obj = base_cls.__new__(origin, *args, **kwds)
@@ -1227,8 +1351,10 @@ class Generic(metaclass=GenericMeta):
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is Generic:
-            raise TypeError("Type Generic cannot be instantiated; "
-                            "it can be used only as a base class")
+            raise TypeError(
+                "Type Generic cannot be instantiated; "
+                "it can be used only as a base class"
+            )
         return _generic_new(cls.__next_in_mro__, cls, *args, **kwds)
 
 
@@ -1267,14 +1393,16 @@ class TupleMeta(GenericMeta):
     def __instancecheck__(self, obj):
         if self.__args__ is None:
             return isinstance(obj, tuple)
-        raise TypeError("Parameterized Tuple cannot be used "
-                        "with isinstance().")
+        raise TypeError(
+            "Parameterized Tuple cannot be used " "with isinstance()."
+        )
 
     def __subclasscheck__(self, cls):
         if self.__args__ is None:
             return issubclass(cls, tuple)
-        raise TypeError("Parameterized Tuple cannot be used "
-                        "with issubclass().")
+        raise TypeError(
+            "Parameterized Tuple cannot be used " "with issubclass()."
+        )
 
 
 class Tuple(tuple, extra=tuple, metaclass=TupleMeta):
@@ -1291,8 +1419,9 @@ class Tuple(tuple, extra=tuple, metaclass=TupleMeta):
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is Tuple:
-            raise TypeError("Type Tuple cannot be instantiated; "
-                            "use tuple() instead")
+            raise TypeError(
+                "Type Tuple cannot be instantiated; " "use tuple() instead"
+            )
         return _generic_new(tuple, cls, *args, **kwds)
 
 
@@ -1315,10 +1444,12 @@ class CallableMeta(GenericMeta):
                 arg_list.append(_type_repr(arg))
             else:
                 arg_list.append(arg[0]._tree_repr(arg))
-        if arg_list[0] == '...':
-            return repr(tree[0]) + '[..., %s]' % arg_list[1]
-        return (repr(tree[0]) +
-                '[[%s], %s]' % (', '.join(arg_list[:-1]), arg_list[-1]))
+        if arg_list[0] == "...":
+            return repr(tree[0]) + "[..., %s]" % arg_list[1]
+        return repr(tree[0]) + "[[%s], %s]" % (
+            ", ".join(arg_list[:-1]),
+            arg_list[-1],
+        )
 
     def __getitem__(self, parameters):
         """A thin wrapper around __getitem_inner__ to provide the latter
@@ -1328,15 +1459,18 @@ class CallableMeta(GenericMeta):
         if self.__origin__ is not None or self._gorg is not Callable:
             return super().__getitem__(parameters)
         if not isinstance(parameters, tuple) or len(parameters) != 2:
-            raise TypeError("Callable must be used as "
-                            "Callable[[arg, ...], result].")
+            raise TypeError(
+                "Callable must be used as " "Callable[[arg, ...], result]."
+            )
         args, result = parameters
         if args is Ellipsis:
             parameters = (Ellipsis, result)
         else:
             if not isinstance(args, list):
-                raise TypeError("Callable[args, result]: args must be a list."
-                                " Got %.100r." % (args,))
+                raise TypeError(
+                    "Callable[args, result]: args must be a list."
+                    " Got %.100r." % (args,)
+                )
             parameters = (tuple(args), result)
         return self.__getitem_inner__(parameters)
 
@@ -1368,8 +1502,10 @@ class Callable(extra=collections_abc.Callable, metaclass=CallableMeta):
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is Callable:
-            raise TypeError("Type Callable cannot be instantiated; "
-                            "use a non-abstract subclass instead")
+            raise TypeError(
+                "Type Callable cannot be instantiated; "
+                "use a non-abstract subclass instead"
+            )
         return _generic_new(cls.__next_in_mro__, cls, *args, **kwds)
 
 
@@ -1390,7 +1526,7 @@ class _ClassVar(_FinalTypingBase, _root=True):
     be used with isinstance() or issubclass().
     """
 
-    __slots__ = ('__type__',)
+    __slots__ = ("__type__",)
 
     def __init__(self, tp=None, **kwds):
         self.__type__ = tp
@@ -1398,11 +1534,16 @@ class _ClassVar(_FinalTypingBase, _root=True):
     def __getitem__(self, item):
         cls = type(self)
         if self.__type__ is None:
-            return cls(_type_check(item,
-                       '{} accepts only single type.'.format(cls.__name__[1:])),
-                       _root=True)
-        raise TypeError('{} cannot be further subscripted'
-                        .format(cls.__name__[1:]))
+            return cls(
+                _type_check(
+                    item,
+                    "{} accepts only single type.".format(cls.__name__[1:]),
+                ),
+                _root=True,
+            )
+        raise TypeError(
+            "{} cannot be further subscripted".format(cls.__name__[1:])
+        )
 
     def _eval_type(self, globalns, localns):
         new_tp = _eval_type(self.__type__, globalns, localns)
@@ -1413,7 +1554,7 @@ class _ClassVar(_FinalTypingBase, _root=True):
     def __repr__(self):
         r = super().__repr__()
         if self.__type__ is not None:
-            r += '[{}]'.format(_type_repr(self.__type__))
+            r += "[{}]".format(_type_repr(self.__type__))
         return r
 
     def __hash__(self):
@@ -1461,9 +1602,15 @@ def _get_defaults(func):
     return res
 
 
-_allowed_types = (types.FunctionType, types.BuiltinFunctionType,
-                  types.MethodType, types.ModuleType,
-                  WrapperDescriptorType, MethodWrapperType, MethodDescriptorType)
+_allowed_types = (
+    types.FunctionType,
+    types.BuiltinFunctionType,
+    types.MethodType,
+    types.ModuleType,
+    WrapperDescriptorType,
+    MethodWrapperType,
+    MethodDescriptorType,
+)
 
 
 def get_type_hints(obj, globalns=None, localns=None):
@@ -1497,7 +1644,7 @@ def get_type_hints(obj, globalns=None, localns=None):
       locals, respectively.
     """
 
-    if getattr(obj, '__no_type_check__', None):
+    if getattr(obj, "__no_type_check__", None):
         return {}
     # Classes require a special treatment.
     if isinstance(obj, type):
@@ -1507,7 +1654,7 @@ def get_type_hints(obj, globalns=None, localns=None):
                 base_globals = sys.modules[base.__module__].__dict__
             else:
                 base_globals = globalns
-            ann = base.__dict__.get('__annotations__', {})
+            ann = base.__dict__.get("__annotations__", {})
             for name, value in ann.items():
                 if value is None:
                     value = type(None)
@@ -1521,19 +1668,21 @@ def get_type_hints(obj, globalns=None, localns=None):
         if isinstance(obj, types.ModuleType):
             globalns = obj.__dict__
         else:
-            globalns = getattr(obj, '__globals__', {})
+            globalns = getattr(obj, "__globals__", {})
         if localns is None:
             localns = globalns
     elif localns is None:
         localns = globalns
-    hints = getattr(obj, '__annotations__', None)
+    hints = getattr(obj, "__annotations__", None)
     if hints is None:
         # Return empty annotations for something that _could_ have them.
         if isinstance(obj, _allowed_types):
             return {}
         else:
-            raise TypeError('{!r} is not a module, class, method, '
-                            'or function.'.format(obj))
+            raise TypeError(
+                "{!r} is not a module, class, method, "
+                "or function.".format(obj)
+            )
     defaults = _get_defaults(obj)
     hints = dict(hints)
     for name, value in hints.items():
@@ -1596,7 +1745,8 @@ def _overload_dummy(*args, **kwds):
         "You should not call an overloaded function. "
         "A series of @overload-decorated functions "
         "outside a stub module should always be followed "
-        "by an implementation that is not @overload-ed.")
+        "by an implementation that is not @overload-ed."
+    )
 
 
 def overload(func):
@@ -1661,7 +1811,7 @@ class _ProtocolMeta(GenericMeta):
         # Get all Protocol base classes.
         protocol_bases = []
         for c in self.__mro__:
-            if getattr(c, '_is_protocol', False) and c.__name__ != '_Protocol':
+            if getattr(c, "_is_protocol", False) and c.__name__ != "_Protocol":
                 protocol_bases.append(c)
 
         # Get attributes included in protocol.
@@ -1670,27 +1820,32 @@ class _ProtocolMeta(GenericMeta):
             for attr in base.__dict__.keys():
                 # Include attributes not defined in any non-protocol bases.
                 for c in self.__mro__:
-                    if (c is not base and attr in c.__dict__ and
-                            not getattr(c, '_is_protocol', False)):
+                    if (
+                        c is not base
+                        and attr in c.__dict__
+                        and not getattr(c, "_is_protocol", False)
+                    ):
                         break
                 else:
-                    if (not attr.startswith('_abc_') and
-                            attr != '__abstractmethods__' and
-                            attr != '__annotations__' and
-                            attr != '__weakref__' and
-                            attr != '_is_protocol' and
-                            attr != '_gorg' and
-                            attr != '__dict__' and
-                            attr != '__args__' and
-                            attr != '__slots__' and
-                            attr != '_get_protocol_attrs' and
-                            attr != '__next_in_mro__' and
-                            attr != '__parameters__' and
-                            attr != '__origin__' and
-                            attr != '__orig_bases__' and
-                            attr != '__extra__' and
-                            attr != '__tree_hash__' and
-                            attr != '__module__'):
+                    if (
+                        not attr.startswith("_abc_")
+                        and attr != "__abstractmethods__"
+                        and attr != "__annotations__"
+                        and attr != "__weakref__"
+                        and attr != "_is_protocol"
+                        and attr != "_gorg"
+                        and attr != "__dict__"
+                        and attr != "__args__"
+                        and attr != "__slots__"
+                        and attr != "_get_protocol_attrs"
+                        and attr != "__next_in_mro__"
+                        and attr != "__parameters__"
+                        and attr != "__origin__"
+                        and attr != "__orig_bases__"
+                        and attr != "__extra__"
+                        and attr != "__tree_hash__"
+                        and attr != "__module__"
+                    ):
                         attrs.add(attr)
 
         return attrs
@@ -1715,32 +1870,38 @@ class _Protocol(metaclass=_ProtocolMeta):
 Hashable = collections_abc.Hashable  # Not generic.
 
 
-if hasattr(collections_abc, 'Awaitable'):
+if hasattr(collections_abc, "Awaitable"):
+
     class Awaitable(Generic[T_co], extra=collections_abc.Awaitable):
         __slots__ = ()
 
-    __all__.append('Awaitable')
+    __all__.append("Awaitable")
 
 
-if hasattr(collections_abc, 'Coroutine'):
-    class Coroutine(Awaitable[V_co], Generic[T_co, T_contra, V_co],
-                    extra=collections_abc.Coroutine):
+if hasattr(collections_abc, "Coroutine"):
+
+    class Coroutine(
+        Awaitable[V_co],
+        Generic[T_co, T_contra, V_co],
+        extra=collections_abc.Coroutine,
+    ):
         __slots__ = ()
 
-    __all__.append('Coroutine')
+    __all__.append("Coroutine")
 
 
-if hasattr(collections_abc, 'AsyncIterable'):
+if hasattr(collections_abc, "AsyncIterable"):
 
     class AsyncIterable(Generic[T_co], extra=collections_abc.AsyncIterable):
         __slots__ = ()
 
-    class AsyncIterator(AsyncIterable[T_co],
-                        extra=collections_abc.AsyncIterator):
+    class AsyncIterator(
+        AsyncIterable[T_co], extra=collections_abc.AsyncIterator
+    ):
         __slots__ = ()
 
-    __all__.append('AsyncIterable')
-    __all__.append('AsyncIterator')
+    __all__.append("AsyncIterable")
+    __all__.append("AsyncIterator")
 
 
 class Iterable(Generic[T_co], extra=collections_abc.Iterable):
@@ -1799,15 +1960,19 @@ class SupportsRound(_Protocol[T_co]):
         pass
 
 
-if hasattr(collections_abc, 'Reversible'):
+if hasattr(collections_abc, "Reversible"):
+
     class Reversible(Iterable[T_co], extra=collections_abc.Reversible):
         __slots__ = ()
+
+
 else:
+
     class Reversible(_Protocol[T_co]):
         __slots__ = ()
 
         @abstractmethod
-        def __reversed__(self) -> 'Iterator[T_co]':
+        def __reversed__(self) -> "Iterator[T_co]":
             pass
 
 
@@ -1818,23 +1983,32 @@ class Container(Generic[T_co], extra=collections_abc.Container):
     __slots__ = ()
 
 
-if hasattr(collections_abc, 'Collection'):
-    class Collection(Sized, Iterable[T_co], Container[T_co],
-                     extra=collections_abc.Collection):
+if hasattr(collections_abc, "Collection"):
+
+    class Collection(
+        Sized,
+        Iterable[T_co],
+        Container[T_co],
+        extra=collections_abc.Collection,
+    ):
         __slots__ = ()
 
-    __all__.append('Collection')
+    __all__.append("Collection")
 
 
 # Callable was defined earlier.
 
-if hasattr(collections_abc, 'Collection'):
-    class AbstractSet(Collection[T_co],
-                      extra=collections_abc.Set):
+if hasattr(collections_abc, "Collection"):
+
+    class AbstractSet(Collection[T_co], extra=collections_abc.Set):
         __slots__ = ()
+
+
 else:
-    class AbstractSet(Sized, Iterable[T_co], Container[T_co],
-                      extra=collections_abc.Set):
+
+    class AbstractSet(
+        Sized, Iterable[T_co], Container[T_co], extra=collections_abc.Set
+    ):
         __slots__ = ()
 
 
@@ -1843,13 +2017,23 @@ class MutableSet(AbstractSet[T], extra=collections_abc.MutableSet):
 
 
 # NOTE: It is only covariant in the value type.
-if hasattr(collections_abc, 'Collection'):
-    class Mapping(Collection[KT], Generic[KT, VT_co],
-                  extra=collections_abc.Mapping):
+if hasattr(collections_abc, "Collection"):
+
+    class Mapping(
+        Collection[KT], Generic[KT, VT_co], extra=collections_abc.Mapping
+    ):
         __slots__ = ()
+
+
 else:
-    class Mapping(Sized, Iterable[KT], Container[KT], Generic[KT, VT_co],
-                  extra=collections_abc.Mapping):
+
+    class Mapping(
+        Sized,
+        Iterable[KT],
+        Container[KT],
+        Generic[KT, VT_co],
+        extra=collections_abc.Mapping,
+    ):
         __slots__ = ()
 
 
@@ -1857,18 +2041,30 @@ class MutableMapping(Mapping[KT, VT], extra=collections_abc.MutableMapping):
     __slots__ = ()
 
 
-if hasattr(collections_abc, 'Reversible'):
-    if hasattr(collections_abc, 'Collection'):
-        class Sequence(Reversible[T_co], Collection[T_co],
-                       extra=collections_abc.Sequence):
+if hasattr(collections_abc, "Reversible"):
+    if hasattr(collections_abc, "Collection"):
+
+        class Sequence(
+            Reversible[T_co], Collection[T_co], extra=collections_abc.Sequence
+        ):
             __slots__ = ()
+
     else:
-        class Sequence(Sized, Reversible[T_co], Container[T_co],
-                       extra=collections_abc.Sequence):
+
+        class Sequence(
+            Sized,
+            Reversible[T_co],
+            Container[T_co],
+            extra=collections_abc.Sequence,
+        ):
             __slots__ = ()
+
+
 else:
-    class Sequence(Sized, Iterable[T_co], Container[T_co],
-                   extra=collections_abc.Sequence):
+
+    class Sequence(
+        Sized, Iterable[T_co], Container[T_co], extra=collections_abc.Sequence
+    ):
         __slots__ = ()
 
 
@@ -1886,8 +2082,9 @@ class List(list, MutableSequence[T], extra=list):
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is List:
-            raise TypeError("Type List cannot be instantiated; "
-                            "use list() instead")
+            raise TypeError(
+                "Type List cannot be instantiated; " "use list() instead"
+            )
         return _generic_new(list, cls, *args, **kwds)
 
 
@@ -1907,8 +2104,9 @@ class Set(set, MutableSet[T], extra=set):
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is Set:
-            raise TypeError("Type Set cannot be instantiated; "
-                            "use set() instead")
+            raise TypeError(
+                "Type Set cannot be instantiated; " "use set() instead"
+            )
         return _generic_new(set, cls, *args, **kwds)
 
 
@@ -1917,8 +2115,10 @@ class FrozenSet(frozenset, AbstractSet[T_co], extra=frozenset):
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is FrozenSet:
-            raise TypeError("Type FrozenSet cannot be instantiated; "
-                            "use frozenset() instead")
+            raise TypeError(
+                "Type FrozenSet cannot be instantiated; "
+                "use frozenset() instead"
+            )
         return _generic_new(frozenset, cls, *args, **kwds)
 
 
@@ -1926,15 +2126,18 @@ class MappingView(Sized, Iterable[T_co], extra=collections_abc.MappingView):
     __slots__ = ()
 
 
-class KeysView(MappingView[KT], AbstractSet[KT],
-               extra=collections_abc.KeysView):
+class KeysView(
+    MappingView[KT], AbstractSet[KT], extra=collections_abc.KeysView
+):
     __slots__ = ()
 
 
-class ItemsView(MappingView[Tuple[KT, VT_co]],
-                AbstractSet[Tuple[KT, VT_co]],
-                Generic[KT, VT_co],
-                extra=collections_abc.ItemsView):
+class ItemsView(
+    MappingView[Tuple[KT, VT_co]],
+    AbstractSet[Tuple[KT, VT_co]],
+    Generic[KT, VT_co],
+    extra=collections_abc.ItemsView,
+):
     __slots__ = ()
 
 
@@ -1942,10 +2145,16 @@ class ValuesView(MappingView[VT_co], extra=collections_abc.ValuesView):
     __slots__ = ()
 
 
-if hasattr(contextlib, 'AbstractContextManager'):
-    class ContextManager(Generic[T_co], extra=contextlib.AbstractContextManager):
+if hasattr(contextlib, "AbstractContextManager"):
+
+    class ContextManager(
+        Generic[T_co], extra=contextlib.AbstractContextManager
+    ):
         __slots__ = ()
+
+
 else:
+
     class ContextManager(Generic[T_co]):
         __slots__ = ()
 
@@ -1964,20 +2173,24 @@ else:
                 # (https://bugs.python.org/issue25958), but we do not support
                 # that pattern here because this fallback class is only used
                 # in Python 3.5 and earlier.
-                if (any("__enter__" in B.__dict__ for B in C.__mro__) and
-                    any("__exit__" in B.__dict__ for B in C.__mro__)):
+                if any("__enter__" in B.__dict__ for B in C.__mro__) and any(
+                    "__exit__" in B.__dict__ for B in C.__mro__
+                ):
                     return True
             return NotImplemented
 
 
-if hasattr(contextlib, 'AbstractAsyncContextManager'):
-    class AsyncContextManager(Generic[T_co],
-                              extra=contextlib.AbstractAsyncContextManager):
+if hasattr(contextlib, "AbstractAsyncContextManager"):
+
+    class AsyncContextManager(
+        Generic[T_co], extra=contextlib.AbstractAsyncContextManager
+    ):
         __slots__ = ()
 
-    __all__.append('AsyncContextManager')
+    __all__.append("AsyncContextManager")
 elif sys.version_info[:2] >= (3, 5):
-    exec("""
+    exec(
+        """
 class AsyncContextManager(Generic[T_co]):
     __slots__ = ()
 
@@ -1999,7 +2212,8 @@ class AsyncContextManager(Generic[T_co]):
         return NotImplemented
 
 __all__.append('AsyncContextManager')
-""")
+"""
+    )
 
 
 class Dict(dict, MutableMapping[KT, VT], extra=dict):
@@ -2008,13 +2222,17 @@ class Dict(dict, MutableMapping[KT, VT], extra=dict):
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is Dict:
-            raise TypeError("Type Dict cannot be instantiated; "
-                            "use dict() instead")
+            raise TypeError(
+                "Type Dict cannot be instantiated; " "use dict() instead"
+            )
         return _generic_new(dict, cls, *args, **kwds)
 
 
-class DefaultDict(collections.defaultdict, MutableMapping[KT, VT],
-                  extra=collections.defaultdict):
+class DefaultDict(
+    collections.defaultdict,
+    MutableMapping[KT, VT],
+    extra=collections.defaultdict,
+):
 
     __slots__ = ()
 
@@ -2034,12 +2252,15 @@ class Counter(collections.Counter, Dict[T, int], extra=collections.Counter):
         return _generic_new(collections.Counter, cls, *args, **kwds)
 
 
-if hasattr(collections, 'ChainMap'):
+if hasattr(collections, "ChainMap"):
     # ChainMap only exists in 3.3+
-    __all__.append('ChainMap')
+    __all__.append("ChainMap")
 
-    class ChainMap(collections.ChainMap, MutableMapping[KT, VT],
-                   extra=collections.ChainMap):
+    class ChainMap(
+        collections.ChainMap,
+        MutableMapping[KT, VT],
+        extra=collections.ChainMap,
+    ):
 
         __slots__ = ()
 
@@ -2050,7 +2271,7 @@ if hasattr(collections, 'ChainMap'):
 
 
 # Determine what base class to use for Generator.
-if hasattr(collections_abc, 'Generator'):
+if hasattr(collections_abc, "Generator"):
     # Sufficiently recent versions of 3.5 have a Generator ABC.
     _G_base = collections_abc.Generator
 else:
@@ -2058,27 +2279,32 @@ else:
     _G_base = types.GeneratorType
 
 
-class Generator(Iterator[T_co], Generic[T_co, T_contra, V_co],
-                extra=_G_base):
+class Generator(Iterator[T_co], Generic[T_co, T_contra, V_co], extra=_G_base):
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is Generator:
-            raise TypeError("Type Generator cannot be instantiated; "
-                            "create a subclass instead")
+            raise TypeError(
+                "Type Generator cannot be instantiated; "
+                "create a subclass instead"
+            )
         return _generic_new(_G_base, cls, *args, **kwds)
 
 
-if hasattr(collections_abc, 'AsyncGenerator'):
-    class AsyncGenerator(AsyncIterator[T_co], Generic[T_co, T_contra],
-                         extra=collections_abc.AsyncGenerator):
+if hasattr(collections_abc, "AsyncGenerator"):
+
+    class AsyncGenerator(
+        AsyncIterator[T_co],
+        Generic[T_co, T_contra],
+        extra=collections_abc.AsyncGenerator,
+    ):
         __slots__ = ()
 
-    __all__.append('AsyncGenerator')
+    __all__.append("AsyncGenerator")
 
 
 # Internal type variable used for Type[].
-CT_co = TypeVar('CT_co', covariant=True, bound=type)
+CT_co = TypeVar("CT_co", covariant=True, bound=type)
 
 
 # This is not a real generic class.  Don't use outside annotations.
@@ -2110,14 +2336,20 @@ class Type(Generic[CT_co], extra=type):
 
 
 def _make_nmtuple(name, types):
-    msg = "NamedTuple('Name', [(f0, t0), (f1, t1), ...]); each t must be a type"
+    msg = (
+        "NamedTuple('Name', [(f0, t0), (f1, t1), ...]); each t must be a type"
+    )
     types = [(n, _type_check(t, msg)) for n, t in types]
     nm_tpl = collections.namedtuple(name, [n for n, t in types])
     # Prior to PEP 526, only _field_types attribute was assigned.
     # Now, both __annotations__ and _field_types are used to maintain compatibility.
-    nm_tpl.__annotations__ = nm_tpl._field_types = collections.OrderedDict(types)
+    nm_tpl.__annotations__ = nm_tpl._field_types = collections.OrderedDict(
+        types
+    )
     try:
-        nm_tpl.__module__ = sys._getframe(2).f_globals.get('__name__', '__main__')
+        nm_tpl.__module__ = sys._getframe(2).f_globals.get(
+            "__name__", "__main__"
+        )
     except (AttributeError, ValueError):
         pass
     return nm_tpl
@@ -2126,22 +2358,33 @@ def _make_nmtuple(name, types):
 _PY36 = sys.version_info[:2] >= (3, 6)
 
 # attributes prohibited to set in NamedTuple class syntax
-_prohibited = ('__new__', '__init__', '__slots__', '__getnewargs__',
-               '_fields', '_field_defaults', '_field_types',
-               '_make', '_replace', '_asdict', '_source')
+_prohibited = (
+    "__new__",
+    "__init__",
+    "__slots__",
+    "__getnewargs__",
+    "_fields",
+    "_field_defaults",
+    "_field_types",
+    "_make",
+    "_replace",
+    "_asdict",
+    "_source",
+)
 
-_special = ('__module__', '__name__', '__qualname__', '__annotations__')
+_special = ("__module__", "__name__", "__qualname__", "__annotations__")
 
 
 class NamedTupleMeta(type):
-
     def __new__(cls, typename, bases, ns):
-        if ns.get('_root', False):
+        if ns.get("_root", False):
             return super().__new__(cls, typename, bases, ns)
         if not _PY36:
-            raise TypeError("Class syntax for NamedTuple is only supported"
-                            " in Python 3.6+")
-        types = ns.get('__annotations__', {})
+            raise TypeError(
+                "Class syntax for NamedTuple is only supported"
+                " in Python 3.6+"
+            )
+        types = ns.get("__annotations__", {})
         nm_tpl = _make_nmtuple(typename, types.items())
         defaults = []
         defaults_dict = {}
@@ -2151,17 +2394,22 @@ class NamedTupleMeta(type):
                 defaults.append(default_value)
                 defaults_dict[field_name] = default_value
             elif defaults:
-                raise TypeError("Non-default namedtuple field {field_name} cannot "
-                                "follow default field(s) {default_names}"
-                                .format(field_name=field_name,
-                                        default_names=', '.join(defaults_dict.keys())))
+                raise TypeError(
+                    "Non-default namedtuple field {field_name} cannot "
+                    "follow default field(s) {default_names}".format(
+                        field_name=field_name,
+                        default_names=", ".join(defaults_dict.keys()),
+                    )
+                )
         nm_tpl.__new__.__annotations__ = collections.OrderedDict(types)
         nm_tpl.__new__.__defaults__ = tuple(defaults)
         nm_tpl._field_defaults = defaults_dict
         # update from user namespace without overriding special namedtuple attributes
         for key in ns:
             if key in _prohibited:
-                raise AttributeError("Cannot overwrite NamedTuple attribute " + key)
+                raise AttributeError(
+                    "Cannot overwrite NamedTuple attribute " + key
+                )
             elif key not in _special and key not in nm_tpl._fields:
                 setattr(nm_tpl, key, ns[key])
         return nm_tpl
@@ -2193,17 +2441,22 @@ class NamedTuple(metaclass=NamedTupleMeta):
 
         Employee = NamedTuple('Employee', [('name', str), ('id', int)])
     """
+
     _root = True
 
     def __new__(self, typename, fields=None, **kwargs):
         if kwargs and not _PY36:
-            raise TypeError("Keyword syntax for NamedTuple is only supported"
-                            " in Python 3.6+")
+            raise TypeError(
+                "Keyword syntax for NamedTuple is only supported"
+                " in Python 3.6+"
+            )
         if fields is None:
             fields = kwargs.items()
         elif kwargs:
-            raise TypeError("Either list of fields or keywords"
-                            " can be provided to NamedTuple, not both")
+            raise TypeError(
+                "Either list of fields or keywords"
+                " can be provided to NamedTuple, not both"
+            )
         return _make_nmtuple(typename, fields)
 
 
@@ -2330,7 +2583,7 @@ class IO(Generic[AnyStr]):
         pass
 
     @abstractmethod
-    def __enter__(self) -> 'IO[AnyStr]':
+    def __enter__(self) -> "IO[AnyStr]":
         pass
 
     @abstractmethod
@@ -2348,7 +2601,7 @@ class BinaryIO(IO[bytes]):
         pass
 
     @abstractmethod
-    def __enter__(self) -> 'BinaryIO':
+    def __enter__(self) -> "BinaryIO":
         pass
 
 
@@ -2378,36 +2631,38 @@ class TextIO(IO[str]):
         pass
 
     @abstractmethod
-    def __enter__(self) -> 'TextIO':
+    def __enter__(self) -> "TextIO":
         pass
 
 
 class io:
     """Wrapper namespace for IO generic classes."""
 
-    __all__ = ['IO', 'TextIO', 'BinaryIO']
+    __all__ = ["IO", "TextIO", "BinaryIO"]
     IO = IO
     TextIO = TextIO
     BinaryIO = BinaryIO
 
 
-io.__name__ = __name__ + '.io'
+io.__name__ = __name__ + ".io"
 sys.modules[io.__name__] = io
 
 
-Pattern = _TypeAlias('Pattern', AnyStr, type(stdlib_re.compile('')),
-                     lambda p: p.pattern)
-Match = _TypeAlias('Match', AnyStr, type(stdlib_re.match('', '')),
-                   lambda m: m.re.pattern)
+Pattern = _TypeAlias(
+    "Pattern", AnyStr, type(stdlib_re.compile("")), lambda p: p.pattern
+)
+Match = _TypeAlias(
+    "Match", AnyStr, type(stdlib_re.match("", "")), lambda m: m.re.pattern
+)
 
 
 class re:
     """Wrapper namespace for re type aliases."""
 
-    __all__ = ['Pattern', 'Match']
+    __all__ = ["Pattern", "Match"]
     Pattern = Pattern
     Match = Match
 
 
-re.__name__ = __name__ + '.re'
+re.__name__ = __name__ + ".re"
 sys.modules[re.__name__] = re

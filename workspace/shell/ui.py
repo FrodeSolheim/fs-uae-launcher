@@ -87,6 +87,7 @@ class ShellIcon(workspace.ui.Canvas):
 
     def path(self):
         return self._path
+
     #     path = self.dir_path
     #     if not path.endswith(":"):
     #         path += "/"
@@ -139,7 +140,7 @@ class ShellIcon(workspace.ui.Canvas):
         w, h = painter.measure_text(self.name)
         painter.set_text_color(workspace.ui.Color(0x00, 0x00, 0x00, 0x80))
         painter.draw_text(self.name, (self.width() - w) // 2 + 1, 80 + 1)
-        painter.set_text_color(workspace.ui.Color(0xff, 0xff, 0xff))
+        painter.set_text_color(workspace.ui.Color(0xFF, 0xFF, 0xFF))
         painter.draw_text(self.name, (self.width() - w) // 2, 80)
         icon = self.icon(self._state)
         # print(icon, icon)

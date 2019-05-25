@@ -21,7 +21,6 @@ assigns = {
     "S": "Workspace:S",
     "SYS": "Workspace:",
     # "T": "Ram Disk:T",
-
     # FIXME: Perhaps
     "CDROMS": "Media/CD-ROMs",
     "DISKS": "Media/Hard Drives",
@@ -29,10 +28,10 @@ assigns = {
     "ICONS": "Workspace:FIXME/Icons",
     "LOGS": "Ram Disk:T/Logs",
     # "DATABASES": "Data/Databases",
-
     # Special
     "VOLUMES": ".",
 }
+
 
 def expand_assigns(path):
     logger.debug("expand_assigns %s", repr(path))
@@ -138,7 +137,6 @@ def join(a, b, *args):
 
 
 class Path:
-
     def __init__(self, path):
         self._path = path
 

@@ -31,7 +31,8 @@ class LaunchMenu(Menu):
         # self.top.left.append(HomeItem())
         # self.top.left.append(MenuItem(item.title))
         self.top.set_selected_index(
-            len(self.top.left) + len(self.top.right) - 1)
+            len(self.top.left) + len(self.top.right) - 1
+        )
         self.state = STATE_STARTING
         self.gc_runner = None
         self.controller = controller
@@ -81,6 +82,7 @@ class LaunchMenu(Menu):
             Dialog.get_current().close()
 
             from arcade.glui.window import main_window
+
             main_window.restore_window_if_necessary()
 
         elif self.state == STATE_ABORTING:
@@ -107,7 +109,8 @@ class LaunchMenu(Menu):
         fs_emu_texturing(True)
         fs_emu_blending(False)
         Texture.sidebar_background.render(
-            0, 0, 1920, Texture.sidebar_background.h)
+            0, 0, 1920, Texture.sidebar_background.h
+        )
 
         if self.state in [STATE_PREPARING, STATE_WAITRUN]:
             self.throbber.render()
@@ -193,7 +196,8 @@ class Throbber:
         if State.get().time - self.throbber_start_time > 0.25:
             # gradually show over 1/3 second
             self.throbber_opacity = (
-                (State.get().time - self.throbber_start_time - 0.25) * 4)
+                State.get().time - self.throbber_start_time - 0.25
+            ) * 4
             if self.throbber_opacity > 1.0:
                 self.throbber_opacity = 1.0
             self.render_throbber()
@@ -213,22 +217,26 @@ class Throbber:
         left = (1920 - throbber_width) / 2
         bottom = (1080 - throbber_width) / 2
 
-        self.render_cell(0, left,
-                         bottom)
-        self.render_cell(1, left + 1 * cell_width + 1 * cell_spacing,
-                         bottom)
-        self.render_cell(2, left + 2 * cell_width + 2 * cell_spacing,
-                         bottom)
-        self.render_cell(3, left + 2 * cell_width + 2 * cell_spacing,
-                         bottom + 1 * cell_width + 1 * cell_spacing)
-        self.render_cell(4, left + 2 * cell_width + 2 * cell_spacing,
-                         bottom + 2 * cell_width + 2 * cell_spacing)
-        self.render_cell(5, left + 1 * cell_width + 1 * cell_spacing,
-                         bottom + 2 * cell_width + 2 * cell_spacing)
-        self.render_cell(6, left,
-                         bottom + 2 * cell_width + 2 * cell_spacing)
-        self.render_cell(7, left,
-                         bottom + 1 * cell_width + 1 * cell_spacing)
+        self.render_cell(0, left, bottom)
+        self.render_cell(1, left + 1 * cell_width + 1 * cell_spacing, bottom)
+        self.render_cell(2, left + 2 * cell_width + 2 * cell_spacing, bottom)
+        self.render_cell(
+            3,
+            left + 2 * cell_width + 2 * cell_spacing,
+            bottom + 1 * cell_width + 1 * cell_spacing,
+        )
+        self.render_cell(
+            4,
+            left + 2 * cell_width + 2 * cell_spacing,
+            bottom + 2 * cell_width + 2 * cell_spacing,
+        )
+        self.render_cell(
+            5,
+            left + 1 * cell_width + 1 * cell_spacing,
+            bottom + 2 * cell_width + 2 * cell_spacing,
+        )
+        self.render_cell(6, left, bottom + 2 * cell_width + 2 * cell_spacing)
+        self.render_cell(7, left, bottom + 1 * cell_width + 1 * cell_spacing)
 
     def render_cell(self, index, x, y):
         color = self.throbber_colors[(self.throbber_progress + index) % 8]

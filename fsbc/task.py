@@ -7,14 +7,12 @@ local_tasks = threading.local()
 
 
 class TaskFailure(Exception):
-
     def __init__(self, message):
         Exception.__init__(self, message)
         self.message = message
 
 
 class TaskStopped(Exception):
-
     def __init__(self):
         Exception.__init__(self)
 
@@ -47,8 +45,9 @@ class Task(object):
 
     def start(self):
         threading.Thread(
-            target=self.__run, name="TaskThread({0})".format(
-                self.get_task_name())).start()
+            target=self.__run,
+            name="TaskThread({0})".format(self.get_task_name()),
+        ).start()
 
     def __run(self):
         local_tasks.task = self
@@ -68,7 +67,9 @@ class Task(object):
                 self.failed(
                     "Task: {}\nError: {}\nMessage: {}\n\n"
                     "See the log file for more details.".format(
-                        self.get_task_name(), type(e).__name__, str(e)))
+                        self.get_task_name(), type(e).__name__, str(e)
+                    )
+                )
             else:
                 print(self, "succeeded")
                 self.succeeded()
@@ -84,11 +85,10 @@ class Task(object):
         raise NotImplementedError("Task.run is not implemented")
 
     def __repr__(self):
-        return "<Task \"{0}\">".format(self.get_task_name())
+        return '<Task "{0}">'.format(self.get_task_name())
 
 
 class CurrentTaskProxy(object):
-
     @property
     def task(self):
         try:

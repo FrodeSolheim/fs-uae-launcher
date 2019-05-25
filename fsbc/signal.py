@@ -15,7 +15,6 @@ def new_signal_id():
 
 
 class Listener(object):
-
     def __init__(self, signal, listener):
         self.description = "<Listener {0}>".format(listener)
 
@@ -83,8 +82,9 @@ class Signal:
 
             # Signal.signal_listeners.setdefault(
             #     self.signal, []).append(ref(listener))
-            Signal.signal_listeners.setdefault(
-                self.signal, []).append(listener)
+            Signal.signal_listeners.setdefault(self.signal, []).append(
+                listener
+            )
 
             # Signal.listeners.setdefault(listener, []).append(self.signal)
 
@@ -94,8 +94,10 @@ class Signal:
             listeners = Signal.signal_listeners[self.signal]
             # print("removing listener", listener)
             for i, v in enumerate(listeners):
-                if v.function == listener.function and \
-                        v.instance == listener.instance:
+                if (
+                    v.function == listener.function
+                    and v.instance == listener.instance
+                ):
                     del listeners[i]
                     break
 

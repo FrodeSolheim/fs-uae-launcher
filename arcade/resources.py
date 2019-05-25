@@ -26,10 +26,12 @@ class Resources(BaseResources):
         stream = self.stream(resource)
         # noinspection PyUnresolvedReferences
         from PIL import Image
+
         return Image.open(stream)
 
     def resource_qt_image(self, resource):
         from fsui.qt import QImage
+
         stream = self.stream(resource)
         im = QImage()
         im.loadFromData(stream.read())
@@ -47,6 +49,7 @@ def resource_pil_image(package_or_requirement, resource_name):
     stream = resource_stream(package_or_requirement, resource_name)
     # noinspection PyUnresolvedReferences
     from PIL import Image
+
     return Image.open(stream)
 
 

@@ -4,10 +4,8 @@ from launcher.res import gettext
 
 
 class TaskDialog(fsui.Window):
-
     def __init__(self, parent, task):
-        fsui.Window.__init__(
-            self, parent, task.get_task_name())
+        fsui.Window.__init__(self, parent, task.get_task_name())
         self.set_icon(fsui.Icon("tools", "pkg:workspace"))
 
         self.layout = fsui.VerticalLayout()
@@ -15,8 +13,8 @@ class TaskDialog(fsui.Window):
         self.layout.set_padding(20, 20, 20, 20)
 
         self.icon_header = IconHeader(
-            self, fsui.Icon("tools", "pkg:workspace"),
-            task.get_task_name(), "")
+            self, fsui.Icon("tools", "pkg:workspace"), task.get_task_name(), ""
+        )
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         hori_layout = fsui.HorizontalLayout()

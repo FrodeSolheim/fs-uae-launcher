@@ -28,7 +28,8 @@ class AnimationSystem(object):
 
 class AnimateValueLinear(object):
     def __init__(
-            self, what, from_value, from_time, to_value, to_time, run=True):
+        self, what, from_value, from_time, to_value, to_time, run=True
+    ):
         self.what = what
         self.from_value = from_value
         self.to_value = to_value
@@ -43,21 +44,25 @@ class AnimateValueLinear(object):
 
     def update(self, t=None):
         t = t or State.get().time
-        progress = (t - self.from_time) / (
-            self.to_time - self.from_time)
+        progress = (t - self.from_time) / (self.to_time - self.from_time)
         progress = max(0.0, min(1.0, progress))
-        setattr(self.what[0], self.what[1],
-                self.from_value + progress * (self.to_value - self.from_value))
+        setattr(
+            self.what[0],
+            self.what[1],
+            self.from_value + progress * (self.to_value - self.from_value),
+        )
         return t < self.to_time
 
 
 class AnimateValueBezier(object):
     def __init__(
-            self, what, x0, t0, x1, t1, x2, t2, x3, t3, points=50, run=True):
+        self, what, x0, t0, x1, t1, x2, t2, x3, t3, points=50, run=True
+    ):
         self.what = what
         self.params = (x0, t0, x1, t1, x2, t2, x3, t3)
         self.curve = Bezier.bezier(
-            (t0, x0), (t1, x1), (t2, x2), (t3, x3), steps=points)
+            (t0, x0), (t1, x1), (t2, x2), (t3, x3), steps=points
+        )
         if run:
             AnimationSystem.animation_list.append(weakref.ref(self))
 

@@ -11,10 +11,10 @@ COLOR = (0x44, 0x44, 0x44)
 
 
 class ShellWindow(ui.Window):
-
     def __init__(self, parent, argv=None):
         super().__init__(
-            parent, "Shell", menu=True, maximizable=False, color=COLOR)
+            parent, "Shell", menu=True, maximizable=False, color=COLOR
+        )
         if argv is None or len(argv) == 0:
             argv = ["CLI"]
 
@@ -40,7 +40,7 @@ class ShellWidget(ui.Canvas):
         super().__init__(parent)
         self.font = ui.Font("Roboto Mono", 14)
         self.set_background_color(ui.Color(*COLOR))
-        self.text_color = ui.Color(0xff, 0xff, 0xff)
+        self.text_color = ui.Color(0xFF, 0xFF, 0xFF)
 
         self.input_thread = None
         self.output_thread = None
@@ -63,6 +63,7 @@ class ShellWidget(ui.Canvas):
 
         # FIXME: Using Qt directly
         from fsui.qt import Qt, QPainter, QPixmap
+
         self._widget.setFocusPolicy(Qt.StrongFocus)
 
         painter = QPainter()
@@ -70,7 +71,8 @@ class ShellWidget(ui.Canvas):
         painter.begin(pixmap)
         painter.setFont(self.font.qfont())
         size = painter.boundingRect(
-            0, 0, 10000, 1000, Qt.AlignLeft | Qt.AlignTop, " " * columns)
+            0, 0, 10000, 1000, Qt.AlignLeft | Qt.AlignTop, " " * columns
+        )
         painter.end()
         print(size)
         self.line_width = size.width()
@@ -128,7 +130,7 @@ class ShellWidget(ui.Canvas):
         if char == "\n":
             self._new_line()
             return
-        if char == '\r':
+        if char == "\r":
             self.cx = 0
             return
         # print(self.cy, self.cx)
@@ -181,6 +183,7 @@ class ShellWidget(ui.Canvas):
             return
         # FIXME: using a QKeyEvent directly
         from fsui.qt import QKeyEvent
+
         assert isinstance(event, QKeyEvent)
         char = event.text()
         print(repr(char))
@@ -216,7 +219,6 @@ class ShellWidget(ui.Canvas):
 
 
 class OutputThread(threading.Thread):
-
     def __init__(self, widget, p):
         super().__init__()
         self._widget = widget

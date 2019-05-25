@@ -22,6 +22,7 @@ def set_open_url_in_browser_function(func):
 
 def is_running_gnome_3():
     import fstd.desktop.gnome3
+
     return fstd.desktop.gnome3.running_in_gnome_3()
 
 

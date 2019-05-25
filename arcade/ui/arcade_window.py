@@ -110,8 +110,14 @@ class ArcadeWindow(fsui.Window):
         if maximized():
             border = False
 
-        super().__init__(parent, title, separator=False, border=border,
-                         menu=True, color=(0x00, 0x00, 0x00))
+        super().__init__(
+            parent,
+            title,
+            separator=False,
+            border=border,
+            menu=True,
+            color=(0x00, 0x00, 0x00),
+        )
         self.set_background_color(fsui.Color(0x00, 0x00, 0x00))
         self.layout = fsui.HorizontalLayout()
         self.quit_flag = False
@@ -193,8 +199,11 @@ class QtWindow(QWidget):
         if blank:
             # Fool app to think mouse has moved to neutral position,
             # in order to "de-focus" focused item.
-            InputHandler.add_event(Event.create_fake_mouse_event(
-                "mouse-motion", 960, 540, (self.width(), self.height())))
+            InputHandler.add_event(
+                Event.create_fake_mouse_event(
+                    "mouse-motion", 960, 540, (self.width(), self.height())
+                )
+            )
 
     def window(self) -> ArcadeWindow:
         # return self.parent().window()
@@ -218,7 +227,8 @@ class QtWindow(QWidget):
             # self.gl_widget.setCursor(Qt.BlankCursor)
             self.set_blank_cursor()
             self.gl_widget.setGeometry(
-                0, 0, self.size().width(), self.size().height())
+                0, 0, self.size().width(), self.size().height()
+            )
             self.gl_widget.show()
         return False
 
@@ -263,28 +273,30 @@ class QtWindow(QWidget):
             # at startup.
             self.first_motion_event = False
             return
-        InputHandler.add_event(Event.create_mouse_event(
-            event, (self.width(), self.height())))
+        InputHandler.add_event(
+            Event.create_mouse_event(event, (self.width(), self.height()))
+        )
         self.ensure_cursor_visible()
 
     def mousePressEvent(self, event):
         if self.show_cursor_until is None:
             # Ignore clicks when cursor is hidden
             return
-        InputHandler.add_event(Event.create_mouse_event(
-            event, (self.width(), self.height())))
+        InputHandler.add_event(
+            Event.create_mouse_event(event, (self.width(), self.height()))
+        )
         self.ensure_cursor_visible()
 
     def mouseReleaseEvent(self, event):
         if self.show_cursor_until is None:
             # Ignore clicks when cursor is hidden
             return
-        InputHandler.add_event(Event.create_mouse_event(
-            event, (self.width(), self.height())))
+        InputHandler.add_event(
+            Event.create_mouse_event(event, (self.width(), self.height()))
+        )
         self.ensure_cursor_visible()
 
     def keyPressEvent(self, event):
-
         def modifier():
             if macosx:
                 # This should correspond to the Cmd key(s) on OS X
@@ -310,10 +322,7 @@ class QtWindow(QWidget):
             # We don't want special characters such as return, backspace
             # and escape (etc) to be sent as text events. For now, we use
             # a simple white list.
-            InputHandler.add_event({
-                "type": "text",
-                "text": event.text(),
-            })
+            InputHandler.add_event({"type": "text", "text": event.text()})
 
     def keyReleaseEvent(self, event):
         assert isinstance(event, QKeyEvent)
@@ -324,7 +333,8 @@ class QtWindow(QWidget):
 
 
 TEXT_WHITE_LIST = (
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,- ")
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,- "
+)
 
 
 def set_black_background(widget):

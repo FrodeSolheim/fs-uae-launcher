@@ -9,7 +9,6 @@ except Exception:
 
 
 class SevenZipFile:
-
     def __init__(self, path, mode="r"):
         if seven_zip_exe is None:
             raise Exception("no 7z executable found")

@@ -25,6 +25,7 @@ DIRTY_WHILE_NOT_LOADED = True
 
 def create_item_menu(name):
     from arcade.glui.itemmenu import ItemMenu
+
     return ItemMenu(name)
 
 
@@ -220,7 +221,8 @@ class MenuItem(object):
         if name:
             try:
                 return resources.resource_filename(
-                    os.path.join(u"items", name + u".png"))
+                    os.path.join(u"items", name + u".png")
+                )
             except Exception:
                 pass
         return None
@@ -229,9 +231,16 @@ class MenuItem(object):
         return None
 
     def render(
-            self, width, height, border_color=(0.0, 0.0, 0.0, 1.0),
-            inner_border_color=(0.92, 0.92, 0.92), height_offset=0.0,
-            brightness=1.0, ratio=None, area=None):
+        self,
+        width,
+        height,
+        border_color=(0.0, 0.0, 0.0, 1.0),
+        inner_border_color=(0.92, 0.92, 0.92),
+        height_offset=0.0,
+        brightness=1.0,
+        ratio=None,
+        area=None,
+    ):
         render_cover(self.get_texture(), width, height)
 
     def create_menu_path(self, menu):
@@ -313,7 +322,8 @@ class MenuItem(object):
         item_list = []
         local_game_database = Database.instance()
         for game in local_game_database.find_games_new(
-                search=search, database_only=True, list_uuid=list_uuid):
+            search=search, database_only=True, list_uuid=list_uuid
+        ):
             item = GameItem(game)
             for filter in filters:
                 pass
@@ -347,8 +357,12 @@ class MenuItem(object):
         return self.title.upper()
 
     def render_top_background(
-            self, selected, style=TOP_ITEM_ARROW, mouse_state=False,
-            mouse_pressed_state=False):
+        self,
+        selected,
+        style=TOP_ITEM_ARROW,
+        mouse_state=False,
+        mouse_pressed_state=False,
+    ):
         x, y, w, h = self.x, self.y, self.w, self.h
         z = -0.01 - 0.01 * x / 1920
         selected = selected or mouse_state
@@ -449,8 +463,11 @@ class MenuItem(object):
         mouse_state = state.mouse_item == self
         mouse_pressed_state = mouse_state and state.mouse_press_item == self
         self.render_top_background(
-            selected, style=TOP_ITEM_LEFT,
-            mouse_state=mouse_state, mouse_pressed_state=mouse_pressed_state)
+            selected,
+            style=TOP_ITEM_LEFT,
+            mouse_state=mouse_state,
+            mouse_pressed_state=mouse_pressed_state,
+        )
         text = self.get_top_left_text()
         self.render_top(text, selected)
 
@@ -459,8 +476,11 @@ class MenuItem(object):
         mouse_state = state.mouse_item == self
         mouse_pressed_state = mouse_state and state.mouse_press_item == self
         self.render_top_background(
-            selected, style=TOP_ITEM_LEFT,
-            mouse_state=mouse_state, mouse_pressed_state=mouse_pressed_state)
+            selected,
+            style=TOP_ITEM_LEFT,
+            mouse_state=mouse_state,
+            mouse_pressed_state=mouse_pressed_state,
+        )
         self.render_top(self.get_top_right_text(), selected)
 
     def render_top(self, text="", selected=False, right_align=False):
@@ -589,8 +609,8 @@ class ListItem(AutoExpandItem):
     def get_filter_list_uuid(self):
         return self.list_path
 
+        # @memoize
 
-            # @memoize
     # def get_list_contents(self):
     #     if self._list is None:
     #         self._list = set()
@@ -632,7 +652,8 @@ class PlatformMenuItem(MenuItem):
             cursor = database.cursor()
             cursor.execute(
                 "SELECT DISTINCT platform FROM game WHERE have >= 3 "
-                "ORDER BY platform")
+                "ORDER BY platform"
+            )
             items = []
             for row in cursor:
                 if not row[0]:
@@ -1104,7 +1125,7 @@ class GameItem(MenuItem):
             if "(" in self.title:
                 if self.title[-1] == ")":
                     pos = self.title.index("(")
-                    self.subtitle = self.title[pos + 1:-1].strip()
+                    self.subtitle = self.title[pos + 1 : -1].strip()
                     self.title = self.title[:pos].strip()
         # if not self.subtitle:
         #     if len(self.title) > 30 and " in " in self.title:
@@ -1133,6 +1154,7 @@ class GameItem(MenuItem):
     def activate(self, menu):
         try:
             from arcade.glui.gamemenu import GameMenu
+
             new_menu = GameMenu(self)
         except Exception:
             show_exception()

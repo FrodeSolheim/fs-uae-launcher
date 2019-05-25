@@ -3,6 +3,7 @@ import shutil
 import traceback
 import fsui
 from fsgs.FSGSDirectories import FSGSDirectories
+
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
 from fsui.extra.iconheader import IconHeader
@@ -10,7 +11,6 @@ from workspace.ui.theme import WorkspaceTheme
 
 
 class HDFCreatorWindow(fsui.DialogWindow):
-
     @classmethod
     def open(cls, parent=None):
         return fsui.open_window_instance(cls, parent)
@@ -31,10 +31,14 @@ class HDFCreatorWindow(fsui.DialogWindow):
         layout.min_width = 500
 
         self.icon_header = IconHeader(
-            self, fsui.Icon("hd-volume", "pkg:workspace"),
+            self,
+            fsui.Icon("hd-volume", "pkg:workspace"),
             gettext("HDF Disk Image Creator"),
-            gettext("Create a single-partition or partitionable hard "
-                    "drive image"))
+            gettext(
+                "Create a single-partition or partitionable hard "
+                "drive image"
+            ),
+        )
         layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         label = fsui.Label(self, gettext("Create disk image of type:"))
@@ -45,9 +49,11 @@ class HDFCreatorWindow(fsui.DialogWindow):
         self.list_view.set_min_height(60)
         icon = fsui.Image("workspace:res/16x16/hd-volume.png")
         self.list_view.add_item(
-            gettext("HDF - Single Partition Hard Disk File"), icon)
+            gettext("HDF - Single Partition Hard Disk File"), icon
+        )
         self.list_view.add_item(
-            gettext("HDF - Partitionable Hard Drive Image (RDB)"), icon)
+            gettext("HDF - Partitionable Hard Drive Image (RDB)"), icon
+        )
         layout.add(self.list_view, expand=True, fill=True)
         self.list_view.item_selected.connect(self.on_item_selected)
 
@@ -57,8 +63,7 @@ class HDFCreatorWindow(fsui.DialogWindow):
         layout.add_spacer(6)
         hori_layout = fsui.HorizontalLayout()
         layout.add(hori_layout, fill=True)
-        self.name_field = fsui.TextField(
-            self, "", read_only=False)
+        self.name_field = fsui.TextField(self, "", read_only=False)
         hori_layout.add(self.name_field, expand=True)
         text = gettext("Size:")
         label = fsui.Label(self, text)
@@ -138,7 +143,8 @@ class HDFCreatorWindow(fsui.DialogWindow):
         # if hasattr(self, "dialog"):
         #    return
         self.dialog = fsui.DirDialog(
-            None, gettext("Select Destination Directory"))
+            None, gettext("Select Destination Directory")
+        )
         self.dialog.accepted.connect(self.on_dialog_accepted)
         # self.dialog.destroyed.connect(self.on_dialog_destroyed)
         # self.dialog.finished.connect(self.on_dialog_finished)
@@ -188,7 +194,8 @@ class HDFCreatorWindow(fsui.DialogWindow):
         path = self.dir_field.get_text().strip()
         if not os.path.isdir(path):
             return self.show_error(
-                gettext("Specified directory does not exist"))
+                gettext("Specified directory does not exist")
+            )
         name = self.name_field.get_text().strip()
         ext = ".hdf"
         if not name.lower().endswith(ext):
@@ -204,7 +211,8 @@ class HDFCreatorWindow(fsui.DialogWindow):
         if disk_type == 2:
             if size >= 512 * 1024 * 1024:
                 return self.show_error(
-                    gettext("Use RDB disk images for size >= {0}".format(512)))
+                    gettext("Use RDB disk images for size >= {0}".format(512))
+                )
 
         if os.path.exists(path):
             return self.show_error(gettext("File already exists"))

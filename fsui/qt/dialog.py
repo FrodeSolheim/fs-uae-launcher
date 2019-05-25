@@ -4,7 +4,6 @@ from fsui.qt.windowbase import WindowBase
 
 
 class Dialog(WindowBase(QDialog)):
-
     def __init__(self, parent=None, title=""):
         super().__init__(QParent(parent), title=title)
 

@@ -3,7 +3,6 @@ from .WidgetTestCase import WidgetTestCase
 
 
 class TestTextField(WidgetTestCase):
-
     def test_text_field(self):
         self.setup_dialog()
         text_field = fsui.TextField(self.dialog)

@@ -4,12 +4,11 @@ from .widget_mixin import WidgetMixin
 
 
 class Model(QAbstractListModel):
-
     def __init__(self, parent):
         QAbstractListModel.__init__(self, parent)
         self.parent = weakref.ref(parent)
         self.count = 0
-    
+
     # def set_item_count(self, count):
     #     self.count = count
 
@@ -122,7 +121,7 @@ class VerticalItemView(QListView, WidgetMixin):
 
     def set_index(self, index):
         if index is None:
-            index = -1        
+            index = -1
         # print(self.rootIndex)
         # idx = QModelIndex.createIndex(index)
         idx = self.model.index(index, 0)
@@ -142,5 +141,5 @@ class VerticalItemView(QListView, WidgetMixin):
         # self.update()
         # self.invalidate()
         self.dataChanged(
-            self.model.createIndex(0, 0),
-            self.model.createIndex(count, 0))
+            self.model.createIndex(0, 0), self.model.createIndex(count, 0)
+        )

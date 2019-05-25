@@ -4,7 +4,6 @@ import weakref
 
 
 class Application:
-
     def __init__(self, name, singleton=None, file=None):
         self._file = file
         self.name = name
@@ -20,6 +19,7 @@ class Application:
 
     def run(self):
         from workspace.util.application_runner import ApplicationRunner
+
         runner = ApplicationRunner(self.name)
         runner.run(self)
 

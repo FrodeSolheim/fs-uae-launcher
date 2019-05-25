@@ -1,7 +1,11 @@
 from arcade.Application import Application
 from arcade.glui.imageloader import ImageLoader
-from arcade.ui.arcade_window import ArcadeWindow, check_argument, fullscreen, \
-    maximized
+from arcade.ui.arcade_window import (
+    ArcadeWindow,
+    check_argument,
+    fullscreen,
+    maximized,
+)
 from fsbc.settings import Settings
 from fsbc.system import macosx
 from .gnome3 import running_in_gnome_3, handle_gnome_extensions
@@ -13,12 +17,16 @@ K_UI_OPTION_AUTO_SHOW_MENU_BAR = 1 << 0
 def os_x_set_system_ui_mode(mode, option):
     # noinspection PyUnresolvedReferences
     import objc
+
     # noinspection PyUnresolvedReferences
     from Foundation import NSBundle
+
     bundle = NSBundle.bundleWithPath_(
-        "/System/Library/Frameworks/Carbon.framework")
+        "/System/Library/Frameworks/Carbon.framework"
+    )
     objc.loadBundleFunctions(
-        bundle, globals(), (("SetSystemUIMode", b"III", ""),))
+        bundle, globals(), (("SetSystemUIMode", b"III", ""),)
+    )
     # noinspection PyUnresolvedReferences
     SetSystemUIMode(mode, option)
 
@@ -40,7 +48,8 @@ def main():
         if fullscreen() or maximized():
             if check_argument("system_autohide") == "1":
                 os_x_set_system_ui_mode(
-                    K_UI_MODE_ALL_HIDDEN, K_UI_OPTION_AUTO_SHOW_MENU_BAR)
+                    K_UI_MODE_ALL_HIDDEN, K_UI_OPTION_AUTO_SHOW_MENU_BAR
+                )
     elif running_in_gnome_3():
         if fullscreen() or maximized():
             # use_fullscreen = False

@@ -15,7 +15,12 @@ from fsui.qt.dialogbuttons import DialogButtons
 from fsui.qt.dialogwindow import DialogWindow
 from fsui.qt.DirDialog import DirDialog
 from fsui.qt.DrawingContext import DrawingContext, Font
-from fsui.qt.FileDialog import FileDialog, pick_directory, pick_file, pick_files
+from fsui.qt.FileDialog import (
+    FileDialog,
+    pick_directory,
+    pick_file,
+    pick_files,
+)
 from fsui.qt.HeadingLabel import HeadingLabel
 from fsui.qt.Icon import Icon
 from fsui.qt.Image import Image

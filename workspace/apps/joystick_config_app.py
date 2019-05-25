@@ -22,9 +22,15 @@ from workspace.ui.theme import WorkspaceTheme
 class JoystickConfigWindow(fsui.Window):
     def __init__(self, parent, device_name):
         title = gettext("Configure {device_name}").format(
-            device_name=device_name)
-        super().__init__(parent, title=title, minimizable=False,
-                         maximizable=False, separator=False)
+            device_name=device_name
+        )
+        super().__init__(
+            parent,
+            title=title,
+            minimizable=False,
+            maximizable=False,
+            separator=False,
+        )
         self.theme = WorkspaceTheme.instance()
         self.layout = fsui.VerticalLayout()
 
@@ -34,6 +40,7 @@ class JoystickConfigWindow(fsui.Window):
 
         if Skin.fws():
             from workspace.ui import TitleSeparator
+
             separator = TitleSeparator(self)
             self.layout.add(separator, fill=True)
 
@@ -62,15 +69,17 @@ class JoystickConfigWindow(fsui.Window):
         self.type_field.changed.connect(self.on_change)
         panel.layout.add(self.type_field)
 
-        panel.layout.add(fsui.PlainLabel(
-            panel, gettext("Make:")), margin_left=20)
+        panel.layout.add(
+            fsui.PlainLabel(panel, gettext("Make:")), margin_left=20
+        )
         self.make_field = fsui.TextField(panel)
         self.make_field.set_min_width(140)
         self.make_field.changed.connect(self.on_change)
         panel.layout.add(self.make_field, margin_left=10)
 
-        panel.layout.add(fsui.PlainLabel(
-            panel, gettext("Model:")), margin_left=20)
+        panel.layout.add(
+            fsui.PlainLabel(panel, gettext("Model:")), margin_left=20
+        )
         self.model_field = fsui.TextField(panel)
         self.model_field.changed.connect(self.on_change)
         panel.layout.add(self.model_field, expand=True, margin_left=10)
@@ -104,8 +113,10 @@ class JoystickConfigWindow(fsui.Window):
 
         fsui.call_later(100, self.on_timer_callback)
         thread = threading.Thread(
-            target=event_thread, name="JoystickConfigEventThread",
-            args=(self.device_name, weakref.ref(self),))
+            target=event_thread,
+            name="JoystickConfigEventThread",
+            args=(self.device_name, weakref.ref(self)),
+        )
         thread.start()
 
     def __del__(self):
@@ -123,8 +134,12 @@ class JoystickConfigWindow(fsui.Window):
         self.save_button.disable()
 
     def set_information(self, device_type, device_make, device_model):
-        print("set_information", repr(device_type), repr(device_make),
-              repr(device_model))
+        print(
+            "set_information",
+            repr(device_type),
+            repr(device_make),
+            repr(device_model),
+        )
         for i, d_type in enumerate(self.device_type_ids):
             print(d_type, device_type)
             if d_type == device_type:
@@ -142,7 +157,8 @@ class JoystickConfigWindow(fsui.Window):
                 return self.read_existing_config_from_stream(f)
         try:
             stream = InputDevice.get_builtin_config_for_device_guid(
-                self.get_joystick_guid())
+                self.get_joystick_guid()
+            )
             print("found builtin config for", self.get_joystick_guid())
         except LookupError:
             return {}
@@ -231,14 +247,16 @@ class JoystickConfigWindow(fsui.Window):
                     name += "_"
         name = name.strip("_")
         return "{0}_{1}_{2}_{3}_{4}_{5}".format(
-            name, buttons, axes, hats, balls, platform)
+            name, buttons, axes, hats, balls, platform
+        )
 
     def get_joystick_guid(self):
         return DeviceManager.joystick_guid(self.device_name)
 
     def get_load_path(self):
         path = self.get_save_path(
-            self.get_joystick_guid() + ".fs-uae-controller")
+            self.get_joystick_guid() + ".fs-uae-controller"
+        )
         if os.path.exists(path):
             print("JoystickConfigWindow.get_load_path found", path)
             return path
@@ -284,23 +302,30 @@ class JoystickConfigWindow(fsui.Window):
             "balls = {}".format(balls),
             "",
             "[default]",
-            "include = universal_gamepad"
+            "include = universal_gamepad",
         ]
         button_config = []
         for i, button in enumerate(BUTTONS):
             panel = self.button_panels[i]
             if panel.event_name:
-                button_config.append("{0} = {1}".format(
-                    panel.event_name, button[3]))
+                button_config.append(
+                    "{0} = {1}".format(panel.event_name, button[3])
+                )
         config.extend(sorted(button_config))
-        with open(self.get_save_path(self.get_joystick_id() + ".conf"),
-                  "w", encoding="UTF-8") as f:
+        with open(
+            self.get_save_path(self.get_joystick_id() + ".conf"),
+            "w",
+            encoding="UTF-8",
+        ) as f:
             for line in config:
                 f.write(line)
                 f.write("\n")
         if len(guid) == 32:
-            with open(self.get_save_path(guid + ".fs-uae-controller"),
-                      "w", encoding="UTF-8") as f:
+            with open(
+                self.get_save_path(guid + ".fs-uae-controller"),
+                "w",
+                encoding="UTF-8",
+            ) as f:
                 for line in config:
                     f.write(line)
                     f.write("\n")
@@ -322,7 +347,7 @@ class MappingButton(fsui.Panel):
         self.direction = direction
 
         self.set_hand_cursor()
-        self.set_background_color(fsui.Color(0xff, 0xff, 0xff))
+        self.set_background_color(fsui.Color(0xFF, 0xFF, 0xFF))
 
     def on_left_down(self):
         print("on_left_down")
@@ -339,7 +364,7 @@ class MappingButton(fsui.Panel):
             dc.set_text_color(fsui.Color(0x80, 0x80, 0x80))
         else:
             text = "click to configure"
-            dc.set_text_color(fsui.Color(0xff, 0x00, 0x00))
+            dc.set_text_color(fsui.Color(0xFF, 0x00, 0x00))
         tw, th = dc.measure_text(text)
         y = (self.get_size()[1] - th) / 2
         if self.direction > 0:
@@ -351,7 +376,8 @@ class MappingButton(fsui.Panel):
 
 def event_thread(device_name, window_ref):
     process = FSUAEDeviceHelper.start_with_args(
-        [device_name], stdout=subprocess.PIPE)
+        [device_name], stdout=subprocess.PIPE
+    )
 
     # while not self.stopped and \
     while not Application.instance().stopping():
@@ -407,28 +433,23 @@ BUTTONS = [
     (160, 160, -1, "dpad_right"),
     (160, 200, -1, "dpad_up"),
     (160, 280, -1, "dpad_down"),
-
     (160, 400, -1, "lstick_left"),
     (320, 400, -1, "lstick_right"),
     (160, 360, -1, "lstick_up"),
     (160, 440, -1, "lstick_down"),
     (320, 440, -1, "lstick_button"),
-
     (480, 400, 1, "rstick_left"),
     (640, 400, 1, "rstick_right"),
     (640, 360, 1, "rstick_up"),
     (640, 440, 1, "rstick_down"),
     (480, 440, 1, "rstick_button"),
-
     (640, 160, 1, "west_button"),
     (640, 200, 1, "north_button"),
     (640, 240, 1, "east_button"),
     (640, 280, 1, "south_button"),
-
     (320, 80, -1, "select_button"),
     (480, 80, 1, "start_button"),
     (480, 40, 1, "menu_button"),
-
     (160, 40, -1, "left_shoulder"),
     (160, 80, -1, "left_trigger"),
     (640, 40, 1, "right_shoulder"),

@@ -3,7 +3,6 @@ from .WidgetTestCase import WidgetTestCase
 
 
 class TestButton(WidgetTestCase):
-
     def test_button(self):
         self.setup_dialog()
         button = fsui.Button(self.dialog)

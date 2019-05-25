@@ -42,7 +42,7 @@ class PlayOption(Option):
 
     def activate(self):
         print("PlayItem.activate")
-        return 'PLAY'
+        return "PLAY"
 
 
 class ConfigOption(Option):
@@ -54,9 +54,7 @@ class ConfigOption(Option):
 
     def activate(self):
         print("ChooseConfigItem.activate")
-        return [
-
-        ]
+        return []
 
 
 class AspectOption(Option):
@@ -68,9 +66,7 @@ class AspectOption(Option):
 
     def activate(self):
         print("AspectItem.activate")
-        return [
-
-        ]
+        return []
 
 
 class ScreenOption(Option):
@@ -82,6 +78,4 @@ class ScreenOption(Option):
 
     def activate(self):
         print("DisplayItem.activate")
-        return [
-
-        ]
+        return []

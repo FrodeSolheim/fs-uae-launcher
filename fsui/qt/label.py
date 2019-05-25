@@ -5,7 +5,6 @@ from urllib.parse import unquote_plus
 
 
 class Label(fsui.qt.QLabel, WidgetMixin):
-
     def __init__(self, parent, label):
         fsui.qt.QLabel.__init__(self, label, parent.get_container())
         self.init_widget(parent)
@@ -13,7 +12,8 @@ class Label(fsui.qt.QLabel, WidgetMixin):
         self.setTextFormat(fsui.qt.Qt.RichText)
         # self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
         self.setTextInteractionFlags(
-                Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
+            Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse
+        )
         self.setOpenExternalLinks(True)
         # self.setFocusPolicy(Qt.NoFocus)
 
@@ -31,7 +31,6 @@ class Label(fsui.qt.QLabel, WidgetMixin):
 
 
 class PlainLabel(fsui.qt.QLabel, WidgetMixin):
-
     def __init__(self, parent, label):
         fsui.qt.QLabel.__init__(self, label, parent.get_container())
         self.init_widget(parent)
@@ -41,7 +40,6 @@ class PlainLabel(fsui.qt.QLabel, WidgetMixin):
 
 
 class URLLabel(Label):
-
     def __init__(self, parent, label, url):
         self._label = label
         self._url = url
@@ -58,7 +56,7 @@ class URLLabel(Label):
 
     def _fix_label(self):
         url = unquote_plus(self._url)
-        return "<a href=\"{0}\">{1}</a>".format(url, self._label)
+        return '<a href="{0}">{1}</a>'.format(url, self._label)
 
     def get_min_height(self):
         # because the underline seems to be cut off otherwise...
@@ -66,7 +64,6 @@ class URLLabel(Label):
 
 
 class MultiLineLabel(WidgetMixin):
-
     def __init__(self, parent, label, min_width=None):
         self._widget = fsui.qt.QLabel(label, parent.get_container())
         # Widget.__init__(self, parent)

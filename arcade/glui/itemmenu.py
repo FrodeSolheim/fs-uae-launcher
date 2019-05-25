@@ -1,7 +1,9 @@
 import math
 
-from arcade.glui.bottombar import render_bottom_bar, \
-    render_bottom_bar_transparent
+from arcade.glui.bottombar import (
+    render_bottom_bar,
+    render_bottom_bar_transparent,
+)
 from arcade.glui.displaylists import DisplayLists
 from arcade.glui.menu import Menu
 from arcade.glui.opengl import gl, fs_emu_blending, fs_emu_texturing
@@ -115,8 +117,11 @@ def _render_menu(menu, what=None, skip_center_item=False):
         for item_index in list(yield_render_item_sequence()):
 
             if num_items < MIN_WRAPAROUND_ITEMS:
-                if not (0 <= item_index - (i_position // num_items *
-                                               num_items) < num_items):
+                if not (
+                    0
+                    <= item_index - (i_position // num_items * num_items)
+                    < num_items
+                ):
                     continue
 
             rel_index = item_index - position  # selected
@@ -143,8 +148,9 @@ def _render_menu(menu, what=None, skip_center_item=False):
             else:
                 spec = 0.8 - rel_index / 1.0 * 0.75
             if LIGHTING:
-                gl.glMaterialfv(gl.GL_FRONT, gl.GL_SPECULAR,
-                                (spec, spec, spec, 1.0))
+                gl.glMaterialfv(
+                    gl.GL_FRONT, gl.GL_SPECULAR, (spec, spec, spec, 1.0)
+                )
 
             gl.glRotate(rotation, 0.0, 1.0, 0.0)
 
@@ -155,11 +161,21 @@ def _render_menu(menu, what=None, skip_center_item=False):
                     gloss_alpha = 0.25 + distance * 0.25
                 else:
                     gloss_alpha = 0.5
-                render_item_gloss(
-                    gloss_alpha, ratio=item.ratio, area=area)
+                render_item_gloss(gloss_alpha, ratio=item.ratio, area=area)
             gl.glPopMatrix()
-            item_data.append(("ITEM", menu, item_index, pos, rotation, scale,
-                              item.ratio, 1.0, area))
+            item_data.append(
+                (
+                    "ITEM",
+                    menu,
+                    item_index,
+                    pos,
+                    rotation,
+                    scale,
+                    item.ratio,
+                    1.0,
+                    area,
+                )
+            )
 
             # reflections.append((item, pos, rotation,
             # width, height, spec * 0.3))
@@ -250,8 +266,17 @@ def render_item_shadows(itemdata, front=False, back=True):
     fs_emu_texturing(True)
     gl.glBindTexture(gl.GL_TEXTURE_2D, Texture.shadow2)
 
-    for type_, menu, item_index, pos, rotation, scale, ratio, brightness, \
-        area in reversed(itemdata):
+    for (
+        type_,
+        menu,
+        item_index,
+        pos,
+        rotation,
+        scale,
+        ratio,
+        brightness,
+        area,
+    ) in reversed(itemdata):
         gl.glPushMatrix()
         gl.glTranslate(*pos)
         gl.glRotate(rotation, 0.0, 1.0, 0.0)

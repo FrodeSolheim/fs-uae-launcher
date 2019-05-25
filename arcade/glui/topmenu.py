@@ -35,8 +35,11 @@ class TopMenuItem(MenuItem):
         mouse_state = state.mouse_item == self
         mouse_pressed_state = mouse_state and state.mouse_press_item == self
         self.render_top_background(
-            selected, style=TOP_ITEM_LEFT, mouse_state=mouse_state,
-            mouse_pressed_state=mouse_pressed_state)
+            selected,
+            style=TOP_ITEM_LEFT,
+            mouse_state=mouse_state,
+            mouse_pressed_state=mouse_pressed_state,
+        )
         fs_emu_blending(True)
         if selected:
             texture = self.selected_texture
@@ -45,7 +48,10 @@ class TopMenuItem(MenuItem):
         # texture.render(self.x, self.y, self.w, self.h)
         texture.render(
             self.x + (self.w - texture.w) / 2,
-            self.y + (self.h - texture.h) / 2, texture.w, texture.h)
+            self.y + (self.h - texture.h) / 2,
+            texture.w,
+            texture.h,
+        )
 
 
 class CloseItem(TopMenuItem):
@@ -172,8 +178,11 @@ class VideoSyncItem(MenuItem):
         mouse_state = state.mouse_item == self
         mouse_pressed_state = mouse_state and state.mouse_press_item == self
         self.render_top_background(
-            selected, style=TOP_ITEM_LEFT, mouse_state=mouse_state,
-            mouse_pressed_state=mouse_pressed_state)
+            selected,
+            style=TOP_ITEM_LEFT,
+            mouse_state=mouse_state,
+            mouse_pressed_state=mouse_pressed_state,
+        )
         gl.glDisable(gl.GL_DEPTH_TEST)
         fs_emu_blending(True)
         if Settings.instance()["video_sync"] == "1":
@@ -187,8 +196,9 @@ class VideoSyncItem(MenuItem):
             b = 1.0
             alpha = 0.33
         x = self.x + 20
-        BitmapFont.title_font.render(self.title, x, self.y + 14,
-                                     r=r, g=g, b=b, alpha=alpha)
+        BitmapFont.title_font.render(
+            self.title, x, self.y + 14, r=r, g=g, b=b, alpha=alpha
+        )
         gl.glEnable(gl.GL_DEPTH_TEST)
 
 
@@ -255,9 +265,11 @@ class TopMenu(Navigatable):
         result = self.selected_item.activate(State.get().current_menu)
         # FIXME:
         from arcade.glui.menu import Menu
+
         if isinstance(result, Menu):
             # FIXME:
             from arcade.glui.window import enter_menu
+
             enter_menu(result)
 
     def __getitem__(self, index):
@@ -354,10 +366,12 @@ class HomeItem(MenuItem):
 
     def activate(self, menu):
         from arcade.glui.window import create_main_menu
+
         new_menu = create_main_menu()
         # State.get().history = [new_menu]
         State.get().history.append(new_menu)
         from arcade.glui.window import set_current_menu
+
         set_current_menu(new_menu)
 
     def update_size_left(self):
@@ -367,8 +381,11 @@ class HomeItem(MenuItem):
         state = State.get()
         mouse_state = state.mouse_item == self
         mouse_pressed_state = mouse_state and state.mouse_press_item == self
-        self.render_top_background(selected, mouse_state=mouse_state,
-                                   mouse_pressed_state=mouse_pressed_state)
+        self.render_top_background(
+            selected,
+            mouse_state=mouse_state,
+            mouse_pressed_state=mouse_pressed_state,
+        )
         # fs_emu_blending(True)
         if selected:
             texture = Texture.home_selected
@@ -390,8 +407,11 @@ class AddItem(MenuItem):
         state = State.get()
         mouse_state = state.mouse_item == self
         mouse_pressed_state = mouse_state and state.mouse_press_item == self
-        self.render_top_background(selected, mouse_state=mouse_state,
-                                   mouse_pressed_state=mouse_pressed_state)
+        self.render_top_background(
+            selected,
+            mouse_state=mouse_state,
+            mouse_pressed_state=mouse_pressed_state,
+        )
         # fs_emu_blending(True)
         if selected:
             texture = Texture.add_selected

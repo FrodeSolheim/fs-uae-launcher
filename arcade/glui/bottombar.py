@@ -117,36 +117,59 @@ def render_bottom_bar_text(item):
     else:
         subtitle = ""
     if title:
-        Render.get().text(title, Font.title_font, x, y, 1920 - x - 170,
-                          shadow=True, color=(1.0, 1.0, 1.0, 1.0 * strength))
+        Render.get().text(
+            title,
+            Font.title_font,
+            x,
+            y,
+            1920 - x - 170,
+            shadow=True,
+            color=(1.0, 1.0, 1.0, 1.0 * strength),
+        )
         if subtitle:
-            color = (0x6e / 0xff, 0x8b / 0xff, 0x96 / 0xff, 0.75)
+            color = (0x6E / 0xFF, 0x8B / 0xFF, 0x96 / 0xFF, 0.75)
             tw, th = Render.get().measure_text(title, Font.title_font)
-            Render.get().text(subtitle, Font.title_font, x + tw + 20,
-                              y, 1920 - x - 170, shadow=True,
-                              color=color)
+            Render.get().text(
+                subtitle,
+                Font.title_font,
+                x + tw + 20,
+                y,
+                1920 - x - 170,
+                shadow=True,
+                color=color,
+            )
 
-    color = (0xc4 / 0xff, 0xd7 / 0xff, 0xde / 0xff, 1.0)
-    year_text = str(getattr(State.get().current_menu.selected_item,
-                            "year", "") or "").upper()
+    color = (0xC4 / 0xFF, 0xD7 / 0xFF, 0xDE / 0xFF, 1.0)
+    year_text = str(
+        getattr(State.get().current_menu.selected_item, "year", "") or ""
+    ).upper()
     if year_text:
         tw, th = Render.get().measure_text(year_text, Font.title_font)
-        Render.get().text(year_text, Font.title_font, 1920 - 30 - tw, y, 0,
-                          shadow=True, color=color)
-    color = (0x6e / 0xff, 0x8b / 0xff, 0x96 / 0xff, 1.0)
+        Render.get().text(
+            year_text,
+            Font.title_font,
+            1920 - 30 - tw,
+            y,
+            0,
+            shadow=True,
+            color=color,
+        )
+    color = (0x6E / 0xFF, 0x8B / 0xFF, 0x96 / 0xFF, 1.0)
     y = 258
     text_str = ""
     companies = set()
-    publisher_text = (getattr(State.get().current_menu.selected_item,
-                              "publisher", "") or "").upper()
+    publisher_text = (
+        getattr(State.get().current_menu.selected_item, "publisher", "") or ""
+    ).upper()
     for text in publisher_text.split("/"):
         text = text.strip()
         if text:
             if text not in companies:
                 text_str = text_str + u" \u00b7 " + text
                 companies.add(text)
-    developer_text = (getattr(State.get().current_menu.selected_item,
-                              "developer", "") or "").upper()
+    developer_text = (
+        getattr(State.get().current_menu.selected_item, "developer", "") or ""
+    ).upper()
     for text in developer_text.split("/"):
         text = text.strip()
         if text:
@@ -156,15 +179,24 @@ def render_bottom_bar_text(item):
     if len(text_str) > 3:
         text_str = text_str[3:]  # remove initial middle dot
         tw, th = Render.get().measure_text(text_str, Font.subtitle_font)
-        Render.get().text(text_str, Font.subtitle_font, 1920 - 30 - tw, y, 0,
-                          shadow=True, color=color)
+        Render.get().text(
+            text_str,
+            Font.subtitle_font,
+            1920 - 30 - tw,
+            y,
+            0,
+            shadow=True,
+            color=color,
+        )
 
     platform_str = str(
-        getattr(State.get().current_menu.selected_item, "platform", "") or "")
+        getattr(State.get().current_menu.selected_item, "platform", "") or ""
+    )
     if platform_str:
         platform_str = PlatformHandler.get_platform_name(platform_str).upper()
     if len(platform_str) >= 3:
         # tw, th = Render.get().measure_text(platform_str, Font.subtitle_font)
-        Render.get().text(platform_str, Font.subtitle_font, x, y,
-                          0, shadow=True, color=color)
+        Render.get().text(
+            platform_str, Font.subtitle_font, x, y, 0, shadow=True, color=color
+        )
     return

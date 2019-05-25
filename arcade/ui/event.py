@@ -93,8 +93,12 @@ def get_key(ev):
     # On OS X, the KeypadModifier value will also be set when an arrow
     # key is pressed as the arrow keys are considered part of the keypad.
     # http://doc.qt.io/qt-5/qt.html#KeyboardModifier-enum
-    macos_arrow_key = (macosx and ev.key() in
-                        [Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down])
+    macos_arrow_key = macosx and ev.key() in [
+        Qt.Key_Left,
+        Qt.Key_Right,
+        Qt.Key_Up,
+        Qt.Key_Down,
+    ]
     if int(ev.modifiers()) & Qt.KeypadModifier and not macos_arrow_key:
         print("keypad!")
         print(ev.key(), "vs", Qt.Key_4)
@@ -123,15 +127,12 @@ def get_key_map():
         # Qt.Key_Backtab	0x01000002
         Qt.Key_Backspace: sdl2.SDLK_BACKSPACE,
         Qt.Key_Return: sdl2.SDLK_RETURN,
-
         # Typically located on the keypad.
         Qt.Key_Enter: sdl2.SDLK_KP_ENTER,
         Qt.Key_Insert: sdl2.SDLK_INSERT,
         Qt.Key_Delete: sdl2.SDLK_DELETE,
-
         # The Pause/Break key (Note: Not anything to do with pausing media).
         Qt.Key_Pause: sdl2.SDLK_PAUSE,
-
         # Qt.Key_Print	0x01000009
         # Qt.Key_SysReq	0x0100000a
         # Qt.Key_Clear	0x0100000b
@@ -145,22 +146,17 @@ def get_key_map():
         Qt.Key_PageDown: sdl2.SDLK_PAGEDOWN,
         # FIXME: LSHIFT vs RSHIFT
         Qt.Key_Shift: sdl2.SDLK_LSHIFT,
-
         # On Mac OS X, this corresponds to the Command keys.
         # Qt.Key_Control	0x01000021
         # FIXME: LCTRL vs RCTRL, OS X, etc
         Qt.Key_Control: sdl2.SDLK_LCTRL,
-
         # On Mac OS X, this corresponds to the Control keys. On Windows
         # keyboards, this key is mapped to the Windows key.
         # Qt.Key_Meta	0x01000022
-
         # Qt.Key_Alt	0x01000023
-
         # On Windows, when the KeyDown event for this key is sent, the
         # Ctrl+Alt modifiers are also set.
         # Qt.Key_AltGr	0x01001103
-
         # Qt.Key_CapsLock	0x01000024
         # Qt.Key_NumLock	0x01000025
         # Qt.Key_ScrollLock	0x01000026
@@ -410,25 +406,19 @@ def get_key_map():
         # Qt.Key_BassDown	0x01000075
         # Qt.Key_TrebleUp	0x01000076
         # Qt.Key_TrebleDown	0x01000077
-
         # A key setting the state of the media player to play
         # Qt.Key_MediaPlay	0x01000080
-
         # A key setting the state of the media player to stop
         # Qt.Key_MediaStop	0x01000081
-
         # Qt.Key_MediaPrevious	0x01000082
         # Qt.Key_MediaNext	0x01000083
         # Qt.Key_MediaRecord	0x01000084
-
         # A key setting the state of the media player to pause
         # (Note: not the pause/break key)
         # Qt.Key_MediaPause	0x1000085
-
         # A key to toggle the play/pause state in the media player
         # (rather than setting an absolute state)
         # Qt.Key_MediaTogglePlayPause	0x1000086
-
         # Qt.Key_HomePage	0x01000090
         # Qt.Key_Favorites	0x01000091
         # Qt.Key_Search	0x01000092
@@ -436,63 +426,44 @@ def get_key_map():
         # Qt.Key_OpenUrl	0x01000094
         # Qt.Key_LaunchMail	0x010000a0
         # Qt.Key_LaunchMedia	0x010000a1
-
         # On X11 this key is mapped to "My Computer" (XF86XK_MyComputer) key
         # for legacy reasons.
         # Qt.Key_Launch0	0x010000a2
-
         # On X11 this key is mapped to "Calculator" (XF86XK_Calculator) key
         # for legacy reasons.
         # Qt.Key_Launch1	0x010000a3
-
         # On X11 this key is mapped to XF86XK_Launch0 key for legacy reasons.
         # Qt.Key_Launch2	0x010000a4
-
         # Qt.Key_Launch3	0x010000a5	On X11 this key is mapped to
         # XF86XK_Launch1 key for legacy reasons.
-
         # Qt.Key_Launch4	0x010000a6	On X11 this key is mapped to
         # XF86XK_Launch2 key for legacy reasons.
-
         # Qt.Key_Launch5	0x010000a7	On X11 this key is mapped to
         # XF86XK_Launch3 key for legacy reasons.
-
         # Qt.Key_Launch6	0x010000a8	On X11 this key is mapped to
         # XF86XK_Launch4 key for legacy reasons.
-
         # Qt.Key_Launch7	0x010000a9	On X11 this key is mapped to
         # XF86XK_Launch5 key for legacy reasons.
-
         # Qt.Key_Launch8	0x010000aa	On X11 this key is mapped to
         # XF86XK_Launch6 key for legacy reasons.
-
         # Qt.Key_Launch9	0x010000ab	On X11 this key is mapped to
         # XF86XK_Launch7 key for legacy reasons.
-
         # Qt.Key_LaunchA	0x010000ac	On X11 this key is mapped to
         # XF86XK_Launch8 key for legacy reasons.
-
         # Qt.Key_LaunchB	0x010000ad	On X11 this key is mapped to
         # XF86XK_Launch9 key for legacy reasons.
-
         # Qt.Key_LaunchC	0x010000ae	On X11 this key is mapped to
         # XF86XK_LaunchA key for legacy reasons.
-
         # Qt.Key_LaunchD	0x010000af	On X11 this key is mapped to
         # XF86XK_LaunchB key for legacy reasons.
-
         # Qt.Key_LaunchE	0x010000b0	On X11 this key is mapped to
         # XF86XK_LaunchC key for legacy reasons.
-
         # Qt.Key_LaunchF	0x010000b1	On X11 this key is mapped to
         # XF86XK_LaunchD key for legacy reasons.
-
         # Qt.Key_LaunchG	0x0100010e	On X11 this key is mapped to
         # XF86XK_LaunchE key for legacy reasons.
-
         # Qt.Key_LaunchH	0x0100010f	On X11 this key is mapped to
         # XF86XK_LaunchF key for legacy reasons.
-
         # Qt.Key_MonBrightnessUp	0x010000b2
         # Qt.Key_MonBrightnessDown	0x010000b3
         # Qt.Key_KeyboardLightOnOff	0x010000b4
@@ -518,11 +489,9 @@ def get_key_map():
         # Qt.Key_ApplicationRight	0x010000c8
         # Qt.Key_Book	0x010000c9
         # Qt.Key_CD	0x010000ca
-
         # On X11 this key is not mapped for legacy reasons.
         # Use Qt.Key_Launch1 instead.
         # Qt.Key_Calculator	0x010000cb
-
         # Qt.Key_ToDoList	0x010000cc
         # Qt.Key_ClearGrab	0x010000cd
         # Qt.Key_Close	0x010000ce
@@ -591,32 +560,26 @@ def get_key_map():
         # Qt.Key_ContrastAdjust	0x0100010d
         # Qt.Key_MediaLast	0x0100ffff
         # Qt.Key_unknown	0x01ffffff
-
         # A key to answer or initiate a call (see Qt.Key_ToggleCallHangup
         # for a key to toggle current call state)
         # Qt.Key_Call	0x01100004
-
         # A key to activate the camera shutter
         # Qt.Key_Camera	0x01100020
-
         # Qt.Key_CameraFocus	0x01100021	A key to focus the camera
         # Qt.Key_Context1	0x01100000
         # Qt.Key_Context2	0x01100001
         # Qt.Key_Context3	0x01100002
         # Qt.Key_Context4	0x01100003
         # Qt.Key_Flip	0x01100006
-
         # A key to end an ongoing call (see Qt.Key_ToggleCallHangup for a
         # key to toggle current call state)
         # Qt.Key_Hangup	0x01100005
         # Qt.Key_No	0x01010002
         # Qt.Key_Select	0x01010000
         # Qt.Key_Yes	0x01010001
-
         # A key to toggle the current call state (ie. either answer, or
         # hangup) depending on current call state
         # Qt.Key_ToggleCallHangup	0x01100007
-
         # Qt.Key_VoiceDial	0x01100008
         # Qt.Key_LastNumberRedial	0x01100009
         # Qt.Key_Execute	0x01020003

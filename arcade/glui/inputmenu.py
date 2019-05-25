@@ -36,7 +36,8 @@ class InputMenu(Menu):
         # self.top.left.append(HomeItem())
         # self.top.left.append(MenuItem(item.title))
         self.top.set_selected_index(
-            len(self.top.left) + len(self.top.right) - 1)
+            len(self.top.left) + len(self.top.right) - 1
+        )
 
         self.controller = controller
         assert isinstance(self.controller, GameDriver)
@@ -147,6 +148,7 @@ class InputMenu(Menu):
         State.get().history.append(new_menu)
         # FIXME
         from arcade.glui.window import set_current_menu
+
         set_current_menu(new_menu)
 
         # print("run_game, controller = ", id(self.controller))
@@ -227,16 +229,19 @@ class InputMenu(Menu):
         fs_emu_texturing(True)
         fs_emu_blending(False)
         Texture.sidebar_background.render(
-            0, 0, 1920, Texture.sidebar_background.h)
+            0, 0, 1920, Texture.sidebar_background.h
+        )
 
         if len(self.controller.ports) == 0:
             color = (1.0, 0.0, 0.0, 1.0)
             text = "No input configuration needed"
-            Render.get().text(text, Font.main_path_font, 200, 730, 400,
-                              color=color, halign=0)
+            Render.get().text(
+                text, Font.main_path_font, 200, 730, 400, color=color, halign=0
+            )
             text = "Press enter or primary key to start game"
-            Render.get().text(text, Font.main_path_font, 200, 670, 400,
-                              color=color, halign=0)
+            Render.get().text(
+                text, Font.main_path_font, 200, 670, 400, color=color, halign=0
+            )
             return
 
         if self.device_list_version != InputDevices.device_list_version:
@@ -253,8 +258,7 @@ class InputMenu(Menu):
                     self.device_data[device.id]["device"] = device
                 except KeyError:
                     print(" -- add device info for", device.id)
-                    self.device_data[device.id] = {
-                        "port": 0, "device": device}
+                    self.device_data[device.id] = {"port": 0, "device": device}
                     self.check_device(self.device_data[device.id])
             for data_key in self.device_data.keys():
                 if data_key not in device_ids:
@@ -270,21 +274,39 @@ class InputMenu(Menu):
 
             text = input_.name.upper()
             color = (1.0, 0.0, 0.0, 1.0)
-            Render.get().text(text, Font.main_path_font, center_x - 200, 760,
-                              400,
-                              color=color, halign=0)
+            Render.get().text(
+                text,
+                Font.main_path_font,
+                center_x - 200,
+                760,
+                400,
+                color=color,
+                halign=0,
+            )
             text = input_.description.upper()
             color = (1.0, 0.0, 0.0, 1.0)
-            Render.get().text(text, Font.main_path_font, center_x - 200, 730,
-                              400,
-                              color=color, halign=0)
+            Render.get().text(
+                text,
+                Font.main_path_font,
+                center_x - 200,
+                730,
+                400,
+                color=color,
+                halign=0,
+            )
             if input_.device_id:
                 device = self.device_data[input_.device_id]["device"]
                 color = (1.0, 0.5, 0.5, 1.0)
                 text = device.name.upper()
-                Render.get().text(text, Font.main_path_font, center_x - 200,
-                                  680,
-                                  400, color=color, halign=0)
+                Render.get().text(
+                    text,
+                    Font.main_path_font,
+                    center_x - 200,
+                    680,
+                    400,
+                    color=color,
+                    halign=0,
+                )
 
             for j, device in enumerate(self.devices):
                 device_data = self.device_data[device.id]
@@ -296,8 +318,15 @@ class InputMenu(Menu):
                     color = (1.0, 1.0, 1.0, 1.0)
                 else:
                     color = (0.5, 0.5, 0.5, 1.0)
-                Render.get().text(text, Font.main_path_font, center_x - 200,
-                                  600 - j * 40, 400, color=color, halign=0)
+                Render.get().text(
+                    text,
+                    Font.main_path_font,
+                    center_x - 200,
+                    600 - j * 40,
+                    400,
+                    color=color,
+                    halign=0,
+                )
 
         fade = 1.0 - (State.get().time - self.first_shown_at) * 3.0
         if fade > 0.0:
@@ -317,5 +346,6 @@ class InputMenu(Menu):
             fs_emu_texturing(True)
             fs_emu_blending(False)
             Texture.sidebar_background.render(
-                0, 0, 1920, Texture.sidebar_background.h, opacity=fade)
+                0, 0, 1920, Texture.sidebar_background.h, opacity=fade
+            )
             gl.glEnable(gl.GL_DEPTH_TEST)

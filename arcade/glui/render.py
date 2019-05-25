@@ -190,8 +190,11 @@ class Render(object):
         if self.perspective == PERSPECTIVE_ORTHO:
             return
         self.display_aspect = 16 / 9.0
-        self.ortho_pscalex = (2.0 / self.display_width *
-                              (self.display_width / self.display_height))
+        self.ortho_pscalex = (
+            2.0
+            / self.display_width
+            * (self.display_width / self.display_height)
+        )
         self.ortho_pscaley = 2.0 / self.display_height
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glLoadIdentity()
@@ -209,8 +212,19 @@ class Render(object):
         self.perspective = PERSPECTIVE_ORTHO
         return self.ortho_pscalex, self.ortho_pscaley
 
-    def text(self, text, font, x, y, w=0, h=0, color=(1.0, 1.0, 1.0, 1.0),
-             shadow=False, shadow_color=(0, 0, 0), halign=-1):
+    def text(
+        self,
+        text,
+        font,
+        x,
+        y,
+        w=0,
+        h=0,
+        color=(1.0, 1.0, 1.0, 1.0),
+        shadow=False,
+        shadow_color=(0, 0, 0),
+        halign=-1,
+    ):
         if not text:
             return 0, 0
         # if len(color) == 3:
@@ -219,9 +233,11 @@ class Render(object):
             alpha = color[3]
         except IndexError:
             alpha = 1.0
-        color = (int(round(color[0] * 255)),
-                 int(round(color[1] * 255)),
-                 int(round(color[2] * 255)))
+        color = (
+            int(round(color[0] * 255)),
+            int(round(color[1] * 255)),
+            int(round(color[2] * 255)),
+        )
 
         cache_key = (text, hash(font), font.size, color, alpha)
         try:
@@ -242,14 +258,26 @@ class Render(object):
             texture = Render.get().create_texture()
             gl.glBindTexture(gl.GL_TEXTURE_2D, texture)
             gl.glTexImage2D(
-                gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, txtsize[0], txtsize[1],
-                0, gl.GL_BGRA, gl.GL_UNSIGNED_BYTE, txtdata)
+                gl.GL_TEXTURE_2D,
+                0,
+                gl.GL_RGBA,
+                txtsize[0],
+                txtsize[1],
+                0,
+                gl.GL_BGRA,
+                gl.GL_UNSIGNED_BYTE,
+                txtdata,
+            )
             gl.glTexParameteri(
-                gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
+                gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR
+            )
             gl.glTexParameteri(
-                gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
-        tw, th = (txtsize[0] * self.ortho_pscalex,
-                  txtsize[1] * self.ortho_pscaley)
+                gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR
+            )
+        tw, th = (
+            txtsize[0] * self.ortho_pscalex,
+            txtsize[1] * self.ortho_pscaley,
+        )
 
         tx = x
         ty = y

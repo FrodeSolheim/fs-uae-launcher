@@ -11,11 +11,7 @@ from fsui.qt import QPen, QColor
 CACHE_SIZE = 100
 text_cache = []
 for _ in range(CACHE_SIZE):
-    text_cache.append({
-        "text": None,
-        "font": None,
-        "texture": None,
-    })
+    text_cache.append({"text": None, "font": None, "texture": None})
 
 
 class Font(object):
@@ -37,7 +33,8 @@ class Font(object):
                 self.font_id = self.database.addApplicationFont(path)
             else:
                 self.font_id = self.database.addApplicationFontFromData(
-                    path.read())
+                    path.read()
+                )
             Font.font_ids[path] = self.font_id
         self.families = self.database.applicationFontFamilies(self.font_id)
         print(self.families)
@@ -67,8 +64,11 @@ class Font(object):
 
         fm = QFontMetrics(self.font)
         rect = fm.boundingRect(text)
-        im = QImage(rect.x() + rect.width(), rect.height(),
-                    QImage.Format_ARGB32_Premultiplied)
+        im = QImage(
+            rect.x() + rect.width(),
+            rect.height(),
+            QImage.Format_ARGB32_Premultiplied,
+        )
         im.fill(QColor(0, 0, 0, 0))
         painter = QPainter()
         painter.begin(im)
@@ -160,27 +160,42 @@ class BitmapFont(object):
         render_texture = gl.glGenTextures(1)
         gl.glBindTexture(gl.GL_TEXTURE_2D, render_texture)
         gl.glTexImage2D(
-            gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, required_width,
-            required_height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_INT, None)
+            gl.GL_TEXTURE_2D,
+            0,
+            gl.GL_RGBA,
+            required_width,
+            required_height,
+            0,
+            gl.GL_RGBA,
+            gl.GL_UNSIGNED_INT,
+            None,
+        )
         gl.glTexParameteri(
-            gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, gl.GL_CLAMP_TO_EDGE)
+            gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, gl.GL_CLAMP_TO_EDGE
+        )
         gl.glTexParameteri(
-            gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE)
+            gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE
+        )
         gl.glTexParameteri(
-            gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
+            gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR
+        )
 
         # FIXME: Mipmapping?
         mip_mapping = 0
         if mip_mapping:
             gl.glTexParameteri(
-                gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER,
-                gl.GL_LINEAR_MIPMAP_LINEAR)
+                gl.GL_TEXTURE_2D,
+                gl.GL_TEXTURE_MIN_FILTER,
+                gl.GL_LINEAR_MIPMAP_LINEAR,
+            )
             gl.glTexParameteri(
-                gl.GL_TEXTURE_2D, gl.GL_GENERATE_MIPMAP, gl.GL_TRUE)
+                gl.GL_TEXTURE_2D, gl.GL_GENERATE_MIPMAP, gl.GL_TRUE
+            )
             gl.glGenerateMipmapEXT(gl.GL_TEXTURE_2D)
         else:
             gl.glTexParameteri(
-                gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
+                gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR
+            )
 
         gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
 
@@ -190,8 +205,12 @@ class BitmapFont(object):
         gl.glGenFramebuffersEXT(1, frame_buffer)
         gl.glBindFramebufferEXT(gl.GL_FRAMEBUFFER_EXT, frame_buffer)
         gl.glFramebufferTexture2DEXT(
-            gl.GL_FRAMEBUFFER_EXT, gl.GL_COLOR_ATTACHMENT0_EXT,
-            gl.GL_TEXTURE_2D, render_texture, 0)
+            gl.GL_FRAMEBUFFER_EXT,
+            gl.GL_COLOR_ATTACHMENT0_EXT,
+            gl.GL_TEXTURE_2D,
+            render_texture,
+            0,
+        )
 
         status = gl.glCheckFramebufferStatusEXT(gl.GL_FRAMEBUFFER_EXT)
         if status != gl.GL_FRAMEBUFFER_COMPLETE_EXT:

@@ -66,8 +66,9 @@ class LegacyDialog(QDialog):
             pp = real_parent.x(), real_parent.y()
             ps = real_parent.width(), real_parent.height()
             ss = self.get_size()
-            self.move(pp[0] + (ps[0] - ss[0]) // 2,
-                      pp[1] + (ps[1] - ss[1]) // 2)
+            self.move(
+                pp[0] + (ps[0] - ss[0]) // 2, pp[1] + (ps[1] - ss[1]) // 2
+            )
         # elif self.default_center:
         #     x, y = self.default_center
         #     ss = self.get_size()

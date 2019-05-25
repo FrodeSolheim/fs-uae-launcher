@@ -11,9 +11,17 @@ logger = logging.getLogger("SYS")
 
 
 def program_path():
-    return ["SYS:C", "SYS:Utilities", "SYS:Rexxc", "SYS:System", "SYS:S",
-            "SYS:Prefs", "SYS:WSStartup", "SYS:Tools",
-            "SYS:Tools/Commodities"]
+    return [
+        "SYS:C",
+        "SYS:Utilities",
+        "SYS:Rexxc",
+        "SYS:System",
+        "SYS:S",
+        "SYS:Prefs",
+        "SYS:WSStartup",
+        "SYS:Tools",
+        "SYS:Tools/Commodities",
+    ]
 
 
 def rexx_path():
@@ -58,13 +66,16 @@ def load_python_program_module(path):
     logger.debug("load_python_program_module %s", repr(path))
     # FIXME: Not nice, requires globally unique module names for apps.
     import importlib
+
     host_path = workspace.path.host(
-        workspace.path.join(path, workspace.path.basename(path) + ".py"))
+        workspace.path.join(path, workspace.path.basename(path) + ".py")
+    )
     host_dir = os.path.dirname(host_path)
     if host_dir not in sys.path:
         sys.path.insert(0, host_dir)
     module = importlib.import_module(
-            os.path.splitext(os.path.basename(host_path))[0])
+        os.path.splitext(os.path.basename(host_path))[0]
+    )
     logger.debug("%s", repr(module))
     return module
 
@@ -73,26 +84,35 @@ def python_exec(script, argv):
     env = os.environ.copy()
     env["PYTHONPATH"] = ":".join(sys.path)
     p = subprocess.Popen(
-        [sys.executable,  script] + argv[1:],
-        stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=env,
+        [sys.executable, script] + argv[1:],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        env=env,
         stderr=subprocess.STDOUT,
-        bufsize=0)
+        bufsize=0,
+    )
     return p
 
 
 def expansion_exec(exe_name, argv):
     executable = PluginManager.instance().find_executable(exe_name)
     p = executable.popen(
-        argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+        argv[1:],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        bufsize=0)
+        bufsize=0,
+    )
     return p
 
 
 def host_exec(exe, argv):
     print([exe] + argv[1:])
     p = subprocess.Popen(
-        [exe] + argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+        [exe] + argv[1:],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        bufsize=0)
+        bufsize=0,
+    )
     return p

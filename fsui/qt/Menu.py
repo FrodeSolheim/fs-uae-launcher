@@ -3,7 +3,6 @@ from fsui.qt import QMenu, QCursor, QPoint
 
 
 class AutoCloseMenu(QMenu):
-
     def mousePressEvent(self, event):
         parent = self._parent()
         # noinspection PyArgumentList
@@ -19,7 +18,6 @@ class AutoCloseMenu(QMenu):
 
 
 class Menu:
-
     def __init__(self, implementation=QMenu):
         self.qmenu = implementation()
         # self._menu = wx.Menu()
@@ -68,6 +66,5 @@ class Menu:
 
 
 class PopupMenu(Menu):
-
     def __init__(self):
         super().__init__(implementation=AutoCloseMenu)

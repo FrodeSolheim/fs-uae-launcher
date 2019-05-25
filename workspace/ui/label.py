@@ -3,7 +3,6 @@ from fsui.qt import QFont
 
 
 class Label(fsui.Label):
-
     def __init__(self, parent, text="", font=None):
         super().__init__(parent, text)
         if font is not None:

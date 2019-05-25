@@ -19,8 +19,9 @@ def enable_exception_handler(force=False):
     already_run = True
 
     if not force and is_running_in_debugger():
-        print("running in debugger, not enabling exception handler "
-              "after all.")
+        print(
+            "running in debugger, not enabling exception handler " "after all."
+        )
         _let_thread_exceptions_be_unhandled()
         return False
 
@@ -39,9 +40,11 @@ def _let_thread_exceptions_be_unhandled():
     if sys.version.startswith("2.7"):
         threading.Thread._Thread__bootstrap = _thread_bootstrap_2_7
     else:
-        print("WARNING: no Thread bootstrap replacement for this "
-              "python version. The debugger will not break on unhandled"
-              "exceptions in threads other than the main thread.")
+        print(
+            "WARNING: no Thread bootstrap replacement for this "
+            "python version. The debugger will not break on unhandled"
+            "exceptions in threads other than the main thread."
+        )
 
 
 def _enable_thread_exception_handler():
@@ -85,7 +88,8 @@ def _handle_exception(exc_type, exc_value, exc_traceback):
     filename = os.path.basename(filename)
     thread = threading.currentThread()
     error_id = "{0}:{1}:{2}:{3}".format(
-        exc_type.__name__, filename, function, line)
+        exc_type.__name__, filename, function, line
+    )
 
     # QtGui.QMessageBox.critical(None, "Error",
     # description = "<html>A critical error has occurred.<br/> "
@@ -96,11 +100,13 @@ def _handle_exception(exc_type, exc_value, exc_traceback):
     #                            + "</html>")
     #
 
-    backtrace_string = "".join(traceback.format_exception(
-        exc_type, exc_value, exc_traceback))
+    backtrace_string = "".join(
+        traceback.format_exception(exc_type, exc_value, exc_traceback)
+    )
 
     message = "\nUnhandled exception detected in thread {0}:\n  {1}\n".format(
-        thread.getName(), error_id)
+        thread.getName(), error_id
+    )
 
     print(message)
     print(backtrace_string)
@@ -121,7 +127,7 @@ def _handle_exception(exc_type, exc_value, exc_traceback):
             #     print("calling app.Exit")
             #     app.Exit()
 
-                Signal("quit").notify()
+            Signal("quit").notify()
         except Exception as e:
             print(repr(e))
 
@@ -139,6 +145,7 @@ def _thread_bootstrap_2_7(self):
     # noinspection PyProtectedMember
     # noinspection PyUnresolvedReferences
     from threading import _active_limbo_lock, _active, _limbo, _trace_hook
+
     # noinspection PyProtectedMember
     # noinspection PyUnresolvedReferences
     from threading import _profile_hook, _sys, _get_ident

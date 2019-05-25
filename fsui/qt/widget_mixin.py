@@ -7,7 +7,6 @@ from .Color import Color
 
 
 class MixinBase(object):
-
     def __init__(self):
         # self._timer_started = False
         pass
@@ -35,7 +34,6 @@ class MixinBase(object):
 
 # noinspection PyPep8Naming
 class WidgetMixin(MixinBase):
-
     def __init__(self, *_):
         # MixinBase.__init__(self)
         self._parent = None
@@ -144,11 +142,11 @@ class WidgetMixin(MixinBase):
     def set_min_width(self, width):
         # noinspection PyAttributeOutsideInit
         self.min_width = width
-    
+
     def set_min_height(self, height):
         # noinspection PyAttributeOutsideInit
         self.min_height = height
-    
+
     def get_min_width(self):
         widget = getattr(self, "_widget", self)
         width = 0
@@ -167,7 +165,7 @@ class WidgetMixin(MixinBase):
         result = max(width, widget.minimumSizeHint().width())
         return min(result, widget.maximumWidth())
         # return max(width, widget.minimumWidth())
-    
+
     def get_min_height(self):
         widget = getattr(self, "_widget", self)
         assert isinstance(widget, QWidget)

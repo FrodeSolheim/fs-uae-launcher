@@ -30,7 +30,7 @@ def get_desktop_dir(allow_create=True):
     else:
         path = xdg_user_dir("DESKTOP")
         if not path:
-            path = os.path.join(get_home_dir(), 'Desktop')
+            path = os.path.join(get_home_dir(), "Desktop")
     path = unicode_path(path)
     if allow_create and not os.path.isdir(path):
         os.makedirs(path)
@@ -58,7 +58,7 @@ def get_pictures_dir(allow_create=True):
     else:
         path = xdg_user_dir("PICTURES")
         if not path:
-            path = os.path.join(get_home_dir(), 'Pictures')
+            path = os.path.join(get_home_dir(), "Pictures")
     path = unicode_path(path)
     if allow_create and not os.path.isdir(path):
         os.makedirs(path)

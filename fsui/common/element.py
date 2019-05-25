@@ -5,7 +5,6 @@
 
 
 class Element:
-
     def __init__(self, parent, delay_create=False):
         self.parent = parent
         self.layout = None
@@ -65,7 +64,6 @@ class Element:
 
 
 class LightElement(Element):
-
     def __init__(self, parent):
         Element.__init__(self, parent)
 

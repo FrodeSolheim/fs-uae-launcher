@@ -5,6 +5,7 @@ import zlib
 from fsbc.resources import Resources
 import fsui
 from fsgs.FSGSDirectories import FSGSDirectories
+
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
 from fsui.extra.iconheader import IconHeader
@@ -12,7 +13,6 @@ from workspace.ui.theme import WorkspaceTheme
 
 
 class ADFCreatorWindow(fsui.Window):
-
     @classmethod
     def open(cls, parent=None):
         return fsui.open_window_instance(cls, parent)
@@ -33,9 +33,11 @@ class ADFCreatorWindow(fsui.Window):
         layout.min_width = 500
 
         self.icon_header = IconHeader(
-            self, fsui.Icon("floppy", "pkg:workspace"),
+            self,
+            fsui.Icon("floppy", "pkg:workspace"),
             gettext("ADF Disk Image Creator"),
-            gettext("Create a blank or formatted ADF floppy disk image"))
+            gettext("Create a blank or formatted ADF floppy disk image"),
+        )
         layout.add(self.icon_header, fill=True, margin_bottom=20)
 
         label = fsui.Label(self, gettext("Create disk image of type:"))
@@ -46,9 +48,11 @@ class ADFCreatorWindow(fsui.Window):
         self.list_view.set_min_height(60)
         icon = fsui.Image("workspace:res/16x16/floppy.png")
         self.list_view.add_item(
-            gettext("ADF - Standard Floppy Disk Image"), icon)
+            gettext("ADF - Standard Floppy Disk Image"), icon
+        )
         self.list_view.add_item(
-            gettext("ADF - Extended Floppy Disk Image (MFM Encoded)"), icon)
+            gettext("ADF - Extended Floppy Disk Image (MFM Encoded)"), icon
+        )
         layout.add(self.list_view, expand=True, fill=True)
         # self.list_view.on_select_item = self.on_select_item
         self.list_view.item_selected.connect(self.on_item_selected)
@@ -59,8 +63,7 @@ class ADFCreatorWindow(fsui.Window):
         layout.add_spacer(6)
         hori_layout = fsui.HorizontalLayout()
         layout.add(hori_layout, fill=True)
-        self.name_field = fsui.TextField(
-            self, "", read_only=False)
+        self.name_field = fsui.TextField(self, "", read_only=False)
         hori_layout.add(self.name_field, expand=True)
         text = gettext("Size:")
         label = fsui.Label(self, text)
@@ -140,7 +143,8 @@ class ADFCreatorWindow(fsui.Window):
         # if hasattr(self, "dialog"):
         #    return
         self.dialog = fsui.DirDialog(
-            None, gettext("Select Destination Directory"))
+            None, gettext("Select Destination Directory")
+        )
         self.dialog.accepted.connect(self.on_dialog_accepted)
         # self.dialog.destroyed.connect(self.on_dialog_destroyed)
         # self.dialog.finished.connect(self.on_dialog_finished)
@@ -190,7 +194,8 @@ class ADFCreatorWindow(fsui.Window):
         path = self.dir_field.get_text().strip()
         if not os.path.isdir(path):
             return self.show_error(
-                gettext("Specified directory does not exist"))
+                gettext("Specified directory does not exist")
+            )
         name = self.name_field.get_text().strip()
         ext = ".adf"
         if not name.lower().endswith(ext):

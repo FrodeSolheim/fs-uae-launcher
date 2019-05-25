@@ -3,7 +3,6 @@ from .application import Application
 
 
 class Menu(fsui.Menu):
-
     def __init__(self, parent):
         if isinstance(parent, Application):
             parent.add_menu(self)

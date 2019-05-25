@@ -3,7 +3,6 @@ import threading
 
 
 class Request(object):
-
     def __init__(self):
         pass
 
@@ -13,7 +12,6 @@ def get_request():
 
 
 class Proxy(object):
-
     def __init__(self, func):
         self._func = func
 
@@ -25,17 +23,15 @@ class Proxy(object):
 
 
 class WebApp(object):
-
     def __init__(self):
         pass
 
     def route(self, path):
-
         def wrapper(func):
-
             def wrapper2():
                 print("wrapper", func)
                 return func()
+
             return bottle.route(path)(wrapper2)
 
         return wrapper

@@ -21,7 +21,8 @@ class ArchiveExtractorApplication(workspace.ui.Application):
 class ArchiveExtractorWindow(workspace.ui.Window):
     def __init__(self, parent):
         super().__init__(
-            parent, "Archive Extractor", maximizable=False, menu=True)
+            parent, "Archive Extractor", maximizable=False, menu=True
+        )
         self.create_menu()
         col = workspace.ui.Column(self)
         col.add_spacer(540, 0)
@@ -67,7 +68,9 @@ class ArchiveExtractorWindow(workspace.ui.Window):
         row = col.row(margin=20, bottom=10)
         row.add(workspace.ui.Label(self, "Destination folder" + ":"))
         row.expand()
-        self.items_label = workspace.ui.Label(self, "4 root items will be created")
+        self.items_label = workspace.ui.Label(
+            self, "4 root items will be created"
+        )
         row.add(self.items_label)
 
         row = col.row(margin=20, top=0)
@@ -79,14 +82,17 @@ class ArchiveExtractorWindow(workspace.ui.Window):
         row = col.row(margin=20, top=0)
         # FIXME
         import fsui
+
         row.add(workspace.ui.Label(self, "Character set:"))
         self.charset_choice = fsui.Choice(
-            self, ["ISO-8859-1", "UTF-8", "CP437"])
+            self, ["ISO-8859-1", "UTF-8", "CP437"]
+        )
         row.add(self.charset_choice, left=10)
         row.expand()
         row.add(workspace.ui.Label(self, "Create .uaem metadata:"))
         self.meta_choice = fsui.Choice(
-            self, ["When needed", "Always", "Never"])
+            self, ["When needed", "Always", "Never"]
+        )
         row.add(self.meta_choice, left=10)
         # self.meta_checkbox = fsui.CheckBox(
         #     self, "Create .uaem files when needed", True)
@@ -140,15 +146,20 @@ class SourceArea(workspace.ui.TitlePanel):
         super().__init__(parent)
         row = workspace.ui.Row(self, padding=20)
 
-        self.image_view = workspace.ui.ImageView(self, workspace.ui.Image(
-            workspace.Stream(__name__, "data/48/zip-file.png")))
+        self.image_view = workspace.ui.ImageView(
+            self,
+            workspace.ui.Image(
+                workspace.Stream(__name__, "data/48/zip-file.png")
+            ),
+        )
         row.add(self.image_view, top=-10, bottom=-10, right=10)
 
         col = workspace.ui.Column()
         row.add(col, expand=True, fill=False, top=0)
 
         self.source_label = workspace.ui.Label(
-            self, "No archive loaded", font="16px Medium Roboto")
+            self, "No archive loaded", font="16px Medium Roboto"
+        )
         col.add(self.source_label)
 
         col.spacer(2)
@@ -156,8 +167,7 @@ class SourceArea(workspace.ui.TitlePanel):
         col.add(self.format_row)
 
         # self.format_label = workspace.gui.Label(self, "ZIP ARCHIVE")
-        self.format_label = workspace.ui.Label(
-            self, "DROP FILE HERE TO LOAD")
+        self.format_label = workspace.ui.Label(self, "DROP FILE HERE TO LOAD")
         font = workspace.ui.Font("Roboto", 12)
         self.format_label.set_font(font)
         self.format_label.set_text_color(workspace.ui.Color(0x80, 0x80, 0x80))

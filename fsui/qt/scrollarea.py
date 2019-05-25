@@ -4,7 +4,6 @@ from .widget_mixin import WidgetMixin
 
 
 class VerticalScrollArea(QScrollArea, WidgetMixin):
-
     def __init__(self, parent):
         QScrollArea.__init__(self, parent.get_container())
         self.init_widget(parent)

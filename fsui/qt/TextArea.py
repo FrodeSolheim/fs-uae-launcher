@@ -7,8 +7,8 @@ class TextArea(fsui.qt.QTextEdit, WidgetMixin):
     changed = fsui.qt.Signal()
 
     def __init__(
-            self, parent, text="", read_only=False, font_family=None,
-            border=True):
+        self, parent, text="", read_only=False, font_family=None, border=True
+    ):
         fsui.qt.QTextEdit.__init__(self, "", parent.get_container())
         # Widget.__init__(self, parent)
         self.init_widget(parent)

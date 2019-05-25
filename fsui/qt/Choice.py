@@ -98,7 +98,6 @@ class Choice(QComboBox, WidgetMixin):
 
 
 class ItemChoice(Choice):
-
     def __init__(self, parent):
         Choice.__init__(self, parent)
 

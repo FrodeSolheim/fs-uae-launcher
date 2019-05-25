@@ -16,7 +16,8 @@ def is_uuid(value: str) -> str:
     """
     match = re.match(
         "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-        value.lower())
+        value.lower(),
+    )
     if match is not None:
         return match.group(0)
     return ""
@@ -46,6 +47,7 @@ def memoize(func):
                 # FIXME: will not happen here.. se above type error?
                 pass
             return value
+
     return wrapper
 
 
@@ -53,15 +55,15 @@ def split_version(version_string: str) -> List[str]:
     pattern = re.compile(
         "^([0-9]{1,4})(?:\.([0-9]{1,4}))?"
         "(?:\.([0-9]{1,4}))?(?:\.([0-9]{1,4}))?"
-        "(~?[a-z][a-z0-9\.]*)?(?:_([0-9]+))?$")
+        "(~?[a-z][a-z0-9\.]*)?(?:_([0-9]+))?$"
+    )
     m = pattern.match(version_string)
     if m is None:
         raise ValueError(version_string + " is not a valid version number")
     return list(m.groups())
 
 
-class Version (object):
-
+class Version(object):
     def __init__(self, version_string: str) -> None:
         self.string = version_string
         v = split_version(version_string)
@@ -158,4 +160,5 @@ def chained_exception(new_e, org_e):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

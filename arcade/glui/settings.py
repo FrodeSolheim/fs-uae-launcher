@@ -1,4 +1,5 @@
 import os
+
 # import pygame
 from fsbc.user import get_home_dir, get_documents_dir
 from fsbc.system import windows
@@ -41,8 +42,9 @@ class Settings(object):
         if cls.games_dir_path:
             path.extend(cls.games_dir_path)
         elif windows:
-            path.append(os.path.join(
-                get_documents_dir(), "Games (Ku Game System)"))
+            path.append(
+                os.path.join(get_documents_dir(), "Games (Ku Game System)")
+            )
         else:
             path.append(os.path.join(get_home_dir(), "Games"))
         return path
@@ -62,7 +64,9 @@ class Settings(object):
             return cls.profile_dir_path
         elif windows:
             return os.path.join(
-                get_documents_dir(), "Gamer Profile (Ku Game System)")
+                get_documents_dir(), "Gamer Profile (Ku Game System)"
+            )
         else:
             return os.path.join(
-                get_home_dir(), "Gamer Profile (Ku Game System)")
+                get_home_dir(), "Gamer Profile (Ku Game System)"
+            )

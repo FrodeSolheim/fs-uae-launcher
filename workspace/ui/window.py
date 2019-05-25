@@ -9,7 +9,6 @@ TEXT_SPACING = 2
 
 
 class WindowImages:
-
     def __init__(self):
         self.nw = fsui.Image("pkg://workspace.ui/data/window-shadow-nw.png")
         self.n = fsui.Image("pkg://workspace.ui/data/window-shadow-n.png")
@@ -42,6 +41,7 @@ class WindowBorder(RealWindow):
 
         # self.setWindowFlags(Qt.FramelessWindowHint)
         from fsui.qt import Qt
+
         self.setAttribute(Qt.WA_NoSystemBackground)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
@@ -52,6 +52,7 @@ class WindowBorder(RealWindow):
         w = self.width()
         h = self.height()
         from fsui.qt import QPainter, QPoint, QRect
+
         painter = QPainter(self)
         painter.drawImage(QPoint(0, 0), images.nw.qimage)
         painter.drawImage(QRect(40, 0, w - 80, 20), images.n.qimage)
@@ -76,19 +77,26 @@ class WindowBorder(RealWindow):
 
 
 class WindowHeader(fsui.Panel):
-
-    def __init__(self, parent, title="", menu=False, minimizable=True,
-                 maximizable=True, separator=True, closable=True,
-                 background=None):
+    def __init__(
+        self,
+        parent,
+        title="",
+        menu=False,
+        minimizable=True,
+        maximizable=True,
+        separator=True,
+        closable=True,
+        background=None,
+    ):
         super().__init__(parent)
 
         if background is None:
-            background = (0xff, 0xff, 0xff)
+            background = (0xFF, 0xFF, 0xFF)
         background_color = fsui.Color(background)
         if background_color.to_hsl().l >= 0.6:
             self.foreground_color = (0x00, 0x00, 0x00)
         else:
-            self.foreground_color = (0xff, 0xff, 0xff)
+            self.foreground_color = (0xFF, 0xFF, 0xFF)
         self.background_color = background_color
         self.set_background_color(background_color)
 
@@ -131,18 +139,36 @@ class WindowHeader(fsui.Panel):
 
 
 class Window(fsui.Window):
-
-    def __init__(self, parent, title="", minimizable=True, maximizable=True,
-                 menu=False, border=True, header=True, below=False,
-                 closable=True, color=None):
+    def __init__(
+        self,
+        parent,
+        title="",
+        minimizable=True,
+        maximizable=True,
+        menu=False,
+        border=True,
+        header=True,
+        below=False,
+        closable=True,
+        color=None,
+    ):
         if isinstance(parent, Application):
             parent.add_window(self)
             parent = None
         super().__init__(
-                parent, title, minimizable=minimizable,
-                maximizable=maximizable, native=False, separator=False,
-                menu=menu, border=border, header=header, below=below,
-                closable=closable, color=color)
+            parent,
+            title,
+            minimizable=minimizable,
+            maximizable=maximizable,
+            native=False,
+            separator=False,
+            menu=menu,
+            border=border,
+            header=header,
+            below=below,
+            closable=closable,
+            color=color,
+        )
         self.__menu = None
 
     def add(self, child):
@@ -159,14 +185,13 @@ class Window(fsui.Window):
 
 
 class Window2(fsui.Panel):
-
     def __init__(self, parent, title="", maximizable=True):
         if isinstance(parent, Application):
             parent.add_window(self)
             # parent = None
         self.__border = WindowBorder(None, title, self)
         super().__init__(self.__border)
-        self.set_background_color(fsui.Color(0xf2, 0xf2, 0xf2))
+        self.set_background_color(fsui.Color(0xF2, 0xF2, 0xF2))
 
         self.layout = fsui.VerticalLayout()
         self.__title_layout = fsui.HorizontalLayout()
@@ -236,7 +261,6 @@ class Window2(fsui.Panel):
 
 
 class WindowTitlePanel(fsui.Panel):
-
     def __init__(self, parent):
         super().__init__(parent, paintable=True)
         self.set_background_color(parent.background_color)
@@ -289,13 +313,13 @@ class WindowTitlePanel(fsui.Panel):
             mouse_pos = fsui.get_mouse_position()
             window_pos = (
                 self.window_pos[0] + mouse_pos[0] - self.mouse_pos[0],
-                self.window_pos[1] + mouse_pos[1] - self.mouse_pos[1])
+                self.window_pos[1] + mouse_pos[1] - self.mouse_pos[1],
+            )
             window = self.parent().parent()
             window.set_position(window_pos)
 
 
 class WindowButton(fsui.Panel):
-
     def __init__(self, parent, name):
         super().__init__(parent, paintable=True)
         self.set_background_color(parent.background_color)
@@ -307,18 +331,24 @@ class WindowButton(fsui.Panel):
         if parent.background_color.to_hsl().l >= 0.6:
             # FIXME: static resources / share between instances
             self.image = fsui.Image(
-                "pkg://workspace.ui/data/window-{}.png".format(name))
+                "pkg://workspace.ui/data/window-{}.png".format(name)
+            )
             self.image_hover = fsui.Image(
-                "pkg://workspace.ui/data/window-{}-hover.png".format(name))
+                "pkg://workspace.ui/data/window-{}-hover.png".format(name)
+            )
             self.image_pressed = fsui.Image(
-                "pkg://workspace.ui/data/window-{}-pressed.png".format(name))
+                "pkg://workspace.ui/data/window-{}-pressed.png".format(name)
+            )
         else:
             self.image = fsui.Image(
-                "pkg://workspace.ui/data/window-{}-dark.png".format(name))
+                "pkg://workspace.ui/data/window-{}-dark.png".format(name)
+            )
             self.image_hover = fsui.Image(
-                "pkg://workspace.ui/data/window-{}-hover.png".format(name))
+                "pkg://workspace.ui/data/window-{}-hover.png".format(name)
+            )
             self.image_pressed = fsui.Image(
-                "pkg://workspace.ui/data/window-{}-pressed.png".format(name))
+                "pkg://workspace.ui/data/window-{}-pressed.png".format(name)
+            )
 
     def on_paint(self):
         dc = self.create_dc()
@@ -366,7 +396,6 @@ class WindowButton(fsui.Panel):
 
 
 class WindowMenuButton(WindowButton):
-
     def __init__(self, parent):
         super().__init__(parent, "menu")
 
@@ -384,7 +413,6 @@ class WindowMenuButton(WindowButton):
 
 
 class WindowMinimizeButton(WindowButton):
-
     def __init__(self, parent):
         super().__init__(parent, "minimize")
 
@@ -395,7 +423,6 @@ class WindowMinimizeButton(WindowButton):
 
 
 class WindowMaximizeButton(WindowButton):
-
     def __init__(self, parent):
         super().__init__(parent, "maximize")
 
@@ -409,7 +436,6 @@ class WindowMaximizeButton(WindowButton):
 
 
 class WindowCloseButton(WindowButton):
-
     def __init__(self, parent):
         super().__init__(parent, "close")
 
@@ -420,7 +446,6 @@ class WindowCloseButton(WindowButton):
 
 # FIXME: Rename to TopPanel?
 class TitlePanel(fsui.Panel):
-
     def __init__(self, parent):
         super().__init__(parent)
         self.set_background_color(WorkspaceTheme.instance().title_background)
@@ -428,9 +453,10 @@ class TitlePanel(fsui.Panel):
 
 # FIXME: Rename to TopSeparator?
 class TitleSeparator(fsui.Panel):
-
     def __init__(self, parent):
         super().__init__(parent)
-        self.set_background_color(WorkspaceTheme.instance().title_separator_color)
+        self.set_background_color(
+            WorkspaceTheme.instance().title_separator_color
+        )
         self.set_min_height(2)
         self.set_min_width(100)

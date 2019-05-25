@@ -1,6 +1,7 @@
 from fsgs.ogd.client import OGDClient
 import fsui
 from fsbc.application import app
+
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
 from launcher.ui.widgets import CloseButton
@@ -23,18 +24,28 @@ class LogoutWindow(fsui.Window):
 
         heading_layout = fsui.HorizontalLayout()
         self.layout.add(heading_layout)
-        heading_layout.add(fsui.ImageView(
-            self, fsui.Image("workspace:res/48/password.png")))
+        heading_layout.add(
+            fsui.ImageView(self, fsui.Image("workspace:res/48/password.png"))
+        )
         heading_layout.add_spacer(20)
         heading_layout_2 = fsui.VerticalLayout()
         heading_layout.add(
-            heading_layout_2, expand=True, fill=False, valign=0.5)
-        heading_layout_2.add(fsui.HeadingLabel(
-            self, gettext("Log Out from Your OAGD.net Account")))
+            heading_layout_2, expand=True, fill=False, valign=0.5
+        )
+        heading_layout_2.add(
+            fsui.HeadingLabel(
+                self, gettext("Log Out from Your OAGD.net Account")
+            )
+        )
         heading_layout_2.add_spacer(2)
-        heading_layout_2.add(fsui.Label(
-            self, gettext("While logged out you will not get "
-                          "database updates")))
+        heading_layout_2.add(
+            fsui.Label(
+                self,
+                gettext(
+                    "While logged out you will not get " "database updates"
+                ),
+            )
+        )
 
         self.layout.add_spacer(20)
         hori_layout = fsui.HorizontalLayout()
@@ -85,5 +96,6 @@ class LogoutWindow(fsui.Window):
     #     app.settings["database_email"] = ""
     #     app.settings["database_password"] = ""
     #     self.close()
+
 
 # application = SimpleApplication(LogoutWindow)

@@ -5,7 +5,6 @@ from .application import Application
 
 
 class Resources(object):
-
     def __init__(self, package, subdir=""):
         self.package = package
         self.subdir = subdir
@@ -51,5 +50,4 @@ class Resources(object):
         except Exception:
             pass
 
-        raise LookupError(
-            "Cannot find resource {0}".format(repr(resource)))
+        raise LookupError("Cannot find resource {0}".format(repr(resource)))

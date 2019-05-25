@@ -136,13 +136,16 @@ class Application(object):
         if windows:
             base_dirs.append(os.path.join(self.executable_dir(), "share"))
         elif macosx:
-            base_dirs.append(os.path.join(self.executable_dir(), "..",
-                                          "Resources", "share"))
+            base_dirs.append(
+                os.path.join(self.executable_dir(), "..", "Resources", "share")
+            )
         else:
             # FIXME: $XDG_DATA_DIRS, $XDG_DATA_HOME
             base_dirs.append(
-                os.path.normpath(os.path.join(
-                    self.executable_dir(), "..", "share")))
+                os.path.normpath(
+                    os.path.join(self.executable_dir(), "..", "share")
+                )
+            )
         for dir_name in base_dirs:
             data_dir = os.path.join(dir_name, self.name)
             logger.debug("* checking for data dir %s", data_dir)

@@ -7,8 +7,9 @@ class IconHeader(Group):
     ICON_LEFT = 0
     ICON_RIGHT = 1
 
-    def __init__(self, parent, icon, title, subtitle="",
-                 icon_position=ICON_LEFT):
+    def __init__(
+        self, parent, icon, title, subtitle="", icon_position=ICON_LEFT
+    ):
         Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
 
@@ -18,8 +19,7 @@ class IconHeader(Group):
             self.layout.add(self.image_view)
             self.layout.add_spacer(20)
         vert_layout = fsui.VerticalLayout()
-        self.layout.add(
-            vert_layout, expand=True, fill=False, valign=0.5)
+        self.layout.add(vert_layout, expand=True, fill=False, valign=0.5)
         self.title_label = fsui.HeadingLabel(self, title)
         vert_layout.add(self.title_label)
         vert_layout.add_spacer(2)
@@ -35,8 +35,9 @@ class NewIconHeader(Group):
     ICON_LEFT = 0
     ICON_RIGHT = 1
 
-    def __init__(self, parent, icon, title, subtitle="",
-                 icon_position=ICON_RIGHT):
+    def __init__(
+        self, parent, icon, title, subtitle="", icon_position=ICON_RIGHT
+    ):
         Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
 

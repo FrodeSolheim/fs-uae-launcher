@@ -8,7 +8,6 @@ from fsui.qt import QFont
 
 
 class Font(fsui.Font):
-
     def __init__(self, name, size):
         qfont = QFont(name)
         qfont.setPixelSize(size)
@@ -21,4 +20,5 @@ class Font(fsui.Font):
             return open(path, "rb")
         except FileNotFoundError:
             return pkg_resources.resource_stream(
-                "workspace.ui", "data/" + name)
+                "workspace.ui", "data/" + name
+            )

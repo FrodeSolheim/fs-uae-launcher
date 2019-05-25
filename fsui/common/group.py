@@ -2,7 +2,6 @@ import weakref
 
 
 class Group(object):
-
     def __init__(self, parent):
         self._parent = weakref.ref(parent)
         if hasattr(parent, "_window"):

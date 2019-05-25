@@ -7,7 +7,6 @@ from .window import texture_program, premultiplied_texture_program
 
 
 class FrameBufferObject(object):  # Renderable, RendererBase):
-
     def __init__(self, width=100, height=100):
         self._transparent = True
         self._has_transparency = True
@@ -57,27 +56,46 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
         # initialize color texture
         gl.glBindTexture(texture_target, color_tex)
         gl.glTexParameterf(
-            texture_target, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
+            texture_target, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR
+        )
         gl.glTexParameterf(
-            texture_target, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
-        gl.glTexImage2D(texture_target, 0, texture_format, w, h,
-                        0, gl.GL_RGB, gl.GL_INT, None)
+            texture_target, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR
+        )
+        gl.glTexImage2D(
+            texture_target,
+            0,
+            texture_format,
+            w,
+            h,
+            0,
+            gl.GL_RGB,
+            gl.GL_INT,
+            None,
+        )
         try:
             # FIXME: An error seems to be thrown here on Windows, even
             # though it seems to work...
             gl.glFramebufferTexture2DEXT(
-                gl.GL_FRAMEBUFFER_EXT, gl.GL_COLOR_ATTACHMENT0_EXT,
-                texture_target, color_tex, 0)
+                gl.GL_FRAMEBUFFER_EXT,
+                gl.GL_COLOR_ATTACHMENT0_EXT,
+                texture_target,
+                color_tex,
+                0,
+            )
         except Exception:
             pass
 
         # initialize depth renderbuffer
         gl.glBindRenderbufferEXT(gl.GL_RENDERBUFFER_EXT, depth_rb)
         gl.glRenderbufferStorageEXT(
-            gl.GL_RENDERBUFFER_EXT, gl.GL_DEPTH_COMPONENT24, w, h)
+            gl.GL_RENDERBUFFER_EXT, gl.GL_DEPTH_COMPONENT24, w, h
+        )
         gl.glFramebufferRenderbufferEXT(
-            gl.GL_FRAMEBUFFER_EXT, gl.GL_DEPTH_ATTACHMENT_EXT,
-            gl.GL_RENDERBUFFER_EXT, depth_rb)
+            gl.GL_FRAMEBUFFER_EXT,
+            gl.GL_DEPTH_ATTACHMENT_EXT,
+            gl.GL_RENDERBUFFER_EXT,
+            depth_rb,
+        )
 
         # initialize stencil renderbuffer
 
@@ -111,12 +129,20 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
 
     def render(self, opacity=1.0):
         render_texture(
-            self._texture, -1.0, -1.0, 0, 2.0, 2.0, opacity=opacity,
-            is_premultiplied=True)
+            self._texture,
+            -1.0,
+            -1.0,
+            0,
+            2.0,
+            2.0,
+            opacity=opacity,
+            is_premultiplied=True,
+        )
 
 
 def render_texture(
-        texture, x, y, z, w, h, opacity=1.0, is_premultiplied=False):
+    texture, x, y, z, w, h, opacity=1.0, is_premultiplied=False
+):
     if is_premultiplied:
         set_program(premultiplied_texture_program)
     else:

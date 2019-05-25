@@ -54,7 +54,9 @@ class TextureManager(object):
                 texture = self.texture_dict[ip]
                 if texture is not None:
                     if texture is not Texture.default_item:
-                        Render.get().delete_texture_list.append(texture.texture)
+                        Render.get().delete_texture_list.append(
+                            texture.texture
+                        )
                 del self.image_dict[ip]
                 del self.texture_dict[ip]
             self.image_list = self.image_list[:CACHE_SIZE]
@@ -99,23 +101,36 @@ class TextureManager(object):
 
                     texture = gl.glGenTextures(1)
                     self.texture_dict[ip] = Texture(
-                        texture, size=(size[0], size[1]))
+                        texture, size=(size[0], size[1])
+                    )
                     self.delay_set.add(ip)
 
                     self.lock.release()
 
                     gl.glBindTexture(target, texture)
                     gl.glTexImage2D(
-                        target, 0, gl.GL_RGBA, size[0], size[1],
-                        0, TEXTURE_FORMAT, gl.GL_UNSIGNED_BYTE, pixels)
+                        target,
+                        0,
+                        gl.GL_RGBA,
+                        size[0],
+                        size[1],
+                        0,
+                        TEXTURE_FORMAT,
+                        gl.GL_UNSIGNED_BYTE,
+                        pixels,
+                    )
                     gl.glTexParameteri(
-                        target, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
+                        target, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR
+                    )
                     gl.glTexParameteri(
-                        target, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
+                        target, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR
+                    )
                     gl.glTexParameteri(
-                        target, gl.GL_TEXTURE_WRAP_S, gl.GL_CLAMP_TO_EDGE)
+                        target, gl.GL_TEXTURE_WRAP_S, gl.GL_CLAMP_TO_EDGE
+                    )
                     gl.glTexParameteri(
-                        target, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE)
+                        target, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE
+                    )
                     loaded += 1
 
                     self.lock.acquire()
@@ -129,5 +144,7 @@ class TextureManager(object):
                 texture = self.texture_dict[ip]
                 if texture is not None:
                     if texture is not Texture.default_item:
-                        Render.get().delete_texture_list.append(texture.texture)
+                        Render.get().delete_texture_list.append(
+                            texture.texture
+                        )
                 self.texture_dict[ip] = None

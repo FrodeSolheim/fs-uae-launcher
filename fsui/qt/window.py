@@ -2,11 +2,13 @@ import traceback
 import weakref
 
 from fsbc.system import macosx
+
 # from fsui import default_window_center, default_window_parent
 from fsui.qt import QMainWindow, QObject, QSignal, QWidget, Qt, QDesktopWidget
 from fsui.qt import QPainter, QPoint, QRect
 from fsui.qt.Image import Image
 from fsui.qt.qt import init_qt, QEvent
+
 # noinspection PyProtectedMember
 from fsui.qt.helpers import QParent
 import fsboot
@@ -16,7 +18,6 @@ _use_fws = False
 
 
 class Margins:
-
     def __init__(self):
         self.top = 0
         self.left = 0
@@ -32,9 +33,15 @@ class Margins:
 
 # noinspection PyProtectedMember
 class RealWindow(QMainWindow):
-
-    def __init__(self, parent, child, minimizable=True, maximizable=True,
-                 border=True, below=False):
+    def __init__(
+        self,
+        parent,
+        child,
+        minimizable=True,
+        maximizable=True,
+        border=True,
+        below=False,
+    ):
         super().__init__(parent)
         self.margins = Margins()
 
@@ -83,7 +90,8 @@ class RealWindow(QMainWindow):
             if self.child.title_panel_visible:
                 title_height = self.child.title_panel.height()
                 self.child.title_panel.set_position_and_size(
-                    (x, y), (width, title_height))
+                    (x, y), (width, title_height)
+                )
                 y += title_height
                 height -= title_height
         self.child._real_widget.setGeometry(x, y, width, height)
@@ -130,7 +138,7 @@ class RealWindow(QMainWindow):
         size = event.size()
         print("RealWindow.resizeEvent", size.width(), size.height())
         print(size, "vs", self.size())
-        # According to docs, event.size() should be same as 
+        # According to docs, event.size() should be same as
         # QWidget.size(), but this isn't always the case :-/.
         size = self.size()
         self.resize_to((size.width(), size.height()))
@@ -141,6 +149,7 @@ class RealWindow(QMainWindow):
             # print("RealWindow.changeEvent(WindowStateChange)")
             self.child.on_resize()
         QMainWindow.changeEvent(self, event)
+
     #         size = self.size()
     #         self.resize_to((size.width(), size.height()))
 
@@ -185,8 +194,10 @@ class RealWindow(QMainWindow):
             # self.resize(1, 1)
             # self.resize(1920, 1080)
             self.showMaximized()
-            print("size after showMaximized",
-                  (self.size().width(), self.size().height()))
+            print(
+                "size after showMaximized",
+                (self.size().width(), self.size().height()),
+            )
         else:
             self.restore_margins()
             self.setWindowState(Qt.WindowNoState)
@@ -207,8 +218,10 @@ class RealWindow(QMainWindow):
                     print("resizing to 1, 1")
                     self.resize(1, 1)
             self.showFullScreen()
-            print("size after showFullScreen",
-                  (self.size().width(), self.size().height()))
+            print(
+                "size after showFullScreen",
+                (self.size().width(), self.size().height()),
+            )
         else:
             self.restore_margins()
             self.setWindowState(Qt.WindowNoState)
@@ -219,7 +232,6 @@ class RealWindow(QMainWindow):
 
 # noinspection PyProtectedMember
 class RealWidget(QWidget):
-
     def __init__(self, parent, owner):
         super().__init__(parent)
         self.setAutoFillBackground(True)
@@ -249,10 +261,22 @@ class Window(QObject):
     shown = QSignal()
     closed = QSignal()
 
-    def __init__(self, parent, title="", border=True, minimizable=True,
-                 maximizable=True, separator=True, menu=False,
-                 native=None, header=True, below=False, closable=True,
-                 color=None, **_):
+    def __init__(
+        self,
+        parent,
+        title="",
+        border=True,
+        minimizable=True,
+        maximizable=True,
+        separator=True,
+        menu=False,
+        native=None,
+        header=True,
+        below=False,
+        closable=True,
+        color=None,
+        **_
+    ):
         init_qt()
         super().__init__()
 
@@ -270,11 +294,17 @@ class Window(QObject):
                 native = not _use_fws
         if native:
             self._real_window = RealWindow(
-                QParent(parent, True), self, minimizable=minimizable,
-                maximizable=maximizable, below=below, border=border)
+                QParent(parent, True),
+                self,
+                minimizable=minimizable,
+                maximizable=maximizable,
+                below=below,
+                border=border,
+            )
         else:
             self._real_window = FwsWindow(
-                    QParent(parent, True), self, below=below)
+                QParent(parent, True), self, below=below
+            )
 
         self._real_widget = RealWidget(self._real_window, self)
 
@@ -316,13 +346,21 @@ class Window(QObject):
             self.real_window()._window = weakref.ref(self)
             from workspace.ui.theme import WorkspaceTheme
             from workspace.ui.window import WindowHeader
+
             if header:
                 self.title_panel = WindowHeader(
-                    self.real_window(), menu=menu, minimizable=minimizable,
-                    maximizable=maximizable, separator=separator,
-                    closable=closable, background=color)
+                    self.real_window(),
+                    menu=menu,
+                    minimizable=minimizable,
+                    maximizable=maximizable,
+                    separator=separator,
+                    closable=closable,
+                    background=color,
+                )
             self.title_panel_visible = True
-            self.set_background_color(WorkspaceTheme.instance().window_background)
+            self.set_background_color(
+                WorkspaceTheme.instance().window_background
+            )
 
     def __closed(self):
         print("Removing window reference", self)
@@ -387,8 +425,8 @@ class Window(QObject):
     def set_position(self, position):
         self._real_window.set_position(position)
 
-#    def set_position_and_size(self, position, size):
-#        self.widget().setGeometry(position[0], position[1], size[0], size[1])
+    #    def set_position_and_size(self, position, size):
+    #        self.widget().setGeometry(position[0], position[1], size[0], size[1])
 
     def size(self):
         return self.width(), self.height()
@@ -485,8 +523,9 @@ class Window(QObject):
             ps = real_parent.width(), real_parent.height()
             ss = self.size()
             print(pp, ps, ss)
-            self.set_position((pp[0] + (ps[0] - ss[0]) // 2,
-                               pp[1] + (ps[1] - ss[1]) // 2))
+            self.set_position(
+                (pp[0] + (ps[0] - ss[0]) // 2, pp[1] + (ps[1] - ss[1]) // 2)
+            )
         # elif len(default_window_center) > 0:
         #     x, y = default_window_center[-1]
         #     ss = self.size()
@@ -572,7 +611,6 @@ class Window(QObject):
 
 
 class WindowImages:
-
     def __init__(self):
         self.nw = Image("pkg://workspace.ui/data/window-shadow-nw.png")
         self.n = Image("pkg://workspace.ui/data/window-shadow-n.png")
@@ -585,7 +623,6 @@ class WindowImages:
 
 
 class FwsWindow(RealWindow):
-
     def __init__(self, parent, child, below=False):
         super().__init__(parent, child, border=False, below=below)
         self.restore_margins()
@@ -598,6 +635,7 @@ class FwsWindow(RealWindow):
 
         # self.setWindowFlags(Qt.FramelessWindowHint)
         from fsui.qt import Qt
+
         self.setAttribute(Qt.WA_NoSystemBackground)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setAttribute(Qt.WA_TransparentForMouseEvents)

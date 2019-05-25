@@ -11,8 +11,10 @@ def test_mypy():
 
 
 def test_latin1_name():
-    zf = fspy.zipfile.ZipFile(os.path.join(os.path.dirname(__file__),
-                                           "zipfile", "iso-8859-1.zip"), "r")
+    zf = fspy.zipfile.ZipFile(
+        os.path.join(os.path.dirname(__file__), "zipfile", "iso-8859-1.zip"),
+        "r",
+    )
     nose.tools.assert_equals(zf.namelist(), ["F\xf8rde"])
     zf.read("F\xf8rde")
     nose.tools.assert_raises(KeyError, zf.read, "Forde")
@@ -21,8 +23,9 @@ def test_latin1_name():
 
 
 def test_utf8_name():
-    zf = fspy.zipfile.ZipFile(os.path.join(os.path.dirname(__file__),
-                                           "zipfile", "utf-8.zip"), "r")
+    zf = fspy.zipfile.ZipFile(
+        os.path.join(os.path.dirname(__file__), "zipfile", "utf-8.zip"), "r"
+    )
     nose.tools.assert_equals(zf.namelist(), ["F\xf8rde"])
     zf.read("F\xf8rde")
     nose.tools.assert_raises(KeyError, zf.read, "Forde")

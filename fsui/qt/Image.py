@@ -74,10 +74,10 @@ class Image(object):
                 # p = v << 24 | v << 16 | v << 8 | a
 
                 # ARGB
-                a = (p & 0xff000000) >> 24
-                r = (p & 0x00ff0000) >> 16
-                g = (p & 0x0000ff00) >> 8
-                b = p & 0x000000ff
+                a = (p & 0xFF000000) >> 24
+                r = (p & 0x00FF0000) >> 16
+                g = (p & 0x0000FF00) >> 8
+                b = p & 0x000000FF
                 # v = (r + g + b) // 3
                 v = int(r * 0.299 + g * 0.587 + b * 0.114)
                 p = a << 24 | v << 16 | v << 8 | v
@@ -92,6 +92,7 @@ class Image(object):
             q = Qt.SmoothTransformation
         else:
             q = Qt.FastTransformation
-        self.qimage = self.qimage.scaled(size[0], size[1],
-                                         Qt.IgnoreAspectRatio, q)
+        self.qimage = self.qimage.scaled(
+            size[0], size[1], Qt.IgnoreAspectRatio, q
+        )
         # self._bitmap = None

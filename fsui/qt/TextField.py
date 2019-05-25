@@ -45,7 +45,6 @@ class TextField(QLineEdit, WidgetMixin):
 
 
 class PasswordField(TextField):
-
     def __init__(self, parent, text=""):
         TextField.__init__(self, parent, text)
         self.setEchoMode(QLineEdit.Password)

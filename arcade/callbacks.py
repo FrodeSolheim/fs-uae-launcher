@@ -23,6 +23,7 @@ class Callbacks:
         TextureManager.reset()
 
         import arcade.glui.window
+
         arcade.glui.window.main_window = self
         arcade.glui.window.show()
 
@@ -52,6 +53,7 @@ class Callbacks:
     def resize(self, width, height):
         print("Callbacks.resize", width, height)
         from arcade.glui.window import on_resize
+
         self.width = width
         self.height = height
         on_resize((width, height))
@@ -59,6 +61,7 @@ class Callbacks:
     def render(self):
         # print("render")
         from arcade.glui.window import main_loop_iteration
+
         if main_loop_iteration():
             print("main_loop_iteration signalled quit")
             TextureManager.get().unload_textures()

@@ -37,7 +37,6 @@ def os_name():
 
 
 class Expansion:
-
     def __init__(self, name):
         self.path = os.path.join("Workspace", "Expansion", name)
         assert os.path.isdir(self.path)

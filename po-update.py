@@ -6,14 +6,7 @@ import shutil
 import tempfile
 import subprocess
 
-dirs = [
-    "arcade",
-    "fsui",
-    "fsbc",
-    "fsgs",
-    "launcher",
-    "workspace",
-]
+dirs = ["arcade", "fsui", "fsbc", "fsgs", "launcher", "workspace"]
 files = []
 extensions = [".py"]
 
@@ -32,26 +25,27 @@ with temp:
         temp.write(path)
         temp.write("\n")
 
-args = ["xgettext",
-        "--output-dir=po",
-        "--files-from=" + temp.name,
-        "--keyword=_",
-        "--keyword=N_",
-        "--package-name=fs-uae-launcher",
-        "--msgid-bugs-address=frode@fs-uae.net",
-        "--copyright-holder=Frode Solheim",
-        "--add-comments=#",
-        "--no-location",
-        "--sort-output",
-        "--from-code=ISO-8859-1",
-        ]
+args = [
+    "xgettext",
+    "--output-dir=po",
+    "--files-from=" + temp.name,
+    "--keyword=_",
+    "--keyword=N_",
+    "--package-name=fs-uae-launcher",
+    "--msgid-bugs-address=frode@fs-uae.net",
+    "--copyright-holder=Frode Solheim",
+    "--add-comments=#",
+    "--no-location",
+    "--sort-output",
+    "--from-code=ISO-8859-1",
+]
 
 print(args)
 p = subprocess.Popen(args)
 p.wait()
 shutil.move("po/messages.po", "po/messages.pot")
 
-#for file in os.listdir("po"):
+# for file in os.listdir("po"):
 #    if file.endswith(".po"):
 #        path = os.path.join("po", file)
 #        print(path)
@@ -64,5 +58,5 @@ shutil.move("po/messages.po", "po/messages.pot")
 #        p.wait()
 
 os.system("find share -name fs-uae.mo -delete")
-#os.system("make -C .. po-dist")
+# os.system("make -C .. po-dist")
 os.system("make mo")

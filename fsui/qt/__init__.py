@@ -2,8 +2,16 @@ import traceback
 import queue
 
 from fsui.res import gettext
-from fsui.qt.qt import init_qt, QDesktopWidget, QEvent, QObject, \
-    QCoreApplication, QTimer, QMessageBox, QCursor
+from fsui.qt.qt import (
+    init_qt,
+    QDesktopWidget,
+    QEvent,
+    QObject,
+    QCoreApplication,
+    QTimer,
+    QMessageBox,
+    QCursor,
+)
 from fsui.qt.qt import *
 from fsui.qt.helpers import QParent
 
@@ -24,13 +32,11 @@ def get_mouse_position():
 
 
 class CustomEvent(QEvent):
-    
     def __init__(self):
         QEvent.__init__(self, QEvent.User)
 
 
 class EventHandler(QObject):
-
     def __init__(self):
         QObject.__init__(self)
         self.queue = queue.Queue()
@@ -53,6 +59,7 @@ class EventHandler(QObject):
         self.queue.put((function, args, kwargs))
         QCoreApplication.instance().postEvent(self, CustomEvent())
 
+
 event_handler = EventHandler()
 
 
@@ -66,6 +73,7 @@ def call_later(duration, function, *args, **kwargs):
     # QApplication.instance().
     def timer_callback():
         function(*args, **kwargs)
+
     QTimer.singleShot(duration, timer_callback)
 
 
@@ -89,4 +97,5 @@ def show_warning(message, title=None, parent=None):
 def error_function(title):
     def error_function_2(message):
         show_error(message, title)
+
     return error_function_2

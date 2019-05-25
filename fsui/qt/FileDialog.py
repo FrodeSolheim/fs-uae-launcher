@@ -8,10 +8,16 @@ NATIVE_DIALOGS = True
 
 
 class FileDialog(QFileDialog):
-
     def __init__(
-            self, parent=None, message="", directory="", file="",
-            pattern="*.*", multiple=False, dir_mode=False):
+        self,
+        parent=None,
+        message="",
+        directory="",
+        file="",
+        pattern="*.*",
+        multiple=False,
+        dir_mode=False,
+    ):
         QFileDialog.__init__(self, QParent(parent), message)
         if directory:
             self.setDirectory(directory)
@@ -40,23 +46,27 @@ class FileDialog(QFileDialog):
 
 
 def pick_directory(parent=None, message="", directory=""):
-    return pick_file(parent=parent, message=message,
-                     directory=directory, what=DIRECTORY)
+    return pick_file(
+        parent=parent, message=message, directory=directory, what=DIRECTORY
+    )
 
 
 def pick_file(parent=None, message="", directory="", what=FILE):
     if NATIVE_DIALOGS:
         if what == DIRECTORY:
             result = QFileDialog.getExistingDirectory(
-                QParent(parent), message, directory)
+                QParent(parent), message, directory
+            )
         elif what == FILES:
             # return value is filenames, selected_filter
             result = QFileDialog.getOpenFileNames(
-                QParent(parent), message, directory)
+                QParent(parent), message, directory
+            )
         else:
             # return value is filename, selected_filter
             result = QFileDialog.getOpenFileName(
-                QParent(parent), message, directory)
+                QParent(parent), message, directory
+            )
         if isinstance(result, tuple):
             # PySide returns a tuple, path is first param
             result = result[0]
@@ -81,5 +91,6 @@ def pick_file(parent=None, message="", directory="", what=FILE):
 
 
 def pick_files(parent=None, message="", directory="", what=FILE):
-    return pick_file(parent=parent, message=message,
-                     directory=directory, what=FILES)
+    return pick_file(
+        parent=parent, message=message, directory=directory, what=FILES
+    )

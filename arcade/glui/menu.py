@@ -33,9 +33,11 @@ class Menu(Navigatable):
         print("update_path", menu_path)
         if self.use_game_center_item():
             from arcade.glui.topmenu import GameCenterItem
+
             self.top.append_left(GameCenterItem())
         # if len(menu_path) > 0:
         from arcade.glui.topmenu import HomeItem
+
         self.top.append_left(HomeItem())
         last_index = len(menu_path) - 1
         for i, item in enumerate(menu_path):
@@ -61,6 +63,7 @@ class Menu(Navigatable):
 
     def add_add_item(self):
         from arcade.glui.topmenu import AddItem
+
         self.top.append_left(AddItem())
         self.set_default_top_selected()
         # print("FIXME: add_add_item temporarily disabled")
@@ -89,8 +92,9 @@ class Menu(Navigatable):
         if self.last_scroll_time == t:
             pass
         elif self.last_scroll_time - t < 1.0:
-            self.cur_scroll_speed = (self.position - self.last_scroll_pos) / \
-                                    (t - self.last_scroll_time)
+            self.cur_scroll_speed = (self.position - self.last_scroll_pos) / (
+                t - self.last_scroll_time
+            )
         else:
             self.cur_scroll_speed = 0
         self.last_scroll_pos = self.position
@@ -107,20 +111,27 @@ class Menu(Navigatable):
             p1 = self.position + self.cur_scroll_speed * 0.040
             self._position_animation = AnimateValueBezier(
                 (self, "position"),
-                self.position, State.get().time,
-                p1, State.get().time + 0.040,
-                index, State.get().time + 0.080,
-                index, State.get().time + 0.200)
+                self.position,
+                State.get().time,
+                p1,
+                State.get().time + 0.040,
+                index,
+                State.get().time + 0.080,
+                index,
+                State.get().time + 0.200,
+            )
         self.configuration_index = 0
 
     def go_left(self, count=1):
         # FIXME:
         from arcade.glui.window import set_items_brightness
+
         set_items_brightness(1.0, duration=0.300)
         self.set_selected_index(self._selected_index - count)
 
     def go_right(self, count=1):
         from arcade.glui.window import set_items_brightness
+
         set_items_brightness(1.0, duration=0.300)
         self.set_selected_index(self._selected_index + count)
 
@@ -130,6 +141,7 @@ class Menu(Navigatable):
             return
         # FIXME
         from arcade.glui.window import enter_menu
+
         enter_menu(result)
 
     def render(self):
@@ -148,5 +160,6 @@ class Menu(Navigatable):
         return len(self.items)
 
     def __repr__(self):
-        return "<{2} {0} ({1} items)>".format(self.title, len(self),
-                                              self.__class__.__name__)
+        return "<{2} {0} ({1} items)>".format(
+            self.title, len(self), self.__class__.__name__
+        )

@@ -53,18 +53,21 @@ class CustomButton(Canvas):
 
 
 class FlatButton(CustomButton):
-
     def __init__(self, parent):
         super().__init__(parent)
         # self.set_background_color(fsui.Color(0xff, 0xff, 0xff))
         self.set_min_width(40)
         self.set_min_height(34)
-        self.border_colors = [fsui.Color(0xbc, 0xbc, 0xbc),
-                              fsui.Color(0xad, 0xad, 0xad),
-                              fsui.Color(0x8c, 0x8c, 0x8c)]
-        self.fill_colors = [fsui.Color(0xff, 0xff, 0xff),
-                            fsui.Color(0xe6, 0xe6, 0xe6),
-                            fsui.Color(0xd4, 0xd4, 0xd4)]
+        self.border_colors = [
+            fsui.Color(0xBC, 0xBC, 0xBC),
+            fsui.Color(0xAD, 0xAD, 0xAD),
+            fsui.Color(0x8C, 0x8C, 0x8C),
+        ]
+        self.fill_colors = [
+            fsui.Color(0xFF, 0xFF, 0xFF),
+            fsui.Color(0xE6, 0xE6, 0xE6),
+            fsui.Color(0xD4, 0xD4, 0xD4),
+        ]
 
     def on_paint(self):
         p = Painter(self)
@@ -80,5 +83,13 @@ class FlatButton(CustomButton):
             fill_color = self.fill_colors[0]
         # p.draw_rectangle(0, 0, size[0], size[1], border_color)
         # p.draw_rectangle(1, 1, size[0] - 2, size[1] - 2, fill_color)
-        p.rounded_rectangle(0, 0, size[0], size[1], fill_color, 6,
-                            border_color=border_color, border_width=1.0)
+        p.rounded_rectangle(
+            0,
+            0,
+            size[0],
+            size[1],
+            fill_color,
+            6,
+            border_color=border_color,
+            border_width=1.0,
+        )

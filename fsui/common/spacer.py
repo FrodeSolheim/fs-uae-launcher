@@ -2,7 +2,6 @@ from .element import LightElement
 
 
 class Spacer(LightElement):
-
     def __init__(self, size, size2=None):
         LightElement.__init__(self, None)
         self.width = size
