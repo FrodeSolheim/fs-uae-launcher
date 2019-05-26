@@ -36,7 +36,7 @@ progdir:
 
 	mkdir -p Launcher/Data
 	cp -a ../../share/locale Launcher/Data/Locale
-	cp ../../requests/cacert.pem Launcher/Data
+	cp ../../cacert.pem Launcher/Data
 	rm -Rf $(launcher_dir)/share/applications
 	rm -Rf $(launcher_dir)/share/icons
 

@@ -1,11 +1,13 @@
+import time
+
+import requests
+
 from launcher.filescanner import FileScanner
 from fsgs.download import Downloader
 from fsgs.FSGSDirectories import FSGSDirectories
 import fsui
 from fsui.extra.iconheader import IconHeader
-import time
 from fsbc.application import app
-from urllib.request import urlopen
 from fsbc.signal import Signal
 from fsbc.task import Task
 from fsgs.Database import Database
@@ -256,9 +258,13 @@ class DownloadTermsTask(Task):
     def run(self):
         for i in range(3):
             try:
-                self.data = urlopen(self.url).read().decode("UTF-8")
+                r = requests.get(self.url)
+                r.raise_for_status()
+                self.data = r.text
             except Exception:
                 time.sleep(0.5)
             else:
                 return
-        self.data = urlopen(self.url).read().decode("UTF-8")
+        r = requests.get(self.url)
+        r.raise_for_status()
+        self.data = r.text

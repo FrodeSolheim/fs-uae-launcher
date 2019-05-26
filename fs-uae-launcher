@@ -100,6 +100,8 @@ main()
 # Dummy imports for cx_Freeze
 sys.exit(0)
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
+import idna.idnadata
+# noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.appdirs
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.packaging.requirements

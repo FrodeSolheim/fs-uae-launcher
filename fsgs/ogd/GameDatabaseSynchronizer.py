@@ -5,11 +5,8 @@ from io import StringIO
 from urllib.parse import quote_plus
 from urllib.request import Request
 
-from fsgs.network import (
-    openretro_url_prefix,
-    opener_for_url_prefix,
-    is_http_url,
-)
+import requests
+from fsgs.network import is_http_url, openretro_url_prefix
 from fsgs.res import gettext
 
 
@@ -33,7 +30,7 @@ class GameDatabaseSynchronizer(object):
         if client:
             self.client = client
             self.database = client.database
-        self.downloaded_size = 0
+        # self.downloaded_size = 0
         self.on_status = on_status
         self._stop_check = stop_check
         if "/" in platform_id:
@@ -41,7 +38,6 @@ class GameDatabaseSynchronizer(object):
         else:
             self.host = ""
             self.platform_id = platform_id.lower()
-        self.opener_cache_dict = {}
 
     def stop_check(self):
         if self._stop_check:
@@ -50,6 +46,9 @@ class GameDatabaseSynchronizer(object):
     def set_status(self, title, status=""):
         if self.on_status:
             self.on_status((title, status))
+
+    def auth(self):
+        return (self.username, self.password)
 
     def synchronize(self):
         if "database" not in self.context.meta:
@@ -157,11 +156,11 @@ class GameDatabaseSynchronizer(object):
             t2 = time.time()
             print("  {0:0.2f} seconds".format(t2 - t1))
 
-        print(
-            "downloaded size: {0:0.2f} MiB".format(
-                self.downloaded_size / (1024 * 1024)
-            )
-        )
+        # print(
+        #     "downloaded size: {0:0.2f} MiB".format(
+        #         self.downloaded_size / (1024 * 1024)
+        #     )
+        # )
 
     def url_prefix(self):
         if self.host:
@@ -172,14 +171,6 @@ class GameDatabaseSynchronizer(object):
         else:
             url_prefix = openretro_url_prefix()
         return url_prefix
-
-    def opener(self):
-        return opener_for_url_prefix(
-            self.url_prefix(),
-            self.username,
-            self.password,
-            cache_dict=self.opener_cache_dict,
-        )
 
     def fetch_game_sync_data(self):
         last_id = self.database.get_last_game_id()
@@ -194,7 +185,7 @@ class GameDatabaseSynchronizer(object):
         )
         print(url)
         data = self.fetch_data(url)
-        self.downloaded_size += len(data)
+        # self.downloaded_size += len(data)
         return data
 
     def fetch_rating_entries(self):
@@ -211,41 +202,20 @@ class GameDatabaseSynchronizer(object):
             self.url_prefix(), self.platform_id, quote_plus(last_time)
         )
         print(url)
-        data, json_data = self.fetch_json(url)
-        self.downloaded_size += len(data)
+        # data, json_data = self.fetch_json(url)
+        json_data = self.fetch_json(url)
+        # self.downloaded_size += len(data)
         return json_data
 
     def fetch_json_attempt(self, url):
-        request = Request(url)
-        request.add_header("Accept-Encoding", "gzip")
-        response = self.opener().open(request)
-        # print(response.headers)
-        data = response.read()
-        try:
-            getheader = response.headers.getheader
-        except AttributeError:
-            getheader = response.getheader
-        content_encoding = getheader("content-encoding", "").lower()
-        if content_encoding == "gzip":
-            fake_stream = StringIO(data)
-            data = GzipFile(fileobj=fake_stream).read()
-        return data, json.loads(data.decode("UTF-8"))
+        r = requests.get(url, auth=self.auth())
+        r.raise_for_status()
+        return r.json()
 
     def fetch_data_attempt(self, url):
-        request = Request(url)
-        # request.add_header("Accept-Encoding", "gzip")
-        response = self.opener().open(request)
-        # print(response.headers)
-        data = response.read()
-        try:
-            getheader = response.headers.getheader
-        except AttributeError:
-            getheader = response.getheader
-        content_encoding = getheader("content-encoding", "").lower()
-        if content_encoding == "gzip":
-            fake_stream = StringIO(data)
-            data = GzipFile(fileobj=fake_stream).read()
-        return data
+        r = requests.get(url, auth=self.auth())
+        r.raise_for_status()
+        return r.content
 
     def fetch_json(self, url):
         for i in range(20):

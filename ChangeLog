@@ -1,3 +1,7 @@
+Version 2.9.10dev:
+
+* Use requests library for all http(s) communication, fixes macOS cert issue.
+
 Version 2.9.9dev:
 
 * Support hd_requirements = xpkmaster.library.

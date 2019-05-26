@@ -5,33 +5,31 @@ import shutil
 import tempfile
 import traceback
 import unittest
-import urllib.parse
 import zlib
-from typing import List, Dict
+from typing import Dict, List
+from urllib.parse import unquote
 
 from fsbc.paths import Paths
 from fsbc.resources import Resources
-from fsbc.task import current_task, TaskFailure
-from fsgs.archive import Archive
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.GameChangeHandler import GameChangeHandler
-from fsgs.GameNameUtil import GameNameUtil
+from fsbc.task import TaskFailure, current_task
 from fsgs.amiga import whdload
 from fsgs.amiga.adffileextractor import ADFFileExtractor
 from fsgs.amiga.amiga import Amiga
 from fsgs.amiga.configwriter import ConfigWriter
 from fsgs.amiga.fsuae import FSUAE
 from fsgs.amiga.rommanager import ROMManager
-from fsgs.amiga.roms import PICASSO_IV_74_ROM, CD32_FMV_ROM
+from fsgs.amiga.roms import CD32_FMV_ROM, PICASSO_IV_74_ROM
 from fsgs.amiga.workbench import WorkbenchExtractor
+from fsgs.archive import Archive
 from fsgs.download import Downloader
 from fsgs.drivers.gamedriver import GameDriver
-from fsgs.knownfiles import (
-    ACTION_REPLAY_MK_III_3_17_ROM,
-    ACTION_REPLAY_MK_III_3_17_MOD_ROM,
-    ACTION_REPLAY_MK_II_2_14_ROM,
-    ACTION_REPLAY_MK_II_2_14_MOD_ROM,
-)
+from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.GameChangeHandler import GameChangeHandler
+from fsgs.GameNameUtil import GameNameUtil
+from fsgs.knownfiles import (ACTION_REPLAY_MK_II_2_14_MOD_ROM,
+                             ACTION_REPLAY_MK_II_2_14_ROM,
+                             ACTION_REPLAY_MK_III_3_17_MOD_ROM,
+                             ACTION_REPLAY_MK_III_3_17_ROM)
 from fsgs.network import is_http_url
 from fsgs.option import Option
 from fsgs.res import gettext
@@ -460,7 +458,7 @@ class LaunchHandler(object):
 
         if is_http_url(src):
             name = src.rsplit("/", 1)[-1]
-            name = urllib.parse.unquote(name)
+            name = unquote(name)
             self.on_progress(gettext("Downloading {0}...".format(name)))
             dest = os.path.join(self.temp_dir, name)
             Downloader.install_file_from_url(src, dest)

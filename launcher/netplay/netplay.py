@@ -1,8 +1,9 @@
 import random
 import traceback
-import uuid
 from urllib.parse import parse_qs
-from urllib.request import urlopen, URLError
+import uuid
+
+import requests
 
 from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
@@ -453,16 +454,16 @@ class Netplay:
             host, port, players, password
         )
         try:
-            f = urlopen(url)
-            result = f.read()
-        except URLError:
+            r = requests.get(url)
+            r.raise_for_status()
+        except Exception:
             channel.warning(
                 "Problem starting game server: {0}".format(
                     traceback.format_exc()
                 )
             )
         else:
-            result = result.decode("UTF-8")
+            result = r.text
             print(result)
             result_dict = parse_qs(result)
             print(result_dict)

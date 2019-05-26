@@ -285,6 +285,7 @@ copy_files = [
     "Makefile",
     "setup.py",
     "update-version",
+    "cacert.pem",
     "debian/changelog",
     "debian/compat",
     "debian/control",

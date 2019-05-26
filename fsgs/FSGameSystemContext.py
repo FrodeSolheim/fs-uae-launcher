@@ -31,10 +31,6 @@ class File(object):
 class FileContext(BaseContext):
     def __init__(self, main_context):
         BaseContext.__init__(self, main_context)
-        # FIXME: When using cache dict, should close/delete openers
-        # when we are done for the time being
-        # self.opener_cache_dict = {}
-        self.opener_cache_dict = None
 
     def find_by_sha1(self, sha1):
         database = FileDatabase.instance()
@@ -77,9 +73,7 @@ class FileContext(BaseContext):
         elif is_http_url(uri):
             return self.open_url(uri)
         elif uri.startswith("locker://"):
-            return open_locker_uri(
-                uri, opener_cache_dict=self.opener_cache_dict
-            )
+            return open_locker_uri(uri)
         else:
             if uri.startswith("$"):
                 uri = Paths.expand_path(uri)
