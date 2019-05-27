@@ -14,7 +14,7 @@ import requests
 from fsbc.application import app
 from fsbc.settings import Settings
 from fsbc.task import Task
-from fsgs.network import openretro_http_connection, openretro_url_prefix
+from fsgs.network import openretro_url_prefix
 
 
 class NonRetryableHTTPError(HTTPError):
@@ -80,7 +80,7 @@ class OGDClient(object):
         return LogoutTask(self, auth_token)
 
     @retry
-    def auth(self, username, password, device_id, device_name):
+    def authorize(self, username, password, device_id, device_name):
         result = self.post(
             "/api/auth",
             {
@@ -110,54 +110,17 @@ class OGDClient(object):
         return ("auth_token", auth_token)
 
     def post(self, path, params=None, data=None, auth=True):
-        # FIXME: opener urlopen httpclient
         headers = {}
-        if auth:
-            headers[str("Authorization")] = str(
-                "Basic "
-                + base64.b64encode(
-                    "{0}:{1}".format(*self.auth()).encode("UTF-8")
-                ).decode("UTF-8")
-            )
-        connection = openretro_http_connection()
         url = "{0}{1}".format(openretro_url_prefix(), path)
-        # if params:
-        #     url += "?" + urlencode(params)
         if not data and params:
             data = urlencode(params)
-            headers[str("Content-Type")] = str(
-                "application/x-www-form-urlencoded"
-            )
+            headers["Content-Type"] = "application/x-www-form-urlencoded"
         print(url, headers)
-        if isinstance(data, dict):
-            data = json.dumps(data)
-        # print(data)
-        connection.request(str("POST"), str(url), data, headers=headers)
-        response = connection.getresponse()
-        if response.status not in [200]:
-            print(response.status, response.reason)
-            if response.status == 400:
-                class_ = BadRequestError
-            elif response.status == 401:
-                class_ = UnauthorizedError
-            elif response.status == 403:
-                class_ = ForbiddenError
-            elif response.status == 404:
-                class_ = NotFoundError
-            else:
-                class_ = HTTPError
-            raise class_(
-                url,
-                response.status,
-                response.reason,
-                response.getheaders(),
-                None,
-            )
-        data = response.read()
-        if len(data) > 0 and data[0:1] == b"{":
-            doc = json.loads(data.decode("UTF-8"))
-            return doc
-        return data
+        r = requests.post(
+            url, data, headers=headers, auth=(self.auth() if auth else None)
+        )
+        r.raise_for_status()
+        return r.json()
 
     def build_url(self, path, **kwargs):
         url = "{0}{1}".format(self.url_prefix(), path)
@@ -192,11 +155,11 @@ class LoginTask(Task):
         self.password = password
 
     def run(self):
-        self.progressed("Logging into oagd.net...")
+        self.progressed("Logging into openretro.org...")
         if not Settings.instance()["device_id"]:
             Settings.instance()["device_id"] = str(uuid4())
         try:
-            result = self.client.auth(
+            result = self.client.authorize(
                 self.username,
                 self.password,
                 Settings.instance()["device_id"],
@@ -218,7 +181,7 @@ class LogoutTask(Task):
         self.auth_token = auth_token
 
     def run(self):
-        self.progressed("Logging out from oagd.net...")
+        self.progressed("Logging out from openretro.org...")
         if not Settings.instance()["device_id"]:
             Settings.instance()["device_id"] = str(uuid4())
         self.client.deauth(self.auth_token)

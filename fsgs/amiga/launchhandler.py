@@ -26,10 +26,12 @@ from fsgs.drivers.gamedriver import GameDriver
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.GameChangeHandler import GameChangeHandler
 from fsgs.GameNameUtil import GameNameUtil
-from fsgs.knownfiles import (ACTION_REPLAY_MK_II_2_14_MOD_ROM,
-                             ACTION_REPLAY_MK_II_2_14_ROM,
-                             ACTION_REPLAY_MK_III_3_17_MOD_ROM,
-                             ACTION_REPLAY_MK_III_3_17_ROM)
+from fsgs.knownfiles import (
+    ACTION_REPLAY_MK_II_2_14_MOD_ROM,
+    ACTION_REPLAY_MK_II_2_14_ROM,
+    ACTION_REPLAY_MK_III_3_17_MOD_ROM,
+    ACTION_REPLAY_MK_III_3_17_ROM,
+)
 from fsgs.network import is_http_url
 from fsgs.option import Option
 from fsgs.res import gettext

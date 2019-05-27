@@ -5,7 +5,7 @@ import sys
 import subprocess
 
 import workspace.path
-from fsgs.plugins.plugin_manager import PluginManager
+from fsgs.plugins.pluginmanager import PluginManager
 
 logger = logging.getLogger("SYS")
 

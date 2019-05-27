@@ -15,7 +15,7 @@ from fsbc.task import current_task
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.fsuae import FSUAE
 from launcher.option import Option
-from fsgs.plugins.plugin_manager import PluginManager, Executable
+from fsgs.plugins.pluginmanager import PluginManager, Executable
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.util.gamenameutil import GameNameUtil
 

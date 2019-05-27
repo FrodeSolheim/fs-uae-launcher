@@ -5,7 +5,7 @@ import traceback
 
 from fsbc.application import Application, app
 from fsbc.system import windows, macosx
-from fsgs.plugins.plugin_manager import Plugin
+from fsgs.plugins.pluginmanager import Plugin
 
 try:
     getcwd = os.getcwdu

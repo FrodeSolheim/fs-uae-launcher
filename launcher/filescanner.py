@@ -45,7 +45,6 @@ class FileScanner(object):
         self.extensions.add(".wav")
         self.extensions.add(".fs-uae")
 
-        # if OGDClient.get_server() != "oagd.net":
         if True:
             self.extensions.add(".bin")
 

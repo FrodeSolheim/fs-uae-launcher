@@ -370,7 +370,7 @@ options = {
         "type": "string",
     },
     Option.DATABASE_SERVER: {
-        "default": "oagd.net",
+        "default": "openretro.org",
         "description": ("Game Database Server"),
         "type": "string",
     },
@@ -407,7 +407,7 @@ options = {
     },
     Option.DEVICE_ID: {
         "default": "",
-        "description": ("Device ID used with OAGD.net authentication"),
+        "description": ("Device ID used with OpenRetro authentication"),
         "type": "string",
     },
     Option.DONGLE_TYPE: {

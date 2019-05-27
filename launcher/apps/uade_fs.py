@@ -1,5 +1,5 @@
 import sys
-from fsgs.plugins.plugin_manager import PluginManager
+from fsgs.plugins.pluginmanager import PluginManager
 
 """
 UADE-FS launcher script used for testing.

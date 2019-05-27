@@ -1,6 +1,5 @@
 import os
 from functools import lru_cache
-from http.client import HTTPConnection, HTTPSConnection
 
 from fsbc.application import app
 from fsbc.settings import Settings
@@ -50,15 +49,6 @@ def openretro_scheme():
 def openretro_url_prefix():
     scheme, host = openretro_server()
     return "{}://{}".format(scheme, host)
-
-
-def openretro_http_connection():
-    scheme, host = openretro_server()
-    if scheme == "https":
-        connection = HTTPSConnection(host, timeout=30)
-    else:
-        connection = HTTPConnection(host, timeout=30)
-    return connection
 
 
 def is_http_url(url):

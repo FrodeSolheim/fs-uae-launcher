@@ -10,7 +10,7 @@ from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.drivers.gamedriver import GameDriver, Emulator
 from fsgs.input.mapper import InputMapper
 from fsgs.knownfiles import KnownFilePath
-from fsgs.plugins.plugin_manager import PluginManager
+from fsgs.plugins.pluginmanager import PluginManager
 
 """
 

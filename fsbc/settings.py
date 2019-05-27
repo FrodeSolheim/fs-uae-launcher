@@ -1,14 +1,17 @@
+import atexit
 import os
 import shutil
 import sys
-import atexit
+import traceback
 from configparser import ConfigParser, NoSectionError
-
-import fsboot
-from .signal import Signal
 
 # noinspection PyUnresolvedReferences
 from typing import Dict, Tuple
+
+import fsboot
+from fsbc.signal import Signal
+from fsbc.util import Version
+from launcher.version import VERSION
 
 
 class Settings(object):
@@ -149,6 +152,16 @@ class SettingsProvider:
             key = self.rewrite_key(key)
             settings.set(key, value)
 
+        try:
+            version = cp.get("launcher", "version")
+        except NoSectionError:
+            version = "0.0.0"
+        try:
+            fix_settings(settings, version)
+        except Exception:
+            print("[SETTINGS] Error fixing settings")
+            traceback.print_exc()
+
     def rewrite_key(self, key):
         # FIXME: Should be moved to subclass
         try:
@@ -189,6 +202,9 @@ class SettingsProvider:
                 cp.add_section(section)
             cp.set(section, key, value)
 
+        cp.add_section("launcher")
+        cp.set("launcher", "version", VERSION)
+
         if not os.path.exists(os.path.dirname(partial_path)):
             os.makedirs(os.path.dirname(partial_path))
         with open(partial_path, "w", encoding="UTF-8", newline="\n") as f:
@@ -221,6 +237,18 @@ def set_path(path: str) -> None:
     Settings.instance().set_path(path)
 
 
+# FIXME: FS-UAE Launcher specific
+def fix_settings(settings, version_str):
+    """Fix settings, based on the version used top save the newly loaded
+    settings."""
+    old = Version(version_str)
+    if old < Version("2.9.10"):
+        if settings.get("fullscreen_mode"):
+            print("[SETTINGS] Reverting fullscreen_mode to default")
+            settings.set("fullscreen_mode", "")
+
+
+# FIXME: FS-UAE Launcher specific
 key_replacement_table = {
     "database_arcade": "arcade_database",
     "database_atari": "atari_database",

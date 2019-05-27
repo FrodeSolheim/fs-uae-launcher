@@ -1,5 +1,5 @@
 Description: Game Database Server
-Default: oagd.net
+Default: openretro.org
 Example: acme-game-database.com
 Type: string
 

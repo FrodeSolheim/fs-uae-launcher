@@ -16,7 +16,7 @@ from fsgs.LockerDatabase import LockerDatabase
 from fsgs.download import Downloader
 from fsgs.network import is_http_url
 from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
-from fsgs.plugins.plugin_manager import PluginManager
+from fsgs.plugins.pluginmanager import PluginManager
 
 
 class NotFoundError(RuntimeError):
@@ -306,9 +306,6 @@ class FSGameSystemContext(object):
         return self.game_database("Amiga")
 
     def game_database(self, database_name):
-        # if database_name == "Amiga":
-        #     # use legacy name for now
-        #     database_name = "oagd.net"
         attr_name = "game_database_" + database_name.replace("/", "_")
         if not hasattr(self.thread_local, attr_name):
             # FIXME

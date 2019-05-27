@@ -1,5 +1,9 @@
 Version 2.9.10dev:
 
+* Support WHDLoad versions 18.4 and 18.5 (game database).
+* Revert fullscreen_mode to default when upgrading from older versions.
+* Hide the fullscreen mode button from quick settings panel.
+* Fix OpenRetro.org login, rebranded oagd.net to openretro.org.
 * Use requests library for all http(s) communication, fixes macOS cert issue.
 
 Version 2.9.9dev:

@@ -22,7 +22,7 @@ class LockerUploaderWindow(fsui.DialogWindow):
         return fsui.open_window_instance(cls, parent)
 
     def __init__(self, parent=None):
-        title = gettext("OAGD.net Locker Uploader")
+        title = gettext("OpenRetro Locker Uploader")
         super().__init__(parent, title)
         self.theme = WorkspaceTheme.instance()
         self.layout = fsui.VerticalLayout()
@@ -34,8 +34,8 @@ class LockerUploaderWindow(fsui.DialogWindow):
         self.icon_header = IconHeader(
             self,
             fsui.Icon("refresh", "pkg:workspace"),
-            gettext("OAGD.net Locker Uploader"),
-            gettext("Upload recognized Amiga files to your OAGD.net locker"),
+            gettext("OpenRetro Locker Uploader"),
+            gettext("Upload recognized Amiga files to your OpenRetro locker"),
         )
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
@@ -125,7 +125,7 @@ class LockerUploaderTask(Task):
     def run(self):
         for i in range(16):
             self.upload_prefix(i)
-        self.progressed(gettext("OAGD.net upload task completed successfully"))
+        self.progressed(gettext("Locker upload task completed successfully"))
 
     def upload_prefix(self, prefix):
         self.stop_check()
@@ -192,7 +192,7 @@ class LockerUploaderTask(Task):
 
     def upload_check(self, prefix):
         self.progressed(
-            gettext("Finding files eligible for OAGD.net Locker")
+            gettext("Finding files eligible for OpenRetro Locker")
             + " ({:0.0%})".format((prefix / 16.0))
         )
         file_database = FileDatabase.instance()
@@ -218,7 +218,7 @@ class LockerUploaderTask(Task):
             except OGDClient.ForbiddenError:
                 raise Task.Failure(
                     gettext(
-                        "OAGD.net Locker is not enabled for your user. "
+                        "OpenRetro Locker is not enabled for your user. "
                         "It may be available only to a few select beta "
                         "users."
                     )

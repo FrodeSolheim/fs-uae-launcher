@@ -42,7 +42,9 @@ class UpdateManager:
             platform = "linux"
         else:
             platform = "other"
-        url = "https://fs-uae.net/{0}/latest-{1}".format(cls.series(), platform)
+        url = "https://fs-uae.net/{0}/latest-{1}".format(
+            cls.series(), platform
+        )
         r = requests.get(url)
         r.raise_for_status()
         version_str = r.text.strip()

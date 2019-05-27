@@ -1,4 +1,5 @@
 *~
+/base-dir
 /build/
 /debian/.debhelper/
 /debian/files
@@ -8,10 +9,13 @@
 /debian/fs-uae-launcher.prerm.debhelper
 /debian/fs-uae-launcher.substvars
 *.egg-info
-fs-uae-launcher_*
+fontconfig
 fs-uae-launcher-*
-/Launcher_*
+fs-uae-launcher_*
+/.idea/tasks.xml
+/.idea/workspace.xml
 /Launcher-*
+/Launcher_*
 Lib
 /Makefile
 *.mo
@@ -20,6 +24,3 @@ Lib
 *.pyc
 *.pyo
 /setup.py
-/.idea/tasks.xml
-/.idea/workspace.xml
-fontconfig

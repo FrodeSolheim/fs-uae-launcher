@@ -26,14 +26,14 @@ known_plugin_versions = {
     "GenesisPlusGX-LR": "1.7.4git",
     "Hatari-FS": "2.0.0fs1",
     "MAME-FS": "0.189fs1",
-    "Mednafen-FS": "0.9.48fs0",
+    "Mednafen-FS": "1.22.2fs0",
     "Mupen64Plus-LR": "2.5fs0git",
     "Nestopia-LR": "1.49fs0wip",
     "QEMU-UAE": "3.8.2qemu2.2.0",
     "Regina-FS": "3.9.1fs0",
     "RetroArch-FS": "1.6.7fs1",
     "UADE-FS": "2.13fs1",
-    "Vice-FS": "3.0fs1",
+    "Vice-FS": "3.3fs0",
 }
 
 

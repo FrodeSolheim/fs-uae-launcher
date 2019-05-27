@@ -205,7 +205,7 @@ def generate_config_for_archive(
     return config
 
 
-default_whdload_version = "18.3"
+default_whdload_version = "18.5"
 
 # noinspection SpellCheckingInspection
 support_files = {
@@ -232,12 +232,13 @@ binaries = {
     "16.9": {"b4267a21918d6375e1bbdcaee0bc8b812e366802": "C/WHDLoad"},
     "17.0": {"0ec213a8c62beb3eb3b3509aaa44f21405929fce": "C/WHDLoad"},
     "17.1": {"1a907ca4539806b42ad5b6f7aeebacb3720e840d": "C/WHDLoad"},
-    "2013-03-01": {"7ee8516eceb9e799295f1b16909749d08f13d26c": "C/WHDLoad"},
     "17.2": {"d8f45f7808fb1ac356d88b8848660a6b96f04349": "C/WHDLoad"},
     "18.0": {"6f778e28673e9f931f81212ab03d9617a41cee40": "C/WHDLoad"},
     "18.1": {"fb4c64b0b5e682125e53eb2ace9bf0ccd3b8501f": "C/WHDLoad"},
     "18.2": {"0a9e7bfa1183420543e44c08410af1c5500fa704": "C/WHDLoad"},
     "18.3": {"b126b899d57f81a7646787776893416c20f43ec2": "C/WHDLoad"},
+    "18.4": {"58efb174f54c67c7c48a7c1bff033c6d7a9884cb": "C/WHDLoad"},
+    "18.5": {"d6b706bfbfe637bd98cd657114eea630b7d2dcc7": "C/WHDLoad"},
 }
 default_whdload_prefs = """
 ; wait for button pressed (slave must support this)

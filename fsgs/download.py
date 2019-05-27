@@ -60,12 +60,15 @@ class Downloader(object):
             return cache_path
         if not download:
             return None
-        with requests.get(url, auth=auth, stream=True) as r:
+        r = requests.get(url, auth=auth, stream=True)
+        try:
             r.raise_for_status()
             cache_path_temp = cache_path + ".partial." + str(uuid4())
             with open(cache_path_temp, "wb") as ofs:
                 for chunk in r.iter_content(chunk_size=65536):
                     ofs.write(chunk)
+        finally:
+            r.close()
         os.rename(cache_path_temp, cache_path)
         return cache_path
 
@@ -96,7 +99,8 @@ class Downloader(object):
             return
         url = cls.sha1_to_url(sha1, name)
         print("[DOWNLOADER]", url)
-        with requests.get(url, stream=True) as r:
+        r = requests.get(url, stream=True)
+        try:
             r.raise_for_status()
             temp_path = path + ".partial." + str(uuid4())
             h = hashlib.sha1()
@@ -104,6 +108,8 @@ class Downloader(object):
                 for chunk in r.iter_content(chunk_size=65536):
                     h.update(chunk)
                     output.write(chunk)
+        finally:
+            r.close()
         if h.hexdigest() != sha1:
             print("error: downloaded sha1 is", h.hexdigest(), "- wanted", sha1)
             raise Exception("sha1 of downloaded file does not match")

@@ -1,39 +1,31 @@
-FS-UAE Launcher
-===============
+# FS-UAE Launcher
 
 This is the README file for FS-UAE Launcher.
 
-
-Installing FS-UAE Launcher
---------------------------
+## Installing FS-UAE Launcher
 
 If you are using the source distribution, you should be able to install
 FS-UAE Launcher by running "make install". The setup procedure
 requires Python 3 and setuptools to be installed.
 
+## Requirements
 
-Requirements
-------------
+FS-UAE Launcher requires Python 3, `requests` and `PyQt5` to be installed.
+It can optionally use the `lhafile` python package to support .lha archives.
+See the `INSTALL` file for more details.
 
-FS-UAE Launcher requires PyQt5, PyQt5 or PySide for Python 3 to be installed.
-It can optionally use python-lhafile to support .lha archives.
-
-
-Running FS-UAE Launcher
------------------------
+## Running FS-UAE Launcher
 
 You start FS-UAE Launcher by running the following command:
 
-$ fs-uae-launcher
+    $ fs-uae-launcher
 
 You can also run FS-UAE Launcher without installation by running the
 following command in the source root directory:
 
-$ ./fs-uae-launcher
+    $ ./fs-uae-launcher
 
-
-About FS-UAE Launcher
----------------------
+# About FS-UAE Launcher
 
 FS-UAE Launcher is Copyright (C) 2012-2019 Frode Solheim.
 

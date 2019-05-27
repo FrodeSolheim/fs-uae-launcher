@@ -20,7 +20,9 @@ def open_locker_uri(uri):
     assert len(sha1) == 40
     context = SynchronizerContext()
     url = "{0}/api/locker/{1}".format(openretro_url_prefix(), sha1)
-    path = Downloader.cache_file_from_url(url, auth=(context.username, context.password))
+    path = Downloader.cache_file_from_url(
+        url, auth=(context.username, context.password)
+    )
     return path
 
 
