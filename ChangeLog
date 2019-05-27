@@ -1,3 +1,7 @@
+Version 2.9.11dev:
+
+* GUI options to toggle game mode / governor warning on Linux.
+
 Version 2.9.10dev:
 
 * Support WHDLoad versions 18.4 and 18.5 (game database).

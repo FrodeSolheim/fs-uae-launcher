@@ -575,6 +575,11 @@ options = {
         "type": "Choice",
         "values": [("ignore", "Ignore"), ("1", "On"), ("0", "Off (Linux)")],
     },
+    Option.GAME_MODE: {
+        "default": "1",
+        "description": N_("Use GameMode to optimize performance"),
+        "type": "Boolean",
+    },
     Option.GB_DATABASE: {
         "default": "0",
         "description": ("Enable/disable use of the Game Boy database"),
@@ -631,6 +636,11 @@ options = {
         "description": ("Game Boy Color Port 1"),
         "type": "Choice",
         "values": [("builtin", N_("Built-in"))],
+    },
+    Option.GOVERNOR_WARNING: {
+        "default": "1",
+        "description": N_("Warn when CPU governor is not 'performance'"),
+        "type": "Boolean",
     },
     Option.GRAPHICS_CARD: {
         "default": "none",
