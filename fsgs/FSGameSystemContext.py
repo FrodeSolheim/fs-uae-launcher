@@ -13,7 +13,7 @@ from fsgs.Database import Database
 from fsgs.filedatabase import FileDatabase
 from fsgs.GameDatabase import GameDatabase, IncompleteGameException
 from fsgs.LockerDatabase import LockerDatabase
-from fsgs.download import Downloader
+from fsgs.download import Downloader, offline_mode
 from fsgs.network import is_http_url
 from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
 from fsgs.plugins.pluginmanager import PluginManager
@@ -33,6 +33,7 @@ class FileContext(BaseContext):
         BaseContext.__init__(self, main_context)
 
     def find_by_sha1(self, sha1):
+        # FIXME: check_sha1 should check with PluginManager directly?
         database = FileDatabase.instance()
         result = database.find_file(sha1=sha1)["path"]
         if not result:
@@ -41,7 +42,7 @@ class FileContext(BaseContext):
                 result = path
         #    result = self.context.get_game_database().find_file_by_sha1(sha1)
         # print("find by sha1", sha1, "in file database - result", result)
-        if not result and is_locker_enabled():
+        if not result and is_locker_enabled() and not offline_mode():
             database = LockerDatabase.instance()
             if database.check_sha1(sha1):
                 result = "locker://" + sha1
@@ -50,6 +51,7 @@ class FileContext(BaseContext):
         return result
 
     def check_sha1(self, sha1):
+        # FIXME: check_sha1 should check with PluginManager directly?
         database = FileDatabase.instance()
         result = database.check_sha1(sha1)
         if not result and is_locker_enabled():

@@ -152,7 +152,7 @@ class MegaDriveMednafenDriver(MednafenDriver):
         super().__init__(fsgs, vanilla)
         self.helper = MegaDriveHelper(self.options)
         self.save_handler.set_save_data_is_emulator_specific(True)
-        self.save_handler.set_srm_alias(".sav")
+        # self.save_handler.set_srm_alias(".sav")
 
     def prepare(self):
         print("[SMD] Mednafen driver preparing...")

@@ -213,8 +213,8 @@ support_files = {
     "1ad1b55e7226bd5cd66def8370a69f19244da796": "Devs/Kickstarts/kick40068.A1200.RTB",
     "209c109855f94c935439b60950d049527d2f2484": "Devs/Kickstarts/kick34005.A500.RTB",
     "973b42dcaf8d6cb111484b3c4d3b719b15f6792d": "Devs/Kickstarts/kick40068.A4000.RTB",
-    "09e4d8a055b4a9801c6b011e7a3de42bafaf070d": "C/uae-configuration",
-    "3b40b7277f0408ebb98526205748138f88d84330": "C/OSEmu.400",
+    "ebf3a1f53be665bb39a636007fda3b3e640998ba": "C/uae-configuration",
+    "51a37230cb45fc20fae422b8a60afd7cc8a63ed3": "C/OSEmu.400",
 }
 # noinspection SpellCheckingInspection
 binaries = {

@@ -42,7 +42,7 @@ class BasePlugin:
         self.path = path
         self.name = name
         self.version = version
-        self._provides = {}
+        self.provides = {}
         # outdated being None implies that it is unknown
         self.outdated = None
         known_version = known_plugin_versions.get(self.name, None)
@@ -53,10 +53,8 @@ class BasePlugin:
                 pass
 
     def add_provide(self, key, value):
-        self._provides[key] = value
-
-    def provides(self):
-        return self._provides
+        logger.debug("%s -> %s", key, value)
+        self.provides[key] = value
 
     def data_file_path(self, name):
         return os.path.join(self.path, "Data", name)
@@ -120,7 +118,7 @@ class Plugin(BasePlugin):
 
 
 class Expansion(BasePlugin):
-    def __init__(self, path, arch_path):
+    def __init__(self, path, arch_path, version=None):
         name = os.path.basename(path)
         version_path = os.path.join(arch_path, "Version.txt")
         if os.path.exists(version_path):
@@ -138,6 +136,21 @@ class Expansion(BasePlugin):
         logger.debug("Loading provides for %s", repr(self.path))
         if os.path.exists(self._arch_path):
             self.load_arch_provides()
+        self.load_sha1_provides()
+
+    def load_sha1_provides(self):
+        data_dir = os.path.join(self.path, "Data")
+        sha1sums_file = os.path.join(data_dir, "SHA1SUMS")
+        if os.path.exists(sha1sums_file):
+            with open(sha1sums_file, "r", encoding="UTF-8") as f:
+                for line in f.readlines():
+                    line = line.strip()
+                    if not line:
+                        continue
+                    sha1, relative_path = line.split(" ", 1)
+                    relative_path = relative_path.lstrip("*")
+                    path = os.path.join(data_dir, relative_path)
+                    self.add_provide("sha1:" + sha1, path)
 
     def load_arch_provides(self):
         for item in os.listdir(self._arch_path):
@@ -164,11 +177,15 @@ class Expansion(BasePlugin):
                                 )
 
     def executable(self, name):
-        path = self.provides()["executable:" + name]
+        path = self.provides["executable:" + name]
         return PluginExecutable(self, path)
 
     def library_path(self, name):
-        path = self.provides()["library:" + name]
+        path = self.provides["library:" + name]
+        return path
+
+    def sha1_path(self, sha1):
+        path = self.provides["sha1:" + sha1]
         return path
 
     def __str__(self):
@@ -225,30 +242,49 @@ class PluginManager:
     def plugin_path(cls):
         result = []
         plugins_dir = FSGSDirectories.get_plugins_dir()
-        if plugins_dir and os.path.isdir(plugins_dir):
+        result.append(plugins_dir)
+
+        # Plugins dir location has changed, add several old and new paths here
+        # to find plugins in both places (FS-UAE and OpenRetro style).
+        plugins_dir = os.path.join(FSGSDirectories.get_base_dir(), "Plugins")
+        if plugins_dir not in result:
             result.append(plugins_dir)
+        plugins_dir = os.path.join(FSGSDirectories.get_data_dir(), "Plugins")
+        if plugins_dir not in result:
+            result.append(plugins_dir)
+
+        # if plugins_dir and os.path.isdir(plugins_dir):
+        #     result.append(plugins_dir)
         expansion_dir = os.path.join(
             FSGSDirectories.get_base_dir(), "Workspace", "Expansion"
         )
         if expansion_dir and os.path.isdir(expansion_dir):
             result.append(expansion_dir)
+
         if System.macos:
-            system_plugins_dir = os.path.join(
-                fsboot.executable_dir(),
-                "..",
-                "..",
-                "..",
-                "..",
-                "..",
-                "..",
-                "Plugins",
+            system_plugins_dir = os.path.normpath(
+                os.path.join(
+                    fsboot.executable_dir(),
+                    "..",
+                    "..",
+                    "..",
+                    "..",
+                    "..",
+                    "..",
+                    "Plugins",
+                )
             )
-        else:
-            system_plugins_dir = os.path.join(
-                fsboot.executable_dir(), "..", "..", "..", "Plugins"
-            )
-        if os.path.isdir(system_plugins_dir):
             result.append(system_plugins_dir)
+        else:
+            system_plugins_dir = os.path.normpath(
+                os.path.join(
+                    fsboot.executable_dir(), "..", "..", "..", "Plugins"
+                )
+            )
+            result.append(system_plugins_dir)
+        # if os.path.isdir(system_plugins_dir):
+        #     result.append(system_plugins_dir)
+
         return result
 
     def __init__(self):
@@ -257,7 +293,7 @@ class PluginManager:
         self._plugins_map = {}
         self.load_plugins()
         for plugin in self._plugins:
-            for key, value in plugin.provides().items():
+            for key, value in plugin.provides.items():
                 self._provides[key] = plugin
 
     def plugin(self, name):
@@ -281,36 +317,48 @@ class PluginManager:
             Plugin.arch_name(True),
         )
 
+        # Reversing order so that later loaded plugins (earlier on path)
+        # takes precedence.
+        # for dir_path in reversed(plugin_path):
+        # I guess we should sort the list by version number and only load the
+        # newest plugin per name.
         for dir_path in plugin_path:
-            # if not os.path.isdir(dir_path):
-            #     continue
+            if not os.path.isdir(dir_path):
+                continue
+            # logger.debug(dir_path)
             for name in os.listdir(dir_path):
                 plugin_dir = os.path.join(dir_path, name)
+                logger.debug(plugin_dir)
                 if not os.path.isdir(plugin_dir):
                     continue
                 try:
                     plugin = self.load_plugin(plugin_dir)
                 except Exception:
+                    logger.debug("Could not load %s", plugin_dir)
                     traceback.print_exc()
                     continue
                 if plugin is None:
+                    logger.debug("No plugin in %s", plugin_dir)
                     continue
+                logger.debug("Found plugin in %s", plugin_dir)
                 self._plugins.append(plugin)
                 self._plugins_map[plugin.name] = plugin
             self._plugins.sort(key=attrgetter("name"))
 
     def load_plugin(self, plugin_dir):
-        logger.info("Load plugin %s", plugin_dir)
-        plugin_ini = os.path.join(plugin_dir, "plugin.ini")
-        name = os.path.basename(plugin_dir).split("_")[0]
-        if not os.path.exists(plugin_ini):
-            return self.load_expansion(plugin_dir)
-        cp = ConfigParser()
-        with open(plugin_ini, "r", encoding="UTF-8") as f:
-            cp.read_file(f)
-        version = cp.get("plugin", "version")
-        plugin = Plugin(os.path.join(plugin_dir, version), name, version, cp)
-        return plugin
+        return self.load_expansion(plugin_dir)
+
+        # logger.info("Load plugin %s", plugin_dir)
+        # plugin_ini = os.path.join(plugin_dir, "plugin.ini")
+        # name = os.path.basename(plugin_dir).split("_")[0]
+        # if not os.path.exists(plugin_ini):
+        #     return self.load_expansion(plugin_dir)
+        # cp = ConfigParser()
+        # with open(plugin_ini, "r", encoding="UTF-8") as f:
+        #     cp.read_file(f)
+        # version = cp.get("plugin", "version")
+        # plugin = Plugin(os.path.join(plugin_dir, version), name, version, cp)
+        # return plugin
 
     def load_expansion(self, path):
         logger.info("Load expansion %s", path)
@@ -321,9 +369,26 @@ class PluginManager:
         if not os.path.exists(version_path):
             # version_path = os.path.join(path, "Data", "Version.txt")
             version_path = os.path.join(path, "Version.txt")
+
+        version = None
         if not os.path.exists(version_path):
-            return None
-        expansion = Expansion(path, arch_path)
+            plugin_ini = os.path.join(path, "Plugin.ini")
+            if os.path.exists(plugin_ini):
+                cp = ConfigParser()
+                with open(plugin_ini, "r", encoding="UTF-8") as f:
+                    cp.read_file(f)
+                version = cp.get("plugin", "version")
+            if not version:
+                plugin_ini = os.path.join(path, "plugin.ini")
+                if os.path.exists(plugin_ini):
+                    cp = ConfigParser()
+                    with open(plugin_ini, "r", encoding="UTF-8") as f:
+                        cp.read_file(f)
+                    version = cp.get("plugin", "version")
+            if not version:
+                return None
+
+        expansion = Expansion(path, arch_path, version=version)
         expansion.load_provides()
         return expansion
 
@@ -378,3 +443,13 @@ class PluginManager:
                 return path
             return None
         return plugin.library_path(name)
+
+    def find_file_by_sha1(self, sha1):
+        try:
+            plugin = self.provides()["sha1:" + sha1]
+        except KeyError:
+            path = None
+        else:
+            path = plugin.sha1_path(sha1)
+        logger.debug("PluginManager.find_file_by_sha1 %s -> %s", sha1, path)
+        return path

@@ -315,6 +315,7 @@ class Option(object):
     NGC_DATABASE = "ngc_database"
     NOTIFICATION_DURATION = "notification_duration"
     NTSC_MODE = "ntsc_mode"
+    OFFLINE_MODE = "offline_mode"
     ORIENTATION = "orientation"
     PLATFORM = "platform"
     PLATFORMS_FEATURE = "platforms_feature"

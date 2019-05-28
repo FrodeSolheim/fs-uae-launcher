@@ -1052,6 +1052,11 @@ options = {
         "description": ("Enable/disable use of the GameCube database"),
         "type": "Boolean",
     },
+    Option.OFFLINE_MODE: {
+        "default": "0",
+        "description": ("Offline mode"),
+        "type": "Boolean",
+    },
     Option.PLATFORM: {
         "default": "amiga",
         "description": ("Platform"),

@@ -197,7 +197,7 @@ class FileScanner(object):
                     all_files = True
                     break
 
-        for name in dir_content:
+        for name in sorted(dir_content):
             if not check_valid_name(name):
                 continue
             if self.stop_check():

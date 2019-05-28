@@ -1,5 +1,8 @@
 Version 2.9.11dev:
 
+* Plugins can provide files for offline use (WHDLoad, JST, SKick, etc).
+* Use newer version of uae-configuration, OSEmu.400.
+* Added support for .xz-compressed files.
 * GUI options to toggle game mode / governor warning on Linux.
 
 Version 2.9.10dev:

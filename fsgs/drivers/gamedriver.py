@@ -979,13 +979,21 @@ class GameDriver:
         print("GameRunner.abort - WARNING: not implemented")
 
     def cheats_file(self, name):
+        dev_path = os.path.join("..", "cheats", name)
+        # FIXME: if development_mode ?
+        if os.path.exists(dev_path):
+            print("Found cheats file:", dev_path)
+            return dev_path
         try:
             plugin = PluginManager.instance().plugin("Cheats")
         except LookupError:
+            print("No cheats plugin found")
             return None
         path = plugin.data_file_path(name)
         if os.path.exists(path):
+            print("Found cheats file:", path)
             return path
+        print("No cheats file found:", name)
         return None
 
     @property

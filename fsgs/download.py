@@ -4,8 +4,25 @@ import shutil
 from uuid import NAMESPACE_URL, uuid4, uuid5
 
 import requests
+
+from fsbc.application import app
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.network import fs_uae_url_from_sha1_and_name
+from fsgs.option import Option
+from fsgs.plugins.pluginmanager import PluginManager
+
+
+class OfflineModeException(Exception):
+    pass
+
+
+def offline_mode():
+    return app.settings[Option.OFFLINE_MODE] == "1"
+
+
+def raise_exception_in_offline_mode():
+    if offline_mode():
+        raise OfflineModeException("Offline mode is enabled")
 
 
 class Downloader(object):
@@ -60,6 +77,7 @@ class Downloader(object):
             return cache_path
         if not download:
             return None
+        raise_exception_in_offline_mode()
         r = requests.get(url, auth=auth, stream=True)
         try:
             r.raise_for_status()
@@ -87,9 +105,29 @@ class Downloader(object):
     def install_file_by_sha1(cls, sha1, name, path):
         print("[DOWNLOADER] install_file_by_sha1", sha1)
         # FIXME: Also find files from file database / plugins
+
         print(repr(path))
         if not os.path.exists(os.path.dirname(path)):
             os.makedirs(os.path.dirname(path))
+
+        src = PluginManager.instance().find_file_by_sha1(sha1)
+        if src:
+            dst = path
+            dst_partial = dst + ".partial"
+            sha1_obj = hashlib.sha1()
+            with open(src, "rb") as fin:
+                with open(dst_partial, "wb") as fout:
+                    while True:
+                        data = fin.read(65536)
+                        if not data:
+                            break
+                        fout.write(data)
+                        sha1_obj.update(data)
+            if sha1_obj.hexdigest() != sha1:
+                raise Exception("File from plugin does not match SHA-1")
+            os.rename(dst_partial, dst)
+            return
+
         cache_path = cls.get_cache_path(sha1)
         if os.path.exists(cache_path):
             print("[CACHE]", cache_path)
@@ -99,6 +137,7 @@ class Downloader(object):
             return
         url = cls.sha1_to_url(sha1, name)
         print("[DOWNLOADER]", url)
+        raise_exception_in_offline_mode()
         r = requests.get(url, stream=True)
         try:
             r.raise_for_status()
@@ -114,8 +153,9 @@ class Downloader(object):
             print("error: downloaded sha1 is", h.hexdigest(), "- wanted", sha1)
             raise Exception("sha1 of downloaded file does not match")
         temp_cache_path = cache_path + ".partial." + str(uuid4())
-        shutil.copy(temp_path, temp_cache_path)
         os.rename(temp_cache_path, cache_path)
+        # Atomic "copy" to final destination
+        shutil.copy(temp_path, temp_cache_path)
         os.rename(temp_path, path)
 
     @classmethod
