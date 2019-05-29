@@ -12,7 +12,7 @@ from fsgs.res import gettext
 
 
 def is_locker_enabled():
-    return fsbc.settings.get("database_locker") != "0"
+    return fsbc.settings.get("database_locker") == "1"
 
 
 def open_locker_uri(uri):

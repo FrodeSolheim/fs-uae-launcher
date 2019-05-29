@@ -178,7 +178,7 @@ options = {
         "type": "boolean",
     },
     Option.BEZEL: {
-        "default": "1",
+        "default": "0",
         "description": ("Bezel"),
         "type": "Choice",
         "values": [("1", N_("Show Bezel")), ("0", N_("Hide Bezel"))],
@@ -360,7 +360,7 @@ options = {
         "type": "boolean",
     },
     Option.DATABASE_LOCKER: {
-        "default": "1",
+        "default": "0",
         "description": ("OpenRetro.org Locker"),
         "type": "Boolean",
     },

@@ -1,9 +1,10 @@
 import json
+import os
 import sqlite3
-from binascii import hexlify, unhexlify
 import zlib
-from .BaseDatabase import BaseDatabase
+from binascii import hexlify, unhexlify
 
+from .BaseDatabase import BaseDatabase
 
 VERSION = 19
 RESET_VERSION = 19
@@ -18,9 +19,19 @@ class GameDatabase(BaseDatabase):
     def __init__(self, path):
         BaseDatabase.__init__(self, BaseDatabase.SENTINEL)
         self._path = path
+        self._name = os.path.splitext(os.path.basename(path))[0]
+
+    def name(self):
+        return self._name
+
+    def path(self):
+        return self._path
 
     def get_path(self):
         return self._path
+
+    def version(self):
+        return VERSION
 
     def get_version(self):
         return VERSION
@@ -110,7 +121,7 @@ class GameDatabase(BaseDatabase):
         return result
 
     def get_game_values_for_uuid(self, game_uuid, recursive=True):
-        print("get_game_values_for_uuid", game_uuid)
+        # print("get_game_values_for_uuid", game_uuid)
         assert game_uuid
         assert isinstance(game_uuid, str)
         return self.get_game_values(game_uuid=game_uuid, recursive=recursive)

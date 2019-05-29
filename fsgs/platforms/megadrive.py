@@ -104,8 +104,8 @@ class MegaDriveLoader(SimpleLoader):
 class MegaDriveMameDriver(MessDriver):
     PORTS = SMD_PORTS
 
-    def __init__(self, fsgs):
-        super().__init__(fsgs)
+    def __init__(self, fsgc):
+        super().__init__(fsgc)
         self.helper = MegaDriveHelper(self.options)
         self.save_handler.set_save_data_is_emulator_specific(True)
         self.save_handler.set_mame_driver(self.get_mame_driver())
@@ -148,8 +148,8 @@ class MegaDriveMameDriver(MessDriver):
 class MegaDriveMednafenDriver(MednafenDriver):
     PORTS = SMD_PORTS
 
-    def __init__(self, fsgs, vanilla=True):
-        super().__init__(fsgs, vanilla)
+    def __init__(self, fsgc, vanilla=True):
+        super().__init__(fsgc, vanilla)
         self.helper = MegaDriveHelper(self.options)
         self.save_handler.set_save_data_is_emulator_specific(True)
         # self.save_handler.set_srm_alias(".sav")

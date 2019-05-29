@@ -12,41 +12,51 @@ if os.environ.get("FSGS_PYTHONPATH", ""):
 if os.getcwd().startswith("C:\\msys64\\home\\"):
     os.environ["PATH"] = "C:\\msys64\\mingw64\\bin;" + os.environ["PATH"]
 
+
 def print_version():
     import launcher.version
+
     print(launcher.version.VERSION)
 
 
 def frozen_qpa_platform_plugin_path():
     import fsboot
+
     if sys.platform == "darwin":
         os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
-            fsboot.executable_dir(), "..", "PlugIns", "platforms")
+            fsboot.executable_dir(), "..", "PlugIns", "platforms"
+        )
         pass
     else:
         os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
-            fsboot.executable_dir(), "platforms")
+            fsboot.executable_dir(), "platforms"
+        )
 
 
 def frozen_python_libs():
     import fsboot
+
     libs_dirs = [fsboot.executable_dir()]
     if sys.platform == "darwin":
         # Add .app/Contents/Python to libs_dirs
         libs_dir = os.path.abspath(
-            os.path.join(fsboot.executable_dir(), "..", "Python"))
+            os.path.join(fsboot.executable_dir(), "..", "Python")
+        )
         print(libs_dir, os.path.exists(libs_dir))
         if os.path.exists(libs_dir):
             libs_dirs.append(libs_dir)
     libs_dir = os.path.abspath(
-        os.path.join(fsboot.executable_dir(), "..", "..", "Python"))
+        os.path.join(fsboot.executable_dir(), "..", "..", "Python")
+    )
     print(libs_dir, os.path.exists(libs_dir))
     if os.path.exists(libs_dir):
         libs_dirs.append(libs_dir)
     else:
         libs_dir = os.path.abspath(
-            os.path.join(fsboot.executable_dir(), "..", "..", "..",
-                         "..", "..", "Python"))
+            os.path.join(
+                fsboot.executable_dir(), "..", "..", "..", "..", "..", "Python"
+            )
+        )
         print(libs_dir, os.path.exists(libs_dir))
         if os.path.exists(libs_dir):
             libs_dirs.append(libs_dir)
@@ -60,16 +70,20 @@ def frozen_python_libs():
 
 def frozen_requests_ca_cert():
     import fsboot
+
     data_dirs = [fsboot.executable_dir()]
     data_dir = os.path.abspath(
-        os.path.join(fsboot.executable_dir(), "..", "..", "Data"))
+        os.path.join(fsboot.executable_dir(), "..", "..", "Data")
+    )
     print(data_dir, os.path.exists(data_dir))
     if os.path.exists(data_dir):
         data_dirs.append(data_dir)
     else:
         data_dir = os.path.abspath(
-            os.path.join(fsboot.executable_dir(), "..", "..", "..",
-                         "..", "..", "Data"))
+            os.path.join(
+                fsboot.executable_dir(), "..", "..", "..", "..", "..", "Data"
+            )
+        )
         print(data_dir, os.path.exists(data_dir))
         if os.path.exists(data_dir):
             data_dirs.append(data_dir)
@@ -92,6 +106,7 @@ def main():
         sys.exit(0)
 
     import launcher.apps
+
     launcher.apps.main()
 
 
@@ -99,21 +114,30 @@ main()
 
 # Dummy imports for cx_Freeze
 sys.exit(0)
+
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import idna.idnadata
+
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.appdirs
+
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.packaging.requirements
+
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.packaging.specifiers
+
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.packaging.version
+
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.pyparsing
+
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import pkg_resources._vendor.six
+
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import PyQt5.sip
+
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import _sysconfigdata_m_darwin_darwin

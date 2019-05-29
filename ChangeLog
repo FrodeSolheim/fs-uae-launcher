@@ -1,3 +1,7 @@
+Version 2.9.12dev:
+
+* Fixed recently introduced bug when downloading files via cache.
+
 Version 2.9.11dev:
 
 * Plugins can provide files for offline use (WHDLoad, JST, SKick, etc).

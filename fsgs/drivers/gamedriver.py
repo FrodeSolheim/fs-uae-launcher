@@ -295,7 +295,7 @@ class GameDriver:
         return self.DEFAULT_EFFECT
 
     def bezel(self):
-        return self.options[Option.BEZEL] != "0"
+        return self.options[Option.BEZEL] == "1"
 
     # FIXME: REMOVE
     def use_smoothing(self):

@@ -131,6 +131,7 @@ class Downloader(object):
         cache_path = cls.get_cache_path(sha1)
         if os.path.exists(cache_path):
             print("[CACHE]", cache_path)
+            # FIXME: Atomic copy utility function?
             shutil.copy(cache_path, path)
             # so we later can delete least accessed files in cache...
             os.utime(cache_path, None)
@@ -152,10 +153,13 @@ class Downloader(object):
         if h.hexdigest() != sha1:
             print("error: downloaded sha1 is", h.hexdigest(), "- wanted", sha1)
             raise Exception("sha1 of downloaded file does not match")
+
+        # Atomic "copy" to cache location
         temp_cache_path = cache_path + ".partial." + str(uuid4())
-        os.rename(temp_cache_path, cache_path)
-        # Atomic "copy" to final destination
         shutil.copy(temp_path, temp_cache_path)
+        os.rename(temp_cache_path, cache_path)
+
+        # Move downloaded file into file position (atomic)
         os.rename(temp_path, path)
 
     @classmethod

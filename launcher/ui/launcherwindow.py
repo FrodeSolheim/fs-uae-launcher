@@ -10,8 +10,12 @@ import launcher.ui
 from fsbc.application import Application
 from fsbc.util import unused
 from fsgs.context import default_context
+from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
+from launcher.i18n import gettext
 from launcher.implicit_handler import ImplicitConfigHandler
 from launcher.launcher_config import LauncherConfig
+from launcher.launcher_settings import LauncherSettings
+from launcher.launcher_signal import LauncherSignal
 from launcher.netplay.netplay_dialog import NetplayDialog
 from launcher.option import Option
 from launcher.panels.additionalconfigpanel import AdditionalConfigPanel
@@ -23,12 +27,20 @@ from launcher.panels.inputpanel import InputPanel
 from launcher.panels.mainpanel import MainPanel
 from launcher.panels.quicksettingspanel import QuickSettingsPanel
 from launcher.panels.romrampanel import RomRamPanel
+from launcher.ui.aboutdialog import AboutDialog
+from launcher.ui.book import Book
 from launcher.ui.bottombar.BottomPanel import BottomPanel
 from launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
 from launcher.ui.bottombar.ScreenshotsPanel import ScreenshotsPanel
 from launcher.ui.config.browser import ConfigBrowser
 from launcher.ui.config.configscrollarea import ConfigScrollArea
+from launcher.ui.ConfigurationsPanel import ConfigurationsPanel
+from launcher.ui.Constants import Constants
+from launcher.ui.kickstartimportdialog import KickstartImportDialog
 from launcher.ui.launch import LaunchGroup
+from launcher.ui.skin import Skin
+from launcher.ui.statusbar.StatusBar import StatusBar
+from launcher.ui.WindowWithTabs import WindowWithTabs
 from launcher.update_manager import UpdateManager
 from workspace.apps.adf_creator_app import ADFCreatorWindow
 from workspace.apps.hdf_creator_app import HDFCreatorWindow
@@ -36,17 +48,6 @@ from workspace.apps.locker_uploader import LockerUploaderWindow
 from workspace.apps.login import LoginWindow
 from workspace.apps.logout import LogoutWindow
 from workspace.apps.refresh import RefreshWindow
-from .ConfigurationsPanel import ConfigurationsPanel
-from .Constants import Constants
-from .WindowWithTabs import WindowWithTabs
-from .aboutdialog import AboutDialog
-from .book import Book
-from .kickstartimportdialog import KickstartImportDialog
-from .skin import Skin
-from .statusbar.StatusBar import StatusBar
-from ..i18n import gettext
-from ..launcher_settings import LauncherSettings
-from ..launcher_signal import LauncherSignal
 
 USE_MAIN_MENU = 1
 QUICK_SETTINGS_WIDTH = 200
@@ -753,11 +754,12 @@ class LauncherWindow(WindowWithTabs):
             # menu.add_item(_("Log In / Register"), self.on_log_in)
             # menu.add_item(gettext("Update Game Database"),
             #               self.on_game_database_refresh)
-            menu.add_item(
-                gettext("Upload Files to OpenRetro Locker"),
-                self.on_upload_locker_files,
-            )
-            # menu.add_separator()
+            if is_locker_enabled():
+                menu.add_item(
+                    gettext("Upload Files to OpenRetro Locker"),
+                    self.on_upload_locker_files,
+                )
+                # menu.add_separator()
             menu.add_item(gettext("Log Out"), self.on_log_out)
         else:
             menu.add_item(gettext("Log In / Register"), self.on_log_in)
