@@ -367,7 +367,6 @@ class MednafenDriver(GameDriver):
             self.emulator.args.extend(
                 ["-{}.shader.goat.slen".format(pfx), "1"]
             )
-            # self.emulator.args.extend(["-{}.tblur".format(pfx), "1"])
             special = "none"
             video_scale = 2
             min_video_scale = 2
@@ -405,6 +404,14 @@ class MednafenDriver(GameDriver):
         self.emulator.env["FSGS_WINDOW_SIZE"] = "{},{}".format(
             window_w, window_h
         )
+
+        deinterlacer = self.options[Option.MEDNAFEN_DEINTERLACER]
+        if deinterlacer:
+            self.emulator.args.extend(["-video.deinterlacer", deinterlacer])
+
+        temporal_blur = self.options[Option.MEDNAFEN_TEMPORAL_BLUR] == "1"
+        if temporal_blur:
+            self.emulator.args.extend(["-{}.tblur".format(pfx), "1"])
 
         self.emulator.args.extend(["-{}.special".format(pfx), special])
         self.emulator.args.extend(self.mednafen_extra_graphics_options())

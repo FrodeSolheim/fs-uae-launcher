@@ -71,11 +71,12 @@ class GameDatabaseSynchronizer(object):
             self.database.commit()
             print("done")
 
-        if os.environ.get("FSGS_WRITE_DAT_FILE", "") == "1":
+        if os.environ.get("FSGS_WRITE_DAT_FILES", "") == "1":
             self.write_dat_file()
 
     def write_dat_file(self):
         games = {}
+        descriptions = {}
 
         for uuid in self.database.get_all_uuids():
             values = self.database.get_game_values_for_uuid(
@@ -89,9 +90,18 @@ class GameDatabaseSynchronizer(object):
                 # print(file_list)
                 if entry["name"].endswith("/"):
                     continue
-                game = entry["sha1"][:3].upper()
-                games.setdefault(game, {})[entry["sha1"]] = {
-                    "name": entry["sha1"],
+                # game = entry["sha1"][:3].upper()
+                # game = uuid[:8] + "/" + values["game_name"]
+                # games.setdefault(game, {})[entry["sha1"]] = {
+                #     "name": entry["sha1"],
+                #     "sha1": entry["sha1"],
+                #     "size": entry["size"],
+                # }
+                game = uuid
+                description = values.get("x_name", "")
+                descriptions[game] = description
+                games.setdefault(game, {})[entry["name"]] = {
+                    "name": entry["name"],
                     "sha1": entry["sha1"],
                     "size": entry["size"],
                 }
@@ -135,7 +145,7 @@ class GameDatabaseSynchronizer(object):
 
             description_node = ElementTree.Element("description")
             game_node.append(description_node)
-            description_node.text = game_name
+            description_node.text = descriptions[game_name]
             description_node.tail = "\n\t\t"
 
             for i, rom_name in enumerate(sorted(game.keys())):

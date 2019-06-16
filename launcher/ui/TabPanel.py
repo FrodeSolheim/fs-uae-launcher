@@ -168,6 +168,9 @@ class TabPanel(fsui.Panel):
             else:
                 color_1 = fsui.Color(0xA7, 0xA7, 0xA7)
                 color_2 = fsui.Color(0xC0, 0xC0, 0xC0)
+        # elif Skin.adwaita():
+        #     color_1 = fsui.Color(0xea, 0xe7, 0xe5)
+        #     color_2 = fsui.Color(0xea, 0xe7, 0xe5)
         elif color_1 is not None:
             if selected:
                 color_2 = color_1

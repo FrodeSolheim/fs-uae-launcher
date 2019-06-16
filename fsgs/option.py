@@ -282,6 +282,8 @@ class Option(object):
     MAME_ARTWORK = "mame_artwork"
     MEDNAFEN_AUDIO_BUFFER = "mednafen_audio_buffer"
     MEDNAFEN_AUDIO_DRIVER = "mednafen_audio_driver"
+    MEDNAFEN_DEINTERLACER = "mednafen_deinterlacer"
+    MEDNAFEN_TEMPORAL_BLUR = "mednafen_temporal_blur"
     MIDDLE_CLICK_UNGRAB = "middle_click_ungrab"
     MIN_FIRST_LINE_NTSC = "min_first_line_ntsc"
     MIN_FIRST_LINE_PAL = "min_first_line_pal"

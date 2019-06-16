@@ -433,7 +433,14 @@ class FSGameSystemContext(object):
         except LookupError:
             return False
 
-        values = self.game.set_from_variant_uuid(database_name, variant_uuid)
+        try:
+            values = self.game.set_from_variant_uuid(
+                database_name, variant_uuid
+            )
+        except KeyError:
+            # It is possible that the variant is found without game entry,
+            # which raises a KeyError.
+            return False
         if not values:
             return False
 

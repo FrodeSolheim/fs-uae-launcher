@@ -852,14 +852,14 @@ options = {
     },
     Option.MEDNAFEN_AUDIO_BUFFER: {
         "default": "40",
-        "description": ("Mednafen Audio Buffer"),
+        "description": ("Mednafen audio buffer"),
         "type": "Integer",
         "min": 0,
         "max": 1000,
     },
     Option.MEDNAFEN_AUDIO_DRIVER: {
         "default": "auto",
-        "description": ("Mednafen Audio Driver"),
+        "description": ("Mednafen audio driver"),
         "type": "Choice",
         "values": [
             ("auto", "Auto"),
@@ -867,6 +867,23 @@ options = {
             ("alsa", "ALSA"),
             ("mednafen", "Mednafen Default"),
         ],
+    },
+    Option.MEDNAFEN_DEINTERLACER: {
+        "default": "weave",
+        "description": ("Mednafen deinterlacer"),
+        "type": "Choice",
+        "values": [
+            ("weave", "weave"),
+            ("bob", "bob"),
+            ("bob_offset", "bob_offset"),
+            ("blend", "blend"),
+            ("blend_rg", "blend_rg"),
+        ],
+    },
+    Option.MEDNAFEN_TEMPORAL_BLUR: {
+        "default": "0",
+        "description": ("Mednafen temporal blur"),
+        "type": "Boolean",
     },
     Option.MIDDLE_CLICK_UNGRAB: {
         "default": "1",

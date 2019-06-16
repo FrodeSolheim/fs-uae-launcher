@@ -66,6 +66,8 @@ class PlatformSettingsDialog(fsui.Window):
             # options.append(Option.PSX_DATABASE)
             options.append(Option.PSX_PRELOAD)
             options.extend(mednafen_options)
+            options.append(Option.MEDNAFEN_DEINTERLACER)
+            options.append(Option.MEDNAFEN_TEMPORAL_BLUR)
         elif platform == Platform.SMD:
             # options.append(Option.SMD_DATABASE)
             options.append(Option.SMD_EMULATOR)
