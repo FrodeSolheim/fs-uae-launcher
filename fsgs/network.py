@@ -1,7 +1,5 @@
 import os
 from functools import lru_cache
-from http.client import HTTPConnection, HTTPSConnection
-from urllib.request import build_opener, HTTPBasicAuthHandler
 
 from fsbc.application import app
 from fsbc.settings import Settings
@@ -51,47 +49,6 @@ def openretro_scheme():
 def openretro_url_prefix():
     scheme, host = openretro_server()
     return "{}://{}".format(scheme, host)
-
-
-def openretro_http_connection():
-    scheme, host = openretro_server()
-    if scheme == "https":
-        connection = HTTPSConnection(host, timeout=30)
-    else:
-        connection = HTTPConnection(host, timeout=30)
-    return connection
-
-
-def opener_for_url_prefix(
-    url_prefix, username=None, password=None, cache_dict=None
-):
-    if cache_dict is not None:
-        cache_key = (url_prefix, username, password)
-        try:
-            return cache_dict[cache_key]
-        except KeyError:
-            pass
-    if username or password:
-        auth_handler = HTTPBasicAuthHandler()
-        auth_handler.add_password(
-            realm="Open Amiga Game Database",
-            uri="{0}".format(url_prefix),
-            user=username,
-            passwd=password,
-        )
-        auth_handler.add_password(
-            realm="OpenRetro",
-            uri="{0}".format(url_prefix),
-            user=username,
-            passwd=password,
-        )
-        opener = build_opener(auth_handler)
-    else:
-        opener = build_opener()
-    if cache_dict is not None:
-        cache_key = (url_prefix, username, password)
-        cache_dict[cache_key] = opener
-    return opener
 
 
 def is_http_url(url):

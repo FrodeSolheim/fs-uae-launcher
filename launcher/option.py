@@ -178,7 +178,7 @@ options = {
         "type": "boolean",
     },
     Option.BEZEL: {
-        "default": "1",
+        "default": "0",
         "description": ("Bezel"),
         "type": "Choice",
         "values": [("1", N_("Show Bezel")), ("0", N_("Hide Bezel"))],
@@ -360,7 +360,7 @@ options = {
         "type": "boolean",
     },
     Option.DATABASE_LOCKER: {
-        "default": "1",
+        "default": "0",
         "description": ("OpenRetro.org Locker"),
         "type": "Boolean",
     },
@@ -370,7 +370,7 @@ options = {
         "type": "string",
     },
     Option.DATABASE_SERVER: {
-        "default": "oagd.net",
+        "default": "openretro.org",
         "description": ("Game Database Server"),
         "type": "string",
     },
@@ -407,7 +407,7 @@ options = {
     },
     Option.DEVICE_ID: {
         "default": "",
-        "description": ("Device ID used with OAGD.net authentication"),
+        "description": ("Device ID used with OpenRetro authentication"),
         "type": "string",
     },
     Option.DONGLE_TYPE: {
@@ -575,6 +575,11 @@ options = {
         "type": "Choice",
         "values": [("ignore", "Ignore"), ("1", "On"), ("0", "Off (Linux)")],
     },
+    Option.GAME_MODE: {
+        "default": "1",
+        "description": N_("Use GameMode to optimize performance"),
+        "type": "Boolean",
+    },
     Option.GB_DATABASE: {
         "default": "0",
         "description": ("Enable/disable use of the Game Boy database"),
@@ -631,6 +636,11 @@ options = {
         "description": ("Game Boy Color Port 1"),
         "type": "Choice",
         "values": [("builtin", N_("Built-in"))],
+    },
+    Option.GOVERNOR_WARNING: {
+        "default": "1",
+        "description": N_("Warn when CPU governor is not 'performance'"),
+        "type": "Boolean",
     },
     Option.GRAPHICS_CARD: {
         "default": "none",
@@ -842,14 +852,14 @@ options = {
     },
     Option.MEDNAFEN_AUDIO_BUFFER: {
         "default": "40",
-        "description": ("Mednafen Audio Buffer"),
+        "description": ("Mednafen audio buffer"),
         "type": "Integer",
         "min": 0,
         "max": 1000,
     },
     Option.MEDNAFEN_AUDIO_DRIVER: {
         "default": "auto",
-        "description": ("Mednafen Audio Driver"),
+        "description": ("Mednafen audio driver"),
         "type": "Choice",
         "values": [
             ("auto", "Auto"),
@@ -857,6 +867,23 @@ options = {
             ("alsa", "ALSA"),
             ("mednafen", "Mednafen Default"),
         ],
+    },
+    Option.MEDNAFEN_DEINTERLACER: {
+        "default": "weave",
+        "description": ("Mednafen deinterlacer"),
+        "type": "Choice",
+        "values": [
+            ("weave", "weave"),
+            ("bob", "bob"),
+            ("bob_offset", "bob_offset"),
+            ("blend", "blend"),
+            ("blend_rg", "blend_rg"),
+        ],
+    },
+    Option.MEDNAFEN_TEMPORAL_BLUR: {
+        "default": "0",
+        "description": ("Mednafen temporal blur"),
+        "type": "Boolean",
     },
     Option.MIDDLE_CLICK_UNGRAB: {
         "default": "1",
@@ -1040,6 +1067,11 @@ options = {
     Option.NGC_DATABASE: {
         "default": "0",
         "description": ("Enable/disable use of the GameCube database"),
+        "type": "Boolean",
+    },
+    Option.OFFLINE_MODE: {
+        "default": "0",
+        "description": ("Offline mode"),
         "type": "Boolean",
     },
     Option.PLATFORM: {

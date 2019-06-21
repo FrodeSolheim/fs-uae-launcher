@@ -143,10 +143,11 @@ class QuickSettingsPanel(fsui.Panel):
         self.layout.add(hori_layout, fill=True)
         self.monitor_button = MonitorButton(self)
         hori_layout.add(self.monitor_button, fill=True, margin_right=10)
-        self.fullscreen_mode_button = FullscreenModeButton(self)
-        hori_layout.add(
-            self.fullscreen_mode_button, fill=True, margin_right=10
-        )
+        if False:
+            self.fullscreen_mode_button = FullscreenModeButton(self)
+            hori_layout.add(
+                self.fullscreen_mode_button, fill=True, margin_right=10
+            )
         self.layout.add_spacer(10)
 
         ConfigBehavior(self, [Option.PLATFORM])

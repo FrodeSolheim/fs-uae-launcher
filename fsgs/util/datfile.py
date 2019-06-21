@@ -36,29 +36,56 @@ class DatFile(object):
         else:
             self._load_dat(data)
 
+    def _add_game_rom(self, game, rom_node):
+        # print(rom_node.attrib)
+        rom = {
+            "name": rom_node.attrib["name"],
+            "size": int(rom_node.attrib["size"]),
+        }
+        if "crc" in rom_node.attrib:
+            rom["crc32"] = rom_node.attrib["crc"].lower()
+        if "md5" in rom_node.attrib:
+            rom["md5"] = rom_node.attrib["md5"].lower()
+        if "sha1" in rom_node.attrib:
+            rom["sha1"] = rom_node.attrib["sha1"].lower()
+        game["files"].append(rom)
+
+    def _add_game(self, node):
+        game = {"name": node.attrib["name"], "files": []}
+        for rom_node in node.findall("rom"):
+            self._add_game_rom(game, rom_node)
+        self.games.append(game)
+
+    def _load_mame(self, root):
+        for machine_node in root.findall("machine"):
+            self._add_game(machine_node)
+
+    def _load_softwarelists(self, root):
+        for softwarelist_node in root.findall("softwarelist"):
+            # FIXME: software list name
+            for software_node in softwarelist_node.findall("software"):
+                # FIXME: software list name + software name?
+                name = software_node.attrib["name"]
+                game = {"name": name, "files": []}
+                for rom_node in software_node.iter("rom"):
+                    if rom_node.attrib.get("name", ""):
+                        self._add_game_rom(game, rom_node)
+                self.games.append(game)
+
     def _load_xml(self, data):
         self.reset()
 
         root = ElementTree.fromstring(data)
+        if root.tag == "mame":
+            return self._load_mame(root)
+        if root.tag == "softwarelists":
+            return self._load_softwarelists(root)
         header_node = root.find("header")
         description_node = header_node.find("description")
         if description_node is not None:
             self.description = description_node.text.strip()
         for game_node in root.findall("game"):
-            game = {"name": game_node.attrib["name"], "files": []}
-            for rom_node in game_node.findall("rom"):
-                rom = {
-                    "name": rom_node.attrib["name"],
-                    "size": int(rom_node.attrib["size"]),
-                }
-                if "crc" in rom_node.attrib:
-                    rom["crc32"] = rom_node.attrib["crc"].lower()
-                if "md5" in rom_node.attrib:
-                    rom["md5"] = rom_node.attrib["md5"].lower()
-                if "sha1" in rom_node.attrib:
-                    rom["sha1"] = rom_node.attrib["sha1"].lower()
-                game["files"].append(rom)
-            self.games.append(game)
+            self._add_game(game_node)
 
     def _load_dat(self, data):
         self.reset()
@@ -97,9 +124,9 @@ class DatFile(object):
                 parts = line.split(" size ")
                 rom["size"] = int(parts[1].strip().split(" ")[0].strip())
                 parts = line.split(" crc ")
-                rom["crc32"] = parts[1].strip().split(" ")[0].strip()
+                rom["crc32"] = parts[1].strip().split(" ")[0].strip().lower()
                 parts = line.split(" md5 ")
-                rom["md5"] = parts[1].strip().split(" ")[0].strip()
+                rom["md5"] = parts[1].strip().split(" ")[0].strip().lower()
                 parts = line.split(" sha1 ")
-                rom["sha1"] = parts[1].strip().split(" ")[0].strip()
+                rom["sha1"] = parts[1].strip().split(" ")[0].strip().lower()
                 game["files"].append(rom)

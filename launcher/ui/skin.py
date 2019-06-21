@@ -128,6 +128,10 @@ class Skin(object):
         return fsui.theme == "fusion" and fsui.theme_variant == "windows10"
 
     @classmethod
+    def adwaita(cls):
+        return fsui.theme == "fusion" and fsui.theme_variant == "adwaita"
+
+    @classmethod
     def fws(cls):
         if cls._fws is None:
             if fsboot.get("fws") == "1":

@@ -14,8 +14,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 %define name fs-uae-launcher
-%define version 2.9.8dev3
-%define unmangled_version 2.9.8dev3
+%define version 2.9.12dev
+%define unmangled_version 2.9.12dev
 %define release 1%{?dist}
 
 Summary: Graphical configuration frontend and launcher for FS-UAE
@@ -29,18 +29,20 @@ Group: Applications/Emulators
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Prefix: %{_prefix}
 BuildArch: noarch
-Vendor: Frode Solheim <frode@fs-uae.net>
-Requires: python3-qt5 fs-uae python3-setuptools python3-lhafile
-BuildRequires: python3-devel python3-setuptools
+Vendor: Frode Solheim <frode@solheim.dev>
+Requires: fs-uae
+Requires: python3-qt5
+Requires: python3-lhafile
+Requires: python3-requests
+Requires: python3-setuptools
+BuildRequires: python3-devel
+BuildRequires: python3-setuptools
 
 %if 0%{?suse_version}
 %global __python  /usr/bin/python3
 %global __python3  /usr/bin/python3
 %else
-%if 0%{?mandriva_version}
-%else
 %global __python %{__python3}
-%endif
 %endif
 
 %description
@@ -55,6 +57,7 @@ make
 
 %install
 make install DESTDIR=%{buildroot} prefix=%{_prefix}
+rm -Rf %{buildroot}%{_prefix}/share/fs-uae-launcher/OpenGL
 
 %clean
 rm -rf %{buildroot}

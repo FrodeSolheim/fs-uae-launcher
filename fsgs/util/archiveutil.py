@@ -1,8 +1,8 @@
 import hashlib
 import os
-import urllib
 import zipfile
-from uuid import uuid5, NAMESPACE_URL
+from urllib.parse import unquote
+from uuid import NAMESPACE_URL, uuid5
 
 
 class ArchiveUtil:
@@ -73,7 +73,7 @@ class ArchiveUtil:
                 # x_permissions = metadata[0:8]
                 # x_date = metadata[9:31]
                 comment = metadata[32:]
-                comment = urllib.parse.unquote(comment)
+                comment = unquote(comment)
 
             lower_to_regular[name.lower()] = name
 

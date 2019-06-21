@@ -9,8 +9,8 @@ class SynchronizerContext(object):
 
     @property
     def username(self):
-        return OGDClient.credentials()[0]
+        return OGDClient.auth()[0]
 
     @property
     def password(self):
-        return OGDClient.credentials()[1]
+        return OGDClient.auth()[1]

@@ -3,7 +3,7 @@ from operator import itemgetter
 import fsui
 from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
-from fsgs.plugins.plugin_manager import PluginManager
+from fsgs.plugins.pluginmanager import PluginManager
 from fsui import Image
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext

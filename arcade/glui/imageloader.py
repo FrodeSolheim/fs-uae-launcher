@@ -2,10 +2,10 @@ import os
 import threading
 import time
 from functools import lru_cache
-from urllib.request import urlopen
 from uuid import uuid4
 from zipfile import ZipFile
 
+import requests
 from arcade.glui.texturemanager import TextureManager
 from arcade.resources import logger
 from fsgs.FSGSDirectories import FSGSDirectories
@@ -41,13 +41,20 @@ def get_file_for_sha1_cached(sha1, size_arg, cache_ext):
 
     url = "{}/image/{}{}".format(openretro_url_prefix(), sha1, size_arg)
     print("[IMAGES]", url)
-    r = urlopen(url)
-    data = r.read()
-    cache_file_partial = "{}.{}.partial".format(cache_file, str(uuid4())[:8])
-    if not os.path.exists(os.path.dirname(cache_file_partial)):
-        os.makedirs(os.path.dirname(cache_file_partial))
-    with open(cache_file_partial, "wb") as f:
-        f.write(data)
+
+    r = requests.get(url, stream=True)
+    try:
+        r.raise_for_status()
+        cache_file_partial = "{}.{}.partial".format(
+            cache_file, str(uuid4())[:8]
+        )
+        if not os.path.exists(os.path.dirname(cache_file_partial)):
+            os.makedirs(os.path.dirname(cache_file_partial))
+        with open(cache_file_partial, "wb") as f:
+            for chunk in r.iter_content(chunk_size=65536):
+                f.write(chunk)
+    finally:
+        r.close()
     os.rename(cache_file_partial, cache_file)
     return cache_file
 

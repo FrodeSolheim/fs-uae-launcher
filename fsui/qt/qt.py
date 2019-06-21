@@ -128,13 +128,20 @@ def initialize_qt_style(qapplication):
         qapplication.setStyle(QStyleFactory.create("Fusion"))
         if fusion_variant == "adwaita":
             pa = QPalette()
-            pa.setColor(QPalette.Window, QColor(232, 232, 231))
-            pa.setColor(QPalette.AlternateBase, QColor(232, 232, 231))
-            pa.setColor(QPalette.Button, QColor(232, 232, 231))
+            # background = QColor("#f6f5f4")
+            background = QColor("#eae7e5")
+            pa.setColor(QPalette.Window, background)
+            pa.setColor(QPalette.AlternateBase, background)
+            pa.setColor(QPalette.Button, background)
             # pa.setColor(QPalette.Base, QColor(255, 255, 255))
             pa.setColor(
                 QPalette.Disabled, QPalette.Base, QColor(241, 241, 241)
             )
+
+            # pa.setColor(QPalette.Window, QColor("#aeaeae"))
+            # pa.setColor(QPalette.AlternateBase, QColor("#aeaeae"))
+            # pa.setColor(QPalette.Button, QColor("#aeaeae"))
+
             qapplication.setPalette(pa)
         elif fusion_variant == "fws" or fusion_variant == "windows10":
             pa = QPalette()

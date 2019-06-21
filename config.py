@@ -17,7 +17,6 @@ package_map = {
     "launcher": ".",
     "OpenGL": ".",
     "oyoyo": ".",
-    "requests": ".",
     "workspace": ".",
 }
 packages = sorted(package_map.keys())

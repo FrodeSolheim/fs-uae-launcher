@@ -4,15 +4,8 @@ from gzip import GzipFile
 from io import StringIO
 from urllib.request import Request
 import requests
-from fsgs.network import (
-    openretro_url_prefix,
-    opener_for_url_prefix,
-    is_http_url,
-)
+from fsgs.network import openretro_url_prefix, is_http_url
 from fsgs.res import gettext
-
-USE_REQUESTS = True
-
 
 # FIXME: Overlap in code/functionality with GameDatabaseSynchronizer
 
@@ -22,7 +15,6 @@ class SynchronizerBase(object):
         self.context = context
         self.on_status = on_status
         self._stop_check = stop_check
-        self.opener_cache_dict = {}
 
     @staticmethod
     def bytes_to_int(m):
@@ -45,49 +37,19 @@ class SynchronizerBase(object):
     def url(self, url):
         if not is_http_url(url):
             url = "{0}{1}".format(self.url_prefix(), url)
-        if USE_REQUESTS:
-            url = url.replace("http:", "https:")
         return url
 
-    def opener(self):
-        return opener_for_url_prefix(
-            self.url_prefix(),
-            self.context.username,
-            self.context.password,
-            cache_dict=self.opener_cache_dict,
-        )
-
     def fetch_json_attempt(self, url):
-        if USE_REQUESTS:
-            print("[HTTP] {}".format(self.url(url)))
-            # FIXME: timeout
-            r = requests.get(self.url(url), auth=self.auth())
-            return r.json()
-        else:
-            data = self.fetch_data_attempt(url, accept_gzip_encoding=True)
-            return json.loads(data.decode("UTF-8"))
+        print("[HTTP] {}".format(self.url(url)))
+        r = requests.get(self.url(url), auth=self.auth())
+        r.raise_for_status()
+        return r.json()
 
     def fetch_data_attempt(self, url, accept_gzip_encoding=False):
         print("[HTTP] {}".format(self.url(url)))
-        if USE_REQUESTS:
-            # FIXME: timeout
-            r = requests.get(self.url(url), auth=self.auth())
-            return r.content
-        else:
-            request = Request(self.url(url))
-        if accept_gzip_encoding:
-            request.add_header("Accept-Encoding", "gzip")
-        response = self.opener().open(request)
-        data = response.read()
-        try:
-            getheader = response.headers.getheader
-        except AttributeError:
-            getheader = response.getheader
-        content_encoding = getheader("content-encoding", "").lower()
-        if content_encoding == "gzip":
-            fake_stream = StringIO(data)
-            data = GzipFile(fileobj=fake_stream).read()
-        return data
+        r = requests.get(self.url(url), auth=self.auth())
+        r.raise_for_status()
+        return r.content
 
     def fetch_json(self, url):
         for i in range(20):

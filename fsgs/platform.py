@@ -108,7 +108,7 @@ from fsgs.platforms.gameboyadvance import GameBoyAdvancePlatform
 from fsgs.platforms.gameboycolor import GameBoyColorPlatform
 from fsgs.platforms.gamegear import GameGearPlatform
 from fsgs.platforms.lynx import LynxPlatformHandler
-from fsgs.platforms.master_system import MasterSystemPlatformHandler
+from fsgs.platforms.mastersystem import MasterSystemPlatform
 from fsgs.platforms.megadrive import MegaDrivePlatform
 from fsgs.platforms.msx import MsxPlatformHandler
 from fsgs.platforms.nintendo64 import Nintendo64Platform
@@ -153,7 +153,7 @@ platforms = {
     Platform.PSX: PlayStationPlatform,
     Platform.SGG: GameGearPlatform,
     Platform.SMD: MegaDrivePlatform,
-    Platform.SMS: MasterSystemPlatformHandler,
+    Platform.SMS: MasterSystemPlatform,
     Platform.TG16: TurboGrafx16Platform,
     Platform.TGCD: TurboGrafxCDPlatform,
     Platform.ZXS: SpectrumPlatformHandler,

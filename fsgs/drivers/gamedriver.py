@@ -15,7 +15,7 @@ from fsbc.task import current_task
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.fsuae import FSUAE
 from launcher.option import Option
-from fsgs.plugins.plugin_manager import PluginManager, Executable
+from fsgs.plugins.pluginmanager import PluginManager, Executable
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.util.gamenameutil import GameNameUtil
 
@@ -295,7 +295,7 @@ class GameDriver:
         return self.DEFAULT_EFFECT
 
     def bezel(self):
-        return self.options[Option.BEZEL] != "0"
+        return self.options[Option.BEZEL] == "1"
 
     # FIXME: REMOVE
     def use_smoothing(self):
@@ -979,13 +979,21 @@ class GameDriver:
         print("GameRunner.abort - WARNING: not implemented")
 
     def cheats_file(self, name):
+        dev_path = os.path.join("..", "cheats", name)
+        # FIXME: if development_mode ?
+        if os.path.exists(dev_path):
+            print("Found cheats file:", dev_path)
+            return dev_path
         try:
             plugin = PluginManager.instance().plugin("Cheats")
         except LookupError:
+            print("No cheats plugin found")
             return None
         path = plugin.data_file_path(name)
         if os.path.exists(path):
+            print("Found cheats file:", path)
             return path
+        print("No cheats file found:", name)
         return None
 
     @property

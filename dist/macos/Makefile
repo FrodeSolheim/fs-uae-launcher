@@ -26,7 +26,7 @@ cxfreeze: clean
 	mkdir -p $(resources)
 	mkdir -p $(locale)
 	cp -pPR ../../share/locale/* $(locale)/
-	cp ../../requests/cacert.pem $(macos)
+	cp ../../cacert.pem $(macos)
 	rm -Rf $(resources)/applications
 	rm -Rf $(resources)/icons
 	mv ../../build/*/* $(macos)

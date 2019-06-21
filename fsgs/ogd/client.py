@@ -10,14 +10,11 @@ from urllib.parse import urlencode
 from urllib.request import Request
 from uuid import uuid4
 
+import requests
 from fsbc.application import app
 from fsbc.settings import Settings
 from fsbc.task import Task
-from fsgs.network import (
-    openretro_http_connection,
-    openretro_url_prefix,
-    opener_for_url_prefix,
-)
+from fsgs.network import openretro_url_prefix
 
 
 class NonRetryableHTTPError(HTTPError):
@@ -83,7 +80,7 @@ class OGDClient(object):
         return LogoutTask(self, auth_token)
 
     @retry
-    def auth(self, username, password, device_id, device_name):
+    def authorize(self, username, password, device_id, device_name):
         result = self.post(
             "/api/auth",
             {
@@ -107,97 +104,29 @@ class OGDClient(object):
     def url_prefix():
         return openretro_url_prefix()
 
-    def opener(self):
-        username, password = self.credentials()
-        # FIXME: use cache dict?
-        return opener_for_url_prefix(self.url_prefix(), username, password)
-
     @staticmethod
-    def credentials():
+    def auth():
         auth_token = Settings.instance()["database_auth"]
-        return "auth_token", auth_token
+        return ("auth_token", auth_token)
 
     def post(self, path, params=None, data=None, auth=True):
         headers = {}
-        if auth:
-            credentials = self.credentials()
-            headers[str("Authorization")] = str(
-                "Basic "
-                + base64.b64encode(
-                    "{0}:{1}".format(*credentials).encode("UTF-8")
-                ).decode("UTF-8")
-            )
-        connection = openretro_http_connection()
         url = "{0}{1}".format(openretro_url_prefix(), path)
-        # if params:
-        #     url += "?" + urlencode(params)
         if not data and params:
             data = urlencode(params)
-            headers[str("Content-Type")] = str(
-                "application/x-www-form-urlencoded"
-            )
+            headers["Content-Type"] = "application/x-www-form-urlencoded"
         print(url, headers)
-        if isinstance(data, dict):
-            data = json.dumps(data)
-        # print(data)
-        connection.request(str("POST"), str(url), data, headers=headers)
-        response = connection.getresponse()
-        if response.status not in [200]:
-            print(response.status, response.reason)
-            if response.status == 400:
-                class_ = BadRequestError
-            elif response.status == 401:
-                class_ = UnauthorizedError
-            elif response.status == 403:
-                class_ = ForbiddenError
-            elif response.status == 404:
-                class_ = NotFoundError
-            else:
-                class_ = HTTPError
-            raise class_(
-                url,
-                response.status,
-                response.reason,
-                response.getheaders(),
-                None,
-            )
-        data = response.read()
-        if len(data) > 0 and data[0:1] == b"{":
-            doc = json.loads(data.decode("UTF-8"))
-            return doc
-        return data
+        r = requests.post(
+            url, data, headers=headers, auth=(self.auth() if auth else None)
+        )
+        r.raise_for_status()
+        return r.json()
 
     def build_url(self, path, **kwargs):
         url = "{0}{1}".format(self.url_prefix(), path)
         if kwargs:
             url += "?" + urlencode(kwargs)
         return url
-
-    def get_request(self, url):
-        request = Request(url)
-        print("get_request:", url)
-        request.add_header("Accept-Encoding", "gzip")
-        response = self.opener().open(request)
-        return self.handle_response(response)
-
-    def handle_response(self, response):
-        self._json = None
-        self.data = response.read()
-        # print(dir(response.headers))
-        try:
-            getheader = response.headers.getheader
-        except AttributeError:
-            getheader = response.getheader
-        content_encoding = getheader("content-encoding", "").lower()
-        if content_encoding == "gzip":
-            # data = zlib.decompress(data)
-            fake_stream = StringIO(self.data)
-            self.data = GzipFile(fileobj=fake_stream).read()
-
-    def json_response(self):
-        if self._json is None:
-            self._json = json.loads(self.data.decode("UTF-8"))
-        return self._json
 
     def rate_variant(self, variant_uuid, like=None, work=None):
         params = {"game": variant_uuid}
@@ -206,8 +135,9 @@ class OGDClient(object):
         if work is not None:
             params["work"] = work
         url = self.build_url("/api/1/rate_game", **params)
-        self.get_request(url)
-        return self.json_response()
+        r = requests.get(url, auth=self.auth())
+        r.raise_for_status()
+        return r.json()
 
 
 def get_device_name():
@@ -225,11 +155,11 @@ class LoginTask(Task):
         self.password = password
 
     def run(self):
-        self.progressed("Logging into oagd.net...")
+        self.progressed("Logging into openretro.org...")
         if not Settings.instance()["device_id"]:
             Settings.instance()["device_id"] = str(uuid4())
         try:
-            result = self.client.auth(
+            result = self.client.authorize(
                 self.username,
                 self.password,
                 Settings.instance()["device_id"],
@@ -251,7 +181,7 @@ class LogoutTask(Task):
         self.auth_token = auth_token
 
     def run(self):
-        self.progressed("Logging out from oagd.net...")
+        self.progressed("Logging out from openretro.org...")
         if not Settings.instance()["device_id"]:
             Settings.instance()["device_id"] = str(uuid4())
         self.client.deauth(self.auth_token)

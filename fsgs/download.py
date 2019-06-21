@@ -1,11 +1,28 @@
-import os
-from uuid import uuid4, uuid5, NAMESPACE_URL
-import shutil
-from urllib.request import urlopen
 import hashlib
+import os
+import shutil
+from uuid import NAMESPACE_URL, uuid4, uuid5
 
+import requests
+
+from fsbc.application import app
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.network import fs_uae_url_from_sha1_and_name
+from fsgs.option import Option
+from fsgs.plugins.pluginmanager import PluginManager
+
+
+class OfflineModeException(Exception):
+    pass
+
+
+def offline_mode():
+    return app.settings[Option.OFFLINE_MODE] == "1"
+
+
+def raise_exception_in_offline_mode():
+    if offline_mode():
+        raise OfflineModeException("Offline mode is enabled")
 
 
 class Downloader(object):
@@ -50,7 +67,7 @@ class Downloader(object):
             raise e
 
     @classmethod
-    def cache_file_from_url(cls, url, download=True, opener=None):
+    def cache_file_from_url(cls, url, download=True, auth=None):
         print("[DOWNLOADER] cache_file_from_url", url)
         cache_path = cls.get_url_cache_path(url)
         if os.path.exists(cache_path):
@@ -60,17 +77,16 @@ class Downloader(object):
             return cache_path
         if not download:
             return None
-        if opener:
-            ifs = opener.open(url)
-        else:
-            ifs = urlopen(url)
-        cache_path_temp = cache_path + ".partial." + str(uuid4())
-        with open(cache_path_temp, "wb") as ofs:
-            while True:
-                data = ifs.read(65536)
-                if not data:
-                    break
-                ofs.write(data)
+        raise_exception_in_offline_mode()
+        r = requests.get(url, auth=auth, stream=True)
+        try:
+            r.raise_for_status()
+            cache_path_temp = cache_path + ".partial." + str(uuid4())
+            with open(cache_path_temp, "wb") as ofs:
+                for chunk in r.iter_content(chunk_size=65536):
+                    ofs.write(chunk)
+        finally:
+            r.close()
         os.rename(cache_path_temp, cache_path)
         return cache_path
 
@@ -89,35 +105,61 @@ class Downloader(object):
     def install_file_by_sha1(cls, sha1, name, path):
         print("[DOWNLOADER] install_file_by_sha1", sha1)
         # FIXME: Also find files from file database / plugins
+
         print(repr(path))
         if not os.path.exists(os.path.dirname(path)):
             os.makedirs(os.path.dirname(path))
+
+        src = PluginManager.instance().find_file_by_sha1(sha1)
+        if src:
+            dst = path
+            dst_partial = dst + ".partial"
+            sha1_obj = hashlib.sha1()
+            with open(src, "rb") as fin:
+                with open(dst_partial, "wb") as fout:
+                    while True:
+                        data = fin.read(65536)
+                        if not data:
+                            break
+                        fout.write(data)
+                        sha1_obj.update(data)
+            if sha1_obj.hexdigest() != sha1:
+                raise Exception("File from plugin does not match SHA-1")
+            os.rename(dst_partial, dst)
+            return
+
         cache_path = cls.get_cache_path(sha1)
         if os.path.exists(cache_path):
             print("[CACHE]", cache_path)
+            # FIXME: Atomic copy utility function?
             shutil.copy(cache_path, path)
             # so we later can delete least accessed files in cache...
             os.utime(cache_path, None)
             return
         url = cls.sha1_to_url(sha1, name)
         print("[DOWNLOADER]", url)
-        # FIXME: Convert to use requests library
-        input = urlopen(url)
-        temp_path = path + ".partial." + str(uuid4())
-        h = hashlib.sha1()
-        with open(temp_path, "wb") as output:
-            while True:
-                data = input.read(65536)
-                if not data:
-                    break
-                h.update(data)
-                output.write(data)
+        raise_exception_in_offline_mode()
+        r = requests.get(url, stream=True)
+        try:
+            r.raise_for_status()
+            temp_path = path + ".partial." + str(uuid4())
+            h = hashlib.sha1()
+            with open(temp_path, "wb") as output:
+                for chunk in r.iter_content(chunk_size=65536):
+                    h.update(chunk)
+                    output.write(chunk)
+        finally:
+            r.close()
         if h.hexdigest() != sha1:
             print("error: downloaded sha1 is", h.hexdigest(), "- wanted", sha1)
             raise Exception("sha1 of downloaded file does not match")
+
+        # Atomic "copy" to cache location
         temp_cache_path = cache_path + ".partial." + str(uuid4())
         shutil.copy(temp_path, temp_cache_path)
         os.rename(temp_cache_path, cache_path)
+
+        # Move downloaded file into file position (atomic)
         os.rename(temp_path, path)
 
     @classmethod

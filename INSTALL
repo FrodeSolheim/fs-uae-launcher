@@ -1,3 +1,35 @@
+# Installing and Running FS-UAE Launcher
 
+## Requirements for Ubuntu or Debian
 
-sudo apt-get install python3-pyqt5 python3-pyqt5.qtopengl
+The following packages are needed:
+
+    sudo apt install python3 python3-pyqt5 python3-pyqt5.qtopengl \
+        python3-requests
+
+At this point, PyOpenGL is bundled, but in the future you might also need
+to manually install:
+
+    sudo apt install python3-opengl
+
+To add support for .lha archives, you also need to have the lhafile
+python package installed. You can get python3-lhafile from Frode's PPA,
+or you can install with pip: `pip3 install lhafile`.
+
+You can run the launcher directly from the source directory:
+
+    ./fs-uae-launcher
+
+In this case you should have a matching fs-uae source directory in
+../fs-uae, and successully compiled fs-uae with "make" (no installation
+needed). FS-UAE Launcher will then find the fs-uae and fs-uae-device-helper
+binaries from this parallel source directory.
+
+## Installing
+
+To install to /usr/local, you can run:
+
+    ./bootstrap
+    sudo make install
+
+Remember to also install FS-UAE itself.

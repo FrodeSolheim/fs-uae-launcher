@@ -13,10 +13,10 @@ from fsgs.Database import Database
 from fsgs.filedatabase import FileDatabase
 from fsgs.GameDatabase import GameDatabase, IncompleteGameException
 from fsgs.LockerDatabase import LockerDatabase
-from fsgs.download import Downloader
+from fsgs.download import Downloader, offline_mode
 from fsgs.network import is_http_url
 from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
-from fsgs.plugins.plugin_manager import PluginManager
+from fsgs.plugins.pluginmanager import PluginManager
 
 
 class NotFoundError(RuntimeError):
@@ -31,12 +31,9 @@ class File(object):
 class FileContext(BaseContext):
     def __init__(self, main_context):
         BaseContext.__init__(self, main_context)
-        # FIXME: When using cache dict, should close/delete openers
-        # when we are done for the time being
-        # self.opener_cache_dict = {}
-        self.opener_cache_dict = None
 
     def find_by_sha1(self, sha1):
+        # FIXME: check_sha1 should check with PluginManager directly?
         database = FileDatabase.instance()
         result = database.find_file(sha1=sha1)["path"]
         if not result:
@@ -45,7 +42,7 @@ class FileContext(BaseContext):
                 result = path
         #    result = self.context.get_game_database().find_file_by_sha1(sha1)
         # print("find by sha1", sha1, "in file database - result", result)
-        if not result and is_locker_enabled():
+        if not result and is_locker_enabled() and not offline_mode():
             database = LockerDatabase.instance()
             if database.check_sha1(sha1):
                 result = "locker://" + sha1
@@ -54,6 +51,7 @@ class FileContext(BaseContext):
         return result
 
     def check_sha1(self, sha1):
+        # FIXME: check_sha1 should check with PluginManager directly?
         database = FileDatabase.instance()
         result = database.check_sha1(sha1)
         if not result and is_locker_enabled():
@@ -77,9 +75,7 @@ class FileContext(BaseContext):
         elif is_http_url(uri):
             return self.open_url(uri)
         elif uri.startswith("locker://"):
-            return open_locker_uri(
-                uri, opener_cache_dict=self.opener_cache_dict
-            )
+            return open_locker_uri(uri)
         else:
             if uri.startswith("$"):
                 uri = Paths.expand_path(uri)
@@ -312,9 +308,6 @@ class FSGameSystemContext(object):
         return self.game_database("Amiga")
 
     def game_database(self, database_name):
-        # if database_name == "Amiga":
-        #     # use legacy name for now
-        #     database_name = "oagd.net"
         attr_name = "game_database_" + database_name.replace("/", "_")
         if not hasattr(self.thread_local, attr_name):
             # FIXME
@@ -440,7 +433,14 @@ class FSGameSystemContext(object):
         except LookupError:
             return False
 
-        values = self.game.set_from_variant_uuid(database_name, variant_uuid)
+        try:
+            values = self.game.set_from_variant_uuid(
+                database_name, variant_uuid
+            )
+        except KeyError:
+            # It is possible that the variant is found without game entry,
+            # which raises a KeyError.
+            return False
         if not values:
             return False
 

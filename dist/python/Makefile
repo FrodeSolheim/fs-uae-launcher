@@ -50,6 +50,8 @@ build:
 	PYTHONPATH=../.. $(cp) $(lib)/launcher.zip launcher.zip
 	# rm $(lib)/launcher.zip
 
+	# cd $(lib) && touch .dummy
+	# cd $(lib) && $(zip) OpenGL.zip .dummy
 	cd $(lib) && $(zip) OpenGL.zip OpenGL
 	PYTHONPATH=../.. $(cp) $(lib)/OpenGL.zip OpenGL.zip
 	# rm $(lib)/OpenGL.zip

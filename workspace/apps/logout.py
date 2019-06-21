@@ -14,7 +14,7 @@ class LogoutWindow(fsui.Window):
         return fsui.open_window_instance(cls, parent)
 
     def __init__(self, parent=None):
-        title = gettext("Log Out from Your OAGD.net Account")
+        title = gettext("Log Out from Your OpenRetro Account")
         super().__init__(parent, title, minimizable=False, maximizable=False)
         self.theme = WorkspaceTheme.instance()
         self.layout = fsui.VerticalLayout()
@@ -34,7 +34,7 @@ class LogoutWindow(fsui.Window):
         )
         heading_layout_2.add(
             fsui.HeadingLabel(
-                self, gettext("Log Out from Your OAGD.net Account")
+                self, gettext("Log Out from Your OpenRetro Account")
             )
         )
         heading_layout_2.add_spacer(2)

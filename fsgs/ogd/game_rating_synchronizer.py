@@ -80,5 +80,6 @@ class GameRatingSynchronizer(GameDatabaseSynchronizer):
             self.url_prefix(), quote_plus(last_time)
         )
         print(url)
-        data, json_data = self.fetch_json(url)
+        # data, json_data = self.fetch_json(url)
+        json_data = self.fetch_json(url)
         return json_data

@@ -1,6 +1,7 @@
 import threading
 import traceback
-from urllib.request import urlopen
+
+import requests
 
 import launcher.version
 from fsbc.application import Application
@@ -41,9 +42,12 @@ class UpdateManager:
             platform = "linux"
         else:
             platform = "other"
-        url = "http://fs-uae.net/{0}/latest-{1}".format(cls.series(), platform)
-        f = urlopen(url)
-        version_str = f.read().strip().decode("UTF-8")
+        url = "https://fs-uae.net/{0}/latest-{1}".format(
+            cls.series(), platform
+        )
+        r = requests.get(url)
+        r.raise_for_status()
+        version_str = r.text.strip()
         print("latest version available: ", version_str)
         print("current version: ", launcher.version.VERSION)
         result = compare_versions(version_str, launcher.version.VERSION)

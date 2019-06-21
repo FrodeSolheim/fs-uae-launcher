@@ -1,4 +1,5 @@
 import gzip
+import lzma
 import io
 import os
 import traceback
@@ -28,8 +29,11 @@ except ImportError:
 else:
     archive_extensions.append(".7z")
 
-archive_extensions_gzip = [".gz", ".adz", ".roz"]
-archive_extensions.extend(archive_extensions_gzip)
+archive_extensions_gz = [".gz", ".adz", ".roz"]
+archive_extensions.extend(archive_extensions_gz)
+
+archive_extensions_xz = [".xz"]
+archive_extensions.extend(archive_extensions_xz)
 
 
 class ZipHandler(object):
@@ -41,12 +45,6 @@ class ZipHandler(object):
         if sub_path:
             return
         return self.zip.namelist()
-        # for name in self.zip.namelist():
-        #     #if name.endswith(str("/")):
-        #     #if name.endswith("/"):
-        #     #    continue
-        #     #yield self.decode_name(name)
-        #     yield name
 
     def open(self, name):
         return self.zip.open(name)
@@ -58,22 +56,6 @@ class ZipHandler(object):
             return False
         else:
             return True
-
-    # def encode_name(self, name):
-    #     name = name.replace("\\", "/")
-    #     name = name.replace("%5f", "\\")
-    #     name = name.replace("%25", "%")
-    #     #name = name.encode("CP437")
-    #     name = name.encode("ISO-8859-1")
-    #     return name
-    #
-    # def decode_name(self, name):
-    #     #name = name.decode("CP437")
-    #     name = name.decode("ISO-8859-1")
-    #     name = name.replace("%", "%25")
-    #     name = name.replace("\\", "%5f")
-    #     name = name.replace("/", os.sep)
-    #     return name
 
 
 class GzipHandler(object):
@@ -104,6 +86,33 @@ class GzipHandler(object):
         if name != self.name:
             raise Exception("File not found")
         return gzip.open(self.path, "rb")
+
+    def exists(self, name):
+        return name == self.name
+
+
+class XzHandler(object):
+    def __init__(self, path):
+        self.path = path
+        name, ext = os.path.splitext(os.path.basename(path))
+        ext = ext.lower()
+        if ext == ".xz":
+            self.name = name
+        else:
+            raise Exception("Unexpected extension {} in XzHandler".format(ext))
+
+    def list_files(self, sub_path):
+        return [self.name]
+
+    def read(self, name):
+        if name != self.name:
+            raise Exception("File not found")
+        return lzma.open(self.path, "rb").read()
+
+    def open(self, name):
+        if name != self.name:
+            raise Exception("File not found")
+        return lzma.open(self.path, "rb")
 
     def exists(self, name):
         return name == self.name
@@ -162,29 +171,16 @@ class LhaHandler(object):
                 return True
         return False
 
-        # try:
-        #     self.zip.getinfo(name)
-        # except KeyError:
-        #     return False
-        # else:
-        #     return True
-
     def encode_name(self, name):
         name = name.replace("\\", "/")
         name = name.replace("%5f", "\\")
         name = name.replace("%25", "%")
-
         # FIXME: a little hack here, LhaFile uses os.sep
         # as path separator
         name = name.replace("/", os.sep)
-
-        # name = name.encode("ISO-8859-1")
         return name
 
     def decode_name(self, name):
-        # print("decode_name", name)
-
-        # name = name.decode("ISO-8859-1")
         # FIXME: a little hack here, LhaFile uses os.sep
         # as path separator, normalizing to /
         name = name.replace(os.sep, "/")
@@ -303,8 +299,11 @@ class Archive(object):
         if ext == ".7z" and SevenZipFile is not None:
             self._handler = SevenZipHandler(self.path)
             return self._handler
-        if ext in archive_extensions_gzip:
+        if ext in archive_extensions_gz:
             self._handler = GzipHandler(self.path)
+            return self._handler
+        if ext in archive_extensions_xz:
+            self._handler = XzHandler(self.path)
             return self._handler
         try:
             self._handler = ZipHandler(self.path)

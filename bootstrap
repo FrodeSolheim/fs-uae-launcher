@@ -3,7 +3,8 @@ import os
 import config as project
 
 f = open("setup.py", "w", newline="\n")
-f.write("""\
+f.write(
+    """\
 import os
 import sys
 if sys.argv[1] == "build_exe":
@@ -22,12 +23,16 @@ if "install" in sys.argv:
         print("python3 setup.py --install-lib=/usr/share/{name} install")
         sys.exit(1)
 
-""".format(title=project.title, name=project.name))
+""".format(
+        title=project.title, name=project.name
+    )
+)
 
 with open("config.py", "r") as pf:
     f.write(pf.read())
 
-f.write("""
+f.write(
+    """
 
 # add unique parent directories to sys.path
 for p in set(package_map.values()):
@@ -41,12 +46,14 @@ setup_cmdclass = {}
 
 
 res_dirs = []
-""")
+"""
+)
 
 for name in sorted(project.packages):
     f.write("res_dirs.append({0})\n".format(repr(name + "/res")))
 
-f.write("""
+f.write(
+    """
 
 def add_package(package_name, package_dir_name):
     setup_packages.add(package_name)
@@ -168,7 +175,8 @@ else:
     setup_kwargs["scripts"] = scripts
 
 setup(**setup_kwargs)
-""")
+"""
+)
 
 f.close()
 
@@ -179,7 +187,8 @@ def write(data):
     f.write(data.replace("    ", "\t"))
 
 
-write("""\
+write(
+    """\
 version := $(strip $(shell cat VERSION))
 build_dir := "."
 dist_name = {tar_name}-$(version)
@@ -188,18 +197,25 @@ dist_dir := $(build_dir)/$(dist_name)
 DESTDIR :=
 prefix := /usr/local
 
-""".format(tar_name=project.tar_name))
+""".format(
+        tar_name=project.tar_name
+    )
+)
 
 
 for name, dir_name in sorted(project.package_map.items()):
-    write("""\
+    write(
+        """\
 ifeq ($(wildcard {0}),)
     {0}_dir := "{1}"
 else
     {0}_dir := "."
 endif
 
-""".format(name, dir_name))
+""".format(
+            name, dir_name
+        )
+    )
 
 
 locales = []
@@ -210,7 +226,8 @@ for name in os.listdir("po"):
 locales.sort()
 
 
-write("""\
+write(
+    """\
 all: mo
 
 share/locale/%/LC_MESSAGES/{0}.mo: po/%.po
@@ -222,12 +239,22 @@ catalogs = \\
 
 mo: $(catalogs)
 
-""".format(project.tar_name, " \\\n".join(
-    ["    share/locale/{0}/LC_MESSAGES/{1}.mo".format(
-        x, project.tar_name) for x in locales])))
+""".format(
+        project.tar_name,
+        " \\\n".join(
+            [
+                "    share/locale/{0}/LC_MESSAGES/{1}.mo".format(
+                    x, project.tar_name
+                )
+                for x in locales
+            ]
+        ),
+    )
+)
 
 
-write("""\
+write(
+    """\
 
 install-program:
 ifeq ($(DESTDIR),)
@@ -260,21 +287,30 @@ install: install-data install-program
 
 dist_dir := {project}-$(version)
 
-""".format(project=project.tar_name))
+""".format(
+        project=project.tar_name
+    )
+)
 
 
-write("""\
+write(
+    """\
 distdir:
     rm -Rf $(dist_dir)/*
     mkdir -p $(dist_dir)
 
-""")
+"""
+)
 
 
 for name, dir_name in sorted(project.package_map.items()):
-    write("""\
+    write(
+        """\
     cp -a $({0}_dir)/{0} $(dist_dir)/
-""".format(name))
+""".format(
+            name
+        )
+    )
 
 
 copy_files = [
@@ -285,6 +321,7 @@ copy_files = [
     "Makefile",
     "setup.py",
     "update-version",
+    "cacert.pem",
     "debian/changelog",
     "debian/compat",
     "debian/control",
@@ -319,7 +356,8 @@ for locale in locales:
 copy_files.sort()
 
 
-write("""\
+write(
+    """\
     cp -a share $(dist_dir)/
     mkdir $(dist_dir)/po/
 
@@ -328,7 +366,8 @@ write("""\
     find $(dist_dir) -name "*.pyo" -delete
     find $(dist_dir) -name __pycache__ -delete
 
-""")
+"""
+)
 
 
 created_dirs = set()
@@ -338,14 +377,21 @@ for copy_file in copy_files:
         continue
     if "/" in copy_file:
         if not os.path.dirname(copy_file) in created_dirs:
-            write("    mkdir -p $(dist_dir)/{0}\n".format(
-                os.path.dirname(copy_file)))
+            write(
+                "    mkdir -p $(dist_dir)/{0}\n".format(
+                    os.path.dirname(copy_file)
+                )
+            )
             created_dirs.add(os.path.dirname(copy_file))
-    write("    cp {0} $(dist_dir)/{1}\n".format(
-        copy_file, os.path.dirname(copy_file)))
+    write(
+        "    cp {0} $(dist_dir)/{1}\n".format(
+            copy_file, os.path.dirname(copy_file)
+        )
+    )
 
 
-write("""\
+write(
+    """\
     cd $(dist_dir) && ./update-version setup.py --strict
     cd $(dist_dir) && ./update-version debian/changelog --deb
     cd $(dist_dir) && ./update-version dist/macos/Info.plist --strict
@@ -353,17 +399,23 @@ write("""\
     cd $(dist_dir) && ./update-version {project}
     cd $(dist_dir) && ./update-version {project}.spec --rpm
 
-""".format(project=project.tar_name))
+""".format(
+        project=project.tar_name
+    )
+)
 
-write("""\
+write(
+    """\
 dist: distdir
     find $(dist_dir) -exec touch \{\} \;
     cd "$(build_dir)" && tar zcfv $(dist_name).tar.gz $(dist_name)
 
-""")
+"""
+)
 
 
-write("""\
+write(
+    """\
 windows-dist: distdir
     cd $(dist_dir)/dist/windows && make
     mv $(dist_dir)/{project}_*windows* .
@@ -399,4 +451,7 @@ bindist-x86: distdir
     mv $(dist_dir)/fs-uae-launcher_*linux* .
     rm -Rf $(dist_dir)
 
-""".format(project=project.tar_name))
+""".format(
+        project=project.tar_name
+    )
+)

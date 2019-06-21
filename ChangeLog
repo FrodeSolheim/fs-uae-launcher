@@ -1,3 +1,27 @@
+Version 2.9.13dev:
+
+* Fixes a problem when launching WHDLoad archived games with OpenRetro
+  database enabled and with a matching orhaned variant in the database.
+
+Version 2.9.12dev:
+
+* Fixed recently introduced bug when downloading files via cache.
+
+Version 2.9.11dev:
+
+* Plugins can provide files for offline use (WHDLoad, JST, SKick, etc).
+* Use newer version of uae-configuration, OSEmu.400.
+* Added support for .xz-compressed files.
+* GUI options to toggle game mode / governor warning on Linux.
+
+Version 2.9.10dev:
+
+* Support WHDLoad versions 18.4 and 18.5 (game database).
+* Revert fullscreen_mode to default when upgrading from older versions.
+* Hide the fullscreen mode button from quick settings panel.
+* Fix OpenRetro.org login, rebranded oagd.net to openretro.org.
+* Use requests library for all http(s) communication, fixes macOS cert issue.
+
 Version 2.9.9dev:
 
 * Support hd_requirements = xpkmaster.library.

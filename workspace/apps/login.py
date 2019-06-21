@@ -16,7 +16,7 @@ class LoginWindow(fsui.Window):
 
     def __init__(self, parent=None):
         print("LoginWindow, parent =", parent)
-        super().__init__(parent, gettext("Log In to Your OAGD.net Account"))
+        super().__init__(parent, gettext("Log In to Your OpenRetro Account"))
         self.set_icon(fsui.Icon("password", "pkg:workspace"))
         self.theme = WorkspaceTheme.instance()
         self.layout = fsui.VerticalLayout()
@@ -34,7 +34,9 @@ class LoginWindow(fsui.Window):
             heading_layout_2, expand=True, fill=False, valign=0.5
         )
         heading_layout_2.add(
-            fsui.HeadingLabel(self, gettext("Log In to Your OAGD.net Account"))
+            fsui.HeadingLabel(
+                self, gettext("Log In to Your OpenRetro Account")
+            )
         )
         heading_layout_2.add_spacer(2)
         heading_layout_2.add(
@@ -86,7 +88,7 @@ class LoginWindow(fsui.Window):
         label = fsui.URLLabel(
             self,
             gettext("Create an account now"),
-            "https://oagd.net/user/register?referrer=fs-uae-launcher",
+            "https://openretro.org/user/register?referrer=fs-uae-launcher",
         )
         hori_layout.add(label, expand=True)
 
@@ -99,7 +101,7 @@ class LoginWindow(fsui.Window):
         self.reset_label = fsui.URLLabel(
             self,
             gettext("Reset password via e-mail"),
-            "https://oagd.net/user/reset?referrer=fs-uae-launcher",
+            "https://openretro.org/user/reset?referrer=fs-uae-launcher",
         )
         hori_layout.add(self.reset_label, expand=True)
 
@@ -135,7 +137,7 @@ class LoginWindow(fsui.Window):
         password = self.password_field.get_text().strip()
         self.login_button.enable(bool(email) and bool(password))
         self.reset_label.set_url(
-            "https://oagd.net/user/reset?referrer=fs-uae-launcher"
+            "https://openretro.org/user/reset?referrer=fs-uae-launcher"
             "&email={0}".format(email)
         )
 
