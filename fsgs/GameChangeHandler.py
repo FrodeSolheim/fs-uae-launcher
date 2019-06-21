@@ -1,6 +1,7 @@
+import hashlib
+import operator
 import os
 import shutil
-import hashlib
 
 # TODO: review the algorithm and add support for saving information about
 # (empty) directories.
@@ -56,6 +57,7 @@ class GameChangeHandler(object):
             print("no game state")
         self._preserve_changes_files = self.create_file_version_list(path)
         print("done")
+        return sorted(self._preserve_changes_files.values(), key=operator.itemgetter("name"))
 
     def update(self, state_dir):
         print("\n" + "-" * 79 + "\n" + "CHANGEHANDLER UPDATE")
@@ -65,8 +67,12 @@ class GameChangeHandler(object):
         newfiles = self.create_file_version_list(self._preserve_changes_dir)
         print("checking files")
         for filename, newcs in newfiles.items():
+            if newcs["name"].endswith("/"):
+                # FIXME: Handle directories
+                continue
+            newcs = newcs["sha1"]
             try:
-                oldcs = oldfiles[filename]
+                oldcs = oldfiles[filename]["sha1"]
             except KeyError:
                 print("New file:", filename)
                 oldcs = None
@@ -81,6 +87,9 @@ class GameChangeHandler(object):
                 shutil.copyfile(sourcepath, destpath)
 
         for filename in oldfiles:
+            if filename.endswith("/"):
+                # FIXME: Handle directories
+                continue
             if not filename in newfiles:
                 print("File removed", filename)
                 destpath = os.path.join(state_dir, filename)
@@ -97,19 +106,30 @@ class GameChangeHandler(object):
         lpath = len(path)
         files = {}
         for dirpath, dirnames, filenames in os.walk(path):
+            for dirname in dirnames:
+                p = os.path.join(dirpath, dirname)
+                files[p[lpath + 1:] + "/"] = {
+                    "name": p[lpath + 1:] + "/",
+                }
             for filename in filenames:
-                filepath = os.path.join(dirpath, filename)
-                checksum = self.md5file(filepath)
-                files[filepath[lpath + 1 :]] = checksum
+                p = os.path.join(dirpath, filename)
+                sha1, size = self.sha1file(p)
+                files[p[lpath + 1 :]] = {
+                    "name": p[lpath + 1 :],
+                    "sha1": sha1,
+                    "size": size,
+                }
         print(" - found %d files (checksummed)" % len(files))
         return files
 
-    def md5file(self, file):
+    def sha1file(self, file):
+        size = 0
         with open(file, "rb") as f:
-            m = hashlib.md5()
+            m = hashlib.sha1()
             while True:
-                buffer = f.read(4096)
+                buffer = f.read(65536)
                 if buffer == b"":
                     break
                 m.update(buffer)
-            return m.hexdigest()
+                size += len(buffer)
+            return m.hexdigest(), size

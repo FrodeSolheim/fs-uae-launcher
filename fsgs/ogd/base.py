@@ -60,6 +60,7 @@ class SynchronizerBase(object):
     def fetch_json_attempt(self, url):
         if USE_REQUESTS:
             print("[HTTP] {}".format(self.url(url)))
+            # FIXME: timeout
             r = requests.get(self.url(url), auth=self.auth())
             return r.json()
         else:
@@ -69,6 +70,7 @@ class SynchronizerBase(object):
     def fetch_data_attempt(self, url, accept_gzip_encoding=False):
         print("[HTTP] {}".format(self.url(url)))
         if USE_REQUESTS:
+            # FIXME: timeout
             r = requests.get(self.url(url), auth=self.auth())
             return r.content
         else:
