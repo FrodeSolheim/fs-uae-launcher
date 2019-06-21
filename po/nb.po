@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2019-05-25 13:30+0200\n"
-"PO-Revision-Date: 2019-05-25 11:31\n"
+"POT-Creation-Date: 2019-05-27 23:21+0200\n"
+"PO-Revision-Date: 2019-06-21 16:10\n"
 "Last-Translator: Frode Solheim (FrodeSolheim)\n"
 "Language-Team: Norwegian Bokmal\n"
 "Language: nb_NO\n"
@@ -1215,7 +1215,7 @@ msgid "Shuffle"
 msgstr "Bland"
 
 msgid "Six Button Control Pad"
-msgstr ""
+msgstr "Kontroller med 6 knapper"
 
 msgid "Size:"
 msgstr "Størrelse:"
@@ -1471,4 +1471,31 @@ msgstr "{system}-tastatur"
 
 msgid "{} ROM files were imported"
 msgstr "{} ROM-filer ble importert"
+
+msgid "Finding files eligible for OpenRetro Locker"
+msgstr "Finner filer som kan lagres i OpenRetro Locker"
+
+msgid "Locker upload task completed successfully"
+msgstr "Opplastingsjobb for OpenRetro Locker fullført"
+
+msgid "Log In to Your OpenRetro Account"
+msgstr "Logg inn med din OpenRetro-konto"
+
+msgid "Log Out from Your OpenRetro Account"
+msgstr "Logg ut fra din OpenRetro-konto"
+
+msgid "OpenRetro Locker Uploader"
+msgstr "Opplaster for OpenRetro Locker"
+
+msgid "OpenRetro Locker is not enabled for your user. It may be available only to a few select beta users."
+msgstr "OpenRetro Locker er ikke aktivert for brukeren din. Det kan vere bare tilgjengelig for utvalgte betabrukere."
+
+msgid "Upload recognized Amiga files to your OpenRetro locker"
+msgstr "Last opp gjenkjente filer til OpenRetro Locker-en din"
+
+msgid "Use GameMode to optimize performance"
+msgstr "Bruk GameMode for å øke ytelsen"
+
+msgid "Warn when CPU governor is not 'performance'"
+msgstr "Advar når CPU-guvernør ikke er 'performance'"
 

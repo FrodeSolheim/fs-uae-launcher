@@ -1,7 +1,8 @@
-Version 2.9.13dev:
+Version 3.0.0:
 
 * Fixes a problem when launching WHDLoad archived games with OpenRetro
   database enabled and with a matching orhaned variant in the database.
+* Imported updated translations from crowdin.com.
 
 Version 2.9.12dev:
 

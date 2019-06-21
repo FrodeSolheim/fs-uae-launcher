@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2019-05-25 13:30+0200\n"
-"PO-Revision-Date: 2019-05-25 11:31\n"
+"POT-Creation-Date: 2019-05-27 23:21+0200\n"
+"PO-Revision-Date: 2019-06-21 16:09\n"
 "Last-Translator: Frode Solheim (FrodeSolheim)\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -1215,7 +1215,7 @@ msgid "Shuffle"
 msgstr "Losowo"
 
 msgid "Six Button Control Pad"
-msgstr ""
+msgstr "6-przyciskowy pad"
 
 msgid "Size:"
 msgstr "Rozmiar:"
@@ -1471,4 +1471,31 @@ msgstr "Klawiatura {system}"
 
 msgid "{} ROM files were imported"
 msgstr "{} pliki ROM zaimportowane"
+
+msgid "Finding files eligible for OpenRetro Locker"
+msgstr "Szukanie plików nadających się do schowka OpenRetro"
+
+msgid "Locker upload task completed successfully"
+msgstr "Przesyłanie do schowka zakończone pomyślnie"
+
+msgid "Log In to Your OpenRetro Account"
+msgstr "Zaloguj się do swojego konta OpenRetro"
+
+msgid "Log Out from Your OpenRetro Account"
+msgstr "Wyloguj się ze swojego konta OpenRetro"
+
+msgid "OpenRetro Locker Uploader"
+msgstr "Uploader schowka OpenRetro"
+
+msgid "OpenRetro Locker is not enabled for your user. It may be available only to a few select beta users."
+msgstr "Schowek OpenRetro jest niedostępny dla tego użytkownika. Może być dostępny tylko dla kilku wybranych użytkowników beta."
+
+msgid "Upload recognized Amiga files to your OpenRetro locker"
+msgstr "Prześlij rozpoznane pliki Amigi do swojego schowka w OpenRetro"
+
+msgid "Use GameMode to optimize performance"
+msgstr "Użyj GameMode dla poprawy wydajności"
+
+msgid "Warn when CPU governor is not 'performance'"
+msgstr "Ostrzegaj gdy CPU nie działa w trybie 'performance'"
 
