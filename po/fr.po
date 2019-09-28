@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2019-05-25 13:30+0200\n"
-"PO-Revision-Date: 2019-05-25 11:31\n"
+"POT-Creation-Date: 2019-05-27 23:21+0200\n"
+"PO-Revision-Date: 2019-06-21 16:09\n"
 "Last-Translator: Frode Solheim (FrodeSolheim)\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -1471,4 +1471,31 @@ msgstr "{system} Clavier"
 
 msgid "{} ROM files were imported"
 msgstr "{} Fichiers ROM ont été importés"
+
+msgid "Finding files eligible for OpenRetro Locker"
+msgstr ""
+
+msgid "Locker upload task completed successfully"
+msgstr ""
+
+msgid "Log In to Your OpenRetro Account"
+msgstr ""
+
+msgid "Log Out from Your OpenRetro Account"
+msgstr ""
+
+msgid "OpenRetro Locker Uploader"
+msgstr ""
+
+msgid "OpenRetro Locker is not enabled for your user. It may be available only to a few select beta users."
+msgstr ""
+
+msgid "Upload recognized Amiga files to your OpenRetro locker"
+msgstr ""
+
+msgid "Use GameMode to optimize performance"
+msgstr ""
+
+msgid "Warn when CPU governor is not 'performance'"
+msgstr ""
 

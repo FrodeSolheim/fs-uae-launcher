@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fs-uae\n"
 "Report-Msgid-Bugs-To: frode@fs-uae.net\n"
-"POT-Creation-Date: 2019-05-25 13:30+0200\n"
-"PO-Revision-Date: 2019-05-25 11:31\n"
+"POT-Creation-Date: 2019-05-27 23:21+0200\n"
+"PO-Revision-Date: 2019-06-21 16:09\n"
 "Last-Translator: Frode Solheim (FrodeSolheim)\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
@@ -1215,7 +1215,7 @@ msgid "Shuffle"
 msgstr "Aleatório"
 
 msgid "Six Button Control Pad"
-msgstr ""
+msgstr "Controle de Seis Botões"
 
 msgid "Size:"
 msgstr "Tamanho:"
@@ -1471,4 +1471,31 @@ msgstr "Teclado {system}"
 
 msgid "{} ROM files were imported"
 msgstr "{} arquivos de ROM foram importados"
+
+msgid "Finding files eligible for OpenRetro Locker"
+msgstr "Localizando arquivos elegíveis para a Estante OpenRetro"
+
+msgid "Locker upload task completed successfully"
+msgstr "Tarefa de carregamento da estante concluída com sucesso"
+
+msgid "Log In to Your OpenRetro Account"
+msgstr "Iniciar sessão na sua conta OpenRetro"
+
+msgid "Log Out from Your OpenRetro Account"
+msgstr "Sair da sua conta OpenRetro"
+
+msgid "OpenRetro Locker Uploader"
+msgstr "Carregador da Estante OpenRetro"
+
+msgid "OpenRetro Locker is not enabled for your user. It may be available only to a few select beta users."
+msgstr "A Estante OpenRetro não está habilitada para o seu usuário. Pode estar disponível apenas para alguns usuários beta selecionados."
+
+msgid "Upload recognized Amiga files to your OpenRetro locker"
+msgstr "Carregar arquivos Amiga reconhecidos para a sua estante OpenRetro"
+
+msgid "Use GameMode to optimize performance"
+msgstr "Usar o Modo Jogo para otimizar o desempenho"
+
+msgid "Warn when CPU governor is not 'performance'"
+msgstr "Avisar quando o regulador da CPU não for 'desempenho'"
 
