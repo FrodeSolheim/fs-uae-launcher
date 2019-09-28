@@ -1094,6 +1094,7 @@ options = {
             ("gba", "Game Boy Advance"),
             ("gbc", "Game Boy Color"),
             ("ngc", "GameCube"),
+            ("sgg", "Game Gear"),
             ("neogeo", "Neo-Geo"),
             ("nes", "Nintendo"),
             ("n64", "Nintendo 64"),
@@ -1423,9 +1424,7 @@ options = {
     Option.UAE_CPU_FREQUENCY: {
         "default": "",
         "description": "Specify the frequency of the emulated CPU in cycle-exact modes",
-        "type": "float",
-        "min": 1.0,
-        "max": 100.0,
+        "type": "integer",
     },
     Option.UAE_CPU_MULTIPLIER: {
         "default": "",

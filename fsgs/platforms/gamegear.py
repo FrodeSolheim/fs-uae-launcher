@@ -46,14 +46,13 @@ class MednafenGameGearDriver(MednafenDriver):
 
     def mednafen_input_mapping(self, port):
         return {
-            "A": "gb.input.builtin.gamepad.a",
-            "B": "gb.input.builtin.gamepad.b",
-            "UP": "gb.input.builtin.gamepad.up",
-            "DOWN": "gb.input.builtin.gamepad.down",
-            "LEFT": "gb.input.builtin.gamepad.left",
-            "RIGHT": "gb.input.builtin.gamepad.right",
-            "SELECT": "gb.input.builtin.gamepad.select",
-            "START": "gb.input.builtin.gamepad.start",
+            "1": "gg.input.builtin.gamepad.button1",
+            "2": "gg.input.builtin.gamepad.button2",
+            "UP": "gg.input.builtin.gamepad.up",
+            "DOWN": "gg.input.builtin.gamepad.down",
+            "LEFT": "gg.input.builtin.gamepad.left",
+            "RIGHT": "gg.input.builtin.gamepad.right",
+            "START": "gg.input.builtin.gamepad.start",
         }
 
     def mednafen_rom_extensions(self):

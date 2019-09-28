@@ -7,6 +7,13 @@ import shutil
 # (empty) directories.
 
 
+"""
+>>> hashlib.md5(b".IsDeleted").hexdigest()
+'38c7347ea2d8d1383521910279bd015f'
+"""
+deleted_signature = b"Signature: 38c7347ea2d8d1383521910279bd015f (Deleted)\n"
+deleted_signature_old = b"FILE_IS_DELETED"
+
 class GameChangeHandler(object):
     def __init__(self, path):
         self._preserve_changes_dir = path
@@ -36,18 +43,30 @@ class GameChangeHandler(object):
                         continue
                     sourcepath = os.path.join(dirpath, file_name)
                     destpath = os.path.join(path, sourcepath[lstate_dir + 1 :])
-                    if os.path.getsize(sourcepath) == 17:
-                        with open(sourcepath, "rb") as f:
-                            if f.read() == "FILE_IS_DELETED":
-                                print(
-                                    "- removing file",
-                                    sourcepath[lstate_dir + 1 :],
-                                )
-                                if os.path.exists(destpath):
-                                    os.remove(destpath)
-                                else:
-                                    print("  (already gone)")
-                                continue
+                    size = os.path.getsize(sourcepath)
+
+                    def maybe_delete(check_signature):
+                        if size == len(check_signature):
+                            with open(sourcepath, "rb") as f:
+                                if f.read() == check_signature:
+                                    print(
+                                        "- removing file",
+                                        sourcepath[lstate_dir + 1 :],
+                                    )
+                                    if os.path.exists(destpath):
+                                        os.remove(destpath)
+                                    else:
+                                        print("  (already gone)")
+                                    return True
+                        return False
+
+                    if size == len(deleted_signature):
+                        if maybe_delete(deleted_signature):
+                            continue
+                    elif size == len(deleted_signature_old):
+                        if maybe_delete(deleted_signature_old):
+                            continue
+
                     print("- updating file", sourcepath[lstate_dir + 1 :])
                     if not os.path.isdir(os.path.dirname(destpath)):
                         os.makedirs(os.path.dirname(destpath))
@@ -96,7 +115,7 @@ class GameChangeHandler(object):
                 if not os.path.exists(os.path.dirname(destpath)):
                     os.makedirs(os.path.dirname(destpath))
                 with open(destpath, "wb") as f:
-                    f.write("FILE_IS_DELETED")
+                    f.write(deleted_signature)
         print("done")
 
     def create_file_version_list(self, path):
