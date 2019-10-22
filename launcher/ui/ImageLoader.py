@@ -96,9 +96,13 @@ class ImageLoader(object):
     def _fill_request(self, request):
         if request.path is None:
             return
+        self.do_load_image(request)
+
+    @classmethod
+    def do_load_image(cls, request):
         cover = request.args.get("is_cover", False)
         if request.path.startswith("sha1:"):
-            path = self.get_cache_path_for_sha1(request, request.path[5:])
+            path = cls.get_cache_path_for_sha1(request, request.path[5:])
         else:
             path = request.path
         if not path:
@@ -108,6 +112,12 @@ class ImageLoader(object):
         print(image.size, request.size)
         if request.size is not None:
             dest_size = request.size
+            if dest_size[0] == -1:
+                # Scale width based on height
+                dest_size = (
+                    dest_size[1] * image.size[0] / image.size[1],
+                    dest_size[1],
+                )
         else:
             dest_size = image.size
         if image.size == dest_size:

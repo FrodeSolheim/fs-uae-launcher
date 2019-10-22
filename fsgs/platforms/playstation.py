@@ -14,8 +14,18 @@ PSX_SCPH5501_BIN_SHA1 = "0555c6fae8906f3f09baf5988f00e55f88e9f30b"
 PSX_SCPH5502_BIN_SHA1 = "f6bc2d1f5eb6593de7d089c425ac681d6fffd3f0"
 PSX_GAMEPAD = {
     "type": "gamepad",
-    "description": "Gamepad",
+    "description": "Digital Gamepad",
     "mapping_name": "playstation",
+}
+PSX_DUALSHOCK = {
+    "type": "dualshock",
+    "description": "DualShock Gamepad",
+    "mapping_name": "playstation",  # FIXME
+}
+PSX_MOUSE = {
+    "type": "mouse",
+    "description": "PlayStation Mouse",
+    "mapping_name": "",  # FIXME
 }
 PSX_SCPH5500_BIN = KnownFile(
     "b05def971d8ec59f346f2d9ac21fb742e3eb6917", PSX_PLATFORM_ID, "scph5500.bin"
@@ -63,13 +73,13 @@ class PlayStationLoader(SimpleLoader):
 PSX_PORTS = [
     {
         "description": "Port 1",
-        "types": [PSX_GAMEPAD],
+        "types": [PSX_GAMEPAD, PSX_DUALSHOCK, PSX_MOUSE],
         "type_option": "psx_port_1_type",
         "device_option": "psx_port_1",
     },
     {
         "description": "Port 2",
-        "types": [PSX_GAMEPAD],
+        "types": [PSX_GAMEPAD, PSX_DUALSHOCK, PSX_MOUSE],
         "type_option": "psx_port_2_type",
         "device_option": "psx_port_2",
     },
@@ -132,6 +142,15 @@ class PlayStationMednafenDriver(MednafenDriver):
 
     def prepare(self):
         super().prepare()
+
+        pfx = self.mednafen_system_prefix()
+
+        self.emulator.args.extend(
+            ["-{}.input.port1".format(pfx), self.ports[0].type]
+        )
+        self.emulator.args.extend(
+            ["-{}.input.port2".format(pfx), self.ports[1].type]
+        )
 
         # self.init_mednafen_crop_from_viewport()
         self.set_mednafen_aspect(4, 3)

@@ -246,6 +246,7 @@ class PluginManager:
 
         # Plugins dir location has changed, add several old and new paths here
         # to find plugins in both places (FS-UAE and OpenRetro style).
+
         plugins_dir = os.path.join(FSGSDirectories.get_base_dir(), "Plugins")
         if plugins_dir not in result:
             result.append(plugins_dir)
@@ -253,14 +254,13 @@ class PluginManager:
         if plugins_dir not in result:
             result.append(plugins_dir)
 
-        # if plugins_dir and os.path.isdir(plugins_dir):
-        #     result.append(plugins_dir)
         expansion_dir = os.path.join(
             FSGSDirectories.get_base_dir(), "Workspace", "Expansion"
         )
         if expansion_dir and os.path.isdir(expansion_dir):
             result.append(expansion_dir)
 
+        # Find plugins from System/Plugins
         if System.macos:
             system_plugins_dir = os.path.normpath(
                 os.path.join(
@@ -396,8 +396,27 @@ class PluginManager:
         plugin = self._provides[name]
         return PluginResource(plugin, name)
 
+    def find_executable_development(self, name):
+        if windows:
+            exe_name = name + ".exe"
+        else:
+            exe_name = name
+        if name == "x64sc-fs":
+            logger.debug("Lookup hack for vice-fs/x64sc-fs")
+            name = "vice-fs"
+        path = os.path.join(fsboot.executable_dir(), "..", name, exe_name)
+        logger.debug("Checking %s", path)
+        if os.path.exists(path):
+            logger.debug("Found non-plugin executable %s", path)
+            return Executable(path)
+        return None
+
     def find_executable(self, name):
         logger.debug("PluginManager.find_executable %s", repr(name))
+        if fsboot.development():
+            executable = self.find_executable_development(name)
+            if executable:
+                return executable
         try:
             plugin = self.provides()["executable:" + name]
         except KeyError:
@@ -412,17 +431,6 @@ class PluginManager:
             if os.path.exists(path):
                 logger.debug("Found non-plugin executable %s", path)
                 return Executable(path)
-            if fsboot.development():
-                if name == "x64sc-fs":
-                    logger.debug("Lookup hack for vice-fs/x64sc-fs")
-                    name = "vice-fs"
-                path = os.path.join(
-                    fsboot.executable_dir(), "..", name, exe_name
-                )
-                logger.debug("Checking %s", path)
-                if os.path.exists(path):
-                    logger.debug("Found non-plugin executable %s", path)
-                    return Executable(path)
             return None
         return plugin.executable(name)
 

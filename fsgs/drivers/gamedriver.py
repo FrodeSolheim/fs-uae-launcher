@@ -350,15 +350,20 @@ class GameDriver:
     def get_platform_name(self):
         # FIXME: UNUSED? REMOVE?
         p = self.options[Option.PLATFORM].lower()
-        if p == "atari-7800":
-            return "Atari 7800"
-        if p == "amiga":
-            return "Amiga"
-        if p == "cdtv":
-            return "CDTV"
-        if p == "cd32":
-            return "CD32"
-        raise Exception("Unrecognized platform")
+        # if p == "atari-7800":
+        #     return "Atari 7800"
+        # if p == "amiga":
+        #     return "Amiga"
+        # if p == "cdtv":
+        #     return "CDTV"
+        # if p == "cd32":
+        #     return "CD32"
+        # fsgs.platform.
+        # return p
+        from fsgs.platform import PlatformHandler
+
+        return PlatformHandler.get_platform_name(p)
+        # raise Exception("Unrecognized platform")
 
     def screen_size(self):
         rect = self.screen_rect()
@@ -579,14 +584,30 @@ class GameDriver:
         else:
             env["FSGS_FULLSCREEN_RECT"] = "{0},{1},{2},{3}".format(x, y, w, h)
 
+        if (
+            env.get("FSEMU_FULLSCREEN_X", "")
+            and env.get("FSEMU_FULLSCREEN_Y", "")
+            and env.get("FSEMU_FULLSCREEN_W", "")
+            and env.get("FSEMU_FULLSCREEN_H", "")
+        ):
+            pass
+        else:
+            env["FSEMU_FULLSCREEN_X"] = str(x)
+            env["FSEMU_FULLSCREEN_Y"] = str(y)
+            env["FSEMU_FULLSCREEN_W"] = str(w)
+            env["FSEMU_FULLSCREEN_H"] = str(h)
+
         if self.use_fullscreen():
             fullscreen_mode = self.options[Option.FULLSCREEN_MODE]
             if fullscreen_mode == "window":
                 env["FSGS_FULLSCREEN_MODE"] = "1"
+                env["FSEMU_FULLSCREEN_MODE"] = "3"
             elif fullscreen_mode == "fullscreen":
                 env["FSGS_FULLSCREEN_MODE"] = "2"
+                env["FSEMU_FULLSCREEN_MODE"] = "2"
             else:
                 env["FSGS_FULLSCREEN_MODE"] = "3"
+                env["FSEMU_FULLSCREEN_MODE"] = "1"
 
             for key in ["FSGS_GEOMETRY", "FSGS_WINDOW"]:
                 if env.get(key, ""):
@@ -605,6 +626,7 @@ class GameDriver:
                 print("using fullscreen window mode")
                 # env["FSGS_FULLSCREEN"] = "window"
                 env["FSGS_FULLSCREEN"] = "1"
+                env["FSEMU_FULLSCREEN"] = "3"
             else:
                 del env["FSGS_WINDOW"]
                 if fullscreen_mode == "fullscreen":
@@ -615,9 +637,11 @@ class GameDriver:
                     print("using fullscreen desktop mode")
                     # env["FSGS_FULLSCREEN"] = "desktop"
                     env["FSGS_FULLSCREEN"] = "3"
+                    env["FSEMU_FULLSCREEN"] = "1"
         else:
             print("using window mode (no fullscreen)")
             env["FSGS_FULLSCREEN"] = "0"
+            env["FSEMU_FULLSCREEN"] = "0"
 
         # if self.use_stretching():
         #     self.env["FSGS_STRETCH"] = "1"
@@ -626,10 +650,13 @@ class GameDriver:
 
         if self.stretching() == self.STRETCH_FILL_SCREEN:
             self.emulator.env["FSGS_STRETCH"] = "1"
+            self.emulator.env["FSEMU_STRETCH_MODE"] = "1"
         elif self.stretching() == self.STRETCH_ASPECT:
             self.emulator.env["FSGS_STRETCH"] = "2"
+            self.emulator.env["FSEMU_STRETCH_MODE"] = "0"
         else:
             self.emulator.env["FSGS_STRETCH"] = "0"
+            self.emulator.env["FSEMU_STRETCH_MODE"] = "2"
 
         if self.border() == self.SMALL_BORDER:
             self.emulator.env["FSGS_BORDER"] = "1"
@@ -647,6 +674,13 @@ class GameDriver:
         )
         if self._model_name:
             env["FSGS_WINDOW_TITLE"] = self._model_name
+            env["FSEMU_WINDOW_TITLE"] = self._model_name
+
+        env["FSEMU_GAME_NAME"] = self.game_name()
+        env["FSEMU_GAME_PLATFORM"] = self.get_platform_name()
+        env["FSEMU_GAME_YEAR"] = self.config["year"]
+        # FIXME: Developer also?
+        env["FSEMU_GAME_COMPANIES"] = self.config["publisher"]
 
         env.update(self.emulator.env)
         if not self.emulator.allow_home_access:
@@ -672,6 +706,32 @@ class GameDriver:
         # env["vblank_mode"] = "1"
 
         self.update_environment_with_centering_info(env)
+
+    def prepare_cover(self, env):
+        front_sha1 = self.config["front_sha1"]
+        if not front_sha1:
+            return
+        from launcher.ui.ImageLoader import ImageLoadRequest, ImageLoader
+
+        request = ImageLoadRequest()
+        request.path = "sha1:" + front_sha1
+        # request.args["is_cover"] = True
+        # FIXME: We want fit-in in this size...
+        # request.size = (-1, 240)
+        ImageLoader.do_load_image(request)
+        image = request.image
+        if image:
+            # Force to 4:3, 1:1 or 3:4 format
+            if image.width() / image.height() > 1.15:
+                size = (320, 240)
+            elif image.width() / image.height() < 0.85:
+                size = (180, 240)
+            else:
+                size = (240, 240)
+            image.resize(size)
+            cover_temp_file = self.temp_file("cover.png")
+            request.image.save(cover_temp_file.path)
+            env["FSEMU_GAME_COVER"] = cover_temp_file.path
 
     def update_environment_with_centering_info(self, env):
         # FIXME: does not really belong here (dependency loop)
@@ -714,6 +774,11 @@ class GameDriver:
         env["FSGS_WINDOW_CENTER"] = "{0},{1}".format(
             main_x + main_w // 2, main_y + main_h // 2
         )
+
+        env["FSEMU_WINDOW_X"] = str(main_x + (main_w - 960) // 2)
+        env["FSEMU_WINDOW_Y"] = str(main_y + (main_h - 540) // 2)
+        env["FSEMU_WINDOW_W"] = str(960)
+        env["FSEMU_WINDOW_H"] = str(540)
 
         # args.append("--window-x={0}".format(x))
         # args.append("--window-y={0}".format(y))
@@ -793,6 +858,7 @@ class GameDriver:
         env = os.environ.copy()
         FSUAE.add_environment_from_settings(env)
         self.update_environment(env)
+        self.prepare_cover(env)
         if self.bezel():
             self.prepare_emulator_skin(env)
         if env_vars:

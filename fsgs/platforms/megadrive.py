@@ -163,9 +163,13 @@ class MegaDriveMednafenDriver(MednafenDriver):
         for i in range(len(self.PORTS)):
             self.init_mega_drive_port(i)
         self.init_mednafen_crop_from_viewport()
-        self.set_mednafen_aspect(4, 3)
+
+        # Not needed any more
+        # self.set_mednafen_aspect(4, 3)
         # We do aspect calculation separately. Must not be done twice.
-        self.emulator.args.extend(["-md.correct_aspect", "0"])
+        # FIME: We do want aspect correction now...
+        # self.emulator.args.extend(["-md.correct_aspect", "0"])
+
         # ROM path must be added at the end of the argument list
         self.emulator.args.append(rom_path)
 

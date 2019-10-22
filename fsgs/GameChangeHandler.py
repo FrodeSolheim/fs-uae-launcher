@@ -14,6 +14,7 @@ import shutil
 deleted_signature = b"Signature: 38c7347ea2d8d1383521910279bd015f (Deleted)\n"
 deleted_signature_old = b"FILE_IS_DELETED"
 
+
 class GameChangeHandler(object):
     def __init__(self, path):
         self._preserve_changes_dir = path
@@ -76,7 +77,10 @@ class GameChangeHandler(object):
             print("no game state")
         self._preserve_changes_files = self.create_file_version_list(path)
         print("done")
-        return sorted(self._preserve_changes_files.values(), key=operator.itemgetter("name"))
+        return sorted(
+            self._preserve_changes_files.values(),
+            key=operator.itemgetter("name"),
+        )
 
     def update(self, state_dir):
         print("\n" + "-" * 79 + "\n" + "CHANGEHANDLER UPDATE")
@@ -127,9 +131,7 @@ class GameChangeHandler(object):
         for dirpath, dirnames, filenames in os.walk(path):
             for dirname in dirnames:
                 p = os.path.join(dirpath, dirname)
-                files[p[lpath + 1:] + "/"] = {
-                    "name": p[lpath + 1:] + "/",
-                }
+                files[p[lpath + 1 :] + "/"] = {"name": p[lpath + 1 :] + "/"}
             for filename in filenames:
                 p = os.path.join(dirpath, filename)
                 sha1, size = self.sha1file(p)

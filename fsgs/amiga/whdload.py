@@ -333,6 +333,7 @@ primary_icons = {
         "HistorylineFr/HistorylineFr.info",
         "Jetstrike/Jetstrike.info",
         "JetstrikeAGA/JetstrikeAGA.info",
+        "JimmyWillburneFr/JimmyWillburneFr.info",
         "Lemmings21MB/Lemmings21MB.info",
         "Lemmings2512KB/Lemmings2512KB.info",
         "MetalMasters/MetalMasters.info",

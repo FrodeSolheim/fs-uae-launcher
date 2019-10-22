@@ -113,6 +113,7 @@ class SuperNintendoHelper:
     # FIXME: Shared, move into common module (find all occurrences)
     def prepare_rom(self, driver):
         file_uri = self.options[Option.CARTRIDGE_SLOT]
+        # file_uri = os.path.expanduser("~/Desktop/240pSuite.sfc")
         input_stream = driver.fsgc.file.open(file_uri)
         _, ext = os.path.splitext(file_uri)
         return self.prepare_rom_with_stream(driver, input_stream, ext)

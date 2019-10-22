@@ -159,6 +159,7 @@ class NintendoMednafenDriver(MednafenDriver):
         self.emulator.args.extend(["-{}.fnscan".format(pfx), "0"])
 
         self.emulator.env["FSGS_ASPECT"] = "4/3"
+        self.emulator.env["FSEMU_ASPECT"] = "4/3"
 
         viewport = self.options[Option.VIEWPORT]
         if viewport == "0 0 256 240 = 0 0 256 240":

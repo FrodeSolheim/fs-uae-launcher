@@ -96,3 +96,6 @@ class Image(object):
             size[0], size[1], Qt.IgnoreAspectRatio, q
         )
         # self._bitmap = None
+
+    def save(self, path):
+        self.qimage.save(path)

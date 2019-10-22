@@ -132,6 +132,7 @@ class Commodore64ViceDriver(GameDriver):
 
     def __init__(self, fsgs):
         super().__init__(fsgs)
+        self.fsemu = True
         self.emulator.name = "x64sc-fs"
         self.helper = Commodore64Helper(self.options)
 
@@ -296,9 +297,12 @@ class Commodore64ViceDriver(GameDriver):
         # slowing down the emulation?). Using defaults for now (uses big
         # buffers by default, only seems to delay the problem).
         # return
-        audio_driver = self.options[Option.VICE_AUDIO_DRIVER]
-        audio_driver = "sdl"
-        f.write("SoundBufferSize={0}\n".format(50))
+        if self.fsemu:
+            audio_driver = "fsemu"
+        else:
+            audio_driver = self.options[Option.VICE_AUDIO_DRIVER]
+            audio_driver = "sdl"
+            f.write("SoundBufferSize={0}\n".format(50))
         if audio_driver:
             print("[VICE] Using audio driver", repr(audio_driver))
             f.write("SoundDeviceName={0}\n".format(audio_driver))
@@ -322,7 +326,7 @@ class Commodore64ViceDriver(GameDriver):
 
     def configure_input(self, f):
         # FIXME: Enable when ready
-        # f.write("KeymapIndex=1\n")  # Use positional keys
+        f.write("KeymapIndex=1\n")  # Use positional keys
 
         for i, port in enumerate(self.ports):
             vice_port = [2, 1, 3, 4][i]
@@ -535,7 +539,7 @@ class ViceInputMapper(InputMapper):
         return "{0} 1 {1}".format(self.device.index, button)
 
     def key(self, key):
-        return "{0}".format(key.sdl_code)
+        return "{0}".format(key.sdl1_key_code)
 
 
 class Commodore64Helper:

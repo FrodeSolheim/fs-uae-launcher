@@ -1132,13 +1132,23 @@ options = {
         "default": "gamepad",
         "description": ("PlayStation Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("gamepad", N_("Gamepad"))],
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", N_("Digital Gamepad")),
+            ("mouse", N_("PlayStation Mouse")),
+            ("dualshock", N_("DualShock Gamepad")),
+        ],
     },
     Option.PSX_PORT_2_TYPE: {
         "default": "gamepad",
         "description": ("PlayStation Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("gamepad", N_("Gamepad"))],
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", N_("Digital Gamepad")),
+            ("mouse", N_("PlayStation Mouse")),
+            ("dualshock", N_("DualShock Gamepad")),
+        ],
     },
     Option.PSX_PRELOAD: {
         "default": "0",

@@ -551,6 +551,7 @@ class Database(BaseDatabase):
 
             if term.startswith("s:"):
                 from fsgs.platform import normalize_platform_id
+
                 term = "s:" + normalize_platform_id(term[2:])
                 exact_term = True
 

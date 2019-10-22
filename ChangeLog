@@ -1,3 +1,7 @@
+Version 3.1.0dev:
+
+* File scanner can in some cases deduce SHA-1 from file name (faster).
+
 Version 3.0.0:
 
 * Fixes a problem when launching WHDLoad archived games with OpenRetro

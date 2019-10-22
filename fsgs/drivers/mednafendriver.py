@@ -48,7 +48,9 @@ class MednafenDriver(GameDriver):
     def set_mednafen_aspect(self, h, v):
         if self.stretching() == self.NO_STRETCHING:
             h, v = self.game_video_size()
+        # FIXME: Maybe build into emulators instead
         self.emulator.env["FSGS_ASPECT"] = "{}/{}".format(h, v)
+        self.emulator.env["FSEMU_ASPECT"] = "{}/{}".format(h, v)
 
     # FIXME: REPLACE BAD IMPLEMENTATION OF prepare cd images
 
@@ -250,6 +252,9 @@ class MednafenDriver(GameDriver):
     def configure_input(self, f):
         print("\n" + "-" * 79 + "\n" + "CONFIGURE PORTS")
         for i, port in enumerate(self.ports):
+            if not port.mapping_name:
+                # Mouse...
+                continue
             input_mapping = self.mednafen_input_mapping(i)
             mapper = MednafenInputMapper(port, input_mapping)
             keys = {}
