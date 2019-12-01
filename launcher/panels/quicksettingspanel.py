@@ -127,13 +127,18 @@ class QuickSettingsPanel(fsui.Panel):
 
         self.layout.add_spacer(expand=True)
 
+        self.add_option(Option.ARCADE_EMULATOR, [Platform.ARCADE])
+        self.add_option(Option.NES_EMULATOR, [Platform.NES])
+        self.add_option(Option.SNES_EMULATOR, [Platform.SNES])
+        self.add_option(Option.ST_EMULATOR, [Platform.ST])
+
         hori_layout = fsui.HorizontalLayout()
-        hori_layout.add_spacer(expand=True)
+        # hori_layout.add_spacer(expand=True)
         self.platform_settings_button = fsui.Button(self, "Platform Settings")
         self.platform_settings_button.activated.connect(
             self.on_platform_settings_button
         )
-        hori_layout.add(self.platform_settings_button, margin=10)
+        hori_layout.add(self.platform_settings_button, expand=True, margin=10)
         self.layout.add(hori_layout, fill=True)
 
         hori_layout = fsui.HorizontalLayout()

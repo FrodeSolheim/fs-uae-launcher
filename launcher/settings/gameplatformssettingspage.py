@@ -45,9 +45,6 @@ class GamePlatformsSettingsPage(SettingsPage):
                 Platform.A7800, Option.A7800_DATABASE, "Atari 7800"
             )
             self.add_database_option(
-                Platform.ATARI, Option.ATARI_DATABASE, "Atari ST"
-            )
-            self.add_database_option(
                 Platform.C64, Option.C64_DATABASE, "Commodore 64"
             )
             self.add_database_option(Platform.DOS, Option.DOS_DATABASE, "DOS")
@@ -77,6 +74,9 @@ class GamePlatformsSettingsPage(SettingsPage):
             )
             self.add_database_option(
                 Platform.SNES, Option.SNES_DATABASE, "Super Nintendo"
+            )
+            self.add_database_option(
+                Platform.ST, Option.ST_DATABASE, "Atari ST"
             )
             self.add_database_option(
                 Platform.TG16, Option.TG16_DATABASE, "TurboGrafx-16"

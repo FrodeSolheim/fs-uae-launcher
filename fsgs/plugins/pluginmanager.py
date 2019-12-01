@@ -204,8 +204,11 @@ class PluginResource:
 
 
 class Executable:
-    def __init__(self, path):
+    def __init__(self, path, ld_library_path=False):
         self.path = path
+        self.env = {}
+        if ld_library_path:
+            self.env["LD_LIBRARY_PATH"] = os.path.dirname(self.path)
 
     def popen(self, args, env=None, **kwargs):
         logger.info("[EXECUTE] %s %s", self.path, repr(args))
@@ -240,50 +243,55 @@ class PluginManager:
 
     @classmethod
     def plugin_path(cls):
-        result = []
-        plugins_dir = FSGSDirectories.get_plugins_dir()
-        result.append(plugins_dir)
-
         # Plugins dir location has changed, add several old and new paths here
         # to find plugins in both places (FS-UAE and OpenRetro style).
 
+        result = []
+
+        # $BASE/Plugins/ or $BASE/Data/Plugins/
+        plugins_dir = FSGSDirectories.get_plugins_dir()
+        result.append(plugins_dir)
+
+        # $BASE/Plugins/
         plugins_dir = os.path.join(FSGSDirectories.get_base_dir(), "Plugins")
         if plugins_dir not in result:
             result.append(plugins_dir)
+
+        # $BASE/Data/Plugins/
         plugins_dir = os.path.join(FSGSDirectories.get_data_dir(), "Plugins")
         if plugins_dir not in result:
             result.append(plugins_dir)
 
-        expansion_dir = os.path.join(
-            FSGSDirectories.get_base_dir(), "Workspace", "Expansion"
-        )
-        if expansion_dir and os.path.isdir(expansion_dir):
-            result.append(expansion_dir)
+        # # $BASE/Workspace/Expansion/
+        # plugins_dir = os.path.join(
+        #     FSGSDirectories.get_base_dir(), "Workspace", "Expansion"
+        # )
+        # if plugins_dir and os.path.isdir(plugins_dir):
+        #     result.append(plugins_dir)
 
-        # Find plugins from System/Plugins
         if System.macos:
-            system_plugins_dir = os.path.normpath(
-                os.path.join(
-                    fsboot.executable_dir(),
-                    "..",
-                    "..",
-                    "..",
-                    "..",
-                    "..",
-                    "..",
-                    "Plugins",
-                )
-            )
-            result.append(system_plugins_dir)
+            escape_exe_dir = "../../../../../.."
         else:
-            system_plugins_dir = os.path.normpath(
-                os.path.join(
-                    fsboot.executable_dir(), "..", "..", "..", "Plugins"
-                )
+            escape_exe_dir = "../../.."
+
+        # System/
+        plugins_dir = os.path.normpath(
+            os.path.join(
+                fsboot.executable_dir(),
+                escape_exe_dir,
             )
-            result.append(system_plugins_dir)
-        # if os.path.isdir(system_plugins_dir):
-        #     result.append(system_plugins_dir)
+        )
+        result.append(plugins_dir)
+
+        # System/Plugins/
+        plugins_dir = os.path.normpath(
+            os.path.join(
+                fsboot.executable_dir(),
+                escape_exe_dir,
+                "Plugins",
+            )
+        )
+        result.append(plugins_dir)
 
         return result
 
@@ -404,11 +412,21 @@ class PluginManager:
         if name == "x64sc-fs":
             logger.debug("Lookup hack for vice-fs/x64sc-fs")
             name = "vice-fs"
+        # See if we can find the executable in a project dir side by side
         path = os.path.join(fsboot.executable_dir(), "..", name, exe_name)
         logger.debug("Checking %s", path)
+        # Try one additional level up
+        if not os.path.exists(path):
+            path = os.path.join(
+                fsboot.executable_dir(), "..", "..", name, exe_name
+            )
+            logger.debug("Checking %s", path)
         if os.path.exists(path):
             logger.debug("Found non-plugin executable %s", path)
-            return Executable(path)
+            # We want to be able to load bundled libraries from the
+            # development directory, before the emulator has been
+            # standalone-ified.
+            return Executable(path, ld_library_path=True)
         return None
 
     def find_executable(self, name):

@@ -77,14 +77,22 @@ class SaveHandler(object):
             with open(save_ini_path, "r", encoding="UTF-8") as f:
                 cp.read(f)
 
+        if not cp.has_section("fsemu-save"):
+            cp.add_section("fsemu-save")
+        cp.set("fsemu-save", "version", "2")
+        cp.set("fsemu-save", "platform", self.get("platform"))
+        cp.set("fsemu-save", "game_uuid", self.get("game_uuid"))
+        cp.set("fsemu-save", "game_name", self.get("game_name"))
+        cp.set("fsemu-save", "variant_uuid", self.get("variant_uuid"))
+        cp.set("fsemu-save", "variant_name", self.get("variant_name"))
+
+        # Deprecated section
         if not cp.has_section("fsgs-save"):
             cp.add_section("fsgs-save")
         cp.set("fsgs-save", "version", "2")
         cp.set("fsgs-save", "platform", self.get("platform"))
         cp.set("fsgs-save", "game_uuid", self.get("game_uuid"))
-        cp.set("fsgs-save", "game_name", self.get("game_name"))
         cp.set("fsgs-save", "variant_uuid", self.get("variant_uuid"))
-        cp.set("fsgs-save", "variant_name", self.get("variant_name"))
 
         with open(save_ini_path + ".partial", "w", encoding="UTF-8") as f:
             cp.write(f)
@@ -117,10 +125,10 @@ class SaveHandler(object):
     def uuid_save_dir_path(self):
         saves_dir = FSGSDirectories.saves_dir()
         # FIXME: Correct?
-        variant_uuid = self.get("variant_uuid")
+        variant_uuid = self.get("variant_uuid").upper()
         if variant_uuid:
             save_dir = os.path.join(
-                saves_dir, "UUID", variant_uuid[:2], variant_uuid
+                saves_dir, variant_uuid[:1], variant_uuid[:2], variant_uuid
             )
             return save_dir
         return None
@@ -129,8 +137,10 @@ class SaveHandler(object):
         save_dir = self.uuid_save_dir_path()
         if save_dir:
             return save_dir
-        # saves_dir = FSGSDirectories.saves_dir()
-        assert False, "save_dir_path not implemented for this case"
+        # assert False, "save_dir_path not implemented for this case"
+        print("[SAVES] Unsupported save dir FIXME")
+        saves_dir = FSGSDirectories.saves_dir()
+        return os.path.join(saves_dir, "Unsupported")
 
     def finish(self):
         for change_handler, changes_dir in self.change_handlers:
@@ -185,6 +195,10 @@ class SaveHandler(object):
         return self.variant
 
     def _get_state_dir(self):
+        save_dir = self.uuid_save_dir_path()
+        if save_dir:
+            return save_dir
+
         config_name = self.config_name
         if not config_name:
             config_name = "Default"

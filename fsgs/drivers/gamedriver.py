@@ -81,13 +81,19 @@ class GameDriver:
         self.files.install()
 
     def run(self):
-        executable = PluginManager.instance().find_executable(
-            self.emulator.name
-        )
-        if executable is None and self.emulator.allow_system_emulator:
-            executable_path = shutil.which(self.emulator.name)
-            if executable_path is not None:
-                executable = Executable(executable_path)
+        executable = None
+        if self.emulator.path:
+            # executable_path = shutil.which(self.emulator.name)
+            if os.path.exists(self.emulator.path):
+                executable = Executable(self.emulator.path)
+        else:
+            executable = PluginManager.instance().find_executable(
+                self.emulator.name
+            )
+        # if executable is None and self.emulator.allow_system_emulator:
+        #     executable_path = shutil.which(self.emulator.name)
+        #     if executable_path is not None:
+        #         executable = Executable(executable_path)
         if executable is None:
             raise LookupError(
                 "Could not find emulator " + repr(self.emulator.name)
@@ -198,19 +204,19 @@ class GameDriver:
         if Application.instance():
             if Application.instance().name == "fs-uae-arcade":
                 return True
-        if Settings.instance()["fullscreen"] == "0":
-            return False
-        return True
+        if Settings.instance()["fullscreen"] == "1":
+            return True
+        return False
 
     def fullscreen_window_mode(self):
         fullscreen_mode = self.options[Option.FULLSCREEN_MODE]
         return fullscreen_mode == "window"
 
-    def g_sync(self):
+    def use_g_sync(self):
         return self.options[Option.G_SYNC] == "1"
 
     def use_vsync(self):
-        if self.g_sync():
+        if self.use_g_sync():
             return False
         # if "--no-vsync" in sys.argv:
         #     return False
@@ -514,9 +520,9 @@ class GameDriver:
         #     f.write("\n")
         return state_dir
 
-    def emulator_state_dir(self, emulator):
-        assert emulator
-        state_dir = os.path.join(self.get_state_dir(), emulator)
+    def emulator_state_dir(self, emulator_name):
+        assert emulator_name
+        state_dir = os.path.join(self.get_state_dir(), emulator_name)
         if not os.path.exists(state_dir):
             os.makedirs(state_dir)
         return state_dir
@@ -863,6 +869,8 @@ class GameDriver:
             self.prepare_emulator_skin(env)
         if env_vars:
             env.update(env_vars)
+        if hasattr(emulator, "env"):
+            env.update(emulator.env)
         print("")
         for key in sorted(env.keys()):
             print("[ENV]", key, ":", repr(env[key]))
@@ -1031,6 +1039,11 @@ class GameDriver:
                 print("setting vsync to true")
                 self.set_vsync(True)
                 return True
+            else:
+                self.set_env(
+                    "FSEMU_VSYNC_REFRESH_MISMATCH",
+                    str(int(round(screen_refresh))),
+                )
         else:
             print("vsync is not enabled")
         print("setting vsync to false")
@@ -1114,6 +1127,7 @@ class Port(object):
         # FIXME: remove
         self.device_id = None
         self.device_config = None
+        self.mapping_name_override = None
 
     @property
     def type(self):
@@ -1121,6 +1135,8 @@ class Port(object):
 
     @property
     def mapping_name(self):
+        if self.mapping_name_override:
+            return self.mapping_name_override
         return self.types[self.index]["mapping_name"]
 
     @property
@@ -1195,13 +1211,16 @@ class TemporaryNamedItem:
 
 
 class Emulator:
-    def __init__(self, name):
+    def __init__(self, name, path=None):
         self.name = name
+        # Use a system install executable instad of plugin
+        self.path = path
         self.args = []
         self.env = {}
         self.process = None
-        self.allow_system_emulator = False
         self.allow_home_access = False
+        # FIXME: Remove this, use path instead
+        self.allow_system_emulator = False
 
 
 class GameFiles:

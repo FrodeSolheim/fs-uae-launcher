@@ -26,3 +26,4 @@ Lib
 *.pyc
 *.pyo
 /setup.py
+/.vscode/.ropeproject/objectdb

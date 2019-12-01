@@ -23,7 +23,6 @@ openretro = False
 OPENRETRO_DEFAULT_DATABASES = [
     Option.ARCADE_DATABASE,
     Option.A7800_DATABASE,
-    Option.ATARI_DATABASE,
     Option.C64_DATABASE,
     Option.CPC_DATABASE,
     Option.DOS_DATABASE,
@@ -37,6 +36,7 @@ OPENRETRO_DEFAULT_DATABASES = [
     Option.SMD_DATABASE,
     Option.SMS_DATABASE,
     Option.SNES_DATABASE,
+    Option.ST_DATABASE,
     Option.TG16_DATABASE,
     Option.TGCD_DATABASE,
     Option.ZXS_DATABASE,

@@ -54,7 +54,7 @@ class Platform(PlatformHandler):
     A2600 = "a2600"
     A5200 = "a5200"
     A7800 = "a7800"
-    ATARI = "atari"
+    # ATARI = "atari"
     C64 = "c64"
     CD32 = "cd32"
     CDTV = "cdtv"
@@ -71,10 +71,11 @@ class Platform(PlatformHandler):
     NES = "nes"
     NGC = "ngc"
     PSX = "psx"
-    SNES = "snes"
     SGG = "sgg"
     SMD = "smd"
     SMS = "sms"
+    SNES = "snes"
+    ST = "st"
     TG16 = "tg16"
     TGCD = "tgcd"
     ZXS = "zxs"
@@ -98,7 +99,7 @@ from fsgs.platforms.arcade.arcadeplatform import ArcadePlatformHandler
 from fsgs.platforms.atari_2600 import Atari2600PlatformHandler
 from fsgs.platforms.atari5200 import Atari5200PlatformHandler
 from fsgs.platforms.atari7800 import Atari7800PlatformHandler
-from fsgs.platforms.atari.atariplatform import AtariSTPlatformHandler
+from fsgs.platforms.atari.atariplatform import AtariSTPlatform
 from fsgs.platforms.cd32 import CD32PlatformHandler
 from fsgs.platforms.cdtv import CDTVPlatformHandler
 from fsgs.platforms.commodore64 import Commodore64Platform
@@ -133,7 +134,7 @@ platforms = {
     Platform.A2600: Atari2600PlatformHandler,
     Platform.A5200: Atari5200PlatformHandler,
     Platform.A7800: Atari7800PlatformHandler,
-    Platform.ATARI: AtariSTPlatformHandler,
+    "atari": AtariSTPlatform,  # FIXME: Deprecated
     Platform.C64: Commodore64Platform,
     Platform.CD32: CD32PlatformHandler,
     Platform.CDTV: CDTVPlatformHandler,
@@ -149,11 +150,12 @@ platforms = {
     Platform.NEOGEO: NeoGeoPlatform,
     Platform.NES: NintendoPlatform,
     Platform.NGC: GameCubePlatform,
-    Platform.SNES: SuperNintendoPlatformHandler,
     Platform.PSX: PlayStationPlatform,
     Platform.SGG: GameGearPlatform,
     Platform.SMD: MegaDrivePlatform,
     Platform.SMS: MasterSystemPlatform,
+    Platform.SNES: SuperNintendoPlatformHandler,
+    Platform.ST: AtariSTPlatform,
     Platform.TG16: TurboGrafx16Platform,
     Platform.TGCD: TurboGrafxCDPlatform,
     Platform.ZXS: SpectrumPlatformHandler,
@@ -164,9 +166,7 @@ PLATFORM_IDS = platforms.keys()
 def normalize_platform_id(platform_id):
     platform_id = platform_id.lower().replace("-", "").replace("_", "")
     # noinspection SpellCheckingInspection
-    if platform_id in ["st", "atarist"]:
-        return Platform.ATARI
-    elif platform_id in ["commodorecdtv"]:
+    if platform_id in ["commodorecdtv"]:
         return Platform.CDTV
     elif platform_id in ["amigacd32"]:
         return Platform.CD32
@@ -202,6 +202,8 @@ def normalize_platform_id(platform_id):
         return Platform.A5200
     elif platform_id in ["atari78600"]:
         return Platform.A7800
+    if platform_id in ["st", "atarist"]:
+        return Platform.ST
     elif platform_id in ["turbografx16"]:
         return Platform.TG16
     elif platform_id in ["gamegear", "sgg"]:

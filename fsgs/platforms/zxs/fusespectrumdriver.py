@@ -23,7 +23,8 @@ class FuseSpectrumDriver(GameDriver):
 
     def __init__(self, fsgs):
         super().__init__(fsgs)
-        self.emulator.name = "fuse-fs"
+        # self.emulator.name = "fuse-fs"
+        self.emulator.name = "fuse"
         self.helper = SpectrumHelper(self.options)
         # self.emulator.allow_system_emulator = True
         self.media_dir = self.temp_dir("Media")

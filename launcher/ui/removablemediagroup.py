@@ -61,8 +61,6 @@ class RemovableMediaGroup(FloppiesGroup):
     def update_media_type(self):
         if self.__platform in AMIGA_PLATFORMS:
             self.set_cd_mode(Amiga.is_cd_based(LauncherConfig))
-        elif self.__platform in [Platform.ATARI]:
-            self.set_mode(self.FLOPPY_MODE)
         elif self.__platform in [Platform.C64]:
             if self._c64_model == C64_MODEL_C64C_1541_II:
                 self.set_mode(self.FLOPPY_MODE)
@@ -74,6 +72,8 @@ class RemovableMediaGroup(FloppiesGroup):
             self.set_mode(self.FLOPPY_MODE)
         elif self.__platform in [Platform.PSX]:
             self.set_mode(self.CD_MODE)
+        elif self.__platform in [Platform.ST]:
+            self.set_mode(self.FLOPPY_MODE)
         elif self.__platform in [Platform.ZXS]:
             if self._zxs_model == ZXS_MODEL_PLUS3:
                 self.set_mode(self.FLOPPY_MODE)

@@ -41,6 +41,10 @@ class GameDatabaseSynchronizer(object):
         else:
             self.host = ""
             self.platform_id = platform_id.lower()
+        
+        # FIXME: Replace hack with proper name mapping...
+        if self.platform_id == "atarist":
+            self.platform_id = "st"
 
     def stop_check(self):
         if self._stop_check:

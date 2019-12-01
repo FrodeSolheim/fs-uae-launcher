@@ -6,8 +6,8 @@ from fsgs.saves import SaveHandler
 
 
 class MessDriver(MameDriver):
-    def __init__(self, fsgs):
-        super().__init__(fsgs)
+    def __init__(self, fsgs, fsemu=False):
+        super().__init__(fsgs, fsemu=fsemu)
         self.save_handler = MessSaveHandler(self.fsgc, options=self.options)
 
     def prepare(self):
@@ -165,14 +165,15 @@ class MessSaveHandler(SaveHandler):
         self._mame_driver = ""
 
     def prepare(self):
-        if self._emulator_specific:
-            if not self._mame_driver:
-                raise Exception("MAME driver not specified")
+        # if self._emulator_specific:
+        if self._mame_driver:
+            # raise Exception("MAME driver not specified")
             self.copy_to_mame_dir()
         super().prepare()
 
     def finish(self):
-        if self._emulator_specific:
+        # if self._emulator_specific:
+        if self._mame_driver:
             self.move_from_mame_dir()
         super().finish()
 

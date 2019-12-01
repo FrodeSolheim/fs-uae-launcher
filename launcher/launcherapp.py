@@ -391,11 +391,12 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                 )
                 return
 
-        platform_id = LauncherConfig.get(Option.PLATFORM).lower()
-        if platform_id in AMIGA_PLATFORMS:
-            cls.start_local_game_amiga()
-        else:
-            cls.start_local_game_other()
+        # platform_id = LauncherConfig.get(Option.PLATFORM).lower()
+        # if platform_id in AMIGA_PLATFORMS:
+        #     cls.start_local_game_amiga()
+        # else:
+        #     cls.start_local_game_other()
+        cls.start_local_game_other()
 
     @classmethod
     def start_local_game_other(cls):
@@ -422,172 +423,172 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         # dialog.show_modal()
         # dialog.close()
 
-    @classmethod
-    def start_local_game_amiga(cls):
-        # make sure x_kickstart_file is initialized
-        LauncherConfig.set_kickstart_from_model()
+    # @classmethod
+    # def start_local_game_amiga(cls):
+    #     # make sure x_kickstart_file is initialized
+    #     LauncherConfig.set_kickstart_from_model()
 
-        # if not Config.get("x_kickstart_file"):  # or not \
-        #     #  os.path.exists(Config.get("kickstart_file")):
-        #     fsui.show_error(
-        #         gettext("No kickstart found for this model. Use the 'Import "
-        #                 "Kickstarts' function from the menu."))
-        #     return
-        cs = Amiga.get_model_config(LauncherConfig.get("amiga_model"))[
-            "ext_roms"
-        ]
-        if len(cs) > 0:
-            # extended kickstart ROM is needed
-            if not LauncherConfig.get("x_kickstart_ext_file"):
-                fsui.show_error(
-                    gettext(
-                        "No extended kickstart found for this model. "
-                        "Try 'scan' function."
-                    )
-                )
-                return
+    #     # if not Config.get("x_kickstart_file"):  # or not \
+    #     #     #  os.path.exists(Config.get("kickstart_file")):
+    #     #     fsui.show_error(
+    #     #         gettext("No kickstart found for this model. Use the 'Import "
+    #     #                 "Kickstarts' function from the menu."))
+    #     #     return
+    #     cs = Amiga.get_model_config(LauncherConfig.get("amiga_model"))[
+    #         "ext_roms"
+    #     ]
+    #     if len(cs) > 0:
+    #         # extended kickstart ROM is needed
+    #         if not LauncherConfig.get("x_kickstart_ext_file"):
+    #             fsui.show_error(
+    #                 gettext(
+    #                     "No extended kickstart found for this model. "
+    #                     "Try 'scan' function."
+    #                 )
+    #             )
+    #             return
 
-        config = LauncherConfig.copy()
-        prepared_config = cls.prepare_config(config)
+    #     config = LauncherConfig.copy()
+    #     prepared_config = cls.prepare_config(config)
 
-        model = LauncherConfig.get("amiga_model")
-        if model.startswith("CD32"):
-            platform = "CD32"
-        elif model == "CDTV":
-            platform = "CDTV"
-        else:
-            platform = "Amiga"
-        name = LauncherSettings.get("config_name")
-        uuid = LauncherConfig.get("x_game_uuid")
+    #     model = LauncherConfig.get("amiga_model")
+    #     if model.startswith("CD32"):
+    #         platform = "CD32"
+    #     elif model == "CDTV":
+    #         platform = "CDTV"
+    #     else:
+    #         platform = "Amiga"
+    #     name = LauncherSettings.get("config_name")
+    #     uuid = LauncherConfig.get("x_game_uuid")
 
-        from fsgs.saves import SaveHandler
+    #     from fsgs.saves import SaveHandler
 
-        save_state_handler = SaveHandler(fsgs, name, platform, uuid)
+    #     save_state_handler = SaveHandler(fsgs, name, platform, uuid)
 
-        from fsgs.amiga.launchhandler import LaunchHandler
+    #     from fsgs.amiga.launchhandler import LaunchHandler
 
-        launch_handler = LaunchHandler(
-            fsgs, name, prepared_config, save_state_handler
-        )
+    #     launch_handler = LaunchHandler(
+    #         fsgs, name, prepared_config, save_state_handler
+    #     )
 
-        from .ui.launcherwindow import LauncherWindow
+    #     from .ui.launcherwindow import LauncherWindow
 
-        task = AmigaLaunchTask(launch_handler)
-        # dialog = LaunchDialog(MainWindow.instance, launch_handler)
-        dialog = LaunchDialog(
-            LauncherWindow.current(), gettext("Launching FS-UAE"), task
-        )
-        dialog.show()
+    #     task = AmigaLaunchTask(launch_handler)
+    #     # dialog = LaunchDialog(MainWindow.instance, launch_handler)
+    #     dialog = LaunchDialog(
+    #         LauncherWindow.current(), gettext("Launching FS-UAE"), task
+    #     )
+    #     dialog.show()
 
-        def on_show_license_information(license_text):
-            unused(license_text)
-            # FIXME: don't depend on wx here
-            # noinspection PyUnresolvedReferences
-            # import wx
-            # license_dialog = wx.MessageDialog(
-            #     dialog, license_text, _("Terms of Use"),
-            #     wx.OK | wx.CANCEL | wx.CENTRE)
-            # license_dialog.CenterOnParent()
-            # result = license_dialog.ShowModal()
-            # return result == wx.ID_OK
-            # FIXME
-            return True
+    #     def on_show_license_information(license_text):
+    #         unused(license_text)
+    #         # FIXME: don't depend on wx here
+    #         # noinspection PyUnresolvedReferences
+    #         # import wx
+    #         # license_dialog = wx.MessageDialog(
+    #         #     dialog, license_text, _("Terms of Use"),
+    #         #     wx.OK | wx.CANCEL | wx.CENTRE)
+    #         # license_dialog.CenterOnParent()
+    #         # result = license_dialog.ShowModal()
+    #         # return result == wx.ID_OK
+    #         # FIXME
+    #         return True
 
-        fsgs.file.on_show_license_information = on_show_license_information
+    #     fsgs.file.on_show_license_information = on_show_license_information
 
-        LauncherConfig.set("__running", "1")
-        task.start()
-        # dialog.show_modal()
-        # dialog.close()
+    #     LauncherConfig.set("__running", "1")
+    #     task.start()
+    #     # dialog.show_modal()
+    #     # dialog.close()
 
-    @classmethod
-    def prepare_config(cls, original_config):
-        config = StringDict(str)
-        for key, value in LauncherSettings.items():
-            # We now show warnings on status bar instead
-            # if key in LauncherConfig.config_keys:
-            #     print("... ignoring config key from settings:", key)
-            #     continue
-            config[key] = value
+    # @classmethod
+    # def prepare_config(cls, original_config):
+    #     config = StringDict(str)
+    #     for key, value in LauncherSettings.items():
+    #         # We now show warnings on status bar instead
+    #         # if key in LauncherConfig.config_keys:
+    #         #     print("... ignoring config key from settings:", key)
+    #         #     continue
+    #         config[key] = value
 
-        config["base_dir"] = FSGSDirectories.get_base_dir()
+    #     config["base_dir"] = FSGSDirectories.get_base_dir()
 
-        for key, value in original_config.items():
-            if value:
-                config[key] = value
+    #     for key, value in original_config.items():
+    #         if value:
+    #             config[key] = value
 
-        if not config["joystick_port_0_mode"]:
-            config["joystick_port_0_mode"] = "mouse"
-        if not config["joystick_port_1_mode"]:
-            if config["amiga_model"].startswith("CD32"):
-                config["joystick_port_1_mode"] = "cd32 gamepad"
-            else:
-                config["joystick_port_1_mode"] = "joystick"
-        if not config["joystick_port_2_mode"]:
-            config["joystick_port_2_mode"] = "none"
-        if not config["joystick_port_3_mode"]:
-            config["joystick_port_3_mode"] = "none"
+    #     if not config["joystick_port_0_mode"]:
+    #         config["joystick_port_0_mode"] = "mouse"
+    #     if not config["joystick_port_1_mode"]:
+    #         if config["amiga_model"].startswith("CD32"):
+    #             config["joystick_port_1_mode"] = "cd32 gamepad"
+    #         else:
+    #             config["joystick_port_1_mode"] = "joystick"
+    #     if not config["joystick_port_2_mode"]:
+    #         config["joystick_port_2_mode"] = "none"
+    #     if not config["joystick_port_3_mode"]:
+    #         config["joystick_port_3_mode"] = "none"
 
-        from .devicemanager import DeviceManager
+    #     from .devicemanager import DeviceManager
 
-        devices = DeviceManager.get_devices_for_ports(config)
-        for port in range(4):
-            key = "joystick_port_{0}".format(port)
-            if not config.get(key):
-                # key not set, use calculated default value
-                config[key] = devices[port].id
+    #     devices = DeviceManager.get_devices_for_ports(config)
+    #     for port in range(4):
+    #         key = "joystick_port_{0}".format(port)
+    #         if not config.get(key):
+    #             # key not set, use calculated default value
+    #             config[key] = devices[port].id
 
-        for remove_key in [
-            "database_username",
-            "database_password",
-            "database_username",
-            "database_email",
-            "database_auth",
-            "device_id",
-        ]:
-            if remove_key in config:
-                del config[remove_key]
+    #     for remove_key in [
+    #         "database_username",
+    #         "database_password",
+    #         "database_username",
+    #         "database_email",
+    #         "database_auth",
+    #         "device_id",
+    #     ]:
+    #         if remove_key in config:
+    #             del config[remove_key]
 
-        # overwrite netplay config
+    #     # overwrite netplay config
 
-        if config.get("__netplay_host", ""):
-            config["netplay_server"] = config["__netplay_host"]
-        if config.get("__netplay_password", ""):
-            config["netplay_password"] = config["__netplay_password"]
-        if config.get("__netplay_port", ""):
-            config["netplay_port"] = config["__netplay_port"]
+    #     if config.get("__netplay_host", ""):
+    #         config["netplay_server"] = config["__netplay_host"]
+    #     if config.get("__netplay_password", ""):
+    #         config["netplay_password"] = config["__netplay_password"]
+    #     if config.get("__netplay_port", ""):
+    #         config["netplay_port"] = config["__netplay_port"]
 
-        # copy actual kickstart options from x_ options
+    #     # copy actual kickstart options from x_ options
 
-        config["kickstart_file"] = config["x_kickstart_file"]
-        config["kickstart_ext_file"] = config["x_kickstart_ext_file"]
+    #     config["kickstart_file"] = config["x_kickstart_file"]
+    #     config["kickstart_ext_file"] = config["x_kickstart_ext_file"]
 
-        if not config["kickstart_file"]:
-            # Warning will have been shown on the status bar
-            config["kickstart_file"] = "internal"
+    #     if not config["kickstart_file"]:
+    #         # Warning will have been shown on the status bar
+    #         config["kickstart_file"] = "internal"
 
-        # Copy default configuration values from model defaults. The main
-        # purpose of this is to let the launch code know about implied defaults
-        # so it can for example configure correct ROM files for expansions.
+    #     # Copy default configuration values from model defaults. The main
+    #     # purpose of this is to let the launch code know about implied defaults
+    #     # so it can for example configure correct ROM files for expansions.
 
-        model_config = Amiga.get_current_config(config)
-        for key, value in model_config["defaults"].items():
-            if not config.get(key):
-                config[key] = value
+    #     model_config = Amiga.get_current_config(config)
+    #     for key, value in model_config["defaults"].items():
+    #         if not config.get(key):
+    #             config[key] = value
 
-        # make sure FS-UAE does not load other config files (Host.fs-uae)
-        config["end_config"] = "1"
-        # Make FS-UAE check that version matches (except for development)
-        if VERSION != "9.8.7dummy":
-            config[Option.EXPECT_VERSION] = VERSION
+    #     # make sure FS-UAE does not load other config files (Host.fs-uae)
+    #     config["end_config"] = "1"
+    #     # Make FS-UAE check that version matches (except for development)
+    #     if VERSION != "9.8.7dummy":
+    #         config[Option.EXPECT_VERSION] = VERSION
 
-        if config.get("__netplay_game", ""):
-            print("\nfixing config for netplay game")
-            for key in [x for x in config.keys() if x.startswith("uae_")]:
-                print("* removing option", key)
-                del config[key]
+    #     if config.get("__netplay_game", ""):
+    #         print("\nfixing config for netplay game")
+    #         for key in [x for x in config.keys() if x.startswith("uae_")]:
+    #             print("* removing option", key)
+    #             del config[key]
 
-        return config
+    #     return config
 
 
 # FIXME: Files to clean up:

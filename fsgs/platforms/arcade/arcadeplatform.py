@@ -1,20 +1,27 @@
-from fsgs.platform import PlatformHandler
+from fsbc import settings
+from fsgs.option import Option
+from fsgs.platform import Platform
 from fsgs.platforms.arcade.mamearcadedriver import MameArcadeDriver
 from fsgs.platforms.loader import SimpleLoader
 
 
-class ArcadePlatformHandler(PlatformHandler):
-
+class ArcadePlatformHandler(Platform):
     PLATFORM_NAME = "Arcade"
 
-    def __init__(self):
-        PlatformHandler.__init__(self)
+    def driver(self, fsgc):
+        driver = settings.get(Option.ARCADE_EMULATOR)
+        if not driver:
+            driver = "mame-fs"
 
-    def get_loader(self, fsgs):
-        return ArcadeLoader(fsgs)
+        if driver == "mame":
+            return MameArcadeDriver(fsgc)
+        elif driver == "mame-fs":
+            return MameArcadeDriver(fsgc, fsemu=True)
 
-    def get_runner(self, fsgs):
-        return MameArcadeDriver(fsgs)
+        return None
+
+    def loader(self, fsgc):
+        return ArcadeLoader(fsgc)
 
 
 class ArcadeLoader(SimpleLoader):

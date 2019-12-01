@@ -57,8 +57,6 @@ class GameDatabaseIterator:
             yield "A7800", self.fsgc.game_database("A7800")
         if self._check_platform(Option.ARCADE_DATABASE):
             yield "Arcade", self.fsgc.game_database("Arcade")
-        if self._check_platform(Option.ATARI_DATABASE):
-            yield "Atari", self.fsgc.game_database("Atari")
         if self._check_platform(Option.C64_DATABASE):
             yield "C64", self.fsgc.game_database("C64")
         if self._check_platform(Option.CPC_DATABASE):
@@ -93,6 +91,8 @@ class GameDatabaseIterator:
             yield "SMS", self.fsgc.game_database("SMS")
         if self._check_platform(Option.SNES_DATABASE):
             yield "SNES", self.fsgc.game_database("SNES")
+        if self._check_platform(Option.ST_DATABASE):
+            yield "AtariST", self.fsgc.game_database("AtariST")
         if self._check_platform(Option.TG16_DATABASE):
             yield "TG16", self.fsgc.game_database("TG16")
         if self._check_platform(Option.TGCD_DATABASE):

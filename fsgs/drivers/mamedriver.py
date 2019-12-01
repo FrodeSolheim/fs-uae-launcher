@@ -43,9 +43,13 @@ mame_artwork_dir = MameArtworkDirectory()
 
 # noinspection PyAttributeOutsideInit
 class MameDriver(GameDriver):
-    def __init__(self, fsgs):
-        super().__init__(fsgs)
-        self.emulator = Emulator("mame-fs")
+    def __init__(self, fsgc, fsemu=False):
+        super().__init__(fsgc)
+        self.fsemu = fsemu
+        if fsemu:
+            self.emulator = Emulator("mame-fs")
+        else:
+            self.emulator = Emulator("mame")
         self.mame_init()
 
     def mame_emulator_name(self):
@@ -270,20 +274,15 @@ class MameDriver(GameDriver):
         with open(game_cfg_file, "wb") as f:
             f.write("".join(self.game_xml).encode("UTF-8"))
             print("")
-            print("")
             print("".join(self.game_xml))
-            print("")
-            print("")
 
         self.default_xml.append("    </system>\n")
         self.default_xml.append("</mameconfig>\n")
         with open(os.path.join(self.cfg_dir.path, "default.cfg"), "wb") as f:
             f.write("".join(self.default_xml).encode("UTF-8"))
-            print("")
-            print("")
-            print("".join(self.default_xml))
-            print("")
-            print("")
+        print("")
+        print("".join(self.default_xml))
+        print("")
 
         if self.use_doubling():
             self.emulator.args.extend(["-prescale", "2"])
@@ -415,7 +414,7 @@ class MameDriver(GameDriver):
             "TOGGLE_KEEP_ASPECT": ["KEYCODE_LALT KEYCODE_A"],
             "UI_CANCEL": ["KEYCODE_LALT KEYCODE_Q"],
             "UI_PAUSE": ["KEYCODE_LALT KEYCODE_P"],
-            "UI_CONFIGURE": ["KEYCODE_F12"],
+            # "UI_CONFIGURE": ["KEYCODE_F12"],
             "UI_SNAPSHOT": ["KEYCODE_LALT KEYCODE_S"],
             "UI_THROTTLE": ["KEYCODE_LALT KEYCODE_W"],
             "UI_TOGGLE_UI": ["KEYCODE_LALT KEYCODE_K", "KEYCODE_SCRLOCK"],
@@ -428,7 +427,7 @@ class MameDriver(GameDriver):
         else:
             self.emulator.args.extend(["-video", "opengl"])
         if self.use_fullscreen():
-            self.emulator.args.extend(["-nowindow"])
+            self.emulator.args.extend(["-nowindow", "-maximize"])
         else:
             self.emulator.args.extend(["-window", "-nomaximize"])
             if self.use_stretching():
@@ -481,21 +480,34 @@ class MameDriver(GameDriver):
         video_args = []
         if self.configure_vsync():
             video_override = "mame_video_options_vsync"
+            # Enable waiting for the start of VBLANK before flipping screens
+            # (reduces tearing effects).
             video_args.append("-waitvsync")
-            video_args.append("-syncrefresh")
+            # Enable using the start of VBLANK for throttling instead of the
+            # game time.
+            # FIXME: Not relevant when using nothrottle ??
+            # video_args.append("-syncrefresh")
             if windows and False:
                 # no-throttle seems to enable turbo mode (no vsync throttling)
                 # when used on Windows
                 pass
             else:
                 video_args.append("-nothrottle")
+                # FIXME: Optional
+                video_args.append("-nosleep")
                 pass
             # if self.get_game_refresh_rate():
             #     # should always be true since vsync was enabled...
             #     self.args.extend(
             #         ["-override_fps", str(self.get_game_refresh_rate())])
+
+            # Automatically adjust emulation speed to keep the emulated refresh
+            # rate slower than the host screen
+            video_args.append("-refreshspeed")
             if windows and False:
                 video_args.append("-notriplebuffer")
+
+            # video_args.extend(["-speed", str(60.00 / 60.098800)])
         else:
             video_override = "mame_video_options"
             if windows and False:

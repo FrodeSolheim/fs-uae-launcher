@@ -119,32 +119,36 @@ class SettingsProvider:
             if verbose:
                 print("[SETTINGS] File", path, "does not exist")
         # Write current settings path back to Settings instance
+
+        values = {}
+
         settings.path = path
         try:
             cp.read([path], encoding="UTF-8")
         except Exception as e:
             if verbose:
                 print("[SETTINGS] Error loading", repr(e))
-            return
-        try:
-            keys = cp.options("settings")
-        except NoSectionError:
-            return
-
-        values = {}
-        for key in sorted(keys):
-            if key.startswith("__"):
-                if verbose:
-                    print("[SETTINGS] Ignoring", key)
-                continue
-            value = cp.get("settings", key)
-            values[key] = value
+            # return
+        else:
+            try:
+                keys = cp.options("settings")
+            except NoSectionError:
+                pass
+            else:
+                for key in sorted(keys):
+                    if key.startswith("__"):
+                        if verbose:
+                            print("[SETTINGS] Ignoring", key)
+                        continue
+                    value = cp.get("settings", key)
+                    values[key] = value
 
         for arg in sys.argv:
             if arg.startswith("--settings:"):
                 arg = arg[11:]
                 key, value = arg.split("=", 1)
                 key = key.replace("-", "_")
+                print("[SETTINGS] Loaded from arg:", key, "=", value)
                 values[key] = value
 
         for key in sorted(values.keys()):
@@ -251,7 +255,7 @@ def fix_settings(settings, version_str):
 # FIXME: FS-UAE Launcher specific
 key_replacement_table = {
     "database_arcade": "arcade_database",
-    "database_atari": "atari_database",
+    "database_atari": "st_database",
     "database_c64": "c64_database",
     "database_cpc": "cpc_database",
     "database_dos": "dos_database",

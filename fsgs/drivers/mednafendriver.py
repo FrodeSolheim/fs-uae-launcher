@@ -19,9 +19,10 @@ from fsgs.saves import SaveHandler
 
 
 class MednafenDriver(GameDriver):
-    def __init__(self, fsgc, vanilla=False):
+    # vanilla is old not, fsemu (inverted) is new
+    def __init__(self, fsgc, vanilla=False, fsemu=True):
         super().__init__(fsgc)
-        if vanilla:
+        if vanilla or not fsemu:
             self.emulator = Emulator("mednafen")
         else:
             self.emulator = Emulator("mednafen-fs")
@@ -29,6 +30,7 @@ class MednafenDriver(GameDriver):
             self.fsgc, options=self.options
         )
         # self._game_files_added = False
+        self.palette_dir = self.temp_dir("mednafen-palette")
 
     def prepare(self):
         if os.path.exists(os.path.join(self.home.path, ".mednafen")):
@@ -198,7 +200,7 @@ class MednafenDriver(GameDriver):
                 self.doc_dir.path,
                 # "-path_cheat", self.doc_dir.path,
                 "-path_palette",
-                self.home.path,
+                self.palette_dir.path,
             ]
         )
 

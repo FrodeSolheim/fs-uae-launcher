@@ -1,6 +1,8 @@
 import os
 
+from fsbc import settings
 from fsgs.drivers.retroarchdriver import RetroArchDriver
+from fsgs.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
 from fsgs.drivers.gamedriver import GameDriver, Emulator
@@ -28,6 +30,22 @@ class Nintendo64Platform(Platform):
     def driver(self, fsgs):
         return Nintendo64RetroArchDriver(fsgs)
 
+    def driver(self, fsgc):
+        driver = settings.get(Option.N64_EMULATOR)
+        if not driver:
+            driver = "mupen64plus_next"
+        if driver == "mupen64plus":
+            return Nintendo64MupenDriver(fsgc)
+        elif driver == "retroarch/mupen64plus_next":
+            return Nintendo64RetroArchDriver(
+                fsgc, core="mupen64plus_next", name="RetroArch/Mupen64PlusNext"
+            )
+        elif driver == "retroarch/parallel_n64":
+            return Nintendo64RetroArchDriver(
+                fsgc, core="parallel_n64", name="RetroArch/Mupen64PlusNext"
+            )
+        raise Exception("Unknkown N64 driver")
+
     def loader(self, fsgs):
         return Nintendo64Loader(fsgs)
 
@@ -37,17 +55,13 @@ class Nintendo64Loader(SimpleLoader):
 
 
 class Nintendo64MupenDriver(GameDriver):
-    PORTS = [
-        {"description": "Input Port 1", "types": [N64_CONTROLLER]},
-        {"description": "Input Port 2", "types": [N64_CONTROLLER]},
-        {"description": "Input Port 3", "types": [N64_CONTROLLER]},
-        {"description": "Input Port 4", "types": [N64_CONTROLLER]},
-    ]
+    PORTS = N64_PORTS
 
     def __init__(self, fsgs):
         super().__init__(fsgs)
-        self.emulator = Emulator("mupen64plus")
-        self.emulator.allow_system_emulator = True
+        # self.emulator = Emulator("mupen64plus")
+        self.emulator = Emulator("mupen64plus", path="/usr/games/mupen64plus")
+        # self.emulator.allow_system_emulator = True
         self.helper = Nintendo64Helper(self.options)
 
     # def force_aspect_ratio(self):
@@ -183,7 +197,7 @@ class Nintendo64MupenDriver(GameDriver):
 
         f.write("\n[UI-Console]\n\n")
         f.write("Version = 1\n")
-        video_plugin = "glide64mk2"
+        # video_plugin = "glide64mk2"
         # video_plugin = "glide64"
         video_plugin = "rice"
         f.write('VideoPlugin = "mupen64plus-video-{}"\n'.format(video_plugin))
@@ -205,7 +219,7 @@ class Nintendo64MupenDriver(GameDriver):
         f.write("\n[Video-Rice]\n\n")
         f.write("AccurateTextureMapping = True\n")
         f.write("ForceAlphaBlender = True\n")
-        # f.write("InN64Resolution = True\n")
+        f.write("InN64Resolution = True\n")
         # f.write("RenderToTexture = 4\n")
         f.write("ScreenUpdateSetting = 2\n")
         # f.write("TextureFilteringMethod = 0\n")
@@ -256,37 +270,42 @@ class Mupen64PlusInputMapper(InputMapper):
         return "key", str(key.sdl_code)
 
 
-class Nintendo64RetroDriver(GameDriver):
-    PORTS = N64_PORTS
+# class Nintendo64RetroDriver(GameDriver):
+#     PORTS = N64_PORTS
 
-    def __init__(self, fsgs):
-        super().__init__(fsgs)
-        self.emulator = Emulator("retroarch")
-        self.emulator.allow_system_emulator = True
-        self.helper = Nintendo64Helper(self.options)
+#     def __init__(self, fsgs):
+#         super().__init__(fsgs)
+#         self.emulator = Emulator("retroarch")
+#         self.emulator.allow_system_emulator = True
+#         self.helper = Nintendo64Helper(self.options)
 
-    def prepare(self):
-        temp_dir = self.temp_dir("mupen64plus")
-        self.emulator.args.extend(["--configdir", temp_dir.path])
-        self.emulator.args.extend(["--datadir", temp_dir.path])
-        config_file = os.path.join(temp_dir.path, "mupen64plus.cfg")
-        with open(config_file, "w") as f:
-            self.write_config(f)
-        input_config_file = os.path.join(temp_dir.path, "InputAutoCfg.ini")
-        with open(input_config_file, "wb") as f:
-            pass
-        rom_path = self.get_game_file()
-        self.emulator.args.extend([rom_path])
+#     def prepare(self):
+#         temp_dir = self.temp_dir("mupen64plus")
+#         self.emulator.args.extend(["--configdir", temp_dir.path])
+#         self.emulator.args.extend(["--datadir", temp_dir.path])
+#         config_file = os.path.join(temp_dir.path, "mupen64plus.cfg")
+#         with open(config_file, "w") as f:
+#             self.write_config(f)
+#         input_config_file = os.path.join(temp_dir.path, "InputAutoCfg.ini")
+#         with open(input_config_file, "wb") as f:
+#             pass
+#         rom_path = self.get_game_file()
+#         self.emulator.args.extend([rom_path])
 
-    def finish(self):
-        pass
+#     def finish(self):
+#         pass
 
 
 class Nintendo64RetroArchDriver(RetroArchDriver):
     PORTS = N64_PORTS
 
-    def __init__(self, fsgc):
-        super().__init__(fsgc, "mupen64plus_libretro", "RetroArch/Mupen64Plus")
+    def __init__(self, fsgc, core, name):
+        # cores/mupen64plus_next_libretro.so
+        # super().__init__(fsgc, "parallel_n64_libretro", "RetroArch/ParallelN64")
+        # super().__init__(fsgc, "mupen64plus_libretro", "RetroArch/Mupen64Plus")
+        super().__init__(fsgc, core + "_libretro", name)
+        if core == "parallel_n64":
+            self.retroarch_video_driver = "vulkan"
         self.helper = Nintendo64Helper(self.options)
 
     def prepare(self):

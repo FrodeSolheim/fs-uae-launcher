@@ -43,6 +43,7 @@ class PlatformSettingsDialog(fsui.Window):
         options = []
         if platform == Platform.ARCADE:
             # options.append(Option.ARCADE_DATABASE)
+            options.append(Option.ARCADE_EMULATOR)
             options.append(Option.MAME_ARTWORK)
             options.extend(mame_options)
         elif platform == Platform.C64:
@@ -54,6 +55,17 @@ class PlatformSettingsDialog(fsui.Window):
             # options.append(Option.GBA_EMULATOR)
             options.append(Option.GBA_GAMMA)
             options.extend(mednafen_options)
+        elif platform == Platform.N64:
+            # options.append(Option.N64_DATABASE)
+            options.append(Option.N64_EMULATOR)
+            # options.extend(mednafen_options)
+            options.extend(retroarch_options)
+        elif platform == Platform.NDS:
+            # options.append(Option.NDS_DATABASE)
+            options.append(Option.NDS_EMULATOR)
+            options.append(Option.DESMUME_PATH)
+            options.append(Option.MELONDS_PATH)
+            options.extend(mame_options)
         elif platform == Platform.NEOGEO:
             # options.append(Option.NEOGEO_DATABASE)
             options.extend(mame_options)
@@ -75,7 +87,11 @@ class PlatformSettingsDialog(fsui.Window):
             options.extend(retroarch_options)
         elif platform == Platform.SNES:
             # options.append(Option.SNES_DATABASE)
+            options.append(Option.SNES_EMULATOR)
             options.extend(mednafen_options)
+        elif platform == Platform.ST:
+            # options.append(Option.ST_DATABASE)
+            options.append(Option.ST_EMULATOR)
         return options
 
 

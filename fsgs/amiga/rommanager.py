@@ -126,6 +126,7 @@ class ROMManager(object):
 
         if dst_data:
             rom["data"] = dst_data
+            print("Patched ROM to", rom["sha1"])
         sha1 = hashlib.sha1()
         sha1.update(rom["data"])
         assert sha1.hexdigest() == rom["sha1"]

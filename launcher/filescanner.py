@@ -359,12 +359,19 @@ class FileScanner(object):
                     filter_sha1_obj.update(data)
                     filter_size += len(data)
                 elif filter_name == "ByteSwapWords":
+                    # We don't really expect odd number of bytes when
+                    # byteswapping words, but this handles the cases where we
+                    # have "false positives" that aren't supposed to be
+                    # byteswapped, and this prevents errors.
+                    data_size = len(data)
                     for i in range(0, len(data), 2):
-                        filter_sha1_obj.update(data[i + 1 : i + 2])
-                        filter_sha1_obj.update(data[i : i + 1])
-                        filter_size += 2
-                    # FIXME: Handle it when we get an odd number of bytes..
-                    assert len(data) % 2 == 0
+                        if data_size - i >= 2:
+                            filter_sha1_obj.update(data[i + 1 : i + 2])
+                            filter_sha1_obj.update(data[i : i + 1])
+                            filter_size += 2
+                        else:
+                            filter_sha1_obj.update(data[i : i + 1])
+                            filter_size += 1
             sha1 = raw_sha1_obj.hexdigest()
             filter_sha1 = filter_sha1_obj.hexdigest()
 

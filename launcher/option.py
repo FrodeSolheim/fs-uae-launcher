@@ -35,19 +35,19 @@ options = {
         "default": "ntsc",
         "description": ("Atari 7800 Model"),
         "type": "Choice",
-        "values": [("ntsc", "NTSC"), ("pal", "PAL")],
+        "values": [("ntsc", "NTSC"), ("pal", "PAL"),],
     },
     Option.A7800_PORT_1_TYPE: {
         "default": "joystick",
         "description": ("Atari 7800 Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick"))],
+        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
     },
     Option.A7800_PORT_2_TYPE: {
         "default": "joystick",
         "description": ("Atari 7800 Port 2"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick"))],
+        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
     },
     Option.ACCELERATOR: {
         "default": "0",
@@ -79,21 +79,22 @@ options = {
             ("262144", "256 MB"),
         ],
     },
-    Option.AMIGA_DATABASE: {
-        "default": "1",
-        "description": ("Enable/disable use of the Amiga game database"),
-        "type": "Boolean",
-    },
     Option.AMIGA_DRIVER: {
         "default": "fs-uae",
         "description": ("Amiga Game Driver"),
         "type": "Choice",
-        "values": [("fs-uae", "FS-UAE")],
+        "values": [("fs-uae", "FS-UAE"),],
     },
     Option.ARCADE_DATABASE: {
         "default": "0",
         "description": ("Enable/disable use of the Arcade game database"),
         "type": "Boolean",
+    },
+    Option.ARCADE_EMULATOR: {
+        "default": "mame-fs",
+        "description": ("Arcade Emulator"),
+        "type": "Choice",
+        "values": [("mame", "MAME"), ("mame-fs", "MAME-FS"),],
     },
     Option.ARCADE_FULLSCREEN: {
         "default": "1",
@@ -119,23 +120,7 @@ options = {
         "default": "blue",
         "description": N_("Arcade theme"),
         "type": "Choice",
-        "values": [("blue", N_("Blue")), ("red", N_("Red"))],
-    },
-    Option.ATARI_DATABASE: {
-        "default": "0",
-        "description": ("Enable/disable use of the Atari ST game database"),
-        "type": "Boolean",
-    },
-    Option.ATARI_MODEL: {
-        "default": "1040st",
-        "description": ("Atari ST Model"),
-        "type": "Choice",
-        "values": [
-            ("520st", "520ST"),
-            ("1040st", "1040ST"),
-            ("520ste", "520STE"),
-            ("1040ste", "1040STE"),
-        ],
+        "values": [("blue", N_("Blue")), ("red", N_("Red")),],
     },
     Option.AUDIO_BUFFER_TARGET_BYTES: {
         "default": "8192",
@@ -181,7 +166,7 @@ options = {
         "default": "0",
         "description": ("Bezel"),
         "type": "Choice",
-        "values": [("1", N_("Show Bezel")), ("0", N_("Hide Bezel"))],
+        "values": [("1", N_("Show Bezel")), ("0", N_("Hide Bezel")),],
     },
     Option.BLIZZARD_SCSI_KIT: {
         "default": "0",
@@ -251,18 +236,13 @@ options = {
         "default": "joystick",
         "description": ("C64 Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick"))],
+        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
     },
     Option.C64_PORT_2_TYPE: {
         "default": "joystick",
         "description": ("C64 Port 2"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick"))],
-    },
-    Option.CD32_DATABASE: {
-        "default": "1",
-        "description": ("Enable/disable use of the CD32 game database"),
-        "type": "Boolean",
+        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
     },
     Option.CDROM_DRIVE_0_DELAY: {
         "default": "0",
@@ -273,12 +253,7 @@ options = {
         "default": "",
         "description": ("CD-ROM Drive Count"),
         "type": "Choice",
-        "values": [("0", "0"), ("1", "1")],
-    },
-    Option.CDTV_DATABASE: {
-        "default": "1",
-        "description": ("Enable/disable use of the CDTV game database"),
-        "type": "Boolean",
+        "values": [("0", "0"), ("1", "1"),],
     },
     Option.CHEATS: {
         "default": "0",
@@ -400,6 +375,11 @@ options = {
         "description": ("Game database user name"),
         "type": "string",
     },
+    Option.DESMUME_PATH: {
+        "default": "",
+        "description": ("Path to DeSmuME executable"),
+        "type": "String",
+    },
     Option.DEVELOPER_MODE: {
         "default": "",
         "description": ("Developer Mode"),
@@ -494,7 +474,13 @@ options = {
         "default": "",
         "description": ("Floppy Drive Count"),
         "type": "Choice",
-        "values": [("0", "0"), ("1", "1"), ("2", "2"), ("3", "3"), ("4", "4")],
+        "values": [
+            ("0", "0"),
+            ("1", "1"),
+            ("2", "2"),
+            ("3", "3"),
+            ("4", "4"),
+        ],
     },
     Option.FLOPPY_DRIVE_SPEED: {
         "default": "100",
@@ -547,7 +533,12 @@ options = {
         "default": "0",
         "description": N_("Full-scene anti-aliasing (FSAA)"),
         "type": "choice",
-        "values": [("0", N_("Off")), ("2", "2x2"), ("4", "4x4"), ("8", "8x8")],
+        "values": [
+            ("0", N_("Off")),
+            ("2", "2x2"),
+            ("4", "4x4"),
+            ("8", "8x8"),
+        ],
     },
     Option.FULL_KEYBOARD: {
         "default": "0",
@@ -573,7 +564,7 @@ options = {
         "default": "ignore",
         "description": ("G-Sync"),
         "type": "Choice",
-        "values": [("ignore", "Ignore"), ("1", "On"), ("0", "Off (Linux)")],
+        "values": [("ignore", "Ignore"), ("1", "On"), ("0", "Off (Linux)"),],
     },
     Option.GAME_MODE: {
         "default": "1",
@@ -589,7 +580,7 @@ options = {
         "default": "builtin",
         "description": ("Game Boy Port 1"),
         "type": "Choice",
-        "values": [("builtin", N_("Built-in"))],
+        "values": [("builtin", N_("Built-in")),],
     },
     Option.GBA_DATABASE: {
         "default": "0",
@@ -624,7 +615,7 @@ options = {
         "default": "builtin",
         "description": ("Game Boy Advance Port 1"),
         "type": "Choice",
-        "values": [("builtin", N_("Built-in"))],
+        "values": [("builtin", N_("Built-in")),],
     },
     Option.GBC_DATABASE: {
         "default": "0",
@@ -635,7 +626,7 @@ options = {
         "default": "builtin",
         "description": ("Game Boy Color Port 1"),
         "type": "Choice",
-        "values": [("builtin", N_("Built-in"))],
+        "values": [("builtin", N_("Built-in")),],
     },
     Option.GOVERNOR_WARNING: {
         "default": "1",
@@ -885,6 +876,11 @@ options = {
         "description": ("Mednafen temporal blur"),
         "type": "Boolean",
     },
+    Option.MELONDS_PATH: {
+        "default": "",
+        "description": ("Path to melonDS executable"),
+        "type": "String",
+    },
     Option.MIDDLE_CLICK_UNGRAB: {
         "default": "1",
         "description": N_("Ungrab Input on Middle Mouse Button"),
@@ -943,10 +939,26 @@ options = {
         "description": ("Enable/disable use of the Nintendo 64 database"),
         "type": "Boolean",
     },
+    Option.N64_EMULATOR: {
+        "default": "retroarch/mupen64plus_next",
+        "description": ("Nintendo 64 Emulator"),
+        "type": "Choice",
+        "values": [
+            ("mupen64plus", "mupen64plus"),
+            ("retroarch/mupen64plus_next", "retroarch/mupen64plus_next"),
+            ("retroarch/parallel_n64", "retroarch/parallel_n64"),
+        ],
+    },
     Option.NDS_DATABASE: {
         "default": "0",
         "description": ("Enable/disable use of the Nintendo DS database"),
         "type": "Boolean",
+    },
+    Option.NDS_EMULATOR: {
+        "default": "melonds",
+        "description": ("Nintendo DS emulator"),
+        "type": "Choice",
+        "values": [("melonds", "melonDS"), ("desmume", "DeSmuME"),],
     },
     Option.NEOGEO_DATABASE: {
         "default": "0",
@@ -969,13 +981,13 @@ options = {
         "default": "joystick",
         "description": ("Neo-Geo Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick"))],
+        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
     },
     Option.NEOGEO_PORT_2_TYPE: {
         "default": "joystick",
         "description": ("Neo-Geo Port 2"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick"))],
+        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
     },
     Option.NES_DATABASE: {
         "default": "0",
@@ -995,13 +1007,16 @@ options = {
         ],
     },
     Option.NES_EMULATOR: {
-        "default": "mednafen",
+        "default": "mednafen-fs",
         "description": ("Nintendo Emulator"),
         "type": "Choice",
         "values": [
+            ("mame", "MAME"),
+            ("mame-fs", "MAME-FS"),
             ("mednafen", "Mednafen"),
-            ("higan", "Higan"),
-            ("retroarch-nestopia", "RetroArch Nestopia"),
+            ("mednafen-fs", "Mednafen-FS"),
+            ("retroarch/mesen", "RetroArch/Mesen"),
+            ("retroarch/nestopia", "RetroArch/Nestopia"),
         ],
     },
     Option.NES_MODEL: {
@@ -1040,13 +1055,13 @@ options = {
         "default": "none",
         "description": ("NES Port 3"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("gamepad", N_("Gamepad"))],
+        "values": [("none", N_("None")), ("gamepad", N_("Gamepad")),],
     },
     Option.NES_PORT_4_TYPE: {
         "default": "none",
         "description": ("NES Port 4"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("gamepad", N_("Gamepad"))],
+        "values": [("none", N_("None")), ("gamepad", N_("Gamepad")),],
     },
     Option.NETPLAY_FEATURE: {
         "default": "0",
@@ -1062,7 +1077,7 @@ options = {
         "default": "0",
         "description": N_("Network Card"),
         "type": "Choice",
-        "values": [("0", N_("None")), ("a2065", "A2065")],
+        "values": [("0", N_("None")), ("a2065", "A2065"),],
     },
     Option.NGC_DATABASE: {
         "default": "0",
@@ -1084,7 +1099,7 @@ options = {
             ("a2600", "Atari 2600"),
             ("a5200", "Atari 5200"),
             ("a7800", "Atari 7800"),
-            ("atari", "Atari ST"),
+            ("st", "Atari ST"),
             ("arcade", "Arcade"),
             ("cd32", "CD32"),
             ("cdtv", "CDTV"),
@@ -1182,6 +1197,11 @@ options = {
         "min": 0,
         "max": 1000,
     },
+    Option.RETROARCH_PATH: {
+        "default": "",
+        "description": ("Path to RetroArch executable"),
+        "type": "String",
+    },
     Option.RTG_SCANLINES: {
         "default": "0",
         "description": N_("Render scan lines in RTG graphics mode"),
@@ -1217,7 +1237,7 @@ options = {
         "default": "builtin",
         "description": ("Game Gear Port 1"),
         "type": "Choice",
-        "values": [("builtin", N_("Built-in"))],
+        "values": [("builtin", N_("Built-in")),],
     },
     Option.SLOW_MEMORY: {
         "default": "",
@@ -1301,30 +1321,90 @@ options = {
         "default": "mednafen",
         "description": ("Master System Game Driver"),
         "type": "Choice",
-        "values": [("mednafen", "mednafen"), ("mess", "mess")],
+        "values": [("mednafen", "mednafen"), ("mess", "mess"),],
     },
     Option.SNES_DATABASE: {
         "default": "0",
         "description": ("Enable/disable use of the Super Nintendo database"),
         "type": "Boolean",
     },
+    Option.SNES_EMULATOR: {
+        "default": "mednafen-fs",
+        "description": ("Super NES Emulator"),
+        "type": "Choice",
+        "values": [
+            ("mame", "MAME"),
+            ("mame-fs", "MAME-FS"),
+            ("mednafen", "Mednafen"),
+            ("mednafen-fs", "Mednafen-FS"),
+            ("retroarch", "RetroArch"),
+            ("retroarch/bsnes", "RetroArch/bsnes"),
+            ("retroarch/bsnes2014_accuracy", "RetroArch/bsnes2014_accuracy"),
+        ],
+    },
     Option.SNES_PORT_1_TYPE: {
         "default": "gamepad",
         "description": ("SNES Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("gamepad", N_("Gamepad"))],
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", N_("SNES Controller")),
+            ("mouse", N_("SNES Mouse")),
+        ],
     },
     Option.SNES_PORT_2_TYPE: {
         "default": "gamepad",
         "description": ("SNES Port 2"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("gamepad", N_("Gamepad"))],
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", N_("SNES Controller")),
+            ("mouse", N_("SNES Mouse")),
+            ("superscope", N_("Super Scope")),
+        ],
     },
     Option.SOUND_CARD: {
         "default": "0",
         "description": N_("Sound Card"),
         "type": "Choice",
-        "values": [("0", N_("None")), ("toccata", "Toccata")],
+        "values": [("0", N_("None")), ("toccata", "Toccata"),],
+    },
+    Option.ST_DATABASE: {
+        "default": "0",
+        "description": ("Enable/disable use of the Atari ST game database"),
+        "type": "Boolean",
+    },
+    Option.ST_EMULATOR: {
+        "default": "hatari-fs",
+        "description": ("Atari ST emulator"),
+        "type": "Choice",
+        "values": [("hatari", "Hatari"), ("hatari-fs", "Hatari-FS"),],
+    },
+    Option.ST_MODEL: {
+        "default": "1040stfm",
+        "description": ("Atari ST Model"),
+        "type": "Choice",
+        "values": [
+            ("520stfm", "520STFM"),
+            ("1040stfm", "1040STFM"),
+            ("1040ste", "1040STE"),
+        ],
+    },
+    Option.ST_PORT_1_TYPE: {
+        "default": "joystick",
+        "description": ("ST Port 1"),
+        "type": "Choice",
+        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
+    },
+    Option.ST_PORT_2_TYPE: {
+        "default": "mouse",
+        "description": ("ST Port 0"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+            ("mouse", N_("Mouse")),
+        ],
     },
     Option.STEREO_SEPARATION: {
         "default": "70",
@@ -1363,7 +1443,7 @@ options = {
         "default": "linear",
         "description": N_("Texture filter"),
         "type": "choice",
-        "values": [("nearest", "GL_NEAREST"), ("linear", "GL_LINEAR")],
+        "values": [("nearest", "GL_NEAREST"), ("linear", "GL_LINEAR"),],
     },
     Option.TEXTURE_FORMAT: {
         "default": "",
@@ -1401,7 +1481,7 @@ options = {
         "default": "",
         "description": "uae_a2065",
         "type": "",
-        "values": [("slirp", "slirp")],
+        "values": [("slirp", "slirp"),],
     },
     Option.UAE_A3000MEM_SIZE: {
         "default": "",
@@ -1463,7 +1543,7 @@ options = {
         "default": "0",
         "description": "Size in MB of Zorro-II Fast RAM (second) expansion board",
         "type": "choice",
-        "values": [("0", "0"), ("1", "1"), ("2", "2"), ("4", "4")],
+        "values": [("0", "0"), ("1", "1"), ("2", "2"), ("4", "4"),],
     },
     Option.UAE_FASTMEM_AUTOCONFIG: {
         "default": "1",
@@ -1474,7 +1554,13 @@ options = {
         "default": "0",
         "description": "Size in MB of Zorro-II Fast RAM expansion board",
         "type": "choice",
-        "values": [("0", "0"), ("1", "1"), ("2", "2"), ("4", "4"), ("8", "8")],
+        "values": [
+            ("0", "0"),
+            ("1", "1"),
+            ("2", "2"),
+            ("4", "4"),
+            ("8", "8"),
+        ],
     },
     Option.UAE_FORCE_0X10000000_Z3: {
         "default": "false",
@@ -1585,7 +1671,7 @@ options = {
         "default": "auto",
         "description": ("Vice Audio Driver"),
         "type": "Choice",
-        "values": [("auto", N_("Auto")), ("sdl", "SDL")],
+        "values": [("auto", N_("Auto")), ("sdl", "SDL"),],
     },
     Option.VIDEO_FORMAT: {
         "default": "bgra",
@@ -1601,7 +1687,7 @@ options = {
         "default": "0",
         "description": N_("Video synchronization"),
         "type": "choice",
-        "values": [("1", N_("Auto")), ("0", N_("Off"))],
+        "values": [("1", N_("Auto")), ("0", N_("Off")),],
     },
     Option.VIDEO_SYNC_METHOD: {
         "default": "auto",
@@ -1741,7 +1827,7 @@ options = {
         "default": "fuse",
         "description": ("ZX Spectrum Game Driver"),
         "type": "Choice",
-        "values": [("fuse", "Fuse"), ("mess", "MESS")],
+        "values": [("fuse", "Fuse"), ("mess", "MESS"),],
     },
     Option.ZXS_MODEL: {
         "default": "spectrum",

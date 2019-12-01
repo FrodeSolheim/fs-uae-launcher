@@ -65,6 +65,10 @@ class ValueConfigLoader(object):
             raise Exception("unknown platform")
         self.config["amiga_model"] = amiga_model
 
+        if not self.values.get("floppy_list", ""):
+            # Assume we have an Amiga CD game if floppy_list is empty
+            cd_based = True
+
         # self.config["x_game_uuid"] = self.values["uuid"]
 
         self.viewport = []
@@ -173,6 +177,9 @@ class ValueConfigLoader(object):
 
         self.config["game_uuid"] = self.values.get("game_uuid", "")
         self.config["variant_uuid"] = self.values.get("variant_uuid", "")
+
+        self.config["game_name"] = self.values.get("game_name")
+        self.config["variant_name"] = self.values.get("variant_name")
 
         game_name = self.values.get("game_name", "")
         platform_name = self.values.get("platform", "")
@@ -517,7 +524,7 @@ class ValueConfigLoader(object):
         else:
             ext = ".iso"
         for file_item in self.get_file_list():
-            if file_item["name"].endswith(ext):
+            if file_item["name"].lower().endswith(ext):
                 media_list.append((file_item["name"], file_item["sha1"]))
         print("load_cdroms media_list =", media_list)
         for i, values in enumerate(media_list):

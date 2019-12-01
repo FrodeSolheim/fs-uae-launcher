@@ -1,10 +1,13 @@
 import os
 
+from fsbc.application import app
 from fsbc.settings import Settings
 from fsgs import Option
+from fsgs.amiga.amiga import Amiga
 from fsgs.amiga.fsuae import FSUAE
 from fsgs.amiga.launchhandler import LaunchHandler
-from fsgs.drivers.gamedriver import GameDriver
+from fsgs.drivers.gamedriver import GameDriver, Emulator
+from launcher.version import VERSION
 
 AMIGA_JOYSTICK = {
     "type": "joystick",
@@ -46,9 +49,85 @@ class FSUAEAmigaDriver(GameDriver):
         super().__init__(fsgc)
         self.temp_config_file = None
         self.launch_handler = None
+        self.emulator = Emulator("fs-uae")
 
     def prepare(self):
         print("FSUAEAmigaDriver.prepare")
+
+        if not self.options["joystick_port_0_mode"]:
+            self.options["joystick_port_0_mode"] = "mouse"
+        if not self.options["joystick_port_1_mode"]:
+            if self.options["amiga_model"].startswith("CD32"):
+                self.options["joystick_port_1_mode"] = "cd32 gamepad"
+            else:
+                self.options["joystick_port_1_mode"] = "joystick"
+        if not self.options["joystick_port_2_mode"]:
+            self.options["joystick_port_2_mode"] = "none"
+        if not self.options["joystick_port_3_mode"]:
+            self.options["joystick_port_3_mode"] = "none"
+
+        from launcher.devicemanager import DeviceManager
+
+        devices = DeviceManager.get_devices_for_ports(self.options)
+        for port in range(4):
+            key = "joystick_port_{0}".format(port)
+            if not self.options[key]:
+                # key not set, use calculated default value
+                self.options[key] = devices[port].id
+
+        for remove_key in [
+            "database_username",
+            "database_password",
+            "database_username",
+            "database_email",
+            "database_auth",
+            "device_id",
+        ]:
+            if remove_key in self.options:
+                del self.options[remove_key]
+
+        # overwrite netplay config
+
+        if self.options["__netplay_host"]:
+            self.options["netplay_server"] = self.options["__netplay_host"]
+        if self.options["__netplay_password"]:
+            self.options["netplay_password"] = self.options[
+                "__netplay_password"
+            ]
+        if self.options["__netplay_port"]:
+            self.options["netplay_port"] = self.options["__netplay_port"]
+
+        # copy actual kickstart options from x_ options
+
+        self.options["kickstart_file"] = self.options["x_kickstart_file"]
+        self.options["kickstart_ext_file"] = self.options[
+            "x_kickstart_ext_file"
+        ]
+
+        if not self.options["kickstart_file"]:
+            # Warning will have been shown on the status bar
+            self.options["kickstart_file"] = "internal"
+
+        # Copy default configuration values from model defaults. The main
+        # purpose of this is to let the launch code know about implied defaults
+        # so it can for example configure correct ROM files for expansions.
+
+        model_config = Amiga.get_current_config(self.options)
+        for key, value in model_config["defaults"].items():
+            if not self.options[key]:
+                self.options[key] = value
+
+        # make sure FS-UAE does not load other config files (Host.fs-uae)
+        self.options["end_config"] = "1"
+        # Make FS-UAE check that version matches (except for development)
+        if VERSION != "9.8.7dummy":
+            self.options[Option.EXPECT_VERSION] = VERSION
+
+        if self.options["__netplay_game"]:
+            print("\nfixing config for netplay game")
+            for key in [x for x in config.keys() if x.startswith("uae_")]:
+                print("* removing option", key)
+                del self.options[key]
 
         # self.temp_dir = self.fsgc.temp_dir("amiga")
 
@@ -72,7 +151,13 @@ class FSUAEAmigaDriver(GameDriver):
 
         from fsgs.saves import SaveHandler
 
-        save_state_handler = SaveHandler(self.fsgc, self.get_name(), platform)
+        # save_state_handler = SaveHandler(self.fsgc, self.get_name(), platform)
+        save_state_handler = SaveHandler(
+            self.fsgc,
+            app.settings.get("config_name"),
+            platform,
+            options=self.options,
+        )
 
         print(
             "[INPUT] joystick_port_1",
@@ -86,8 +171,8 @@ class FSUAEAmigaDriver(GameDriver):
             "->",
             self.ports[1].device_id or "none",
         )
-        self.options["joystick_port_1"] = self.ports[0].device_id or "none"
-        self.options["joystick_port_0"] = self.ports[1].device_id or "none"
+        # self.options["joystick_port_1"] = self.ports[0].device_id or "none"
+        # self.options["joystick_port_0"] = self.ports[1].device_id or "none"
 
         self.launch_handler = LaunchHandler(
             self.fsgc,
@@ -125,6 +210,14 @@ class FSUAEAmigaDriver(GameDriver):
 
         self.launch_handler.prepare()
 
+        config = self.launch_handler.create_config()
+        config_file = self.temp_file("config.fs-uae").path
+        with open(config_file, "w", encoding="UTF-8") as f:
+            for line in config:
+                print(line)
+                f.write(line + "\n")
+        self.emulator.args.extend([config_file])
+
     # def configure(self):
     #     print("AmigaGameHandler.configure")
     #
@@ -150,15 +243,15 @@ class FSUAEAmigaDriver(GameDriver):
     #     if self.get_option("fsaa"):
     #         f.write("fsaa = {0}\n".format(str(self.get_option("fsaa"))))
 
-    def run(self):
-        print("FSUAEAmigaDriver.run, cwd =", self.cwd.path)
-        config = self.launch_handler.create_config()
-        self.emulator.process, self.temp_config_file = FSUAE.start_with_config(
-            config, cwd=self.cwd.path
-        )
-        self.write_emulator_pid_file(
-            self.emulator_pid_file(), self.emulator.process
-        )
+    # def run(self):
+    #     print("FSUAEAmigaDriver.run, cwd =", self.cwd.path)
+    #     config = self.launch_handler.create_config()
+    #     self.emulator.process, self.temp_config_file = FSUAE.start_with_config(
+    #         config, cwd=self.cwd.path
+    #     )
+    #     self.write_emulator_pid_file(
+    #         self.emulator_pid_file(), self.emulator.process
+    #     )
 
     def finish(self):
         print("FSUAEAmigaDriver.finish: Removing", self.temp_config_file)

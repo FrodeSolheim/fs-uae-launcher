@@ -6,7 +6,8 @@ qt_dir = $(python_dir)/Lib/site-packages/PyQt5/Qt
 arch = $(strip $(shell $(python) ../arch.py))
 launcher_dir = Launcher/Windows/$(arch)
 launcher_zip = fs-uae-launcher_$(version)_windows_$(arch).zip
-launcher_txz = fs-uae-launcher_$(version)_windows_$(arch).tar.xz
+# launcher_txz = fs-uae-launcher_$(version)_windows_$(arch).tar.xz
+launcher_txz = Launcher_$(version)_Windows_$(arch).tar.xz
 
 
 all: clean progdir zip
