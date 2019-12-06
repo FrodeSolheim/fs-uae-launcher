@@ -33,6 +33,7 @@ TODO:
 import os
 import traceback
 
+from fsbc.system import macosx
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.knownfiles import KnownFile
 from fsgs.option import Option
@@ -273,7 +274,10 @@ class HatariDriver(GameDriver):
             f.write("kDown = Down\n")
             f.write("kLeft = Left\n")
             f.write("kRight = Right\n")
-            f.write("kFire = Right Ctrl\n")
+            if macosx:
+                f.write("kFire = Right Alt\n")
+            else:
+                f.write("kFire = Right Ctrl\n")
 
     # def configure_fullscreen_scaling(self):
     #     """Configure scaling for the SDL 1.x version of Hatari-FS.

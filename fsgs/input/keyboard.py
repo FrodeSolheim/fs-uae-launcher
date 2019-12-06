@@ -224,7 +224,13 @@ key_table = {
     "SDLK_QUOTE": (39, "DIK_APOSTROPHE", 40),
     "SDLK_QUOTEDBL": (34, "", 0),
     "SDLK_R": (114, "DIK_R", 19),
-    "SDLK_RALT": (307, "DIK_RMENU", 184),
+    "SDLK_RALT": (
+        sdl2.SDLK_RALT,
+        "DIK_RMENU",
+        184,
+        sdl2.SDL_SCANCODE_RALT,
+        sdl_key_codes["RALT"],
+    ),
     "SDLK_RCTRL": (
         sdl2.SDLK_RCTRL,
         "DIK_RCONTROL",

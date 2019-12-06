@@ -55,12 +55,15 @@ class FSUAE(object):
         cls.add_environment_from_settings(env)
         # env[str("SDL_VIDEO_WINDOW_POS")] = "0,0"
         # args += ["--fullscreen-mode", "desktop"]
-        if windows:
-            p = subprocess.Popen(
-                args, cwd=cwd, env=env, close_fds=True, **kwargs
-            )
-        else:
-            p = subprocess.Popen(args, cwd=cwd, env=env, **kwargs)
+
+        # No longer needed since Python 3.4?
+        # if windows:
+        #     p = subprocess.Popen(
+        #         args, cwd=cwd, env=env, close_fds=True, **kwargs
+        #     )
+        # else:
+
+        p = subprocess.Popen(args, cwd=cwd, env=env, **kwargs)
         return p
 
     @classmethod
@@ -174,15 +177,24 @@ class FSUAE(object):
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
-                    "../../../Programs/Mac OS X/FS-UAE.app/Contents/MacOS/"
-                    + executable,
+                    "../../../FS-UAE Launcher.app/Contents/Resources/"
+                    "FS-UAE.app/Contents/MacOS/" + executable,
                 )
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
-                    "../../../FS-UAE Launcher.app/Contents/Resources/"
+                    "..",
+                    "..",
+                    "..",
+                    "..",
+                    "..",
+                    "..",
+                    "FS-UAE",
+                    Plugin.os_name(True),
+                    Plugin.arch_name(True),
                     "FS-UAE.app/Contents/MacOS/" + executable,
                 )
+                print("checking", exe)
         else:
             print("application executable dir", application.executable_dir())
             exe = os.path.join(application.executable_dir(), executable)

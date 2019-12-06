@@ -888,8 +888,11 @@ class GameDriver:
             kwargs["cwd"] = self.cwd.path
         print("[CWD]", kwargs["cwd"])
         print("")
-        if System.windows:
-            kwargs["close_fds"] = True
+
+	# No longer needed since Python 3.4?
+        # if System.windows:
+        #     kwargs["close_fds"] = True
+
         # print(" ".join(args))
         current_task.set_progress(
             "Starting {emulator}".format(emulator=emulator)

@@ -13,7 +13,7 @@ qtdir = $(pylib)/python3.6/site-packages/PyQt5/Qt
 all: bindist-launcher
 
 clean:
-	rm -Rf Launcher.app "FS-UAE Launcher.app"
+	rm -Rf Launcher.app "FS-UAE Launcher.app" Launcher
 
 cxfreeze: clean
 	make -C ../..
@@ -109,4 +109,9 @@ bindist-launcher: launcher
 	rm -Rf "FS-UAE Launcher.app"
 	mv Launcher.app "FS-UAE Launcher.app"
 	# python3 sign.py "FS-UAE Launcher.app"
-	GZIP=-9 tar Jcfv ../../$(dname).tar.xz "FS-UAE Launcher.app"
+	tar Jcfv ../../$(dname).tar.xz "FS-UAE Launcher.app"
+
+	rm -Rf Launcher
+	mkdir -p Launcher/macOS/$(arch)
+	mv "FS-UAE Launcher.app" Launcher/macOS/$(arch)/Launcher.app
+	tar Jcfv ../../Launcher_$(version)_macOS_$(arch).tar.xz Launcher
