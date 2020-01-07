@@ -77,7 +77,7 @@ class DiskNameUtil(object):
             matches = []
             for use_name, p in items:
                 without_number = GameNameUtil.strip_number(use_name)
-                # print(without_number, "vs", first_without_number)
+                print(without_number, "vs", first_without_number)
                 if without_number == first_without_number:
                     # print("perfect match:", p)
                     # disks.append(p)

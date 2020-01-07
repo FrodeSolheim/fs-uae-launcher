@@ -147,7 +147,7 @@ class GameNameUtil(object):
 
         # number = None
         lname = name.lower()
-        for prefix in "reel", "disk", "cd":
+        for prefix in "reel", "disk", "cd", "side":
             # print(prefix)
             pprefix = "(" + prefix + " "
             index = lname.find(pprefix)
@@ -210,6 +210,8 @@ class GameNameUtil(object):
         name = re.sub("\\([Rr][Ee][Ee][Ll][^)]*\\)", "", name)
         # remove 'cd x'
         name = re.sub("\\([Cc][Dd][^)]*\\)", "", name)
+        # remove 'side x'
+        name = re.sub("\\([Ss][Ii][Dd][Ee][^)]*\\)", "", name)
         # remove 'track x' from multi-part bin files
         name = re.sub("\\([Tt][Tr][Aa][Cc][Kk][^)]*\\)", "", name)
         # remove 'xxx disk' from name

@@ -100,7 +100,9 @@ class QuickSettingsPanel(fsui.Panel):
         #     # self.add_option(Option.DOS_EMULATOR, [Platform.DOS])
         # self.add_option(Option.NES_EMULATOR, [Platform.NES])
 
-        self.add_option(Option.AUTO_LOAD, [Platform.DOS, Platform.ZXS])
+        self.add_option(
+            Option.AUTO_LOAD, [Platform.CPC, Platform.DOS, Platform.ZXS]
+        )
         self.add_option(Option.AUTO_QUIT, [Platform.DOS])
         self.add_option(Option.TURBO_LOAD, [Platform.ZXS])
 
@@ -127,10 +129,16 @@ class QuickSettingsPanel(fsui.Panel):
 
         self.layout.add_spacer(expand=True)
 
+        self.add_option(
+            Option.AMIGA_EMULATOR,
+            [Platform.AMIGA, Platform.CD32, Platform.CDTV],
+        )
         self.add_option(Option.ARCADE_EMULATOR, [Platform.ARCADE])
+        self.add_option(Option.CPC_EMULATOR, [Platform.CPC])
         self.add_option(Option.NES_EMULATOR, [Platform.NES])
         self.add_option(Option.SNES_EMULATOR, [Platform.SNES])
         self.add_option(Option.ST_EMULATOR, [Platform.ST])
+        self.add_option(Option.ZXS_EMULATOR, [Platform.ZXS])
 
         hori_layout = fsui.HorizontalLayout()
         # hori_layout.add_spacer(expand=True)

@@ -85,6 +85,16 @@ options = {
         "type": "Choice",
         "values": [("fs-uae", "FS-UAE"),],
     },
+    Option.AMIGA_EMULATOR: {
+        "default": "fs-uae",
+        "description": ("Amiga Emulator"),
+        "type": "Choice",
+        "values": [
+            ("fs-uae", "FS-UAE"),
+            ("fs-uae-3.0", "FS-UAE 3.0"),
+            ("fs-uae-2.8", "FS-UAE 2.8"),
+        ],
+    },
     Option.ARCADE_DATABASE: {
         "default": "0",
         "description": ("Enable/disable use of the Arcade game database"),
@@ -276,8 +286,30 @@ options = {
     },
     Option.CPC_DATABASE: {
         "default": "0",
-        "description": ("Enable/disable use of the Amstrad CPC game database"),
+        "description": ("Enable/disable use of the Amstrad CPC database"),
         "type": "Boolean",
+    },
+    Option.CPC_EMULATOR: {
+        "default": "mame-fs",
+        "description": ("Amstrad CPC Emulator"),
+        "type": "Choice",
+        "values": [("mame", "MAME"), ("mame-fs", "MAME-FS"),],
+    },
+    Option.CPC_MODEL: {
+        "default": "464",
+        "description": ("Amstrad CPC Model"),
+        "type": "Choice",
+        "values": [
+            ("464", "CPC 464"),
+            ("664", "CPC 664"),
+            ("6128", "CPC 6128"),
+        ],
+    },
+    Option.CPC_PORT_1_TYPE: {
+        "default": "joystick",
+        "description": ("Amstrad CPC Port 1"),
+        "type": "Choice",
+        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
     },
     Option.CPU: {
         "default": "",
@@ -1795,6 +1827,7 @@ options = {
             ("704x540", "704x540"),
             ("704x566", "704x566"),
             ("724x566", "724x566"),
+            ("720x568", "720x568"),
         ],
     },
     Option.ZORRO_III_MEMORY: {
@@ -1823,21 +1856,47 @@ options = {
         "description": ("Enable/disable use of the ZX Spectrum database"),
         "type": "Boolean",
     },
-    Option.ZXS_DRIVER: {
-        "default": "fuse",
-        "description": ("ZX Spectrum Game Driver"),
+    Option.ZXS_EMULATOR: {
+        "default": "fuse-fs",
+        "description": ("ZX Spectrum Emulator"),
         "type": "Choice",
-        "values": [("fuse", "Fuse"), ("mess", "MESS"),],
+        "values": [
+            ("fuse", "Fuse"),
+            ("fuse-fs", "Fuse-fs"),
+            ("mame", "MAME"),
+            ("mame-fs", "MAME-FS"),
+        ],
     },
     Option.ZXS_MODEL: {
         "default": "spectrum",
         "description": ("ZX Spectrum Model"),
         "type": "Choice",
         "values": [
-            ("spectrum", "Spectrum 48K"),
-            ("spectrum/if2", "Spectrum 48K, Interface 2"),
-            ("spectrum128", "Spectrum 128"),
-            ("spectrum+3", "Spectrum +3"),
+            ("48k", "Spectrum 48K"),
+            ("128", "Spectrum 128"),
+            ("+2", "Spectrum +2"),
+            ("+2a", "Spectrum +2A"),
+            ("+3", "Spectrum +3"),
+        ],
+    },
+    Option.ZXS_PORT_1_TYPE: {
+        "default": "kempston",
+        "description": ("ZX Spectrum Port 1"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("kempston", N_("Kempston Joystick")),
+            ("sinclair", N_("Sinclair Joystick")),
+            ("cursor", N_("Cursor Joystick")),
+        ],
+    },
+    Option.ZXS_PORT_2_TYPE: {
+        "default": "none",
+        "description": ("ZX Spectrum Port 2"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("sinclair", N_("Sinclair Joystick")),
         ],
     },
 }

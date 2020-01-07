@@ -57,23 +57,28 @@ C64_JOYSTICK = {
     "description": "Joystick",
     "mapping_name": "c64",
 }
+NO_CONTROLLER_TYPE = "none"
+NO_CONTROLLER = {
+    "type": NO_CONTROLLER_TYPE,
+    "description": "None",
+    "mapping_name": "",
+}
 C64_PORTS = [
     {
         "description": "Port 2",
-        "types": [C64_JOYSTICK],
+        "types": [NO_CONTROLLER, C64_JOYSTICK],
         "type_option": "c64_port_2_type",
         "device_option": "c64_port_2",
     },
     {
         "description": "Port 1",
-        "types": [C64_JOYSTICK],
+        "types": [NO_CONTROLLER, C64_JOYSTICK],
         "type_option": "c64_port_1_type",
         "device_option": "c64_port_1",
     },
 ]
 C64_VIDEO_WIDTH = 384
 C64_VIDEO_HEIGHT = 272
-
 VICE_KEY_SET_A = 2
 VICE_KEY_SET_B = 3
 VICE_JOYSTICK = 4
@@ -117,14 +122,20 @@ class Commodore64Loader(SimpleLoader):
                 ] = "sha1://{0}/{1}".format(item["sha1"], item["name"])
 
     def load_extra(self, values):
-        # FIXME: Replace with c64_model?
-        self.config[Option.C64_MODEL] = values["model"]
-        if not self.config[Option.C64_MODEL]:
-            self.config[Option.C64_MODEL] = C64_MODEL_C64C
-        self.config["c64_port_1_type"] = values["c64_port_1_type"]
-        self.config["c64_port_2_type"] = values["c64_port_2_type"]
+        model = values["c64_model"]
+
+        # FIXME: Legacy
+        if not model:
+            model = values["model"]
         # FIXME: Remove?
         self.config["model"] = ""
+
+        if not model:
+            model = C64_MODEL_C64C
+        self.config[Option.C64_MODEL] = model
+
+        self.config["c64_port_1_type"] = values["c64_port_1_type"]
+        self.config["c64_port_2_type"] = values["c64_port_2_type"]
 
 
 class Commodore64ViceDriver(GameDriver):
@@ -331,16 +342,22 @@ class Commodore64ViceDriver(GameDriver):
         for i, port in enumerate(self.ports):
             vice_port = [2, 1, 3, 4][i]
             # vice_port = i + 1
-            if port.device is None:
+            if port.type == "joystick":
+                vice_port_type = 1
+            else:
                 vice_port_type = 0
+
+            if port.device is None:
+                vice_device_type = 0
             elif port.device.type == "joystick":
-                vice_port_type = VICE_JOYSTICK
+                vice_device_type = VICE_JOYSTICK
             elif port.device.type == "keyboard":
-                vice_port_type = VICE_KEY_SET_A + i
+                vice_device_type = VICE_KEY_SET_A + i
                 # assert False
             else:
                 vice_port_type = 0
-            f.write("JoyDevice{0}={1}\n".format(vice_port, vice_port_type))
+            f.write("JoyPort{0}Device={1}\n".format(vice_port, vice_port_type))
+            f.write("JoyDevice{0}={1}\n".format(vice_port, vice_device_type))
             print(
                 "[INPUT] Port",
                 port.type_option,

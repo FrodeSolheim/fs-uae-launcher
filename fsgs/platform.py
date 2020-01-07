@@ -94,7 +94,7 @@ class Platform(PlatformHandler):
 
 
 from fsgs.platforms.amiga import AmigaPlatformHandler
-from fsgs.platforms.amstrad_cpc import AmstradCPCPlatformHandler
+from fsgs.platforms.cpc.cpcplatform import CpcPlatform
 from fsgs.platforms.arcade.arcadeplatform import ArcadePlatformHandler
 from fsgs.platforms.atari_2600 import Atari2600PlatformHandler
 from fsgs.platforms.atari5200 import Atari5200PlatformHandler
@@ -121,7 +121,7 @@ from fsgs.platforms.playstation import PlayStationPlatform
 from fsgs.platforms.supernintendo import SuperNintendoPlatformHandler
 from fsgs.platforms.turbografx16 import TurboGrafx16Platform
 from fsgs.platforms.turbografxcd import TurboGrafxCDPlatform
-from fsgs.platforms.zxs import SpectrumPlatformHandler
+from fsgs.platforms.zxspectrum import SpectrumPlatform
 
 
 class UnsupportedPlatform(PlatformHandler):
@@ -138,7 +138,7 @@ platforms = {
     Platform.C64: Commodore64Platform,
     Platform.CD32: CD32PlatformHandler,
     Platform.CDTV: CDTVPlatformHandler,
-    Platform.CPC: AmstradCPCPlatformHandler,
+    Platform.CPC: CpcPlatform,
     Platform.DOS: DOSPlatformHandler,
     Platform.GB: GameBoyPlatform,
     Platform.GBA: GameBoyAdvancePlatform,
@@ -158,7 +158,7 @@ platforms = {
     Platform.ST: AtariSTPlatform,
     Platform.TG16: TurboGrafx16Platform,
     Platform.TGCD: TurboGrafxCDPlatform,
-    Platform.ZXS: SpectrumPlatformHandler,
+    Platform.ZXS: SpectrumPlatform,
 }
 PLATFORM_IDS = platforms.keys()
 

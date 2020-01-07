@@ -41,7 +41,9 @@ class PlatformSettingsDialog(fsui.Window):
     @staticmethod
     def option_list_for_platform(platform):
         options = []
-        if platform == Platform.ARCADE:
+        if platform in [Platform.AMIGA, Platform.CD32, Platform.CDTV]:
+            options.append(Option.AMIGA_EMULATOR)
+        elif platform == Platform.ARCADE:
             # options.append(Option.ARCADE_DATABASE)
             options.append(Option.ARCADE_EMULATOR)
             options.append(Option.MAME_ARTWORK)
@@ -50,6 +52,9 @@ class PlatformSettingsDialog(fsui.Window):
             # options.append(Option.C64_DATABASE)
             options.append(Option.C64_PALETTE)
             options.append(Option.VICE_AUDIO_DRIVER)
+        elif platform == Platform.CPC:
+            # options.append(Option.CPC_DATABASE)
+            options.append(Option.CPC_EMULATOR)
         elif platform == Platform.GBA:
             # options.append(Option.NES_DATABASE)
             # options.append(Option.GBA_EMULATOR)
@@ -92,6 +97,9 @@ class PlatformSettingsDialog(fsui.Window):
         elif platform == Platform.ST:
             # options.append(Option.ST_DATABASE)
             options.append(Option.ST_EMULATOR)
+        elif platform == Platform.ZXS:
+            # options.append(Option.ZXS_DATABASE)
+            options.append(Option.ZXS_EMULATOR)
         return options
 
 

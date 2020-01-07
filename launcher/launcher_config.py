@@ -125,6 +125,8 @@ cfg = [
     (Option.A7800_MODEL, "", "checksum", "sync"),
     (Option.A7800_PORT_1_TYPE, "", "checksum", "sync"),
     (Option.A7800_PORT_2_TYPE, "", "checksum", "sync"),
+    (Option.CPC_MODEL, "", "checksum", "sync"),
+    (Option.COMMAND, "", "checksum", "sync"),
     (Option.NES_MODEL, "", "checksum", "sync"),
     (Option.C64_MODEL, "", "checksum", "sync"),
     (Option.CARTRIDGE_SLOT, "", "checksum", "sync"),

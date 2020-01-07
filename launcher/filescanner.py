@@ -69,6 +69,9 @@ class FileScanner(object):
             self.extensions.add(".bin")  # bios images
 
             # Commodore 64
+            self.extensions.add(".d64")
+            self.extensions.add(".tap")
+            self.extensions.add(".t64")
 
             # DOS / GOG
             # self.extensions.add(".mp3")

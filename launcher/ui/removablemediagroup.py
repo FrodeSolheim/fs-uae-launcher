@@ -2,8 +2,10 @@ import fsui
 from fsgs.amiga.amiga import Amiga
 from fsgs.option import Option
 from fsgs.platform import Platform
+from fsgs.platforms.cpc.cpcconstants import CPC_MODEL_464
 from fsgs.platforms.commodore64 import C64_MODEL_C64C_1541_II
-from fsgs.platforms.zxs.spectrumplatform import ZXS_MODEL_PLUS3
+from fsgs.platforms.zxspectrum import ZXS_MODEL_PLUS3
+from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS
@@ -21,6 +23,7 @@ class RemovableMediaGroup(FloppiesGroup):
         self.__amiga_model = ""
         self._main = main
         self._c64_model = ""
+        self._cpc_model = ""
         self._zxs_model = ""
 
         self._ines_header_widget = INesHeaderWidget(self)
@@ -29,6 +32,9 @@ class RemovableMediaGroup(FloppiesGroup):
         self._a78_header_widget = A78HeaderWidget(self)
         self._a78_header_widget.hide()
         self.layout.add(self._a78_header_widget, fill=True)
+        self._command_widget = CommandWidget(self)
+        self._command_widget.hide()
+        self.layout.add(self._command_widget, fill=True)
 
         self.update_media_type()
 
@@ -38,6 +44,7 @@ class RemovableMediaGroup(FloppiesGroup):
                 Option.PLATFORM,
                 Option.AMIGA_MODEL,
                 Option.C64_MODEL,
+                Option.CPC_MODEL,
                 Option.ZXS_MODEL,
             ],
         )
@@ -54,6 +61,10 @@ class RemovableMediaGroup(FloppiesGroup):
         self._c64_model = value
         self.update_media_type()
 
+    def on_cpc_model_config(self, value):
+        self._cpc_model = value
+        self.update_media_type()
+
     def on_zxs_model_config(self, value):
         self._zxs_model = value
         self.update_media_type()
@@ -67,7 +78,10 @@ class RemovableMediaGroup(FloppiesGroup):
             else:
                 self.set_mode(self.TAPE_MODE)
         elif self.__platform in [Platform.CPC]:
-            self.set_mode(self.TAPE_MODE)
+            if self._cpc_model == CPC_MODEL_464:
+                self.set_mode(self.TAPE_MODE)
+            else:
+                self.set_mode(self.FLOPPY_MODE)
         elif self.__platform in [Platform.DOS]:
             self.set_mode(self.FLOPPY_MODE)
         elif self.__platform in [Platform.PSX]:
@@ -86,15 +100,23 @@ class RemovableMediaGroup(FloppiesGroup):
             if self.__platform == Platform.A7800:
                 self.selectors[1].hide()
                 self._a78_header_widget.show()
+                self._command_widget.hide()
+                self._ines_header_widget.hide()
+            elif self.__platform in [Platform.CPC, Platform.DOS, Platform.ZXS]:
+                self.selectors[1].hide()
+                self._a78_header_widget.hide()
+                self._command_widget.show()
                 self._ines_header_widget.hide()
             elif self.__platform == Platform.NES:
                 # if self.selectors[1].is_visible():
                 self.selectors[1].hide()
                 self._a78_header_widget.hide()
+                self._command_widget.hide()
                 self._ines_header_widget.show()
             else:
                 # if not self.selectors[1].is_visible():
                 self.selectors[1].show()
+                self._command_widget.hide()
                 self._a78_header_widget.hide()
                 self._ines_header_widget.hide()
             self.layout.update()
@@ -171,3 +193,32 @@ class A78HeaderWidget(fsui.Panel):
     def on_text_changed(self):
         # LauncherConfig.set("nes_ines_header", self.text_field.get_text())
         pass
+
+
+class CommandWidget(fsui.Panel):
+    def __init__(self, parent):
+        fsui.Panel.__init__(self, parent)
+        self.layout = fsui.VerticalLayout()
+        hori_layout = fsui.HorizontalLayout()
+        self.layout.add(hori_layout, fill=True, margin=10)
+
+        label = fsui.Label(self, gettext("Command:"))
+        hori_layout.add(label, fill=True, margin_right=10)
+
+        self.text_field = fsui.TextField(self, "")
+        self.text_field.on_changed = self.on_text_changed
+        # self.text_field.disable()
+        hori_layout.add(self.text_field, expand=True)
+
+        # self.help_button = HelpButton(
+        #     self, "https://fs-uae.net/docs/options/nes-ines-header")
+        # hori_layout.add(self.help_button, margin_left=10)
+
+        ConfigBehavior(self, [Option.COMMAND])
+
+    def on_command_config(self, value):
+        if value != self.text_field.get_text():
+            self.text_field.set_text(value)
+
+    def on_text_changed(self):
+        LauncherConfig.set("command", self.text_field.get_text())

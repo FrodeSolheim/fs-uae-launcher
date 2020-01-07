@@ -62,7 +62,7 @@ class RetroArchDriver(GameDriver):
         f.close()
 
         with open(self.retroarch_config_file.path, "w", encoding="UTF-8") as f:
-        # with self.open_retroarch_options() as f:
+            # with self.open_retroarch_options() as f:
             self.write_retroarch_config(f)
             self.write_retroarch_input_config(f)
             self.write_retroarch_video_config(f)
@@ -558,7 +558,7 @@ class RetroArchDriver(GameDriver):
             # f.write("video_vsync = false\n")
             f.write("audio_sync = false\n")
             f.write("vrr_runloop_enable = true\n")
-            
+
             f.write("video_vsync = true\n")
             f.write("video_hard_sync = true\n")
 
@@ -574,7 +574,6 @@ class RetroArchDriver(GameDriver):
             f.write("video_hard_sync = true\n")
         else:
             f.write("video_vsync = false\n")
-
 
         # aspect_ratio_index = 22
         # custom_viewport_width = 0

@@ -889,7 +889,7 @@ class GameDriver:
         print("[CWD]", kwargs["cwd"])
         print("")
 
-	# No longer needed since Python 3.4?
+        # No longer needed since Python 3.4?
         # if System.windows:
         #     kwargs["close_fds"] = True
 

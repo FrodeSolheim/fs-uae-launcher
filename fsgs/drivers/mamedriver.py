@@ -322,7 +322,7 @@ class MameDriver(GameDriver):
             # already a list
             pass
 
-    def configure_input(self):
+    def configure_input(self, extra_port_config=None):
         # return
         # FIXME: ignoring input
         self.default_xml.append("        <input>\n")
@@ -392,6 +392,10 @@ class MameDriver(GameDriver):
             xml.append("            </port>\n")
 
         self.add_default_shortcuts(self.mame_shortcuts())
+
+        for item in extra_port_config:
+            self.game_xml.append("            ")
+            self.game_xml.append(item)
 
         self.default_xml.append("        </input>\n")
         self.game_xml.append("        </input>\n")
@@ -819,8 +823,8 @@ mame_key_codes = {
     "LALT": "LALT",
     # "RMETA": 309,
     # "LMETA": 310,
-    # "LSUPER": 311,
-    # "RSUPER": 312,
+    "LSUPER": "LWIN",
+    "RSUPER": "RWIN",
     # "MODE": 313,
     # "COMPOSE": 314,
     # "HELP": 315,

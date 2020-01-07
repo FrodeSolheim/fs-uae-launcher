@@ -56,19 +56,13 @@ NO_CONTROLLER = {
 ST_PORTS = [
     {
         "description": "Port 1",
-        "types": [
-            ST_JOYSTICK_CONTROLLER,
-            NO_CONTROLLER,
-        ],
+        "types": [ST_JOYSTICK_CONTROLLER, NO_CONTROLLER,],
         "type_option": "st_port_1_type",
         "device_option": "st_port_1",
     },
     {
         "description": "Port 2",
-        "types": [
-            ST_JOYSTICK_CONTROLLER,
-            NO_CONTROLLER,
-        ],
+        "types": [ST_JOYSTICK_CONTROLLER, NO_CONTROLLER,],
         "type_option": "st_port_2_type",
         "device_option": "st_port_2",
     },
@@ -239,9 +233,9 @@ class HatariDriver(GameDriver):
             f.write("nMemorySize = 0\n")
         else:
             print("WARNING: UNKNOWN ST MEMORY SIZE")
-        
+
         self.configure_input(f)
-    
+
     def configure_input(self, f):
 
         for port in self.ports:
@@ -250,6 +244,8 @@ class HatariDriver(GameDriver):
             # port_index = i
             # joystick_mode = 0
             # joystick_mode = 1  # Real joystick
+
+            joystick_index = 0
             if port.device.type == "keyboard":
                 joystick_mode = 2  # Keyboard emulation
             elif port.device.type == "mouse":
@@ -258,9 +254,7 @@ class HatariDriver(GameDriver):
                 joystick_mode = 0
             else:
                 joystick_mode = 1
-
-            # FIXME
-            joystick_index = -1
+                joystick_index = port.device.index
 
             hatari_port = port.index
             if hatari_port < 2:

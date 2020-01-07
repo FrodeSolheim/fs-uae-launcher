@@ -21,3 +21,7 @@ package_map = {
 }
 packages = sorted(package_map.keys())
 scripts = ["fs-uae-launcher"]
+extra_dist = [
+    "docs/compiling.md",
+    "docs/file-database.md",
+]

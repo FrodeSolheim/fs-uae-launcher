@@ -49,7 +49,14 @@ class FSUAEAmigaDriver(GameDriver):
         super().__init__(fsgc)
         self.temp_config_file = None
         self.launch_handler = None
-        self.emulator = Emulator("fs-uae")
+
+        emulator = self.options[Option.AMIGA_EMULATOR]
+        if emulator == "fs-uae-3.0":
+            self.emulator = Emulator("fs-uae-3.0")
+        elif emulator == "fs-uae-2.8":
+            self.emulator = Emulator("fs-uae-2.8")
+        else:
+            self.emulator = Emulator("fs-uae")
 
     def prepare(self):
         print("FSUAEAmigaDriver.prepare")
