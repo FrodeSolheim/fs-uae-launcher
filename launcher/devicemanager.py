@@ -58,6 +58,10 @@ class DeviceManager:
         return cls.joystick_data[device][4]
 
     @classmethod
+    def joystick_sdl_name(cls, device):
+        return cls.sdl_names[device]
+
+    @classmethod
     def init(cls):
         if cls.initialized:
             return
@@ -129,10 +133,13 @@ class DeviceManager:
                     guid,
                 )
                 continue
-            if line.startswith("SDLName:"):
-                value = line.split(" ")[1]
+            if line.startswith("SDLName: "):
+                value = line[len("SDLName: "):]
                 # Strip quotes
                 cls.sdl_names[last_joystick] = value[1:-1]
+                # print("\n\n\n\n\n", line)
+                # print(last_joystick, "<-", value[1:-1])
+                # print("\n")
 
             device_type, name = line.split(" ", 1)
             # if name.lower() in ["keyboard", "mouse"]:

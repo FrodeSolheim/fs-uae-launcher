@@ -336,6 +336,15 @@ class Commodore64ViceDriver(GameDriver):
         f.write("\n")
 
     def configure_input(self, f):
+        if self.fsemu:
+            self.configure_input_fsemu(f)
+        else:
+            self.configure_input_vanilla(f)
+
+    def configure_input_fsemu(self, f):
+        f.write("KeymapIndex=1\n")  # Use positional keys
+
+    def configure_input_vanilla(self, f):
         # FIXME: Enable when ready
         f.write("KeymapIndex=1\n")  # Use positional keys
 

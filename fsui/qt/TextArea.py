@@ -7,7 +7,13 @@ class TextArea(fsui.qt.QTextEdit, WidgetMixin):
     changed = fsui.qt.Signal()
 
     def __init__(
-        self, parent, text="", read_only=False, font_family=None, border=True
+        self,
+        parent,
+        text="",
+        read_only=False,
+        font_family=None,
+        border=True,
+        line_wrap=True,
     ):
         fsui.qt.QTextEdit.__init__(self, "", parent.get_container())
         # Widget.__init__(self, parent)
@@ -20,6 +26,8 @@ class TextArea(fsui.qt.QTextEdit, WidgetMixin):
             font = fsui.qt.QFont("Courier")
             # font.setStyleHint(QtGui.QFont.TypeWriter)
             self.setFont(font)
+        if line_wrap == False:
+            self.setLineWrapMode(fsui.qt.QTextEdit.NoWrap)
         if text:
             self.append_text(text)
         self.textChanged.connect(self.__text_changed)

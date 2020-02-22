@@ -37,10 +37,10 @@ CPC_NO_CONTROLLER = {
 CPC_PORTS = [
     {
         "description": "Joystick Port 1",
-        "types": [CPC_NO_CONTROLLER, CPC_JOYSTICK,],
+        "types": [CPC_NO_CONTROLLER, CPC_JOYSTICK],
         "type_option": "cpc_port_1_type",
         "device_option": "cpc_port_1",
-    },
+    }
 ]
 
 # noinspection SpellCheckingInspection

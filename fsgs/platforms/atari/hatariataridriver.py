@@ -56,13 +56,13 @@ NO_CONTROLLER = {
 ST_PORTS = [
     {
         "description": "Port 1",
-        "types": [ST_JOYSTICK_CONTROLLER, NO_CONTROLLER,],
+        "types": [ST_JOYSTICK_CONTROLLER, NO_CONTROLLER],
         "type_option": "st_port_1_type",
         "device_option": "st_port_1",
     },
     {
         "description": "Port 2",
-        "types": [ST_JOYSTICK_CONTROLLER, NO_CONTROLLER,],
+        "types": [ST_JOYSTICK_CONTROLLER, NO_CONTROLLER],
         "type_option": "st_port_2_type",
         "device_option": "st_port_2",
     },

@@ -431,6 +431,16 @@ class Window(QObject):
     def size(self):
         return self.width(), self.height()
 
+    def unscaled_position(self):
+        x, y = self._real_window.position()
+        scale = self._real_window.devicePixelRatioF()
+        return round(x * scale), round(y * scale)
+
+    def unscaled_size(self):
+        w, h = self.size()
+        scale = self._real_window.devicePixelRatioF()
+        return round(w * scale), round(h * scale)
+
     def width(self):
         return self._real_window.width()
 

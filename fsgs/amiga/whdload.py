@@ -102,35 +102,41 @@ def fix_whdload_args(args: List[str]) -> str:
     .info "parser", the latter being the most likely.
     """
     args_str = " ".join(args)
-    if args_str.startswith("KingsQuestEnhanced.Slave PRELOAD  /\x8c"):
-        args_str = "KingsQuestEnhanced.Slave PRELOAD"
-    elif args_str.startswith("PsychoKillerCDTV.Slave PRELOAD 3\x11"):
-        args_str = "PsychoKillerCDTV.Slave PRELOAD"
-    elif args_str.startswith("QuestForGlory.Slave PRELOAD \x00"):
-        args_str = "QuestForGlory.Slave PRELOAD"
-    elif args_str.startswith("Lorna.Slave PRELOAD \n"):
-        args_str = "Lorna.Slave PRELOAD"
+    if args_str.startswith("AlienBreed.Slave PRELOAD \x11"):
+        args_str = "AlienBreed.Slave PRELOAD"
     elif args_str.startswith("BrainBlasters.Slave PRELOAD D\x88"):
         args_str = "BrainBlasters.Slave PRELOAD"
-    elif args_str.startswith("MikroMortalTennis.slave PRELOAD fÿÝ"):
-        args_str = "MikroMortalTennis.slave PRELOAD"
     elif args_str.startswith("BreakOutRevolutionAGA.slave PRELOAD \x0f"):
         args_str = "BreakOutRevolutionAGA.slave PRELOAD"
+    elif args_str.startswith("KingsQuestEnhanced.Slave PRELOAD  /\x8c"):
+        args_str = "KingsQuestEnhanced.Slave PRELOAD"
     elif args_str.startswith("KingsQuestEnhancedMT32.Slave PRELOAD /\x8c"):
         args_str = "KingsQuestEnhancedMT32.Slave PRELOAD"
-    elif args_str.startswith("Turbo.Slave PRELOAD \x00"):
-        args_str = "Turbo.Slave PRELOAD"
-    elif args_str.startswith("WinterChallengeNTSC.slave PRELOAD NTSC î\x00"):
-        args_str = "WinterChallengeNTSC.slave PRELOAD NTSC"
-    elif args_str.startswith("OscarCD32NTSC.Slave PRELOAD NTSC Ì"):
-        args_str = "OscarCD32NTSC.Slave PRELOAD NTSC"
-    elif args_str.startswith("AlienBreed.Slave PRELOAD \x11"):
-        args_str = "AlienBreed.Slave PRELOAD"
     elif args_str.startswith(
         "LittleComputerPeopleNTSC.Slave PRELOAD NTSC MAG\x00"
     ):
         # FIXME: Should MAG be included?
         args_str = "LittleComputerPeopleNTSC.Slave PRELOAD NTSC"
+    elif args_str.startswith("Lorna.Slave PRELOAD \n"):
+        args_str = "Lorna.Slave PRELOAD"
+    elif args_str.startswith("MikroMortalTennis.slave PRELOAD fÿÝ"):
+        args_str = "MikroMortalTennis.slave PRELOAD"
+    elif args_str.startswith("OscarAGA.Slave PRELOAD Ì"):
+        args_str = "OscarAGA.Slave PRELOAD"
+    elif args_str.startswith("OscarCD32.Slave PRELOAD Ì"):
+        args_str = "OscarCD32.Slave PRELOAD"
+    elif args_str.startswith("OscarCD32NTSC.Slave PRELOAD NTSC Ì"):
+        args_str = "OscarCD32NTSC.Slave PRELOAD NTSC"
+    elif args_str.startswith("PsychoKillerCDTV.Slave PRELOAD 3\x11"):
+        args_str = "PsychoKillerCDTV.Slave PRELOAD"
+    elif args_str.startswith("QuestForGlory.Slave PRELOAD \x00"):
+        args_str = "QuestForGlory.Slave PRELOAD"
+    elif args_str.startswith("StreetFighter2.Slave PRELOAD »"):
+        args_str = "StreetFighter2.Slave PRELOAD"
+    elif args_str.startswith("Turbo.Slave PRELOAD \x00"):
+        args_str = "Turbo.Slave PRELOAD"
+    elif args_str.startswith("WinterChallengeNTSC.slave PRELOAD NTSC î\x00"):
+        args_str = "WinterChallengeNTSC.slave PRELOAD NTSC"
     return args_str.strip()
 
 

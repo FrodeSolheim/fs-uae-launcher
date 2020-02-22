@@ -763,8 +763,8 @@ class GameDriver:
         if LauncherWindow.current() is None:
             return
 
-        main_w, main_h = LauncherWindow.current().get_size()
-        main_x, main_y = LauncherWindow.current().get_position()
+        main_w, main_h = LauncherWindow.current().unscaled_size()
+        main_x, main_y = LauncherWindow.current().unscaled_position()
 
         x = main_x + (main_w - width) // 2
         y = main_y + (main_h - height) // 2
@@ -781,10 +781,13 @@ class GameDriver:
             main_x + main_w // 2, main_y + main_h // 2
         )
 
-        env["FSEMU_WINDOW_X"] = str(main_x + (main_w - 960) // 2)
-        env["FSEMU_WINDOW_Y"] = str(main_y + (main_h - 540) // 2)
-        env["FSEMU_WINDOW_W"] = str(960)
-        env["FSEMU_WINDOW_H"] = str(540)
+        env["FSEMU_WINDOW_CENTER_X"] = str(main_x + main_w // 2)
+        env["FSEMU_WINDOW_CENTER_Y"] = str(main_y + main_h // 2)
+
+        # env["FSEMU_WINDOW_X"] = str(main_x + (main_w - 960) // 2)
+        # env["FSEMU_WINDOW_Y"] = str(main_y + (main_h - 540) // 2)
+        # env["FSEMU_WINDOW_W"] = str(960)
+        # env["FSEMU_WINDOW_H"] = str(540)
 
         # args.append("--window-x={0}".format(x))
         # args.append("--window-y={0}".format(y))

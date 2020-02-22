@@ -52,11 +52,7 @@ SNES_CONTROLLER = {
     "description": "SNES Controller",
     "mapping_name": "supernintendo",
 }
-SNES_MOUSE = {
-    "type": "mouse",
-    "description": "SNES Mouse",
-    "mapping_name": "",
-}
+SNES_MOUSE = {"type": "mouse", "description": "SNES Mouse", "mapping_name": ""}
 SNES_SUPERSCOPE = {
     "type": "superscope",
     "description": "Super Scope",
@@ -79,9 +75,7 @@ SNES_PORTS = [
 ]
 
 # noinspection SpellCheckingInspection
-SNES_ROMS = {
-    "97e352553e94242ae823547cd853eecda55c20f0": "spc700.rom",
-}
+SNES_ROMS = {"97e352553e94242ae823547cd853eecda55c20f0": "spc700.rom"}
 
 
 class MameSnesDriver(MessDriver):
