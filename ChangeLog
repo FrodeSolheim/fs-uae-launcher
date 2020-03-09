@@ -1,3 +1,7 @@
+Version 3.0.3:
+
+* Fixed crash when starting the Launcher in a KDE environment.
+
 Version 3.0.2:
 
 * Another fix for global WHDLoad quit key.
