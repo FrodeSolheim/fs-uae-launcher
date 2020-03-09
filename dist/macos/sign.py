@@ -10,9 +10,11 @@ tries = 0
 while do_sign:
     args = [
         "codesign",
-        "--verbose",
         "-f",
         "--deep",
+        "--options=runtime",
+        "--entitlements",
+        "Entitlements.plist",
         "-s",
         "Developer ID Application",
         sys.argv[1],

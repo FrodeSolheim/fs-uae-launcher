@@ -1,3 +1,15 @@
+Version 3.0.2:
+
+* Another fix for global WHDLoad quit key.
+* Fixed a misleading warning when cyberstorm ROM was not found (3.0.1).
+
+Version 3.0.1:
+
+* Scanner bug prevented Conquests of the Longbow WHDLoad to be recognized.
+* The correct kickstart wasn't always loaded.
+* Cloanto ROMs were not always decrypted.
+* Fix for global WHDLoad quit key.
+
 Version 3.0.0:
 
 * Fixes a problem when launching WHDLoad archived games with OpenRetro

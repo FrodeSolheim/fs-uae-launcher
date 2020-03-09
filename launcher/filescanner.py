@@ -276,7 +276,8 @@ class FileScanner(object):
             name,
         )
 
-        f = archive.open(path)
+        f = None
+        sha1 = None
         raw_sha1_obj = hashlib.sha1()
         filter_sha1_obj = hashlib.sha1()
         filter_name = ""
@@ -291,6 +292,7 @@ class FileScanner(object):
             # Locker uploader or other tools expecting on-disk data to match
             # the database checksum (this also applies to the Cloanto ROM
             # hack). Should be done properly.
+            f = archive.open(path)
             data = f.read(16)
             if len(data) == 16 and data.startswith(b"NES\x1a"):
                 print("Stripping iNES header for", path)
@@ -298,12 +300,14 @@ class FileScanner(object):
             raw_sha1_obj.update(data)
         elif ext == ".a78":
             # FIXME: Check if 128 is a fixed or variable number of bytes
+            f = archive.open(path)
             data = f.read(128)
             if len(data) == 128 and data[1:10] == b"ATARI7800":
                 print("Stripping A78 header for", path)
                 filter_name = "Skip(128)"
             raw_sha1_obj.update(data)
         elif ext == ".smc":
+            f = archive.open(path)
             data = f.read(512)
             if len(data) == 512 and all(map(lambda x: x == 0, data[48:])):
                 print("Stripping SMC header for", path)
@@ -312,25 +316,64 @@ class FileScanner(object):
         elif ext in [".v64", ".n64"]:
             filter_name = "ByteSwapWords"
 
-        while True:
-            if self.stop_check():
-                return
-            data = f.read(65536)
-            if not data:
-                break
-            raw_sha1_obj.update(data)
-            if filter_name.startswith("Skip("):
-                filter_sha1_obj.update(data)
-                filter_size += len(data)
-            elif filter_name == "ByteSwapWords":
-                for i in range(0, len(data), 2):
-                    filter_sha1_obj.update(data[i + 1 : i + 2])
-                    filter_sha1_obj.update(data[i : i + 1])
-                    filter_size += 2
-                # FIXME: Handle it when we get an odd number of bytes..
-                assert len(data) % 2 == 0
-        sha1 = raw_sha1_obj.hexdigest()
-        filter_sha1 = filter_sha1_obj.hexdigest()
+        def is_sha1(name):
+            if not len(name) == 40:
+                return False
+            name = name.lower()
+            for c in name:
+                if c not in "0123456789abcdef":
+                    return False
+            return True
+
+        if filter_name:
+            # We have a filter, so we must calculate checksum of filtered contents
+            pass
+        else:
+            # Try to see if we can deduce the checksum of the contained file.
+            # Supports symlinks to compressed files.
+            real_path = os.path.realpath(archive.path)
+            real_name = os.path.basename(real_path)
+            real_name = real_name.lower()
+            real_name, real_ext = os.path.splitext(real_name)
+            if real_ext in [".xz", ".gz"]:
+                if is_sha1(real_name):
+                    if parent is not None:
+                        # We assume this is the correct SHA-1, avoids having
+                        # to decompress and calculate the SHA-1
+                        sha1 = real_name
+                    else:
+                        # Assume we are not interested in the parent's SHA-1
+                        sha1 = "ffffffffffffffffffffffffffffffffffffffff"
+
+        if sha1 is None:
+            if f is None:
+                f = archive.open(path)
+            while True:
+                if self.stop_check():
+                    return
+                data = f.read(65536)
+                if not data:
+                    break
+                raw_sha1_obj.update(data)
+                if filter_name.startswith("Skip("):
+                    filter_sha1_obj.update(data)
+                    filter_size += len(data)
+                elif filter_name == "ByteSwapWords":
+                    # We don't really expect odd number of bytes when
+                    # byteswapping words, but this handles the cases where we
+                    # have "false positives" that aren't supposed to be
+                    # byteswapped, and this prevents errors.
+                    data_size = len(data)
+                    for i in range(0, len(data), 2):
+                        if data_size - i >= 2:
+                            filter_sha1_obj.update(data[i + 1 : i + 2])
+                            filter_sha1_obj.update(data[i : i + 1])
+                            filter_size += 2
+                        else:
+                            filter_sha1_obj.update(data[i : i + 1])
+                            filter_size += 1
+            sha1 = raw_sha1_obj.hexdigest()
+            filter_sha1 = filter_sha1_obj.hexdigest()
 
         if ext == ".rom":
             try:
@@ -365,11 +408,17 @@ class FileScanner(object):
 
         if parent:
             path = "#/" + path.rsplit("#/", 1)[1]
+        if parent is not None:
+            # FIXME: size is incorrect here -- it's the size of the parent
+            # file currently (not a big problem), setting it to -1 instead
+            # for now.
+            size = -1
         file_id = database.add_file(
             path=path, sha1=sha1, mtime=mtime, size=size, parent=parent
         )
         self.files_added += 1
-        self.bytes_added += size
+        if parent is None:
+            self.bytes_added += size
 
         if filter_name:
             if parent:

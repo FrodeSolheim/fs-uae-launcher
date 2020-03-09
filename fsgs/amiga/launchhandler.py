@@ -194,9 +194,12 @@ class LaunchHandler(object):
                 )
             )
 
+        use_temp_kickstarts_dir = False
+
         for config_key, default_roms in roms:
             print("[ROM]", config_key, default_roms)
             src = self.config[config_key]
+            print(src)
             if not src:
                 for sha1 in default_roms:
                     print("[ROM] Trying", sha1)
@@ -226,8 +229,6 @@ class LaunchHandler(object):
                         )
                     )
                 )
-
-            use_temp_kickstarts_dir = False
 
             dest = os.path.join(self.temp_dir, os.path.basename(src))
 
@@ -272,20 +273,30 @@ class LaunchHandler(object):
                         else:
                             print("[ROM] Trying", path)
             stream = None
-            try:
-                stream = self.fsgs.file.open(src)
-                if stream is None:
-                    raise FileNotFoundError(src)
-            except FileNotFoundError:
-                raise TaskFailure(
-                    gettext(
-                        "Cannot find required ROM "
-                        "file: {name}".format(name=repr(org_src))
+            # FIXME: prepare_roms should be rewritten, it's kind of crap.
+            # Rom patching and decryption should be handled differently. Should
+            # use file database filters, and decryption via rom.key should only
+            # be supported when using uncompressed files directly on disk.
+            if not src or not os.path.exists(src):
+                try:
+                    stream = self.fsgs.file.open(src)
+                    if stream is None:
+                        raise FileNotFoundError(src)
+                except FileNotFoundError:
+                    raise TaskFailure(
+                        gettext(
+                            "Cannot find required ROM "
+                            "file: {name}".format(name=repr(org_src))
+                        )
                     )
-                )
             with open(dest, "wb") as f:
                 if stream:
-                    f.write(stream.read())
+                    print("[ROM] From stream => {}".format(dest))
+                    rom = {}
+                    rom["data"] = stream.read()
+                    rom["sha1"] = hashlib.sha1(rom["data"]).hexdigest()
+                    ROMManager.patch_rom(rom)
+                    f.write(rom["data"])
                 else:
                     archive = Archive(src)
                     ROMManager.decrypt_archive_rom(archive, src, file=f)
@@ -293,8 +304,8 @@ class LaunchHandler(object):
                     self.config[config_key] = os.path.basename(src)
                 else:
                     self.config[config_key] = dest
-            if use_temp_kickstarts_dir:
-                self.config["kickstarts_dir"] = self.temp_dir
+        if use_temp_kickstarts_dir:
+            self.config["kickstarts_dir"] = self.temp_dir
 
     @staticmethod
     def expand_default_path(src, default_dir):
@@ -689,6 +700,14 @@ class LaunchHandler(object):
         whdload_args = self.config.get("x_whdload_args", "").strip()
         hdinst_args = self.config.get("x_hdinst_args", "").strip()
         hd_startup = self.config.get("hd_startup", "").strip()
+
+        if not whdload_args:
+            # The WHDLoad override setting and config key does not quite
+            # follow the usual semantics of configs/settings unfortunately, so
+            # we really want whdload_quit_key to be cleared when not using
+            # WHDLoad. Otherwise the emulator will try to quit everything with
+            # the WHDLoad quit key (when overriden).
+            self.config["whdload_quit_key"] = ""
 
         if not whdload_args and not hdinst_args and not hd_startup:
             return
