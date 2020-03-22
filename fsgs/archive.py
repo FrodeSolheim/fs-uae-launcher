@@ -5,6 +5,7 @@ import os
 import traceback
 from io import BytesIO
 
+from fsbc.system import windows
 from fspy.zipfile import ZipFile
 
 # This list is also used by the filescanner to add to recognized file
@@ -172,6 +173,8 @@ class LhaHandler(object):
         return False
 
     def encode_name(self, name):
+        if windows and name.endswith("%2e"):
+            name = "{}.".format(name[:-3])
         name = name.replace("\\", "/")
         name = name.replace("%5f", "\\")
         name = name.replace("%25", "%")
@@ -187,6 +190,8 @@ class LhaHandler(object):
 
         name = name.replace("%", "%25")
         name = name.replace("\\", "%5f")
+        if windows and name.endswith("."):
+            name = "{}%2e".format(name[:-1])
         name = name.replace("/", os.sep)
         return name
 
