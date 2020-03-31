@@ -4,7 +4,6 @@ import os
 import shutil
 import tempfile
 import traceback
-import unittest
 import zlib
 from typing import Dict, List
 from urllib.parse import unquote
@@ -480,6 +479,10 @@ class LaunchHandler(object):
             self.unpack_game_hard_drive(index, src)
             self.disable_save_states()
             return
+        elif src.startswith("file_list:"):
+            self.unpack_game_hard_drive(index, src)
+            self.disable_save_states()
+            return
         elif src.startswith("hd://template/workbench/"):
             self.prepare_workbench_hard_drive(index, src)
             self.disable_save_states()
@@ -590,11 +593,17 @@ class LaunchHandler(object):
 
     def unpack_game_hard_drive(self, drive_index, src):
         print("unpack_game_hard_drive", drive_index, src)
-        scheme, dummy, dummy, game_uuid, drive = src.split("/")
+        if src.startswith("file_list:"):
+            _scheme, dummy, drive = src.split("/")
+            file_list = json.loads(self.fsgs.config.get("file_list"))
+        else:
+            _scheme, dummy, dummy, game_uuid, drive = src.split("/")
+            file_list = self.get_file_list_for_game_uuid(game_uuid)
+
         drive_prefix = drive + "/"
         dir_name = "DH{0}".format(drive_index)
         dir_path = os.path.join(self.temp_dir, dir_name)
-        file_list = self.get_file_list_for_game_uuid(game_uuid)
+
         for file_entry in file_list:
             if self.stop_flag:
                 return
@@ -606,15 +615,16 @@ class LaunchHandler(object):
             # extract Amiga relative path and convert each path component
             # to host file name (where needed).
 
-            amiga_rel_path = name[len(drive_prefix) :]
-            print("amiga_rel_path", amiga_rel_path)
-            amiga_rel_parts = amiga_rel_path.split("/")
-            for i, part in enumerate(amiga_rel_parts):
-                # part can be blank if amiga_rel_parts is a directory
-                # (ending with /)
-                if part:
-                    amiga_rel_parts[i] = amiga_filename_to_host_filename(part)
-            amiga_rel_path = "/".join(amiga_rel_parts)
+            # amiga_rel_path = name[len(drive_prefix) :]
+            # print("amiga_rel_path", amiga_rel_path)
+            # amiga_rel_parts = amiga_rel_path.split("/")
+            # for i, part in enumerate(amiga_rel_parts):
+            #     # part can be blank if amiga_rel_parts is a directory
+            #     # (ending with /)
+            #     if part:
+            #         amiga_rel_parts[i] = amiga_filename_to_host_filename(part)
+            # amiga_rel_path = "/".join(amiga_rel_parts)
+            amiga_rel_path = amiga_path_to_host_path(name[len(drive_prefix) :])
 
             dst_file = os.path.join(dir_path, amiga_rel_path)
             print(repr(dst_file))
@@ -1161,27 +1171,47 @@ class LaunchHandler(object):
         archive = Archive(path)
         print(archive)
         print(archive.get_handler())
-        for name in archive.list_files():
+        for entry in archive.list_files():
             if self.stop_flag:
                 return
 
-            print(name)
-            n = name[len(path) + 2 :]
-            out_path = os.path.join(destination, n)
+            print(entry)
+            n = entry[len(path) + 2 :]
+            amiga_rel_path = amiga_path_to_host_path(n)
+
+            out_path = os.path.join(destination, amiga_rel_path)
             print("out path", out_path)
 
-            if name.endswith("/"):
+            if entry.endswith("/"):
                 os.makedirs(out_path)
             else:
                 if not os.path.exists(os.path.dirname(out_path)):
                     os.makedirs(os.path.dirname(out_path))
-                f = archive.open(name)
+                f = archive.open(entry)
                 with open(out_path, "wb") as out_f:
                     while True:
                         data = f.read(65536)
                         if not data:
                             break
                         out_f.write(data)
+                # FIXME: Extract real timestamps from archive
+                # FIXME: Real metadata from archive
+                # noinspection SpellCheckingInspection
+                metadata = [
+                    "----rwed",
+                    " ",
+                    "2000-01-01 00:00:00.00",
+                    " ",
+                    "",
+                    "\n",
+                ]
+                info = archive.getinfo(entry)
+                if info.comment:
+                    # print(info.comment)
+                    # raise Exception("gnit")
+                    metadata[4] = self.encode_file_comment(info.comment)
+                with open(out_path + ".uaem", "wb") as out_file:
+                    out_file.write("".join(metadata).encode("UTF-8"))
 
     def copy_folder_tree(self, source_path, dest_path, overwrite=False):
         for item in os.listdir(source_path):
@@ -1201,6 +1231,19 @@ class LaunchHandler(object):
                 if overwrite or not os.path.exists(dest_item_path):
                     print("copy", repr(item_path), "to", repr(dest_item_path))
                     shutil.copy(item_path, dest_item_path)
+
+
+def amiga_path_to_host_path(amiga_rel_path):
+    # amiga_rel_path = amiga_path
+    print("amiga_rel_path", amiga_rel_path)
+    amiga_rel_parts = amiga_rel_path.split("/")
+    for i, part in enumerate(amiga_rel_parts):
+        # part can be blank if amiga_rel_parts is a directory
+        # (ending with /)
+        if part:
+            amiga_rel_parts[i] = amiga_filename_to_host_filename(part)
+    amiga_rel_path = "/".join(amiga_rel_parts)
+    return amiga_rel_path
 
 
 def amiga_filename_to_host_filename(amiga_name, ascii_only=False):
@@ -1409,36 +1452,3 @@ def is_sha1(s):
         if c not in "0123456789abcdef":
             return False
     return True
-
-
-class TestCase(unittest.TestCase):
-
-    # noinspection SpellCheckingInspection
-    def test_convert_amiga_file_name(self):
-        result = amiga_filename_to_host_filename("pro.i*riska")
-        self.assertEquals(result, "pro.i%2ariska")
-
-    # noinspection SpellCheckingInspection
-    def test_convert_amiga_file_name_2(self):
-        result = amiga_filename_to_host_filename("mypony.uaem")
-        self.assertEquals(result, "mypony.uae%6d")
-
-    def test_convert_amiga_file_name_short(self):
-        result = amiga_filename_to_host_filename("t")
-        self.assertEquals(result, "t")
-
-    def test_convert_amiga_file_name_short_2(self):
-        result = amiga_filename_to_host_filename("t ")
-        self.assertEquals(result, "t%20")
-
-    def test_convert_amiga_file_name_lpt1(self):
-        result = amiga_filename_to_host_filename("LPT1")
-        self.assertEquals(result, "LP%541")
-
-    def test_convert_amiga_file_name_aux(self):
-        result = amiga_filename_to_host_filename("AUX")
-        self.assertEquals(result, "AU%58")
-
-
-if __name__ == "__main__":
-    unittest.main()

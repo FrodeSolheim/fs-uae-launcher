@@ -36,18 +36,13 @@ archive_extensions_xz = [".xz"]
 archive_extensions.extend(archive_extensions_xz)
 
 
+# FIXME: getinfo needs to work for everything (return dummy data if necessary)
+
+
 class ZipHandler(object):
     def __init__(self, path):
         self.path = path
         self.zip = ZipFile(self.path, "r")
-
-    def list_files(self, sub_path):
-        if sub_path:
-            return
-        return self.zip.namelist()
-
-    def open(self, name):
-        return self.zip.open(name)
 
     def exists(self, name):
         try:
@@ -56,6 +51,18 @@ class ZipHandler(object):
             return False
         else:
             return True
+
+    def getinfo(self, name):
+        # Needs tests!!
+        return self.zip.getinfo(name)
+
+    def list_files(self, sub_path):
+        if sub_path:
+            return
+        return self.zip.namelist()
+
+    def open(self, name):
+        return self.zip.open(name)
 
 
 class GzipHandler(object):
@@ -74,21 +81,21 @@ class GzipHandler(object):
                 "Unexpected extension {} in GzipHandler".format(ext)
             )
 
+    def exists(self, name):
+        return name == self.name
+
     def list_files(self, sub_path):
         return [self.name]
-
-    def read(self, name):
-        if name != self.name:
-            raise Exception("File not found")
-        return gzip.open(self.path, "rb").read()
 
     def open(self, name):
         if name != self.name:
             raise Exception("File not found")
         return gzip.open(self.path, "rb")
 
-    def exists(self, name):
-        return name == self.name
+    def read(self, name):
+        if name != self.name:
+            raise Exception("File not found")
+        return gzip.open(self.path, "rb").read()
 
 
 class XzHandler(object):
@@ -101,39 +108,27 @@ class XzHandler(object):
         else:
             raise Exception("Unexpected extension {} in XzHandler".format(ext))
 
+    def exists(self, name):
+        return name == self.name
+
     def list_files(self, sub_path):
         return [self.name]
-
-    def read(self, name):
-        if name != self.name:
-            raise Exception("File not found")
-        return lzma.open(self.path, "rb").read()
 
     def open(self, name):
         if name != self.name:
             raise Exception("File not found")
         return lzma.open(self.path, "rb")
 
-    def exists(self, name):
-        return name == self.name
+    def read(self, name):
+        if name != self.name:
+            raise Exception("File not found")
+        return lzma.open(self.path, "rb").read()
 
 
 class SevenZipHandler(object):
     def __init__(self, path):
         self.path = path
         self.zip = SevenZipFile(self.path, "r")
-
-    def list_files(self, sub_path):
-        if sub_path:
-            return
-        return self.zip.namelist()
-
-    def read(self, name):
-        return self.zip.read(name)
-
-    def open(self, name):
-        data = self.zip.read(name)
-        return io.BytesIO(data)
 
     def exists(self, name):
         try:
@@ -143,42 +138,23 @@ class SevenZipHandler(object):
         else:
             return True
 
+    def list_files(self, sub_path):
+        if sub_path:
+            return
+        return self.zip.namelist()
+
+    def open(self, name):
+        data = self.zip.read(name)
+        return io.BytesIO(data)
+
+    def read(self, name):
+        return self.zip.read(name)
+
 
 class LhaHandler(object):
     def __init__(self, path):
         self.path = path
-        self.zip = LhaFile(self.path, "r")
-
-    def list_files(self, sub_path):
-        if sub_path:
-            return
-        for name in self.zip.namelist():
-            # if name.endswith(str("/")):
-            #     continue
-            yield self.decode_name(name)
-
-    def open(self, name):
-        name = self.encode_name(name)
-        # LhaFile does not have open method
-        data = self.zip.read(name)
-        return io.BytesIO(data)
-
-    def exists(self, name):
-        name = self.encode_name(name)
-        items = self.zip.infolist()
-        for item in items:
-            if item.filename == name:
-                return True
-        return False
-
-    def encode_name(self, name):
-        name = name.replace("\\", "/")
-        name = name.replace("%5f", "\\")
-        name = name.replace("%25", "%")
-        # FIXME: a little hack here, LhaFile uses os.sep
-        # as path separator
-        name = name.replace("/", os.sep)
-        return name
+        self._lhafile = LhaFile(self.path, "r")
 
     def decode_name(self, name):
         # FIXME: a little hack here, LhaFile uses os.sep
@@ -186,9 +162,44 @@ class LhaHandler(object):
         name = name.replace(os.sep, "/")
 
         name = name.replace("%", "%25")
-        name = name.replace("\\", "%5f")
+        name = name.replace("\\", "%5c")
         name = name.replace("/", os.sep)
         return name
+
+    def encode_name(self, name):
+        name = name.replace("\\", "/")
+        name = name.replace("%5c", "\\")
+        name = name.replace("%25", "%")
+        # FIXME: a little hack here, LhaFile uses os.sep
+        # as path separator
+        name = name.replace("/", os.sep)
+        return name
+
+    def exists(self, name):
+        # FIXME: Maybe look up in NameToInfo instead for quicker lookups
+        name = self.encode_name(name)
+        items = self._lhafile.infolist()
+        for item in items:
+            if item.filename == name:
+                return True
+        return False
+
+    def getinfo(self, name):
+        # FIXME: Should instead add getinfo to LhaFile...
+        return self._lhafile.NameToInfo[self.encode_name(name)]
+
+    def list_files(self, sub_path):
+        if sub_path:
+            return
+        for name in self._lhafile.namelist():
+            # if name.endswith(str("/")):
+            #     continue
+            yield self.decode_name(name)
+
+    def open(self, name):
+        # LhaFile does not have open method
+        data = self._lhafile.read(self.encode_name(name))
+        return io.BytesIO(data)
 
 
 class NullHandler(object):
@@ -337,6 +348,18 @@ class Archive(object):
         if "#?" in sub_path:
             sub_path = sub_path.rsplit("#?", 1)[0]
         return self.get_handler().exists(sub_path)
+
+    def getinfo(self, path):
+        path, sub_path = self.split_path(path)
+        # print(path, self.path)
+        assert path == self.path
+        # if not sub_path:
+        #     if "#?" in path:
+        #         path = path.rsplit("#?", 1)[0]
+        #     return os.path.exists(path)
+        if "#?" in sub_path:
+            sub_path = sub_path.rsplit("#?", 1)[0]
+        return self.get_handler().getinfo(sub_path)
 
     def open(self, path):
         print("[Archive] Open", repr(path))
