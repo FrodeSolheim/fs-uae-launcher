@@ -1,5 +1,5 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 import struct
 from .block.Block import Block
@@ -19,6 +19,7 @@ class ADFSDir(ADFSNode):
     self.entries = None
     self.dcache_blks = None
     self.name_hash = None
+    self.hash_size = 72
     self.valid = False
     
   def __repr__(self):
@@ -57,7 +58,8 @@ class ADFSDir(ADFSNode):
   
   def _init_name_hash(self):
     self.name_hash = []
-    for i in xrange(self.block.hash_size):
+    self.hash_size = self.block.hash_size
+    for i in range(self.hash_size):
       self.name_hash.append([])      
   
   def read(self, recursive=False):
@@ -66,7 +68,7 @@ class ADFSDir(ADFSNode):
      
     # create initial list with blk_num/hash_index for dir scan
     blocks = []
-    for i in xrange(self.block.hash_size):
+    for i in range(self.block.hash_size):
       blk_num = self.block.hash_table[i]
       if blk_num != 0:
         blocks.append((blk_num,i))
@@ -117,7 +119,7 @@ class ADFSDir(ADFSNode):
     return self.entries
   
   def has_name(self, fn):
-    fn_hash = fn.hash()
+    fn_hash = fn.hash(hash_size=self.hash_size)
     fn_up = fn.get_upper_ami_str()
     node_list = self.name_hash[fn_hash]
     for node in node_list:
@@ -130,7 +132,7 @@ class ADFSDir(ADFSNode):
     blkdev = self.blkdev
     # create a UserDirBlock
     ud = UserDirBlock(blkdev, blk_num, self.volume.is_longname)
-    ud.create(parent_blk, name.get_ami_str(), meta_info.get_protect(), meta_info.get_comment_ami_str(), meta_info.get_mod_ts(), hash_chain_blk)
+    ud.create(parent_blk, name, meta_info.get_protect(), meta_info.get_comment(), meta_info.get_mod_ts(), hash_chain_blk)
     ud.write()    
     self.set_block(ud)
     self._init_name_hash()
@@ -157,7 +159,7 @@ class ADFSDir(ADFSNode):
     if self.has_name(fn):
       raise FSError(NAME_ALREADY_EXISTS, file_name=name, node=self)
     # calc hash index of name
-    fn_hash = fn.hash()
+    fn_hash = fn.hash(hash_size=self.hash_size)
     hash_chain = self.name_hash[fn_hash]
     if len(hash_chain) == 0:
       hash_chain_blk = 0
@@ -227,11 +229,11 @@ class ADFSDir(ADFSNode):
     if node not in self.entries:
       raise FSError(INTERNAL_ERROR, node=node, extra="node not in entries")      
     # get hash key
-    hash_key = node.name.hash()
+    hash_key = node.name.hash(hash_size=self.hash_size)
     names = self.name_hash[hash_key]
     # find my node
     pos = None
-    for i in xrange(len(names)):
+    for i in range(len(names)):
       if names[i] == node:
         pos = i
         break
@@ -382,7 +384,8 @@ class ADFSDir(ADFSNode):
   def _dircache_add_entry(self, name, meta_info, entry_blk, size, update_myself=True):
     # create a new dircache record
     r = DirCacheRecord(entry=entry_blk, size=size, protect=meta_info.get_protect(), \
-                       mod_ts=meta_info.get_mod_ts(), sub_type=0, name=name, comment=meta_info.get_comment())
+                       mod_ts=meta_info.get_mod_ts(), sub_type=0, name=name,
+                       comment=meta_info.get_comment())
     return self._dircache_add_entry_int(r, update_myself)
     
   def _dircache_add_entry_int(self, r, update_myself=True):
@@ -431,14 +434,14 @@ class ADFSDir(ADFSNode):
     dcb = None
     record = None
     n = len(self.dcache_blks)
-    for i in xrange(n):
+    for i in range(n):
       dcb = self.dcache_blks[i]
       record = dcb.get_record_by_name(name)
       if record != None:
         pos = i
         break
     if record == None:
-      raise FSError(INTERNAL_ERROR, node=self)
+      raise FSError(INTERNAL_ERROR, node=self, extra="no dc record!")
     # remove entry from this block
     dcb.remove_record(record)
     # remove whole block?
@@ -469,10 +472,10 @@ class ADFSDir(ADFSNode):
       return None
     
   def get_dircache_record(self, name):
-    if self.dcache_blks != None:
+    if self.dcache_blks:
       for dcb in self.dcache_blks:
         record = dcb.get_record_by_name(name)
-        if record != None:
+        if record:
           return record
     return None
   

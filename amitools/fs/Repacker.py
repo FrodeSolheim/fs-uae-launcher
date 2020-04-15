@@ -1,5 +1,5 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 from .ADFSVolume import ADFSVolume
 from amitools.fs.blkdev.BlkDevFactory import BlkDevFactory
@@ -37,7 +37,7 @@ class Repacker:
       return None
     # clone geo from input
     if options == None:
-      options = self.in_blkdev.get_chs_dict()
+      options = self.in_blkdev.get_options()
     f = BlkDevFactory()
     self.out_blkdev = f.create(image_file, force=force, options=options)
     return self.out_blkdev

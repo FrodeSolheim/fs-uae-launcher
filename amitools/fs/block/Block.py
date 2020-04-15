@@ -1,9 +1,11 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 import struct
 import ctypes
 from ..TimeStamp import TimeStamp
+from ..FSString import FSString
+
 
 class Block:
   # mark end of block list
@@ -149,7 +151,7 @@ class Block:
   
   def _calc_chksum(self):
     chksum = 0
-    for i in xrange(self.block_longs):
+    for i in range(self.block_longs):
       if i != self.chk_loc:
         chksum += self._get_long(i)
     return (-chksum) & 0xffffffff
@@ -167,6 +169,19 @@ class Block:
     self._put_long(loc+1, ts.mins)
     self._put_long(loc+2, ts.ticks)
   
+  def _get_bytes(self, loc, size):
+    if loc < 0:
+      loc = self.block_longs + loc
+    loc = loc * 4
+    return self.data[loc:loc+size]
+
+  def _put_bytes(self, loc, data):
+    if loc < 0:
+      loc = self.block_longs + loc
+    loc = loc * 4
+    size = len(data)
+    self.data[loc:loc+size] = data
+
   def _get_bstr(self, loc, max_size):
     if loc < 0:
       loc = self.block_longs + loc
@@ -175,26 +190,29 @@ class Block:
     if size > max_size:
       return None
     if size == 0:
-      return ""
+      return FSString()
     name = self.data[loc+1:loc+1+size]
-    return name
-  
-  def _put_bstr(self, loc, max_size, bstr):
-    if bstr == None:
-      bstr = ""
+    return FSString(name)
+
+  def _put_bstr(self, loc, max_size, fs_str):
+    if fs_str is None:
+      fs_str = FSString()
+    assert isinstance(fs_str, FSString)
+    bstr = fs_str.get_ami_str()
+    assert len(bstr) < 256
     n = len(bstr)
     if n > max_size:
       bstr = bstr[:max_size]
     if loc < 0:
       loc = self.block_longs + loc
     loc = loc * 4
-    self.data[loc] = chr(len(bstr))
+    self.data[loc] = len(bstr)
     if len(bstr) > 0:
       self.data[loc+1:loc+1+len(bstr)] = bstr
   
   def _get_cstr(self, loc, max_size):
     n = 0
-    s = ""
+    s = b""
     loc = loc * 4
     while n < max_size:
       c = self.data[loc+n]
@@ -202,11 +220,13 @@ class Block:
         break
       s += c
       n += 1
-    return s
+    return FSString(s)
     
-  def _put_cstr(self, loc, max_size, cstr):
-    if cstr == None:
-      cstr = ""
+  def _put_cstr(self, loc, max_size, fs_str):
+    if fs_str is None:
+      fs_str = FSString()
+    assert isinstance(fs_str, FSString)
+    cstr = fs_str.get_ami_str()
     n = min(max_size, len(cstr))
     loc = loc * 4
     if n > 0:

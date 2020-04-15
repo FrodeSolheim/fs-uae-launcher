@@ -1,14 +1,10 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 import os.path
-import sys
 
 from .Block import Block
 import amitools.fs.DosType as DosType
-
-if sys.version_info[0] == 3:
-  xrange = range
 
 
 class BootBlock(Block):  
@@ -29,14 +25,14 @@ class BootBlock(Block):
     self.dos_type = dos_type    
     self.valid_dos_type = True
     # root blk
-    self.calc_root_blk = int(self.blkdev.num_blocks / 2)
+    self.calc_root_blk = int(self.blkdev.num_blocks // 2)
     if root_blk != None:
       self.got_root_blk = root_blk
     else:
       self.got_root_blk = self.calc_root_blk      
     # create extra blks
     self.extra_blks = []
-    for i in xrange(self.num_extra):
+    for i in range(self.num_extra):
       b = Block(self.blkdev, self.blk_num + 1 + i)
       b._create_data()
       self.extra_blks.append(b)
@@ -60,7 +56,7 @@ class BootBlock(Block):
     n = self.blkdev.block_longs
     chksum = 0
     for blk in all_blks:
-      for i in xrange(n):
+      for i in range(n):
         if i != 1: # skip chksum
           chksum += blk._get_long(i)
           if chksum > 0xffffffff:
@@ -72,7 +68,7 @@ class BootBlock(Block):
     self._read_data()
     # read extra boot blocks
     self.extra_blks = []
-    for i in xrange(self.num_extra):
+    for i in range(self.num_extra):
       b = Block(self.blkdev, self.blk_num + 1 + i)
       b._read_data()
       self.extra_blks.append(b)
@@ -82,7 +78,7 @@ class BootBlock(Block):
     self.got_root_blk = self._get_long(2)
     self.calc_chksum = self._calc_chksum()
     # calc position of root block
-    self.calc_root_blk = int(self.blkdev.num_blocks / 2)
+    self.calc_root_blk = int(self.blkdev.num_blocks // 2)
     # check validity
     self.valid_chksum = self.got_chksum == self.calc_chksum
     self.valid_dos_type = DosType.is_valid(self.dos_type)
@@ -101,7 +97,7 @@ class BootBlock(Block):
     pos = len(boot_code) - 4
     while pos > 0:
       tag = boot_code[pos:pos+3]
-      if tag != 'DOS' and ord(boot_code[pos])!=0:
+      if tag != 'DOS' and boot_code[pos] !=0:
         pos += 4
         break
       pos -= 4

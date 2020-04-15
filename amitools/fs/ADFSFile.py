@@ -1,5 +1,5 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 from .block.EntryBlock import EntryBlock
 from .block.FileHeaderBlock import FileHeaderBlock
@@ -74,7 +74,7 @@ class ADFSFile(ADFSNode):
     total_size = 0
     is_ffs = self.volume.is_ffs
     byte_size = self.block.byte_size
-    data = ""
+    data = bytearray()
     for blk in self.data_blk_nums:
       if is_ffs:
         # ffs has raw data blocks
@@ -140,7 +140,7 @@ class ADFSFile(ADFSNode):
     """given the file size: how many data blocks do we need to store the file?"""
     bb = self.get_data_block_contents_bytes()
     ds = self.data_size
-    return (ds + bb -1 ) / bb
+    return (ds + bb -1 ) // bb
   
   def calc_number_of_list_blks(self):
     """given the file size: how many list blocks do we need to store the data blk ptrs?"""
@@ -152,7 +152,7 @@ class ADFSFile(ADFSNode):
       return 0
     else:
       db -= ppb
-      return (db + ppb - 1) / ppb 
+      return (db + ppb - 1) // ppb 
   
   def blocks_get_create_num(self):
     # determine number of blocks to create
@@ -163,12 +163,12 @@ class ADFSFile(ADFSNode):
     fhb_num = free_blks[0]
     # ... for ext
     self.ext_blk_nums = []
-    for i in xrange(self.num_ext_blks):
+    for i in range(self.num_ext_blks):
       self.ext_blk_nums.append(free_blks[1+i])
     # ... for data
     off = 1 + self.num_ext_blks
     self.data_blk_nums = []
-    for i in xrange(self.num_data_blks):
+    for i in range(self.num_data_blks):
       self.data_blk_nums.append(free_blks[off])
       off += 1
     
@@ -184,13 +184,15 @@ class ADFSFile(ADFSNode):
       hdr_blks = self.data_blk_nums
       hdr_ext = 0
       
-    fhb.create(parent_blk, name.get_ami_str(), hdr_blks, hdr_ext, byte_size, meta_info.get_protect(), meta_info.get_comment_ami_str(), meta_info.get_mod_ts(), hash_chain_blk)
+    fhb.create(parent_blk, name, hdr_blks, hdr_ext, byte_size,
+               meta_info.get_protect(), meta_info.get_comment(),
+               meta_info.get_mod_ts(), hash_chain_blk)
     fhb.write() 
     self.set_block(fhb)
     
     # create file list (=ext) blocks
     ext_off = ppb
-    for i in xrange(self.num_ext_blks):
+    for i in range(self.num_ext_blks):
       flb = FileListBlock(self.blkdev, self.ext_blk_nums[i])
       if i == self.num_ext_blks - 1:
         ext_blk = 0
@@ -227,7 +229,7 @@ class ADFSFile(ADFSNode):
       if is_ffs:
         # pad block
         if size < bs:
-          d += '\0' * (bs-size)
+          d += b'\0' * (bs-size)
         # write raw block data in FFS
         self.blkdev.write_block(blk_num, d)
       else:

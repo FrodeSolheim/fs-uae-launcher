@@ -1,5 +1,5 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 from .block.CommentBlock import CommentBlock
 from .block.EntryBlock import EntryBlock
@@ -27,17 +27,18 @@ class ADFSNode:
   
   def set_block(self, block):  
     self.block = block
-    self.name = FileName(FSString(self.block.name), is_intl=self.volume.is_intl,is_longname=self.volume.is_longname)
+    self.name = FileName(self.block.name, is_intl=self.volume.is_intl,is_longname=self.volume.is_longname)
     self.valid = True
     self.create_meta_info()
     
   def create_meta_info(self):
-    comment = self.block.comment
     if self.block.comment_block_id != 0:
         comment_block = CommentBlock(self.blkdev, self.block.comment_block_id)
         comment_block.read()
         comment = comment_block.comment
-    self.meta_info = MetaInfo(self.block.protect, self.block.mod_ts, FSString(comment))
+    else:
+        comment = self.block.comment
+    self.meta_info = MetaInfo(self.block.protect, self.block.mod_ts, comment)
 
   def get_file_name(self):
     return self.name
@@ -58,35 +59,35 @@ class ADFSNode:
 
     # dircache?
     rebuild_dircache = False
-    if self.volume.is_dircache and self.parent != None:
-      record = self.parent.get_dircache_record(self.name.get_ami_str_name())
-      if record == None:
-        raise FSError(INTERNAL_ERROR, node=self)
+    if self.volume.is_dircache and self.parent:
+      record = self.parent.get_dircache_record(self.name.get_name())
+      if not record:
+        raise FSError(INTERNAL_ERROR, node=self, extra="dc not found!")
     else:
       record = None
         
     # alter protect flags
     protect = meta_info.get_protect()
-    if protect != None and hasattr(self.block, 'protect'):
+    if protect and hasattr(self.block, 'protect'):
       self.block.protect = protect
       self.meta_info.set_protect(protect)
       dirty = True
-      if record != None:
+      if record:
         record.protect = protect
 
     # alter mod time
     mod_ts = meta_info.get_mod_ts()
-    if mod_ts != None:
+    if mod_ts:
       self.block.mod_ts = mod_ts
       self.meta_info.set_mod_ts(mod_ts)
       dirty = True
-      if record != None:
+      if record:
         record.mod_ts = mod_ts
     
     # alter comment
     comment = meta_info.get_comment()
-    if comment != None and hasattr(self.block, "comment"):
-      if EntryBlock.needs_extra_comment_block(self.name.get_ami_str_name(), comment.get_ami_str()):
+    if comment and hasattr(self.block, "comment"):
+      if EntryBlock.needs_extra_comment_block(self.name, comment):
         if self.block.comment_block_id == 0:
           # Allocate and initialize extra block for comment
           blks = self.volume.bitmap.alloc_n(1)
@@ -94,32 +95,30 @@ class ADFSNode:
             cblk = CommentBlock(self.blkdev, blks[0])
             cblk.create(self.block.blk_num)
             self.block.comment_block_id = cblk.blk_num
-            self.volume.bitmap.write_only_bits()
           else:
             raise FSError(NO_FREE_BLOCKS, node=self)
         else:
           cblk = CommentBlock(self.blkdev, self.block.comment_block_id)
           cblk.read()
-        cblk.comment = comment.get_ami_str()
+        cblk.comment = comment
         cblk.write()
       else:
-        self.block.comment = comment.get_ami_str()
+        self.block.comment = comment
         if self.block.comment_block_id != 0:
           self.volume.bitmap.dealloc_n([self.block.comment_block_id])
           self.block.comment_block_id = 0
-          self.volume.bitmap.write_only_bits()
 
       self.meta_info.set_comment(comment)
       dirty = True
-      if record != None:
-        rebuild_dircache = len(record.comment) < comment 
-        record.comment = comment.get_ami_str()
+      if record:
+        rebuild_dircache = len(record.comment) < comment
+        record.comment = comment
     
     # really need update?
     if dirty:
       self.block.write()
       # dirache update
-      if record != None:
+      if record:
         self.parent.update_dircache_record(record, rebuild_dircache)        
       
   def change_comment(self, comment):
@@ -142,15 +141,15 @@ class ADFSNode:
     self.change_meta_info(MetaInfo(mod_ts=t))
 
   def get_list_str(self, indent=0, all=False, detail=False):
-    istr = u'  ' * indent
+    istr = '  ' * indent
     if detail:
       extra = self.get_detail_str()
     else:
       extra = self.meta_info.get_str_line()
-    return u'%-40s       %8s  %s' % (istr + self.name.get_unicode_name(), self.get_size_str(), extra)
+    return '%-40s       %8s  %s' % (istr + self.name.get_unicode_name(), self.get_size_str(), extra)
     
   def list(self, indent=0, all=False, detail=False, encoding="UTF-8"):
-    print(self.get_list_str(indent=indent, all=all, detail=detail).encode(encoding))
+    print(self.get_list_str(indent=indent, all=all, detail=detail))
 
   def get_size_str(self):
     # re-implemented in derived classes!
@@ -183,7 +182,7 @@ class ADFSNode:
 
   def get_node_path_name(self, with_vol=False):
     r = self.get_node_path()
-    return FSString(u"/".join(r))
+    return FSString("/".join(r))
 
   def get_detail_str(self):
     return ""

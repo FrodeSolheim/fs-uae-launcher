@@ -1,10 +1,11 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 import time
 from .Block import Block
 from .EntryBlock import EntryBlock
 from ..ProtectFlags import ProtectFlags
+from ..FSString import FSString
 
 class UserDirBlock(EntryBlock):
   def __init__(self, blkdev, blk_num, is_longname):
@@ -34,7 +35,7 @@ class UserDirBlock(EntryBlock):
     # hash table of entries
     self.hash_table = []
     self.hash_size = self.blkdev.block_longs - 56
-    for i in xrange(self.hash_size):
+    for i in range(self.hash_size):
       self.hash_table.append(self._get_long(6+i))
     
     self.valid = (self.own_key == self.blk_num)
@@ -44,8 +45,8 @@ class UserDirBlock(EntryBlock):
     Block.create(self)
     self.own_key = self.blk_num
     self.protect = protect
-    if comment == None:
-      self.comment = ''
+    if comment is None:
+      self.comment = FSString()
     else:
       self.comment = comment
     # timestamps
@@ -57,7 +58,7 @@ class UserDirBlock(EntryBlock):
     # empty hash table
     self.hash_table = []
     self.hash_size = self.blkdev.block_longs - 56
-    for i in xrange(self.hash_size):
+    for i in range(self.hash_size):
       self.hash_table.append(0)
     self.valid = True
     return True
@@ -71,7 +72,7 @@ class UserDirBlock(EntryBlock):
     self._put_long(-3, self.parent)
     self._put_long(-2, self.extension)
     # hash table
-    for i in xrange(self.hash_size):
+    for i in range(self.hash_size):
       self._put_long(6+i, self.hash_table[i])
     Block.write(self)
   

@@ -1,9 +1,9 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # xdftool
 # swiss army knife for adf and hdf amiga disk images
 
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 import sys
 import argparse
@@ -18,7 +18,6 @@ from amitools.fs.block.BootBlock import BootBlock
 from amitools.fs.block.RootBlock import RootBlock
 from amitools.util.CommandQueue import CommandQueue
 from amitools.util.HexDump import *
-from amitools.util.DisAsm import DisAsm
 import amitools.util.KeyValue as KeyValue
 from amitools.fs.rdb.RDisk import RDisk
 from amitools.fs.FSString import FSString
@@ -32,11 +31,13 @@ def make_fsstr(s):
   # fetch default encoding (if available)
   encoding = sys.stdin.encoding
   if encoding is None:
-    # assume win default encoding
-    if os.platform == "win32":
-      encoding = "cp1252"
-    else:
-      encoding = "utf-8"
+    encoding = "utf-8"
+    try:
+      if os.platform == "win32":
+        # set win default encoding
+        encoding = "cp1252"
+    except AttributeError:
+        pass
   u = s.decode(encoding)
   return FSString(u)
 
@@ -212,7 +213,12 @@ class FormatCmd(Command):
   def init_blkdev(self, image_file):
     opts = KeyValue.parse_key_value_strings(self.opts[1:])
     f = BlkDevFactory()
-    return f.create(image_file, options=opts, force=self.args.force)
+    blkdev = f.open(image_file, options=opts, read_only=False,
+                    none_if_missing=True)
+    if not blkdev:
+      return f.create(image_file, options=opts, force=self.args.force)
+    else:
+      return blkdev
 
   def init_vol(self, blkdev):
     vol = ADFSVolume(blkdev)
@@ -278,11 +284,14 @@ class UnpackCmd(Command):
   def handle_vol(self, vol):
     n = len(self.opts)
     if n == 0:
-      print("Usage: unpack <out_path>")
+      print("Usage: unpack <out_path> [fsuae]")
       return 1
     else:
+      meta_mode = Imager.META_MODE_DB
+      if 'fsuae' in self.opts:
+        meta_mode = Imager.META_MODE_FSUAE
       out_path = self.opts[0]
-      img = Imager()
+      img = Imager(meta_mode=meta_mode)
       img.unpack(vol, out_path)
       if self.args.verbose:
         print("Unpacked %d bytes" % (img.get_total_bytes()))
@@ -348,7 +357,7 @@ class TypeCmd(Command):
     else:
       name = make_fsstr(p[0])
       data = vol.read_file(name)
-      print(data)
+      sys.stdout.buffer.write(data)
       return 0
 
 class ReadCmd(Command):
@@ -380,7 +389,7 @@ class ReadCmd(Command):
       fh.close()
     # its a dir
     elif node.is_dir():
-      img = Imager()
+      img = Imager(meta_mode=Imager.META_MODE_NONE)
       img.unpack_dir(node, out_name)
     node.flush()
     return 0
@@ -441,7 +450,7 @@ class WriteCmd(Command):
         print("Invalid path", ami_path)
         return 2
       node = parent_node.create_dir(dir_name)
-      img = Imager()
+      img = Imager(meta_mode=Imager.META_MODE_NONE)
       img.pack_dir(sys_file, node)
 
     return 0
@@ -523,7 +532,7 @@ class RelabelCmd(Command):
       print("Usage: relabel <new_name>")
       return 1
     name = self.opts[0]
-    node = vol.relabel(name)
+    node = vol.relabel(FSString(name))
     return 0
 
 # ----- Block Tools -----
@@ -570,7 +579,7 @@ class BitmapCmd(Command):
   def handle_vol(self, vol):
     n = len(self.opts)
     if n == 0:
-      print("Usage: bitmap ( free | used | find [n] | all | maps | root [all] | node <path> [all] [entries]) [brief]")
+      print("Usage: bitmap ( info | free | used | find [n] | all | maps | root [all] | node <path> [all] [entries]) [brief]")
       return 1
     cmd = self.opts[0]
 
@@ -580,7 +589,10 @@ class BitmapCmd(Command):
       brief = True
       self.opts = self.opts[:-1]
 
-    if cmd == 'free':
+    if cmd == 'info':
+      vol.bitmap.print_info()
+      return 0
+    elif cmd == 'free':
       vol.bitmap.print_free(brief)
       return 0
     elif cmd == 'used':
@@ -703,9 +715,10 @@ class BootCmd(Command):
         if 'hex' in self.opts:
           print_hex(bb.boot_code)
         if 'asm' in self.opts:
-          dis = DisAsm()
-          code = dis.disassemble(bb.boot_code)
-          dis.dump(code)
+          from amitools.vamos.machine import DisAsm
+          dis = DisAsm.create()
+          code = dis.disassemble_block(bb.boot_code)
+          dis.dump_block(code)
       return 0
     # boot read <file>
     elif cmd == 'read':
@@ -814,7 +827,7 @@ def main():
 
   parser = argparse.ArgumentParser()
   parser.add_argument('image_file')
-  parser.add_argument('command_list', nargs='+', help="command: "+",".join(cmd_map.keys()))
+  parser.add_argument('command_list', nargs='+', help="command: "+",".join(list(cmd_map.keys())))
   parser.add_argument('-v', '--verbose', action='store_true', default=False, help="be more verbos")
   parser.add_argument('-s', '--seperator', default='+', help="set the command separator char sequence")
   parser.add_argument('-r', '--read-only', action='store_true', default=False, help="read-only operation")

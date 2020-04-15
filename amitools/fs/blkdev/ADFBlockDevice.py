@@ -1,5 +1,5 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 from .BlockDevice import BlockDevice
 import ctypes
@@ -51,7 +51,8 @@ class ADFBlockDevice(BlockDevice):
     if self.read_only:
       self.data = data
     else:
-      self.data = ctypes.create_string_buffer(data)
+      self.data = ctypes.create_string_buffer(self.num_bytes)
+      self.data[:] = data
 
   def flush(self):
     # write dirty adf

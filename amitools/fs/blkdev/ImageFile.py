@@ -22,7 +22,7 @@ class ImageFile:
       self.fobj.seek(0,2) # end of file
       self.size = self.fobj.tell()
       self.fobj.seek(0,0) # return to begin
-      self.num_blocks = self.size / self.block_bytes
+      self.num_blocks = self.size // self.block_bytes
     # file name given
     else:
       # is readable?
@@ -41,7 +41,7 @@ class ImageFile:
         self.size = os.path.getsize(self.file_name)
       if self.size == 0:
         raise IOError("Empty image file detected!")
-      self.num_blocks = self.size / self.block_bytes
+      self.num_blocks = self.size // self.block_bytes
       # open raw file
       if self.read_only:
         flags = "rb"
@@ -49,22 +49,22 @@ class ImageFile:
         flags = "r+b"
       self.fh = io.open(self.file_name, flags)
 
-  def read_blk(self, blk_num):
+  def read_blk(self, blk_num, num_blks=1):
     if blk_num >= self.num_blocks:
       raise IOError("Invalid image file block num: got %d but max is %d" % (blk_num, self.num_blocks))
     off = blk_num * self.block_bytes
     if off != self.fh.tell():
       self.fh.seek(off, os.SEEK_SET)
-    num = self.block_bytes
-    data = self.fh.read(self.block_bytes)
+    num = self.block_bytes * num_blks
+    data = self.fh.read(num)
     return data
 
-  def write_blk(self, blk_num, data):
+  def write_blk(self, blk_num, data, num_blks=1):
     if self.read_only:
       raise IOError("Can't write block: image file is read-only")
     if blk_num >= self.num_blocks:
       raise IOError("Invalid image file block num: got %d but max is %d" % (blk_num, self.num_blocks))
-    if len(data) != self.block_bytes:
+    if len(data) != (self.block_bytes * num_blks):
       raise IOError("Invalid block size written: got %d but size is %d" % (len(data), self.block_bytes))
     off = blk_num * self.block_bytes
     if off != self.fh.tell():
@@ -82,17 +82,16 @@ class ImageFile:
   def create(self, num_blocks):
     if self.read_only:
       raise IOError("Can't create image file in read only mode")
-    block = '\0' * self.block_bytes
+    block = b'\0' * self.block_bytes
     if self.fobj is not None:
-      for i in xrange(num_blocks):
+      for i in range(num_blocks):
         self.fobj.write(block)
       self.fobj.seek(0,0)
     else:
-      fh = file(self.file_name, "wb")
-      for i in xrange(num_blocks):
+      fh = open(self.file_name, "wb")
+      for i in range(num_blocks):
         fh.write(block)
       fh.close()
-
 
 # --- mini test ---
 if __name__ == '__main__':
@@ -105,7 +104,7 @@ if __name__ == '__main__':
     im.write_blk(0,d)
     im.close()
     # read fobj
-    fobj = file(a,"r+b")
+    fobj = open(a,"r+b")
     im = ImageFile(a,fobj=fobj)
     im.open()
     d = im.read_blk(0)

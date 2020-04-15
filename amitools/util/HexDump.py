@@ -1,11 +1,10 @@
 # amitools utility functions
 
-from __future__ import print_function
+
 
 
 def _get_vis_char(d):
-  v = ord(d)
-  if v >= 32 and v < 127:
+  if d >= 32 and d < 127:
     return "%c" % d
   else:
     return "."
@@ -16,8 +15,8 @@ def get_hex_line(addr, line, indent=0, num=16):
   out = " " * indent
   out += "%08x: " % addr
   for d in line:
-    out += "%02x " % ord(d)
-  for d in xrange(skip):
+    out += "%02x " % d
+  for d in range(skip):
     out += "   "
   out += " "
   for d in line:
@@ -45,20 +44,20 @@ def get_hex_diff_line(addr, a_line, b_line, indent=0, num=16):
   ac = []
   bh = []
   bc = []
-  for d in xrange(n):
+  for d in range(n):
     av = a_line[d]
     bv = b_line[d]
     if av != bv:
-      ah.append("%02x" % ord(av))
+      ah.append("%02x" % av)
       ac.append(_get_vis_char(av))
-      bh.append("%02x" % ord(bv))
+      bh.append("%02x" % bv)
       bc.append(_get_vis_char(bv))
     else:
       ah.append("--")
       ac.append(" ")
       bh.append("--")
       bc.append(" ")
-  for d in xrange(skip):
+  for d in range(skip):
     ah.append("  ")
     ac.append(" ")
     bh.append("  ")

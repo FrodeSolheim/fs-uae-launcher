@@ -1,9 +1,9 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # rdbtool
 # swiss army knife for rdb disk images or devices
 
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 import sys
 import argparse
@@ -11,12 +11,14 @@ import os.path
 
 from amitools.util.CommandQueue import CommandQueue
 from amitools.fs.FSError import FSError
+from amitools.fs.FSString import FSString
 from amitools.fs.rdb.RDisk import RDisk
 from amitools.fs.blkdev.RawBlockDevice import RawBlockDevice
 from amitools.fs.blkdev.DiskGeometry import DiskGeometry
 from amitools.fs.DosType import *
 from amitools.fs.block.rdb.PartitionBlock import PartitionBlock, PartitionDosEnv
 from amitools.fs.block.rdb.FSHeaderBlock import FSHeaderDeviceNode
+from amitools.fs.block.BootBlock import BootBlock
 import amitools.util.KeyValue as KeyValue
 import amitools.util.ByteSize as ByteSize
 import amitools.util.VerTag as VerTag
@@ -184,18 +186,46 @@ class OpenCommand(Command):
     # make sure image file exists
     if not os.path.exists(file_name):
       raise IOError("Image File not found: '%s'" % file_name)
-    # open existing raw block device
-    blkdev = RawBlockDevice(file_name, self.args.read_only)
-    blkdev.open()
-    # try to guess geometry
-    geo = DiskGeometry()
-    num_blocks = blkdev.num_blocks
-    block_bytes = blkdev.block_bytes
+    # parse opts
     opts = KeyValue.parse_key_value_strings(self.opts)
-    if geo.detect(num_blocks * block_bytes, opts) == None:
+    # is a block size given in options? if yes then enforce it
+    bs = 512
+    opts_bs = self._get_opts_block_size(opts)
+    if opts_bs:
+      bs = opts_bs
+    # setup initial raw block dev with default block size
+    blkdev = RawBlockDevice(file_name, self.args.read_only, block_bytes=bs)
+    blkdev.open()
+    # if no bs was given in options then try to find out block size
+    # from an existing rdb
+    if not opts_bs:
+      rd = RDisk(blkdev)
+      peek_bs = rd.peek_block_size()
+      # real block size differs: re-open dev with correct size
+      if peek_bs and peek_bs != blkdev.block_bytes:
+        blkdev.close()
+        blkdev = RawBlockDevice(file_name, self.args.read_only,
+                                block_bytes=peek_bs)
+        blkdev.open()
+        bs = peek_bs
+    # try to guess geometry
+    file_size = blkdev.num_blocks * blkdev.block_bytes
+    geo = DiskGeometry(block_bytes=bs)
+    if not geo.detect(file_size, opts):
       raise IOError("Can't detect geometry of disk: '%s'" % file_name)
+    # make sure block size is still the same
+    if geo.block_bytes != bs:
+      raise IOError("Invalid geo block size chosen: %d" % geo.block_bytes)
+    # keep geo
     blkdev.geo = geo
     return blkdev
+
+  def _get_opts_block_size(self, opts):
+    if opts and 'bs' in opts:
+      bs = int(opts['bs'])
+      if bs % 512 != 0 or bs < 512:
+        raise IOError("Invalid block size given!")
+      return bs
 
 # --- Create new RDISK device/image ---
 
@@ -208,19 +238,18 @@ class CreateCommand(Command):
       raise IOError("Image File already exists: '%s'" % file_name)
     # make sure size is given
     if len(self.opts) < 1:
-      print("Usage: create ( size=<n> | chs=<c,h,s> )")
+      print("Usage: create ( size=<n> | chs=<c,h,s> ) [bs=<n>]")
       return None
     # determine disk geometry
     opts = KeyValue.parse_key_value_strings(self.opts)
     geo = DiskGeometry()
-    if geo.setup(opts) == None:
+    if not geo.setup(opts):
       raise IOError("Can't set geometry of disk: '%s'" % file_name)
-    else:
-      # create new empty image file for geometry
-      blkdev = RawBlockDevice(file_name)
-      blkdev.create(geo.get_num_blocks())
-      blkdev.geo = geo
-      return blkdev
+    # create new empty image file for geometry
+    blkdev = RawBlockDevice(file_name, block_bytes=geo.block_bytes)
+    blkdev.create(geo.get_num_blocks())
+    blkdev.geo = geo
+    return blkdev
 
 # --- Init existing disk image ---
 
@@ -228,7 +257,7 @@ class InitCommand(OpenCommand):
   def init_rdisk(self, blkdev):
     opts = KeyValue.parse_key_value_strings(self.opts)
     # number of cylinders for RDB
-    if opts.has_key('rdb_cyls'):
+    if 'rdb_cyls' in opts:
       rdb_cyls = int(opts['rdb_cyls'])
     else:
       rdb_cyls = 1
@@ -240,7 +269,10 @@ class InitCommand(OpenCommand):
 
 class InfoCommand(Command):
   def handle_rdisk(self, rdisk):
-    lines = rdisk.get_info()
+    part_name = None
+    if len(self.opts) > 0:
+      part_name = self.opts[0]
+    lines = rdisk.get_info(part_name)
     for l in lines:
       print(l)
     return 0
@@ -291,9 +323,9 @@ class PartEditCommand(Command):
     self.rdisk = rdisk
 
   def get_dos_type(self, empty=False):
-    if self.popts.has_key('fs'):
+    if 'fs' in self.popts:
       fs_str = self.popts['fs']
-    elif self.popts.has_key('dostype'):
+    elif 'dostype' in self.popts:
       fs_str = self.popts['dostype']
     elif not empty:
       fs_str = self.args.dostype
@@ -302,16 +334,16 @@ class PartEditCommand(Command):
     return parse_dos_type_str(str(fs_str))
 
   def get_drv_name(self, empty=False):
-    if self.popts.has_key('name'):
+    if 'name' in self.popts:
       drv_name = self.popts['name']
     elif empty:
-      drv_name = None
+      return None
     else:
       drv_name = "%s%d" % (self.args.drive_prefix, self.rdisk.get_num_partitions())
-    return drv_name
+    return FSString(drv_name)
 
   def get_bootable(self, empty=False):
-    if self.popts.has_key('bootable'):
+    if 'bootable' in self.popts:
       return bool(self.popts['bootable'])
     elif not empty:
       return False
@@ -319,7 +351,7 @@ class PartEditCommand(Command):
       return None
 
   def get_boot_pri(self, empty=False):
-    if self.popts.has_key('pri'):
+    if 'pri' in self.popts:
       return self.popts['pri']
     elif not empty:
       return 0
@@ -327,10 +359,18 @@ class PartEditCommand(Command):
       return None
 
   def get_automount(self, empty=False):
-    if self.popts.has_key('automount'):
+    if 'automount' in self.popts:
       return bool(self.popts['automount'])
     elif not empty:
       return True
+    else:
+      return None
+
+  def get_fs_block_size(self, empty=False):
+    if 'bs' in self.popts:
+      return int(self.popts['bs'])
+    elif not empty:
+      return 512
     else:
       return None
 
@@ -363,32 +403,32 @@ class PartEditCommand(Command):
 
   def get_more_dos_env_info(self):
     valid_keys = PartitionDosEnv.valid_keys
-    info = map(lambda x : "[%s=<n>]" % x, valid_keys)
+    info = ["[%s=<n>]" % x for x in valid_keys]
     return " ".join(info)
 
   def get_cyl_range(self):
     start = None
-    if self.popts.has_key('start'):
+    if 'start' in self.popts:
       start = int(self.popts['start'])
     # range with start=<n> end=<n>
-    if self.popts.has_key('end'):
+    if 'end' in self.popts:
       end = int(self.popts['end'])
       if start == None or end <= start:
         return None
       else:
         return (start, end)
     # expect a size
-    elif self.popts.has_key('size'):
+    elif 'size' in self.popts:
       size = self.popts['size']
       cyls = None
       if type(size) == int:
         cyls = size
       # size in bytes
       elif size[-1] in ('b','B'):
-        bytes = ByteSize.parse_byte_size_str(size[:-1])
-        if bytes == None:
+        num_bytes = ByteSize.parse_byte_size_str(size[:-1])
+        if num_bytes == None:
           return None
-        cyls = bytes / self.rdisk.get_cylinder_bytes()
+        cyls = num_bytes // self.rdisk.get_cylinder_bytes()
       # size in percent
       elif size[-1] == '%':
         prc = float(size[:-1])
@@ -430,9 +470,12 @@ class AddCommand(PartEditCommand):
     flags = self.get_flags()
     boot_pri = self.get_boot_pri()
     more_dos_env = self.get_more_dos_env()
+    fs_bs = self.get_fs_block_size(empty=True)
     print("creating: '%s' %s %s" % (drv_name, lo_hi, num_to_tag_str(dostype)))
     # add partition
-    if rdisk.add_partition(drv_name, lo_hi, dos_type=dostype, flags=flags, boot_pri=boot_pri, more_dos_env=more_dos_env):
+    if rdisk.add_partition(drv_name, lo_hi, dos_type=dostype, flags=flags,
+                           boot_pri=boot_pri, more_dos_env=more_dos_env,
+                           fs_block_size=fs_bs):
       return 0
     else:
       print("ERROR: creating partition: '%s': %s" % (drv_name, lo_hi))
@@ -451,15 +494,92 @@ class ChangeCommand(PartEditCommand):
         drv_name = self.get_drv_name(empty=True)
         flags = self.get_flags(empty=True, old_flags=p.get_flags())
         boot_pri = self.get_boot_pri(empty=True)
+        fs_bs = self.get_fs_block_size(empty=True)
         more_dos_env = self.get_more_dos_env()
         # change partition
-        if rdisk.change_partition(p.num, drv_name=drv_name, dos_type=dostype, flags=flags, boot_pri=boot_pri, more_dos_env=more_dos_env):
+        if rdisk.change_partition(p.num, drv_name=drv_name, dos_type=dostype,
+                                  flags=flags, boot_pri=boot_pri,
+                                  more_dos_env=more_dos_env,
+                                  fs_block_size=fs_bs):
           return 0
         else:
           print("ERROR: changing partition: '%s'" % (drv_name))
           return 1
       else:
         print("Can't find partition: '%s'" % self.opts[0])
+        return 1
+
+# --- Export/Import file system image ---
+
+class ExportCommand(Command):
+  def handle_rdisk(self, rdisk):
+    if len(self.opts) < 2:
+      print("Usage: export <partition> <file>")
+      return 1
+    else:
+      part = self.opts[0]
+      file_name = self.opts[1]
+      p = rdisk.find_partition_by_string(part)
+      if p != None:
+        blkdev = p.create_blkdev()
+        blkdev.open()
+        num_blks = blkdev.num_blocks
+        print("exporting '%s' (%d blocks) to '%s'" % \
+            (p.get_drive_name(), num_blks, file_name))
+        try:
+          with open(file_name, "wb") as fh:
+            for b in range(num_blks):
+              data = blkdev.read_block(b)
+              fh.write(data)
+        except IOError as e:
+          print("Error writing file: '%s': %s" % (file_name, e))
+          return 1
+        blkdev.close()
+        return 0
+      else:
+        print("Can't find partition: '%s'" % part)
+        return 1
+
+class ImportCommand(Command):
+  def handle_rdisk(self, rdisk):
+    if len(self.opts) < 2:
+      print("Usage: import <partition> <file>")
+      return 1
+    else:
+      part = self.opts[0]
+      file_name = self.opts[1]
+      p = rdisk.find_partition_by_string(part)
+      if p != None:
+        part_dev = p.create_blkdev()
+        part_dev.open()
+        part_blks = part_dev.num_blocks
+        blk_size = part_dev.block_bytes
+        total = part_blks * blk_size
+        # open image
+        file_size = os.path.getsize(file_name)
+        file_blks = file_size // blk_size
+        if file_size % blk_size != 0:
+          print("image file not block size aligned!")
+          return 1
+        # check sizes
+        if total < file_size:
+          print("import image too large: partition=%d != file=%d",
+                total, file_size)
+          return 1
+        if total > file_size:
+          delta = total - file_size
+          print("WARNING: import file too small: %d unused blocks", delta)
+        print("importing '%s' (%d blocks) to '%s' (%d blocks)" % \
+            (file_name, file_blks, p.get_drive_name(), part_blks))
+        # copy image
+        with open(file_name, "rb") as fh:
+          for b in range(file_blks):
+            data = fh.read(blk_size)
+            part_dev.write_block(b, data)
+        part_dev.close()
+        return 0
+      else:
+        print("Can't find partition: '%s'" % part)
         return 1
 
 # --- Fill empty space with partitions ---
@@ -479,9 +599,15 @@ class FillCommand(PartEditCommand):
       if dostype == None:
         print("ERROR: invalid dostype given!")
         return 1
+      flags = self.get_flags()
+      boot_pri = self.get_boot_pri()
+      more_dos_env = self.get_more_dos_env()
+      fs_bs = self.get_fs_block_size(empty=True)
       print("creating: '%s' %s %s" % (drv_name, lo_hi, num_to_tag_str(dostype)))
       # add partition
-      if not rdisk.add_partition(drv_name, lo_hi, dos_type=dostype):
+      if not rdisk.add_partition(drv_name, lo_hi, dos_type=dostype, flags=flags,
+                                 boot_pri=boot_pri, more_dos_env=more_dos_env,
+                                 fs_block_size=fs_bs):
         print("ERROR: creating partition: '%s': %s" % (drv_name, lo_hi))
         return 1
     return 0
@@ -537,9 +663,9 @@ class FSAddCommand(Command):
     self.popts = KeyValue.parse_key_value_strings(self.opts)
 
   def get_dos_type(self):
-    if self.popts.has_key('fs'):
+    if 'fs' in self.popts:
       fs_str = self.popts['fs']
-    elif self.popts.has_key('dostype'):
+    elif 'dostype' in self.popts:
       fs_str = self.popts['dostype']
     else:
       fs_str = self.args.dostype
@@ -549,7 +675,7 @@ class FSAddCommand(Command):
     self.parse_opts()
     valid_flags = FSHeaderDeviceNode.valid_flags
     if len(self.opts) < 1:
-      flag_info = map(lambda x : "[%s=<n>]" % x, valid_flags)
+      flag_info = ["[%s=<n>]" % x for x in valid_flags]
       flag_info = " ".join(flag_info)
       print("Usage: fsadd <file_name> [dostype=<n|tag>] [version=<n.m>] " + flag_info)
       return 1
@@ -569,7 +695,7 @@ class FSAddCommand(Command):
       if ver == None:
         ver = (0,0)
       # overwrite version from options
-      if opts.has_key('version'):
+      if 'version' in opts:
         vstr = opts['version']
         pos = vstr.find('.')
         if pos != -1:
@@ -653,12 +779,14 @@ def main():
   "fsflags" : FSFlagsCommand,
   "map" : MapCommand,
   "delete" : DeleteCommand,
-  "change" : ChangeCommand
+  "change" : ChangeCommand,
+  "export" : ExportCommand,
+  "import" : ImportCommand
   }
 
   parser = argparse.ArgumentParser()
   parser.add_argument('image_file')
-  parser.add_argument('command_list', nargs='+', help="command: "+",".join(cmd_map.keys()))
+  parser.add_argument('command_list', nargs='+', help="command: "+",".join(list(cmd_map.keys())))
   parser.add_argument('-v', '--verbose', action='store_true', default=False, help="be more verbos")
   parser.add_argument('-s', '--seperator', default='+', help="set the command separator char sequence")
   parser.add_argument('-r', '--read-only', action='store_true', default=False, help="read-only operation")

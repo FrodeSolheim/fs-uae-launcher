@@ -1,5 +1,5 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 import time
 from .Block import Block
@@ -7,6 +7,7 @@ from .EntryBlock import EntryBlock
 from .CommentBlock import CommentBlock
 from ..ProtectFlags import ProtectFlags
 from ..TimeStamp import *
+from ..FSString import FSString
 
 class FileHeaderBlock(EntryBlock):
   def __init__(self, blkdev, blk_num, is_longname):
@@ -36,7 +37,7 @@ class FileHeaderBlock(EntryBlock):
     if bc > mbc:
       bc = mbc
     self.data_blocks = []
-    for i in xrange(bc):
+    for i in range(bc):
       self.data_blocks.append(self._get_long(-51-i))
     
     self.protect = self._get_long(-48)
@@ -57,7 +58,7 @@ class FileHeaderBlock(EntryBlock):
     self._put_long(4, self.first_data)
     
     # data blocks
-    for i in xrange(len(self.data_blocks)):
+    for i in range(len(self.data_blocks)):
       self._put_long(-51-i, self.data_blocks[i])
     
     self._put_long(-48, self.protect)
@@ -84,11 +85,13 @@ class FileHeaderBlock(EntryBlock):
     self.protect = protect
     self.protect_flags = ProtectFlags(self.protect)
     self.byte_size = byte_size
-    if comment == None:
-      self.comment = ''
+    if comment is None:
+      self.comment = FSString()
     else:
+      assert isinstance(comment, FSString)
       self.comment = comment
     self.mod_ts = mod_ts
+    assert isinstance(name, FSString)
     self.name = name
     self.hash_chain = hash_chain
     self.parent = parent
