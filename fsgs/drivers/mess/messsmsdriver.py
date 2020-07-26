@@ -5,7 +5,7 @@ class MessSmsDriver(MessDriver):
     CONTROLLER = {
         "type": "gamepad",
         "description": "Gamepad",
-        "mapping_name": "mastersystem",
+        "mapping_name": "mainsystem",
     }
 
     PORTS = [

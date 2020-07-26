@@ -83,10 +83,10 @@ class ArchiveUtil:
                     info_data = archive.read(name)
                     info_data_lower = info_data.lower()
                     # if "whdload" in info_data_lower and \
-                    #         "slave=" in info_data_lower:
-                    if b"slave=" in info_data_lower:
+                    #         "subordinate=" in info_data_lower:
+                    if b"subordinate=" in info_data_lower:
                         # if ".slav" in info_data.lower():
-                        # assert "slave" in info_data
+                        # assert "subordinate" in info_data
                         icons.append(name)
                 # All .info files are skipped, these are generally not identical
                 # across installations, and are also not needed.

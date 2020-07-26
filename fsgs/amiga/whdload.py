@@ -51,7 +51,7 @@ def override_config(config: DefaultDict[str, str]):
         if model == "A1200":
             config[Option.AMIGA_MODEL] = "A1200"
         elif model == "A1200/NONCE":
-            # The following slaves do not work with A1200 non-cycle-exact
+            # The following subordinates do not work with A1200 non-cycle-exact
             # (non-exhaustive list, only some random tests):
             # - Cyber World
             config[Option.AMIGA_MODEL] = "A1200"
@@ -63,7 +63,7 @@ def override_config(config: DefaultDict[str, str]):
 
 def read_whdload_args_from_info_data(data: bytes) -> List[str]:
     logging.debug("[WHDLOAD] Read WHDLoad args from info data")
-    index = data.lower().find(b"slave=") - 1
+    index = data.lower().find(b"subordinate=") - 1
     if not index:
         return []
     args = []
@@ -83,11 +83,11 @@ def read_whdload_args_from_info_stream(stream: BinaryIO) -> List[str]:
     return read_whdload_args_from_info_data(stream.read())
 
 
-def strip_whdload_slave_prefix(whdload_args: List[str]) -> List[str]:
+def strip_whdload_subordinate_prefix(whdload_args: List[str]) -> List[str]:
     result = []
     for i, arg in enumerate(whdload_args):
         arg = arg.split(";")[0]
-        if i == 0 and arg.lower().startswith("slave="):
+        if i == 0 and arg.lower().startswith("subordinate="):
             arg = arg[6:]
         if not arg.startswith("("):
             result.append(arg)
@@ -102,52 +102,52 @@ def fix_whdload_args(args: List[str]) -> str:
     .info "parser", the latter being the most likely.
     """
     args_str = " ".join(args)
-    if args_str.startswith("AlienBreed.Slave PRELOAD \x11"):
-        args_str = "AlienBreed.Slave PRELOAD"
-    elif args_str.startswith("BrainBlasters.Slave PRELOAD D\x88"):
-        args_str = "BrainBlasters.Slave PRELOAD"
-    elif args_str.startswith("BreakOutRevolutionAGA.slave PRELOAD \x0f"):
-        args_str = "BreakOutRevolutionAGA.slave PRELOAD"
-    elif args_str.startswith("KingsQuestEnhanced.Slave PRELOAD  /\x8c"):
-        args_str = "KingsQuestEnhanced.Slave PRELOAD"
-    elif args_str.startswith("KingsQuestEnhancedMT32.Slave PRELOAD /\x8c"):
-        args_str = "KingsQuestEnhancedMT32.Slave PRELOAD"
+    if args_str.startswith("AlienBreed.Subordinate PRELOAD \x11"):
+        args_str = "AlienBreed.Subordinate PRELOAD"
+    elif args_str.startswith("BrainBlasters.Subordinate PRELOAD D\x88"):
+        args_str = "BrainBlasters.Subordinate PRELOAD"
+    elif args_str.startswith("BreakOutRevolutionAGA.subordinate PRELOAD \x0f"):
+        args_str = "BreakOutRevolutionAGA.subordinate PRELOAD"
+    elif args_str.startswith("KingsQuestEnhanced.Subordinate PRELOAD  /\x8c"):
+        args_str = "KingsQuestEnhanced.Subordinate PRELOAD"
+    elif args_str.startswith("KingsQuestEnhancedMT32.Subordinate PRELOAD /\x8c"):
+        args_str = "KingsQuestEnhancedMT32.Subordinate PRELOAD"
     elif args_str.startswith(
-        "LittleComputerPeopleNTSC.Slave PRELOAD NTSC MAG\x00"
+        "LittleComputerPeopleNTSC.Subordinate PRELOAD NTSC MAG\x00"
     ):
         # FIXME: Should MAG be included?
-        args_str = "LittleComputerPeopleNTSC.Slave PRELOAD NTSC"
-    elif args_str.startswith("Lorna.Slave PRELOAD \n"):
-        args_str = "Lorna.Slave PRELOAD"
-    elif args_str.startswith("MikroMortalTennis.slave PRELOAD fÿÝ"):
-        args_str = "MikroMortalTennis.slave PRELOAD"
-    elif args_str.startswith("OscarAGA.Slave PRELOAD Ì"):
-        args_str = "OscarAGA.Slave PRELOAD"
-    elif args_str.startswith("OscarCD32.Slave PRELOAD Ì"):
-        args_str = "OscarCD32.Slave PRELOAD"
-    elif args_str.startswith("OscarCD32NTSC.Slave PRELOAD NTSC Ì"):
-        args_str = "OscarCD32NTSC.Slave PRELOAD NTSC"
-    elif args_str.startswith("PsychoKillerCDTV.Slave PRELOAD 3\x11"):
-        args_str = "PsychoKillerCDTV.Slave PRELOAD"
-    elif args_str.startswith("QuestForGlory.Slave PRELOAD \x00"):
-        args_str = "QuestForGlory.Slave PRELOAD"
-    elif args_str.startswith("StreetFighter2.Slave PRELOAD »"):
-        args_str = "StreetFighter2.Slave PRELOAD"
-    elif args_str.startswith("Turbo.Slave PRELOAD \x00"):
-        args_str = "Turbo.Slave PRELOAD"
-    elif args_str.startswith("WinterChallengeNTSC.slave PRELOAD NTSC î\x00"):
-        args_str = "WinterChallengeNTSC.slave PRELOAD NTSC"
+        args_str = "LittleComputerPeopleNTSC.Subordinate PRELOAD NTSC"
+    elif args_str.startswith("Lorna.Subordinate PRELOAD \n"):
+        args_str = "Lorna.Subordinate PRELOAD"
+    elif args_str.startswith("MikroMortalTennis.subordinate PRELOAD fÿÝ"):
+        args_str = "MikroMortalTennis.subordinate PRELOAD"
+    elif args_str.startswith("OscarAGA.Subordinate PRELOAD Ì"):
+        args_str = "OscarAGA.Subordinate PRELOAD"
+    elif args_str.startswith("OscarCD32.Subordinate PRELOAD Ì"):
+        args_str = "OscarCD32.Subordinate PRELOAD"
+    elif args_str.startswith("OscarCD32NTSC.Subordinate PRELOAD NTSC Ì"):
+        args_str = "OscarCD32NTSC.Subordinate PRELOAD NTSC"
+    elif args_str.startswith("PsychoKillerCDTV.Subordinate PRELOAD 3\x11"):
+        args_str = "PsychoKillerCDTV.Subordinate PRELOAD"
+    elif args_str.startswith("QuestForGlory.Subordinate PRELOAD \x00"):
+        args_str = "QuestForGlory.Subordinate PRELOAD"
+    elif args_str.startswith("StreetFighter2.Subordinate PRELOAD »"):
+        args_str = "StreetFighter2.Subordinate PRELOAD"
+    elif args_str.startswith("Turbo.Subordinate PRELOAD \x00"):
+        args_str = "Turbo.Subordinate PRELOAD"
+    elif args_str.startswith("WinterChallengeNTSC.subordinate PRELOAD NTSC î\x00"):
+        args_str = "WinterChallengeNTSC.subordinate PRELOAD NTSC"
     return args_str.strip()
 
 
 def calculate_whdload_args(archive_path: str) -> str:
     """
     This function, as it is currently written, only works if there
-    is an .info with the same name as the .slave file. In theory, they
-    could be different since the .info file contains a slave=... tool type.
+    is an .info with the same name as the .subordinate file. In theory, they
+    could be different since the .info file contains a subordinate=... tool type.
     """
     archive = Archive(archive_path)
-    slave_args = {}
+    subordinate_args = {}
     lower_to_name = {}
     for path in archive.list_files():
         path_lower = path.lower()
@@ -164,7 +164,7 @@ def calculate_whdload_args(archive_path: str) -> str:
         if name_lower.endswith(".info"):
             try:
                 args = read_whdload_args_from_info_stream(archive.open(path))
-                args = strip_whdload_slave_prefix(args)
+                args = strip_whdload_subordinate_prefix(args)
             except Exception as e:
                 logging.warning(
                     "[WHDLOAD] WARNING: Error reading args: %s", repr(e)
@@ -177,17 +177,17 @@ def calculate_whdload_args(archive_path: str) -> str:
                             archive_name, " ".join(args)
                         )
                     )
-                    slave_args[archive_name] = args
-    if len(slave_args) == 0:
+                    subordinate_args[archive_name] = args
+    if len(subordinate_args) == 0:
         return ""
-    if len(slave_args) > 1:
+    if len(subordinate_args) > 1:
         logging.debug("[WHDLOAD] Multiple WHDLoad icons found")
-        for icon, args in slave_args.items():
+        for icon, args in subordinate_args.items():
             if icon.lower() in primary_icons:
                 logging.debug("[WHDLOAD] Choosing %s as primary icon", icon)
                 return fix_whdload_args(args)
-        raise Exception("Multiple slaves found")
-    return fix_whdload_args(slave_args.popitem()[1])
+        raise Exception("Multiple subordinates found")
+    return fix_whdload_args(subordinate_args.popitem()[1])
 
 
 def generate_config_for_archive(
@@ -247,7 +247,7 @@ binaries = {
     "18.5": {"d6b706bfbfe637bd98cd657114eea630b7d2dcc7": "C/WHDLoad"},
 }
 default_whdload_prefs = """
-; wait for button pressed (slave must support this)
+; wait for button pressed (subordinate must support this)
 ;ButtonWait
 
 ; disable cache-ability of Chip-Memory
@@ -343,7 +343,7 @@ primary_icons = {
         "JimmyWillburneFr/JimmyWillburneFr.info",
         "Lemmings21MB/Lemmings21MB.info",
         "Lemmings2512KB/Lemmings2512KB.info",
-        "MetalMasters/MetalMasters.info",
+        "MetalMains/MetalMains.info",
         "Might&Magic3/Might&Magic3.info",
         "Might&Magic3/Might&Magic3.info",
         "Might&Magic3De/Might&Magic3De.info",

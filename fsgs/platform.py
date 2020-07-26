@@ -109,7 +109,7 @@ from fsgs.platforms.gameboyadvance import GameBoyAdvancePlatform
 from fsgs.platforms.gameboycolor import GameBoyColorPlatform
 from fsgs.platforms.gamegear import GameGearPlatform
 from fsgs.platforms.lynx import LynxPlatformHandler
-from fsgs.platforms.mastersystem import MasterSystemPlatform
+from fsgs.platforms.mainsystem import MainSystemPlatform
 from fsgs.platforms.megadrive import MegaDrivePlatform
 from fsgs.platforms.msx import MsxPlatformHandler
 from fsgs.platforms.nintendo64 import Nintendo64Platform
@@ -153,7 +153,7 @@ platforms = {
     Platform.PSX: PlayStationPlatform,
     Platform.SGG: GameGearPlatform,
     Platform.SMD: MegaDrivePlatform,
-    Platform.SMS: MasterSystemPlatform,
+    Platform.SMS: MainSystemPlatform,
     Platform.SNES: SuperNintendoPlatformHandler,
     Platform.ST: AtariSTPlatform,
     Platform.TG16: TurboGrafx16Platform,
@@ -192,7 +192,7 @@ def normalize_platform_id(platform_id):
         return Platform.SNES
     elif platform_id in ["zxspectrum"]:
         return Platform.ZXS
-    elif platform_id in ["mastersystem", "segamastersystem"]:
+    elif platform_id in ["mainsystem", "segamainsystem"]:
         return Platform.SMS
     elif platform_id in ["megadrive", "segamegadrive", "genesis"]:
         return Platform.SMD

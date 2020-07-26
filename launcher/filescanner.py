@@ -86,7 +86,7 @@ class FileScanner(object):
             # Game Boy Color
             self.extensions.add(".gbc")
 
-            # Master System
+            # Main System
             self.extensions.add(".sms")
 
             # Mega Drive
@@ -196,7 +196,7 @@ class FileScanner(object):
                 if not check_valid_name(name):
                     continue
                 l_name = name.lower()
-                if l_name.endswith(".slave") or l_name.endswith(".slav"):
+                if l_name.endswith(".subordinate") or l_name.endswith(".slav"):
                     all_files = True
                     break
 

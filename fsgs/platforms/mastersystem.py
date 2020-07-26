@@ -14,28 +14,28 @@ FIXME: Some PAL games are 256x240, e.g. Fantastic Dizzy
 """
 
 
-class MasterSystemPlatform(Platform):
-    PLATFORM_NAME = "Master System"
+class MainSystemPlatform(Platform):
+    PLATFORM_NAME = "Main System"
 
     def driver(self, fsgc):
         if settings.get(Option.SMS_DRIVER) == "mess":
             return MessSmsDriver(fsgc)
         else:
-            return MasterSystemMednafenFSDriver(fsgc)
+            return MainSystemMednafenFSDriver(fsgc)
 
     def loader(self, fsgc):
-        return MasterSystemLoader(fsgc)
+        return MainSystemLoader(fsgc)
 
 
-class MasterSystemLoader(SimpleLoader):
+class MainSystemLoader(SimpleLoader):
     pass
 
 
-class MasterSystemMednafenDriver(MednafenDriver):
+class MainSystemMednafenDriver(MednafenDriver):
     CONTROLLER = {
         "type": "gamepad",
         "description": "Gamepad",
-        "mapping_name": "mastersystem",
+        "mapping_name": "mainsystem",
     }
 
     PORTS = [
@@ -45,7 +45,7 @@ class MasterSystemMednafenDriver(MednafenDriver):
 
     def __init__(self, fsgc, vanilla=True):
         super().__init__(fsgc, vanilla)
-        self.helper = MasterSystemHelper(self.options)
+        self.helper = MainSystemHelper(self.options)
         # FIXME: Not checked
         self.save_handler.set_save_data_is_emulator_specific(True)
         # self.save_handler.set_srm_alias(".sav")
@@ -110,12 +110,12 @@ class MasterSystemMednafenDriver(MednafenDriver):
         return None
 
 
-class MasterSystemMednafenFSDriver(MasterSystemMednafenDriver):
+class MainSystemMednafenFSDriver(MainSystemMednafenDriver):
     def __init__(self, fsgs):
         super().__init__(fsgs, vanilla=False)
 
 
-class MasterSystemHelper:
+class MainSystemHelper:
     def __init__(self, options):
         self.options = options
 

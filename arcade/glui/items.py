@@ -754,9 +754,9 @@ class PlatformItem(AutoExpandItem):
         #            "DOS",
         #            "IBM PC Compatible",
         #            "PC 1"),
-        #        "master-system": (
-        #            "Master System",
-        #            "Sega Master System / Mark III",
+        #        "main-system": (
+        #            "Main System",
+        #            "Sega Main System / Mark III",
         #            "Sega 1"),
         #        "mega-drive": (
         #            "Mega Drive",

@@ -778,8 +778,8 @@ class LaunchHandler(object):
         elif hd_startup:
             self.write_startup_sequence(s_dir, hd_startup)
 
-        if "xpkmaster.library" in self.hd_requirements:
-            self.copy_xpkmaster_files(dest_dir)
+        if "xpkmain.library" in self.hd_requirements:
+            self.copy_xpkmain_files(dest_dir)
 
         system_configuration_file = os.path.join(
             devs_dir, "system-configuration"
@@ -788,9 +788,9 @@ class LaunchHandler(object):
             with open(system_configuration_file, "wb") as f:
                 f.write(system_configuration)
 
-    def copy_xpkmaster_files(self, dest_dir):
+    def copy_xpkmain_files(self, dest_dir):
         file_map = {
-            "Libs/xpkmaster.library": "5bd19f9503b59c5d19bfe1c6a6e3b6e7c0e9eae2",
+            "Libs/xpkmain.library": "5bd19f9503b59c5d19bfe1c6a6e3b6e7c0e9eae2",
             "Libs/compressors/xpkCBR0.library": "a2a76c10cb06315e51990911fa050669cc89830d",
             "Libs/compressors/xpkDLTA.library": "ca64f89919c2869cb6fd75346b9a21245a6d04a8",
             "Libs/compressors/xpkDUKE.library": "8102d77ae0a3d64496436ee56a9c577c84b11992",
@@ -828,31 +828,31 @@ class LaunchHandler(object):
         print("[WHDLOAD] copy_whdload_files, dest_dir = ", dest_dir)
 
         whdload_dir = ""
-        slave_original_name = whdload_args.split(" ", 1)[0]
-        slave = slave_original_name.lower()
-        found_slave = False
+        subordinate_original_name = whdload_args.split(" ", 1)[0]
+        subordinate = subordinate_original_name.lower()
+        found_subordinate = False
         for dir_path, dir_names, file_names in os.walk(dest_dir):
             for name in file_names:
-                if name.lower() == slave:
+                if name.lower() == subordinate:
                     print("[WHDLOAD] Found", name)
-                    found_slave = True
+                    found_subordinate = True
                     whdload_dir = dir_path[len(dest_dir) :]
                     whdload_dir = whdload_dir.replace("\\", "/")
                     if not whdload_dir:
-                        # slave was found in root directory
+                        # subordinate was found in root directory
                         pass
                     elif whdload_dir[0] == "/":
                         whdload_dir = whdload_dir[1:]
                     break
-            if found_slave:
+            if found_subordinate:
                 break
-        if not found_slave:
+        if not found_subordinate:
             raise Exception(
-                "Did not find the specified WHDLoad slave {}. "
-                "Check the WHDLoad arguments".format(repr(slave_original_name))
+                "Did not find the specified WHDLoad subordinate {}. "
+                "Check the WHDLoad arguments".format(repr(subordinate_original_name))
             )
-        print("[WHDLOAD] Slave directory:", repr(whdload_dir))
-        print("[WHDLOAD] Slave arguments:", whdload_args)
+        print("[WHDLOAD] Subordinate directory:", repr(whdload_dir))
+        print("[WHDLOAD] Subordinate arguments:", whdload_args)
 
         self.copy_whdload_kickstart(
             dest_dir,
@@ -929,7 +929,7 @@ class LaunchHandler(object):
             )
             icon_path = os.path.join(dest_dir, icon)
             print("[WHDLOAD] Create icon at ", icon_path)
-            create_slave_icon(icon_path, whdload_args)
+            create_subordinate_icon(icon_path, whdload_args)
             self.write_startup_sequence(
                 s_dir,
                 'cd "{0}"\n'
@@ -1386,9 +1386,9 @@ def write_string(f, s):
     f.write("\0")
 
 
-def create_slave_icon(path, whdload_args):
+def create_subordinate_icon(path, whdload_args):
     default_tool = "DH0:/C/WHDLoad"
-    # FIXME: handle "" around slave name?
+    # FIXME: handle "" around subordinate name?
     # args = whdload_args.split(" ")
     tool_types = whdload_args.split(" ")
     tool_types[0] = "SLAVE=" + tool_types[0]
