@@ -17,8 +17,8 @@ platforms.
 
 The following packages are needed:
 
-    sudo apt install python3 python3-pyqt5 python3-pyqt5.qtopengl \
-        python3-requests
+    sudo apt install python3 python3-pillow python3-pyqt5 \
+        python3-pyqt5.qtopengl python3-requests
 
 At this point, PyOpenGL is bundled, but in the future you might also need
 to manually install:
@@ -61,8 +61,8 @@ FIXME: Write about dependencies for running the launcher from the source
 directory:
 
     pacman -S mingw-w64-x86_64-python3 mingw-w64-x86_64-python3-lhafile \
-    mingw-w64-x86_64-python3-pyqt5 mingw-w64-x86_64-python3-requests \
-    mingw-w64-x86_64-python3-setuptools
+    mingw-w64-x86_64-python3-pillow mingw-w64-x86_64-python3-pyqt5 \
+    mingw-w64-x86_64-python3-requests mingw-w64-x86_64-python3-setuptools
 
 And finally, from the fs-uae-launcher source directory:
 
@@ -102,9 +102,7 @@ thatyou do not get errors here). Then follow with:
 
     cd %LOCALAPPDATA%\Programs\Python\Python36
     python -m pip install --upgrade pip
-    python -m pip install PyQt5==5.12.2
-    python -m pip install requests
-    python -m pip install lhafile
+    python -m pip install lhafile requests pillow PyQt5==5.12.2
 
 In the MSYS2 MinGW 64-bit shell:
 
@@ -128,7 +126,7 @@ verify that pip3 is found in the correct place:
 
 Then run:
 
-    pip3 install lhafile requests pyobjc pyqt5==5.9.2
+    pip3 install lhafile requests pillow pyobjc pyqt5==5.9.2
 
 And finally, from the fs-uae-launcher source directory:
 
