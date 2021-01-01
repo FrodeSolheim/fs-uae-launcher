@@ -1,17 +1,15 @@
 import sys
 
 import fsui
-from fsbc.application import app
 from fsgs.drivers.gamedriver import GameDriver
+from launcher.context import get_config
 from launcher.i18n import gettext
-from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
-from launcher.settings.fullscreenmodebutton import FullscreenModeButton
-from launcher.settings.monitorbutton import MonitorButton
+from launcher.settings.fullscreentogglebutton import FullscreenToggleButton
 from launcher.settings.override_warning import OverrideWarning
-from launcher.settings.videosynccheckbox import VideoSyncCheckBox
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
+from launcher.ui2.startbutton import StartButton
 
 
 class LaunchGroup(fsui.Group):
@@ -45,7 +43,7 @@ class LaunchGroup(fsui.Group):
         self.hori_layout.add(self.override_warning, margin_right=10)
         self.fullscreen_button = FullscreenToggleButton(self)
         self.hori_layout.add(self.fullscreen_button, fill=True)
-        start_button = StartButton(self, gsc)
+        start_button = StartButton(self)
         self.hori_layout.add(start_button, fill=True, margin_left=10)
         # ConfigBehavior(self, [Option.FULLSCREEN])
         gsc.config.add_behavior(
@@ -74,25 +72,6 @@ class LaunchGroup(fsui.Group):
 
     def on_fullscreen_config(self, _):
         self.layout.update()
-
-
-class StartButton(fsui.Button):
-    def __init__(self, parent, gsc):
-        super().__init__(parent, gettext("Start"))
-        self.gsc = gsc
-        #        gsc.signal.add_behavior(self, ["start_ready"])
-        gsc.config.add_behavior(self, ["__running"])
-
-    def on_activated(self):
-        from launcher.launcherapp import LauncherApp
-
-        LauncherApp.start_game()
-
-    def on___running_config(self, value):
-        self.set_enabled(value != "1")
-
-        # def on_start_ready_signal(self):
-        #     pass
 
 
 class ScreenInfoLabel(fsui.Label):
@@ -161,41 +140,11 @@ class ScreenInfoLabel(fsui.Label):
         )
 
 
-class FullscreenToggleButton(fsui.ImageButton):
-    def __init__(self, parent):
-        self.windowed_icon = fsui.Image("launcher:res/windowed_16.png")
-        self.fullscreen_icon = fsui.Image("launcher:res/fullscreen_16.png")
-        fsui.ImageButton.__init__(self, parent, self.windowed_icon)
-        self.set_tooltip(
-            gettext("Toggle Between Windowed and Full-Screen Mode")
-        )
-        self.set_min_width(40)
-        self.fullscreen_mode = False
-        self.on_setting("fullscreen", app.settings["fullscreen"])
-        LauncherSettings.add_listener(self)
-
-    def on_destroy(self):
-        LauncherSettings.remove_listener(self)
-
-    def on_setting(self, key, value):
-        if key == "fullscreen":
-            if value == "1":
-                self.fullscreen_mode = True
-                self.set_image(self.fullscreen_icon)
-            else:
-                self.fullscreen_mode = False
-                self.set_image(self.windowed_icon)
-
-    def on_activate(self):
-        if self.fullscreen_mode:
-            app.settings["fullscreen"] = "0"
-        else:
-            app.settings["fullscreen"] = "1"
-
-
 class LaunchDialog(fsui.Window):
-    def __init__(self, parent, title, task):
+    def __init__(self, parent, title, task, *, gscontext):
         print("LaunchDialog parent =", parent)
+        self.gscontext = gscontext
+
         self.has_parent = parent is not None
         self.no_gui = "--no-gui" in sys.argv
         super().__init__(parent, title, maximizable=False)
@@ -255,29 +204,31 @@ class LaunchDialog(fsui.Window):
         self.deleteLater()
 
     def __closed(self):
-        LauncherConfig.set("__running", "")
+        get_config(self).set("__running", "")
         self.cancel()
         return False
 
     def on_progress(self, progress):
         def hide_function():
-            self.visible = False
+            self.set_visible(False)
 
         def function():
             if progress == "__run__":
-                self.cancel_button.disable()
+                self.cancel_button.set_enabled(False)
                 # Hide dialog after 1.5 seconds. The reason for delaying it
                 # is to avoid "confusing" flickering if/when the dialog is
                 # only shown for a split second.
-                if self.is_shown():
+                if self.visible():
                     fsui.call_later(1500, hide_function)
-                LauncherConfig.set("__progress", gettext("Running: Emulator"))
+                get_config(self).set(
+                    "__progress", gettext("Running: Emulator")
+                )
             else:
                 if self.no_gui:
                     print("[PROGRESS]", progress)
                 else:
                     self.sub_title_label.set_text(progress)
-                LauncherConfig.set(
+                get_config(self).set(
                     "__progress", "Preparing: {}".format(progress)
                 )
 
@@ -308,4 +259,4 @@ class LaunchDialog(fsui.Window):
         print("LaunchDialog.cancel")
         if self.task is not None:
             self.task.stop()
-        self.cancel_button.disable()
+        self.cancel_button.set_enabled(False)

@@ -1,21 +1,21 @@
-import fsui
+from fsui import Button, Color, get_mouse_position, HorizontalLayout, Panel
 
 
-class TitleBar(fsui.Panel):
+class TitleBar(Panel):
     def __init__(self, parent):
         super().__init__(parent, paintable=True)
         self.set_min_height(40)
-        self.set_background_color(fsui.Color(0xFF, 0xFF, 0xFF))
+        self.set_background_color(Color(0xFF, 0xFF, 0xFF))
 
-        self.menu_button = fsui.Button(self, "=")
-        self.minimize_button = fsui.Button(self, "_")
+        self.menu_button = Button(self, "=")
+        self.minimize_button = Button(self, "_")
         self.minimize_button.activated.connect(self.on_minimize_button)
-        self.maximize_button = fsui.Button(self, "^")
+        self.maximize_button = Button(self, "^")
         self.maximize_button.activated.connect(self.on_maximize_button)
-        self.close_button = fsui.Button(self, "X")
+        self.close_button = Button(self, "X")
         self.close_button.activated.connect(self.on_close_button)
 
-        self.layout = fsui.HorizontalLayout()
+        self.layout = HorizontalLayout()
         self.layout.add(self.menu_button, fill=True)
         self.layout.add_spacer(0, expand=True)
         self.layout.add(self.minimize_button, fill=True)
@@ -42,10 +42,10 @@ class TitleBar(fsui.Panel):
 
     def on_left_down(self):
         self.window_pos = self.parent().get_position()
-        self.mouse_pos = fsui.get_mouse_position()
+        self.mouse_pos = get_mouse_position()
 
     def on_mouse_motion(self):
-        mouse_pos = fsui.get_mouse_position()
+        mouse_pos = get_mouse_position()
         window_pos = (
             self.window_pos[0] + mouse_pos[0] - self.mouse_pos[0],
             self.window_pos[1] + mouse_pos[1] - self.mouse_pos[1],
@@ -64,5 +64,5 @@ class TitleBar(fsui.Panel):
         # print(self.parent())
         # text = self.parent().title()
         text = "FIXME"
-        tw, th = dc.measure_text(text)
+        _, th = dc.measure_text(text)
         dc.draw_text(text, x_offset, (self.height() - th) // 2)

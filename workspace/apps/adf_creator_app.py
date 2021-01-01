@@ -22,7 +22,7 @@ class ADFCreatorWindow(fsui.Window):
         super().__init__(parent, title=title, maximizable=False)
         self.theme = WorkspaceTheme.instance()
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        if self.window.theme.has_close_buttons:
+        if self.window().theme.has_close_buttons:
             buttons.create_close_button()
 
         self.dialog = None
@@ -84,7 +84,7 @@ class ADFCreatorWindow(fsui.Window):
         self.dir_field = fsui.TextField(self, "", read_only=True)
         hori_layout.add(self.dir_field, expand=True)
         self.browse_button = fsui.Button(self, gettext("Browse"))
-        self.browse_button.clicked.connect(self.on_browse_clicked)
+        self.browse_button.actived.connect(self.on_browse_clicked)
         hori_layout.add(self.browse_button, margin_left=10)
 
         self.created_label = fsui.Label(self, "")
@@ -133,7 +133,7 @@ class ADFCreatorWindow(fsui.Window):
         else:
             raise Exception("Unexpected index " + repr(index))
         self.size_field.set_text(size)
-        self.size_field.enable(False)
+        self.size_field.set_enabled(False)
 
     def set_path(self, path):
         self.path = path
@@ -190,7 +190,7 @@ class ADFCreatorWindow(fsui.Window):
 
     def create_disk_file(self):
         self.created_label.set_text("")
-        disk_type = self.list_view.get_index()
+        disk_type = self.list_view.index()
         path = self.dir_field.get_text().strip()
         if not os.path.isdir(path):
             return self.show_error(

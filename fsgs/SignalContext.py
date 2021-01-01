@@ -1,4 +1,5 @@
 import weakref
+
 from fsbc.signal import Signal
 from .contextaware import ContextAware
 

@@ -1,6 +1,7 @@
 *~
 /base-dir
 /build/
+/build-dir/
 /build.fs/
 /debian/.debhelper/
 /debian/files
@@ -11,6 +12,7 @@
 /debian/fs-uae-launcher.substvars
 /dist.fs/
 *.egg-info
+/.flatpak-builder/
 fontconfig
 fs-uae-launcher-*
 fs-uae-launcher_*
@@ -21,9 +23,12 @@ fs-uae-launcher_*
 Lib
 /Makefile
 *.mo
+/.mypy_cache/
 *.pot
 /.pybuild/
 *.pyc
 *.pyo
+/repo/
 /setup.py
+/venv/
 /.vscode/.ropeproject/objectdb

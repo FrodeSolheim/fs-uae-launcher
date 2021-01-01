@@ -1,8 +1,8 @@
 from fsbc.desktop import open_url_in_browser
 from fsgs.network import openretro_url_prefix
 from fsui import Image, Panel
-from ...launcher_config import LauncherConfig
-from ..skin import Skin
+from launcher.ui.skin import Skin
+from launcher.context import get_config
 
 
 class WebButton(Panel):
@@ -13,12 +13,14 @@ class WebButton(Panel):
             self.icon = Image("launcher:res/16x16/world.png")
         Panel.__init__(self, parent, paintable=True)
         # self.set_tooltip(tooltip)
-        LauncherConfig.add_listener(self)
+        config = get_config(self)
+        config.add_listener(self)
         self.on_config("variant_uuid", "")
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
-        pass
+        config = get_config(self)
+        config.remove_listener(self)
+        super().on_destroy()
 
     def get_min_width(self):
         return 32
@@ -27,7 +29,8 @@ class WebButton(Panel):
         return 24
 
     def get_url(self):
-        variant_uuid = LauncherConfig.get("variant_uuid", "")
+        config = get_config(self)
+        variant_uuid = config.get("variant_uuid", "")
         if not variant_uuid:
             return
         return "{0}/game/{1}".format(openretro_url_prefix(), variant_uuid)
@@ -41,13 +44,13 @@ class WebButton(Panel):
         if key == "variant_uuid":
             if value:
                 if not self.is_enabled():
-                    self.enable()
+                    self.set_enabled()
                     # self.refresh()
                     self.show()
                     self.set_hand_cursor()
             else:
                 if self.is_enabled():
-                    self.disable()
+                    self.set_enabled(False)
                     self.hide()
                     # self.refresh()
                     # self.set_default_cursor()

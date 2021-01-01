@@ -1,7 +1,7 @@
 import json
 
 from fsgs.drivers.mamedriver import MameDriver
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.arcade.arcadeplatform import ArcadeLoader
 

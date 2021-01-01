@@ -1,13 +1,15 @@
 import fsui
-from launcher.ui.skin import Skin
 from launcher.ui.config.InputGroup import InputGroup
+from launcher.ui.skin import Skin
+from launcher.ui.config.configpanel import ConfigPanel
 
 
-class InputPanel(fsui.Panel):
+class InputPanel(ConfigPanel):
     def __init__(self, parent):
-        fsui.Panel.__init__(self, parent)
-        Skin.set_background_color(self)
-        self.layout = fsui.VerticalLayout()
+        super().__init__(parent)
+        # Skin.set_background_color(self)
+
+        # self.layout = fsui.VerticalLayout()
         self.input_group = InputGroup(self, refresh_button=True)
         self.layout.add(self.input_group, fill=True)
         self.layout.add_spacer(Skin.EXTRA_GROUP_MARGIN)

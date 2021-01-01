@@ -140,7 +140,6 @@ dinput_key_codes = {
     "UNDO": 0,  # FIXME
 }
 
-
 sdlk_to_dik = {
     "ESCAPE": "ESCAPE",
     "1": "1",

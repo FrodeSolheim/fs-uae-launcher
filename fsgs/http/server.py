@@ -1,11 +1,12 @@
-import re
 import json
+import re
 import traceback
-from wsgiref.util import setup_testing_defaults
 from wsgiref.simple_server import make_server
+from wsgiref.util import setup_testing_defaults
+
 from fsgs.FSGameSystemContext import FSGameSystemContext
-from fsgs.session import Session
 from fsgs.http.request import Request
+from fsgs.session import Session
 
 """
 
@@ -101,7 +102,6 @@ def get_games_handler(request):
     database_items = fsgs.database().find_games_new(" ".join(terms))
     result = []
     for item in database_items:
-
         # query = "SELECT DISTINCT uuid, name, platform, year, publisher, " \
         #         "front_image, title_image, screen1_image, screen2_image, " \
         #         "screen3_image, screen4_image, screen5_image, have, path, " \
@@ -281,7 +281,6 @@ url_map = [
 
 
 def create_application():
-
     fsgs = FSGameSystemContext()
 
     # A relatively simple WSGI application. It's going to print out the

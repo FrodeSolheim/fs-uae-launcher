@@ -2,17 +2,17 @@ import fsui
 from fsgs.Database import Database
 from fsgs.ogd.client import OGDClient
 from fsui import Image, Choice
+from launcher.context import get_config
 from launcher.i18n import gettext
-from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.ui.ConfigGroup import ConfigGroup
 from launcher.ui.ConfigurationsBrowser import ConfigurationsBrowser
 from launcher.ui.GameListSelector import GameListSelector
-from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
-from launcher.ui.skin import Skin
 from launcher.ui.VariantsBrowser import VariantsBrowser
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.newbutton import NewButton
+from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
+from launcher.ui.newconfigbutton import NewConfigButton
+from launcher.ui.skin import Skin
 
 
 class ConfigurationsPanel(fsui.Panel):
@@ -32,11 +32,11 @@ class ConfigurationsPanel(fsui.Panel):
         label_stand_in.set_min_height(th)
         hor_layout.add(label_stand_in, margin_top=10, margin_bottom=10)
 
-        hor_layout.add(NewButton(self), margin_left=10, margin_right=10)
+        hor_layout.add(NewConfigButton(self), margin_left=10, margin_right=10)
 
         game_list_selector = GameListSelector(self)
         game_list_selector.set_min_width(250)
-        game_list_selector.setMaximumWidth(250)
+        # game_list_selector.setMaximumWidth(250)
         game_list_selector.changed.connect(self.on_game_list_changed)
         hor_layout.add(game_list_selector, expand=False, margin_left=10)
 
@@ -44,6 +44,7 @@ class ConfigurationsPanel(fsui.Panel):
             self, LauncherSettings.get("config_search")
         )
         self.text_field.on_changed = self.on_search_changed
+
         if VariantsBrowser.use_horizontal_layout():
             # window is big enough to use fixed size
             # self.text_field.set_min_width(210)
@@ -120,6 +121,7 @@ class ConfigurationsPanel(fsui.Panel):
 
     def on_destroy(self):
         LauncherSettings.remove_listener(self)
+        super().on_destroy()
 
     def on_setting(self, key, value):
         if key == "parent_uuid":
@@ -172,10 +174,10 @@ class RatingChoice(Choice):
         SettingsBehavior(self, ["__variant_rating"])
 
     def on_changed(self):
-        variant_uuid = LauncherConfig.get("variant_uuid", "")
+        variant_uuid = get_config(self).get("variant_uuid")
         if not variant_uuid:
             return
-        rating = self.index_to_rating(self.get_index())
+        rating = self.index_to_rating(self.index())
         self.set_rating_for_variant(variant_uuid, rating)
 
     @staticmethod

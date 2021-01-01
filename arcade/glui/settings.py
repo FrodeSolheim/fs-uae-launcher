@@ -3,7 +3,7 @@ import os
 # import pygame
 from fsbc.user import get_home_dir, get_documents_dir
 from fsbc.system import windows
-from fsbc.util import memoize
+from fspy.decorators import memoize
 
 
 @memoize

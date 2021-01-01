@@ -1,5 +1,5 @@
 import fsui
-from ...launcher_config import LauncherConfig
+from launcher.context import get_config
 
 
 class ConfigCheckBox(fsui.CheckBox):
@@ -10,19 +10,20 @@ class ConfigCheckBox(fsui.CheckBox):
         self.set_config_handlers()
 
     def initialize_from_config(self):
-        self.on_config(self.config_key, LauncherConfig.get(self.config_key))
+        self.on_config(self.config_key, get_config(self).get(self.config_key))
 
     def set_config_handlers(self):
-        LauncherConfig.add_listener(self)
+        get_config(self).add_listener(self)
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        get_config(self).remove_listener(self)
+        super().on_destroy()
 
     def on_changed(self):
-        if self.is_checked():
-            LauncherConfig.set(self.config_key, "1")
+        if self.checked():
+            get_config(self).set(self.config_key, "1")
         else:
-            LauncherConfig.set(self.config_key, "")
+            get_config(self).set(self.config_key, "")
 
     def on_config(self, key, value):
         if key == self.config_key:

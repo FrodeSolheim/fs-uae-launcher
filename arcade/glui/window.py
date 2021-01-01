@@ -11,7 +11,7 @@ from fsgs.FSGSDirectories import FSGSDirectories
 from arcade.gamecenter import GameCenter
 from arcade.resources import resources
 from fsbc.system import windows
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import PlatformHandler
 from fsgs.util.gamenameutil import GameNameUtil
 

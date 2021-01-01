@@ -1,11 +1,11 @@
-from fsbc.util import unused
 import fsui
-from ...launcher_settings import LauncherSettings
-from ...game_paths import GamePaths
-from ..Constants import Constants
-from ..ImageLoader import ImageLoader
-from ..skin import Skin
+from fsbc.util import unused
 from .BottomPanel import BottomPanel
+from launcher.ui.Constants import Constants
+from launcher.ui.imageloader import ImageLoader
+from ..skin import Skin
+from ...game_paths import GamePaths
+from ...launcher_settings import LauncherSettings
 
 BORDER = 20
 
@@ -47,6 +47,7 @@ class ScreenshotsPanel(BottomPanel):
     def on_destroy(self):
         LauncherSettings.remove_listener(self)
         self.image_loader.stop()
+        super().on_destroy()
 
     def set_min_screenshots(self, count):
         # w = SCREEN_SIZE[0] * count + BORDER * 2 + (BORDER + 1) * (count - 1)

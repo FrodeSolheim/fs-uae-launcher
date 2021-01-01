@@ -3,8 +3,8 @@ import os
 
 from fsbc import settings
 from fsgs import Option
-from fsgs.drivers.messdriver import MessDriver
 from fsgs.drivers.mednafendriver import MednafenDriver
+from fsgs.drivers.messdriver import MessDriver
 from fsgs.drivers.retroarchdriver import RetroArchDriver
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader

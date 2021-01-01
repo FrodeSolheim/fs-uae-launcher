@@ -1,36 +1,22 @@
 import os
 import subprocess
 
-from fsbc import settings
-from fsgs.option import Option
-from .fsuae import FSUAE
-
-try:
-    getcwd = os.getcwdu
-except AttributeError:
-    getcwd = os.getcwd
+from fsbc.settings import Settings
+from fsgs.amiga.fsuae import FSUAE
+from fsgs.options.option import Option
 
 
-class FSUAEDeviceHelper(object):
+class FSUAEDeviceHelper:
     @classmethod
     def start_with_args(cls, args, **kwargs):
-        print("FSUAE.start_with_args:", args)
+        print("FSUAEDeviceHelper.start_with_args:", args)
         exe = cls.find_executable()
-        print("current dir (cwd): ", getcwd())
-        print("using fs-uae executable:", exe)
+        print("Current dir (cwd): ", os.getcwd())
+        print("Using executable:", exe)
         args = [exe] + args
         print(args)
         env = os.environ.copy()
-        if settings.get(Option.FAKE_JOYSTICKS):
-            try:
-                fake_joysticks = int(settings.get(Option.FAKE_JOYSTICKS))
-            except ValueError:
-                print(
-                    "WARNING: fake_joysticks contains invalid value",
-                    repr(settings.get(Option.FAKE_JOYSTICKS)),
-                )
-            else:
-                env["FSGS_FAKE_JOYSTICKS"] = str(fake_joysticks)
+        cls.maybe_add_fake_joysticks(env)
         FSUAE.add_environment_from_settings(env)
         process = subprocess.Popen(
             args,
@@ -43,4 +29,18 @@ class FSUAEDeviceHelper(object):
 
     @classmethod
     def find_executable(cls):
-        return FSUAE.find_executable("fs-uae-device-helper")
+        return FSUAE.find_executable("fs-uae-device-helper", libexec=True)
+
+    @classmethod
+    def maybe_add_fake_joysticks(cls, env):
+        settings = Settings.instance()
+        if settings.get(Option.FAKE_JOYSTICKS):
+            try:
+                fake_joysticks = int(settings.get(Option.FAKE_JOYSTICKS))
+            except ValueError:
+                print(
+                    "WARNING: fake_joysticks contains invalid value",
+                    repr(settings.get(Option.FAKE_JOYSTICKS)),
+                )
+            else:
+                env["FSGS_FAKE_JOYSTICKS"] = str(fake_joysticks)

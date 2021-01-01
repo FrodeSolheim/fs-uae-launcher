@@ -55,11 +55,11 @@ class LogoutWindow(fsui.Window):
         hori_layout.add_spacer(20)
 
         self.logout_button = fsui.Button(self, gettext("Log Out"))
-        # self.logout_button.disable()
+        # self.logout_button.set_enabled(False)
         self.logout_button.activated.connect(self.__logout_activated)
         hori_layout.add(self.logout_button)
 
-        if self.window.theme.has_close_buttons:
+        if self.window().theme.has_close_buttons:
             self.close_button = CloseButton(self)
             hori_layout.add(self.close_button, fill=True, margin_left=10)
 

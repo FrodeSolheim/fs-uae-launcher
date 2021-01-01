@@ -7,12 +7,10 @@ from launcher.settings.settings_page import SettingsPage
 class LanguageSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
-        icon = fsui.Icon("language-settings", "pkg:workspace")
-        # gettext("Appearance")
-        title = gettext("Language")
-        # gettext("Set language and look for FS-UAE applications")
-        subtitle = gettext("Set language for FS-UAE applications")
-        self.add_header(icon, title, subtitle)
+        # icon = fsui.Icon("language-settings", "pkg:workspace")
+        # title = gettext("Language")
+        # subtitle = gettext("Set language for FS-UAE applications")
+        # self.add_header(icon, title, subtitle)
 
         hori_layout = fsui.HorizontalLayout()
         self.layout.add(hori_layout, fill=True)
@@ -34,7 +32,7 @@ class LanguageSettingsPage(SettingsPage):
             "based on information from the operating system (or English, "
             "if a supported language is not detected)."
         )
-        self.layout.add(fsui.MultiLineLabel(self, information, 640))
+        self.layout.add(fsui.MultiLineLabel(self, information, 500))
 
         label = fsui.Label(
             self, "You can help translate FS-UAE on crowdin.net:"
@@ -70,7 +68,7 @@ class LanguageSettingChoice(fsui.Choice):
             self.set_index(selected_index)
 
     def on_changed(self):
-        index = self.get_index()
+        index = self.index()
         LauncherSettings.set("language", LANGUAGE_ITEMS[index][1])
 
 

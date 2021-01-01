@@ -1,12 +1,12 @@
 import fsui
 from fsgs.amiga.amiga import Amiga
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import Platform
-from fsgs.platforms.cpc.cpcconstants import CPC_MODEL_464
 from fsgs.platforms.commodore64 import C64_MODEL_C64C_1541_II
+from fsgs.platforms.cpc.cpcconstants import CPC_MODEL_464
 from fsgs.platforms.zxspectrum import ZXS_MODEL_PLUS3
+from launcher.context import get_config
 from launcher.i18n import gettext
-from launcher.launcher_config import LauncherConfig
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS
 from launcher.ui.floppiesgroup import FloppiesGroup
@@ -14,7 +14,7 @@ from launcher.ui.floppiesgroup import FloppiesGroup
 
 class RemovableMediaGroup(FloppiesGroup):
     def __init__(self, parent, drives, main=False):
-        FloppiesGroup.__init__(self, parent, drives, removable_media=True)
+        super().__init__(parent, drives, removable_media=True)
         self.layout3 = fsui.HorizontalLayout()
         self.layout.add(self.layout3, fill=True)
         self.layout3.add_spacer(0, expand=True)
@@ -71,7 +71,7 @@ class RemovableMediaGroup(FloppiesGroup):
 
     def update_media_type(self):
         if self.__platform in AMIGA_PLATFORMS:
-            self.set_cd_mode(Amiga.is_cd_based(LauncherConfig))
+            self.set_cd_mode(Amiga.is_cd_based(get_config(self)))
         elif self.__platform in [Platform.C64]:
             if self._c64_model == C64_MODEL_C64C_1541_II:
                 self.set_mode(self.FLOPPY_MODE)
@@ -130,7 +130,7 @@ class RemovableMediaGroup(FloppiesGroup):
             # selector.set_cd_mode(self.cd_mode)
             selector.set_mode(self.mode)
         self.update_heading_label()
-        # self.selectors[1].enable(not self.cd_mode)
+        # self.selectors[1].set_enabled(not self.cd_mode)
 
     def set_cd_mode(self, cd_mode):
         if cd_mode:
@@ -144,11 +144,11 @@ class INesHeaderWidget(fsui.Panel):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
         hori_layout = fsui.HorizontalLayout()
-        self.layout.add(hori_layout, fill=True, margin=10)
+        self.layout.add(hori_layout, fill=True, margin=10, margin_bottom=0)
 
         self.text_field = fsui.TextField(self, "")
         self.text_field.on_changed = self.on_text_changed
-        self.text_field.disable()
+        self.text_field.set_enabled(False)
         hori_layout.add(self.text_field, expand=True)
 
         # self.help_button = HelpButton(
@@ -158,12 +158,12 @@ class INesHeaderWidget(fsui.Panel):
         ConfigBehavior(self, [Option.NES_INES_HEADER])
 
     def on_nes_ines_header_config(self, value):
-        if value != self.text_field.get_text():
+        if value != self.text_field.text():
             value = "iNES Header: " + value
             self.text_field.set_text(value)
 
     def on_text_changed(self):
-        # LauncherConfig.set("nes_ines_header", self.text_field.get_text())
+        # LauncherConfig.set("nes_ines_header", self.text_field.text())
         pass
 
 
@@ -172,11 +172,11 @@ class A78HeaderWidget(fsui.Panel):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
         hori_layout = fsui.HorizontalLayout()
-        self.layout.add(hori_layout, fill=True, margin=10)
+        self.layout.add(hori_layout, fill=True, margin=10, margin_bottom=0)
 
         self.text_field = fsui.TextField(self, "")
         self.text_field.on_changed = self.on_text_changed
-        self.text_field.disable()
+        self.text_field.set_enabled(False)
         hori_layout.add(self.text_field, expand=True)
 
         # self.help_button = HelpButton(
@@ -186,12 +186,12 @@ class A78HeaderWidget(fsui.Panel):
         ConfigBehavior(self, [Option.A7800_A78_HEADER])
 
     def on_a7800_a78_header_config(self, value):
-        if value != self.text_field.get_text():
+        if value != self.text_field.text():
             value = "A78 Header: " + value
             self.text_field.set_text(value)
 
     def on_text_changed(self):
-        # LauncherConfig.set("nes_ines_header", self.text_field.get_text())
+        # LauncherConfig.set("nes_ines_header", self.text_field.text())
         pass
 
 
@@ -200,14 +200,14 @@ class CommandWidget(fsui.Panel):
         fsui.Panel.__init__(self, parent)
         self.layout = fsui.VerticalLayout()
         hori_layout = fsui.HorizontalLayout()
-        self.layout.add(hori_layout, fill=True, margin=10)
+        self.layout.add(hori_layout, fill=True, margin=10, margin_bottom=0)
 
         label = fsui.Label(self, gettext("Command:"))
         hori_layout.add(label, fill=True, margin_right=10)
 
         self.text_field = fsui.TextField(self, "")
         self.text_field.on_changed = self.on_text_changed
-        # self.text_field.disable()
+        # self.text_field.set_enabled(False)
         hori_layout.add(self.text_field, expand=True)
 
         # self.help_button = HelpButton(
@@ -217,8 +217,8 @@ class CommandWidget(fsui.Panel):
         ConfigBehavior(self, [Option.COMMAND])
 
     def on_command_config(self, value):
-        if value != self.text_field.get_text():
+        if value != self.text_field.text():
             self.text_field.set_text(value)
 
     def on_text_changed(self):
-        LauncherConfig.set("command", self.text_field.get_text())
+        get_config(self).set("command", self.text_field.text())

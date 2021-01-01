@@ -1,5 +1,5 @@
 import fsui
-from fsgs.option import Option
+from fsgs.options.option import Option
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
@@ -127,6 +127,7 @@ class PreferredJoystickSelector(fsui.Group):
 
     def on_destroy(self):
         LauncherSettings.remove_listener(self)
+        super().on_destroy()
 
     def on_device_changed(self):
         value = self.device_choice.get_text()

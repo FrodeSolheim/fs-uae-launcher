@@ -1,10 +1,10 @@
 import traceback
 
 import fsui
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import Platform
+from launcher.context import get_config
 from launcher.i18n import gettext
-from launcher.launcher_config import LauncherConfig
 from launcher.option import options
 from launcher.settings.fullscreenmodebutton import FullscreenModeButton
 from launcher.settings.monitorbutton import MonitorButton
@@ -183,18 +183,18 @@ class QuickSettingsPanel(fsui.Panel):
 
     def on_platform_config(self, value):
         self.layout.update()
-        self.platform_settings_button.enable(
+        self.platform_settings_button.set_enabled(
             len(PlatformSettingsDialog.option_list_for_platform(value)) > 0
         )
 
     def on_g_sync_setting(self, value):
-        self.video_sync_checkbox.enable(value != "1")
+        self.video_sync_checkbox.set_enabled(value != "1")
 
     def on_settings_button(self):
         SettingsDialog.open(self.window)
 
     def on_platform_settings_button(self):
-        platform = LauncherConfig.get("platform")
+        platform = get_config(self).get("platform")
         if platform:
             PlatformSettingsDialog.open(self.window, platform)
 

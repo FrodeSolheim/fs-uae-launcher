@@ -9,7 +9,7 @@ class ConfigDialog(fsui.DialogWindow):
         title = gettext("Custom Configuration")
         super().__init__(parent, title=title)
         self.theme = LauncherTheme.get()
-        if self.window.theme.has_close_buttons:
+        if self.window().theme.has_close_buttons:
             buttons, layout = fsui.DialogButtons.create_with_layout(self)
             buttons.create_close_button()
         else:

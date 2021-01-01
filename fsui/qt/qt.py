@@ -2,37 +2,72 @@ import functools
 import os
 import sys
 
+# pylint: disable=unused-wildcard-import
+if os.environ.get("QT_API", "").lower() == "pyside2":
+    # noinspection PyUnresolvedReferences
+    from fsui.qt.pyside2 import *
+else:
+    # noinspection PyUnresolvedReferences
+    from fsui.qt.pyqt5 import *
+
+# from fsui.qt.pyqt5 import (
+#     QAbstractListModel,
+#     QApplication,
+#     QBrush,
+#     QCheckBox,
+#     QColor,
+#     QColorDialog,
+#     QComboBox,
+#     QCoreApplication,
+#     QCursor,
+#     QDesktopServices,
+#     QDesktopWidget,
+#     QDialog,
+#     QEvent,
+#     QFileDialog,
+#     QFont,
+#     QFontDatabase,
+#     QFontMetrics,
+#     QFrame,
+#     QIcon,
+#     QImage,
+#     QLabel,
+#     QLinearGradient,
+#     QLineEdit,
+#     QListView,
+#     QMainWindow,
+#     QMenu,
+#     QMessageBox,
+#     QObject,
+#     QPainter,
+#     QPalette,
+#     QPen,
+#     QPixmap,
+#     QPoint,
+#     QPushButton,
+#     QRect,
+#     QScrollArea,
+#     QSignal,
+#     QSize,
+#     QSpinBox,
+#     QStandardItem,
+#     QStandardItemModel,
+#     QStyleFactory,
+#     QSvgRenderer,
+#     Qt,
+#     QTextCursor,
+#     QTextEdit,
+#     QTimer,
+#     QUrl,
+#     QWidget,
+# )
+
 import fsbc.application
 import fsbc.desktop
 import fsboot
 import fstd.desktop
 from fsbc.settings import Settings
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtCore import *
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtGui import *
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtWidgets import *
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtCore import pyqtSignal as Signal
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtCore import pyqtSignal as QSignal
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtOpenGL import *
-
-from fsgs.option import Option
-
-try:
-    # noinspection PyUnresolvedReferences, PyPackageRequirements
-    from PyQt5.QtX11Extras import *
-except ImportError:
-    pass
+from fsgs.options.option import Option
 
 
 def open_url_in_browser(url):
@@ -78,7 +113,7 @@ def init_qt():
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
     fsbc.desktop.set_open_url_in_browser_function(open_url_in_browser)
-    qapplication = QtBaseApplication([])
+    qapplication = QtBaseApplication(sys.argv)
 
     initialize_qt_style(qapplication)
     return qapplication

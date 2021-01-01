@@ -1,15 +1,14 @@
 import filecmp
 import os
-
 import shutil
 
 from fsbc.system import windows
 from fsbc.task import current_task
-from fsgs.option import Option
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.drivers.gamedriver import GameDriver, Emulator
 from fsgs.input.mapper import InputMapper
 from fsgs.knownfiles import KnownFilePath
+from fsgs.options.option import Option
 from fsgs.plugins.pluginmanager import PluginManager
 
 """
@@ -393,9 +392,10 @@ class MameDriver(GameDriver):
 
         self.add_default_shortcuts(self.mame_shortcuts())
 
-        for item in extra_port_config:
-            self.game_xml.append("            ")
-            self.game_xml.append(item)
+        if extra_port_config is not None:
+            for item in extra_port_config:
+                self.game_xml.append("            ")
+                self.game_xml.append(item)
 
         self.default_xml.append("        </input>\n")
         self.game_xml.append("        </input>\n")

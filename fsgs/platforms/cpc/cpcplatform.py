@@ -16,15 +16,11 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from fsbc import settings
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import Platform
+from fsgs.platforms.cpc.cpcconstants import CPC_MODEL_464
 from fsgs.platforms.cpc.cpcmamedriver import CpcMameDriver, CpcMameFsDriver
 from fsgs.platforms.loader import SimpleLoader
-from fsgs.platforms.cpc.cpcconstants import (
-    CPC_MODEL_464,
-    CPC_MODEL_664,
-    CPC_MODEL_6128,
-)
 
 
 class CpcPlatform(Platform):

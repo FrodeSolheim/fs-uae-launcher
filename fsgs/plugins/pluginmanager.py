@@ -7,9 +7,8 @@ from configparser import ConfigParser, NoSectionError
 from operator import attrgetter
 
 import fsboot
-from fsbc.util import Version
-
 from fsbc.system import System, windows, linux
+from fsbc.util import Version
 from fsgs.FSGSDirectories import FSGSDirectories
 
 X86_MACHINES = ["x86", "i386", "i486", "i586", "i686"]
@@ -269,17 +268,21 @@ class PluginManager:
         # if plugins_dir and os.path.isdir(plugins_dir):
         #     result.append(plugins_dir)
 
+        # FIXME: Only if not is_development?
+
         if System.macos:
             escape_exe_dir = "../../../../../.."
         else:
             escape_exe_dir = "../../.."
 
+        # FIXME: Check that this contains something known first?
         # System/
         plugins_dir = os.path.normpath(
             os.path.join(fsboot.executable_dir(), escape_exe_dir)
         )
         result.append(plugins_dir)
 
+        # FIXME: Check that this contains something known first?
         # System/Plugins/
         plugins_dir = os.path.normpath(
             os.path.join(fsboot.executable_dir(), escape_exe_dir, "Plugins")
@@ -405,6 +408,10 @@ class PluginManager:
         if name == "x64sc-fs":
             logger.debug("Lookup hack for vice-fs/x64sc-fs")
             name = "vice-fs"
+        if os.path.basename(os.getcwd()) == "fs-uae-launcher-private":
+            if name == "fs-uae":
+                name = "fs-uae-private"
+
         # See if we can find the executable in a project dir side by side
         path = os.path.join(fsboot.executable_dir(), "..", name, exe_name)
         logger.debug("Checking %s", path)

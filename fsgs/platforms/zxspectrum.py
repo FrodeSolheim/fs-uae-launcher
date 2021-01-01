@@ -21,7 +21,7 @@ import os
 from fsbc import settings
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.drivers.messdriver import MessDriver
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
 
@@ -63,6 +63,7 @@ MESS_SPEC128 = "spec128"  # ZX Spectrum 128
 MESS_SPECPLS2 = "specpls2"  # ZX Spectrum +2
 MESS_SPECPL2A = "specpl2a"  # ZX Spectrum +2a
 MESS_SPECPLS3 = "specpls3"  # ZX Spectrum +3
+
 
 # MESS_sp3e8bit = "sp3e8bit"  # ZX Spectrum +3e 8bit IDE
 # noinspection SpellCheckingInspection

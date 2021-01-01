@@ -1,12 +1,11 @@
-import fsgs
-from fsgs import openretro
-from launcher.settings.maintenance_settings_page import DefragmentDatabasesTask
-
 import fsboot
 import fsui
+from fsgs import fsgs_product
+from fsgs import openretro
 from fsui.extra.taskdialog import TaskDialog
 from launcher.option import Option
 from launcher.res import gettext
+from launcher.settings.maintenance_settings_page import DefragmentDatabasesTask
 from launcher.settings.settings_page import SettingsPage
 
 
@@ -14,7 +13,7 @@ class LauncherSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("fs-uae-launcher", "pkg:launcher")
-        self.add_header(icon, "{} Launcher".format(fsgs.product))
+        self.add_header(icon, "{} Launcher".format(fsgs_product()))
 
         if fsboot.get("fws") == "1":
             # We omit the appearance settings, since they have no effect

@@ -1,7 +1,7 @@
-import sys
-import time
 import atexit
 import subprocess
+import sys
+import time
 
 
 class Server:

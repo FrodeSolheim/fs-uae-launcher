@@ -1,5 +1,5 @@
 from fsgs.amiga.amiga import Amiga
-from fsgs.option import Option
+from fsgs.options.option import Option
 
 CONFIG_KEY_BLACKLIST = [
     "_*",
@@ -18,6 +18,8 @@ CONFIG_KEY_BLACKLIST = [
     "database_snes",
     "database_url",
     "developer",
+    "error_report_user_id",
+    "file_list",
     "front_sha1",
     "hol_url",
     "irc_nick",

@@ -73,9 +73,11 @@ def initialize_locale(language=None):
             if os.path.exists(p):
                 locale_base = p
         if sys.platform == "darwin":
-            # .app/Contents/Locale
+            # .app/Contents/Resources/Locale
             p = os.path.abspath(
-                os.path.join(fsboot.executable_dir(), "..", "Locale")
+                os.path.join(
+                    fsboot.executable_dir(), "..", "Resources", "Locale"
+                )
             )
             if os.path.exists(p):
                 locale_base = p

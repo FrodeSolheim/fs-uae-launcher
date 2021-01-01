@@ -1,7 +1,7 @@
-from .Button import Button
-from .Panel import Panel
-from ..common.i18n import gettext
-from ..common.layout import HorizontalLayout, VerticalLayout
+from fsui.common.i18n import gettext
+from fsui.common.layout import HorizontalLayout, VerticalLayout
+from fsui.qt.button import Button
+from fsui.qt.panel import Panel
 
 
 class DialogButtons(Panel):
@@ -15,8 +15,9 @@ class DialogButtons(Panel):
         self.layout.add(self.button_layout, fill=True)
 
     @classmethod
-    def create_with_layout(cls, parent):
-        parent.layout = VerticalLayout()
+    def create_with_layout(cls, parent, create_parent_layout=True):
+        if create_parent_layout:
+            parent.layout = VerticalLayout()
         buttons = DialogButtons(parent)
         layout = VerticalLayout(padding=20)
         parent.layout.add(layout, expand=True, fill=True)

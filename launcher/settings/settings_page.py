@@ -19,9 +19,23 @@ class SettingsPage(fsui.Panel):
         self.icon_header = SettingsHeader(self, icon, title, subtitle)
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
-    def add_option(self, name, description=""):
-        group = OptionUI.create_group(self, name, description=description)
-        self.layout.add(group, fill=True, margin_top=10, margin_bottom=10)
+    def add_option(
+        self,
+        name,
+        description="",
+        margin_top=10,
+        margin_bottom=10,
+        warnings=None,
+    ):
+        group = OptionUI.create_group(
+            self, name, description=description, warnings=warnings
+        )
+        self.layout.add(
+            group,
+            fill=True,
+            margin_top=margin_top,
+            margin_bottom=margin_bottom,
+        )
         self.options_on_page.add(name)
         return group
 

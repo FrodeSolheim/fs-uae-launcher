@@ -44,7 +44,7 @@ class TaskDialog(fsui.Window):
 
     def on_abort_activated(self):
         self.task.stop()
-        self.abort_button.disable()
+        self.abort_button.set_enabled(False)
 
     def on_failure(self, message):
         fsui.show_error(message, parent=self.get_window())

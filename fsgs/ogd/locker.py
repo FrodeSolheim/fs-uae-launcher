@@ -1,10 +1,9 @@
 import time
-from functools import lru_cache
 
-import fsbc.settings
-from fsgs.filedatabase import FileDatabase
+from fsbc.settings import Settings
 from fsgs.LockerDatabase import LockerDatabase
 from fsgs.download import Downloader
+from fsgs.filedatabase import FileDatabase
 from fsgs.network import openretro_url_prefix
 from fsgs.ogd.base import SynchronizerBase
 from fsgs.ogd.context import SynchronizerContext
@@ -12,7 +11,7 @@ from fsgs.res import gettext
 
 
 def is_locker_enabled():
-    return fsbc.settings.get("database_locker") == "1"
+    return Settings.instance().get("database_locker") == "1"
 
 
 def open_locker_uri(uri):

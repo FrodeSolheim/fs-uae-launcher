@@ -1,8 +1,8 @@
 import fsui
-from fsgs.option import Option
+from fsbc.system import linux
+from fsgs.options.option import Option
 from launcher.res import gettext
 from launcher.settings.settings_page import SettingsPage
-from fsbc.system import linux
 
 
 class FSUAESettingsPage(SettingsPage):

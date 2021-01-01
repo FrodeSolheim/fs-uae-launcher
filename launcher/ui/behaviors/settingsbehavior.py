@@ -1,4 +1,5 @@
 import weakref
+
 from launcher.launcher_settings import LauncherSettings
 
 
@@ -9,7 +10,7 @@ class SettingsBehavior:
         self._names = set(names)
         LauncherSettings.add_listener(self)
         try:
-            parent.destroyed.connect(self.on_parent_destroyed)
+            parent.destroyed.connect(self.__on_parent_destroyed)
         except AttributeError:
             print(
                 "WARNING: SettingsBehavior without remove_listener "
@@ -19,7 +20,7 @@ class SettingsBehavior:
             # Broadcast initial value
             self.on_setting(name, LauncherSettings.get(name))
 
-    def on_parent_destroyed(self):
+    def __on_parent_destroyed(self):
         print("SettingsBehavior: remove_listener", self._parent())
         LauncherSettings.remove_listener(self)
 

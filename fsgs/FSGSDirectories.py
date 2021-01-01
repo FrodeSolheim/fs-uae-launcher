@@ -1,14 +1,13 @@
+import functools
 import logging
 import os
-
-import functools
 import warnings
 from configparser import ConfigParser
 
 import fsboot
 from fsbc.paths import Paths
 from fsbc.settings import Settings
-from fsbc.system import windows, macosx
+from fsbc.system import windows
 from fsbc.user import get_common_documents_dir
 from fsbc.user import get_documents_dir
 from fsgs import openretro
@@ -248,16 +247,19 @@ class FSGSDirectories(object):
     @classmethod
     @functools.lru_cache()
     def get_save_states_dir(cls):
-        path = cls.portable_dir("save_states_dir")
-        if not path:
-            if openretro:
-                path = os.path.join(cls.get_data_dir(), "Saves")
-            else:
-                path = os.path.join(cls.get_base_dir(), "Save States")
-        if not os.path.exists(path):
-            os.makedirs(path)
-        path = Paths.get_real_case(path)
-        return path
+        return cls.saves_dir()
+
+        # # path = cls.portable_dir("save_states_dir")
+        # path = cls.portable_dir("saves_dir")
+        # if not path:
+        #     # if openretro:
+        #     path = os.path.join(cls.get_data_dir(), "Saves")
+        #     # else:
+        #     #     path = os.path.join(cls.get_base_dir(), "Save States")
+        # if not os.path.exists(path):
+        #     os.makedirs(path)
+        # path = Paths.get_real_case(path)
+        # return path
 
     @classmethod
     @functools.lru_cache()

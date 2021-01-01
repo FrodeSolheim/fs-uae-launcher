@@ -1,15 +1,14 @@
 import fsui
 from launcher.ui.skin import LauncherTheme
 from launcher.ui.widgets import CloseButton
-from ...i18n import gettext
 from .ImportTask import ImportTask
+from ...i18n import gettext
 from ...launcher_signal import LauncherSignal
 
 TIMER_INTERVAL = 100
 
 
 class ImportDialog(fsui.Window):
-
     AMIGA_FOREVER = 1
 
     def __init__(self, parent, path, import_type):
@@ -34,7 +33,7 @@ class ImportDialog(fsui.Window):
             self, self.layout, margin_top=20
         )
         if self.close_button:
-            self.close_button.disable()
+            self.close_button.set_enabled(False)
 
         self.line_count = 0
         self.task = ImportTask(path, import_type)
@@ -48,7 +47,7 @@ class ImportDialog(fsui.Window):
         if self.task.done:
             LauncherSignal.broadcast("scan_done")
             if self.close_button:
-                self.close_button.enable()
+                self.close_button.set_enabled()
         else:
             fsui.call_later(TIMER_INTERVAL, self.on_timer)
         lines = self.task.get_new_log_lines(self.line_count)

@@ -7,7 +7,6 @@
 # import workspace.apps.locker_uploader
 # import workspace.apps.login
 # import workspace.apps.logout
-# import workspace.apps.refresh
 
 # import workspace.apps.clock_app
 # import workspace.prefs.audio

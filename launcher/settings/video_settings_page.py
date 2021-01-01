@@ -1,4 +1,5 @@
 import fsui
+from fsgs.options.option import Option
 from launcher.i18n import gettext
 from launcher.settings.settings_page import SettingsPage
 
@@ -6,13 +7,13 @@ from launcher.settings.settings_page import SettingsPage
 class VideoSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
-        icon = fsui.Icon("video-settings", "pkg:workspace")
-        gettext("Video Settings")
-        title = gettext("Video")
-        subtitle = ""
-        self.add_header(icon, title, subtitle)
+        # icon = fsui.Icon("video-settings", "pkg:workspace")
+        # gettext("Video Settings")
+        # title = gettext("Video")
+        # subtitle = ""
+        # self.add_header(icon, title, subtitle)
 
-        self.add_option("fullscreen")
+        self.add_option("fullscreen", margin_top=0)
         self.add_option("monitor")
 
         self.add_section(gettext("Scaling & Filters"))
@@ -36,3 +37,10 @@ class VideoSettingsPage(SettingsPage):
         )
         self.layout.add(label, fill=True, margin_top=0)
         self.video_sync_group = self.add_option("video_sync")
+
+        self.add_section(gettext("Advanced"))
+        self.add_option(Option.FULLSCREEN_MODE)
+        self.add_option(Option.VIDEO_FORMAT)
+        self.low_latency_group = self.add_option(
+            Option.LOW_LATENCY_VSYNC, margin_bottom=0
+        )

@@ -1,9 +1,10 @@
-import json
 import atexit
+import json
+import subprocess
+import traceback
 from queue import Queue, Empty
 from threading import Thread
-import traceback
-import subprocess
+
 from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 
 

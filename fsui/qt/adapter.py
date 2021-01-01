@@ -1,12 +1,12 @@
-from fsui.qt.helpers import QParent
+from fsui.qt.qparent import QParent
 from fsui.qt.widget import Widget
 
 
 class Adapter(Widget):
     def __init__(self, parent, widget):
-        super().__init__(parent)
-        self._widget = widget
-        self._widget.setParent(QParent(parent))
+        # self._widget = widget
+        widget.setParent(QParent(parent))
+        super().__init__(parent, widget)
         # self._widget.move(0, 2000)
 
         # def on_resize(self):

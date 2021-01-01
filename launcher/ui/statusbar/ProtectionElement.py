@@ -1,7 +1,7 @@
 from fsui import Image
-from ...launcher_config import LauncherConfig
-from ...i18n import gettext
-from .StatusElement import StatusElement
+from launcher.ui.statusbar.StatusElement import StatusElement
+from launcher.i18n import gettext
+from launcher.context import get_config
 
 
 class ProtectionElement(StatusElement):
@@ -20,11 +20,14 @@ class ProtectionElement(StatusElement):
         self.text = self.na_text
         self.active = False
 
-        LauncherConfig.add_listener(self)
-        self.on_config("protection", LauncherConfig.get("protection"))
+        config = get_config(self)
+        config.add_listener(self)
+        self.on_config("protection", config.get("protection"))
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        config = get_config(self)
+        config.remove_listener(self)
+        super().on_destroy()
 
     def on_config(self, key, value):
         if key == "protection":

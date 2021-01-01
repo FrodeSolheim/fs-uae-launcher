@@ -1,7 +1,7 @@
 import os
 import time
 
-import fsgs
+from fsgs import fsgs_product
 from arcade.gamecentersettings import GameCenterSettings
 from arcade.glui.constants import TOP_ITEM_LEFT
 from arcade.glui.constants import TOP_ITEM_NOBORDER
@@ -284,9 +284,9 @@ class TopMenu(Navigatable):
 class OldGameCenterItem(MenuItem):
     def __init__(self):
         super().__init__()
-        if fsgs.product == "FS-UAE":
+        if fsgs_product() == "FS-UAE":
             self.title = "FS-UAE   Arcade"
-        elif fsgs.product == "OpenRetro":
+        elif fsgs_product() == "OpenRetro":
             self.title = "OpenRetro   Arcade"
         else:
             self.title = "Unknown   Arcade"
@@ -326,9 +326,9 @@ class GameCenterItem(MenuItem):
         super().__init__()
         self.path_title = self.title
         self.enabled = False
-        if fsgs.product == "FS-UAE":
+        if fsgs_product() == "FS-UAE":
             self.text1 = "FS-UAE"
-        elif fsgs.product == "OpenRetro":
+        elif fsgs_product() == "OpenRetro":
             self.text1 = "OpenRetro"
         else:
             self.text1 = "Unknown"

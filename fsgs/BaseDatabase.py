@@ -1,14 +1,14 @@
 import os
 import sqlite3
 import threading
-import fsbc.settings
 
+from fsbc.settings import Settings
 
 global_database_lock = threading.Lock()
 
 
 def log_query_plans():
-    return fsbc.settings.get("log_query_plans") == "1"
+    return Settings.instance().get("log_query_plans") == "1"
 
 
 def use_debug_cursor():
@@ -20,7 +20,6 @@ class ResetException(Exception):
 
 
 class BaseDatabase(object):
-
     SENTINEL = "fae7671d-e232-4b71-b179-b3cd45995f92"
 
     thread_local = threading.local()

@@ -1,9 +1,11 @@
 import fsui
-from fsgs.option import Option
+from fsgs.options.option import Option
 from launcher.launcher_settings import LauncherSettings
 
+from fsui.theme import Theme
 
-class WorkspaceTheme:
+
+class WorkspaceTheme(Theme):
 
     __instance = None
 
@@ -14,6 +16,7 @@ class WorkspaceTheme:
         return cls.__instance
 
     def __init__(self):
+        super().__init__()
         self.title_font = fsui.Font("Noto Sans", 15)
         # self.title_color = fsui.Color(0x80, 0x80, 0x80)
         self.title_color = fsui.Color(0x44, 0x44, 0x44)

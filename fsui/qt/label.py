@@ -1,42 +1,45 @@
-import fsui.qt
-from fsui.qt import Qt
-from .widget_mixin import WidgetMixin
 from urllib.parse import unquote_plus
 
+from fsui.qt.qparent import QParent
+from fsui.qt.qt import Qt, QLabel
+from fsui.qt.widget import Widget
 
-class Label(fsui.qt.QLabel, WidgetMixin):
+
+class PlainLabel(Widget):
     def __init__(self, parent, label):
-        fsui.qt.QLabel.__init__(self, label, parent.get_container())
-        self.init_widget(parent)
+        super().__init__(parent, QLabel(label, QParent(parent)))
 
-        self.setTextFormat(fsui.qt.Qt.RichText)
+    def set_text(self, label):
+        self._qwidget.setText(label)
+
+
+class Label(PlainLabel):
+    TEXT_ALIGNMENT_CENTER = 1
+
+    def __init__(self, parent, label="", selectable=True):
+        super().__init__(parent, label)
+
+        self._qwidget.setTextFormat(Qt.RichText)
         # self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
-        self.setTextInteractionFlags(
-            Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse
-        )
-        self.setOpenExternalLinks(True)
+        if selectable:
+            self._qwidget.setTextInteractionFlags(
+                Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse
+            )
+        self._qwidget.setOpenExternalLinks(True)
         # self.setFocusPolicy(Qt.NoFocus)
 
         # FIXME: focusPolicy()
         # FIXME: make Label more plain, and rather make a InteractiveLabel
         # descendant or something like that
 
+    def set_text_alignment(self, alignment):
+        if alignment == 1:
+            self._qwidget.setAlignment(Qt.AlignHCenter)
+
     def set_text_color(self, color):
-        palette = self.palette()
-        palette.setColor(self.foregroundRole(), color)
-        self.setPalette(palette)
-
-    def set_text(self, label):
-        self.setText(label)
-
-
-class PlainLabel(fsui.qt.QLabel, WidgetMixin):
-    def __init__(self, parent, label):
-        fsui.qt.QLabel.__init__(self, label, parent.get_container())
-        self.init_widget(parent)
-
-    def set_text(self, label):
-        self.setText(label)
+        palette = self._qwidget.palette()
+        palette.setColor(self._qwidget.foregroundRole(), color)
+        self._qwidget.setPalette(palette)
 
 
 class URLLabel(Label):
@@ -48,11 +51,11 @@ class URLLabel(Label):
 
     def set_text(self, label):
         self._label = label
-        self.setText(self._fix_label())
+        super().set_text(self._fix_label())
 
     def set_url(self, url):
         self._url = url
-        self.setText(self._fix_label())
+        self.set_text(self._fix_label())
 
     def _fix_label(self):
         url = unquote_plus(self._url)
@@ -60,39 +63,32 @@ class URLLabel(Label):
 
     def get_min_height(self):
         # because the underline seems to be cut off otherwise...
-        return Label.get_min_height(self) + 1
+        return super().get_min_height() + 1
 
 
-class MultiLineLabel(WidgetMixin):
+class MultiLineLabel(Widget):
     def __init__(self, parent, label, min_width=None):
-        self._widget = fsui.qt.QLabel(label, parent.get_container())
-        # Widget.__init__(self, parent)
-        self.init_widget(parent)
-        self._widget.setWordWrap(True)
+        super().__init__(parent, QLabel(label, QParent(parent)))
+        self._qwidget.setWordWrap(True)
         # self._widget.setFixedWidth(200)
         # self._widget.setFixedHeight(200)
         if min_width:
             self.set_min_width(min_width)
 
-        self._widget.setTextFormat(fsui.qt.Qt.RichText)
-        self._widget.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
-        self._widget.setOpenExternalLinks(True)
-        self._widget.setAlignment(fsui.qt.Qt.AlignLeft | fsui.qt.Qt.AlignTop)
+        self._qwidget.setTextFormat(Qt.RichText)
+        self._qwidget.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        self._qwidget.setOpenExternalLinks(True)
+        self._qwidget.setAlignment(Qt.AlignLeft | Qt.AlignTop)
 
     def set_text(self, label):
-        self._widget.setText(label)
-
-    # def set_fixed_width(self, width):
-
-    # def set_min_width(self):
-    #     pass
+        self._qwidget.setText(label)
 
     def get_min_height(self):
         # + 1 because of url underlines
         if hasattr(self, "min_width"):
             if self.min_width:
-                height = self._widget.heightForWidth(self.min_width) + 1
+                height = self._qwidget.heightForWidth(self.min_width) + 1
                 if hasattr(self, "min_height"):
                     return max(self.min_height, height)
                 return height
-        return WidgetMixin.get_min_height(self) + 1
+        return super().get_min_height() + 1

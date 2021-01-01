@@ -17,7 +17,7 @@ class PlatformSettingsDialog(fsui.Window):
         super().__init__(parent, title)
         # self.layout = fsui.VerticalLayout()
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        # if self.window.theme.has_close_buttons:
+        # if self.window().theme.has_close_buttons:
         # buttons.create_close_button()
 
         # self.layout.padding = 10

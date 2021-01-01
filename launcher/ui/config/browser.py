@@ -1,6 +1,7 @@
-from launcher.ui.config.model import create_model
-import fsui
 import traceback
+
+import fsui
+from launcher.ui.config.model import create_model
 
 
 class ConfigBrowser(fsui.VerticalItemView):

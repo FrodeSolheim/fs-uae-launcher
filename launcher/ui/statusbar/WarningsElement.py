@@ -17,6 +17,7 @@ from launcher.ui.download import DownloadGameWindow
 from launcher.ui.kickstartimportdialog import KickstartImportDialog
 from launcher.ui.statusbar.StatusElement import StatusElement
 from launcher.update_manager import UpdateManager
+from launcher.context import get_config
 
 ERROR_LEVEL = 0
 WARNING_LEVEL = 1
@@ -92,14 +93,15 @@ class WarningsElement(StatusElement):
         )
         SettingsBehavior(self, ["__update_available"])
 
-        LauncherConfig.add_listener(self)
+        config = get_config(self)
+        config.add_listener(self)
         for key in JOYSTICK_KEYS:
-            self.on_config(key, LauncherConfig.get(key))
+            self.on_config(key, config.get(key))
         for key in LauncherConfig.keys():
             if LauncherConfig.is_custom_uae_option(key):
-                self.on_config(key, LauncherConfig.get(key))
+                self.on_config(key, config.get(key))
             elif LauncherConfig.is_custom_option(key):
-                self.on_config(key, LauncherConfig.get(key))
+                self.on_config(key, config.get(key))
 
         LauncherSettings.add_listener(self)
         for key in LauncherSettings.keys():
@@ -107,8 +109,10 @@ class WarningsElement(StatusElement):
                 self.on_setting(key, LauncherSettings.get(key))
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        config = get_config(self)
+        config.remove_listener(self)
         LauncherSettings.remove_listener(self)
+        super().on_destroy()
 
     def on_platform_config(self, value):
         if value != self.platform:
@@ -116,7 +120,8 @@ class WarningsElement(StatusElement):
             self.rebuild_warnings_and_refresh()
 
     def on_amiga_model_config(self, value):
-        LauncherConfig.update_kickstart()
+        config = get_config(self)
+        config.update_kickstart()
         if value != self.amiga_model:
             self.amiga_model = value
             self.amiga_model_calculated = value.split("/")[0]
@@ -191,9 +196,10 @@ class WarningsElement(StatusElement):
         self.rebuild_warnings_and_refresh()
 
     def on_config(self, key, value):
+        config = get_config(self)
         if key in JOYSTICK_KEYS:
             prev_value = self.using_joy_emu
-            devices = DeviceManager.get_devices_for_ports(LauncherConfig)
+            devices = DeviceManager.get_devices_for_ports(config)
             for device in devices:
                 if device.id == "keyboard":
                     self.using_joy_emu = True
@@ -368,6 +374,7 @@ class WarningsElement(StatusElement):
             self.warnings.append((ERROR_LEVEL, self.variant_error, ""))
 
     def add_config_warnings(self):
+        config = get_config(self)
         # FIXME: move such warnings to config model code instead
         if (
             self.chip_memory_calculated
@@ -378,8 +385,8 @@ class WarningsElement(StatusElement):
                 amiga_model=self.amiga_model
             )
             self.warnings.append((WARNING_LEVEL, text, ""))
-        if LauncherConfig.get("amiga_model") == "A4000/OS4":
-            if LauncherConfig.get("jit_compiler") == "1":
+        if config.get("amiga_model") == "A4000/OS4":
+            if config.get("jit_compiler") == "1":
                 text = gettext(
                     "JIT compiler with a PPC-only OS is not recommended"
                 )

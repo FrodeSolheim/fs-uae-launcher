@@ -1,5 +1,6 @@
-import os
 import hashlib
+import os
+
 from fsgs.archive import Archive
 
 

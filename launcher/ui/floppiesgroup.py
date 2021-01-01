@@ -1,6 +1,7 @@
 import fsui
-from launcher.cd_manager import CDManager
-from launcher.floppy_manager import FloppyManager
+from launcher.context import get_config
+from launcher.helpers.cdmanager import CDManager
+from launcher.helpers.floppymanager import FloppyManager
 from launcher.i18n import gettext
 from launcher.option import Option
 from launcher.ui.behaviors.platformbehavior import (
@@ -12,14 +13,16 @@ from launcher.ui.floppyselector import FloppySelector
 from launcher.ui.options import ConfigWidgetFactory
 
 
-class FloppiesGroup(fsui.Group):
+# FIXME: Superclass was Group, but changed to Panel due to not being able
+# to disconnect from listening to config changes when closing window.
+class FloppiesGroup(fsui.Panel):
     FLOPPY_MODE = FloppySelector.FLOPPY_MODE
     CD_MODE = FloppySelector.CD_MODE
     TAPE_MODE = FloppySelector.TAPE_MODE
     CARTRIDGE_MODE = FloppySelector.CARTRIDGE_MODE
 
     def __init__(self, parent, drives=2, cd_mode=False, removable_media=False):
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.VerticalLayout()
 
         self.cd_mode = cd_mode
@@ -64,7 +67,7 @@ class FloppiesGroup(fsui.Group):
                 ConfigWidgetFactory().create(
                     self,
                     drive_count_option,
-                    text=gettext("Drive Count"),
+                    text=gettext("Drive count"),
                     platforms=AMIGA_PLATFORMS,
                 ),
                 fill=True,
@@ -72,15 +75,15 @@ class FloppiesGroup(fsui.Group):
             )
 
         self.multi_select_button = fsui.Button(
-            self, gettext("Multi-Select...")
+            self, gettext("Multi-select...")
         )
         if self.cd_mode:
             self.multi_select_button.set_tooltip(
-                gettext("Add Multiple CD-ROMs at Once")
+                gettext("Add multiple CD-ROMs at once")
             )
         else:
             self.multi_select_button.set_tooltip(
-                gettext("Add Multiple Floppies at Once")
+                gettext("Add multiple floppies at once")
             )
         if behavior_class:
             behavior_class(self.multi_select_button)
@@ -92,7 +95,7 @@ class FloppiesGroup(fsui.Group):
 
         self.selectors = []
         for i in range(drives):
-            selector = FloppySelector(parent, i, show_path=not removable_media)
+            selector = FloppySelector(self, i, show_path=not removable_media)
             if behavior_class:
                 behavior_class(selector)
             selector.set_mode(self.mode)
@@ -100,10 +103,11 @@ class FloppiesGroup(fsui.Group):
             self.layout.add(selector, fill=True, margin=10, margin_bottom=0)
 
     def on_multi_select_button(self):
+        config = get_config(self)
         if self.cd_mode:
-            CDManager.multi_select(self.get_window())
+            CDManager.multi_select(self.get_window(), config=config)
         else:
-            FloppyManager.multi_select(self.get_window())
+            FloppyManager.multi_select(self.get_window(), config=config)
 
     def update_heading_label(self):
         if self.mode == self.CD_MODE:

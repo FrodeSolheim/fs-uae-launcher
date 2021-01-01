@@ -1,12 +1,12 @@
 import os
 
 from fsbc import settings
+from fsgs.drivers.gamedriver import GameDriver, Emulator
 from fsgs.drivers.retroarchdriver import RetroArchDriver
-from fsgs.option import Option
+from fsgs.input.mapper import InputMapper
+from fsgs.options.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
-from fsgs.drivers.gamedriver import GameDriver, Emulator
-from fsgs.input.mapper import InputMapper
 
 N64_PLATFORM_ID = "n64"
 N64_PLATFORM_NAME = "Nintendo 64"
@@ -33,7 +33,7 @@ class Nintendo64Platform(Platform):
     def driver(self, fsgc):
         driver = settings.get(Option.N64_EMULATOR)
         if not driver:
-            driver = "mupen64plus_next"
+            driver = "retroarch/mupen64plus_next"
         if driver == "mupen64plus":
             return Nintendo64MupenDriver(fsgc)
         elif driver == "retroarch/mupen64plus_next":
@@ -309,7 +309,19 @@ class Nintendo64RetroArchDriver(RetroArchDriver):
         self.helper = Nintendo64Helper(self.options)
 
     def prepare(self):
-        super().prepare()
+        core_options = {}
+
+        # core_options["mupen64plus-rdp-plugin"] = "angrylion"
+        # core_options["mupen64plus-rsp-plugin"] = "parallel"
+
+        # core_options["mupen64plus-angrylion-multithread"] = "all threads"
+        # core_options["mupen64plus-angrylion-multithread"] = "4"
+
+        super().prepare(
+            libretro_core_options=core_options,
+            # libretro_content_factory=nes_rom_factory(self),
+        )
+
         rom_path = self.get_game_file()
         # self.helper.fix_ines_rom(rom_path)
         self.emulator.args.extend([rom_path])
@@ -348,3 +360,62 @@ class Nintendo64RetroArchDriver(RetroArchDriver):
 class Nintendo64Helper:
     def __init__(self, options):
         self.options = options
+
+
+# mupen64plus-169screensize = "960x540"
+# mupen64plus-43screensize = "640x480"
+# mupen64plus-alt-map = "False"
+# mupen64plus-angrylion-multithread = "all threads"
+# mupen64plus-angrylion-overscan = "disabled"
+# mupen64plus-angrylion-sync = "Low"
+# mupen64plus-angrylion-vioverlay = "Filtered"
+# mupen64plus-aspect = "4:3"
+# mupen64plus-astick-deadzone = "15"
+# mupen64plus-astick-sensitivity = "100"
+# mupen64plus-BackgroundMode = "OnePiece"
+# mupen64plus-BilinearMode = "standard"
+# mupen64plus-CorrectTexrectCoords = "Off"
+# mupen64plus-CountPerOp = "0"
+# mupen64plus-cpucore = "dynamic_recompiler"
+# mupen64plus-d-cbutton = "C3"
+# mupen64plus-EnableCopyColorToRDRAM = "Async"
+# mupen64plus-EnableCopyDepthToRDRAM = "Software"
+# mupen64plus-EnableEnhancedHighResStorage = "False"
+# mupen64plus-EnableEnhancedTextureStorage = "False"
+# mupen64plus-EnableFBEmulation = "True"
+# mupen64plus-EnableFragmentDepthWrite = "True"
+# mupen64plus-EnableHWLighting = "False"
+# mupen64plus-EnableLegacyBlending = "False"
+# mupen64plus-EnableLODEmulation = "True"
+# mupen64plus-EnableN64DepthCompare = "False"
+# mupen64plus-EnableNativeResTexrects = "Disabled"
+# mupen64plus-EnableOverscan = "Enabled"
+# mupen64plus-EnableShadersStorage = "True"
+# mupen64plus-EnableTextureCache = "True"
+# mupen64plus-ForceDisableExtraMem = "False"
+# mupen64plus-FrameDuping = "False"
+# mupen64plus-Framerate = "Original"
+# mupen64plus-FXAA = "0"
+# mupen64plus-l-cbutton = "C2"
+# mupen64plus-MaxTxCacheSize = "8000"
+# mupen64plus-MultiSampling = "0"
+# mupen64plus-NoiseEmulation = "True"
+# mupen64plus-OverscanBottom = "0"
+# mupen64plus-OverscanLeft = "0"
+# mupen64plus-OverscanRight = "0"
+# mupen64plus-OverscanTop = "0"
+# mupen64plus-pak1 = "memory"
+# mupen64plus-pak2 = "none"
+# mupen64plus-pak3 = "none"
+# mupen64plus-pak4 = "none"
+# mupen64plus-r-cbutton = "C1"
+# mupen64plus-rdp-plugin = "angrylion"
+# mupen64plus-rsp-plugin = "parallel"
+# mupen64plus-txCacheCompression = "True"
+# mupen64plus-txEnhancementMode = "None"
+# mupen64plus-txFilterIgnoreBG = "True"
+# mupen64plus-txFilterMode = "None"
+# mupen64plus-txHiresEnable = "False"
+# mupen64plus-txHiresFullAlphaChannel = "False"
+# mupen64plus-u-cbutton = "C4"
+# mupen64plus-virefresh = "Auto"

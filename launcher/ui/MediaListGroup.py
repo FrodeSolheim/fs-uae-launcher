@@ -2,14 +2,16 @@ import os
 
 import fsui
 from fsbc.paths import Paths
-from fsgs.checksumtool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.amiga import Amiga
+from fsgs.checksumtool import ChecksumTool
 from fsgs.context import fsgs
-from launcher.cd_manager import CDManager
-from launcher.floppy_manager import FloppyManager
+from launcher.context import get_config
+from launcher.helpers.cdmanager import CDManager
+from launcher.helpers.floppymanager import FloppyManager
 from launcher.i18n import gettext
-from launcher.launcher_config import LauncherConfig
+
+# from launcher.launcher_config import LauncherConfig
 from launcher.option import Option
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
@@ -19,10 +21,11 @@ from launcher.ui.behaviors.platformbehavior import (
     PlatformEnableBehavior,
 )
 
-
-class MediaListGroup(fsui.Group):
+# FIXME: Superclass was Group, but changed to Panel due to not being able
+# to disconnect from listening to config changes when closing window.
+class MediaListGroup(fsui.Panel):
     def __init__(self, parent, cd_mode):
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.VerticalLayout()
 
         self.cd_mode = cd_mode
@@ -101,32 +104,37 @@ class MediaListGroup(fsui.Group):
         # vert_layout.add(clear_button, margin=10)
 
         self.update_list()
-        LauncherConfig.add_listener(self)
+        config = get_config(self)
+        config.add_listener(self)
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        config = get_config(self)
+        config.remove_listener(self)
+        super().on_destroy()
 
     def on_config(self, key, _):
         if key.startswith(self.file_key_prefix):
             self.update_list()
 
     def on_activate_item(self, item):
-        path = LauncherConfig.get(self.file_key.format(item))
-        sha1 = LauncherConfig.get(self.sha1_key.format(item))
+        config = get_config(self)
+        path = config.get(self.file_key.format(item))
+        sha1 = config.get(self.sha1_key.format(item))
         if self.cd_mode:
             pass
         else:
             fsgs.amiga.insert_floppy_in_free_drive(path, sha1=sha1)
 
     def create_list(self):
+        config = get_config(self)
         items = []
         if self.cd_mode:
             max_items = Amiga.MAX_CDROM_IMAGES
         else:
             max_items = Amiga.MAX_FLOPPY_IMAGES
         for i in range(max_items):
-            path = LauncherConfig.get(self.file_key.format(i))
-            sha1 = LauncherConfig.get(self.sha1_key.format(i))
+            path = config.get(self.file_key.format(i))
+            sha1 = config.get(self.sha1_key.format(i))
             if not path:
                 continue
             items.append((path, sha1))
@@ -145,13 +153,14 @@ class MediaListGroup(fsui.Group):
             # self.list_view.set_items(items)
 
     def on_clear_list(self):
+        config = get_config(self)
         if self.cd_mode:
-            CDManager.clear_cdrom_list()
+            CDManager.clear_cdrom_list(config=config)
         else:
-            FloppyManager.clear_floppy_list()
+            FloppyManager.clear_floppy_list(config=config)
 
     def on_remove_button(self):
-        index = self.list_view.get_index()
+        index = self.list_view.index()
         existing_items = self.create_list()
         if 0 <= index < len(existing_items):
             del existing_items[index]
@@ -212,7 +221,8 @@ class MediaListGroup(fsui.Group):
                 path, sha1 = items[i]
             set_list.append((self.file_key.format(i), path))
             set_list.append((self.sha1_key.format(i), sha1))
-        LauncherConfig.set_multiple(set_list)
+        config = get_config(self)
+        config.set_multiple(set_list)
 
 
 class SaveDiskCheckBox(fsui.CheckBox):
@@ -226,7 +236,8 @@ class SaveDiskCheckBox(fsui.CheckBox):
         ConfigBehavior(self, [Option.SAVE_DISK])
 
     def on_changed(self):
-        LauncherConfig.set(Option.SAVE_DISK, "" if self.is_checked() else "0")
+        config = get_config(self)
+        config.set(Option.SAVE_DISK, "" if self.checked() else "0")
 
     def on_save_disk_config(self, value):
         self.check(value != "0")

@@ -8,11 +8,12 @@ import fstd.desktop
 import fsui
 import launcher.ui
 from fsbc.application import Application
+from fsbc.settings import get_setting
 from fsbc.util import unused
 from fsgs.context import default_context
-from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
+from fsgs.ogd.locker import is_locker_enabled
 from launcher.i18n import gettext
-from launcher.implicit_handler import ImplicitConfigHandler
+from launcher.helpers.implicitconfighandler import ImplicitConfigHandler
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
@@ -27,27 +28,25 @@ from launcher.panels.inputpanel import InputPanel
 from launcher.panels.mainpanel import MainPanel
 from launcher.panels.quicksettingspanel import QuickSettingsPanel
 from launcher.panels.romrampanel import RomRamPanel
+from launcher.ui.ConfigurationsPanel import ConfigurationsPanel
+from launcher.ui.Constants import Constants
+from launcher.ui.WindowWithTabs import WindowWithTabs
 from launcher.ui.aboutdialog import AboutDialog
 from launcher.ui.book import Book
 from launcher.ui.bottombar.BottomPanel import BottomPanel
 from launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
 from launcher.ui.bottombar.ScreenshotsPanel import ScreenshotsPanel
-from launcher.ui.config.browser import ConfigBrowser
 from launcher.ui.config.configscrollarea import ConfigScrollArea
-from launcher.ui.ConfigurationsPanel import ConfigurationsPanel
-from launcher.ui.Constants import Constants
 from launcher.ui.kickstartimportdialog import KickstartImportDialog
 from launcher.ui.launch import LaunchGroup
 from launcher.ui.skin import Skin
 from launcher.ui.statusbar.StatusBar import StatusBar
-from launcher.ui.WindowWithTabs import WindowWithTabs
 from launcher.update_manager import UpdateManager
 from workspace.apps.adf_creator_app import ADFCreatorWindow
 from workspace.apps.hdf_creator_app import HDFCreatorWindow
 from workspace.apps.locker_uploader import LockerUploaderWindow
 from workspace.apps.login import LoginWindow
 from workspace.apps.logout import LogoutWindow
-from workspace.apps.refresh import RefreshWindow
 
 USE_MAIN_MENU = 1
 QUICK_SETTINGS_WIDTH = 200
@@ -83,8 +82,9 @@ class LauncherWindow(WindowWithTabs):
             self.fsgs = fsgs
         else:
             self.fsgs = default_context()
-        # New name
+        # New name (2)
         self.gsc = self.fsgs
+        self.gscontext = self.fsgs
 
         from launcher.launcherapp import LauncherApp
 
@@ -257,7 +257,8 @@ class LauncherWindow(WindowWithTabs):
         LauncherSignal.add_listener("setting", self)
 
         self.update_title()
-        self.check_for_update_once()
+        if get_setting(Option.CHECK_FOR_UPDATES) != "0":
+            self.check_for_update_once()
         self.implicit_config_handler = ImplicitConfigHandler(self)
 
     def on_destroy(self):
@@ -265,6 +266,7 @@ class LauncherWindow(WindowWithTabs):
         print("LauncherWindow.on_destroy")
         LauncherSignal.remove_listener("scan_done", self)
         LauncherSignal.remove_listener("setting", self)
+        super().on_destroy()
 
     checked_for_update = False
 
@@ -577,7 +579,7 @@ class LauncherWindow(WindowWithTabs):
                 RomRamPanel,
                 "32x32/application-x-firmware",
                 gettext("Hardware"),
-                gettext("ROM and RAM"),
+                gettext("CPU, ROM & RAM"),
             )
             self.add_page(
                 column,
@@ -810,7 +812,7 @@ class LauncherWindow(WindowWithTabs):
         self.on_scan_button()
 
     def on_update_game_database(self):
-        RefreshWindow.open(self)
+        wsopen("SYS:Tools/DatabaseUpdater")
 
     def on_upload_locker_files(self):
         print("on_upload_locker_files")

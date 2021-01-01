@@ -1,33 +1,31 @@
 # import os
-import zipfile
-import tempfile
-
 # noinspection PyUnresolvedReferences
-from typing import BinaryIO, Dict
+from typing import Dict, IO, Optional
+from zipfile import ZipFile
 
-
-_archive = None  # type: zipfile.ZipFile
+_archive: Optional[ZipFile] = None
 _archive_initialized = False
-_temp = {}  # type: Dict[str, str]
+_temp: Dict[str, str] = {}
 
 
 def app_name() -> str:
     pass
 
 
-def archive() -> zipfile.ZipFile:
-    global _archive, _archive_initialized
-    if _archive_initialized:
-        return _archive
-    archive_name = app_name() + ".dat"
-    _archive = zipfile.ZipFile(archive_name, "r")
+def archive() -> ZipFile:
+    global _archive
+    # , _archive_initialized
+    if _archive is None:
+        archive_name = app_name() + ".dat"
+        _archive = ZipFile(archive_name, "r")
     return _archive
 
 
 def reset() -> None:
-    global _archive, _archive_initialized
+    global _archive
+    # , _archive_initialized
     _archive = None
-    _archive_initialized = False
+    # _archive_initialized = False
 
 
 def path_no_extract(name: str) -> str:
@@ -42,12 +40,13 @@ def path(name: str) -> str:
     try:
         return path_no_extract(name)
     except LookupError:
-        s = stream(name)
-        fd, p = tempfile.mkstemp(suffix=name)
-        with fd:
-            fd.write(s.read())
-        _temp[name] = p
-        return p
+        raise NotImplementedError("No working implementation")
+        # s = stream(name)
+        # fd, p = tempfile.mkstemp(suffix=name)
+        # with fd:
+        #     fd.write(s.read())
+        # _temp[name] = p
+        # return p
 
     # if p is None:
     #     raise LookupError(name)
@@ -55,6 +54,6 @@ def path(name: str) -> str:
 
 
 # def stream(name: str, mode: str="rb") -> BinaryIO:
-def stream(name: str) -> BinaryIO:
+def stream(name: str) -> IO[bytes]:
     # archive().read()
     return archive().open(name)

@@ -1,11 +1,15 @@
-Upstream Project:
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: FS-UAE Launcher
+Upstream-Contact: Frode Solheim <frode@fs-uae.net>
+Source: https://fs-uae.net/download
 
-    Copyright (C) 2011-2017 Frode Solheim <frode@fs-uae.net>
-    Licensed under the GNU General Public License version 2,
-    see "/usr/share/common-licenses/GPL-2".
+Files: *
+License: GPL-2
 
-Debian Packaging:
+Files: debian/*
+Copyright: 2012-2020 Frode Solheim
+License: GPL-2+
 
-    Copyright (C) 2012-2017 Frode Solheim <frode@fs-uae.net>
-    Licensed under the GNU General Public License version 2,
-    see "/usr/share/common-licenses/GPL-2".
+# FIXME: Exception for gamemode
+
+# FIXME: Add more specific copyright / license information to subpackages

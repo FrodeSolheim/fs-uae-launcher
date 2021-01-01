@@ -30,7 +30,6 @@ class LauncherSettings(object):
         "config_path": "",
         Option.CPC_DATABASE: "",
         "config_search": "",
-        "config_xml_path": "",
         "configurations_dir_mtime": "",
         "database_auth": "",
         "database_email": "",

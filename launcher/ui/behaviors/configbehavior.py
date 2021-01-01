@@ -1,5 +1,6 @@
 import weakref
-from launcher.launcher_config import LauncherConfig
+
+from launcher.context import get_config
 
 
 class ConfigBehavior:
@@ -7,7 +8,7 @@ class ConfigBehavior:
         parent.__config_enable_behavior = self
         self._parent = weakref.ref(parent)
         self._names = set(names)
-        LauncherConfig.add_listener(self)
+        get_config(parent).add_listener(self)
         try:
             parent.destroyed.connect(self.on_parent_destroyed)
         except AttributeError:
@@ -17,11 +18,11 @@ class ConfigBehavior:
             )
         for name in names:
             # Broadcast initial value
-            self.on_config(name, LauncherConfig.get(name))
+            self.on_config(name, get_config(parent).get(name))
 
     def on_parent_destroyed(self):
         print("ConfigBehavior: remove_listener", self._parent())
-        LauncherConfig.remove_listener(self)
+        get_config(self._parent()).remove_listener(self)
 
     def on_config(self, key, value):
         if key in self._names:

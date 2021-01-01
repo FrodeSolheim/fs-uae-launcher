@@ -2,7 +2,6 @@ from fsgs.ogd.client import OGDClient
 import fsui
 from fsbc.application import app
 from launcher.ui.widgets import CloseButton
-from workspace.apps.refresh import RefreshWindow
 
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
@@ -113,11 +112,11 @@ class LoginWindow(fsui.Window):
         hori_layout.add_spacer(20)
 
         self.login_button = fsui.Button(self, gettext("Log In"))
-        self.login_button.disable()
+        self.login_button.set_enabled(False)
         self.login_button.activated.connect(self.on_login_activated)
         hori_layout.add(self.login_button)
 
-        if self.window.theme.has_close_buttons:
+        if self.window().theme.has_close_buttons:
             self.close_button = CloseButton(self)
             hori_layout.add(self.close_button, fill=True, margin_left=10)
 
@@ -135,7 +134,7 @@ class LoginWindow(fsui.Window):
     def on_text_field_changed(self):
         email = self.username_field.get_text().strip()
         password = self.password_field.get_text().strip()
-        self.login_button.enable(bool(email) and bool(password))
+        self.login_button.set_enabled(bool(email) and bool(password))
         self.reset_label.set_url(
             "https://openretro.org/user/reset?referrer=fs-uae-launcher"
             "&email={0}".format(email)
@@ -153,9 +152,9 @@ class LoginWindow(fsui.Window):
         password = self.password_field.get_text().strip()
         if not email or not password:
             return
-        self.username_field.disable()
-        self.password_field.disable()
-        self.login_button.disable()
+        self.username_field.set_enabled(False)
+        self.password_field.set_enabled(False)
+        self.login_button.set_enabled(False)
 
         task = OGDClient().login_task(email, password)
         # task.progressed.connect(self.progress)
@@ -168,26 +167,16 @@ class LoginWindow(fsui.Window):
         # center = self.get_window_center()
         # fsui.call_after(start_refresh_task, center)
         # shell_open("Workspace:Tools/Refresh", center=self.get_window_center())
-        RefreshWindow.open(self.parent())
+
+        # RefreshWindow.open(self.parent())
+        wsopen("SYS:Tools/DatabaseUpdater")
+
         self.close()
 
     def on_failure(self, message):
         fsui.show_error(message, parent=self.get_window())
-        self.username_field.enable()
-        self.password_field.enable()
-        self.login_button.enable()
+        self.username_field.set_enabled()
+        self.password_field.set_enabled()
+        self.login_button.set_enabled()
         self.password_field.select_all()
         self.password_field.focus()
-
-    # def on_progress(self):
-    #    print("on_progress")
-
-    # def on_success(self):
-    #     self.close()
-
-
-# def start_refresh_task(center):
-#     RefreshWindow.open()
-
-
-# application = SimpleApplication(LoginWindow)

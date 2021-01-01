@@ -162,7 +162,7 @@ def main_profile(cfg_files=None, args=None, cfg_dict=None,
   cpr = cProfile.Profile()
   cpr.enable()
   ret_code = main(cfg_files, args, cfg_dict)
-  cpr.disable()
+  cpr.set_enabled(False)
   # write file
   cpr.dump_stats(profile_file)
   # show profile?

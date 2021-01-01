@@ -1,10 +1,11 @@
 import weakref
-from fsui.qt import QDialog, Signal
-from fsui.qt.helpers import QParent
+
+from fsui.qt.qparent import QParent
+from fsui.qt.qt import QDialog
+from fsui.qt.signal import Signal
 
 
 class LegacyDialog(QDialog):
-
     closed = Signal()
 
     def __init__(self, parent=None, title=""):

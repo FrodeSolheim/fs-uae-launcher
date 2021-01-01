@@ -1,15 +1,16 @@
 import fsui
 from launcher.option import Option
+from launcher.ui.MediaListGroup import MediaListGroup
 from launcher.ui.config.configpanel import ConfigPanel
 from launcher.ui.floppiesgroup import FloppiesGroup
-from launcher.ui.MediaListGroup import MediaListGroup
 from launcher.ui.skin import Skin
 
 
 class CDPanel(ConfigPanel):
     def __init__(self, parent):
         super().__init__(parent)
-        Skin.set_background_color(self)
+        # Skin.set_background_color(self)
+
         self.layout = fsui.VerticalLayout()
         self.drives_group = FloppiesGroup(self, 1, cd_mode=True)
         self.layout.add(self.drives_group, fill=True)

@@ -1,13 +1,12 @@
+import io
 import os
 import sys
-import io
 from configparser import ConfigParser
-from fsgs.context import fsgs
-from fsgs.input.enumeratehelper import EnumerateHelper
-from fsgs.platform import PlatformHandler
-from fsgs.Database import Database
+
 import fsbc.application
+from fsgs.Database import Database
 from fsgs.application import ApplicationMixin
+from fsgs.context import fsgs
 from fsgs.util.gamenameutil import GameNameUtil
 
 

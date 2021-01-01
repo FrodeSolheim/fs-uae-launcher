@@ -1,6 +1,5 @@
 from .spacer import Spacer
 
-
 DEBUG = 0
 
 
@@ -33,7 +32,7 @@ class Layout(object):
         self.min_width = 0
         self.min_height = 0
 
-    def is_visible(self):
+    def visible(self):
         return True
 
     def get_padding(self):
@@ -44,13 +43,19 @@ class Layout(object):
             self.padding_bottom,
         )
 
-    def set_padding(self, *amount):
+    def set_padding(self, *amount, css=False):
         print("set_padding", amount)
         try:
-            self.padding_left = amount[0]
-            self.padding_top = amount[1]
-            self.padding_right = amount[2]
-            self.padding_bottom = amount[3]
+            if css:
+                self.padding_top = amount[0]
+                self.padding_right = amount[1]
+                self.padding_bottom = amount[2]
+                self.padding_left = amount[3]
+            else:
+                self.padding_left = amount[0]
+                self.padding_top = amount[1]
+                self.padding_right = amount[2]
+                self.padding_bottom = amount[3]
         except IndexError:
             self.padding_left = amount[0]
             self.padding_right = amount[0]
@@ -162,8 +167,8 @@ class Layout(object):
                 del self.children[i]
                 return
 
-    def add_spacer(self, size=0, size2=None, expand=False):
-        self.add(Spacer(size, size2), expand=expand)
+    def add_spacer(self, size=0, size2=None, expand=False, horizontal=False):
+        self.add(Spacer(size, size2, horizontal), expand=expand)
 
     def get_position(self):
         return self.position
@@ -207,7 +212,7 @@ class LinearLayout(Layout):
         last_margin = 0
 
         for child in self.children:
-            if not child.element.is_visible():
+            if not child.element.visible():
                 continue
 
             child.min_size = [
@@ -269,7 +274,7 @@ class LinearLayout(Layout):
         )
 
         for child in self.children:
-            if not child.element.is_visible():
+            if not child.element.visible():
                 continue
 
             size = [child.min_size[0], child.min_size[1]]
@@ -318,6 +323,9 @@ class LinearLayout(Layout):
 class HorizontalLayout(LinearLayout):
     def __init__(self, padding=0):
         LinearLayout.__init__(self, False, padding=padding)
+
+    def add_spacer(self, size=0, size2=None, expand=False):
+        super().add_spacer(size, size2, expand, horizontal=True)
 
     def get_min_width(self):
         min_width = 0

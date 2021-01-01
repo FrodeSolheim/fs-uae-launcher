@@ -1,5 +1,6 @@
-from fsgs.util import sdl2
 from fsgs.input.sdlkeycodes import sdl_key_codes
+from fsgs.util import sdl2
+
 
 # with open(os.expanduser('~/Desktop/keys.txt'), 'wb') as f:
 #     for key in sorted(sdl_key_codes.keys()):

@@ -1,34 +1,33 @@
 import fsui
-from fsbc import settings
+from fsbc.settings import Settings
 from fsbc.util import unused
 from fsgs import openretro
 from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
-from fsgs.platform import PLATFORM_IDS
-from launcher.option import Option
-from fsgs.platforms import PLATFORM_ZXS
-from launcher.cd_manager import CDManager
-from launcher.floppy_manager import FloppyManager
+from launcher.context import get_config
+from launcher.helpers.cdmanager import CDManager
+from launcher.helpers.floppymanager import FloppyManager
 from launcher.i18n import gettext
-from launcher.launcher_config import LauncherConfig
-from launcher.panels.additionalconfigpanel import CustomConfigButton
-from launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
+
+# from launcher.launcher_config import LauncherConfig
+from launcher.option import Option
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.behaviors.platformbehavior import (
     AMIGA_PLATFORMS,
-    PlatformShowBehavior,
     AmigaShowBehavior,
 )
 from launcher.ui.config.ConfigCheckBox import ConfigCheckBox
 from launcher.ui.options import ConfigWidgetFactory
 
 
-class ModelGroup(fsui.Group):
+# FIXME: Superclass was Group, but changed to Panel due to not being able
+# to disconnect from listening to config changes when closing window.
+class ModelGroup(fsui.Panel):
 
     # FIXME: remove with_more_button=True
     def __init__(self, parent, with_more_button=True):
         unused(with_more_button)
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.VerticalLayout()
 
         self.model_ids = [x["id"] for x in Amiga.models if "/" not in x["id"]]
@@ -62,6 +61,7 @@ class ModelGroup(fsui.Group):
         self.model_title_layout = fsui.HorizontalLayout()
         self.layout.add(self.model_title_layout, fill=True)
 
+        settings = Settings.instance()
         if openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
             heading_label = fsui.HeadingLabel(
                 self, gettext("Platform & Model")
@@ -85,7 +85,7 @@ class ModelGroup(fsui.Group):
 
         self.model_title_layout.add(self.accuracy_label, margin_right=10)
         self.model_title_layout.add(self.accuracy_choice, margin_right=10)
-        self.model_title_layout.add(CustomConfigButton(self), margin_right=10)
+        # self.model_title_layout.add(CustomConfigButton(self), margin_right=10)
 
         self.model_layout = fsui.HorizontalLayout()
 
@@ -127,46 +127,50 @@ class ModelGroup(fsui.Group):
 
     def on_model_changed(self):
         print("ModelGroup.on_model_change\n")
-        index = self.model_choice.get_index()
+        index = self.model_choice.index()
         model = self.model_ids[index]
         if model == "A500":
             # The default model (A500) can be specified with the empty string
             model = ""
-        LauncherConfig.set("amiga_model", model)
+        config = get_config(self)
+        config.set("amiga_model", model)
+
         # Config.update_kickstart()
-        # if Amiga.is_cd_based(Config):
-        #     FloppyManager.clear_all()
+        # if Amiga.is_cd_based(config):
+        #     FloppyManager.clear_all(config=config)
         # else:
-        #     CDManager.clear_all()
+        #     CDManager.clear_all(config=config)
 
     def on_sub_model_changed(self):
         print("ModelGroup.on_sub_model_change\n")
         if self.sub_model_updating:
             print("sub model list is currently updating")
             return
-        index = self.sub_model_choice.get_index()
+        index = self.sub_model_choice.index()
         # if index == 0:
         #     # The default model (A500) can be specified with the empty string
         #     model = ""
         # else:
-        model = self.model_ids[self.model_choice.get_index()]
+        model = self.model_ids[self.model_choice.index()]
         sub_model = self.sub_model_ids[index]
+        config = get_config(self)
         if sub_model:
-            LauncherConfig.set("amiga_model", model + "/" + sub_model)
+            config.set("amiga_model", model + "/" + sub_model)
         else:
-            LauncherConfig.set("amiga_model", model)
+            config.set("amiga_model", model)
 
-        if Amiga.is_cd_based(LauncherConfig):
-            FloppyManager.clear_all()
+        if Amiga.is_cd_based(config):
+            FloppyManager.clear_all(config=config)
         else:
-            CDManager.clear_all()
+            CDManager.clear_all(config=config)
 
     def on_accuracy_changed(self):
-        index = self.accuracy_choice.get_index()
+        index = self.accuracy_choice.index()
+        config = get_config(self)
         if index == 0:
-            LauncherConfig.set("accuracy", "")
+            config.set("accuracy", "")
         else:
-            LauncherConfig.set("accuracy", str(1 - index))
+            config.set("accuracy", str(1 - index))
 
     def update_sub_models(self, model_id, sub_model_id):
         sub_model_index = 0
@@ -174,7 +178,7 @@ class ModelGroup(fsui.Group):
         self.sub_model_ids.clear()
         self.sub_model_titles.clear()
 
-        for i, config in enumerate(Amiga.models):
+        for config in Amiga.models:
             if config["id"] == model_id:
                 self.sub_model_ids.append("")
                 self.sub_model_titles.append(config["subtitle"])
@@ -187,10 +191,11 @@ class ModelGroup(fsui.Group):
                 sub_model_index = len(self.sub_model_ids) - 1
 
         self.sub_model_choice.clear()
+        config = get_config(self)
         for title in self.sub_model_titles:
             self.sub_model_choice.add_item(title)
-        self.sub_model_choice.enable(
-            LauncherConfig.get(Option.PLATFORM) in AMIGA_PLATFORMS
+        self.sub_model_choice.set_enabled(
+            config.get(Option.PLATFORM) in AMIGA_PLATFORMS
             and len(self.sub_model_ids) > 1
         )
         return sub_model_index
@@ -208,7 +213,7 @@ class ModelGroup(fsui.Group):
         model_index = 0
         sub_model_index = 0
         self.sub_model_updating = True
-        for i, config in enumerate(Amiga.models_config):
+        for config in Amiga.models_config:
             if config == value:
                 # self.model_choice.set_index(i)
                 # find main model index
@@ -246,9 +251,10 @@ class ModelChoice(fsui.Choice):
 
     def on_destroy(self):
         fsgs.signal.disconnect("config", self.on_config)
+        super().on_destroy()
 
     def __changed(self):
-        fsgs.config.set(self._model_key, self._choice_values[self.get_index()])
+        fsgs.config.set(self._model_key, self._choice_values[self.index()])
 
     def on_config(self, key, value):
         if key == Option.PLATFORM:

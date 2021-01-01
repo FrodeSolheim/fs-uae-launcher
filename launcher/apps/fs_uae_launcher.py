@@ -37,8 +37,7 @@ def app_main():
             fsui.show_error(
                 "An error occurred starting FS-UAE Launcher:\n\n"
                 + repr(e)
-                + "\n\nFS-UAE Launcher cannot start "
-                "because of this.",
+                + "\n\nFS-UAE Launcher cannot start because of this.",
                 "FS-UAE Launcher",
             )
             fsui.show_error(traceback.format_exc())

@@ -2,10 +2,10 @@
 
 ## Running without installing
 
-You can run fs-uae launcher from the source directory without compiling or
-installing, as long as the dependencies are installed. In this case, you
-should have FS-UAE compiled it's own `fs-uae` source directory next to
-the fs-uae-launcher source directory, for example:
+You can run fs-uae launcher from the source directory as long as the
+dependencies are installed. In this case, you should have FS-UAE compiled in
+it's own `fs-uae` source directory next to the fs-uae-launcher source
+directory, for example:
 
     src/fs-uae/
     src/fs-uae-launcher/
@@ -28,6 +28,11 @@ to manually install:
 To add support for .lha archives, you also need to have the lhafile
 python package installed. You can get `python3-lhafile` from Frode's PPA,
 or you can install with pip: `pip3 install lhafile`.
+
+To compile some required files:
+
+    ./bootstrap
+    make
 
 You can run the launcher directly from the source directory:
 
@@ -62,6 +67,7 @@ directory:
 And finally, from the fs-uae-launcher source directory:
 
     ./bootstrap
+    make
 
 This will allow you to run fs-uae-launcher from the source directory by
 executing (See also the section "Running without installing"):
@@ -127,6 +133,7 @@ Then run:
 And finally, from the fs-uae-launcher source directory:
 
     ./bootstrap
+    make
 
 This will allow you to run fs-uae-launcher from the source directory by
 executing (See also the section "Running without installing"):

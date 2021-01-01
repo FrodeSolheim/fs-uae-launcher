@@ -1,7 +1,6 @@
 import os
 from functools import lru_cache
 
-from fsbc.application import app
 from fsbc.settings import Settings
 from fsgs.FSGSDirectories import FSGSDirectories
 

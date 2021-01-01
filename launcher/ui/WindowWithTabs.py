@@ -1,7 +1,7 @@
 import fsui
-from .TabPanel import TabPanel
-from .TabButton import TabButton
 from .Constants import Constants
+from .TabButton import TabButton
+from .TabPanel import TabPanel
 from .skin import Skin
 
 

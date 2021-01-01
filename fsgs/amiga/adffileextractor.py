@@ -8,7 +8,6 @@
 BLOCK_SIZE = 512  # Size of a block on an ADos disk
 AMIGA_ULONG_SIZE = 4  # Size of an Amiga ULong variable
 
-
 if b"\0"[0] == 0:  # Python 3
 
     def byte_value(x):

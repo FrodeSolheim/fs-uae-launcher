@@ -84,6 +84,7 @@ class NetplayPanel(fsui.Panel):
         print("NetplayPanel.on_destroy")
         IRCBroadcaster.remove_listener(self)
         self.netplay.disconnect()
+        super().on_destroy()
 
     def on_show(self):
         # FIXME: currently disabled
@@ -93,7 +94,7 @@ class NetplayPanel(fsui.Panel):
         self.input_field.focus()
 
     def on_select_channel(self, index):
-        # index = self.channel_list.get_index()
+        # index = self.channel_list.index()
         # if index == 0:
         #     channel = ""
         # else:

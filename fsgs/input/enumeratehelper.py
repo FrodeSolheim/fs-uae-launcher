@@ -120,7 +120,6 @@ class EnumerateHelper(object):
                 port_devices = DeviceManager.get_non_amiga_devices_for_ports(
                     options
                 )
-                from fsgs.platform import Platform
 
                 if ports[0].type_option == Option.C64_PORT_2_TYPE:
                     print("[INPUT] Hack for inverted C64 port order")

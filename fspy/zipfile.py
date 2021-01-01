@@ -1,23 +1,21 @@
 """
 The goals of this class are:
-1. To be able to use ISO-8859-1 encoding instead of CP43, and
-2. Also support zip files with UTF-8 encoding, and
+
+1. To be able to use ISO-8859-1 encoding instead of CP43.
+2. Also support zip files with UTF-8 encoding.
 
 Python 3 assumes strings must be converted to CP437 for non-ASCII characters.
 This is why there'll be decoding/encoding from/to CP437 even for ISO-8859-1
-and UTF-8 name lookup (with Python 3). Complications arise because Python
-seems to detect UTF-8 in some zip files (based on a flag) and then
-automatically convert to/from unicode.
+and UTF-8 name lookup (with Python 3). Complications arise because Python seems
+to detect UTF-8 in some zip files (based on a flag) and then automatically
+convert to/from unicode.
 """
 import os
 import sys
 import zipfile
 import zlib
 
-try:
-    from typing import List
-except ImportError:
-    from fstd.typing import List
+from typing import List
 
 
 class ZipFile(zipfile.ZipFile):

@@ -1,7 +1,8 @@
-import os
 import hashlib
-from fsgs.archive import Archive
+import os
+
 from fsgs.amiga.rommanager import ROMManager
+from fsgs.archive import Archive
 
 ZERO_SHA1 = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
 

@@ -229,6 +229,7 @@ locales.sort()
 write(
     """\
 all: mo
+    make -C src
 
 share/locale/%/LC_MESSAGES/{0}.mo: po/%.po
     mkdir -p share/locale/$*/LC_MESSAGES
@@ -278,7 +279,12 @@ endif
 
 install-data: mo
     mkdir -p $(DESTDIR)$(prefix)/share
-    cp -a share/* $(DESTDIR)$(prefix)/share
+
+    cp -a share/{project} $(DESTDIR)$(prefix)/share
+    cp -a data/* $(DESTDIR)$(prefix)/share/{project}
+
+    cp -a share/applications $(DESTDIR)$(prefix)/share
+    cp -a share/icons $(DESTDIR)$(prefix)/share
 
     mkdir -p $(DESTDIR)$(prefix)/share/doc/{project}
     cp -a README COPYING $(DESTDIR)$(prefix)/share/doc/{project}

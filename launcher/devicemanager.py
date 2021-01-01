@@ -134,7 +134,7 @@ class DeviceManager:
                 )
                 continue
             if line.startswith("SDLName: "):
-                value = line[len("SDLName: "):]
+                value = line[len("SDLName: ") :]
                 # Strip quotes
                 cls.sdl_names[last_joystick] = value[1:-1]
                 # print("\n\n\n\n\n", line)

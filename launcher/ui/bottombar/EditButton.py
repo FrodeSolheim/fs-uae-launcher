@@ -1,7 +1,7 @@
 from fsgs.network import openretro_url_prefix
 from fsui import Image
-from ...launcher_config import LauncherConfig
-from .WebButton import WebButton
+from launcher.ui.bottombar.WebButton import WebButton
+from launcher.context import get_config
 
 
 class EditButton(WebButton):
@@ -10,7 +10,8 @@ class EditButton(WebButton):
         WebButton.__init__(self, parent, icon)
 
     def get_url(self):
-        variant_uuid = LauncherConfig.get("variant_uuid", "")
+        config = get_config(self)
+        variant_uuid = config.get("variant_uuid", "")
         if not variant_uuid:
             return
         return "{0}/game/{1}/edit#{1}".format(

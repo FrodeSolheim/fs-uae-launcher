@@ -1,5 +1,5 @@
-from ...launcher_config import LauncherConfig
-from .StatusElement import StatusElement
+from launcher.ui.statusbar.StatusElement import StatusElement
+from launcher.context import get_config
 
 
 class LanguageElement(StatusElement):
@@ -13,11 +13,14 @@ class LanguageElement(StatusElement):
         if tool_tip:
             self.set_tooltip(tool_tip)
 
-        LauncherConfig.add_listener(self)
-        self.on_config("languages", LauncherConfig.get("languages"))
+        config = get_config(self)
+        config.add_listener(self)
+        self.on_config("languages", config.get("languages"))
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        config = get_config(self)
+        config.remove_listener(self)
+        super().on_destroy()
 
     def on_config(self, key, value):
         if key == "languages":

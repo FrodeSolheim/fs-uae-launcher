@@ -1,13 +1,14 @@
 # FIXME: send fsgs as parameter to ValueConfigLoader instead
-from fsgs.context import fsgs
-import os
 import json
+import os
+
 from fsbc.paths import Paths
+from fsgs.amiga import whdload
 from fsgs.amiga.amiga import Amiga
+from fsgs.context import fsgs
 from fsgs.filedatabase import FileDatabase
 from fsgs.network import openretro_url_prefix
-from fsgs.option import Option
-from fsgs.amiga import whdload
+from fsgs.options.option import Option
 
 
 class ValueConfigLoader(object):
@@ -372,6 +373,11 @@ class ValueConfigLoader(object):
             # elif key == "languages":
             #     self.options["x_languages"] = value
 
+        # Also load file_list ?
+        elif key == "file_list":
+            self.options["file_list"] = value
+
+
     def load_joystick_port_x_mode_option(self, key, value):
         value = value.lower()
         if "," not in value:
@@ -412,7 +418,8 @@ class ValueConfigLoader(object):
             if name.startswith("DH0/"):
                 if hds:
                     # p = os.path.join(self.path, "HardDrive")
-                    p = "hd://game/" + self.uuid + "/DH0"
+                    # p = "hd://game/" + self.uuid + "/DH0"
+                    p = "file_list://DH0"
                     if p in added:
                         # already added
                         continue

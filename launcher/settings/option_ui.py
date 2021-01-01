@@ -3,14 +3,20 @@ from fsbc.application import app
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
-from launcher.settings.override_warning import OverrideWarning
-from launcher.ui.HelpButton import HelpButton
+from launcher.settings.override_warning import OverrideWarning, OptionWarning
+from launcher.system.classes.optionhelpbutton import OptionHelpButton
 
 
 class OptionUI(object):
     @classmethod
     def create_group(
-        cls, parent, name, description=None, help_button=True, thin=False
+        cls,
+        parent,
+        name,
+        description=None,
+        help_button=True,
+        thin=False,
+        warnings=None,
     ):
         group = fsui.Group(parent)
         group.layout = fsui.HorizontalLayout()
@@ -18,12 +24,17 @@ class OptionUI(object):
             thin_layout = fsui.VerticalLayout()
             thin_layout.add(group.layout, fill=True)
         option = Option.get(name)
-        if description == "":
+        if not description:
             description = gettext(option["description"])
         if description:
             group.label = fsui.Label(group, description + ":")
             group.layout.add(group.label, margin_right=10)
             group.layout.add(OverrideWarning(group, name), margin_right=10)
+        if warnings is not None:
+            for warning in warnings:
+                group.layout.add(
+                    OptionWarning(group, warning), margin_right=10
+                )
 
         if thin:
             group.layout = fsui.HorizontalLayout()
@@ -103,15 +114,15 @@ class OptionUI(object):
             )
             if current == "":
                 check_box.check()
-                spin_ctrl.disable()
+                spin_ctrl.set_enabled(False)
 
             def on_checkbox():
-                if check_box.is_checked():
+                if check_box.checked():
                     spin_ctrl.set_value(int(option["default"]))
-                    spin_ctrl.disable()
+                    spin_ctrl.set_enabled(False)
                     LauncherSettings.set(name, "")
                 else:
-                    spin_ctrl.enable()
+                    spin_ctrl.set_enabled()
 
             check_box.on_changed = on_checkbox
 
@@ -128,7 +139,7 @@ class OptionUI(object):
         if choice_values:
 
             def on_changed():
-                index = choice.get_index()
+                index = choice.index()
                 LauncherSettings.set(name, choice_values[index][0])
 
             choice_labels = [x[1] for x in choice_values]
@@ -147,11 +158,12 @@ class OptionUI(object):
             group.widget = choice
 
         if help_button:
-            option_url = "https://fs-uae.net/docs/options/" + name.replace(
-                "_", "-"
-            )
-            group.help_button = HelpButton(parent, option_url)
-            group.layout.add(group.help_button, margin_left=10)
+            group.help_button = OptionHelpButton(parent, name)
+            # option_url = "https://fs-uae.net/docs/options/" + name.replace(
+            #     "_", "-"
+            # )
+            # group.help_button = HelpButton(parent, option_url)
+            group.layout.add(group.help_button, fill=True, margin_left=10)
 
         if thin:
             group.layout = thin_layout

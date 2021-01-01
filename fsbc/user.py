@@ -3,7 +3,7 @@ import sys
 
 import fsboot
 from fsbc.path import unicode_path
-from fsbc.util import memoize
+from fspy.decorators import memoize
 
 CSIDL_DESKTOP = 0
 CSIDL_PERSONAL = 5

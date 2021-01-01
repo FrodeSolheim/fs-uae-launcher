@@ -4,7 +4,7 @@ import traceback
 from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
 from arcade.glui.texture import Texture
 from arcade.resources import resources
-from fsbc.util import memoize
+from fspy.decorators import memoize
 from fsui.qt import QFontDatabase, QPainter, QImage, QFontMetrics, QPoint
 from fsui.qt import QPen, QColor
 

@@ -1,7 +1,4 @@
-# def xx_on_resize(self):
-#     if self.layout:
-#         self.layout.set_size(self.get_size())
-#         self.layout.update()
+from fspy.decorators import deprecated
 
 
 class Element:
@@ -10,27 +7,21 @@ class Element:
         self.layout = None
         self.position = (0, 0)
         self.size = (0, 0)
-        # if not delay_create:
-        #     self.on_create()
-
-    # @classmethod
-    # def init(cls, obj):
-    #     obj.on_resize = xx_on_resize
-
-    def is_visible(self):
-        return True
 
     def create(self):
         self.on_create()
         return self
 
+    def get_min_size(self):
+        return 0, 0
+
+    def get_position(self):
+        return self.position
+
     def get_position_base(self):
         base = self.get_position_base()
         pos = self.get_position()
         return base[0] + pos[0], base[1] + pos[1]
-
-    def on_create(self):
-        pass
 
     def get_real_parent(self):
         return self
@@ -38,11 +29,17 @@ class Element:
     def get_size(self):
         return self.size
 
-    def get_min_size(self):
-        return 0, 0
+    @deprecated
+    def is_visible(self):
+        return self.visible()
 
-    def get_position(self):
-        return self.position
+    def on_create(self):
+        pass
+
+    def on_resize(self):
+        if self.layout:
+            self.layout.set_size(self.get_size())
+            self.layout.update()
 
     def set_position(self, position):
         self.position = position
@@ -57,10 +54,8 @@ class Element:
             self.layout.set_size(size)
         self.on_resize()
 
-    def on_resize(self):
-        if self.layout:
-            self.layout.set_size(self.get_size())
-            self.layout.update()
+    def visible(self):
+        return True
 
 
 class LightElement(Element):

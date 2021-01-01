@@ -6,7 +6,7 @@ from fsbc import settings
 from fsgs.drivers.mednafendriver import MednafenDriver
 from fsgs.drivers.messdriver import MessDriver
 from fsgs.drivers.retroarchdriver import RetroArchDriver
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
 

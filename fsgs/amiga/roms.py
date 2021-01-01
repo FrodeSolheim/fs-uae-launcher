@@ -1,3 +1,33 @@
+import os
+
+from fsgs.amiga.types import ConfigType, FilesType
+
+
+def prepare_amiga_roms(config: ConfigType, files: FilesType):
+    amiga_model = config.get("amiga_model", "A500")
+    # To avoid circular import
+    from fsgs.amiga.amiga import Amiga
+    model_config = Amiga.get_model_config(amiga_model)
+
+    roms = [("kickstart_file", model_config["kickstarts"])]
+    if config["kickstart_ext_file"] or model_config["ext_roms"]:
+        # not all Amigas have extended ROMs
+        roms.append(("kickstart_ext_file", model_config["ext_roms"]))
+    if amiga_model.lower() == "cd32/fmv":
+        roms.append(("fvm_rom", [CD32_FMV_ROM]))
+
+    for config_key, rom_sha1_list in roms:
+        assert len(rom_sha1_list) == 1
+        sha1 = rom_sha1_list[0]
+        rom_name = sha1[:8].upper() + ".rom"
+        # rom_path = f"ROMs/{rom_name}"
+        # rom_path = f"{rom_name}"
+        rom_path = rom_name
+        files[rom_path] = {
+            "sha1": sha1
+        }
+        config[config_key] = os.path.join(config["run_dir"], rom_path)
+
 A1000_KICKSTARTS = [
     # amiga-os-120.rom (decrypted)
     # Kickstart v1.2 r33.180 (1986)(Commodore)(A500-A1000-A2000)[!]

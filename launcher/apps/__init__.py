@@ -2,21 +2,15 @@
 import sys
 
 import launcher.version
-from fsgs import OPENRETRO_DEFAULT_DATABASES, openretro
+from fsgs import OPENRETRO_DEFAULT_DATABASES
 from launcher.option import Option
-
-try:
-    import typing
-except ImportError:
-    # Workaround to make import typing work without having it on the
-    # default python path (would confuse mypy).
-    import fstd.typing
-
-    sys.modules["typing"] = fstd.typing
 
 
 def find_app(app):
     if app in ["launcher", "fs-uae-launcher"]:
+        app = "SYS:Launcher"
+
+    if app in ["fs-uae-launcher-legacy"]:
         from launcher.apps.fs_uae_launcher import app_main
     elif app in ["arcade", "fs-uae-arcade"]:
         from launcher.apps.fs_uae_arcade import app_main
@@ -37,6 +31,14 @@ def find_app(app):
     elif app == "list-dirs":
         from launcher.apps.listdirs import app_main
 
+    elif app == "AmigaForever:AmigaForever":
+        from launcher.apps.amigaforeverapp import app_main
+
+    elif ":" in app:
+        from functools import partial
+        from launcher.apps.launcher2 import wsopen_main
+
+        app_main = partial(wsopen_main, app)
     elif app in ["dosbox", "dosbox-fs"]:
         from launcher.apps.dosbox_fs import app_main
     elif app in ["mame", "mame-fs"]:
@@ -101,7 +103,7 @@ def main():
 
     if app_name == "xdftool":
         sys.argv[0] = "xdftool"
-        import amitools.tols.xdftool
+        import amitools.tools.xdftool
 
         sys.exit(amitools.tools.xdftool.main())
 

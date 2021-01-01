@@ -129,9 +129,9 @@ class ScanDialog(fsui.Window):
                     gettext("Click 'Scan' button to start scan")
                 )
             if self.scan_button is not None:
-                self.scan_button.enable()
-            self.stop_button.disable()
-            # self.close_button.enable()
+                self.scan_button.set_enabled()
+            self.stop_button.set_enabled(False)
+            # self.close_button.set_enabled()
             return
 
         status = Scanner.status
@@ -143,14 +143,14 @@ class ScanDialog(fsui.Window):
 
     def start_scan(self):
         if self.scan_button is not None:
-            self.scan_button.disable()
+            self.scan_button.set_enabled(False)
         self.has_started_scan = True
         self.set_scan_title(gettext("Starting scan"))
         self.set_scan_status(gettext("Please wait..."))
         paths = ScanPathsGroup.get_search_path()
 
-        # self.close_button.disable()
-        self.stop_button.enable()
+        # self.close_button.set_enabled(False)
+        self.stop_button.set_enabled()
 
         Scanner.start(
             paths,
@@ -165,7 +165,7 @@ class ScanDialog(fsui.Window):
     # noinspection PyMethodMayBeStatic
     def on_stop_button(self):
         Scanner.stop_flag = True
-        # self.close_button.enable()
+        # self.close_button.set_enabled()
 
 
 class KickstartStatusGroup(fsui.Group):
@@ -188,6 +188,7 @@ class KickstartStatusGroup(fsui.Group):
 
     def on_destroy(self):
         LauncherSignal.remove_listener("scan_done", self)
+        super().on_destroy()
 
     def on_scan_done_signal(self):
         self.update()
@@ -327,9 +328,9 @@ class ScanProgressGroup(fsui.Group):
         self.layout2.add(self.status_label, fill=True)
 
         # def on_change(self):
-        #     value = "1" if self.scan_roms.is_checked() else "0"
+        #     value = "1" if self.scan_roms.checked() else "0"
         #     Settings.set("scan_roms", value)
-        #     value = "1" if self.scan_files.is_checked() else "0"
+        #     value = "1" if self.scan_files.checked() else "0"
         #     Settings.set("scan_files", value)
-        #     value = "1" if self.scan_configs.is_checked() else "0"
+        #     value = "1" if self.scan_configs.checked() else "0"
         #     Settings.set("scan_configs", value)

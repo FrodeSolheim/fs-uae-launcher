@@ -1,4 +1,4 @@
-from .window import Window
+from fsui.qt.window import Window
 
 
 class DialogWindow(Window):

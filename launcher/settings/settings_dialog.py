@@ -1,6 +1,7 @@
 import fsgs
 import fsui
 from fsbc import settings
+from fsgs import fsgs_product
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
@@ -39,7 +40,7 @@ class SettingsDialog(PagedDialog):
         PagedDialog.__init__(
             self,
             parent,
-            "{} - {} Launcher".format(gettext("Settings"), fsgs.product),
+            "{} - {} Launcher".format(gettext("Settings"), fsgs_product()),
         )
 
         # FIXME: remove this once the dialog uses Window as base class
@@ -118,7 +119,7 @@ class SettingsDialog(PagedDialog):
         #     gettext("Logging"), LoggingSettingsPage,
         #     fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
-            "{} Launcher".format(fsgs.product),
+            "{} Launcher".format(fsgs_product()),
             LauncherSettingsPage,
             fsui.Icon("fs-uae-launcher", "pkg:launcher"),
             bold=True,
@@ -156,7 +157,7 @@ class SettingsDialog(PagedDialog):
         #     gettext("Maintenance"), MaintenanceSettingsPage,
         #     fsui.Icon("maintenance", "pkg:workspace"))
         self.add_page(
-            "{} Arcade".format(fsgs.product),
+            "{} Arcade".format(fsgs_product()),
             ArcadeSettingsPage,
             fsui.Icon("fs-uae-arcade", "pkg:launcher"),
             bold=True,
@@ -189,7 +190,7 @@ class SettingsDialog(PagedDialog):
         self.page_changed.connect(self.__page_changed)
 
     def __page_changed(self):
-        index = self.get_index()
+        index = self.index()
         LauncherSettings.set("last_settings_page", self.get_page_title(index))
 
     def __closed(self):

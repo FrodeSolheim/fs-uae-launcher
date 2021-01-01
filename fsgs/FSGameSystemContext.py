@@ -1,19 +1,16 @@
 import os
 import shutil
-import tempfile
 import threading
-import time
-import traceback
 import weakref
+
 from fsbc.paths import Paths
-from fsbc.util import unused
-from fsgs.archive import Archive
 from fsgs.BaseContext import BaseContext
 from fsgs.Database import Database
-from fsgs.filedatabase import FileDatabase
 from fsgs.GameDatabase import GameDatabase, IncompleteGameException
 from fsgs.LockerDatabase import LockerDatabase
+from fsgs.archive import Archive
 from fsgs.download import Downloader, offline_mode
+from fsgs.filedatabase import FileDatabase
 from fsgs.network import is_http_url
 from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
 from fsgs.plugins.pluginmanager import PluginManager
@@ -32,7 +29,8 @@ class FileContext(BaseContext):
     def __init__(self, main_context):
         BaseContext.__init__(self, main_context)
 
-    def find_by_sha1(self, sha1):
+    @classmethod
+    def find_by_sha1(cls, sha1):
         # FIXME: check_sha1 should check with PluginManager directly?
         database = FileDatabase.instance()
         result = database.find_file(sha1=sha1)["path"]
@@ -50,7 +48,8 @@ class FileContext(BaseContext):
             # result)
         return result
 
-    def check_sha1(self, sha1):
+    @classmethod
+    def check_sha1(cls, sha1):
         # FIXME: check_sha1 should check with PluginManager directly?
         database = FileDatabase.instance()
         result = database.check_sha1(sha1)
@@ -66,14 +65,15 @@ class FileContext(BaseContext):
         return self.context.get_game_database().get_license_code_for_url(url)
 
     # FIXME: better name
-    def convert_uri(self, uri, prefer_path=False):
+    @classmethod
+    def convert_uri(cls, uri, prefer_path=False):
         if uri.startswith("sha1://"):
-            return self.open_sha1_uri(uri)
+            return cls.open_sha1_uri(uri)
         elif uri.startswith("db://"):
             # old name for sha1://
-            return self.open_sha1_uri(uri)
+            return cls.open_sha1_uri(uri)
         elif is_http_url(uri):
-            return self.open_url(uri)
+            return cls.open_url(uri)
         elif uri.startswith("locker://"):
             return open_locker_uri(uri)
         else:
@@ -84,10 +84,11 @@ class FileContext(BaseContext):
                 return File(uri)
             return Archive(uri).open(uri)
 
-    def open(self, uri, prefer_path=False):
+    @classmethod
+    def open(cls, uri, prefer_path=False):
         print("[FILES] Open", uri)
         while isinstance(uri, str):
-            uri = self.convert_uri(uri, prefer_path=prefer_path)
+            uri = cls.convert_uri(uri, prefer_path=prefer_path)
         if prefer_path and isinstance(uri, File):
             # is a path
             return uri.path
@@ -99,12 +100,14 @@ class FileContext(BaseContext):
             return None
         raise Exception("unexpected result in fsgs.file.open")
 
-    def open_sha1_uri(self, uri):
+    @classmethod
+    def open_sha1_uri(cls, uri):
         sha1 = uri.split("/")[2]
         assert len(sha1) == 40
-        return self.find_by_sha1(sha1)
+        return cls.find_by_sha1(sha1)
 
-    def open_url(self, url):
+    @classmethod
+    def open_url(cls, url):
         original_url = url
         hash_part = ""
         parts = url.split("#", 1)
@@ -112,53 +115,56 @@ class FileContext(BaseContext):
             url = parts[0]
             hash_part = "#" + parts[1]
         if not Downloader.cache_file_from_url(url, download=False):
-            license_code = self.get_license_code_for_url(original_url)
-            license_status = {"accepted": False, "done": False}
+            # license_code = cls.get_license_code_for_url(original_url)
+            # license_status = {"accepted": False, "done": False}
 
-            def show_license_code():
-                try:
-                    try:
-                        license_status["accepted"] = self.show_license_code(
-                            license_code
-                        )
-                    except Exception:
-                        traceback.print_exc()
-                finally:
-                    license_status["done"] = True
+            # def show_license_code():
+            #     try:
+            #         try:
+            #             license_status["accepted"] = cls.show_license_code(
+            #                 license_code
+            #             )
+            #         except Exception:
+            #             traceback.print_exc()
+            #     finally:
+            #         license_status["done"] = True
 
-            if license_code:
-                print("URL", url, "has license code", license_code)
-                # FIXME: remove direct dependency on fsui
-                import fsui as fsui
+            # if license_code:
+            #     print("URL", url, "has license code", license_code)
+            #     # FIXME: remove direct dependency on fsui
+            #     import fsui as fsui
 
-                fsui.call_after(show_license_code)
-                while not license_status["done"]:
-                    time.sleep(0.1)
-                if not license_status["accepted"]:
-                    # FIXME: custom exception here
-                    raise Exception(
-                        'Usage terms "{0}" was not '
-                        "accepted".format(license_code)
-                    )
+            #     fsui.call_after(show_license_code)
+            #     while not license_status["done"]:
+            #         time.sleep(0.1)
+            #     if not license_status["accepted"]:
+            #         # FIXME: custom exception here
+            #         raise Exception(
+            #             'Usage terms "{0}" was not '
+            #             "accepted".format(license_code)
+            #         )
+            pass
         path = Downloader.cache_file_from_url(url)
         return path + hash_part
 
-    def show_license_code(self, license_code):
-        if license_code == "BTTR":
-            license_text = (
-                "Files for this game are provided by back2roots.org.\n\n"
-                "By using back2roots.org or any of their services you "
-                "agree to their Acceptable Usage Policy:\n\n"
-                "http://www.back2roots.org/About/Project/Policy/"
-            )
-        else:
-            license_text = license_code
-        return self.on_show_license_information(license_text)
+    # @classmethod
+    # def show_license_code(cls, license_code):
+    #     if license_code == "BTTR":
+    #         license_text = (
+    #             "Files for this game are provided by back2roots.org.\n\n"
+    #             "By using back2roots.org or any of their services you "
+    #             "agree to their Acceptable Usage Policy:\n\n"
+    #             "http://www.back2roots.org/About/Project/Policy/"
+    #         )
+    #     else:
+    #         license_text = license_code
+    #     return cls.on_show_license_information(license_text)
 
-    def on_show_license_information(self, license_text):
-        unused(license_text)
-        print("*** on_show_license_information not implemented ***")
-        raise Exception("on_show_license_information not implemented")
+    # @classmethod
+    # def on_show_license_information(cls, license_text):
+    #     unused(license_text)
+    #     print("*** on_show_license_information not implemented ***")
+    #     raise Exception("on_show_license_information not implemented")
 
     def copy_game_file(self, src, dst):
         try:
@@ -253,7 +259,7 @@ class FSGameSystemContext(object):
     @property
     def config(self):
         if self._config is None:
-            from .Config import Config
+            from fsgs.config.config import Config
 
             self._config = Config(self)
         return self._config

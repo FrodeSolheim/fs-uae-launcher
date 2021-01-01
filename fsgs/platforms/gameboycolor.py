@@ -1,5 +1,4 @@
 import hashlib
-
 import os
 
 from fsgs import Option

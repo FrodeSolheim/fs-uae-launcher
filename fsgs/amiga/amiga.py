@@ -1,9 +1,24 @@
-from fsgs.amiga.roms import *
+from fsgs.amiga.roms import (
+    A1000_KICKSTARTS,
+    A500_KICKSTARTS,
+    A500P_KICKSTARTS,
+    A600_KICKSTARTS,
+    A1200_3_0_KICKSTARTS,
+    A1200_3_1_KICKSTARTS,
+    A3000_KICKSTARTS,
+    A4000_KICKSTARTS,
+    CD32_KICKSTARTS,
+    CD32_EXT_ROMS,
+    CDTV_KICKSTARTS,
+    CDTV_EXT_ROMS,
+)
+
+NULL_CHECKSUM = "0000000000000000000000000000000000000000"
 
 
 class Amiga(object):
-    # FIXME: setting fake checksum, for now
-    INTERNAL_ROM_SHA1 = "0000000000000000000000000000000000000000"
+    # FIXME: Setting fake checksum for now
+    INTERNAL_ROM_SHA1 = NULL_CHECKSUM
 
     MAX_FLOPPY_DRIVES = 4
     MAX_FLOPPY_IMAGES = 20
@@ -36,7 +51,7 @@ class Amiga(object):
             "title": "A500",
             # "subtitle": "1.3 ROM, 512 KB Chip  + 512 KB Slow RAM",
             # "subtitle": "1.3 ROM, 512 KB RAM Trapdoor Expansion",
-            "subtitle": '1.3 ROM, 512 KB "Slow" RAM',
+            "subtitle": "1.3 ROM, 512 KB Trapdoor RAM",
             # "subtitle": "1.3 ROM, 512 KB  RAM",
             "cd_based": False,
             "kickstarts": A500_KICKSTARTS,

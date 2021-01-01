@@ -1,7 +1,7 @@
 import random
 import traceback
-from urllib.parse import parse_qs
 import uuid
+from urllib.parse import parse_qs
 
 import requests
 

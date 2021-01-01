@@ -1,6 +1,6 @@
 import os
-from binascii import unhexlify
 import sqlite3
+from binascii import unhexlify
 
 # FIXME: remove dependency on launcher, have the Launcher tell this class
 # the path instead

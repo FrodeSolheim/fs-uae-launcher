@@ -1,7 +1,7 @@
 from fsui import Image
-from ...launcher_config import LauncherConfig
-from ...i18n import gettext
-from .StatusElement import StatusElement
+from launcher.ui.statusbar.StatusElement import StatusElement
+from launcher.i18n import gettext
+from launcher.context import get_config
 
 
 class PlayersElement(StatusElement):
@@ -13,11 +13,14 @@ class PlayersElement(StatusElement):
 
         self.players = ""
 
-        LauncherConfig.add_listener(self)
-        self.on_config("players", LauncherConfig.get("players"))
+        config = get_config(self)
+        config.add_listener(self)
+        self.on_config("players", config.get("players"))
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        config = get_config(self)
+        config.remove_listener(self)
+        super().on_destroy()
 
     def on_config(self, key, value):
         if key == "players":

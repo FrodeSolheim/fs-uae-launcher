@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 from typing import Optional
@@ -10,10 +11,7 @@ from fsgs.input.mapper import InputMapper
 from fsgs.plugins.pluginmanager import PluginManager
 from fsgs.saves import SaveHandler
 
-
-# class TempRoot:
-#     def __init__(self, path):
-#         self.path = path
+logger = logging.getLogger("retroarchdriver")
 
 
 class RetroArchDriver(GameDriver):
@@ -64,6 +62,7 @@ class RetroArchDriver(GameDriver):
         with open(self.retroarch_config_file.path, "w", encoding="UTF-8") as f:
             # with self.open_retroarch_options() as f:
             self.write_retroarch_config(f)
+            self.write_retroarch_audio_config(f)
             self.write_retroarch_input_config(f)
             self.write_retroarch_video_config(f)
 
@@ -109,13 +108,13 @@ class RetroArchDriver(GameDriver):
         name = name + "_libretro"
         dll_name = name + ".so"
         path = os.path.join(fsboot.executable_dir(), "..", name, dll_name)
-        # logger.debug("Checking %s", path)
+        logger.debug("Checking %s", path)
         # Try one additional level up
         if not os.path.exists(path):
             path = os.path.join(
                 fsboot.executable_dir(), "..", "..", name, dll_name
             )
-            # logger.debug("Checking %s", path)
+            logger.debug("Checking %s", path)
         if os.path.exists(path):
             # logger.debug("Found non-plugin library %s", path)
             return path
@@ -252,7 +251,12 @@ class RetroArchDriver(GameDriver):
         f.write("all_users_control_menu = true\n")
         f.write("video_gpu_screenshot = false\n")
 
-        default_buffer_size = 40
+        # f.write('frontend_log_level = "0"\n')
+        # f.write('libretro_log_level = "0"\n')
+
+    def write_retroarch_audio_config(self, f):
+        # default_buffer_size = 40
+        default_buffer_size = 64
         buffer_size = default_buffer_size
         if self.options[Option.RETROARCH_AUDIO_BUFFER]:
             try:
@@ -263,7 +267,17 @@ class RetroArchDriver(GameDriver):
                 if buffer_size < 0 or buffer_size > 1000:
                     print("WARNING: RetroArch audio buffer size out of range")
                     buffer_size = default_buffer_size
-        f.write("audio_latency = {}\n".format(buffer_size))
+        # f.write("audio_latency = {}\n".format(buffer_size))
+        audio_driver = None
+        # audio_driver = "sdl2"
+        # audio_driver = "null"
+        # audio_driver = "alsa"
+        if audio_driver:
+            f.write('audio_driver = "{}"\n'.format(audio_driver))
+        if audio_driver == "null":
+            f.write('audio_enable = "{}"\n'.format("false"))
+        if audio_driver == "alsa":
+            f.write('audio_device = "{}"\n'.format("hw:0"))
 
     def write_retroarch_input_config(self, f):
         # f.write('input_driver = "sdl2"\n')
@@ -511,6 +525,10 @@ class RetroArchDriver(GameDriver):
 
         # FIXME: 1 or 0?
         f.write("video_max_swapchain_images = 1\n")
+
+        f.write('settings_show_onscreen_display = "true"\n')
+        f.write('fps_show = "true"\n')
+        f.write('fps_update_interval = "256"\n')
 
         if self.effect() == self.CRT_EFFECT:
             video_shader = "crt/crt-aperture"

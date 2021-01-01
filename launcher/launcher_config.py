@@ -5,12 +5,13 @@ from configparser import ConfigParser, NoSectionError
 
 from fsbc.paths import Paths
 from fsbc.signal import Signal
-from fsgs.checksumtool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.amiga import Amiga
 from fsgs.amiga.valueconfigloader import ValueConfigLoader
+from fsgs.checksumtool import ChecksumTool
 from fsgs.context import fsgs
 from fsgs.platform import PlatformHandler
+from fspy.decorators import deprecated
 from launcher.option import Option
 from .launcher_settings import LauncherSettings
 
@@ -217,16 +218,19 @@ for _i in range(Amiga.MAX_HARD_DRIVES):
         ("x_hard_drive_{0}_sha1".format(_i), "", "checksum", "sync", "no_save")
     )
 
+default_config = {}
+for c in cfg:
+    default_config[c[0]] = c[1]
+
+checksum_keys = [x[0] for x in cfg if "checksum" in x]
+
 
 class LauncherConfig(object):
     config_keys = [x[0] for x in cfg]
 
-    default_config = {}
-    for c in cfg:
-        default_config[c[0]] = c[1]
-
+    default_config = default_config
+    checksum_keys = checksum_keys
     key_order = [x[0] for x in cfg]
-    checksum_keys = [x[0] for x in cfg if "checksum" in x]
     sync_keys_list = [x[0] for x in cfg if "sync" in x]
     sync_keys_set = set(sync_keys_list)
     no_custom_config = [x[0] for x in cfg if "custom" not in x]
@@ -273,36 +277,44 @@ class LauncherConfig(object):
     # config_listeners = []
 
     @classmethod
+    @deprecated
     def keys(cls):
         return fsgs.config.values.keys()
 
     @classmethod
+    @deprecated
     def copy(cls):
         return fsgs.config.copy()
 
     @classmethod
+    @deprecated
     def get(cls, key, default=""):
         return fsgs.config.get(key, default)
 
     @classmethod
+    @deprecated
     def add_listener(cls, listener):
         # deprecated
         Signal("fsgs:config").connect(getattr(listener, "on_config"))
 
     @classmethod
+    @deprecated
     def remove_listener(cls, listener):
         # deprecated
         Signal("fsgs:config").disconnect(getattr(listener, "on_config"))
 
     @classmethod
+    @deprecated
     def set(cls, key, value):
         fsgs.config.set(key, value)
 
     @classmethod
+    @deprecated
     def set_multiple(cls, items):
         fsgs.config.set(items)
 
     @classmethod
+    @deprecated
     def update_from_config_dict(cls, config_dict):
         changes = []
         for key, value in config_dict.items():
@@ -314,28 +326,30 @@ class LauncherConfig(object):
         cls.set_multiple(changes)
 
     @classmethod
+    @deprecated
     def sync_items(cls):
         for key, value in fsgs.config.values.items():
             if key in cls.sync_keys_set:
                 yield key, value
 
     @classmethod
+    @deprecated
     def checksum(cls):
         return cls.checksum_config(fsgs.config.copy())
 
-    @classmethod
-    def checksum_config(cls, config):
+    @staticmethod
+    def checksum_config(config):
         s = hashlib.sha1()
-        for key in cls.checksum_keys:
+        for key in checksum_keys:
             value = config[key]
             s.update(str(value).encode("UTF-8"))
         return s.hexdigest()
 
-    @classmethod
-    def update_kickstart_in_config_dict(cls, config_dict):
+    @staticmethod
+    def update_kickstart_in_config_dict(config_dict):
         print("update_kickstart_in_config")
         model = config_dict.setdefault(
-            "amiga_model", cls.default_config["amiga_model"]
+            "amiga_model", default_config["amiga_model"]
         )
 
         kickstart_file = config_dict.setdefault("kickstart_file", "")
@@ -385,10 +399,12 @@ class LauncherConfig(object):
                     # FIXME: set sha1 and name x_options also
 
     @classmethod
+    @deprecated
     def update_kickstart(cls):
         cls.set_kickstart_from_model()
 
     @classmethod
+    @deprecated
     def set_kickstart_from_model(cls):
         print("set_kickstart_from_model")
         config_dict = fsgs.config.values.copy()
@@ -396,6 +412,7 @@ class LauncherConfig(object):
         cls.update_from_config_dict(config_dict)
 
     @classmethod
+    @deprecated
     def load_default_config(cls, platform=""):
         print("load_default_config platform =", platform)
         if platform:
@@ -404,15 +421,15 @@ class LauncherConfig(object):
             cls.load({})
         LauncherSettings.set(Option.CONFIG_NAME, "Unnamed Configuration")
         LauncherSettings.set("config_path", "")
-        LauncherSettings.set("config_xml_path", "")
 
     @classmethod
+    @deprecated
     def load(cls, config):
         update_config = {}
-        for key, value in cls.default_config.items():
+        for key, value in default_config.items():
             update_config[key] = value
         for key in list(fsgs.config.values.keys()):
-            if key not in cls.default_config:
+            if key not in default_config:
                 # We need to broadcast changed for all config keys, also
                 # the ones this class does not know about
                 if key.startswith("__implicit_"):
@@ -447,8 +464,8 @@ class LauncherConfig(object):
 
             # cls.update_kickstart()
 
-    @classmethod
-    def fix_joystick_ports(cls, config):
+    @staticmethod
+    def fix_joystick_ports(config):
         # from .Settings import Settings
 
         print("---", config["joystick_port_0"])
@@ -528,6 +545,7 @@ class LauncherConfig(object):
                 config["joystick_port_0"] = "none"
 
     @classmethod
+    @deprecated
     def load_file(cls, path):
         try:
             return cls._load_file(path, "")
@@ -538,6 +556,7 @@ class LauncherConfig(object):
         return False
 
     @classmethod
+    @deprecated
     def load_data(cls, data):
         print("Config.load_data")
         try:
@@ -548,6 +567,7 @@ class LauncherConfig(object):
             traceback.print_exc()
 
     @classmethod
+    @deprecated
     def create_fs_name(cls, name):
         name = name.replace(":", " - ")
         name = name.replace("*", "-")
@@ -563,6 +583,7 @@ class LauncherConfig(object):
         return name
 
     @classmethod
+    @deprecated
     def _load_file(cls, path, data):
         if data:
             print("loading config from data")
@@ -573,7 +594,6 @@ class LauncherConfig(object):
         if data:
             raise Exception("_load_file (data) not implemented")
         else:
-            config_xml_path = ""
             cp = ConfigParser(interpolation=None, strict=False)
             try:
                 with open(path, "r", encoding="UTF-8") as f:
@@ -610,11 +630,11 @@ class LauncherConfig(object):
             config_name, ext = os.path.splitext(os.path.basename(path))
 
         LauncherSettings.set(Option.CONFIG_NAME, config_name)
-        LauncherSettings.set("config_xml_path", config_xml_path)
         cls.set("__changed", changed)
         return True
 
     @classmethod
+    @deprecated
     def load_values(cls, values, uuid=""):
         # print("loading config values", values)
         platform_id = values.get("platform", "").lower()
@@ -632,8 +652,8 @@ class LauncherConfig(object):
             fsgs.config.load(loader.load_values(values))
         cls.post_load_values(values)
 
-    @classmethod
-    def post_load_values(cls, values):
+    @staticmethod
+    def post_load_values(values):
         print("POST_LOAD_VALUES")
         if values.get("__config_name", ""):
             print("__config_name was set")
@@ -646,7 +666,6 @@ class LauncherConfig(object):
         if config_name:
             config_name = cls.create_fs_name(config_name)
         LauncherSettings.set(Option.CONFIG_NAME, config_name)
-        LauncherSettings.set("config_xml_path", "")
         cls.set("__changed", "0")
 
     @staticmethod
@@ -672,8 +691,8 @@ class LauncherConfig(object):
             return True
         return False
 
-    @classmethod
-    def fix_loaded_config(cls, config):
+    @staticmethod
+    def fix_loaded_config(config):
         print("[CONFIG] Fix loaded config")
         # cls.fix_joystick_ports(config)
 

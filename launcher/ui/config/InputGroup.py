@@ -1,11 +1,13 @@
 import fsui
+from .InputSelector import InputSelector
+from ..IconButton import IconButton
 from ...devicemanager import DeviceManager
 from ...i18n import gettext
-from ..IconButton import IconButton
-from .InputSelector import InputSelector
 
 
-class InputGroup(fsui.Group):
+# FIXME: Superclass was Group, but changed to Panel due to not being able
+# to disconnect from listening to config changes when closing window.
+class InputGroup(fsui.Panel):
     def __init__(
         self,
         parent,
@@ -14,7 +16,7 @@ class InputGroup(fsui.Group):
         parallel_ports=False,
         custom_ports=False,
     ):
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.VerticalLayout()
 
         if parallel_ports:

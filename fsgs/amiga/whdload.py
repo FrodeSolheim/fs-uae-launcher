@@ -1,10 +1,428 @@
 import logging
 import os
-from typing import List, Dict, DefaultDict, BinaryIO
+import shutil
+import traceback
+from typing import List, Dict, DefaultDict, BinaryIO, Optional
 
-from fsbc import settings
+from fsbc.settings import Settings
+from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.amiga.amigaconfig import AmigaConfig
+from fsgs.amiga.config import Config
+from fsgs.amiga.iconparser import IconParser
+from fsgs.amiga.rommanager import ROMManager
+from fsgs.amiga.startupsequence import prepare_startup_sequence
+from fsgs.amiga.types import ConfigType, FilesType
 from fsgs.archive import Archive
-from fsgs.option import Option
+from fsgs.download import Downloader
+from fsgs.options.constants import WHDLOAD_PRELOAD
+from fsgs.options.option import Option
+from fsgs.paths import fsgs_data_dir
+
+
+def fsgs_whdload_data_dir():
+    return os.path.join(fsgs_data_dir(), "WHDLoad")
+
+
+def find_whdload_slave(files, hd_dir, slave_name):
+    slave_name = slave_name.lower()
+    for path in files.keys():
+        print(path)
+        if not path.startswith(hd_dir + "/"):
+            continue
+        # try:
+        dirpath, filename = path.rsplit("/", 1)
+        # except ValueError:
+        #     dirpath = ""
+        #     filename = path
+        if filename.lower() == slave_name:
+            print("[WHDLOAD] Found", filename)
+            found_slave = True
+            slave_dir = dirpath[len(hd_dir) :]
+            # whdload_dir = whdload_dir.replace("\\", "/")
+            if not slave_dir:
+                # slave was found in root directory
+                pass
+            elif slave_dir[0] == "/":
+                slave_dir = slave_dir[1:]
+            return slave_dir
+    return None
+
+
+def prepare_whdload_system_volume(
+    hd_dir, s_dir, *, config: ConfigType, files: FilesType
+):
+    whdload_args = Config(config).whdload_args()
+    # if not whdload_args:
+    #     return
+    assert whdload_args
+
+    # whdload_dir = ""
+    slave_name = whdload_args.split(" ", 1)[0]
+    # slave = slave_original_name.lower()
+    # found_slave = False
+    # # for dirpath, _dirnames, filenames in os.walk(destdir):
+    # for path in files.keys():
+    #     dirpath, filename = path.rsplit("/", 1)
+    #     if filename.lower() == slave:
+    #         print("[WHDLOAD] Found", filename)
+    #         found_slave = True
+    #         whdload_dir = dirpath[len(destdir) :]
+    #         # whdload_dir = whdload_dir.replace("\\", "/")
+    #         if not whdload_dir:
+    #             # slave was found in root directory
+    #             pass
+    #         elif whdload_dir[0] == "/":
+    #             whdload_dir = whdload_dir[1:]
+    #         break
+    #     if found_slave:
+    #         break
+    slave_dir = find_whdload_slave(files, hd_dir, slave_name)
+    if slave_dir is None:
+        raise Exception(
+            "Did not find the specified WHDLoad slave {}. "
+            "Check the WHDLoad arguments".format(repr(slave_name))
+        )
+
+    print("[WHDLOAD] Slave directory:", repr(slave_dir))
+    print("[WHDLOAD] Slave arguments:", whdload_args)
+
+    return prepare_whdload_system_volume_2(
+        hd_dir,
+        s_dir,
+        config=config,
+        slavedir=slave_dir,
+        whdloadargs=whdload_args,
+        files=files,
+    )
+
+
+def prepare_whdload_system_volume_2(
+    hd_dir,
+    s_dir=None,
+    *,
+    whdloadargs,
+    slavedir,
+    config: ConfigType,
+    files: FilesType,
+):
+    if not s_dir:
+        s_dir = os.path.join(hd_dir, "S")
+        # if not os.path.exists(s_dir):
+        #     os.makedirs(s_dir)
+
+    # FIXME: Get whdload_args from arg
+    # whdload_args = config["x_whdload_args"].strip()
+    # if not whdload_args:
+    #     return
+
+    print("[WHDLOAD] prepare_whdload_system_volume_2")
+
+    # FIXME: ...
+    if config[WHDLOAD_PRELOAD] != "0":
+        if " PRELOAD" not in whdloadargs.upper():
+            print("[WHDLOAD] Adding PRELOAD argument")
+            whdloadargs += " PRELOAD"
+
+    # current_task.set_progress(gettext("Preparing WHDLoad..."))
+    # self.on_progress(gettext("Preparing WHDLoad..."))
+    print("[WHDLOAD] prepare_whdload_system_volume_2, dest_dir = ", hd_dir)
+
+    roms_dir = hd_dir
+
+    files[f"{roms_dir}/Devs/Kickstarts/kick33180.A500"] = {
+        "sha1": "11f9e62cf299f72184835b7b2a70a16333fc0d88",
+        "size": 0,
+    }
+    files[f"{roms_dir}/Devs/Kickstarts/kick34005.A500"] = {
+        "sha1": "891e9a547772fe0c6c19b610baf8bc4ea7fcb785",
+        "size": 0,
+    }
+    files[f"{roms_dir}/Devs/Kickstarts/kick40068.A1200"] = {
+        "sha1": "e21545723fe8374e91342617604f1b3d703094f1",
+        "size": 0,
+    }
+    files[f"{roms_dir}/Devs/Kickstarts/kick40068.A4000"] = {
+        "sha1": "5fe04842d04a489720f0f4bb0e46948199406f49",
+        "size": 0,
+    }
+
+    data = prepare_prefs_file(config)
+    if data is not None:
+        files[s_dir + "/WHDLoad.prefs"] = {"data": data}
+
+    # FIXME
+    whdload_version = Config(config).whdload_version()
+    if not whdload_version:
+        whdload_version = default_whdload_version
+
+    for key, value in binaries[whdload_version].items():
+        # install_whdload_file(key, hd_dir, value)
+        files[hd_dir + "/" + value] = {
+            "sha1": key
+        }
+    for key, value in support_files.items():
+        # install_whdload_file(key, hd_dir, value)
+        files[hd_dir + "/" + value] = {
+            "sha1": key
+        }
+
+    if config["__netplay_game"]:
+        print(
+            "[WHDLOAD] Key and settings files are not copied in net play mode"
+        )
+    else:
+        print("FIXME: Support for WHDLoad.key / WHDLoad.prefs disabled")
+        # key_file = os.path.join(FSGSDirectories.get_base_dir(), "WHDLoad.key")
+        # if os.path.exists(key_file):
+        #     print("found WHDLoad.key at ", key_file)
+        #     shutil.copy(key_file, os.path.join(s_dir, "WHDLoad.key"))
+        # else:
+        #     print("[WHDLOAD] Key file not found in base dir (FS-UAE dir)")
+
+        # # Temporary feature, at least until it's possible to set more WHDLoad
+        # # settings directly in the Launcher
+
+        # prefs_file = os.path.join(
+        #     FSGSDirectories.get_base_dir(), "WHDLoad.prefs"
+        # )
+        # if os.path.exists(prefs_file):
+        #     print("found WHDLoad.prefs at ", prefs_file)
+        #     shutil.copy(prefs_file, os.path.join(s_dir, "WHDLoad.prefs"))
+        # else:
+        #     print("[WHDLOAD] Prefs file not found in base dir (FS-UAE dir)")
+
+
+
+
+    # if self.config.get("__netplay_game", ""):
+    #     print("[WHDLOAD] WHDLoad base dir is not copied in net play mode")
+    # else:
+    #     src_dir = self.get_whdload_dir()
+    #     if src_dir and os.path.exists(src_dir):
+    #         print("[WHDLOAD] WHDLoad base dir exists, copying resources...")
+    #         self.copy_folder_tree(src_dir, dest_dir)
+
+    # icon = self.config.get("__whdload_icon", "")
+    # icon = ""
+    # if icon:
+    #     shutil.copy(
+    #         os.path.expanduser("~/kgiconload"),
+    #         os.path.join(dest_dir, "C", "kgiconload"),
+    #     )
+    #     icon_path = os.path.join(dest_dir, icon)
+    #     print("[WHDLOAD] Create icon at ", icon_path)
+    #     create_slave_icon(icon_path, whdload_args)
+    #     self.write_startup_sequence(
+    #         s_dir,
+    #         'cd "{0}"\n'
+    #         "kgiconload {1}\n"
+    #         "uae-configuration SPC_QUIT 1\n".format(
+    #             whdload_dir, os.path.basename(icon)
+    #         ),
+    #     )
+    # else:
+
+    # FIXME: Setting setpatch to True whether found or not, currently, AmigaOS
+    # will try to run this.
+    setpatch = True
+
+    data = prepare_startup_sequence(
+        whdload_sequence.format(slavedir, whdloadargs),
+        setpatch=setpatch
+    )
+    if data is not None:
+        files[f"{s_dir}/Startup-Sequence"] = {"data": data}
+
+
+# def populate_whdload_system_volume(destdir, s_dir, *, config):
+#     whdload_args = config["x_whdload_args"].strip()
+#     if not whdload_args:
+#         return
+
+#     whdload_dir = ""
+#     slave_original_name = whdload_args.split(" ", 1)[0]
+#     slave = slave_original_name.lower()
+#     found_slave = False
+#     for dirpath, _dirnames, filenames in os.walk(destdir):
+#         for filename in filenames:
+#             if filename.lower() == slave:
+#                 print("[WHDLOAD] Found", filename)
+#                 found_slave = True
+#                 whdload_dir = dirpath[len(destdir) :]
+#                 whdload_dir = whdload_dir.replace("\\", "/")
+#                 if not whdload_dir:
+#                     # slave was found in root directory
+#                     pass
+#                 elif whdload_dir[0] == "/":
+#                     whdload_dir = whdload_dir[1:]
+#                 break
+#         if found_slave:
+#             break
+#     if not found_slave:
+#         raise Exception(
+#             "Did not find the specified WHDLoad slave {}. "
+#             "Check the WHDLoad arguments".format(repr(slave_original_name))
+#         )
+#     print("[WHDLOAD] Slave directory:", repr(whdload_dir))
+#     print("[WHDLOAD] Slave arguments:", whdload_args)
+
+#     return populate_whdload_system_volume_2(
+#         destdir,
+#         s_dir,
+#         config=config,
+#         slavedir=whdload_dir,
+#         whdloadargs=whdload_args,
+#     )
+
+
+# def populate_whdload_system_volume_2(
+#     destdir, s_dir=None, *, whdloadargs, slavedir, config
+# ):
+#     if not s_dir:
+#         s_dir = os.path.join(destdir, "S")
+#         if not os.path.exists(s_dir):
+#             os.makedirs(s_dir)
+
+#     # FIXME: Get whdload_args from arg
+#     # whdload_args = config["x_whdload_args"].strip()
+#     # if not whdload_args:
+#     #     return
+
+#     print("[WHDLOAD] LaunchHandler.copy_whdload_files")
+
+#     # FIXME: ...
+#     if config[WHDLOAD_PRELOAD] != "0":
+#         if " PRELOAD" not in whdloadargs.upper():
+#             print("[WHDLOAD] Adding PRELOAD argument")
+#             whdloadargs += " PRELOAD"
+
+#     # current_task.set_progress(gettext("Preparing WHDLoad..."))
+#     # self.on_progress(gettext("Preparing WHDLoad..."))
+#     print("[WHDLOAD] copy_whdload_files, dest_dir = ", destdir)
+
+#     copy_whdload_kickstart(
+#         destdir,
+#         "kick33180.A500",
+#         ["11f9e62cf299f72184835b7b2a70a16333fc0d88"],
+#     )
+#     copy_whdload_kickstart(
+#         destdir,
+#         "kick34005.A500",
+#         ["891e9a547772fe0c6c19b610baf8bc4ea7fcb785"],
+#     )
+#     copy_whdload_kickstart(
+#         destdir,
+#         "kick40068.A1200",
+#         ["e21545723fe8374e91342617604f1b3d703094f1"],
+#     )
+#     copy_whdload_kickstart(
+#         destdir,
+#         "kick40068.A4000",
+#         ["5fe04842d04a489720f0f4bb0e46948199406f49"],
+#     )
+
+#     create_prefs_file(config, os.path.join(s_dir, "WHDLoad.prefs"))
+
+#     # FIXME
+#     whdload_version = config["x_whdload_version"]
+#     if not whdload_version:
+#         whdload_version = default_whdload_version
+
+#     for key, value in binaries[whdload_version].items():
+#         install_whdload_file(key, destdir, value)
+#     for key, value in support_files.items():
+#         install_whdload_file(key, destdir, value)
+
+#     if config["__netplay_game"]:
+#         print(
+#             "[WHDLOAD] Key and settings files are not copied in net play mode"
+#         )
+#     else:
+#         key_file = os.path.join(FSGSDirectories.get_base_dir(), "WHDLoad.key")
+#         if os.path.exists(key_file):
+#             print("found WHDLoad.key at ", key_file)
+#             shutil.copy(key_file, os.path.join(s_dir, "WHDLoad.key"))
+#         else:
+#             print("[WHDLOAD] Key file not found in base dir (FS-UAE dir)")
+
+#         # Temporary feature, at least until it's possible to set more WHDLoad
+#         # settings directly in the Launcher
+
+#         prefs_file = os.path.join(
+#             FSGSDirectories.get_base_dir(), "WHDLoad.prefs"
+#         )
+#         if os.path.exists(prefs_file):
+#             print("found WHDLoad.prefs at ", prefs_file)
+#             shutil.copy(prefs_file, os.path.join(s_dir, "WHDLoad.prefs"))
+#         else:
+#             print("[WHDLOAD] Prefs file not found in base dir (FS-UAE dir)")
+
+#     # if self.config.get("__netplay_game", ""):
+#     #     print("[WHDLOAD] WHDLoad base dir is not copied in net play mode")
+#     # else:
+#     #     src_dir = self.get_whdload_dir()
+#     #     if src_dir and os.path.exists(src_dir):
+#     #         print("[WHDLOAD] WHDLoad base dir exists, copying resources...")
+#     #         self.copy_folder_tree(src_dir, dest_dir)
+
+#     # icon = self.config.get("__whdload_icon", "")
+#     # icon = ""
+#     # if icon:
+#     #     shutil.copy(
+#     #         os.path.expanduser("~/kgiconload"),
+#     #         os.path.join(dest_dir, "C", "kgiconload"),
+#     #     )
+#     #     icon_path = os.path.join(dest_dir, icon)
+#     #     print("[WHDLOAD] Create icon at ", icon_path)
+#     #     create_slave_icon(icon_path, whdload_args)
+#     #     self.write_startup_sequence(
+#     #         s_dir,
+#     #         'cd "{0}"\n'
+#     #         "kgiconload {1}\n"
+#     #         "uae-configuration SPC_QUIT 1\n".format(
+#     #             whdload_dir, os.path.basename(icon)
+#     #         ),
+#     #     )
+#     # else:
+#     write_startup_sequence(
+#         s_dir, whdload_sequence.format(slavedir, whdloadargs)
+#     )
+
+
+def install_whdload_file(sha1, dest_dir, rel_path):
+    abs_path = os.path.join(dest_dir, rel_path)
+    name = os.path.basename(rel_path)
+    # self.on_progress(gettext("Downloading {0}...".format(name)))
+    Downloader.install_file_by_sha1(sha1, name, abs_path)
+
+
+from fsgs.FSGameSystemContext import FileContext
+
+
+# def copy_whdload_kickstart(base_dir, name, checksums):
+#     dest = os.path.join(base_dir, "Devs", "Kickstarts")
+#     if not os.path.exists(dest):
+#         os.makedirs(dest)
+#     dest = os.path.join(dest, name)
+#     for checksum in checksums:
+#         # print("find kickstart with sha1", checksum)
+#         path = FileContext.find_by_sha1(checksum)
+#         if path:  # and os.path.exists(path):
+#             print("found kickstart for", name, "at", path)
+#             archive = Archive(path)
+#             if archive.exists(path):
+#                 with open(dest, "wb") as f:
+#                     ROMManager.decrypt_archive_rom(archive, path, file=f)
+#                 print(repr(dest))
+#                 break
+#             else:
+#                 stream = FileContext.open(path)
+#                 if stream is None:
+#                     raise Exception("Cannot find kickstart " + repr(path))
+#                 with open(dest, "wb") as f:
+#                     f.write(stream.read())
+#     else:
+#         print("did not find kickstart for", name)
 
 
 def should_disable_drive_click() -> bool:
@@ -12,7 +430,38 @@ def should_disable_drive_click() -> bool:
     return True
 
 
-def create_prefs_file(config: DefaultDict[str, str], path: str) -> bool:
+# def create_prefs_file(config: DefaultDict[str, str], path: str) -> bool:
+#     """Write a WHDLoad.prefs respecting options from config.
+
+#     Returns true if the prefs file was created.
+#     """
+#     if config[Option.NETPLAY_GAME]:
+#         # The options below are commonly retrieved from settings, not
+#         # config, and settings are not synced in net play, so we use
+#         # default settings.
+#         logging.info("[WHDLOAD] No WHDLoad overrides in net play mode")
+#         return False
+#     prefs = default_whdload_prefs
+#     splash_delay = config[Option.WHDLOAD_SPLASH_DELAY]
+#     if splash_delay:
+#         prefs = prefs.replace(
+#             ";SplashDelay=0", "SplashDelay={}".format(int(splash_delay))
+#         )
+
+#     quit_key = config[Option.WHDLOAD_QUIT_KEY]
+#     if quit_key:
+#         prefs = prefs.replace(
+#             ";QuitKey=$45", "QuitKey=${}".format(quit_key.upper())
+#         )
+
+#     # Make sure the data is CRLF line terminated.
+#     prefs = prefs.replace("\r\n", "\n").replace("\n", "\r\n")
+#     with open(path, "wb") as f:
+#         f.write(prefs.encode("ISO-8859-1"))
+#     return True
+
+
+def prepare_prefs_file(config: ConfigType) -> Optional[bytes]:
     """Write a WHDLoad.prefs respecting options from config.
 
     Returns true if the prefs file was created.
@@ -22,7 +471,7 @@ def create_prefs_file(config: DefaultDict[str, str], path: str) -> bool:
         # config, and settings are not synced in net play, so we use
         # default settings.
         logging.info("[WHDLOAD] No WHDLoad overrides in net play mode")
-        return False
+        return None
     prefs = default_whdload_prefs
     splash_delay = config[Option.WHDLOAD_SPLASH_DELAY]
     if splash_delay:
@@ -38,15 +487,15 @@ def create_prefs_file(config: DefaultDict[str, str], path: str) -> bool:
 
     # Make sure the data is CRLF line terminated.
     prefs = prefs.replace("\r\n", "\n").replace("\n", "\r\n")
-    with open(path, "wb") as f:
-        f.write(prefs.encode("ISO-8859-1"))
-    return True
+    # with open(path, "wb") as f:
+    #     f.write(prefs.encode("ISO-8859-1"))
+    return prefs.encode("ISO-8859-1")
 
 
 def override_config(config: DefaultDict[str, str]):
     if should_disable_drive_click():
         config[Option.FLOPPY_DRIVE_VOLUME_EMPTY] = "0"
-    model = settings.get(Option.WHDLOAD_MODEL)
+    model = Settings.instance().get(Option.WHDLOAD_MODEL)
     if model:
         if model == "A1200":
             config[Option.AMIGA_MODEL] = "A1200"
@@ -63,19 +512,27 @@ def override_config(config: DefaultDict[str, str]):
 
 def read_whdload_args_from_info_data(data: bytes) -> List[str]:
     logging.debug("[WHDLOAD] Read WHDLoad args from info data")
-    index = data.lower().find(b"slave=") - 1
-    if not index:
-        return []
-    args = []
-    parts = data[index:].split(b"\x00\x00\x00\x00")
-    for part in parts[:]:
-        if len(part) > 2:
-            length = part[0]
-            # logging.debug("%d", length)
-            arg = part[1 : 1 + length - 1]
-            if b"***" in arg:
-                break
-            args.append(arg.decode("ISO-8859-1"))
+    iconparser = IconParser(data)
+    iconparser.parse()
+    tooltypes = iconparser.tooltypes
+    args: List[str] = []
+    for tooltype in tooltypes:
+        # "In a NewIcons file, one of the strings in the table (usually
+        # the first one) is a single space.  The next string is the
+        # message "*** DON'T EDIT THE FOLLOWING LINES!! ***". Later
+        # strings contain the NewIcons data..."
+        # if string == "*** DON'T EDIT THE FOLLOWING LINES!! ***":
+        #     if len(args) > 1 and args == " ":
+        #         args.pop()
+        #     break
+        if tooltype.startswith("***"):
+            # Example: *** Colors ROMIcon ***
+            continue
+        elif tooltype.lower().startswith("slave="):
+            args.insert(0, tooltype)
+            # args.insert(0, tooltype[6:])
+        else:
+            args.append(tooltype)
     return args
 
 
@@ -96,47 +553,11 @@ def strip_whdload_slave_prefix(whdload_args: List[str]) -> List[str]:
 
 def fix_whdload_args(args: List[str]) -> str:
     """Converts args list to string and corrects args for a few icons.
-
-    The corrections remove binary garbage from the end of the arguments list
-    (either there's a problem with the icons, or there's a bug in the
-    .info "parser", the latter being the most likely.
+    
+    The previously performed corrections are no longer necessary. A proper icon
+    parser was written.
     """
     args_str = " ".join(args)
-    if args_str.startswith("AlienBreed.Slave PRELOAD \x11"):
-        args_str = "AlienBreed.Slave PRELOAD"
-    elif args_str.startswith("BrainBlasters.Slave PRELOAD D\x88"):
-        args_str = "BrainBlasters.Slave PRELOAD"
-    elif args_str.startswith("BreakOutRevolutionAGA.slave PRELOAD \x0f"):
-        args_str = "BreakOutRevolutionAGA.slave PRELOAD"
-    elif args_str.startswith("KingsQuestEnhanced.Slave PRELOAD  /\x8c"):
-        args_str = "KingsQuestEnhanced.Slave PRELOAD"
-    elif args_str.startswith("KingsQuestEnhancedMT32.Slave PRELOAD /\x8c"):
-        args_str = "KingsQuestEnhancedMT32.Slave PRELOAD"
-    elif args_str.startswith(
-        "LittleComputerPeopleNTSC.Slave PRELOAD NTSC MAG\x00"
-    ):
-        # FIXME: Should MAG be included?
-        args_str = "LittleComputerPeopleNTSC.Slave PRELOAD NTSC"
-    elif args_str.startswith("Lorna.Slave PRELOAD \n"):
-        args_str = "Lorna.Slave PRELOAD"
-    elif args_str.startswith("MikroMortalTennis.slave PRELOAD fÿÝ"):
-        args_str = "MikroMortalTennis.slave PRELOAD"
-    elif args_str.startswith("OscarAGA.Slave PRELOAD Ì"):
-        args_str = "OscarAGA.Slave PRELOAD"
-    elif args_str.startswith("OscarCD32.Slave PRELOAD Ì"):
-        args_str = "OscarCD32.Slave PRELOAD"
-    elif args_str.startswith("OscarCD32NTSC.Slave PRELOAD NTSC Ì"):
-        args_str = "OscarCD32NTSC.Slave PRELOAD NTSC"
-    elif args_str.startswith("PsychoKillerCDTV.Slave PRELOAD 3\x11"):
-        args_str = "PsychoKillerCDTV.Slave PRELOAD"
-    elif args_str.startswith("QuestForGlory.Slave PRELOAD \x00"):
-        args_str = "QuestForGlory.Slave PRELOAD"
-    elif args_str.startswith("StreetFighter2.Slave PRELOAD »"):
-        args_str = "StreetFighter2.Slave PRELOAD"
-    elif args_str.startswith("Turbo.Slave PRELOAD \x00"):
-        args_str = "Turbo.Slave PRELOAD"
-    elif args_str.startswith("WinterChallengeNTSC.slave PRELOAD NTSC î\x00"):
-        args_str = "WinterChallengeNTSC.slave PRELOAD NTSC"
     return args_str.strip()
 
 
@@ -166,6 +587,7 @@ def calculate_whdload_args(archive_path: str) -> str:
                 args = read_whdload_args_from_info_stream(archive.open(path))
                 args = strip_whdload_slave_prefix(args)
             except Exception as e:
+                traceback.print_exc()
                 logging.warning(
                     "[WHDLOAD] WARNING: Error reading args: %s", repr(e)
                 )
@@ -173,20 +595,37 @@ def calculate_whdload_args(archive_path: str) -> str:
                 if args:
                     archive_name = path.rsplit("#/", 1)[1]
                     logging.debug(
-                        "[WHDLOAD] %s => %s".format(
+                        "[WHDLOAD] {} => {}".format(
                             archive_name, " ".join(args)
                         )
+                    )
+                    # EmeraldMines_v1.0_CD.lha contains \ instead of / ???
+                    archive_name = archive_name.replace(
+                        "EmeraldMinesCD%5c", "EmeraldMinesCD/"
                     )
                     slave_args[archive_name] = args
     if len(slave_args) == 0:
         return ""
     if len(slave_args) > 1:
         logging.debug("[WHDLOAD] Multiple WHDLoad icons found")
+        # See if we have a hardcoded primary icon for this game
         for icon, args in slave_args.items():
             if icon.lower() in primary_icons:
                 logging.debug("[WHDLOAD] Choosing %s as primary icon", icon)
                 return fix_whdload_args(args)
-        raise Exception("Multiple slaves found")
+        # Try to the main icon by comparing icon name to directory name
+        for icon, args in slave_args.items():
+            icon_lower = icon.lower()
+            parts = icon_lower.split("/")
+            if len(parts) == 2:
+                if parts[0] + ".info" == parts[1]:
+                    logging.debug(
+                        "[WHDLOAD] Assuming %s as primary icon", icon
+                    )
+                    return fix_whdload_args(args)
+        # Giving up...
+        print([x.lower() for x in slave_args.keys()])
+        raise Exception("Multiple icons found, couldn't decide on one")
     return fix_whdload_args(slave_args.popitem()[1])
 
 
@@ -211,7 +650,75 @@ def generate_config_for_archive(
     return config
 
 
+def char(v):
+    return chr(v)
+
+
+def write_number(f, n):
+    f.write(char((n & 0xFF000000) >> 3))
+    f.write(char((n & 0x00FF0000) >> 2))
+    f.write(char((n & 0x0000FF00) >> 1))
+    f.write(char((n & 0x000000FF) >> 0))
+
+
+def write_string(f, s):
+    write_number(f, len(s) + 1)
+    f.write(s)
+    f.write("\0")
+
+
+def create_whdload_slave_icon(path, whdload_args):
+    default_tool = "DH0:/C/WHDLoad"
+    # FIXME: handle "" around slave name?
+    # args = whdload_args.split(" ")
+    tool_types = whdload_args.split(" ")
+    tool_types[0] = "SLAVE=" + tool_types[0]
+
+    with open(path, "wb") as f:
+        f.write(base_icon)
+        write_string(f, default_tool)
+        write_number(f, (len(tool_types) + 1) * 4)
+        for tool_type in tool_types:
+            write_string(f, tool_type)
+        f.close()
+
+
+# noinspection SpellCheckingInspection
+base_icon = (
+    b"\xe3\x10\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x006\x00"
+    b"\x17\x00\x04\x00\x01\x00\x01\x00\x02\x1a\x98\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x04\x00\x00\t\x01l\x00\x01\xa5\x9c\x80\x00\x00\x00\x80\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00"
+    b"\x00\x00\x006\x00\x16\x00\x02\x00\x08\xce \x03\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x04\x00\x00\x00\x00\x00\x00\x00\x0c\x00"
+    b"\x00\x00\x00\x00\x00\x00\x0c\x00\x00\x00\x00\x00\x00\x00\x0c\x00"
+    b"\x00\x00\x00\x00\x00\x00\x0c\x00\x00\x00\x00\x00\x00\x00\x0c\x00"
+    b"\x03\xf0\x0f\xff\xe0\x00\x0c\x00\x02\x080\x00\x1c\x00\x0c\x00\x02"
+    b"\x07\xc0\x00\x03\x80\x0c\x00\x02\x00\x00\x00\x00`\x0c\x00\x02\x00"
+    b"\x00\x00\x00\x10\x0c\x00\x02\x00\x00\x00\x00\x08\x0c\x00\x02\x07"
+    b"\xc0\x00\x1f\xc4\x0c\x00\x02\x08 \x00 2\x0c\x00\x03\xf0\x18\x00"
+    b"\xc0\r\x0c\x00\x00\x00\x06\x03\x00\x03\x0c\x00\x00\x00\x02\x02"
+    b"\x00\x00\x0c\x00\x00\x00\x02\x02\x00\x00\x0c\x00\x00\x00\x02\x02"
+    b"\x00\x00\x0c\x00\x00\x00\x03\xfe\x00\x00\x0c\x00\x00\x00\x00\x00"
+    b"\x00\x00\x0c\x00\x7f\xff\xff\xff\xff\xff\xfc\x00\xff\xff\xff\xff"
+    b"\xff\xff\xf8\x00\xd5UUUUUP\x00\xd5UUUUUP\x00\xd5UUUUUP\x00\xd5UUU"
+    b"UUP\x00\xd5UUUUUP\x00\xd4\x05P\x00\x15UP\x00\xd4\x05@\x00\x01UP"
+    b"\x00\xd4\x00\x00\x00\x00UP\x00\xd4\x00\x00\x00\x00\x15P\x00\xd4"
+    b"\x00\x00\x00\x00\x05P\x00\xd4\x00\x00\x00\x00\x05P\x00\xd4\x00"
+    b"\x00\x00\x00\x01P\x00\xd4\x05@\x00\x15AP\x00\xd4\x05@\x00\x15PP"
+    b"\x00\xd5UP\x00UTP\x00\xd5UT\x01UUP\x00\xd5UT\x01UUP\x00\xd5UT"
+    b"\x01UUP\x00\xd5UT\x01UUP\x00\xd5UUUUUP\x00\x80\x00\x00\x00\x00"
+    b"\x00\x00\x00"
+)
+
 default_whdload_version = "18.5"
+
+whdload_sequence = """
+cd "{0}"
+WHDLoad {1}
+uae-configuration SPC_QUIT 1
+"""
 
 # noinspection SpellCheckingInspection
 support_files = {
@@ -307,69 +814,51 @@ default_whdload_prefs = """
 ;WriteDelay=150
 """
 # noinspection SpellCheckingInspection
-primary_icons = {
-    _.lower()
-    for _ in [
-        "3DPool/3DPool.info",
-        "AigleDOrFr/AigleDOrFr.info",
-        "BartVsSpaceMutants2Disk/BartVsSpaceMutants2Disk.info",
-        "BattleIsle/BattleIsle.info",
-        "BattleIsle/Programm.info",
-        "BattleIsle&DataDisks/BattleIsle.info",
-        "BattleIsle&DataDisks/BattleIsle.info",
-        "BattleIsle&DataDisks/Programm.info",
-        "BlackViperCD32/BlackViperCD32.info",
-        "Cadaver&CadaverThePayoff/CadaverThePayoff.info",
-        "CastleOfDrBrain/CastleOfDrBrain.info",
-        "ChaosStrikesBack/ChaosStrikesBack.info",
-        "DGeneration/DGeneration.info",
-        "DGenerationAGA/DGenerationAGA.info",
-        "DGenerationCD32/DGenerationCD32.info",
-        "EmeraldMine2/EmeraldMine2.info",
-        "Entity/Entity.info",
-        "EyeOfTheStorm/EyeOfTheStorm.info",
-        "Fuzzball/Fuzzball.info",
-        "Genesia/Genesia.info",
-        "GenesiaFr/GenesiaFr.info",
-        "HardDrivin2/HardDrivin2.info",
-        "Historyline/Historyline.info",
-        "Historyline/Historyline.info",
-        "HistorylineDe/HistorylineDe.info",
-        "HistorylineDe/HistorylineDe.info",
-        "HistorylineFr/HistorylineFr.info",
-        "HistorylineFr/HistorylineFr.info",
-        "Jetstrike/Jetstrike.info",
-        "JetstrikeAGA/JetstrikeAGA.info",
-        "JimmyWillburneFr/JimmyWillburneFr.info",
-        "Lemmings21MB/Lemmings21MB.info",
-        "Lemmings2512KB/Lemmings2512KB.info",
-        "MetalMasters/MetalMasters.info",
-        "Might&Magic3/Might&Magic3.info",
-        "Might&Magic3/Might&Magic3.info",
-        "Might&Magic3De/Might&Magic3De.info",
-        "MightAndMagic3/MightAndMagic3.info",
-        "MightAndMagic3De/MightAndMagic3De.info",
-        "MightAndMagic3De/MightAndMagic3.info",
-        "PinballPrelude/PinballPrelude Past.info",
-        "PinballPreludeAGA/PinballPreludeAGA Past.info",
-        "PinballPreludeAGA/Past.info",
-        "RaceDrivin/RaceDrivin.info",
-        "SensibleSoccer/SensibleSoccer.info",
-        "SensibleSoccer/SensibleSoccer.info",
-        "SensibleSoccerEuro/SensibleSoccerEuro.info",
-        "SensibleSoccerEuro/SensibleSoccerEuro.info",
-        "SensibleSoccerIntEd/SensibleSoccerIntEd.info",
-        "SensibleSoccerIntlEd/SensibleSoccerIntlEd.info",
-        "SpaceHarrier&RFantasyZone/RFantasyZone.info",
-        "SpaceHarrier&RetrnFntZone/ReturnToFantasyZone.info",
-        "Superfrog/Superfrog.info",
-        "SuperfrogCD32/SuperfrogCD32.info",
-        "SuprStrtFtr2TrboAGA/SuprStrtFtr2TrboAGA.info",
-        "SuprStrtFtr2TrboCD32/SuprStrtFtr2TrboCD32.info",
-        "TubularWorldsECS/TubularWorldsECS.info",
-        "TurboTraxArcane/TurboTraxArcane.info",
-        "Virocop/Virocop2Meg.info",
-        "WalkerCrunched/WalkerCrunched.info",
-        "WalkerDecrunched/WalkerDecrunched.info",
+primary_icons = set(
+    [
+        "alchemydemo/alchemydemomine.info",
+        "atrain&constrset512k/atrain512k.info",
+        "atrain&constructionset/atrain.info",
+        "battleisle/programm.info",
+        "battleisle&datadisks/battleisle.info",
+        "battleisle&datadisks/programm.info",
+        # "bloodwych&extendedlevels/bloodwych.info",
+        "bloodwych&extendedlevels/extendedlevels.info",
+        "cadaver&cadaverthepayoff/cadaverthepayoff.info",
+        "chaosstrikesback&deutil/chaosstrikesback.info",
+        "chaosstrikesback&enutil/chaosstrikesback.info",
+        "chaosstrikesback&frutil/chaosstrikesback.info",
+        "dizzycollection/disk1.info",
+        "dizzysexcellentadventures/disk1.info",
+        "emeraldminescd/emeraldmine1.info",
+        "epic&missiondisk/epic.info",
+        "falcon&missiondisks/falcon.info",
+        "falcon&missiondisksntsc/falconntsc.info",
+        "goldrunner2&scenerydisks/goldrunner2.info",
+        "kickoff&extratime1disk/extratime1disk.info",
+        # "kickoff&extratime1disk/kickoff1disk.info",
+        "kickoff&extratime2disk/extratime2disk.info",
+        # "kickoff&extratime2disk/kickoff2disk.info",
+        "mightandmagic3de/mightandmagic3.info",
+        "pinballprelude/pinballprelude past.info",
+        "pinballpreludeaga/pinballpreludeaga past.info",
+        "pinballpreludeaga/past.info",
+        # "populous&datadisks/populous.info",
+        "populous&datadisks/finalfrontier.info",
+        # "populous&datadisks/promisedlands.info",
+        "populous2&challengegames/challengegames.info",
+        # "populous2&challengegames/populous2.info",
+        # "spacecrusade&voyagebeyond/spacecrusade.info",
+        "spacecrusade&voyagebeyond/voyagebeyond.info",
+        "spaceharrier&rfantasyzone/rfantasyzone.info",
+        "spaceharrier&retrnfntzone/returntofantasyzone.info",
+        "strippoker2+&datadisk1/datadisk1.info",
+        # "strippoker2+&datadisk1/strippoker2+.info",
+        "timerunnersseries/timerunners01.info",
+        "utopia&newworlds/newworlds.info",
+        # "utopia&newworlds/utopia.info",
+        "virocop/virocop2meg.info",
+        # "vroom&datadisk/datadisk.info",
+        "vroom&datadisk/vroom.info",
     ]
-}
+)

@@ -1,6 +1,6 @@
-from fsbc.util import unused
-import fsui
 import fsbc.system
+import fsui
+from fsbc.util import unused
 from .Constants import Constants
 from .skin import Skin
 

@@ -1,9 +1,9 @@
-import fsui.qt
+from fsui.qt.qt import QObject
+from fsui.qt.signal import Signal
 
 
-class IntervalTimer(fsui.qt.QObject):
-
-    activated = fsui.qt.QSignal()
+class IntervalTimer(QObject):
+    activated = Signal()
 
     def __init__(self, interval):
         super().__init__()

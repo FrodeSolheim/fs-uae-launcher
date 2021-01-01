@@ -1,17 +1,12 @@
-import base64
-import json
 import platform
 import time
 from functools import wraps
-from gzip import GzipFile
-from io import StringIO
 from urllib.error import HTTPError
 from urllib.parse import urlencode
-from urllib.request import Request
 from uuid import uuid4
 
 import requests
-from fsbc.application import app
+
 from fsbc.settings import Settings
 from fsbc.task import Task
 from fsgs.network import openretro_url_prefix
@@ -168,6 +163,7 @@ class LoginTask(Task):
         except UnauthorizedError:
             raise Task.Failure("Wrong e-mail address or password")
 
+        Settings.instance()["error_report_user_id"] = result["user_id"]
         Settings.instance()["database_username"] = result["username"]
         Settings.instance()["database_email"] = result["email"]
         Settings.instance()["database_auth"] = result["auth_token"]
@@ -186,6 +182,7 @@ class LogoutTask(Task):
             Settings.instance()["device_id"] = str(uuid4())
         self.client.deauth(self.auth_token)
 
+        Settings.instance()["error_report_user_id"] = ""
         Settings.instance()["database_username"] = ""
         # Settings.instance()["database_email"] = ""
         Settings.instance()["database_auth"] = ""

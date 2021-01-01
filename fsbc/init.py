@@ -1,5 +1,3 @@
-import sys
-import platform
 import fsbc.debug
 import fsbc.logging
 
@@ -19,7 +17,6 @@ def initialize_application(
     enable_logging=True,
     enable_exception_handler=True,
 ):
-
     global init_called, unicode_patched, logging_enabled, exception_handler_enabled
     init_called = True
 

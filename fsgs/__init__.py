@@ -15,10 +15,15 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from fsgs.option import Option
+from fsgs.options.option import Option
 
 product = "FS-UAE"
 openretro = False
+
+
+def fsgs_product():
+    return product
+
 
 OPENRETRO_DEFAULT_DATABASES = [
     Option.ARCADE_DATABASE,

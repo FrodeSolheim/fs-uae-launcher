@@ -1,10 +1,10 @@
 import os
 
 import fsui
-from fsgs.checksumtool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.checksumtool import ChecksumTool
+from launcher.context import get_config
 from launcher.i18n import gettext
-from launcher.launcher_config import LauncherConfig
 from launcher.option import Option
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
@@ -16,7 +16,7 @@ from launcher.ui.options import ConfigWidgetFactory
 class RomRamPanel(ConfigPanel):
     def __init__(self, parent):
         ConfigPanel.__init__(self, parent)
-        heading_label = fsui.HeadingLabel(self, gettext("ROM & RAM"))
+        heading_label = fsui.HeadingLabel(self, gettext("CPU, ROM & RAM"))
         self.layout.add(heading_label, margin=10)
         self.layout.add_spacer(0)
 
@@ -78,50 +78,51 @@ class KickstartGroup(fsui.Panel):
         self.set_config_handlers()
 
     def initialize_from_config(self):
-        self.on_config("kickstart_file", LauncherConfig.get("kickstart_file"))
-        self.on_config(
-            "kickstart_ext_file", LauncherConfig.get("kickstart_ext_file")
-        )
+        config = get_config(self)
+        self.on_config("kickstart_file", config.get("kickstart_file"))
+        self.on_config("kickstart_ext_file", config.get("kickstart_ext_file"))
 
     def set_config_handlers(self):
         self.kickstart_type_choice.on_changed = self.on_kickstart_type_changed
         self.ext_rom_type_choice.on_changed = self.on_ext_rom_type_changed
-        LauncherConfig.add_listener(self)
+        config = get_config(self)
+        config.add_listener(self)
 
     def on_destroy(self):
-        print("on_destroy")
-        LauncherConfig.remove_listener(self)
+        config = get_config(self)
+        config.remove_listener(self)
+        super().on_destroy()
 
     def on_kickstart_type_changed(self):
-        index = self.kickstart_type_choice.get_index()
+        config = get_config(self)
+        index = self.kickstart_type_choice.index()
         if index == 0:
-            if LauncherConfig.get("kickstart_file") == "":
+            if config.get("kickstart_file") == "":
                 return
-            LauncherConfig.set("kickstart_file", "")
+            config.set("kickstart_file", "")
         elif index == 2:
-            if LauncherConfig.get("kickstart_file") == "internal":
+            if config.get("kickstart_file") == "internal":
                 return
-            LauncherConfig.set("kickstart_file", "internal")
+            config.set("kickstart_file", "internal")
         else:
-            LauncherConfig.set(
-                "kickstart_file", LauncherConfig.get("x_kickstart_file")
-            )
-        LauncherConfig.update_kickstart()
+            config.set("kickstart_file", config.get("x_kickstart_file"))
+        config.update_kickstart()
 
     def on_ext_rom_type_changed(self):
-        index = self.ext_rom_type_choice.get_index()
+        config = get_config(self)
+        index = self.ext_rom_type_choice.index()
         if index == 0:
-            if LauncherConfig.get("kickstart_ext_file") == "":
+            if config.get("kickstart_ext_file") == "":
                 return
-            LauncherConfig.set("kickstart_ext_file", "")
+            config.set("kickstart_ext_file", "")
         else:
-            LauncherConfig.set(
-                "kickstart_ext_file",
-                LauncherConfig.get("x_kickstart_ext_file"),
+            config.set(
+                "kickstart_ext_file", config.get("x_kickstart_ext_file"),
             )
-        LauncherConfig.update_kickstart()
+        config.update_kickstart()
 
     def on_browse_button(self, extended=False):
+        config = get_config(self)
         default_dir = FSGSDirectories.get_kickstarts_dir()
         if extended:
             title = gettext("Choose Extended ROM")
@@ -130,7 +131,7 @@ class KickstartGroup(fsui.Panel):
             title = gettext("Choose Kickstart ROM")
             key = "kickstart_file"
         dialog = LauncherFilePicker(
-            self.get_window(), title, "rom", LauncherConfig.get(key)
+            self.get_window(), title, "rom", config.get(key)
         )
         if not dialog.show_modal():
             return
@@ -150,7 +151,7 @@ class KickstartGroup(fsui.Panel):
             path = file
 
         if extended:
-            LauncherConfig.set_multiple(
+            config.set_multiple(
                 [
                     ("kickstart_ext_file", path),
                     ("x_kickstart_ext_file", path),
@@ -158,7 +159,7 @@ class KickstartGroup(fsui.Panel):
                 ]
             )
         else:
-            LauncherConfig.set_multiple(
+            config.set_multiple(
                 [
                     ("kickstart_file", path),
                     ("x_kickstart_file", path),
@@ -198,22 +199,23 @@ class MemoryGroup(fsui.Panel):
         self.layout = fsui.VerticalLayout()
         self.hori_layout = None
         self.hori_counter = 0
-        config_widget_factory = ConfigWidgetFactory()
-        self.add_widget(config_widget_factory.create(self, Option.CHIP_MEMORY))
+        factory = ConfigWidgetFactory()
+
+        self.add_widget(factory.create(self, Option.CPU))
+        self.add_widget(factory.create(self, Option.ZORRO_III_MEMORY))
+
+        self.add_widget(factory.create(self, Option.CHIP_MEMORY))
+        self.add_widget(factory.create(self, Option.MOTHERBOARD_RAM))
+
+        self.add_widget(factory.create(self, Option.SLOW_MEMORY))
+        self.add_widget(factory.create(self, Option.ACCELERATOR_MEMORY))
+
+        self.add_widget(factory.create(self, Option.FAST_MEMORY))
+        # self.add_widget(fsui.Label(self, ""))
         self.add_widget(
-            config_widget_factory.create(self, Option.MOTHERBOARD_RAM)
-        )
-        self.add_widget(config_widget_factory.create(self, Option.SLOW_MEMORY))
-        self.add_widget(
-            config_widget_factory.create(self, Option.ZORRO_III_MEMORY)
-        )
-        self.add_widget(config_widget_factory.create(self, Option.FAST_MEMORY))
-        self.add_widget(
-            config_widget_factory.create(self, Option.ACCELERATOR_MEMORY)
-        )
-        self.add_widget(fsui.Label(self, ""))
-        self.add_widget(
-            config_widget_factory.create(self, Option.GRAPHICS_MEMORY)
+            factory.create(
+                self, Option.GRAPHICS_MEMORY, text=gettext("Graphics Card RAM")
+            ),
         )
 
     def add_widget(self, widget):

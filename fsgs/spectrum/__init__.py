@@ -60,7 +60,6 @@ ZXS_PLUS2A_3_ROM = KnownFile(
     "65f031caa8148a5493afe42c41f4929deab26b4e", PLATFORM_ZXS, "p2a41_3.rom"
 )
 
-
 ZXS_PLUS3_0_ROM = KnownFile(
     "e319ed08b4d53a5e421a75ea00ea02039ba6555b", PLATFORM_ZXS, "plus3-0.rom"
 )

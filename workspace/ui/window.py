@@ -1,6 +1,6 @@
 import pkg_resources
 import fsui
-from fsui.qt.window import RealWindow
+from fsui.qt.old_window import RealWindow
 from .application import Application
 from .theme import WorkspaceTheme
 
@@ -380,7 +380,7 @@ class WindowButton(fsui.Panel):
         self.on_mouse_motion()
 
     def on_mouse_motion(self):
-        new_state = self.is_mouse_over()
+        new_state = self.is_under_mouse()
         if self.hover != new_state:
             self.hover = new_state
             self.refresh()
@@ -388,7 +388,7 @@ class WindowButton(fsui.Panel):
     def on_left_up(self):
         self.pressed = False
         self.refresh()
-        if self.is_mouse_over():
+        if self.is_under_mouse():
             self.on_activate()
 
     def on_left_dclick(self):

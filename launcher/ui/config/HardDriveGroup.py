@@ -1,11 +1,11 @@
 import os
 
 import fsui
-from fsgs.checksumtool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga import whdload
+from fsgs.checksumtool import ChecksumTool
+from launcher.context import get_config
 from launcher.i18n import gettext
-from launcher.launcher_config import LauncherConfig
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
 from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
@@ -53,13 +53,14 @@ class HardDriveGroup(fsui.Panel):
         self.set_config_handlers()
 
     def initialize_from_config(self):
-        self.on_config(self.config_key, LauncherConfig.get(self.config_key))
+        self.on_config(self.config_key, get_config(self).get(self.config_key))
 
     def set_config_handlers(self):
-        LauncherConfig.add_listener(self)
+        get_config(self).add_listener(self)
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        get_config(self).remove_listener(self)
+        super().on_destroy()
 
     def on_config(self, key, value):
         if key != self.config_key:
@@ -71,10 +72,10 @@ class HardDriveGroup(fsui.Panel):
             path = name
         self.text_field.set_text(path)
         self.text_field.set_cursor_position(0)
-        self.eject_button.enable(bool(value))
+        self.eject_button.set_enabled(bool(value))
 
     def on_eject_button(self):
-        LauncherConfig.set_multiple(
+        get_config(self).set_multiple(
             [(self.config_key, ""), (self.config_key_sha1, "")]
         )
 
@@ -90,7 +91,7 @@ class HardDriveGroup(fsui.Panel):
             self.get_window(),
             gettext("Choose Hard Drive"),
             "hd",
-            LauncherConfig.get(self.config_key),
+            get_config(self).get(self.config_key),
             dir_mode=dir_mode,
         )
         if not dialog.show_modal():
@@ -135,4 +136,4 @@ class HardDriveGroup(fsui.Panel):
                     full_path, model_config=False
                 ).items()
             )
-        LauncherConfig.set_multiple(values)
+        get_config(self).set_multiple(values)

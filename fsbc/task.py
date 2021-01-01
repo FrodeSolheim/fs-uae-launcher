@@ -1,7 +1,7 @@
 import threading
 import traceback
-from .signal import Signal
 
+from .signal import Signal
 
 local_tasks = threading.local()
 
@@ -18,7 +18,6 @@ class TaskStopped(Exception):
 
 
 class Task(object):
-
     Failure = TaskFailure
     Stopped = TaskStopped
 
@@ -66,7 +65,7 @@ class Task(object):
                 traceback.print_exc()
                 self.failed(
                     "Task: {}\nError: {}\nMessage: {}\n\n"
-                    "See the log file for more details.".format(
+                    "The log file may contain more details.".format(
                         self.get_task_name(), type(e).__name__, str(e)
                     )
                 )

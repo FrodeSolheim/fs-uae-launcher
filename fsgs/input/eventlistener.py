@@ -2,8 +2,8 @@ import time
 
 from arcade.notification import Notification
 from fsgs.input.device import Device
-from fsgs.input.eventhelper import EventHelper
 from fsgs.input.devicemanager import DeviceManager
+from fsgs.input.eventhelper import EventHelper
 
 CHECK_DELAY = 0.5
 

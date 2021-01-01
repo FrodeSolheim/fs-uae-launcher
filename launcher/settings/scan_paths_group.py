@@ -1,9 +1,9 @@
 import fsui
+from fsbc.util import unused
+from fsgs.FSGSDirectories import FSGSDirectories
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.ui.IconButton import IconButton
-from fsbc.util import unused
-from fsgs.FSGSDirectories import FSGSDirectories
 
 
 class ScanPathsGroup(fsui.Group):
@@ -28,7 +28,7 @@ class ScanPathsGroup(fsui.Group):
 
         add_button = IconButton(self, "add_button.png")
         add_button.set_tooltip(gettext("Add Directory to Search Path"))
-        # add_button.disable()
+        # add_button.set_enabled(False)
         add_button.activated.connect(self.on_add_button)
         vlayout.add(add_button)
         vlayout.add_spacer(10)
@@ -37,7 +37,7 @@ class ScanPathsGroup(fsui.Group):
         self.remove_button.set_tooltip(
             gettext("Remove Directory from Search Path")
         )
-        self.remove_button.disable()
+        self.remove_button.set_enabled(False)
         self.remove_button.activated.connect(self.on_remove_button)
         vlayout.add(self.remove_button)
 
@@ -48,6 +48,7 @@ class ScanPathsGroup(fsui.Group):
 
     def on_destroy(self):
         LauncherSettings.remove_listener(self)
+        super().on_destroy()
 
     def on_setting(self, key, value):
         unused(value)
@@ -56,7 +57,7 @@ class ScanPathsGroup(fsui.Group):
 
     def on_select_item(self, index):
         unused(index)
-        self.remove_button.enable()
+        self.remove_button.set_enabled()
 
     def repopulate_list(self):
         self.list_view.clear()
@@ -110,7 +111,7 @@ class ScanPathsGroup(fsui.Group):
             LauncherSettings.set("search_path", ";".join(search_path))
 
     def on_remove_button(self):
-        path = self.list_view.get_item(self.list_view.get_index())
+        path = self.list_view.get_item(self.list_view.index())
         search_path = LauncherSettings.get("search_path")
         search_path = [x.strip() for x in search_path.split(";") if x.strip()]
         for i in range(len(search_path)):

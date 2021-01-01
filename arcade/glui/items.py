@@ -7,9 +7,9 @@ from fsgs.platform import PlatformHandler
 from arcade.glui.constants import TOP_ITEM_ARROW, TOP_ITEM_LEFT
 from arcade.glui.constants import ROW_NAME, ROW_PLATFORM
 
-from fsbc.util import memoize
 from fsgs.Database import Database
 from fsgs.util.gamenameutil import GameNameUtil
+from fspy.decorators import memoize
 from arcade.resources import resources, gettext
 from .font import BitmapFont
 from .opengl import gl, fs_emu_blending, fs_emu_texturing

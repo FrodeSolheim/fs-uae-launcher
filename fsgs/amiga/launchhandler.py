@@ -4,7 +4,6 @@ import os
 import shutil
 import tempfile
 import traceback
-import unittest
 import zlib
 from typing import Dict, List
 from urllib.parse import unquote
@@ -12,20 +11,21 @@ from urllib.parse import unquote
 from fsbc.paths import Paths
 from fsbc.resources import Resources
 from fsbc.task import TaskFailure, current_task
-from fsgs.amiga import whdload
+from fsbc.util import is_sha1
+from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.GameChangeHandler import GameChangeHandler
 from fsgs.amiga.adffileextractor import ADFFileExtractor
 from fsgs.amiga.amiga import Amiga
 from fsgs.amiga.configwriter import ConfigWriter
 from fsgs.amiga.fsuae import FSUAE
 from fsgs.amiga.rommanager import ROMManager
 from fsgs.amiga.roms import CD32_FMV_ROM, PICASSO_IV_74_ROM
-from fsgs.amiga.workbench import WorkbenchExtractor
+from fsgs.amiga.workbenchdata import workbench_disks_with_setpatch_39_6
+from fsgs.amiga.workbenchextractor import WorkbenchExtractor
+# from fsgs.amiga.xpkmaster import install_xpkmaster_files
 from fsgs.archive import Archive
 from fsgs.download import Downloader
 from fsgs.drivers.gamedriver import GameDriver
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.GameChangeHandler import GameChangeHandler
-from fsgs.GameNameUtil import GameNameUtil
 from fsgs.knownfiles import (
     ACTION_REPLAY_MK_II_2_14_MOD_ROM,
     ACTION_REPLAY_MK_II_2_14_ROM,
@@ -33,8 +33,12 @@ from fsgs.knownfiles import (
     ACTION_REPLAY_MK_III_3_17_ROM,
 )
 from fsgs.network import is_http_url
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.res import gettext
+from fsgs.util.gamenameutil import GameNameUtil
+
+
+# FIXME: Support relative_temp_feature for unpacked archives-as-HD as well
 
 
 class LaunchHandler(object):
@@ -99,7 +103,15 @@ class LaunchHandler(object):
         self.config["save_states_dir"] = ""
         self.config["floppy_overlays_dir"] = ""
         self.config["flash_memory_dir"] = ""
-        self.change_handler = GameChangeHandler(self.temp_dir)
+
+        # FIXME: Document or change. Tests needs to be able to disable
+        # saving changes or otherwise be able to start with a clean slate.
+
+        # FIXME: Change handler is disabled for now
+        # if self.config.get("__save_dir", "") == "0":
+        #     pass
+        # else:
+        #     self.change_handler = GameChangeHandler(self.temp_dir)
 
         self.config["cdroms_dir"] = FSGSDirectories.get_cdroms_dir()
         self.config[
@@ -111,7 +123,7 @@ class LaunchHandler(object):
         self.config["save_states_dir"] = FSGSDirectories.get_save_states_dir()
         self.config["themes_dir"] = FSGSDirectories.get_themes_dir()
 
-        self.prepare_roms()
+        # self.prepare_roms()
         if self.stop_flag:
             return
         self.prepare_floppies()
@@ -120,10 +132,10 @@ class LaunchHandler(object):
         self.prepare_cdroms()
         if self.stop_flag:
             return
-        self.prepare_hard_drives()
+        # self.prepare_hard_drives()
         if self.stop_flag:
             return
-        self.copy_hd_files()
+        # self.copy_hd_files()
         if self.stop_flag:
             return
         self.init_changes()
@@ -199,7 +211,7 @@ class LaunchHandler(object):
         for config_key, default_roms in roms:
             print("[ROM]", config_key, default_roms)
             src = self.config[config_key]
-            print(src)
+            print("[ROM]", src)
             if not src:
                 for sha1 in default_roms:
                     print("[ROM] Trying", sha1)
@@ -385,11 +397,13 @@ class LaunchHandler(object):
             s = Resources("fsgs", "res").stream("amiga/adf_save_disk.dat")
             data = s.read()
             data = zlib.decompress(data)
-            save_disk = os.path.join(self.temp_dir, "Save Disk.adf")
+            save_disk_sha1 = hashlib.sha1(data).hexdigest()
+            # save_disk = os.path.join(self.temp_dir, "Save Disk.adf")
+            save_disk = os.path.join(self.temp_dir, save_disk_sha1[:8].upper() + ".adf")
             with open(save_disk, "wb") as f:
                 f.write(data)
-            key = "floppy_image_{0}".format(save_image)
-            self.config[key] = "Save Disk.adf"
+            self.config[f"floppy_image_{save_image}"] = save_disk
+            self.config[f"floppy_image_{save_image}_label"] = "Save Disk"
 
     def prepare_cdroms(self):
         print("LaunchHandler.prepare_cdroms")
@@ -460,7 +474,7 @@ class LaunchHandler(object):
         print("LaunchHandler.prepare_hard_drives")
         current_task.set_progress(gettext("Preparing hard drives..."))
         # self.on_progress(gettext("Preparing hard drives..."))
-        for i in range(0, 10):
+        for i in range(0, Amiga.MAX_HARD_DRIVES):
             self.prepare_hard_drive(i)
 
     def prepare_hard_drive(self, index):
@@ -477,6 +491,10 @@ class LaunchHandler(object):
             Downloader.install_file_from_url(src, dest)
             src = dest
         elif src.startswith("hd://game/"):
+            self.unpack_game_hard_drive(index, src)
+            self.disable_save_states()
+            return
+        elif src.startswith("file_list:"):
             self.unpack_game_hard_drive(index, src)
             self.disable_save_states()
             return
@@ -590,11 +608,17 @@ class LaunchHandler(object):
 
     def unpack_game_hard_drive(self, drive_index, src):
         print("unpack_game_hard_drive", drive_index, src)
-        scheme, dummy, dummy, game_uuid, drive = src.split("/")
+        if src.startswith("file_list:"):
+            _scheme, dummy, drive = src.split("/")
+            file_list = json.loads(self.fsgs.config.get("file_list"))
+        else:
+            _scheme, dummy, dummy, game_uuid, drive = src.split("/")
+            file_list = self.get_file_list_for_game_uuid(game_uuid)
+
         drive_prefix = drive + "/"
         dir_name = "DH{0}".format(drive_index)
         dir_path = os.path.join(self.temp_dir, dir_name)
-        file_list = self.get_file_list_for_game_uuid(game_uuid)
+
         for file_entry in file_list:
             if self.stop_flag:
                 return
@@ -606,15 +630,16 @@ class LaunchHandler(object):
             # extract Amiga relative path and convert each path component
             # to host file name (where needed).
 
-            amiga_rel_path = name[len(drive_prefix) :]
-            print("amiga_rel_path", amiga_rel_path)
-            amiga_rel_parts = amiga_rel_path.split("/")
-            for i, part in enumerate(amiga_rel_parts):
-                # part can be blank if amiga_rel_parts is a directory
-                # (ending with /)
-                if part:
-                    amiga_rel_parts[i] = amiga_filename_to_host_filename(part)
-            amiga_rel_path = "/".join(amiga_rel_parts)
+            # amiga_rel_path = name[len(drive_prefix) :]
+            # print("amiga_rel_path", amiga_rel_path)
+            # amiga_rel_parts = amiga_rel_path.split("/")
+            # for i, part in enumerate(amiga_rel_parts):
+            #     # part can be blank if amiga_rel_parts is a directory
+            #     # (ending with /)
+            #     if part:
+            #         amiga_rel_parts[i] = amiga_filename_to_host_filename(part)
+            # amiga_rel_path = "/".join(amiga_rel_parts)
+            amiga_rel_path = amiga_path_to_host_path(name[len(drive_prefix) :])
 
             dst_file = os.path.join(dir_path, amiga_rel_path)
             print(repr(dst_file))
@@ -650,7 +675,7 @@ class LaunchHandler(object):
                 "\n",
             ]
             if "comment" in file_entry:
-                metadata[4] = self.encode_file_comment(file_entry["comment"])
+                metadata[4] = encode_file_comment(file_entry["comment"])
             with open(dst_file + ".uaem", "wb") as out_file:
                 out_file.write("".join(metadata).encode("UTF-8"))
 
@@ -658,22 +683,6 @@ class LaunchHandler(object):
             self.config["hard_drive_{0}".format(drive_index)] = dir_name
         else:
             self.config["hard_drive_{0}".format(drive_index)] = dir_path
-
-    @staticmethod
-    def encode_file_comment(comment):
-        result = []
-        # raw = 0
-        for c in comment:
-            # if c == '%':
-            #     result.append("%")
-            #     raw = 2
-            # elif raw:
-            #     result.append(c)
-            #     raw = raw - 1
-            # else:
-            #     result.append("%{0:x}".format(ord(c)))
-            result.append("%{0:x}".format(ord(c)))
-        return "".join(result)
 
     def unpack_hard_drive(self, i, src):
         src, archive = self.expand_default_path(
@@ -779,7 +788,7 @@ class LaunchHandler(object):
             self.write_startup_sequence(s_dir, hd_startup)
 
         if "xpkmaster.library" in self.hd_requirements:
-            self.copy_xpkmaster_files(dest_dir)
+            install_xpkmaster_files(dest_dir)
 
         system_configuration_file = os.path.join(
             devs_dir, "system-configuration"
@@ -788,198 +797,59 @@ class LaunchHandler(object):
             with open(system_configuration_file, "wb") as f:
                 f.write(system_configuration)
 
-    def copy_xpkmaster_files(self, dest_dir):
-        file_map = {
-            "Libs/xpkmaster.library": "5bd19f9503b59c5d19bfe1c6a6e3b6e7c0e9eae2",
-            "Libs/compressors/xpkCBR0.library": "a2a76c10cb06315e51990911fa050669cc89830d",
-            "Libs/compressors/xpkDLTA.library": "ca64f89919c2869cb6fd75346b9a21245a6d04a8",
-            "Libs/compressors/xpkDUKE.library": "8102d77ae0a3d64496436ee56a9c577c84b11992",
-            "Libs/compressors/xpkFAST.library": "4599430f3baa302635a85b26a7b70a4116dc5f09",
-            "Libs/compressors/xpkFRLE.library": "d0746429187ab38e886a47820203315f734e8d89",
-            "Libs/compressors/xpkHFMN.library": "f4a8dbe69e386d87d9ab8cbaf7fc3881b358fdb2",
-            "Libs/compressors/xpkHUFF.library": "f22d099b81d2d039c4fbb3fea47cc9700b01fecf",
-            "Libs/compressors/xpkIMPL.library": "0e00bc18aec757d86f9831131c2236a704c175db",
-            "Libs/compressors/xpkMASH.library": "1093133a17cb635c21c5532ae26ded83b6d359ce",
-            "Libs/compressors/xpkNONE.library": "46dca6e2ff2176f7a12c52ea992a7a49ae5ef269",
-            "Libs/compressors/xpkNUKE.library": "168bee97805be1f85b65f615e6931c4942caf4e4",
-            "Libs/compressors/xpkRAKE.library": "50cd2a19bee1ebd6b54b31c5b9461d5a81a2e910",
-            "Libs/compressors/xpkRLEN.library": "c81cf6d99de56faa6154cc81a9876517c2a8efc0",
-            "Libs/compressors/xpkSHRI.library": "fc96d367e7b3409074841c7f145ab6daef0a6a4d",
-            "Libs/compressors/xpkSMPL.library": "d140b4e87a2ff76cf94616d97fe7b127d128d973",
-            "Libs/compressors/xpkSQSH.library": "2191b616abd4b2fb34c89ae243c35feea2b71104",
-        }
-        for rel_path, sha1 in file_map.items():
-            # file_dest_dir = os.path.join(dest_dir, os.path.dirname(name))
-            # self.install_whdload_file(sha1, file_dest_dir, value)
-            self.install_whdload_file(sha1, dest_dir, rel_path)
-
     def copy_whdload_files(self, dest_dir, s_dir):
-        whdload_args = self.config.get("x_whdload_args", "").strip()
-        if not whdload_args:
-            return
-        print("[WHDLOAD] LaunchHandler.copy_whdload_files")
-        if self.config.get(Option.WHDLOAD_PRELOAD, "") != "0":
-            if " PRELOAD" not in whdload_args.upper():
-                print("[WHDLOAD] Adding PRELOAD argument")
-                whdload_args += " PRELOAD"
-
-        current_task.set_progress(gettext("Preparing WHDLoad..."))
-        # self.on_progress(gettext("Preparing WHDLoad..."))
-        print("[WHDLOAD] copy_whdload_files, dest_dir = ", dest_dir)
-
-        whdload_dir = ""
-        slave_original_name = whdload_args.split(" ", 1)[0]
-        slave = slave_original_name.lower()
-        found_slave = False
-        for dir_path, dir_names, file_names in os.walk(dest_dir):
-            for name in file_names:
-                if name.lower() == slave:
-                    print("[WHDLOAD] Found", name)
-                    found_slave = True
-                    whdload_dir = dir_path[len(dest_dir) :]
-                    whdload_dir = whdload_dir.replace("\\", "/")
-                    if not whdload_dir:
-                        # slave was found in root directory
-                        pass
-                    elif whdload_dir[0] == "/":
-                        whdload_dir = whdload_dir[1:]
-                    break
-            if found_slave:
-                break
-        if not found_slave:
-            raise Exception(
-                "Did not find the specified WHDLoad slave {}. "
-                "Check the WHDLoad arguments".format(repr(slave_original_name))
-            )
-        print("[WHDLOAD] Slave directory:", repr(whdload_dir))
-        print("[WHDLOAD] Slave arguments:", whdload_args)
-
-        self.copy_whdload_kickstart(
-            dest_dir,
-            "kick33180.A500",
-            ["11f9e62cf299f72184835b7b2a70a16333fc0d88"],
-        )
-        self.copy_whdload_kickstart(
-            dest_dir,
-            "kick34005.A500",
-            ["891e9a547772fe0c6c19b610baf8bc4ea7fcb785"],
-        )
-        self.copy_whdload_kickstart(
-            dest_dir,
-            "kick40068.A1200",
-            ["e21545723fe8374e91342617604f1b3d703094f1"],
-        )
-        self.copy_whdload_kickstart(
-            dest_dir,
-            "kick40068.A4000",
-            ["5fe04842d04a489720f0f4bb0e46948199406f49"],
-        )
-        whdload.create_prefs_file(
-            self.config, os.path.join(s_dir, "WHDLoad.prefs")
-        )
-
-        whdload_version = self.config["x_whdload_version"]
-        if not whdload_version:
-            whdload_version = whdload.default_whdload_version
-
-        for key, value in whdload.binaries[whdload_version].items():
-            self.install_whdload_file(key, dest_dir, value)
-        for key, value in whdload.support_files.items():
-            self.install_whdload_file(key, dest_dir, value)
-
-        if self.config.get("__netplay_game", ""):
-            print("[WHDLOAD] Key file is not copied in net play mode")
-        else:
-            key_file = os.path.join(
-                self.fsgs.amiga.get_base_dir(), "WHDLoad.key"
-            )
-            if os.path.exists(key_file):
-                print("found WHDLoad.key at ", key_file)
-                shutil.copy(key_file, os.path.join(s_dir, "WHDLoad.key"))
-            else:
-                print("[WHDLOAD] Key file not found in base dir (FS-UAE dir)")
-
-            # temporary feature, at least until it's possible to set more
-            # WHDLoad settings directly in the Launcher
-            prefs_file = os.path.join(
-                self.fsgs.amiga.get_base_dir(), "WHDLoad.prefs"
-            )
-            if os.path.exists(prefs_file):
-                print("found WHDLoad.prefs at ", prefs_file)
-                shutil.copy(prefs_file, os.path.join(s_dir, "WHDLoad.prefs"))
-            else:
-                print("[WHDLOAD] Key file not found in base dir (FS-UAE dir)")
-
-        if self.config.get("__netplay_game", ""):
-            print("[WHDLOAD] WHDLoad base dir is not copied in net play mode")
-        else:
-            src_dir = self.get_whdload_dir()
-            if src_dir and os.path.exists(src_dir):
-                print(
-                    "[WHDLOAD] WHDLoad base dir exists, copying resources..."
-                )
-                self.copy_folder_tree(src_dir, dest_dir)
-
-        # icon = self.config.get("__whdload_icon", "")
-        icon = ""
-        if icon:
-            shutil.copy(
-                os.path.expanduser("~/kgiconload"),
-                os.path.join(dest_dir, "C", "kgiconload"),
-            )
-            icon_path = os.path.join(dest_dir, icon)
-            print("[WHDLOAD] Create icon at ", icon_path)
-            create_slave_icon(icon_path, whdload_args)
-            self.write_startup_sequence(
-                s_dir,
-                'cd "{0}"\n'
-                "kgiconload {1}\n"
-                "uae-configuration SPC_QUIT 1\n".format(
-                    whdload_dir, os.path.basename(icon)
-                ),
-            )
-        else:
-            self.write_startup_sequence(
-                s_dir, whdload_sequence.format(whdload_dir, whdload_args)
-            )
+        # from fsgs.amiga.whdload import populate_whdload_system_volume
+        # populate_whdload_system_volume(dest_dir, s_dir, config=self.config)
+        pass
 
     def get_whdload_dir(self):
         path = self.config.get(Option.WHDLOAD_BOOT_DIR)
         return path
 
     def write_startup_sequence(self, s_dir, command):
-        # FIXME: semi-colon is used in WHDLoad CONFIG options...
-        command = "\n".join([x.strip() for x in command.split(";")])
-        startup_sequence = os.path.join(s_dir, "Startup-Sequence")
-        # if True:
-        if not os.path.exists(startup_sequence):
-            with open(startup_sequence, "wb") as f:
-                if "setpatch" in self.hd_requirements:
-                    if self.setpatch_installed:
-                        f.write(
-                            setpatch_found_sequence.replace(
-                                "\r\n", "\n"
-                            ).encode("ISO-8859-1")
-                        )
-                    else:
-                        f.write(
-                            setpatch_not_found_sequence.replace(
-                                "\r\n", "\n"
-                            ).encode("ISO-8859-1")
-                        )
-                f.write(command.replace("\r\n", "\n").encode("ISO-8859-1"))
+        from fsgs.amiga.startupsequence import write_startup_sequence
 
-        # The User-Startup file is useful if the user has provided a
-        # base WHDLoad directory with an existing startup-sequence
-        user_startup = os.path.join(s_dir, "User-Startup")
-        with open(user_startup, "ab") as f:
-            f.write(command.replace("\r\n", "\n").encode("ISO-8859-1"))
+        setpatch = None
+        if "setpatch" in self.hd_requirements:
+            if self.setpatch_installed:
+                setpatch = True
+            else:
+                setpatch = False
 
-    def install_whdload_file(self, sha1, dest_dir, rel_path):
-        abs_path = os.path.join(dest_dir, rel_path)
-        name = os.path.basename(rel_path)
-        self.on_progress(gettext("Downloading {0}...".format(name)))
-        Downloader.install_file_by_sha1(sha1, name, abs_path)
+        write_startup_sequence(s_dir, command, setpatch=setpatch)
+
+    #     # FIXME: semi-colon is used in WHDLoad CONFIG options...
+    #     command = "\n".join([x.strip() for x in command.split(";")])
+    #     startup_sequence = os.path.join(s_dir, "Startup-Sequence")
+    #     # if True:
+    #     if not os.path.exists(startup_sequence):
+    #         with open(startup_sequence, "wb") as f:
+    #             if "setpatch" in self.hd_requirements:
+    #                 if self.setpatch_installed:
+    #                     f.write(
+    #                         setpatch_found_sequence.replace(
+    #                             "\r\n", "\n"
+    #                         ).encode("ISO-8859-1")
+    #                     )
+    #                 else:
+    #                     f.write(
+    #                         setpatch_not_found_sequence.replace(
+    #                             "\r\n", "\n"
+    #                         ).encode("ISO-8859-1")
+    #                     )
+    #             f.write(command.replace("\r\n", "\n").encode("ISO-8859-1"))
+
+    #     # The User-Startup file is useful if the user has provided a
+    #     # base WHDLoad directory with an existing startup-sequence
+    #     user_startup = os.path.join(s_dir, "User-Startup")
+    #     with open(user_startup, "ab") as f:
+    #         f.write(command.replace("\r\n", "\n").encode("ISO-8859-1"))
+
+    # def install_whdload_file(self, sha1, dest_dir, rel_path):
+    #     abs_path = os.path.join(dest_dir, rel_path)
+    #     name = os.path.basename(rel_path)
+    #     self.on_progress(gettext("Downloading {0}...".format(name)))
+    #     Downloader.install_file_by_sha1(sha1, name, abs_path)
 
     def copy_setpatch(self, base_dir):
         dest = os.path.join(base_dir, "C")
@@ -1029,36 +899,38 @@ class LaunchHandler(object):
             f.write(setpatch_data)
         return True
 
-    def copy_whdload_kickstart(self, base_dir, name, checksums):
-        dest = os.path.join(base_dir, "Devs", "Kickstarts")
-        if not os.path.exists(dest):
-            os.makedirs(dest)
-        dest = os.path.join(dest, name)
-        for checksum in checksums:
-            # print("find kickstart with sha1", checksum)
-            path = self.fsgs.file.find_by_sha1(checksum)
-            if path:  # and os.path.exists(path):
-                print("found kickstart for", name, "at", path)
-                archive = Archive(path)
-                if archive.exists(path):
-                    with open(dest, "wb") as f:
-                        ROMManager.decrypt_archive_rom(archive, path, file=f)
-                    print(repr(dest))
-                    break
-                else:
-                    stream = self.fsgs.file.open(path)
-                    if stream is None:
-                        raise Exception("Cannot find kickstart " + repr(path))
-                    with open(dest, "wb") as f:
-                        f.write(stream.read())
+    # def copy_whdload_kickstart(self, base_dir, name, checksums):
+    #     dest = os.path.join(base_dir, "Devs", "Kickstarts")
+    #     if not os.path.exists(dest):
+    #         os.makedirs(dest)
+    #     dest = os.path.join(dest, name)
+    #     for checksum in checksums:
+    #         # print("find kickstart with sha1", checksum)
+    #         path = self.fsgs.file.find_by_sha1(checksum)
+    #         if path:  # and os.path.exists(path):
+    #             print("found kickstart for", name, "at", path)
+    #             archive = Archive(path)
+    #             if archive.exists(path):
+    #                 with open(dest, "wb") as f:
+    #                     ROMManager.decrypt_archive_rom(archive, path, file=f)
+    #                 print(repr(dest))
+    #                 break
+    #             else:
+    #                 stream = self.fsgs.file.open(path)
+    #                 if stream is None:
+    #                     raise Exception("Cannot find kickstart " + repr(path))
+    #                 with open(dest, "wb") as f:
+    #                     f.write(stream.read())
 
-        else:
-            print("did not find kickstart for", name)
+    #     else:
+    #         print("did not find kickstart for", name)
 
     def get_state_dir(self):
         return self.game_paths.get_state_dir()
 
     def init_changes(self):
+        if self.change_handler is None:
+            return
         print("LaunchHandler.init_changes")
         self.on_progress(gettext("Restoring changes..."))
         self.change_handler.init(
@@ -1066,6 +938,8 @@ class LaunchHandler(object):
         )
 
     def update_changes(self):
+        if self.change_handler is None:
+            return
         print("LaunchHandler.update_changes")
         self.on_progress(gettext("Saving changes..."))
         self.change_handler.update(self.get_state_dir())
@@ -1116,9 +990,9 @@ class LaunchHandler(object):
         name = GameNameUtil.create_cmpname(name)
         self.config["screenshots_output_prefix"] = name
 
-    def create_config(self):
-        config = ConfigWriter(self.config).create_fsuae_config()
-        return config
+    # def create_config(self):
+    #     config = ConfigWriter(self.config).create_fsuae_config()
+    #     return config
 
     def write_config(self, f):
         config_lines = self.create_config()
@@ -1161,27 +1035,47 @@ class LaunchHandler(object):
         archive = Archive(path)
         print(archive)
         print(archive.get_handler())
-        for name in archive.list_files():
+        for entry in archive.list_files():
             if self.stop_flag:
                 return
 
-            print(name)
-            n = name[len(path) + 2 :]
-            out_path = os.path.join(destination, n)
+            print(entry)
+            n = entry[len(path) + 2 :]
+            amiga_rel_path = amiga_path_to_host_path(n)
+
+            out_path = os.path.join(destination, amiga_rel_path)
             print("out path", out_path)
 
-            if name.endswith("/"):
+            if entry.endswith("/"):
                 os.makedirs(out_path)
             else:
                 if not os.path.exists(os.path.dirname(out_path)):
                     os.makedirs(os.path.dirname(out_path))
-                f = archive.open(name)
+                f = archive.open(entry)
                 with open(out_path, "wb") as out_f:
                     while True:
                         data = f.read(65536)
                         if not data:
                             break
                         out_f.write(data)
+                # FIXME: Extract real timestamps from archive
+                # FIXME: Real metadata from archive
+                # noinspection SpellCheckingInspection
+                metadata = [
+                    "----rwed",
+                    " ",
+                    "2000-01-01 00:00:00.00",
+                    " ",
+                    "",
+                    "\n",
+                ]
+                info = archive.getinfo(entry)
+                if info.comment:
+                    # print(info.comment)
+                    # raise Exception("gnit")
+                    metadata[4] = encode_file_comment(info.comment)
+                with open(out_path + ".uaem", "wb") as out_file:
+                    out_file.write("".join(metadata).encode("UTF-8"))
 
     def copy_folder_tree(self, source_path, dest_path, overwrite=False):
         for item in os.listdir(source_path):
@@ -1201,6 +1095,37 @@ class LaunchHandler(object):
                 if overwrite or not os.path.exists(dest_item_path):
                     print("copy", repr(item_path), "to", repr(dest_item_path))
                     shutil.copy(item_path, dest_item_path)
+
+
+def encode_file_comment(comment):
+    result = []
+    # raw = 0
+    if isinstance(comment, str):
+        comment = comment.encode("ISO-8859-1")
+    for c in comment:
+        # if c == '%':
+        #     result.append("%")
+        #     raw = 2
+        # elif raw:
+        #     result.append(c)
+        #     raw = raw - 1
+        # else:
+        #     result.append("%{0:x}".format(ord(c)))
+        result.append("%{0:x}".format(c))
+    return "".join(result)
+
+
+def amiga_path_to_host_path(amiga_rel_path):
+    # amiga_rel_path = amiga_path
+    print("amiga_rel_path", amiga_rel_path)
+    amiga_rel_parts = amiga_rel_path.split("/")
+    for i, part in enumerate(amiga_rel_parts):
+        # part can be blank if amiga_rel_parts is a directory
+        # (ending with /)
+        if part:
+            amiga_rel_parts[i] = amiga_filename_to_host_filename(part)
+    amiga_rel_path = "/".join(amiga_rel_parts)
+    return amiga_rel_path
 
 
 def amiga_filename_to_host_filename(amiga_name, ascii_only=False):
@@ -1277,168 +1202,3 @@ system_configuration = (
     b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00"
     b"\x00"
 )
-
-# noinspection SpellCheckingInspection
-workbench_disks_with_setpatch_39_6 = [
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 1 of 6)(Install).adf
-    "ba24b4172339b9198e4f724a6804d0c6eb5e394b",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 1 of 6)(Install)[a].adf
-    "c0781dece2486b54e15ce54a9b24dec6d9429421",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 1 of 6)(Install)[m drive definitions].adf
-    "7eeb2511ce34f8d3f09efe82b290bddeb899d237",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 1 of 6)(Install)[m2].adf
-    "7271d7db4472e10fbe4b266278e16f03336c14e3",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 1 of 6)(Install)[m3].adf
-    "92c2f33bb73e1bdee5d9a0dc0f5b09a15524f684",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 2 of 6)(Workbench)[!].adf
-    "e663c92a9c88fa38d02bbb299bea8ce70c56b417",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 2 of 6)(Workbench)[a2].adf
-    "65ab988e597b456ac40320f88a502fc016d590aa",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 2 of 6)(Workbench)[a].adf
-    "9496daa66e6b2f4ddde4fa2580bb3983a25e3cd2",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 2 of 6)(Workbench)[m2].adf
-    "cf2f24cf5f5065479476a38ec8f1016b1f746884",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 2 of 6)(Workbench)[m3].adf
-    "0e7f30223af254df0e2b91ea409f35c56d6164a6",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 2 of 6)(Workbench)[m4].adf
-    "08c4afde7a67e6aaee1f07af96e95e9bed897947",
-    # amiga-os-300-workbench.adf
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 2 of 6)(Workbench)[m5].adf
-    "4f4770caae5950eca4a2720e0424df052ced6a32",
-    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
-    # (Disk 2 of 6)(Workbench)[m].adf
-    "53086c3e44ec2d34e60ab65af71fb11941f4e0af",
-]
-
-setpatch_found_sequence = """
-C:SetPatch
-"""
-
-setpatch_not_found_sequence = """
-echo "Warning: SetPatch (39.6) not found."
-echo "Make sure a WB 3.0 disk is scanned in FS-UAE Launcher"
-echo "and the file will automatically be copied from the disk."
-EndIF
-"""
-
-whdload_sequence = """
-cd "{0}"
-WHDLoad {1}
-uae-configuration SPC_QUIT 1
-"""
-
-# noinspection SpellCheckingInspection
-base_icon = (
-    b"\xe3\x10\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x006\x00"
-    b"\x17\x00\x04\x00\x01\x00\x01\x00\x02\x1a\x98\x00\x00\x00\x00\x00"
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
-    b"\x00\x04\x00\x00\t\x01l\x00\x01\xa5\x9c\x80\x00\x00\x00\x80\x00"
-    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x10\x00\x00\x00"
-    b"\x00\x00\x006\x00\x16\x00\x02\x00\x08\xce \x03\x00\x00\x00\x00\x00"
-    b"\x00\x00\x00\x00\x00\x00\x04\x00\x00\x00\x00\x00\x00\x00\x0c\x00"
-    b"\x00\x00\x00\x00\x00\x00\x0c\x00\x00\x00\x00\x00\x00\x00\x0c\x00"
-    b"\x00\x00\x00\x00\x00\x00\x0c\x00\x00\x00\x00\x00\x00\x00\x0c\x00"
-    b"\x03\xf0\x0f\xff\xe0\x00\x0c\x00\x02\x080\x00\x1c\x00\x0c\x00\x02"
-    b"\x07\xc0\x00\x03\x80\x0c\x00\x02\x00\x00\x00\x00`\x0c\x00\x02\x00"
-    b"\x00\x00\x00\x10\x0c\x00\x02\x00\x00\x00\x00\x08\x0c\x00\x02\x07"
-    b"\xc0\x00\x1f\xc4\x0c\x00\x02\x08 \x00 2\x0c\x00\x03\xf0\x18\x00"
-    b"\xc0\r\x0c\x00\x00\x00\x06\x03\x00\x03\x0c\x00\x00\x00\x02\x02"
-    b"\x00\x00\x0c\x00\x00\x00\x02\x02\x00\x00\x0c\x00\x00\x00\x02\x02"
-    b"\x00\x00\x0c\x00\x00\x00\x03\xfe\x00\x00\x0c\x00\x00\x00\x00\x00"
-    b"\x00\x00\x0c\x00\x7f\xff\xff\xff\xff\xff\xfc\x00\xff\xff\xff\xff"
-    b"\xff\xff\xf8\x00\xd5UUUUUP\x00\xd5UUUUUP\x00\xd5UUUUUP\x00\xd5UUU"
-    b"UUP\x00\xd5UUUUUP\x00\xd4\x05P\x00\x15UP\x00\xd4\x05@\x00\x01UP"
-    b"\x00\xd4\x00\x00\x00\x00UP\x00\xd4\x00\x00\x00\x00\x15P\x00\xd4"
-    b"\x00\x00\x00\x00\x05P\x00\xd4\x00\x00\x00\x00\x05P\x00\xd4\x00"
-    b"\x00\x00\x00\x01P\x00\xd4\x05@\x00\x15AP\x00\xd4\x05@\x00\x15PP"
-    b"\x00\xd5UP\x00UTP\x00\xd5UT\x01UUP\x00\xd5UT\x01UUP\x00\xd5UT"
-    b"\x01UUP\x00\xd5UT\x01UUP\x00\xd5UUUUUP\x00\x80\x00\x00\x00\x00"
-    b"\x00\x00\x00"
-)
-
-
-def char(v):
-    return chr(v)
-
-
-def write_number(f, n):
-    f.write(char((n & 0xFF000000) >> 3))
-    f.write(char((n & 0x00FF0000) >> 2))
-    f.write(char((n & 0x0000FF00) >> 1))
-    f.write(char((n & 0x000000FF) >> 0))
-
-
-def write_string(f, s):
-    write_number(f, len(s) + 1)
-    f.write(s)
-    f.write("\0")
-
-
-def create_slave_icon(path, whdload_args):
-    default_tool = "DH0:/C/WHDLoad"
-    # FIXME: handle "" around slave name?
-    # args = whdload_args.split(" ")
-    tool_types = whdload_args.split(" ")
-    tool_types[0] = "SLAVE=" + tool_types[0]
-
-    with open(path, "wb") as f:
-        f.write(base_icon)
-        write_string(f, default_tool)
-        write_number(f, (len(tool_types) + 1) * 4)
-        for tool_type in tool_types:
-            write_string(f, tool_type)
-        f.close()
-
-
-def is_sha1(s):
-    if len(s) != 40:
-        return False
-    for c in s:
-        if c not in "0123456789abcdef":
-            return False
-    return True
-
-
-class TestCase(unittest.TestCase):
-
-    # noinspection SpellCheckingInspection
-    def test_convert_amiga_file_name(self):
-        result = amiga_filename_to_host_filename("pro.i*riska")
-        self.assertEquals(result, "pro.i%2ariska")
-
-    # noinspection SpellCheckingInspection
-    def test_convert_amiga_file_name_2(self):
-        result = amiga_filename_to_host_filename("mypony.uaem")
-        self.assertEquals(result, "mypony.uae%6d")
-
-    def test_convert_amiga_file_name_short(self):
-        result = amiga_filename_to_host_filename("t")
-        self.assertEquals(result, "t")
-
-    def test_convert_amiga_file_name_short_2(self):
-        result = amiga_filename_to_host_filename("t ")
-        self.assertEquals(result, "t%20")
-
-    def test_convert_amiga_file_name_lpt1(self):
-        result = amiga_filename_to_host_filename("LPT1")
-        self.assertEquals(result, "LP%541")
-
-    def test_convert_amiga_file_name_aux(self):
-        result = amiga_filename_to_host_filename("AUX")
-        self.assertEquals(result, "AU%58")
-
-
-if __name__ == "__main__":
-    unittest.main()

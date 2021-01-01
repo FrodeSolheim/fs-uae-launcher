@@ -1,8 +1,8 @@
 import os
 
+from fsbc.system import System
 from fsgs.drivers.gamedriver import GameDriver, Emulator
 from fsgs.input.mapper import InputMapper
-from fsbc.system import System
 
 
 class DolphinDriver(GameDriver):

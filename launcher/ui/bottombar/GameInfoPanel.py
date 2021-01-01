@@ -1,13 +1,13 @@
 import fsui
-from ...launcher_config import LauncherConfig
-from ...launcher_settings import LauncherSettings
-from ...game_paths import GamePaths
-from .BottomPanel import BottomPanel
-from ..Constants import Constants
-from ..ImageLoader import ImageLoader
-from .EditButton import EditButton
-from .WebButton import WebButton
-from ..skin import Skin
+from launcher.ui.bottombar.BottomPanel import BottomPanel
+from launcher.ui.bottombar.EditButton import EditButton
+from launcher.ui.bottombar.WebButton import WebButton
+from launcher.ui.Constants import Constants
+from launcher.ui.imageloader import ImageLoader
+from launcher.ui.skin import Skin
+from launcher.game_paths import GamePaths
+from launcher.launcher_settings import LauncherSettings
+from launcher.context import get_config
 
 BORDER = 20
 
@@ -105,7 +105,8 @@ class GameInfoPanel(BottomPanel):
         self.image_loader = ImageLoader()
         self.load_info()
         LauncherSettings.add_listener(self)
-        LauncherConfig.add_listener(self)
+        config = get_config(self)
+        config.add_listener(self)
 
         for key in [
             "database_url",
@@ -117,12 +118,14 @@ class GameInfoPanel(BottomPanel):
             "publisher",
             "developer",
         ]:
-            self.on_config(key, LauncherConfig.get(key))
+            self.on_config(key, config.get(key))
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        config = get_config(self)
+        config.remove_listener(self)
         LauncherSettings.remove_listener(self)
         self.image_loader.stop()
+        super().on_destroy()
 
     def load_info(self):
         handler = GamePaths.current()
@@ -230,7 +233,7 @@ class GameInfoPanel(BottomPanel):
         dc.set_text_color(color)
 
         if self.year:
-            twy, thy = dc.measure_text(self.year)
+            twy, _thy = dc.measure_text(self.year)
             dc.draw_text(self.year, text_x, y)
             twy += 10
         else:
@@ -244,7 +247,7 @@ class GameInfoPanel(BottomPanel):
         y = 80
         h = 30
 
-        tw, th = dc.measure_text(self.sub_title)
+        _tw, th = dc.measure_text(self.sub_title)
         if self.cover_on_right:
             dc.draw_rectangle(
                 text_x,

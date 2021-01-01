@@ -11,7 +11,11 @@ from typing import Dict, Tuple
 import fsboot
 from fsbc.signal import Signal
 from fsbc.util import Version
+from fspy.decorators import deprecated
 from launcher.version import VERSION
+
+
+# from fspy.exception import set_automatic_error_reports
 
 
 class Settings(object):
@@ -59,6 +63,9 @@ class Settings(object):
         self.values[key] = value
         Signal("setting").notify(key, value)
 
+    def items(self):
+        return self.values.items()
+
     def __getitem__(self, key: str):
         return self.get(key)
 
@@ -66,6 +73,14 @@ class Settings(object):
         self.set(key, value)
 
     def load(self, force=False):
+        verbose = self.verbose
+        self.verbose = False
+        try:
+            self._load(force)
+        finally:
+            self.verbose = verbose
+
+    def _load(self, force):
         # print("[SETTINGS] Load", self)
         if (not self._loaded) or force:
             try:
@@ -101,6 +116,9 @@ class SettingsProvider:
     customized loading/saving."""
 
     def load(self, settings, verbose=True):
+        print("-" * 79)
+        print("Loading settings")
+        print("-" * 79)
         cp = ConfigParser(interpolation=None)
         cp.optionxform = str
         path = settings.path
@@ -110,14 +128,13 @@ class SettingsProvider:
             if verbose:
                 print("[SETTINGS] No settings path specified")
             path = os.path.join(fsboot.base_dir(), "Data", "Settings.ini")
-            if verbose:
-                print("[SETTINGS] Using default", path)
+            # if verbose:
+            print("[SETTINGS] Using default", path)
         if os.path.exists(path):
-            if verbose:
-                print("[SETTINGS] Loading from", path)
+            print("[SETTINGS] Loading from", path)
         else:
-            if verbose:
-                print("[SETTINGS] File", path, "does not exist")
+            # if verbose:
+            print("[SETTINGS] File", path, "does not exist")
         # Write current settings path back to Settings instance
 
         values = {}
@@ -126,8 +143,8 @@ class SettingsProvider:
         try:
             cp.read([path], encoding="UTF-8")
         except Exception as e:
-            if verbose:
-                print("[SETTINGS] Error loading", repr(e))
+            # if verbose:
+            print("[SETTINGS] Error loading", repr(e))
             # return
         else:
             try:
@@ -141,6 +158,12 @@ class SettingsProvider:
                             print("[SETTINGS] Ignoring", key)
                         continue
                     value = cp.get("settings", key)
+                    if key.upper() == key:
+                        # Keep all upercase keys as is - for environment
+                        # variables specified in advanced settings.
+                        pass
+                    else:
+                        key = key.lower()
                     values[key] = value
 
         for arg in sys.argv:
@@ -155,6 +178,12 @@ class SettingsProvider:
             value = values[key]
             key = self.rewrite_key(key)
             settings.set(key, value)
+
+        # Disabled by default to due privacy, but we want to enable it as soon
+        # as possible if the user has enabled it.
+        # AUTOMATIC_ERROR_REPORTS = "automatic_error_reports"
+        # if settings.get(AUTOMATIC_ERROR_REPORTS):
+        #     set_automatic_error_reports(True)
 
         try:
             version = cp.get("launcher", "version")
@@ -217,24 +246,36 @@ class SettingsProvider:
         shutil.move(partial_path, settings.path)
 
 
+def get_setting(key: str) -> str:
+    return Settings.instance().get(key)
+
+
+@deprecated
 def get(key: str) -> str:
     return Settings.instance().get(key)
 
 
+@deprecated
 def set(key: str, value: str) -> None:
     Settings.instance().set(key, value)
 
 
+@deprecated
 def load() -> None:
     Settings.instance().load()
 
 
+@deprecated
 def save() -> None:
     Settings.instance().save()
 
 
+@deprecated
 def unload() -> None:
-    raise NotImplementedError("settings.unload")
+    for key in Settings.instance().values.keys():
+        Settings.instance().set(key, "")
+    Settings.instance().values.clear()
+    Settings.instance()._loaded = False
 
 
 def set_path(path: str) -> None:

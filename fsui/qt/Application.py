@@ -1,5 +1,5 @@
-from fsui.qt.qt import init_qt
 from fsbc.application import Application as FSBCApplication
+from fsui.qt.qt import init_qt
 
 
 class Application(FSBCApplication):

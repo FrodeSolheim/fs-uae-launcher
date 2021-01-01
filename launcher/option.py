@@ -1,6 +1,6 @@
 # Automatically generated - do not edit by hand
 
-from fsgs.option import Option as BaseOption
+from fsgs.options.option import Option as BaseOption
 
 
 # noinspection PyClassHasNoInit
@@ -108,12 +108,12 @@ options = {
     },
     Option.ARCADE_FULLSCREEN: {
         "default": "1",
-        "description": N_("Arcade Fullscreen"),
+        "description": N_("Start Arcade in fullscreen mode"),
         "type": "boolean",
     },
     Option.ARCADE_INITIAL_FAVORITES: {
         "default": "0",
-        "description": N_("Arcade starts with favorites filter"),
+        "description": N_("Start Arcade with favorites filter on"),
         "type": "Boolean",
     },
     Option.ARCADE_SEARCH: {
@@ -165,6 +165,16 @@ options = {
     Option.AUTO_QUIT: {
         "default": "1",
         "description": ("Auto-Quit"),
+        "type": "Boolean",
+    },
+    Option.AUTOMATIC_ERROR_REPORTING: {
+        "default": "0",
+        "description": ("Automatic error reports"),
+        "type": "Boolean",
+    },
+    Option.AUTOMATIC_ERROR_REPORTING_INCLUDE_USER_ID: {
+        "default": "0",
+        "description": ("Include uuser ID in automatic error reports"),
         "type": "Boolean",
     },
     Option.AUTOMATIC_INPUT_GRAB: {
@@ -268,6 +278,11 @@ options = {
     Option.CHEATS: {
         "default": "0",
         "description": ("Cheats"),
+        "type": "Boolean",
+    },
+    Option.CHECK_FOR_UPDATES: {
+        "default": "1",
+        "description": ("Automatic version check"),
         "type": "Boolean",
     },
     Option.CHIP_MEMORY: {
@@ -475,6 +490,11 @@ options = {
         "description": ("Write emulator PID file"),
         "type": "",
     },
+    Option.ERROR_REPORT_USER_ID: {
+        "default": "",
+        "description": ("Error report user ID"),
+        "type": "",
+    },
     Option.EXPECT_VERSION: {
         "default": "",
         "description": ("Expect Specific FS-UAE Version"),
@@ -662,7 +682,7 @@ options = {
     },
     Option.GOVERNOR_WARNING: {
         "default": "1",
-        "description": N_("Warn when CPU governor is not 'performance'"),
+        "description": N_("Warn when not using performance CPU governor"),
         "type": "Boolean",
     },
     Option.GRAPHICS_CARD: {
@@ -830,6 +850,23 @@ options = {
             ("fusion-dark", "Fusion Dark"),
             ("fusion-windows10", "Fusion Windows 10"),
         ],
+    },
+    Option.LAUNCHER_TITLEBAR_HEIGHT: {
+        "default": "40",
+        "description": ("Launcher titlebar height"),
+        "type": "Integer",
+        "min": 20,
+        "max": 80,
+    },
+    Option.LAUNCHER_TITLEBAR_UPPERCASE: {
+        "default": "1",
+        "description": ("Launcher titlebar uppercase"),
+        "type": "Boolean",
+    },
+    Option.LAUNCHER_WINDOW_TITLE: {
+        "default": "FS-UAE Launcher",
+        "description": ("Launcher window title"),
+        "type": "String",
     },
     Option.LOAD_STATE: {
         "default": "",
@@ -1270,6 +1307,11 @@ options = {
         "description": ("Game Gear Port 1"),
         "type": "Choice",
         "values": [("builtin", N_("Built-in")),],
+    },
+    Option.SHADER: {
+        "default": "0",
+        "description": ("OpenGL pixel shader"),
+        "type": "",
     },
     Option.SLOW_MEMORY: {
         "default": "",
@@ -1765,15 +1807,20 @@ options = {
     },
     Option.WHDLOAD_PRELOAD: {
         "default": "1",
-        "description": N_("Override WHDLoad preload option"),
-        "type": "Boolean",
+        "description": N_("WHDLoad preload"),
+        "type": "Choice",
+        "values": [
+            ("auto", "Slave decides"),
+            ("1", "Always preload"),
+            ("0", "Never preload"),
+        ],
     },
     Option.WHDLOAD_QUIT_KEY: {
         "default": "0",
-        "description": N_("Override WHDLoad quit key"),
+        "description": N_("WHDLoad quit key"),
         "type": "Choice",
         "values": [
-            ("0", "No override"),
+            ("0", "Slave decides"),
             ("45", "Escape"),
             ("50", "F1"),
             ("51", "F2"),
@@ -1789,10 +1836,39 @@ options = {
     },
     Option.WHDLOAD_SPLASH_DELAY: {
         "default": "200",
-        "description": N_("Override WHDLoad splash delay"),
+        "description": N_("WHDLoad splash delay"),
         "type": "integer",
         "min": -1,
         "max": 500,
+    },
+    Option.WHDLOAD_VERSION: {
+        "default": "18.5",
+        "description": ("WHDLoad version"),
+        "type": "Choice",
+        "values": [
+            ("Custom", N_("Custom")),
+            ("18.5", "18.5"),
+            ("18.4", "18.4"),
+            ("18.3", "18.3"),
+            ("18.2", "18.2"),
+            ("18.1", "18.1"),
+            ("18.0", "18.0"),
+            ("17.2", "17.2"),
+            ("17.1", "17.1"),
+            ("17.0", "17.0"),
+            ("16.9", "16.9"),
+            ("16.8", "16.8"),
+            ("16.7", "16.7"),
+            ("16.6", "16.6"),
+            ("16.5", "16.5"),
+            ("16.4", "16.4"),
+            ("16.3", "16.3"),
+            ("16.2", "16.2"),
+            ("16.1", "16.1"),
+            ("16.0", "16.0"),
+            ("13.0", "13.0"),
+            ("10.0", "10.0"),
+        ],
     },
     Option.WINDOW_BORDER: {
         "default": "",
@@ -1808,6 +1884,11 @@ options = {
         "default": "0",
         "description": ("Window is minimized on startup"),
         "type": "Boolean",
+    },
+    Option.WORKSPACE_WINDOW_TITLE: {
+        "default": "Launcher Workspace",
+        "description": ("Workspace window title"),
+        "type": "String",
     },
     Option.ZOOM: {
         "default": "692x540",
@@ -1833,7 +1914,7 @@ options = {
     },
     Option.ZORRO_III_MEMORY: {
         "default": "",
-        "description": N_("Zorro III Fast Memory"),
+        "description": ("Zorro III RAM"),
         "type": "Choice",
         "values": [
             ("0", "0 MB"),

@@ -1,10 +1,10 @@
-import fsui
 import fsbc.system
-from fsbc.util import memoize
-from .Constants import Constants
-from ..option import Option
-from ..launcher_settings import LauncherSettings
 import fsboot
+from fspy.decorators import memoize
+import fsui
+from .Constants import Constants
+from ..launcher_settings import LauncherSettings
+from ..option import Option
 
 try:
     import workspace
@@ -15,8 +15,10 @@ except ImportError:
 LEVEL = 0xEB
 # LEVEL = 0xe4
 
+from fsui.theme import Theme
 
-class LauncherTheme(object):
+
+class LauncherTheme(Theme):
     __instance = None
 
     @classmethod
@@ -26,6 +28,7 @@ class LauncherTheme(object):
         return cls.__instance
 
     def __init__(self):
+        super().__init__()
         from fsui.qt import QPalette
 
         palette = QPalette()
@@ -54,7 +57,6 @@ class LauncherTheme(object):
 
 
 class Skin(object):
-
     EXTRA_GROUP_MARGIN = 0
     _fws = None
 

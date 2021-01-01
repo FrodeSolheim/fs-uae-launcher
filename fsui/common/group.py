@@ -1,8 +1,16 @@
 import weakref
 
+from fspy.decorators import deprecated
+from fsui.qt import QObject
 
-class Group(object):
+
+# Inheriting from QObject in order to be able to have signals associated
+# with subclasses of Group.
+
+
+class Group(QObject):
     def __init__(self, parent):
+        super().__init__()
         self._parent = weakref.ref(parent)
         if hasattr(parent, "_window"):
             # noinspection PyProtectedMember
@@ -12,24 +20,25 @@ class Group(object):
         # FIXME
         # parent.destroyed.connect(self.on_destroy)
 
-    @property
+    # @property
     def parent(self):
         return self._parent()
 
     # def show_or_hide(self, show):
     #     self.__visible = show
 
+    @deprecated
     def is_visible(self):
-        return self.__visible
+        return self.visible()
 
     def on_destroy(self):
         pass
 
     def get_window(self):
-        return self.parent.get_window()
+        return self.parent().get_window()
 
     def get_container(self):
-        return self.parent.get_container()
+        return self.parent().get_container()
 
     def get_min_width(self):
         return self.layout.get_min_width()
@@ -50,3 +59,6 @@ class Group(object):
         self.position = position
         if self.layout:
             self.layout.set_position_and_size(position, size)
+
+    def visible(self):
+        return self.__visible

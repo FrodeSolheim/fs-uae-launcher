@@ -8,7 +8,7 @@ import requests
 from fsbc.application import app
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.network import fs_uae_url_from_sha1_and_name
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.plugins.pluginmanager import PluginManager
 
 

@@ -2,10 +2,11 @@ import os
 import sys
 import threading
 import traceback
+
 from .signal import Signal
 
 main_thread_id = threading.current_thread().ident
-already_run = False
+excepthook_installed = False
 
 
 def is_running_in_debugger():
@@ -13,22 +14,26 @@ def is_running_in_debugger():
 
 
 def enable_exception_handler(force=False):
-    global already_run
-    if already_run:
-        return
-    already_run = True
+    # # print("Not installing sys.excepthook")
+    # # return
 
-    if not force and is_running_in_debugger():
-        print(
-            "running in debugger, not enabling exception handler " "after all."
-        )
-        _let_thread_exceptions_be_unhandled()
-        return False
+    # global excepthook_installed
+    # if excepthook_installed:
+    #     return
+    # excepthook_installed = True
 
-    # print("enabling except hook")
-    sys.excepthook = _handle_exception
-    _enable_thread_exception_handler()
-    return True
+    # if not force and is_running_in_debugger():
+    #     print("Running in debugger, not installing sys.excepthook")
+    #     _let_thread_exceptions_be_unhandled()
+    #     return False
+
+    # print("Installing new sys.excepthook")
+    # sys.excepthook = _handle_exception
+    # _enable_thread_exception_handler()
+    # return True
+    import fspy.exception
+
+    fspy.exception.install_excepthook()
 
 
 def _let_thread_exceptions_be_unhandled():
@@ -70,12 +75,19 @@ def _enable_thread_exception_handler():
 
 def _handle_exception(exc_type, exc_value, exc_traceback):
     if issubclass(exc_type, KeyboardInterrupt):
-        print("handle_exception: KeyboardInterrupt caught")
+        print("KeyboardInterrupt caught by fsbc.debug._handle_exception")
         sys.exit(1)
 
     # FIXME: PYTHON3
     tb = traceback.extract_tb(exc_traceback)
     # print(exc_type, exc_value, tb)
+
+    # FIXME: Handle the case where tb is empty
+    # Traceback (most recent call last):
+    #   File "fs-uae-launcher/fsbc/debug.py", line 79, in _handle_exception
+    #     filename, line, function, dummy = tb.pop()
+    # IndexError: pop from empty list
+
     filename, line, function, dummy = tb.pop()
     try:
         filename = filename.decode(sys.getfilesystemencoding())

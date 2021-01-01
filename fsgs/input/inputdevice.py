@@ -1,11 +1,12 @@
-import os
 import io
+import os
 from configparser import ConfigParser
+
+from fsbc.resources import Resources
 from fsbc.system import windows, linux, macosx
-from fsbc.util import memoize
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.context import fsgs
-from fsbc.resources import Resources
+from fspy.decorators import memoize
 
 
 class InputDeviceNotFoundException(Exception):
@@ -35,7 +36,6 @@ class InputDeviceInfo(object):
 
 
 class InputDevice(object):
-
     MissingPlatformSupportException = MissingPlatformSupportException
 
     def __init__(

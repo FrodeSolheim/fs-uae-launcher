@@ -1,7 +1,6 @@
 import fsui
+from launcher.context import get_config
 from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
-from ...launcher_config import LauncherConfig
-from ...i18n import gettext
 from ..HelpButton import HelpButton
 
 
@@ -22,20 +21,22 @@ class WHDLoadGroup(fsui.Panel):
         self.set_config_handlers()
 
     def initialize_from_config(self):
-        self.on_config("x_whdload_args", LauncherConfig.get("x_whdload_args"))
+        self.on_config(
+            "x_whdload_args", get_config(self).get("x_whdload_args")
+        )
 
     def set_config_handlers(self):
         self.text_field.on_changed = self.on_text_changed
-        LauncherConfig.add_listener(self)
+        get_config(self).add_listener(self)
 
     def on_destroy(self):
-        print("on_destroy")
-        LauncherConfig.remove_listener(self)
+        get_config(self).remove_listener(self)
+        super().on_destroy()
 
     def on_config(self, key, value):
         if key == "x_whdload_args":
-            if value != self.text_field.get_text():
+            if value != self.text_field.text():
                 self.text_field.set_text(value)
 
     def on_text_changed(self):
-        LauncherConfig.set("x_whdload_args", self.text_field.get_text())
+        get_config(self).set("x_whdload_args", self.text_field.text())

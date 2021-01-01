@@ -1,7 +1,0 @@
-Description: "Adult-Themed Games"
-Default: 0
-Example: 1
-Type: boolean
-
-Alternatively, you can include tag:adult when searching in the game list
-to specifically search for adult-themed games.

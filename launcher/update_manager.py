@@ -3,13 +3,13 @@ import traceback
 
 import requests
 
-import launcher.version
 from fsbc.application import Application
 from fsbc.system import windows, macosx, linux
 from fsbc.util import compare_versions, unused
 from fstd.desktop import open_url_in_browser
-from .launcher_settings import LauncherSettings
-from .launcher_signal import LauncherSignal
+from launcher.launcher_settings import LauncherSettings
+from launcher.launcher_signal import LauncherSignal
+from launcher.version import VERSION
 
 
 class UpdateManager:
@@ -42,16 +42,14 @@ class UpdateManager:
             platform = "linux"
         else:
             platform = "other"
-        url = "https://fs-uae.net/{0}/latest-{1}".format(
-            cls.series(), platform
-        )
+        url = f"https://fs-uae.net/{cls.series()}/latest-{platform}"
         r = requests.get(url)
         r.raise_for_status()
         version_str = r.text.strip()
-        print("latest version available: ", version_str)
-        print("current version: ", launcher.version.VERSION)
-        result = compare_versions(version_str, launcher.version.VERSION)
-        print("update check result: ", result)
+        print("Latest version available:", version_str)
+        print("Current version:", VERSION)
+        result = compare_versions(version_str, VERSION)
+        print("Update check result: ", result)
         if result > 0 and version_str != "9.9.9":
             web_url = "https://fs-uae.net/{0}/download/".format(cls.series())
             LauncherSignal.broadcast("update_available", version_str, web_url)

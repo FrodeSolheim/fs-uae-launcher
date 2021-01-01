@@ -1,16 +1,17 @@
 import fsui
 from launcher.i18n import gettext
-from launcher.ui.config.WHDLoadGroup import WHDLoadGroup
 from launcher.ui.config.HardDriveGroup import HardDriveGroup
+from launcher.ui.config.WHDLoadGroup import WHDLoadGroup
 from launcher.ui.skin import Skin
+from launcher.ui.config.configpanel import ConfigPanel
 
 
-class HardDrivesPanel(fsui.Panel):
+class HardDrivesPanel(ConfigPanel):
     def __init__(self, parent):
-        fsui.Panel.__init__(self, parent)
-        Skin.set_background_color(self)
-        self.layout = fsui.VerticalLayout()
+        super().__init__(parent)
+        # Skin.set_background_color(self)
 
+        # self.layout = fsui.VerticalLayout()
         heading_label = fsui.HeadingLabel(self, gettext("Hard Drives"))
         self.layout.add(heading_label, margin=10)
         self.layout.add_spacer(0)

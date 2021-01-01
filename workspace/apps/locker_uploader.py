@@ -50,10 +50,10 @@ class LockerUploaderWindow(fsui.DialogWindow):
 
         self.stop_button = fsui.Button(self, gettext("Stop"))
         self.stop_button.activated.connect(self.on_stop_activated)
-        self.stop_button.disable()
+        self.stop_button.set_enabled(False)
         hori_layout.add(self.stop_button, margin_left=10)
 
-        if self.window.theme.has_close_buttons:
+        if self.window().theme.has_close_buttons:
             self.close_button = CloseButton(self)
             hori_layout.add(self.close_button, margin_left=10)
         else:
@@ -75,9 +75,9 @@ class LockerUploaderWindow(fsui.DialogWindow):
 
     def on_upload_activated(self):
         if self.close_button:
-            self.close_button.disable()
-        self.upload_button.disable()
-        self.stop_button.enable()
+            self.close_button.set_enabled(False)
+        self.upload_button.set_enabled(False)
+        self.stop_button.set_enabled()
         self.task = LockerUploaderTask()
         self.task.progressed.connect(self.on_progress)
         self.task.failed.connect(self.on_failure)
@@ -88,7 +88,7 @@ class LockerUploaderWindow(fsui.DialogWindow):
     def on_stop_activated(self):
         self.task.stop()
         if self.close_button:
-            self.stop_button.disable()
+            self.stop_button.set_enabled(False)
 
     def on_stopped(self):
         self.icon_header.subtitle_label.set_text(gettext("Stopped by user"))
@@ -103,9 +103,9 @@ class LockerUploaderWindow(fsui.DialogWindow):
 
     def after_task_has_stopped(self):
         if self.close_button:
-            self.close_button.enable()
-        self.upload_button.enable()
-        self.stop_button.disable()
+            self.close_button.set_enabled()
+        self.upload_button.set_enabled()
+        self.stop_button.set_enabled(False)
 
     def on_progress(self, message):
         if not isinstance(message, str):

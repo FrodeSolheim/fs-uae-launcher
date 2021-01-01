@@ -9,13 +9,13 @@ from launcher.settings.settings_page import SettingsPage
 class AdvancedSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
-        icon = fsui.Icon("settings", "pkg:workspace")
-        title = gettext("Advanced")
-        subtitle = gettext(
-            "Specify global options and settings which does "
-            "not have UI controls"
-        )
-        self.add_header(icon, title, subtitle)
+        # icon = fsui.Icon("settings", "pkg:workspace")
+        # title = gettext("Advanced")
+        # subtitle = gettext(
+        #     "Specify global options and settings which does "
+        #     "not have UI controls"
+        # )
+        # self.add_header(icon, title, subtitle)
 
         label = fsui.MultiLineLabel(
             self,
@@ -45,6 +45,8 @@ class AdvancedSettingsPage(SettingsPage):
         self.text_area.set_text(self.get_initial_text())
         self.layout.add(self.text_area, fill=True, expand=True)
         self.text_area.changed.connect(self.update_settings)
+
+        self.set_min_height(600)
 
     def update_settings(self):
         text = self.text_area.get_text()
@@ -85,14 +87,14 @@ class AdvancedSettingsPage(SettingsPage):
                     "option.\n".format(key)
                 )
             value = app.settings[key]
-            if LauncherConfig.get(key):
-                text += (
-                    "\n# {0} is overridden by current "
-                    "configuration\n".format(key)
-                )
+            # if LauncherConfig.get(key):
+            #     text += (
+            #         "\n# {0} is overridden by current "
+            #         "configuration\n".format(key)
+            #     )
             text += "{0} = {1}\n".format(key, value)
-            if LauncherConfig.get(key):
-                text += "\n"
+            # if LauncherConfig.get(key):
+            #     text += "\n"
             if key in LauncherConfig.config_keys:
                 text += "\n"
         return text

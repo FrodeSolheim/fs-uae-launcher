@@ -2,16 +2,16 @@ import time
 
 import requests
 
-from launcher.filescanner import FileScanner
-from fsgs.download import Downloader
-from fsgs.FSGSDirectories import FSGSDirectories
 import fsui
-from fsui.extra.iconheader import IconHeader
 from fsbc.application import app
 from fsbc.signal import Signal
 from fsbc.task import Task
 from fsgs.Database import Database
+from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs.download import Downloader
 from fsgs.ogd.context import SynchronizerContext
+from fsui.extra.iconheader import IconHeader
+from launcher.filescanner import FileScanner
 from launcher.gamescanner import GameScanner
 from ..i18n import gettext
 
@@ -103,7 +103,7 @@ class DownloadGameWindow(fsui.Window):
         self.close()
 
     def on_scan_files(self):
-        self.scan_button.disable()
+        self.scan_button.set_enabled(False)
 
         self.task = RescanTask()
         self.task.progressed.connect(self.on_progress)
@@ -120,7 +120,7 @@ class DownloadGameWindow(fsui.Window):
 
     def on_failure(self, message):
         fsui.show_error(message, parent=self.get_window())
-        self.scan_button.enable()
+        self.scan_button.set_enabled()
         self.status_label.set_text("")
 
     def on_success(self):
@@ -134,7 +134,7 @@ class DownloadGameWindow(fsui.Window):
                 title=gettext("Missing Files"),
                 parent=self.get_window(),
             )
-            self.scan_button.enable()
+            self.scan_button.set_enabled()
             self.status_label.set_text("")
         else:
             self.close()
@@ -220,8 +220,8 @@ class DownloadTermsDialog(fsui.LegacyDialog):
         self.accept_button.activated.connect(self.on_accept_button)
         hori_layout.add(self.accept_button, margin_left=10)
 
-        self.accept_button.disable()
-        self.reject_button.disable()
+        self.accept_button.set_enabled(False)
+        self.reject_button.set_enabled(False)
 
         self.task = DownloadTermsTask(self.download_terms)
         # self.task.progressed.connect(self.on_progress)
@@ -244,8 +244,8 @@ class DownloadTermsDialog(fsui.LegacyDialog):
 
     def on_success(self):
         self.label.set_text(self.task.data)
-        self.reject_button.enable()
-        self.accept_button.enable()
+        self.reject_button.set_enabled()
+        self.accept_button.set_enabled()
         self.accept_button.focus()
 
 

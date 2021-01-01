@@ -1,15 +1,13 @@
+import itertools
 import os
 import re
 import unicodedata
 import unittest
-import itertools
-
 
 QUOTED_TERMS_RE = re.compile('["].*?["]')
 
 
 class GameNameUtil(object):
-
     TOSEC = "TOSEC"
     NOINTRO = "NOINTRO"
 
@@ -594,22 +592,22 @@ class TestGameNameUtil(unittest.TestCase):
     def test_already_commaed_name(self):
         full_name = "Name (A, B, C).adf"
         name, variant = GameNameUtil.extract_names(full_name)
-        self.assertEquals(name, "Name")
-        self.assertEquals(variant, "A, B, C")
+        self.assertEqual(name, "Name")
+        self.assertEqual(variant, "A, B, C")
 
     def test_variant_with_slash(self):
         full_name = "Tron (8/9).dummy"
         name, variant = GameNameUtil.extract_names(full_name)
         print("name:", name)
         print("variant:", variant)
-        self.assertEquals(name, "Tron")
-        self.assertEquals(variant, "8/9")
+        self.assertEqual(name, "Tron")
+        self.assertEqual(variant, "8/9")
 
     def test_name_without_variant(self):
         full_name = "Name.adf"
         name, variant = GameNameUtil.extract_names(full_name)
-        self.assertEquals(name, "Name")
-        self.assertEquals(variant, "")
+        self.assertEqual(name, "Name")
+        self.assertEqual(variant, "")
 
     def test_tosec_name(self):
         full_name = (
@@ -617,42 +615,42 @@ class TestGameNameUtil(unittest.TestCase):
             "[t +4 Goonies].adf"
         )
         name, variant = GameNameUtil.extract_names(full_name)
-        self.assertEquals(name, "Lotus Turbo Challenge 2")
-        self.assertEquals(variant, "1991, Gremlin, cr CPY, t +4 Goonies")
+        self.assertEqual(name, "Lotus Turbo Challenge 2")
+        self.assertEqual(variant, "1991, Gremlin, cr CPY, t +4 Goonies")
 
     def test_tosec_name_with_comma_in_publisher(self):
         full_name = "Zero Gravity (1997)(Hollemans, M.)(AGA).adf"
         name, variant = GameNameUtil.extract_names(full_name)
-        self.assertEquals(name, "Zero Gravity")
-        self.assertEquals(variant, "1997, M. Hollemans, AGA")
+        self.assertEqual(name, "Zero Gravity")
+        self.assertEqual(variant, "1997, M. Hollemans, AGA")
 
     def test_tosec_name_with_comma_in_publisher_2(self):
         full_name = "Ziriax (1990)(Software Business, The)[3001].dummy"
         name, variant = GameNameUtil.extract_names(full_name)
-        self.assertEquals(name, "Ziriax")
-        self.assertEquals(variant, "1990, The Software Business, 3001")
+        self.assertEqual(name, "Ziriax")
+        self.assertEqual(variant, "1990, The Software Business, 3001")
 
     def test_hitchhikers_guide_to_the_galaxy(self):
         full_name = "Leather Goddesses of Phobos r59 (1986)(Infocom).adf"
         name, variant = GameNameUtil.extract_names(full_name)
-        self.assertEquals(name, "Leather Goddesses of Phobos")
-        self.assertEquals(variant, "r59, 1986, Infocom")
+        self.assertEqual(name, "Leather Goddesses of Phobos")
+        self.assertEqual(variant, "r59, 1986, Infocom")
 
     def test_leather_goddesses_of_phobos(self):
         full_name = (
             "Hitchhiker's Guide to the Galaxy, The r58 " "(1986)(Infocom).adf"
         )
         name, variant = GameNameUtil.extract_names(full_name)
-        self.assertEquals(name, "Hitchhiker's Guide to the Galaxy, The")
-        self.assertEquals(variant, "r58, 1986, Infocom")
+        self.assertEqual(name, "Hitchhiker's Guide to the Galaxy, The")
+        self.assertEqual(variant, "r58, 1986, Infocom")
 
     def test_deep_core(self):
         full_name = "Deep Core (Europe)(v1.00).dummy"
         name, variant = GameNameUtil.extract_names_from_file_name(
             full_name, style=GameNameUtil.NOINTRO
         )
-        self.assertEquals(name, "Deep Core")
-        self.assertEquals(variant, "Europe, v1.00")
+        self.assertEqual(name, "Deep Core")
+        self.assertEqual(variant, "Europe, v1.00")
 
     def test_extract_index_terms_kings_quest(self):
         self.assertEqual(

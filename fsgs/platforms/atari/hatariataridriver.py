@@ -31,12 +31,11 @@ TODO:
 
 """
 import os
-import traceback
 
 from fsbc.system import macosx
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.knownfiles import KnownFile
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platforms import PLATFORM_ATARI
 
 ST_PLATFORM_ID = "st"

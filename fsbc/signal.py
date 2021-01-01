@@ -1,8 +1,7 @@
 import threading
 import traceback
-from weakref import ref
 from typing import Dict, List, Any, Tuple
-
+from weakref import ref
 
 main_thread_id = threading.current_thread().ident
 _signal_id = 0
@@ -58,7 +57,6 @@ class Listener(object):
 
 
 class Signal:
-
     # FIXME: should have type Dict[str, Callable]
     # or # type_xxx: Dict[str, Function]
     signal_listeners = {}  # type: Dict[str, Any]
@@ -90,15 +88,20 @@ class Signal:
 
     def disconnect(self, function):
         listener = Listener(self.signal, function)
+        disconnected = False
         with self.lock:
             listeners = Signal.signal_listeners[self.signal]
-            # print("removing listener", listener)
+            # print("\nRemoving listener", listener)
             for i, v in enumerate(listeners):
+                # print(" -", v.function, listener.function)
+                # print("    ", v.instance, listener.instance)
                 if (
                     v.function == listener.function
                     and v.instance == listener.instance
                 ):
+                    # print("Deleting listener!")
                     del listeners[i]
+                    disconnected = True
                     break
 
             if len(Signal.signal_listeners[self.signal]) == 0:
@@ -107,6 +110,9 @@ class Signal:
             # Signal.listeners[listener].remove(self.signal)
             # if len(Signal.listeners[listener]) == 0:
             #     del Signal.listeners[listener]
+
+        if not disconnected:
+            print("WARNING: Did not disconnect listener", function)
 
     # @classmethod
     # def disconnect_all(cls, listener):

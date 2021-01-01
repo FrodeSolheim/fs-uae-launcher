@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
+import hashlib
 import os
 import sys
-import hashlib
 from io import BytesIO
 
 # noinspection PyUnresolvedReferences
 from typing import List, Dict
-
 
 B_SIZE = 512
 B_COUNT = 880 * 2
@@ -85,7 +84,6 @@ class FileInfo(object):
 
 
 class ADFFile(object):
-
     FFS_FLAG = 1
     INTL_ONLY_FLAG = 2
     DIRC_AND_INTL_FLAG = 4

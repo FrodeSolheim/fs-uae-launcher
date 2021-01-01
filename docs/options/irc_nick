@@ -1,4 +1,0 @@
-Description: "IRC nickname"
-Default:
-Example: johndoe
-Type: string

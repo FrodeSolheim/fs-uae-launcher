@@ -1,7 +1,7 @@
 import fsui
 from launcher.ui.Constants import Constants
-from launcher.ui.skin import Skin
 from launcher.ui.TabPanel import TabPanel
+from launcher.ui.skin import Skin
 
 
 class TabButton(fsui.Panel):
@@ -49,7 +49,9 @@ class TabButton(fsui.Panel):
             hover=self.hover,
             button_style=(self.type == self.TYPE_BUTTON),
         )
+
         # TabPanel.draw_border(self, dc)
+
         size = self.size()
         x = (
             self.left_padding

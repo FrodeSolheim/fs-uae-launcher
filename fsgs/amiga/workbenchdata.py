@@ -4,12 +4,12 @@ disks. The data is used when creating a Workbench environment on demand.
 Some files are removed because they differ between Cloanto WB floppies and
 original WB floppies.
 """
+import hashlib
 import os
 import sys
-import hashlib
 import traceback
-from fsgs.amiga.adf import ADFFile
 
+from fsgs.amiga.adf import ADFFile
 
 wb_133_startup_sequence = """\
 c:SetPatch >NIL: ;patch system functions
@@ -34,7 +34,6 @@ path ram: c: sys:utilities sys:system s: sys:prefs add ;set path for Workbench
 LoadWB delay  ;wait for inhibit to end before continuing
 endcli >NIL:
 """
-
 
 wb_204_startup_sequence = """\
 c:setpatch >NIL:
@@ -100,7 +99,6 @@ LoadWB
 
 endcli >NIL:
 """
-
 
 wb_300_startup_sequence = """\
 ; $VER: startup-sequence 39.9 (9.8.92)
@@ -672,6 +670,50 @@ wb_300_floppies = [
     "0e7f30223af254df0e2b91ea409f35c56d6164a6",
     # amiga-os-300-workbench.adf
     "4f4770caae5950eca4a2720e0424df052ced6a32",
+]
+
+# noinspection SpellCheckingInspection
+workbench_disks_with_setpatch_39_6 = [
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 1 of 6)(Install).adf
+    "ba24b4172339b9198e4f724a6804d0c6eb5e394b",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 1 of 6)(Install)[a].adf
+    "c0781dece2486b54e15ce54a9b24dec6d9429421",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 1 of 6)(Install)[m drive definitions].adf
+    "7eeb2511ce34f8d3f09efe82b290bddeb899d237",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 1 of 6)(Install)[m2].adf
+    "7271d7db4472e10fbe4b266278e16f03336c14e3",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 1 of 6)(Install)[m3].adf
+    "92c2f33bb73e1bdee5d9a0dc0f5b09a15524f684",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 2 of 6)(Workbench)[!].adf
+    "e663c92a9c88fa38d02bbb299bea8ce70c56b417",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 2 of 6)(Workbench)[a2].adf
+    "65ab988e597b456ac40320f88a502fc016d590aa",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 2 of 6)(Workbench)[a].adf
+    "9496daa66e6b2f4ddde4fa2580bb3983a25e3cd2",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 2 of 6)(Workbench)[m2].adf
+    "cf2f24cf5f5065479476a38ec8f1016b1f746884",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 2 of 6)(Workbench)[m3].adf
+    "0e7f30223af254df0e2b91ea409f35c56d6164a6",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 2 of 6)(Workbench)[m4].adf
+    "08c4afde7a67e6aaee1f07af96e95e9bed897947",
+    # amiga-os-300-workbench.adf
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 2 of 6)(Workbench)[m5].adf
+    "4f4770caae5950eca4a2720e0424df052ced6a32",
+    # Workbench v3.0 rev 39.29 (1992)(Commodore)(A1200-A4000)(M10)
+    # (Disk 2 of 6)(Workbench)[m].adf
+    "53086c3e44ec2d34e60ab65af71fb11941f4e0af",
 ]
 
 

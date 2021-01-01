@@ -99,6 +99,7 @@ class VideoSyncSettingsPage(SettingsPage):
 
     def on_destroy(self):
         LauncherSettings.remove_listener(self)
+        super().on_destroy()
 
     def on_setting(self, key, _):
         if key == "video_sync":
@@ -115,8 +116,8 @@ class VideoSyncSettingsPage(SettingsPage):
     #
     # def on_either_checkbox_changed(self):
     #     value = ""
-    #     if self.vblank_checkbox.is_checked():
-    #         if self.full_sync_checkbox.is_checked():
+    #     if self.vblank_checkbox.checked():
+    #         if self.full_sync_checkbox.checked():
     #             value = "auto"
     #         else:
     #             value = "vblank"
@@ -127,12 +128,12 @@ class VideoSyncSettingsPage(SettingsPage):
         vblank = value in ["1", "auto", "full", "vblank"]
         full = value in ["1", "auto", "full"]
 
-        # self.full_sync_checkbox.enable(vblank)
-        self.sync_method_group.label.enable(vblank)
-        self.sync_method_group.widget.enable(vblank)
-        self.sync_method_group.help_button.enable(vblank)
-        self.sync_method_label.enable(vblank)
-        # self.smooth_label.enable(vblank)
-        self.low_latency_group.label.enable(full)
-        self.low_latency_group.widget.enable(full)
-        self.low_latency_group.help_button.enable(full)
+        # self.full_sync_checkbox.set_enabled(vblank)
+        self.sync_method_group.label.set_enabled(vblank)
+        self.sync_method_group.widget.set_enabled(vblank)
+        self.sync_method_group.help_button.set_enabled(vblank)
+        self.sync_method_label.set_enabled(vblank)
+        # self.smooth_label.set_enabled(vblank)
+        self.low_latency_group.label.set_enabled(full)
+        self.low_latency_group.widget.set_enabled(full)
+        self.low_latency_group.help_button.set_enabled(full)

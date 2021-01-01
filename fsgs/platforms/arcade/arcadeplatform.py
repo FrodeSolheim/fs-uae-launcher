@@ -1,5 +1,5 @@
 from fsbc import settings
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.arcade.mamearcadedriver import MameArcadeDriver
 from fsgs.platforms.loader import SimpleLoader

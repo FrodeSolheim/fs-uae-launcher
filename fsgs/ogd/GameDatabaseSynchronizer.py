@@ -2,10 +2,7 @@ import json
 import os
 import time
 import xml.etree.cElementTree as ElementTree
-from gzip import GzipFile
-from io import StringIO
 from urllib.parse import quote_plus
-from urllib.request import Request
 
 import requests
 
@@ -229,7 +226,7 @@ class GameDatabaseSynchronizer(object):
                 k += 4
                 game_data = data[k : k + game_data_size]
                 k += game_data_size
-                # print("game data len:", len(game_data))
+                # print(game_uuid, "game data len:", len(game_data))
                 if len(game_data) > 0:
                     self.database.add_game(game_sync_id, game_uuid, game_data)
                 else:

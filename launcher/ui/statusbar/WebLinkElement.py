@@ -1,8 +1,9 @@
 from fsbc.desktop import open_url_in_browser
-from launcher.launcher_config import LauncherConfig
 from fsui import Image, HorizontalLayout, Menu
-from ...i18n import gettext
-from .StatusElement import StatusElement
+from launcher.launcher_config import LauncherConfig
+from launcher.ui.statusbar.StatusElement import StatusElement
+from launcher.i18n import gettext
+from launcher.context import get_config
 
 
 url_descriptions = [
@@ -35,25 +36,29 @@ class WebLinkElement(StatusElement):
 
         self.text = gettext("Web Links")
 
-        LauncherConfig.add_listener(self)
-        self.on_config("protection", LauncherConfig.get("protection"))
+        config = get_config(self)
+        config.add_listener(self)
+        self.on_config("protection", config.get("protection"))
 
         self.have = set()
         for key in url_keys:
-            self.on_config(key, LauncherConfig.get(key))
+            self.on_config(key, config.get(key))
 
     def on_left_down(self):
+        config = get_config(self)
         if len(self.have) == 0:
             return
         menu = Menu()
         for key, description in url_descriptions:
-            value = LauncherConfig.get(key, "")
+            value = config.get(key, "")
             if value:
                 menu.add_item(description, create_open_url_function(value))
         self.popup_menu(menu)
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        config = get_config(self)
+        config.remove_listener(self)
+        super().on_destroy()
 
     def on_config(self, key, value):
         if key in url_keys:

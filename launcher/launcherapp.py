@@ -7,19 +7,18 @@ from collections import defaultdict
 from configparser import ConfigParser
 
 import fsui
-from fsbc.application import app
 from fsbc.settings import Settings
 from fsbc.task import Task
-from fsbc.util import unused, is_uuid
-from fsgs.archive import Archive
+from fsbc.util import is_uuid
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.filedatabase import FileDatabase
 from fsgs.amiga import whdload
-from fsgs.amiga.amiga import Amiga
 from fsgs.application import ApplicationMixin
-from fsgs.context import fsgs
+from fsgs.archive import Archive
+from fsgs.context import fsgs, FSGameSystemContext
 from fsgs.download import Downloader
+from fsgs.filedatabase import FileDatabase
 from fsgs.input.enumeratehelper import EnumerateHelper
+from fsgs.options.constants2 import RUNNING__
 from fsgs.platform import PlatformHandler, PLATFORM_IDS
 from fsgs.util.archiveutil import ArchiveUtil
 from launcher.i18n import gettext
@@ -27,12 +26,9 @@ from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.startup_scan import StartupScan
-from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS
-from launcher.ui.config.HardDriveGroup import HardDriveGroup
 from launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
 from launcher.ui.launch import LaunchDialog
 from launcher.ui.launcherwindow import LauncherWindow
-from launcher.version import VERSION
 
 
 class StringDict(defaultdict):
@@ -46,10 +42,11 @@ class LauncherApp(ApplicationMixin, fsui.Application):
     def __init__(self):
         fsui.Application.__init__(self, "fs-uae-launcher")
         self.set_icon(fsui.Icon("fs-uae-launcher", "pkg:launcher"))
+        # FIXME: Remove
         self.fsgs = fsgs
-        # Try to auto-detect game when launching with an archive
 
     def on_idle(self):
+        # FIXME: Remove
         self.fsgs.signal.process()
 
     @classmethod
@@ -68,7 +65,6 @@ class LauncherApp(ApplicationMixin, fsui.Application):
     def start(cls):
         cls.pre_start()
         print("FSUAELauncherApplication.start")
-
         if cls.run_config_or_game():
             return False
         # window = LauncherWindow(fsgs)
@@ -78,6 +74,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
 
     @classmethod
     def run_config_or_game(cls):
+        gscontext = FSGameSystemContext()
         config_path = None
         archive_path = None
         floppy_image_paths = []
@@ -114,8 +111,8 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                 print("[STARTUP] Config path does not exist", file=sys.stderr)
                 return True
             LauncherConfig.load_file(config_path)
-            fsgs.config.add_from_argv()
-            return cls.run_config_directly()
+            gscontext.config.add_from_argv()
+            return cls.run_config_directly(gscontext=gscontext)
 
         if archive_path:
             print("[STARTUP] Archive path given:", archive_path)
@@ -143,7 +140,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                         "[STARTUP] Try auto-detecting variant, uuid =",
                         archive_uuid,
                     )
-                    if fsgs.load_game_variant(archive_uuid):
+                    if gscontext.load_game_variant(archive_uuid):
                         print("[STARTUP] Auto-detected variant", archive_uuid)
                         print("[STARTUP] Adding archive files to file index")
                         for archive_file in archive.list_files():
@@ -154,22 +151,24 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                             FileDatabase.add_static_file(
                                 archive_file, size=size, sha1=sha1
                             )
-                        fsgs.config.add_from_argv()
-                        fsgs.config.set("__config_name", archive_name)
-                        LauncherConfig.post_load_values(fsgs.config)
-                        return cls.run_config_directly()
+                        gscontext.config.add_from_argv()
+                        gscontext.config.set("__config_name", archive_name)
+                        LauncherConfig.post_load_values(gscontext.config)
+                        return cls.run_config_directly(gscontext=gscontext)
 
                 values = whdload.generate_config_for_archive(archive_path)
                 values["hard_drive_0"] = archive_path
-                values.update(fsgs.config.config_from_argv())
+                values.update(gscontext.config.config_from_argv())
                 # archive_name, archive_ext = os.path.splitext(archive_name)
                 values["__config_name"] = archive_name
-                return cls.run_config_directly_with_values(values)
+                return cls.run_config_directly_with_values(
+                    values, gscontext=gscontext
+                )
 
         if floppy_image_paths:
             enum_paths = tuple(enumerate(floppy_image_paths))
             values = {}
-            values.update(fsgs.config.config_from_argv())
+            values.update(gscontext.config.config_from_argv())
             max_drives = int(values.get("floppy_drive_count", "4"))
             values.update(
                 {
@@ -182,12 +181,14 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             )
             # FIXME: Generate a better config name for save dir?
             values["__config_name"] = "Default"
-            return cls.run_config_directly_with_values(values)
+            return cls.run_config_directly_with_values(
+                values, gscontext=gscontext
+            )
 
         if cdrom_image_paths:
             enum_paths = tuple(enumerate(cdrom_image_paths))
             values = {"amiga_model": "CD32"}
-            values.update(fsgs.config.config_from_argv())
+            values.update(gscontext.config.config_from_argv())
             max_drives = int(values.get("cdrom_drive_count", "1"))
             values.update(
                 {
@@ -200,34 +201,36 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             )
             # FIXME: Generate a better config name for save dir?
             values["__config_name"] = "Default"
-            return cls.run_config_directly_with_values(values)
+            return cls.run_config_directly_with_values(
+                values, gscontext=gscontext
+            )
 
         if config_uuid:
             print("[STARTUP] Config uuid given:", config_uuid)
             variant_uuid = config_uuid
-            # values = fsgs.game.set_from_variant_uuid(variant_uuid)
-            if fsgs.load_game_variant(variant_uuid):
+            # values = gscontext.game.set_from_variant_uuid(variant_uuid)
+            if gscontext.load_game_variant(variant_uuid):
                 print("[STARTUP] Loaded variant")
             else:
                 print("[STARTUP] Could not load variant, try to load game")
                 game_uuid = config_uuid
-                variant_uuid = fsgs.find_preferred_game_variant(game_uuid)
+                variant_uuid = gscontext.find_preferred_game_variant(game_uuid)
                 print("[STARTUP] Preferred variant:", variant_uuid)
-                fsgs.load_game_variant(variant_uuid)
-            fsgs.config.add_from_argv()
-            LauncherConfig.post_load_values(fsgs.config)
-            return cls.run_config_directly()
+                gscontext.load_game_variant(variant_uuid)
+            gscontext.config.add_from_argv()
+            LauncherConfig.post_load_values(gscontext.config)
+            return cls.run_config_directly(gscontext=gscontext)
 
     @classmethod
-    def run_config_directly(cls):
-        cls.start_game()
+    def run_config_directly(cls, *, gscontext):
+        cls.start_game(gscontext=gscontext)
         return True
 
     @classmethod
-    def run_config_directly_with_values(cls, values):
+    def run_config_directly_with_values(cls, values, *, gscontext):
         LauncherConfig.load(values)
         LauncherConfig.post_load_values(values)
-        return cls.run_config_directly()
+        return cls.run_config_directly(gscontext=gscontext)
 
     _plugins_loaded = False
 
@@ -279,12 +282,14 @@ class LauncherApp(ApplicationMixin, fsui.Application):
     def load_settings(cls):
         if cls.settings_loaded:
             return
+        print("-" * 79)
+        print("LauncherApp.load_settings")
+        print("-" * 79)
         cls.settings_loaded = True
 
         settings = Settings.instance()
         settings.load()
         path = settings.path
-        # path = app.get_settings_path()
         print("loading last config from " + repr(path))
         if not os.path.exists(path):
             print("settings file does not exist")
@@ -297,16 +302,17 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             return
 
         for key in LauncherSettings.old_keys:
-            if app.settings.get(key):
+            if settings.get(key):
                 print("[SETTINGS] Removing old key", key)
-                app.settings.set(key, "")
+                settings.set(key, "")
 
         if fsgs.config.add_from_argv():
             print("[CONFIG] Configuration specified via command line")
             # Prevent the launcher from loading the last used game
-            LauncherSettings.set("parent_uuid", "")
-        elif LauncherSettings.get("config_path"):
-            if LauncherConfig.load_file(LauncherSettings.get("config_path")):
+            settings.set("parent_uuid", "")
+        elif settings.get("config_path"):
+            # FIXME:
+            if LauncherConfig.load_file(settings.get("config_path")):
                 print("[CONFIG] Loaded last configuration file")
             else:
                 print("[CONFIG] Failed to load last configuration file")
@@ -334,7 +340,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         if new_config:
             LauncherConfig.load_default_config(platform=new_config_platform)
             # Prevent the launcher from loading the last used game
-            LauncherSettings.set("parent_uuid", "")
+            Settings.instance().set("parent_uuid", "")
 
     @staticmethod
     def save_settings():
@@ -344,39 +350,39 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                 # keys starting with __ are never saved
                 continue
             extra["config/" + str(key)] = str(value)
-        app.settings.save(extra=extra)
+        Settings.instance().save(extra=extra)
 
     @classmethod
-    def start_game(cls):
+    def start_game(cls, dialog=True, *, gscontext):
         from .netplay.netplay import Netplay
 
         if Netplay.current() and Netplay.current().game_channel:
             Netplay.current().start_netplay_game()
         else:
-            cls.start_local_game()
+            cls.start_local_game(dialog=dialog, gscontext=gscontext)
 
     @classmethod
-    def start_local_game(cls):
+    def start_local_game(cls, dialog=True, *, gscontext):
+        config = gscontext.config
         print("START LOCAL GAME")
-        print("x_missing_files", LauncherConfig.get("x_missing_files"))
+        print("x_missing_files", config.get("x_missing_files"))
 
-        if LauncherConfig.get("x_missing_files"):
-            if LauncherConfig.get("download_file"):
-                if LauncherConfig.get(
+        if config.get("x_missing_files"):
+            if config.get("download_file"):
+                if config.get(
                     "download_terms"
                 ) and not Downloader.check_terms_accepted(
-                    LauncherConfig.get("download_file"),
-                    LauncherConfig.get("download_terms"),
+                    config.get("download_file"), config.get("download_terms"),
                 ):
                     from .ui.launcherwindow import LauncherWindow
 
-                    dialog = DownloadTermsDialog(
+                    terms_dialog = DownloadTermsDialog(
                         LauncherWindow.current(), fsgs
                     )
-                    if not dialog.show_modal():
+                    if not terms_dialog.show_modal():
                         return
 
-            elif LauncherConfig.get("download_page"):
+            elif config.get("download_page"):
                 from .ui.launcherwindow import LauncherWindow
 
                 # fsui.show_error(_("This game must be downloaded first."))
@@ -391,21 +397,24 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                 )
                 return
 
-        # platform_id = LauncherConfig.get(Option.PLATFORM).lower()
+        # platform_id = config.get(Option.PLATFORM).lower()
         # if platform_id in AMIGA_PLATFORMS:
         #     cls.start_local_game_amiga()
         # else:
         #     cls.start_local_game_other()
-        cls.start_local_game_other()
+        cls.start_local_game_other(dialog=dialog, gscontext=gscontext)
 
     @classmethod
-    def start_local_game_other(cls):
+    def start_local_game_other(cls, dialog=True, *, gscontext):
+        config = gscontext.config
         if True:
-            platform_id = LauncherConfig.get(Option.PLATFORM).lower()
+            platform_id = config.get(Option.PLATFORM).lower()
+            if not platform_id:
+                platform_id = "amiga"
             platform_handler = PlatformHandler.create(platform_id)
         else:
-            database_name = LauncherConfig.get("__database")
-            variant_uuid = LauncherConfig.get("variant_uuid")
+            database_name = config.get("__database")
+            variant_uuid = config.get("variant_uuid")
             assert variant_uuid
             fsgs.game.set_from_variant_uuid(database_name, variant_uuid)
             platform_handler = PlatformHandler.create(fsgs.game.platform.id)
@@ -414,11 +423,26 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         task = RunnerTask(runner)
         from .ui.launcherwindow import LauncherWindow
 
-        dialog = LaunchDialog(
-            LauncherWindow.current(), gettext("Launching Game"), task
-        )
-        dialog.show()
-        LauncherConfig.set("__running", "1")
+        print("DIALOG", dialog)
+
+        if dialog:
+            _dialog = LaunchDialog(
+                LauncherWindow.current(),
+                gettext("Launching Game"),
+                task,
+                gscontext=gscontext,
+            )
+            _dialog.show()
+        else:
+            # FIXME: Dialog is still needed. Fix!
+            _dialog = LaunchDialog(
+                LauncherWindow.current(),
+                gettext("Launching Game"),
+                task,
+                gscontext=gscontext,
+            )
+
+        config.set(RUNNING__, "1")
         task.start()
         # dialog.show_modal()
         # dialog.close()

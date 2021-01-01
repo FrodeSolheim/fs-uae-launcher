@@ -8,7 +8,7 @@ import fsboot
 from fsbc.paths import Paths
 from fsbc.settings import Settings
 from fsbc.system import windows, macosx
-from fsbc.util import memoize
+from fspy.decorators import memoize
 
 logger = logging.getLogger("APP")
 

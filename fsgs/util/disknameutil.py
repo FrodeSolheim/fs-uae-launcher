@@ -1,10 +1,7 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
 import os
 import re
 import unittest
+
 from fsgs.util.gamenameutil import GameNameUtil
 
 
@@ -193,7 +190,7 @@ class TestGameDiskUtil(unittest.TestCase):
         disks = self.find_disks(
             "Batman - The Movie (1989)(Ocean)(PAL)(Disk 1 of 2)[cr QTX].adf"
         )
-        self.assertEquals(
+        self.assertEqual(
             disks,
             [
                 "Batman - The Movie (1989)(Ocean)(PAL)(Disk 1 of 2)[cr QTX].adf",
@@ -232,7 +229,6 @@ Batman - The Movie (1989)(Ocean)(PAL)[cr][a][one disk version].adf
 Batman - The Movie (1989)(Ocean)(PAL)[cr][one disk version].adf
 Batman - The Movie (1991)(Hit Squad, The)(PAL).adf
 """
-
 
 if __name__ == "__main__":
     unittest.main()

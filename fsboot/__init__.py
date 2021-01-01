@@ -1,9 +1,9 @@
-import os
 import ctypes
 import functools
 import getpass
-import subprocess
 import logging
+import os
+import subprocess
 import sys
 import time
 
@@ -266,10 +266,10 @@ def base_dir():
             return path
 
     else:
-        logger.debug("Checking FS_UAE_BASE_DIR")
-        path = os.environ.get("FS_UAE_BASE_DIR", "")
+        logger.debug("Checking fsuae_path_base_dir")
+        path = os.environ.get("fsuae_path_base_dir", "")
         if path:
-            logger.debug("Base directory via FS_UAE_BASE_DIR: %s", repr(path))
+            logger.debug("Base directory via fsuae_path_base_dir: %s", repr(path))
             return path
 
     path = custom_path("base-dir")
@@ -294,3 +294,45 @@ def development():
     result = os.path.exists(os.path.join(executable_dir(), "setup.py"))
     logger.info("Development mode: %s", result)
     return result
+
+
+def is_frozen():
+    return getattr(sys, "frozen", False)
+
+
+def setup_frozen_python_libs():
+    libs_dirs = [fsboot.executable_dir()]
+    if sys.platform == "darwin":
+        # Add .app/Contents/Python to libs_dirs
+        libs_dir = os.path.abspath(
+            os.path.join(fsboot.executable_dir(), "..", "Python")
+        )
+        print(libs_dir, os.path.exists(libs_dir))
+        if os.path.exists(libs_dir):
+            libs_dirs.append(libs_dir)
+    libs_dir = os.path.abspath(
+        os.path.join(fsboot.executable_dir(), "..", "..", "Python")
+    )
+    print(libs_dir, os.path.exists(libs_dir))
+    if os.path.exists(libs_dir):
+        libs_dirs.append(libs_dir)
+    else:
+        libs_dir = os.path.abspath(
+            os.path.join(
+                fsboot.executable_dir(), "..", "..", "..", "..", "..", "Python"
+            )
+        )
+        print(libs_dir, os.path.exists(libs_dir))
+        if os.path.exists(libs_dir):
+            libs_dirs.append(libs_dir)
+    for libs_dir in libs_dirs:
+        for item in os.listdir(libs_dir):
+            if item.endswith(".zip"):
+                path = os.path.join(libs_dir, item)
+                print("adding", path)
+                sys.path.insert(0, path)
+
+
+def setup_python_path():
+    if is_frozen():
+        setup_frozen_python_libs()

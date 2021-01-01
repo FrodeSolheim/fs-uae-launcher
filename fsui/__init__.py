@@ -3,43 +3,45 @@ from fsui.common.group import Group
 from fsui.common.layout import Layout, VerticalLayout, HorizontalLayout
 from fsui.common.spacer import Spacer
 from fsui.qt import *
-from fsui.qt.adapter import Adapter
 from fsui.qt.Application import Application
-from fsui.qt.Button import Button
-from fsui.qt.CheckBox import CheckBox, HeadingCheckBox
-from fsui.qt.Color import Color
-from fsui.qt.Choice import Choice, ItemChoice
-from fsui.qt.ComboBox import ComboBox
+from fsui.qt.adapter import Adapter
+from fsui.qt.button import Button
+from fsui.qt.checkbox import CheckBox, HeadingCheckBox
+from fsui.qt.choice import Choice, ItemChoice
+from fsui.qt.color import Color
+from fsui.qt.combobox import ComboBox
 from fsui.qt.dialog import Dialog
 from fsui.qt.dialogbuttons import DialogButtons
 from fsui.qt.dialogwindow import DialogWindow
-from fsui.qt.DirDialog import DirDialog
-from fsui.qt.DrawingContext import DrawingContext, Font
-from fsui.qt.FileDialog import (
+from fsui.qt.dirdialog import DirDialog
+from fsui.qt.drawingcontext import DrawingContext
+from fsui.qt.filedialog import (
     FileDialog,
     pick_directory,
     pick_file,
     pick_files,
 )
-from fsui.qt.HeadingLabel import HeadingLabel
-from fsui.qt.Icon import Icon
-from fsui.qt.Image import Image
-from fsui.qt.ImageButton import ImageButton
-from fsui.qt.ImageView import ImageView
+from fsui.qt.font import Font
+from fsui.qt.headinglabel import HeadingLabel
+from fsui.qt.icon import Icon
+from fsui.qt.image import Image
+from fsui.qt.imagebutton import ImageButton
+from fsui.qt.imageview import ImageView
 from fsui.qt.label import Label, PlainLabel, URLLabel, MultiLineLabel
 from fsui.qt.legacydialog import LegacyDialog
-from fsui.qt.ListView import ListView
-from fsui.qt.Menu import Menu, PopupMenu
-from fsui.qt.Panel import Panel
-from fsui.qt.scrollarea import VerticalScrollArea
-from fsui.qt.SpinCtrl import SpinCtrl
-from fsui.qt.System import System
+from fsui.qt.listview import ListView
+from fsui.qt.menu import Menu, PopupMenu
+from fsui.qt.mouse import get_mouse_position
+from fsui.qt.panel import Panel
+from fsui.qt.scrollarea import VerticalScrollArea, ScrollArea
+from fsui.qt.signal import Signal
+from fsui.qt.spinctrl import SpinCtrl
+from fsui.qt.system import System
+from fsui.qt.textarea import TextArea
+from fsui.qt.textfield import TextField, PasswordField
 from fsui.qt.timer import IntervalTimer
-from fsui.qt.TextArea import TextArea
-from fsui.qt.TextField import TextField, PasswordField
-from fsui.qt.VerticalItemView import VerticalItemView
+from fsui.qt.verticalitemview import VerticalItemView
 from fsui.qt.window import Window
-
 
 default_window_parent = []
 default_window_center = []
@@ -103,3 +105,31 @@ def current_window_instance(cls):
     if not hasattr(cls, "_window_instance"):
         return None
     return cls._window_instance
+
+
+# def get_parent(widget):
+#     try:
+#         return widget._cached_parent
+#     except AttributeError:
+#         widget._cached_parent = widget.parent()
+#         return widget._cached_parent
+
+
+# def get_window(widget):
+#     try:
+#         return widget._cached_window
+#     except AttributeError:
+#         widget._cached_window = widget.window
+#         return widget._cached_window
+
+
+# from fsui.theme import Theme
+# default_theme = Theme()
+
+
+# def get_theme(widget):
+#     try:
+#         return get_window(widget).theme
+#     except AttributeError:
+#         return default_theme
+from fsui.context import get_parent, get_theme, get_window

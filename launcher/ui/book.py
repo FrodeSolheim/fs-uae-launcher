@@ -1,10 +1,10 @@
-import fsui
+from fsui import Panel, VerticalLayout
 
 
-class Book(fsui.Panel):
+class Book(Panel):
     def __init__(self, parent):
-        fsui.Panel.__init__(self, parent)
-        self.layout = fsui.VerticalLayout()
+        super().__init__(parent)
+        self.layout = VerticalLayout()
 
         self.page_titles = []
         self.pages = []
@@ -15,6 +15,7 @@ class Book(fsui.Panel):
         self.pages.append(function)
 
     def set_page(self, page):
+        print("Book.set_page", page)
         try:
             index = page + 0
         except TypeError:
@@ -37,4 +38,15 @@ class Book(fsui.Panel):
         page.show()
         if hasattr(page, "on_show"):
             page.on_show()
+
+        print("Book, about to call self.layout.update, size =", self.size())
+        # self.layout.set_size((1000, 100))
+        # self.layout.update()
+
+        # self.layout.set_size(self.size())
         self.layout.update()
+        # self.layout.update()
+        # self.layout.update()
+        # if hasattr(page, "layout"):
+        #     page.layout.set_size(self.size())
+        #     page.layout.update()

@@ -3,7 +3,7 @@ import logging
 import fsui
 from fsbc.application import app
 from fsgs.Database import Database
-from fsgs.option import Option
+from fsgs.options.option import Option
 from launcher.i18n import gettext
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
@@ -34,7 +34,7 @@ class GameListSelector(fsui.Choice):
                 for i, item in enumerate(self.game_lists):
                     logging.debug("GameListSelector - %s", repr(item[0]))
                     if item[0] == old_list_uuid:
-                        if self.get_index() != i:
+                        if self.index() != i:
                             logging.debug(
                                 "GameListSelector Set choice index to %d", i
                             )
@@ -51,7 +51,7 @@ class GameListSelector(fsui.Choice):
     def select_list_from_uuid(self, uuid):
         for i, item in enumerate(self.game_lists):
             if item[0] == uuid:
-                if self.get_index() != i:
+                if self.index() != i:
                     with self.changed.inhibit:
                         logging.debug("GameListSelector = %d", i)
                         self.set_index(i)
@@ -77,7 +77,7 @@ class GameListSelector(fsui.Choice):
             self.add_item(list_name)
 
     def selected_list_uuid(self):
-        index = self.get_index()
+        index = self.index()
         try:
             return self.game_lists[index][0]
         except IndexError:

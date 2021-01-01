@@ -1,5 +1,5 @@
 import fsui
-from fsgs.option import Option
+from fsgs.options.option import Option
 from launcher.i18n import gettext
 from launcher.settings.settings_page import SettingsPage
 

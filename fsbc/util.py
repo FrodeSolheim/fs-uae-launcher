@@ -1,10 +1,21 @@
 import re
-import functools
 from typing import List, Union, Any
+
+
+# Moved to fspy.decorators
 
 
 def unused(_: Any) -> None:
     pass
+
+
+def is_sha1(value: str) -> bool:
+    if len(value) != 40:
+        return False
+    for c in value:
+        if c not in "0123456789abcdef":
+            return False
+    return True
 
 
 def is_uuid(value: str) -> str:
@@ -21,34 +32,6 @@ def is_uuid(value: str) -> str:
     if match is not None:
         return match.group(0)
     return ""
-
-
-def memoize(func):
-    memoize_dict = {}
-
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            key = (args, frozenset(kwargs.items()))
-        except TypeError:
-            # cannot create key -- for instance, passing a list as an argument.
-            # FIXME: Log warning here
-            return func(*args, **kwargs)
-        try:
-            return memoize_dict[key]
-        except KeyError:
-            value = func(*args, **kwargs)
-            try:
-                memoize_dict[key] = value
-            except TypeError:
-                # not cacheable -- for instance, passing a list as an
-                # argument.
-                # FIXME: Log warning here
-                # FIXME: will not happen here.. se above type error?
-                pass
-            return value
-
-    return wrapper
 
 
 def split_version(version_string: str) -> List[str]:

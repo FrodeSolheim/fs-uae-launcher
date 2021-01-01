@@ -15,8 +15,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from fsgs.option import Option
 from fsgs.drivers.messdriver import MessDriver
+from fsgs.options.option import Option
 from fsgs.platforms.cpc.cpcconstants import (
     CPC_JOYSTICK_TYPE,
     CPC_MAME_ROMS_6128,

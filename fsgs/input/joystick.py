@@ -1,6 +1,7 @@
 import os
-import time
 import threading
+import time
+
 from fsbc.system import windows, macosx
 
 

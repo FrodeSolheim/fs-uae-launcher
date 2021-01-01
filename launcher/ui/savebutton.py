@@ -1,32 +1,37 @@
-import os
-import io
-import time
-import hashlib
 import datetime
-from launcher.launcher_config import LauncherConfig
-from launcher.configuration_scanner import ConfigurationScanner
-from launcher.i18n import gettext
-from launcher.launcher_settings import LauncherSettings
-from launcher.ui.IconButton import IconButton
+import hashlib
+import io
+import os
+import time
+
 from fsgs.Database import Database
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.filedatabase import FileDatabase
 from fsgs.context import fsgs
+from fsgs.filedatabase import FileDatabase
+from launcher.configuration_scanner import ConfigurationScanner
+from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
+from launcher.launcher_settings import LauncherSettings
+from launcher.ui.IconButton import IconButton
+from launcher.context import get_config
 
 
 class SaveButton(IconButton):
     def __init__(self, parent):
         super().__init__(parent, "save_button.png")
         self.set_tooltip(gettext("Save Config"))
-        LauncherConfig.add_listener(self)
-        self.on_config("__changed", LauncherConfig.get("__changed"))
+        config = get_config(self)
+        config.add_listener(self)
+        self.on_config("__changed", config.get("__changed"))
 
     def on_destroy(self):
-        LauncherConfig.remove_listener(self)
+        config = get_config(self)
+        config.remove_listener(self)
+        super().on_destroy()
 
     def on_config(self, key, value):
         if key == "__changed":
-            self.enable(value == "1")
+            self.set_enabled(value == "1")
 
     def on_activate(self):
         print("SaveButton.on_activate")
@@ -39,6 +44,7 @@ class SaveButton(IconButton):
     @staticmethod
     def save_config():
         print("SaveButton.save_config")
+        config = get_config(self)
         database = Database.get_instance()
 
         name = LauncherSettings.get("config_name").strip()
@@ -61,7 +67,7 @@ class SaveButton(IconButton):
             f.write("\n[fs-uae]\n")
             keys = sorted(fsgs.config.values.keys())
             for key in keys:
-                value = LauncherConfig.get(key)
+                value = config.get(key)
                 if key.startswith("__"):
                     continue
                 if key in LauncherConfig.no_save_keys_set:

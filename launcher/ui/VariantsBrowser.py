@@ -1,11 +1,14 @@
 import traceback
-from launcher.ui.ConfigGroup import ConfigGroup
-from fsgs.context import fsgs
-from fsgs.Database import Database
+
 import fsui
-from ..launcher_config import LauncherConfig
-from ..launcher_signal import LauncherSignal
-from ..launcher_settings import LauncherSettings
+from fsgs.Database import Database
+from fsgs.context import fsgs
+from launcher.ui.ConfigGroup import ConfigGroup
+from launcher.launcher_config import LauncherConfig
+from launcher.launcher_settings import LauncherSettings
+from launcher.launcher_signal import LauncherSignal
+from launcher.ui.newconfigbutton import NewConfigButton
+from launcher.context import get_config, get_gscontext
 
 
 class LastVariants(object):
@@ -65,6 +68,7 @@ class VariantsBrowser(fsui.ItemChoice):
     def on_destroy(self):
         LauncherSettings.remove_listener(self)
         # Signal.remove_listener("quit", self)
+        super().on_destroy()
 
     def on_select_item(self, index):
         if index is None:
@@ -76,9 +80,10 @@ class VariantsBrowser(fsui.ItemChoice):
     def on_activate_item(self, _):
         from ..launcherapp import LauncherApp
 
-        LauncherApp.start_game()
+        LauncherApp.start_game(gscontext=get_gscontext(self))
 
     def on_setting(self, key, value):
+        config = get_config(self)
         if key == "parent_uuid":
             self.parent_uuid = value
             if value:
@@ -87,9 +92,9 @@ class VariantsBrowser(fsui.ItemChoice):
                 LauncherSettings.set("game_uuid", "")
                 # self.set_items([gettext("Configuration")])
                 self.set_items([])
-                self.disable()
+                self.set_enabled(False)
         elif key == "__variant_rating":
-            variant_uuid = LauncherConfig.get("variant_uuid")
+            variant_uuid = config.get("variant_uuid")
             for item in self.items:
                 if item["uuid"] == variant_uuid:
                     item["personal_rating"] = int(value or 0)
@@ -99,7 +104,7 @@ class VariantsBrowser(fsui.ItemChoice):
     def set_items(self, items):
         self.items = items
         self.update()
-        # self.enable(len(items) > 0)
+        # self.set_enabled(len(items) > 0)
 
     def get_item_count(self):
         return len(self.items)
@@ -184,10 +189,9 @@ class VariantsBrowser(fsui.ItemChoice):
                 variant["like_rating"],
                 variant["work_rating"],
             ) = game_database.get_ratings_for_game(variant["uuid"])
-            (
-                variant["personal_rating"],
-                ignored,
-            ) = database.get_ratings_for_game(variant["uuid"])
+            (variant["personal_rating"], _,) = database.get_ratings_for_game(
+                variant["uuid"]
+            )
 
             if variant["published"] == 0:
                 primary_sort = 1
@@ -257,12 +261,12 @@ class VariantsBrowser(fsui.ItemChoice):
         # for i, variant in enumerate(self.items):
         #     self.add_item(variant["name"], icon=self.get_item_icon(i))
 
-        self.enable(len(self.items) > 0)
+        self.set_enabled(len(self.items) > 0)
         if select_index is not None:
             print("selecting variant index", select_index)
             self.select_item(select_index)
         else:
-            ConfigGroup.new_config()
+            NewConfigButton.new_config(get_config(self))
 
         # try:
         #     variant_uuid = self.last_variants.cache[game_uuid]
@@ -299,7 +303,8 @@ class VariantsBrowser(fsui.ItemChoice):
     def _load_variant_2(
         self, variant_uuid, database_name, personal_rating, have
     ):
-        if LauncherConfig.get("variant_uuid") == variant_uuid:
+        config = get_config(self)
+        if config.get("variant_uuid") == variant_uuid:
             print("Variant {} is already loaded".format(variant_uuid))
         game_database = fsgs.game_database(database_name)
 
@@ -326,7 +331,7 @@ class VariantsBrowser(fsui.ItemChoice):
 
         LauncherConfig.load_values(values, uuid=variant_uuid)
 
-        # print("--->", LauncherConfig.get("variant_uuid"))
+        # print("--->", config.get("variant_uuid"))
 
         # variant_rating = 0
         # if item["work_rating"] is not None:

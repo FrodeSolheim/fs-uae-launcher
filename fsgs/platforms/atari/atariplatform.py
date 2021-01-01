@@ -1,7 +1,7 @@
 import json
 
 from fsbc import settings
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.atari.hatariataridriver import (
     HatariDriver,

@@ -1,14 +1,13 @@
 import hashlib
 import os
-from binascii import unhexlify
 import shutil
+from binascii import unhexlify
 
 from fsbc import settings
-from fsgs.drivers.gamedriver import GameDriver, Emulator
 from fsgs.drivers.mednafendriver import MednafenDriver
 from fsgs.drivers.messdriver import MessDriver
 from fsgs.drivers.retroarchdriver import RetroArchDriver
-from fsgs.option import Option
+from fsgs.options.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
 
@@ -732,7 +731,6 @@ NES_COIN_1 = "coin_1"
 NES_COIN_2 = "coin_2"
 NES_MICROPHONE = "microphone"
 
-
 # SDL_CONTROLLER_BUTTON_A
 # SDL_CONTROLLER_BUTTON_B
 # SDL_CONTROLLER_BUTTON_X
@@ -798,6 +796,7 @@ CONTROLLER_RIGHTXNEG = "rightxneg"
 CONTROLLER_RIGHTXPOS = "rightxpos"
 CONTROLLER_RIGHTYNEG = "rightyneg"
 CONTROLLER_RIGHTYPOS = "rightypos"
+
 
 # CONTROLLER_DPAD_UP = CONTROLLER_DPUP
 # CONTROLLER_DPAD_DOWN = CONTROLLER_DPDOWN

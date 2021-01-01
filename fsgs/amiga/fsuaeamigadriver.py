@@ -1,11 +1,11 @@
 import os
 
-from fsbc.application import app
-from fsbc.settings import Settings
 from fsgs import Option
 from fsgs.amiga.amiga import Amiga
-from fsgs.amiga.fsuae import FSUAE
+from fsgs.amiga.configwriter import ConfigWriter
 from fsgs.amiga.launchhandler import LaunchHandler
+from fsgs.amiga.installfiles import install_files
+from fsgs.amiga.prepareamiga import prepare_amiga
 from fsgs.drivers.gamedriver import GameDriver, Emulator
 from launcher.version import VERSION
 
@@ -111,9 +111,10 @@ class FSUAEAmigaDriver(GameDriver):
             "x_kickstart_ext_file"
         ]
 
-        if not self.options["kickstart_file"]:
-            # Warning will have been shown on the status bar
-            self.options["kickstart_file"] = "internal"
+        # FIXME: Temporarily disabled
+        # if not self.options["kickstart_file"]:
+        #     # Warning will have been shown on the status bar
+        #    self.options["kickstart_file"] = "internal"
 
         # Copy default configuration values from model defaults. The main
         # purpose of this is to let the launch code know about implied defaults
@@ -161,7 +162,7 @@ class FSUAEAmigaDriver(GameDriver):
         # save_state_handler = SaveHandler(self.fsgc, self.get_name(), platform)
         save_state_handler = SaveHandler(
             self.fsgc,
-            app.settings.get("config_name"),
+            self.options["config_name"],
             platform,
             options=self.options,
         )
@@ -186,7 +187,7 @@ class FSUAEAmigaDriver(GameDriver):
             self.get_name(),
             self.options,
             save_state_handler,
-            temp_dir=self.cwd.path,
+            temp_dir=self.filesdir.path,
         )
 
         # self.change_handler.init(self.fsgc.get_game_state_dir(),
@@ -201,11 +202,11 @@ class FSUAEAmigaDriver(GameDriver):
             self.launch_handler.config["fullscreen"] = "1"
             if not self.launch_handler.config.get("fullscreen_mode", ""):
                 # Check if fullscreen mode is overridden by temporary setting.
-                if Settings.instance()["__fullscreen_mode"]:
+                if self.options.get("__fullscreen_mode"):
                     self.launch_handler.config[
                         "fullscreen_mode"
-                    ] = Settings.instance()["__fullscreen_mode"]
-            if Settings.instance()["__arcade"]:
+                    ] = self.options.get("__fullscreen_mode")
+            if self.options.get("__arcade"):
                 # Remove window border when launched from FS-UAE Arcade in
                 # order to reduce flickering
                 self.launch_handler.config["window_border"] = "0"
@@ -217,13 +218,59 @@ class FSUAEAmigaDriver(GameDriver):
 
         self.launch_handler.prepare()
 
-        config = self.launch_handler.create_config()
-        config_file = self.temp_file("config.fs-uae").path
+
+        run_dir = self.filesdir.path
+        from fsgs.amiga.amigaconfig import AmigaConfig
+        # config = AmigaConfig(self.options)
+        self.options = self.launch_handler.config.copy()
+
+        self.options["run_dir"] = run_dir
+
+        files = prepare_amiga(self.options)
+
+        # FIXME: Move function
+        def file_sha1_to_stream(sha1):
+            stream = self.fsgs.file.open("sha1://{0}".format(sha1))
+            if stream is not None:
+                return stream
+
+            # FIXME: Move import
+            from fsgs.plugins.pluginmanager import PluginManager
+
+            path = PluginManager.instance().find_file_by_sha1(sha1)
+            if path:
+                return open(path, "rb")
+                # dst = path
+                # dst_partial = dst + ".partial"
+                # sha1_obj = hashlib.sha1()
+                # with open(src, "rb") as fin:
+                #     with open(dst_partial, "wb") as fout:
+                #         while True:
+                #             data = fin.read(65536)
+                #             if not data:
+                #                 break
+                #             fout.write(data)
+                #             sha1_obj.update(data)
+                # if sha1_obj.hexdigest() != sha1:
+                #     raise Exception("File from plugin does not match SHA-1")
+                # os.rename(dst_partial, dst)
+                # return
+
+                # pass
+            return None
+
+        install_files(files, run_dir, file_sha1_to_stream)
+
+        config = ConfigWriter(self.config).create_fsuae_config()
+        config_file = self.temp_file("Config.fs-uae").path
+
         with open(config_file, "w", encoding="UTF-8") as f:
             for line in config:
                 print(line)
                 f.write(line + "\n")
         self.emulator.args.extend([config_file])
+
+        # raise Exception("gnit")
 
     # def configure(self):
     #     print("AmigaGameHandler.configure")

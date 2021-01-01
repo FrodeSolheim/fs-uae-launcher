@@ -48,10 +48,7 @@ class FSUAE(object):
         env = os.environ.copy()
         print(repr(env))
         # env = None
-        try:
-            cls.center_window(args, env)
-        except Exception:
-            traceback.print_exc()
+
         cls.add_environment_from_settings(env)
         # env[str("SDL_VIDEO_WINDOW_POS")] = "0,0"
         # args += ["--fullscreen-mode", "desktop"]
@@ -84,54 +81,22 @@ class FSUAE(object):
                 env[key] = value
 
     @classmethod
-    def center_window(cls, args, env):
-        # FIXME: does not really belong here (dependency loop)
-        from launcher.launcher_config import LauncherConfig
-        from launcher.launcher_settings import LauncherSettings
-
-        width = LauncherConfig.get("window_width") or LauncherSettings.get(
-            "window_width"
-        )
-        height = LauncherConfig.get("window_height") or LauncherSettings.get(
-            "window_height"
-        )
-        try:
-            width = int(width)
-        except:
-            width = 960
-        try:
-            height = int(height)
-        except:
-            height = 540
-        from launcher.ui.launcherwindow import LauncherWindow
-
-        if LauncherWindow.current() is None:
-            return
-
-        main_w, main_h = LauncherWindow.current().get_size()
-        main_x, main_y = LauncherWindow.current().get_position()
-
-        x = main_x + (main_w - width) // 2
-        y = main_y + (main_h - height) // 2
-
-        # FIXME: re-implement without wx
-        # if windows:
-        #     import wx
-        #    y += wx.SystemSettings_GetMetric(wx.SYS_CAPTION_Y)
-
-        env[str("SDL_VIDEO_WINDOW_POS")] = str("{0},{1}".format(x, y))
-        args.append("--window-x={0}".format(x))
-        args.append("--window-y={0}".format(y))
-        # print("window position", env["SDL_VIDEO_WINDOW_POS"])
-        # os.environ["SDL_VIDEO_WINDOW_POS"] = "{0},{1}".format(x, y)
-
-    @classmethod
-    def find_executable(cls, executable="fs-uae"):
+    def find_executable(cls, executable="fs-uae", libexec=False):
         application = Application.instance()
 
+        if os.path.basename(os.getcwd()) == "fs-uae-launcher-private":
+            # We are running FS-UAE Launcher from source directory. We then
+            # want to run the locally compiled fs-uae binary.
+            path = "../fs-uae-private/" + executable
+            if windows:
+                path += ".exe"
+            if os.path.isfile(path):
+                return os.path.abspath(path)
+            raise Exception("Could not find development FS-UAE executable")
+
         if os.path.isdir("../fs-uae/src"):
-            # running FS-UAE Launcher from source directory, we
-            # then want to run the locally compiled fs-uae binary
+            # We are running FS-UAE Launcher from source directory. We then
+            # want to run the locally compiled fs-uae binary.
             path = "../fs-uae/" + executable
             if windows:
                 path += ".exe"
@@ -198,12 +163,18 @@ class FSUAE(object):
         else:
             print("application executable dir", application.executable_dir())
             exe = os.path.join(application.executable_dir(), executable)
-            print("checking", exe)
-            if not os.path.exists(exe):
+            print("Checking side-by-side:", exe)
+            if not os.path.exists(exe) and libexec:
                 exe = os.path.join(
-                    application.executable_dir(), "..", "bin", executable
+                    application.executable_dir(), "..", "libexec", executable
                 )
-                print("checking", exe)
+                print("Checking in $prefix/libexec:", exe)
+            # if not os.path.exists(exe):
+            #     exe = os.path.join(
+            #         application.executable_dir(), "..", "bin", executable
+            #     )
+            #     print("checking", exe)
+            # Find in plugin structure
             if not os.path.exists(exe):
                 exe = os.path.join(
                     application.executable_dir(),
@@ -215,8 +186,9 @@ class FSUAE(object):
                     Plugin.arch_name(True),
                     executable,
                 )
-                print("checking", exe)
+                print("Checking plugin executable:", exe)
             if not os.path.exists(exe):
+                print("Found ", exe)
                 return executable
 
         if not os.path.exists(exe):

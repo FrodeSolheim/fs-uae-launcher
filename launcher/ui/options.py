@@ -1,8 +1,8 @@
 import traceback
 
 import fsui
+from launcher.context import get_config
 from launcher.i18n import gettext
-from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.ui.HelpButton import HelpButton
@@ -19,10 +19,7 @@ class OptionWidgetFactory(object):
         self.help = help
         self.label_spacing = 10
         self.label = label
-        if settings:
-            self.options = LauncherSettings
-        else:
-            self.options = LauncherConfig
+        self.settings = settings
 
     # noinspection PyShadowingBuiltins
     def create(
@@ -35,10 +32,15 @@ class OptionWidgetFactory(object):
         platforms=None,
         label=None,
     ):
+        if self.settings:
+            options = LauncherSettings
+        else:
+            options = get_config(parent)
+
         option = Option.get(name)
         return create_option_group(
             parent,
-            self.options,
+            options,
             option,
             name,
             option["type"].lower(),
@@ -110,11 +112,11 @@ def create_option_group(
 
         def on_changed():
             val = text_field.get_text()
-            LauncherConfig.set(key, val.strip())
+            get_config(parent).set(key, val.strip())
 
         text_field = fsui.TextField(group)
         # text_field.set_min_width(400)
-        text_field.set_text(LauncherConfig.get(key))
+        text_field.set_text(get_config(parent).get(key))
         text_field.on_changed = on_changed
         group.layout.add(text_field, expand=True)
 
@@ -129,7 +131,7 @@ def create_option_group(
             group, options, key, option["min"], option["max"]
         )
 
-        # current = LauncherConfig.get(key)
+        # current = get_config(parent).get(key)
         # current_int = int(option["default"])
         # if current:
         #     try:
@@ -142,22 +144,22 @@ def create_option_group(
         #                           option["max"], current_int)
         # if current == "":
         #     check_box.check()
-        #     spin_ctrl.disable()
+        #     spin_ctrl.set_enabled(False)
 
         # def on_checkbox():
-        #     if check_box.is_checked():
+        #     if check_box.checked():
         #         spin_ctrl.set_value(int(option["default"]))
-        #         spin_ctrl.disable()
-        #         LauncherConfig.set(key, "")
+        #         spin_ctrl.set_enabled(False)
+        #         get_config(parent).set(key, "")
         #     else:
-        #         spin_ctrl.enable()
+        #         spin_ctrl.set_enabled()
         #
         # check_box.on_changed = on_checkbox
         #
         # def on_spin():
         #     val = spin_ctrl.get_value()
         #     val = max(option["min"], min(option["max"], val))
-        #     LauncherConfig.set(key, str(val))
+        #     get_config(parent).set(key, str(val))
 
         # spin_ctrl.on_changed = on_spin
         # group.layout.add(check_box)
@@ -166,18 +168,18 @@ def create_option_group(
 
     if choice_values:
 
-        def on_changed():
-            index = choice.get_index()
-            LauncherConfig.set(key, choice_values[index][0])
+        def on_choice_changed():
+            index = choice.index()
+            get_config(parent).set(key, choice_values[index][0])
 
         choice_labels = [x[1] for x in choice_values]
         choice = fsui.Choice(group, choice_labels)
-        current = LauncherConfig.get(key)
+        current = get_config(parent).get(key)
         for i, value in enumerate(choice_values):
             if current == value[0]:
                 choice.set_index(i)
                 break
-        choice.on_changed = on_changed
+        choice.on_changed = on_choice_changed
         group.layout.add_spacer(0, expand=True)
         group.layout.add(choice)
         group.widget = choice
@@ -226,11 +228,11 @@ class OptionCheckBox(fsui.CheckBox):
 
     def on_explicit_option(self, value):
         if value:
-            if not self.is_checked():
+            if not self.checked():
                 with self.changed.inhibit:
                     self.check(True)
         else:
-            if self.is_checked():
+            if self.checked():
                 with self.changed.inhibit:
                     self.check(False)
 
@@ -238,7 +240,7 @@ class OptionCheckBox(fsui.CheckBox):
         self.implicit_value = value
 
     def on_changed(self):
-        if self.is_checked():
+        if self.checked():
             if self.options.get(self.key) == "":
                 print("-- setting option to default value")
                 value = self.implicit_value
@@ -325,7 +327,7 @@ class ChoiceControl(fsui.Choice):
         self.invalid_index = None
 
     def on_changed(self):
-        index = self.get_index()
+        index = self.index()
         self.options.set(self.key, self.choice_values[index])
         if not self.use_checkbox:
             self.update_auto_item()
@@ -338,7 +340,7 @@ class ChoiceControl(fsui.Choice):
         #     #     self.set_from_value(self.implicit_value)
         #     pass
         # else:
-        if self.get_index() == 0 and self.implicit_value:
+        if self.index() == 0 and self.implicit_value:
             text = gettext("Auto - {}".format(self.implicit_value))
         else:
             text = gettext("Auto")
@@ -415,38 +417,3 @@ class SpinValueControl(fsui.SpinCtrl):
                 value = default_value(self.key)
         with self.changed.inhibit:
             self.set_value(self.int_value(value))
-
-
-# current = LauncherConfig.get(key)
-# current_int = int(option["default"])
-# if current:
-#     try:
-#         current_int = int(current)
-#     except ValueError:
-#         pass
-# current_int = max(option["min"], min(option["max"], current_int))
-# check_box = fsui.CheckBox(group, gettext("Default"))
-# spin_ctrl = fsui.SpinCtrl(group, option["min"],
-#                           option["max"], current_int)
-#
-# if current == "":
-#     check_box.check()
-#     spin_ctrl.disable()
-#
-#
-# def on_checkbox():
-#     if check_box.is_checked():
-#         spin_ctrl.set_value(int(option["default"]))
-#         spin_ctrl.disable()
-#         LauncherConfig.set(key, "")
-#     else:
-#         spin_ctrl.enable()
-#
-#
-# check_box.on_changed = on_checkbox
-#
-#
-# def on_spin():
-#     val = spin_ctrl.get_value()
-#     val = max(option["min"], min(option["max"], val))
-#     LauncherConfig.set(key, str(val))

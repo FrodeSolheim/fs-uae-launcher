@@ -1,10 +1,9 @@
 import fsui
-from ...i18n import gettext
 from .ImportDialog import ImportDialog
+from ...i18n import gettext
 
 
 class ImportGroup(fsui.Group):
-
     AMIGA_FOREVER = 1
 
     def __init__(self, parent, import_type=0):
@@ -55,13 +54,13 @@ class ImportGroup(fsui.Group):
         hori_layout.add(self.browse_button, margin_left=10)
         self.import_button = fsui.Button(self, gettext("Import"))
         self.import_button.activated.connect(self.on_import)
-        self.import_button.disable()
+        self.import_button.set_enabled(False)
         hori_layout.add(self.import_button, margin_left=10)
 
     def set_path(self, path):
         self.path = path
         self.text_field.set_text(path)
-        self.import_button.enable()
+        self.import_button.set_enabled()
 
     def on_browse(self):
         path = fsui.pick_directory(

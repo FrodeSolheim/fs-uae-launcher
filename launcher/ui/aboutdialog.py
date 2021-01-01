@@ -1,33 +1,38 @@
-import fsgs
-import fsui
-from fsui.extra.iconheader import IconHeader
 from fsbc.application import app
+from fsgs import fsgs_product
+from fsui import Window, VerticalLayout, Icon, TextArea
+from fsui.extra.iconheader import IconHeader
 from launcher.i18n import gettext
 from launcher.ui.skin import LauncherTheme
 from launcher.ui.widgets import CloseButton
 
 
-class AboutDialog(fsui.Window):
+class AboutDialog(Window):
     def __init__(self, parent):
-        if fsgs.product == "OpenRetro":
+        if fsgs_product() == "OpenRetro":
             app_name = "OpenRetro Launcher"
         else:
             app_name = "FS-UAE Launcher"
         title = "{} - {}".format(gettext("About"), app_name)
         super().__init__(parent, title, minimizable=False, maximizable=False)
         self.theme = LauncherTheme.get()
-        self.layout = fsui.VerticalLayout()
+        self.layout = VerticalLayout()
         self.layout.set_padding(20)
 
         self.icon_header = IconHeader(
             self,
-            fsui.Icon("fs-uae-launcher", "pkg:launcher"),
+            Icon("fs-uae-launcher", "pkg:launcher"),
             "{name} {version}".format(name=app_name, version=app.version),
-            "Copyright © 2012-2017 Frode Solheim",
+            "Copyright © 2012-2020 Frode Solheim",
         )
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
-        self.text_area = fsui.TextArea(
+        # FIXME: Python version
+        # FIXME: Qt version
+        # FIXME: PyQt5 version
+        # (FIXME: Linux distribution?)
+
+        self.text_area = TextArea(
             self, about_message, read_only=True, font_family="monospace"
         )
         self.text_area.scroll_to_start()

@@ -111,7 +111,7 @@ class JoystickConfigWindow(fsui.Window):
         self.save_button.activated.connect(self.on_save_button)
         panel.layout.add(self.save_button, margin_left=20)
 
-        if self.window.theme.has_close_buttons:
+        if self.window().theme.has_close_buttons:
             self.close_button = CloseButton(panel)
             panel.layout.add(self.close_button, margin_left=10)
 
@@ -129,7 +129,7 @@ class JoystickConfigWindow(fsui.Window):
         # self.make_field.changed.connect(self.on_change)
         self.model_field.changed.connect(self.on_change)
 
-        self.save_button.disable()
+        self.save_button.set_enabled(False)
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
 
@@ -156,8 +156,8 @@ class JoystickConfigWindow(fsui.Window):
         self.mapping_field.set_text(
             "\n".join(self.create_sdl_gamecontroller_mapping())
         )
-        self.reset_button.enable()
-        self.save_button.enable()
+        self.reset_button.set_enabled()
+        self.save_button.set_enabled()
 
     def on_close(self):
         print("on_close")
@@ -174,11 +174,11 @@ class JoystickConfigWindow(fsui.Window):
         self.mapping_field.set_text(
             "\n".join(self.create_sdl_gamecontroller_mapping())
         )
-        self.reset_button.disable()
+        self.reset_button.set_enabled(False)
 
     def on_save_button(self):
         self.save_config()
-        self.save_button.disable()
+        self.save_button.set_enabled(False)
 
     def set_information(self, device_type, device_make, device_model):
         print(
@@ -266,7 +266,7 @@ class JoystickConfigWindow(fsui.Window):
         self.on_change()
 
     def priority_order(self):
-        priority_order = self.priority_type_ids[self.priority_choice.get_index()]
+        priority_order = self.priority_type_ids[self.priority_choice.index()]
         k = 0
         result = {}
         for item in priority_order.split(","):
@@ -515,7 +515,7 @@ class JoystickConfigWindow(fsui.Window):
 
     def save_config(self):
         device_name = self.device_name.rsplit("#", 1)[0]
-        device_type = self.device_type_ids[self.type_field.get_index()]
+        device_type = self.device_type_ids[self.type_field.index()]
         # device_make = self.make_field.get_text().strip()
         device_model = self.model_field.get_text().strip()
         guid = DeviceManager.joystick_guid(self.device_name)

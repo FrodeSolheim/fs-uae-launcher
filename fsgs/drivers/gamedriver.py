@@ -9,15 +9,20 @@ from collections import defaultdict
 import fsboot
 from fsbc.application import Application
 from fsbc.resources import Resources
-from fsbc.settings import Settings
 from fsbc.system import System
 from fsbc.task import current_task
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.fsuae import FSUAE
-from launcher.option import Option
+from fsgs.options.constants2 import (
+    PARENT_X__,
+    PARENT_Y__,
+    PARENT_W__,
+    PARENT_H__,
+)
 from fsgs.plugins.pluginmanager import PluginManager, Executable
-from fsgs.refreshratetool import RefreshRateTool
+from fsgs.monitors.refreshratetool import RefreshRateTool
 from fsgs.util.gamenameutil import GameNameUtil
+from launcher.option import Option
 
 
 class GameDriverLogger:
@@ -71,8 +76,31 @@ class GameDriver:
         # noinspection PyProtectedMember
         self.cwd._path = self.home._path
 
+        # self.filesdir = self.temp_dir("Files")
+        self.filesdir = self.temp_dir("RUN")
+        # FIXME: Why is there functionality to set __files_dir again?
+        if self.options["__files_dir"]:
+            if not os.path.exists(self.options["__files_dir"]):
+                raise Exception("Override __files_dir: Directory must exist")
+            if len(os.listdir(self.options["__files_dir"])) != 0:
+                raise Exception(
+                    "Override __files_dir: Directory must be empty"
+                )
+            self.filesdir._path = self.options["__files_dir"]
+
     def __del__(self):
         print("GameDriver.__del__")
+
+    def init_options(self):
+        # for key, value in Settings.instance().values.items():
+        for key, value in self.fsgc.settings.items():
+            # FIXME: re-enable this check?
+            # if key in Config.config_keys:
+            #     print("... ignoring config key from settings:", key)
+            #     continue
+            self.options[key] = value
+        for key, value in self.fsgc.config.items():
+            self.options[key] = value
 
     def prepare(self):
         pass
@@ -101,7 +129,7 @@ class GameDriver:
         self.emulator.process = self.start_emulator(executable)
 
     def emulator_pid_file(self):
-        return self.fsgc.settings[Option.EMULATOR_PID_FILE]
+        return self.options[Option.EMULATOR_PID_FILE]
 
     @classmethod
     def write_emulator_pid_file(cls, pid_file, process):
@@ -130,16 +158,6 @@ class GameDriver:
 
     def finish(self):
         pass
-
-    def init_options(self):
-        for key, value in Settings.instance().values.items():
-            # FIXME: re-enable this check?
-            # if key in Config.config_keys:
-            #     print("... ignoring config key from settings:", key)
-            #     continue
-            self.options[key] = value
-        for key, value in self.fsgc.config.items():
-            self.options[key] = value
 
     def init_ports(self):
         for i, port_info in enumerate(self.PORTS):
@@ -204,7 +222,7 @@ class GameDriver:
         if Application.instance():
             if Application.instance().name == "fs-uae-arcade":
                 return True
-        if Settings.instance()["fullscreen"] == "1":
+        if self.options["fullscreen"] == "1":
             return True
         return False
 
@@ -332,7 +350,7 @@ class GameDriver:
     def use_audio_frequency(self):
         if self.options[Option.AUDIO_FREQUENCY]:
             try:
-                return int(Settings.instance()[Option.AUDIO_FREQUENCY])
+                return int(self.options[Option.AUDIO_FREQUENCY])
             except ValueError:
                 pass
         return 48000
@@ -717,7 +735,7 @@ class GameDriver:
         front_sha1 = self.config["front_sha1"]
         if not front_sha1:
             return
-        from launcher.ui.ImageLoader import ImageLoadRequest, ImageLoader
+        from launcher.ui.imageloader import ImageLoadRequest, ImageLoader
 
         request = ImageLoadRequest()
         request.path = "sha1:" + front_sha1
@@ -726,7 +744,7 @@ class GameDriver:
         # request.size = (-1, 240)
         ImageLoader.do_load_image(request)
         image = request.image
-        if image:
+        if image and image.width() and image.height():
             # Force to 4:3, 1:1 or 3:4 format
             if image.width() / image.height() > 1.15:
                 size = (320, 240)
@@ -735,64 +753,54 @@ class GameDriver:
             else:
                 size = (240, 240)
             image.resize(size)
-            cover_temp_file = self.temp_file("cover.png")
+            cover_temp_file = self.temp_file("Cover.png")
             request.image.save(cover_temp_file.path)
             env["FSEMU_GAME_COVER"] = cover_temp_file.path
 
     def update_environment_with_centering_info(self, env):
-        # FIXME: does not really belong here (dependency loop)
-        from launcher.launcher_config import LauncherConfig
-        from launcher.launcher_settings import LauncherSettings
-
-        width = LauncherConfig.get("window_width") or LauncherSettings.get(
-            "window_width"
-        )
-        height = LauncherConfig.get("window_height") or LauncherSettings.get(
-            "window_height"
-        )
+        width = self.options["window_width"]
+        height = self.options["window_height"]
         try:
             width = int(width)
         except:
-            width = 960
+            # width = 960
+            width = 864
         try:
             height = int(height)
         except:
-            height = 540
-        from launcher.ui.launcherwindow import LauncherWindow
+            # height = 540
+            height = 648
 
-        if LauncherWindow.current() is None:
+        env["FSEMU_WINDOW_W"] = str(width)
+        env["FSEMU_WINDOW_H"] = str(height)
+
+        try:
+            parent_x = int(self.options[PARENT_X__])
+            parent_y = int(self.options[PARENT_Y__])
+            parent_w = int(self.options[PARENT_W__])
+            parent_h = int(self.options[PARENT_H__])
+            x = parent_x + (parent_w - width) // 2
+            y = parent_y + (parent_h - height) // 2
+            # print(parent_x, parent_y, parent_w, parent_h, x, y)
+        except Exception:
             return
-
-        main_w, main_h = LauncherWindow.current().unscaled_size()
-        main_x, main_y = LauncherWindow.current().unscaled_position()
-
-        x = main_x + (main_w - width) // 2
-        y = main_y + (main_h - height) // 2
 
         # FIXME: REMOVE
         env["FSGS_WINDOW_X"] = str(x)
         env["FSGS_WINDOW_Y"] = str(y)
+        env["FSGS_WINDOW_POS"] = str("{0},{1}".format(x, y))
+        env["FSGS_WINDOW_CENTER"] = "{0},{1}".format(
+            parent_x + parent_w // 2, parent_y + parent_h // 2
+        )
 
         # FIXME: REMOVE
         env["SDL_VIDEO_WINDOW_POS"] = str("{0},{1}".format(x, y))
-        env["FSGS_WINDOW_POS"] = str("{0},{1}".format(x, y))
 
-        env["FSGS_WINDOW_CENTER"] = "{0},{1}".format(
-            main_x + main_w // 2, main_y + main_h // 2
-        )
+        env["FSEMU_WINDOW_X"] = str(x)
+        env["FSEMU_WINDOW_Y"] = str(y)
 
-        env["FSEMU_WINDOW_CENTER_X"] = str(main_x + main_w // 2)
-        env["FSEMU_WINDOW_CENTER_Y"] = str(main_y + main_h // 2)
-
-        # env["FSEMU_WINDOW_X"] = str(main_x + (main_w - 960) // 2)
-        # env["FSEMU_WINDOW_Y"] = str(main_y + (main_h - 540) // 2)
-        # env["FSEMU_WINDOW_W"] = str(960)
-        # env["FSEMU_WINDOW_H"] = str(540)
-
-        # args.append("--window-x={0}".format(x))
-        # args.append("--window-y={0}".format(y))
-        # print("window position", env["SDL_VIDEO_WINDOW_POS"])
-        # os.environ["SDL_VIDEO_WINDOW_POS"] = "{0},{1}".format(x, y)
+        env["FSEMU_WINDOW_CENTER_X"] = str(parent_x + parent_w // 2)
+        env["FSEMU_WINDOW_CENTER_Y"] = str(parent_y + parent_h // 2)
 
     def emulator_skin_paths(self):
         left = self.temp_file("left.png").path

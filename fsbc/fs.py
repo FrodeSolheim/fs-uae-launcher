@@ -1,6 +1,6 @@
+import functools
 import os
 import sys
-import functools
 
 # noinspection PyUnresolvedReferences
 from fsbc.system import windows, macosx
@@ -8,8 +8,7 @@ from fsbc.system import windows, macosx
 # noinspection PyUnresolvedReferences
 from fsbc.user import get_data_dir
 
-# noinspection PyUnresolvedReferences
-from .util import memoize
+from fspy.decorators import memoize
 
 
 def cache(func):
