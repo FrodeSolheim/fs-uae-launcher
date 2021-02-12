@@ -1,9 +1,9 @@
 import os
 
 import fsui
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga import whdload
-from fsgs.checksumtool import ChecksumTool
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.amiga import whdload
+from fsgamesys.checksumtool import ChecksumTool
 from launcher.context import get_config
 from launcher.i18n import gettext
 from launcher.ui.IconButton import IconButton

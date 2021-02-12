@@ -1,9 +1,9 @@
 from operator import itemgetter
 
 import fsui
-from fsgs.amiga.amiga import Amiga
-from fsgs.context import fsgs
-from fsgs.plugins.pluginmanager import PluginManager
+from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.context import fsgs
+from fsgamesys.plugins.pluginmanager import PluginManager
 from fsui import Image
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext

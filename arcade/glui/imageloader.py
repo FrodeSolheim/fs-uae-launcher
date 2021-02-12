@@ -8,8 +8,8 @@ from zipfile import ZipFile
 import requests
 from arcade.glui.texturemanager import TextureManager
 from arcade.resources import logger
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.network import openretro_url_prefix
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.network import openretro_url_prefix
 from fsui.qt import QImage
 
 error_set = set()

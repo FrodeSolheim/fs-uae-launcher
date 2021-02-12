@@ -1,6 +1,6 @@
-from fsgs.Database import Database
-from fsgs.ogd.client import OGDClient
-from fsgs.options.constants2 import VARIANT_RATING__, VARIANT_UUID__
+from fsgamesys.Database import Database
+from fsgamesys.ogd.client import OGDClient
+from fsgamesys.options.constants2 import VARIANT_RATING__, VARIANT_UUID__
 from fsui import Choice, Image
 from launcher.context import get_config
 from launcher.i18n import gettext

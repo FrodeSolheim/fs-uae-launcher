@@ -1,6 +1,6 @@
 # Automatically generated - do not edit by hand
 
-from fsgs.options.option import Option as BaseOption
+from fsgamesys.options.option import Option as BaseOption
 
 
 # noinspection PyClassHasNoInit
@@ -35,19 +35,28 @@ options = {
         "default": "ntsc",
         "description": ("Atari 7800 Model"),
         "type": "Choice",
-        "values": [("ntsc", "NTSC"), ("pal", "PAL"),],
+        "values": [
+            ("ntsc", "NTSC"),
+            ("pal", "PAL"),
+        ],
     },
     Option.A7800_PORT_1_TYPE: {
         "default": "joystick",
         "description": ("Atari 7800 Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ],
     },
     Option.A7800_PORT_2_TYPE: {
         "default": "joystick",
         "description": ("Atari 7800 Port 2"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ],
     },
     Option.ACCELERATOR: {
         "default": "0",
@@ -79,11 +88,18 @@ options = {
             ("262144", "256 MB"),
         ],
     },
+    Option.AMIGA_DATABASE: {
+        "default": "1",
+        "description": ("Enable/disable use of the Amiga game database"),
+        "type": "Boolean",
+    },
     Option.AMIGA_DRIVER: {
         "default": "fs-uae",
         "description": ("Amiga Game Driver"),
         "type": "Choice",
-        "values": [("fs-uae", "FS-UAE"),],
+        "values": [
+            ("fs-uae", "FS-UAE"),
+        ],
     },
     Option.AMIGA_EMULATOR: {
         "default": "fs-uae",
@@ -104,7 +120,10 @@ options = {
         "default": "mame-fs",
         "description": ("Arcade Emulator"),
         "type": "Choice",
-        "values": [("mame", "MAME"), ("mame-fs", "MAME-FS"),],
+        "values": [
+            ("mame", "MAME"),
+            ("mame-fs", "MAME-FS"),
+        ],
     },
     Option.ARCADE_FULLSCREEN: {
         "default": "1",
@@ -130,7 +149,10 @@ options = {
         "default": "blue",
         "description": N_("Arcade theme"),
         "type": "Choice",
-        "values": [("blue", N_("Blue")), ("red", N_("Red")),],
+        "values": [
+            ("blue", N_("Blue")),
+            ("red", N_("Red")),
+        ],
     },
     Option.AUDIO_BUFFER_TARGET_BYTES: {
         "default": "8192",
@@ -186,7 +208,10 @@ options = {
         "default": "0",
         "description": ("Bezel"),
         "type": "Choice",
-        "values": [("1", N_("Show Bezel")), ("0", N_("Hide Bezel")),],
+        "values": [
+            ("1", N_("Show Bezel")),
+            ("0", N_("Hide Bezel")),
+        ],
     },
     Option.BLIZZARD_SCSI_KIT: {
         "default": "0",
@@ -256,13 +281,24 @@ options = {
         "default": "joystick",
         "description": ("C64 Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ],
     },
     Option.C64_PORT_2_TYPE: {
         "default": "joystick",
         "description": ("C64 Port 2"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ],
+    },
+    Option.CD32_DATABASE: {
+        "default": "1",
+        "description": ("Enable/disable use of the CD32 game database"),
+        "type": "Boolean",
     },
     Option.CDROM_DRIVE_0_DELAY: {
         "default": "0",
@@ -273,7 +309,15 @@ options = {
         "default": "",
         "description": ("CD-ROM Drive Count"),
         "type": "Choice",
-        "values": [("0", "0"), ("1", "1"),],
+        "values": [
+            ("0", "0"),
+            ("1", "1"),
+        ],
+    },
+    Option.CDTV_DATABASE: {
+        "default": "1",
+        "description": ("Enable/disable use of the CDTV game database"),
+        "type": "Boolean",
     },
     Option.CHEATS: {
         "default": "0",
@@ -308,7 +352,10 @@ options = {
         "default": "mame-fs",
         "description": ("Amstrad CPC Emulator"),
         "type": "Choice",
-        "values": [("mame", "MAME"), ("mame-fs", "MAME-FS"),],
+        "values": [
+            ("mame", "MAME"),
+            ("mame-fs", "MAME-FS"),
+        ],
     },
     Option.CPC_MODEL: {
         "default": "464",
@@ -324,7 +371,10 @@ options = {
         "default": "joystick",
         "description": ("Amstrad CPC Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ],
     },
     Option.CPU: {
         "default": "",
@@ -616,7 +666,11 @@ options = {
         "default": "ignore",
         "description": ("G-Sync"),
         "type": "Choice",
-        "values": [("ignore", "Ignore"), ("1", "On"), ("0", "Off (Linux)"),],
+        "values": [
+            ("ignore", "Ignore"),
+            ("1", "On"),
+            ("0", "Off (Linux)"),
+        ],
     },
     Option.GAME_MODE: {
         "default": "1",
@@ -632,7 +686,9 @@ options = {
         "default": "builtin",
         "description": ("Game Boy Port 1"),
         "type": "Choice",
-        "values": [("builtin", N_("Built-in")),],
+        "values": [
+            ("builtin", N_("Built-in")),
+        ],
     },
     Option.GBA_DATABASE: {
         "default": "0",
@@ -667,7 +723,9 @@ options = {
         "default": "builtin",
         "description": ("Game Boy Advance Port 1"),
         "type": "Choice",
-        "values": [("builtin", N_("Built-in")),],
+        "values": [
+            ("builtin", N_("Built-in")),
+        ],
     },
     Option.GBC_DATABASE: {
         "default": "0",
@@ -678,7 +736,9 @@ options = {
         "default": "builtin",
         "description": ("Game Boy Color Port 1"),
         "type": "Choice",
-        "values": [("builtin", N_("Built-in")),],
+        "values": [
+            ("builtin", N_("Built-in")),
+        ],
     },
     Option.GOVERNOR_WARNING: {
         "default": "1",
@@ -1027,7 +1087,10 @@ options = {
         "default": "melonds",
         "description": ("Nintendo DS emulator"),
         "type": "Choice",
-        "values": [("melonds", "melonDS"), ("desmume", "DeSmuME"),],
+        "values": [
+            ("melonds", "melonDS"),
+            ("desmume", "DeSmuME"),
+        ],
     },
     Option.NEOGEO_DATABASE: {
         "default": "0",
@@ -1050,13 +1113,19 @@ options = {
         "default": "joystick",
         "description": ("Neo-Geo Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ],
     },
     Option.NEOGEO_PORT_2_TYPE: {
         "default": "joystick",
         "description": ("Neo-Geo Port 2"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ],
     },
     Option.NES_DATABASE: {
         "default": "0",
@@ -1124,13 +1193,19 @@ options = {
         "default": "none",
         "description": ("NES Port 3"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("gamepad", N_("Gamepad")),],
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", N_("Gamepad")),
+        ],
     },
     Option.NES_PORT_4_TYPE: {
         "default": "none",
         "description": ("NES Port 4"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("gamepad", N_("Gamepad")),],
+        "values": [
+            ("none", N_("None")),
+            ("gamepad", N_("Gamepad")),
+        ],
     },
     Option.NETPLAY_FEATURE: {
         "default": "0",
@@ -1146,7 +1221,10 @@ options = {
         "default": "0",
         "description": N_("Network Card"),
         "type": "Choice",
-        "values": [("0", N_("None")), ("a2065", "A2065"),],
+        "values": [
+            ("0", N_("None")),
+            ("a2065", "A2065"),
+        ],
     },
     Option.NGC_DATABASE: {
         "default": "0",
@@ -1306,12 +1384,19 @@ options = {
         "default": "builtin",
         "description": ("Game Gear Port 1"),
         "type": "Choice",
-        "values": [("builtin", N_("Built-in")),],
+        "values": [
+            ("builtin", N_("Built-in")),
+        ],
     },
     Option.SHADER: {
         "default": "0",
         "description": ("OpenGL pixel shader"),
         "type": "",
+    },
+    Option.SHARED_VOLUME: {
+        "default": "0",
+        "description": ("Add shared volume"),
+        "type": "Boolean",
     },
     Option.SLOW_MEMORY: {
         "default": "",
@@ -1395,7 +1480,10 @@ options = {
         "default": "mednafen",
         "description": ("Master System Game Driver"),
         "type": "Choice",
-        "values": [("mednafen", "mednafen"), ("mess", "mess"),],
+        "values": [
+            ("mednafen", "mednafen"),
+            ("mess", "mess"),
+        ],
     },
     Option.SNES_DATABASE: {
         "default": "0",
@@ -1441,7 +1529,60 @@ options = {
         "default": "0",
         "description": N_("Sound Card"),
         "type": "Choice",
-        "values": [("0", N_("None")), ("toccata", "Toccata"),],
+        "values": [
+            ("0", N_("None")),
+            ("toccata", "Toccata"),
+        ],
+    },
+    Option.SPECTRUM_DATABASE: {
+        "default": "0",
+        "description": ("Enable/disable use of the ZX Spectrum database"),
+        "type": "Boolean",
+    },
+    Option.SPECTRUM_EMULATOR: {
+        "default": "fuse-fs",
+        "description": ("ZX Spectrum Emulator"),
+        "type": "Choice",
+        "values": [
+            ("fuse", "Fuse"),
+            ("fuse-fs", "Fuse-fs"),
+            ("mame", "MAME"),
+            ("mame-fs", "MAME-FS"),
+        ],
+    },
+    Option.SPECTRUM_MODEL: {
+        "default": "spectrum",
+        "description": ("ZX Spectrum Model"),
+        "type": "Choice",
+        "values": [
+            ("48k", "Spectrum 48K"),
+            ("128", "Spectrum 128"),
+            ("plus2", "Spectrum +2"),
+            ("plus2a", "Spectrum +2A"),
+            ("plus3", "Spectrum +3"),
+        ],
+    },
+    Option.SPECTRUM_PORT_1_TYPE: {
+        "default": "kempston",
+        "description": ("ZX Spectrum Port 1"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("kempston", N_("Joystick")),
+            ("sinclair", N_("Joystick (Sinclair)")),
+            ("cursor", N_("Joystick (Cursor)")),
+            ("custom", N_("Custom")),
+        ],
+    },
+    Option.SPECTRUM_PORT_2_TYPE: {
+        "default": "none",
+        "description": ("ZX Spectrum Port 2"),
+        "type": "Choice",
+        "values": [
+            ("none", N_("None")),
+            ("sinclair", N_("Joystick (Sinclair)")),
+            ("custom", N_("Custom")),
+        ],
     },
     Option.ST_DATABASE: {
         "default": "0",
@@ -1452,7 +1593,10 @@ options = {
         "default": "hatari-fs",
         "description": ("Atari ST emulator"),
         "type": "Choice",
-        "values": [("hatari", "Hatari"), ("hatari-fs", "Hatari-FS"),],
+        "values": [
+            ("hatari", "Hatari"),
+            ("hatari-fs", "Hatari-FS"),
+        ],
     },
     Option.ST_MODEL: {
         "default": "1040stfm",
@@ -1468,7 +1612,10 @@ options = {
         "default": "joystick",
         "description": ("ST Port 1"),
         "type": "Choice",
-        "values": [("none", N_("None")), ("joystick", N_("Joystick")),],
+        "values": [
+            ("none", N_("None")),
+            ("joystick", N_("Joystick")),
+        ],
     },
     Option.ST_PORT_2_TYPE: {
         "default": "mouse",
@@ -1517,7 +1664,10 @@ options = {
         "default": "linear",
         "description": N_("Texture filter"),
         "type": "choice",
-        "values": [("nearest", "GL_NEAREST"), ("linear", "GL_LINEAR"),],
+        "values": [
+            ("nearest", "GL_NEAREST"),
+            ("linear", "GL_LINEAR"),
+        ],
     },
     Option.TEXTURE_FORMAT: {
         "default": "",
@@ -1555,7 +1705,9 @@ options = {
         "default": "",
         "description": "uae_a2065",
         "type": "",
-        "values": [("slirp", "slirp"),],
+        "values": [
+            ("slirp", "slirp"),
+        ],
     },
     Option.UAE_A3000MEM_SIZE: {
         "default": "",
@@ -1617,7 +1769,12 @@ options = {
         "default": "0",
         "description": "Size in MB of Zorro-II Fast RAM (second) expansion board",
         "type": "choice",
-        "values": [("0", "0"), ("1", "1"), ("2", "2"), ("4", "4"),],
+        "values": [
+            ("0", "0"),
+            ("1", "1"),
+            ("2", "2"),
+            ("4", "4"),
+        ],
     },
     Option.UAE_FASTMEM_AUTOCONFIG: {
         "default": "1",
@@ -1678,6 +1835,16 @@ options = {
             ("MSM6242B", "Oki MSM6242B"),
             ("RP5C01A", "Ricoh RP5C01A"),
             ("MSM6242B_A2000", "A2000 MSM6242B"),
+        ],
+    },
+    Option.UAE_RTG_MODES: {
+        "default": "0x212",
+        "description": "RTG color modes",
+        "type": "Choice",
+        "values": [
+            ("0x212", "8bit + 16bit PC + 32bit BGRA"),
+            ("0x602", "8bit + 16bit + 32bit BGRA"),
+            ("0x112", "8bit + 16bit + 32bit RGBA"),
         ],
     },
     Option.UAE_SANA2: {
@@ -1745,7 +1912,10 @@ options = {
         "default": "auto",
         "description": ("Vice Audio Driver"),
         "type": "Choice",
-        "values": [("auto", N_("Auto")), ("sdl", "SDL"),],
+        "values": [
+            ("auto", N_("Auto")),
+            ("sdl", "SDL"),
+        ],
     },
     Option.VIDEO_FORMAT: {
         "default": "bgra",
@@ -1761,7 +1931,10 @@ options = {
         "default": "0",
         "description": N_("Video synchronization"),
         "type": "choice",
-        "values": [("1", N_("Auto")), ("0", N_("Off")),],
+        "values": [
+            ("1", N_("Auto")),
+            ("0", N_("Off")),
+        ],
     },
     Option.VIDEO_SYNC_METHOD: {
         "default": "auto",

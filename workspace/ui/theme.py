@@ -1,5 +1,5 @@
 import fsui
-from fsgs.options.option import Option
+from fsgamesys.options.option import Option
 from launcher.launcher_settings import LauncherSettings
 
 from fsui.theme import Theme

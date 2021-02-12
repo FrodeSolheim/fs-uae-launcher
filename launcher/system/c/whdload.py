@@ -2,7 +2,7 @@ import os
 from collections import defaultdict
 
 # FIXME
-# from fsgs.amiga.whdload import populate_whdload_system_volume_2
+# from fsgamesys.amiga.whdload import populate_whdload_system_volume_2
 from launcher.system.classes.runhelper import RunHelper
 from launcher.ws.shell import shell_hostpath, shell_realcase, shell_split
 
@@ -68,17 +68,17 @@ class WHDLoad:
 
 #         print(config)
 
-#         from fsgs.context import FSGameSystemContext
+#         from fsgamesys.context import FSGameSystemContext
 
 #         gscontext = FSGameSystemContext()
 #         gscontext.config.set(config.items())
 
-#         from fsgs.platform import PlatformHandler
+#         from fsgamesys.platforms.platform import PlatformHandler
 
 #         platform_handler = PlatformHandler.create("amiga")
 #         driver = platform_handler.get_runner(gscontext)
 
-#         from fsgs.input.enumeratehelper import EnumerateHelper
+#         from fsgamesys.input.enumeratehelper import EnumerateHelper
 
 #         device_helper = EnumerateHelper()
 #         device_helper.default_port_selection(driver.ports, driver.options)

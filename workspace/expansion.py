@@ -3,7 +3,7 @@ import sys
 import platform
 import functools
 
-from fsgs.plugins.pluginmanager import PluginManager
+from fsgamesys.plugins.pluginmanager import PluginManager
 
 
 @functools.lru_cache()

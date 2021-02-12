@@ -1,16 +1,58 @@
 #!/usr/bin/env python3
 import sys
 
+from fscore.settings import Settings
 import launcher.version
-from fsgs import OPENRETRO_DEFAULT_DATABASES
+import fsgamesys
+from fsgamesys.product import Product
 from launcher.option import Option
+
+
+def configure_launcher_app(base_name, databases, default_platform_id):
+    Product.base_name = base_name
+    for option_name in fsgamesys.OPENRETRO_DEFAULT_DATABASES:
+        Option.get(option_name)["default"] = "0"
+        Settings.set_default(option_name, "0")
+    for option_name in [
+        Option.AMIGA_DATABASE,
+        Option.CD32_DATABASE,
+        Option.CDTV_DATABASE,
+    ]:
+        Option.get(option_name)["default"] = "0"
+        Settings.set_default(option_name, "0")
+    for option_name in databases:
+        Option.get(option_name)["default"] = "1"
+        Settings.set_default(option_name, "1")
+
+    from fsgamesys.config.config import Config
+
+    Config.set_default("platform", default_platform_id)
+    Product.default_platform_id = default_platform_id
+
+    Settings.set_default("launcher_titlebar_bgcolor", "#c46262")
+    # Settings.set_default("launcher_titlebar_fgcolor", "#dee2f1")
+    import fsboot
+
+    fsboot.set("base_dir_name", base_name)
+    return "SYS:Launcher"
 
 
 def find_app(app):
     if app in ["launcher", "fs-uae-launcher"]:
         app = "SYS:Launcher"
 
-    if app in ["fs-uae-launcher-legacy"]:
+    elif app == "fs-fuse":
+        app = configure_launcher_app(
+            "FS-Fuse", [Option.SPECTRUM_DATABASE], "spectrum"
+        )
+
+    if ":" in app:
+        from functools import partial
+        from launcher.apps.launcher2 import wsopen_main
+
+        app_main = partial(wsopen_main, app)
+
+    elif app in ["fs-uae-launcher-legacy"]:
         from launcher.apps.fs_uae_launcher import app_main
     elif app in ["arcade", "fs-uae-arcade"]:
         from launcher.apps.fs_uae_arcade import app_main
@@ -21,9 +63,12 @@ def find_app(app):
     elif app == "fs-game-center":
         from launcher.apps.fs_game_center import app_main
     elif app in ["dump-game-database", "game-database-dumper"]:
-        from fsgs.gamedb.game_database_dumper import game_database_dumper_main
+        from fsgamesys.gamedb.game_database_dumper import (
+            game_database_dumper_main,
+        )
 
         app_main = game_database_dumper_main
+
     elif app in ["fsgs", "fs-game-runner"]:
         from launcher.apps.fsgs import app_main
     elif app == "list-plugins":
@@ -34,11 +79,6 @@ def find_app(app):
     elif app == "AmigaForever:AmigaForever":
         from launcher.apps.amigaforeverapp import app_main
 
-    elif ":" in app:
-        from functools import partial
-        from launcher.apps.launcher2 import wsopen_main
-
-        app_main = partial(wsopen_main, app)
     elif app in ["dosbox", "dosbox-fs"]:
         from launcher.apps.dosbox_fs import app_main
     elif app in ["mame", "mame-fs"]:
@@ -54,6 +94,7 @@ def find_app(app):
         from launcher.apps.x64sc_fs import app_main
     else:
         return None
+
     return app_main
 
 
@@ -84,13 +125,13 @@ def main():
             app_name = arg[6:]
             sys.argv.remove(arg)
 
-    import fsgs
+    import fsgamesys
 
     if "--openretro" in sys.argv:
         sys.argv.remove("--openretro")
-        fsgs.product = "OpenRetro"
-        fsgs.openretro = True
-        for option_name in OPENRETRO_DEFAULT_DATABASES:
+        Product.base_name = "OpenRetro"
+        fsgamesys.openretro = True
+        for option_name in fsgamesys.OPENRETRO_DEFAULT_DATABASES:
             Option.get(option_name)["default"] = "1"
 
     # Check for (fake) version override

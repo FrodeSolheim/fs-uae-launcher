@@ -1,4 +1,4 @@
-from fsgs.config.configevent import ConfigEvent
+from fsgamesys.config.configevent import ConfigEvent
 from launcher.context import get_config
 
 

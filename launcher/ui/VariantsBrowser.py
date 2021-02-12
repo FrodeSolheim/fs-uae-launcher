@@ -1,8 +1,8 @@
 import traceback
 
 import fsui
-from fsgs.Database import Database
-from fsgs.context import fsgs
+from fsgamesys.Database import Database
+from fsgamesys.context import fsgs
 from launcher.ui.ConfigGroup import ConfigGroup
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings

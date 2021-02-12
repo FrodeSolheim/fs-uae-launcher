@@ -1,7 +1,7 @@
 import sys
 
 from fsbc import settings
-from fsgs.options.option import Option
+from fsgamesys.options.option import Option
 
 
 class ArcadeSettings:

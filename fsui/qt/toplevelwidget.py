@@ -70,10 +70,12 @@ class TopLevelWidget(Widget):
         self.__centered_on_initial_show = True
 
     def center_on_parent(self):
+        print("TopLevelWidget.center_on_parent")
         self.set_initial_size_from_layout()
+        print("parent", self.parent())
+        print("qwidget:", self._qwidget)
         real_parent = self._qwidget.parent()
-        # print("center_on_parent real_parent = ",
-        #       real_parent, default_window_center)
+        print("center_on_parent real_parent = ", real_parent)
         if real_parent:
             pp = real_parent.x(), real_parent.y()
             ps = real_parent.width(), real_parent.height()
@@ -100,6 +102,24 @@ class TopLevelWidget(Widget):
         # #     x, y = default_window_center[-1]
         # #     ss = self.get_size()
         # #     self.move(x - ss[0] // 2, y - ss[1] // 2,)
+
+    def center_on_window(self, other):
+        print(f"TopLevelWidget.center_on_window other={other}")
+        self.set_initial_size_from_layout()
+        # print("parent", self.parent())
+        # print("qwidget:", self._qwidget)
+        # real_parent = other._qwidget.parent()
+        # print("center_on_parent real_parent = ", real_parent)
+        # if real_parent:
+        # pp = other.x(), other.y()
+        # ps = other.width(), other.height()
+        pp = other.position()
+        ps = other.size()
+        ss = self.size()
+        print(pp, ps, ss)
+        self.set_position(
+            (pp[0] + (ps[0] - ss[0]) // 2, pp[1] + (ps[1] - ss[1]) // 2)
+        )
 
     def center_on_screen(self):
         frame_rect = self._qwidget.frameGeometry()

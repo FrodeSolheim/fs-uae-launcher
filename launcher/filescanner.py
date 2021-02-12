@@ -3,9 +3,9 @@ import os
 import traceback
 
 from fsbc.paths import Paths
-from fsgs.amiga.rommanager import ROMManager
-from fsgs.archive import Archive, archive_extensions
-from fsgs.filedatabase import FileDatabase
+from fsgamesys.amiga.rommanager import ROMManager
+from fsgamesys.archive import Archive, archive_extensions
+from fsgamesys.filedatabase import FileDatabase
 from .i18n import gettext
 
 

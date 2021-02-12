@@ -3,15 +3,16 @@ import sys
 import time
 import weakref
 
-import fsgs as fsgs_module
+from fsgamesys.product import Product
+import fsgamesys
 import fstd.desktop
 import fsui
 import launcher.ui
 from fsbc.application import Application
 from fsbc.settings import get_setting
 from fsbc.util import unused
-from fsgs.context import default_context
-from fsgs.ogd.locker import is_locker_enabled
+from fsgamesys.context import default_context
+from fsgamesys.ogd.locker import is_locker_enabled
 from launcher.i18n import gettext
 from launcher.helpers.implicitconfighandler import ImplicitConfigHandler
 from launcher.launcher_config import LauncherConfig
@@ -105,10 +106,7 @@ class LauncherWindow(WindowWithTabs):
         if "--no-window-border" in sys.argv:
             border = False
 
-        if fsgs_module.product == "OpenRetro":
-            app_name = "OpenRetro Launcher"
-        else:
-            app_name = "FS-UAE Launcher"
+        app_name = "{} Launcher".format(Product.base_name)
         if Skin.fws():
             title = app_name
         else:
@@ -329,10 +327,7 @@ class LauncherWindow(WindowWithTabs):
             login_info = username
         else:
             login_info = gettext("Not logged in")
-        if fsgs_module.product == "OpenRetro":
-            app_name = "OpenRetro Launcher"
-        else:
-            app_name = "FS-UAE Launcher"
+        app_name = "{} Launcher".format(Product.base_name)
         title = "{} {} ({})".format(
             app_name, Application.instance().version, login_info
         )
@@ -663,10 +658,7 @@ class LauncherWindow(WindowWithTabs):
             gettext("About {name}").format(name="OpenRetro.org"),
             self.on_what_is_this,
         )
-        if fsgs_module.product == "OpenRetro":
-            app_name = "OpenRetro Launcher"
-        else:
-            app_name = "FS-UAE Launcher"
+        app_name = "{} Launcher".format(Product.base_name)
         menu.add_about_item(
             gettext("About {name}").format(name=app_name), self.on_about
         )

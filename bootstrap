@@ -287,7 +287,7 @@ install-data: mo
     cp -a share/icons $(DESTDIR)$(prefix)/share
 
     mkdir -p $(DESTDIR)$(prefix)/share/doc/{project}
-    cp -a README COPYING $(DESTDIR)$(prefix)/share/doc/{project}
+    cp -a README.md COPYING $(DESTDIR)$(prefix)/share/doc/{project}
 
 install: install-data install-program
 
@@ -352,7 +352,7 @@ copy_files = [
     "INSTALL",
     "Makefile",
     "po-update.py",
-    "README",
+    "README.md",
     "setup.py",
     "update-version",
     "VERSION",

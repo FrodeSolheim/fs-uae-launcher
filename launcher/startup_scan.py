@@ -2,12 +2,12 @@ import hashlib
 import os
 
 from fsbc.paths import Paths
-from fsgs.Database import Database
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.amiga import Amiga
-from fsgs.amiga.rommanager import ROMManager
-from fsgs.context import fsgs
-from fsgs.filedatabase import FileDatabase
+from fsgamesys.Database import Database
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.amiga.rommanager import ROMManager
+from fsgamesys.context import fsgs
+from fsgamesys.filedatabase import FileDatabase
 from launcher.configuration_scanner import ConfigurationScanner
 from launcher.launcher_settings import LauncherSettings
 

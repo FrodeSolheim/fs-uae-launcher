@@ -1,7 +1,7 @@
 import weakref
 
-from fsbc.system import macosx
-from fspy.decorators import deprecated
+from fscore.system import System
+from fscore.deprecated import deprecated
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QMainWindow, Qt, init_qt
 from fsui.qt.toplevelwidget import TopLevelWidget
@@ -20,13 +20,14 @@ class WindowWrapper(QMainWindow):
         maximizable=True,
         title,
     ):
+        print(f"\nWindowWrapper.__init__ parent={parent}")
         super().__init__(QParent(parent, window=True))
         # self.margins = Margins()
         self.setWindowTitle(title)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
         flags = Qt.Window
-        if macosx:
+        if System.macos:
             flags &= ~Qt.WindowFullscreenButtonHint
 
         if border:

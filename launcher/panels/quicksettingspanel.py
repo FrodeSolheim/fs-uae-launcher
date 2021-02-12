@@ -1,8 +1,8 @@
 import traceback
 
 import fsui
-from fsgs.options.option import Option
-from fsgs.platform import Platform
+from fsgamesys.options.option import Option
+from fsgamesys.platforms.platform import Platform
 from launcher.context import get_config
 from launcher.i18n import gettext
 from launcher.option import options

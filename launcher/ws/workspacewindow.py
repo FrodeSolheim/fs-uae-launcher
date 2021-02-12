@@ -1,4 +1,4 @@
-from fsgs.monitors.screens import screen_rects
+from fsgamesys.monitors.screens import screen_rects
 from fsui import Color, Panel, VerticalLayout, Window
 from launcher.context import get_launcher_theme
 from launcher.ws.shell import shell_volumes

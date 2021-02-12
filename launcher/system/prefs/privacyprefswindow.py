@@ -1,4 +1,4 @@
-from fsgs.options.option import Option
+from fsgamesys.options.option import Option
 from fsui import (
     Panel,
     MultiLineLabel,

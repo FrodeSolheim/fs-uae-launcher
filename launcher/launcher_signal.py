@@ -22,7 +22,7 @@ class LauncherSignal(object):
     def broadcast(cls, signal, *args):
         if signal == "config":
             # temporary, while restructuring
-            from fsgs.context import fsgs
+            from fsgamesys.context import fsgs
 
             key, value = args
             fsgs.signal.notify("fsgs:config:" + key, value)

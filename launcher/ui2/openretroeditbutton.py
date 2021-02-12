@@ -1,5 +1,5 @@
 from fsbc.desktop import open_url_in_browser
-from fsgs.options.constants2 import VARIANT_UUID__
+from fsgamesys.options.constants2 import VARIANT_UUID__
 from launcher.ui.IconButton import IconButton
 from launcher.context import get_config
 

@@ -8,8 +8,8 @@ from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
 from arcade.option import Option
-from fsgs.context import fsgs
-from fsgs.platform import PlatformHandler
+from fsgamesys.context import fsgs
+from fsgamesys.platforms.platform import PlatformHandler
 
 GROUP_SPACING = 26
 HEADING_TEXT_LEFT = 1920 - 560 + 40 + 20 - 28
@@ -125,7 +125,7 @@ class GameMenu(Menu):
 
     # noinspection PyMethodMayBeStatic
     def temp_fix_configs(self, item):
-        # from fsgs.Database import Database
+        # from fsgamesys.Database import Database
         # local_game_database = Database.get_instance()
         # game_database = fsgs.get_game_database()
         #

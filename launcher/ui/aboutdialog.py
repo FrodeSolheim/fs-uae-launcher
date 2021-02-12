@@ -1,5 +1,5 @@
 from fsbc.application import app
-from fsgs import fsgs_product
+from fsgamesys.product import Product
 from fsui import Window, VerticalLayout, Icon, TextArea
 from fsui.extra.iconheader import IconHeader
 from launcher.i18n import gettext
@@ -9,10 +9,7 @@ from launcher.ui.widgets import CloseButton
 
 class AboutDialog(Window):
     def __init__(self, parent):
-        if fsgs_product() == "OpenRetro":
-            app_name = "OpenRetro Launcher"
-        else:
-            app_name = "FS-UAE Launcher"
+        app_name = "{} Launcher".format(Product.base_name)
         title = "{} - {}".format(gettext("About"), app_name)
         super().__init__(parent, title, minimizable=False, maximizable=False)
         self.theme = LauncherTheme.get()

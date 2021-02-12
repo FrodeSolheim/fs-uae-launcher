@@ -1,7 +1,7 @@
 import os
 
 import fsui
-from fsgs.FSGSDirectories import FSGSDirectories
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from ..launcher_settings import LauncherSettings
 
 

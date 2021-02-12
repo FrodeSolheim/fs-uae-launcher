@@ -1,6 +1,6 @@
 import os
 
-from fsgs.FSGSDirectories import FSGSDirectories
+from fsgamesys.FSGSDirectories import FSGSDirectories
 
 
 class PluginHelper(object):

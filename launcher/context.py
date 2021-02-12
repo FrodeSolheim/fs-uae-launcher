@@ -2,14 +2,16 @@
 from fsui.context import get_window
 from launcher.launcher_settings import LauncherSettings
 from launcher.system.classes.theme import Theme
+from fsgamesys.FSGameSystemContext import FSGameSystemContext
 
 
-def get_config(widget):
+def get_config(widget) :
     return get_gscontext(widget).config
 
 
-def get_gscontext(widget):
+def get_gscontext(widget) -> FSGameSystemContext:
     # return window(widget).gscontext
+    # print(get_window(widget).gscontext)
     return get_window(widget).gscontext
 
 
@@ -34,7 +36,7 @@ def config(widget):
     return gscontext(widget).config
 
 
-def gscontext(widget):
+def gscontext(widget) -> FSGameSystemContext:
     return window(widget).gscontext
     # try:
     #     return widget._cached_gscontext

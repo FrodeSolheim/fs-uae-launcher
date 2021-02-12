@@ -1,7 +1,7 @@
 import fsboot
 import fsui
-from fsgs import fsgs_product
-from fsgs import openretro
+from fsgamesys.product import Product
+# from fsgamesys import openretro
 from fsui.extra.taskdialog import TaskDialog
 from launcher.option import Option
 from launcher.res import gettext
@@ -13,7 +13,7 @@ class LauncherSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("fs-uae-launcher", "pkg:launcher")
-        self.add_header(icon, "{} Launcher".format(fsgs_product()))
+        self.add_header(icon, "{} Launcher".format(Product.base_name))
 
         if fsboot.get("fws") == "1":
             # We omit the appearance settings, since they have no effect
@@ -28,7 +28,7 @@ class LauncherSettingsPage(SettingsPage):
         self.add_section(gettext("Experimental Features"))
         # Netplay feature is now enabled by default
         # self.add_option(Option.NETPLAY_FEATURE)
-        if not openretro:
+        if not Product.is_openretro():
             self.add_option(Option.PLATFORMS_FEATURE)
         # self.add_option(Option.LAUNCHER_CONFIG_FEATURE)
         # self.add_option(Option.LAUNCHER_SETUP_WIZARD_FEATURE)

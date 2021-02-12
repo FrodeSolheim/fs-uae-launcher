@@ -1,10 +1,10 @@
 import fsui
-from fsgs.amiga.amiga import Amiga
-from fsgs.options.option import Option
-from fsgs.platform import Platform
-from fsgs.platforms.commodore64 import C64_MODEL_C64C_1541_II
-from fsgs.platforms.cpc.cpcconstants import CPC_MODEL_464
-from fsgs.platforms.zxspectrum import ZXS_MODEL_PLUS3
+from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.options.option import Option
+from fsgamesys.platforms.platform import Platform
+from fsgamesys.platforms.commodore64 import C64_MODEL_C64C_1541_II
+from fsgamesys.platforms.cpc.cpcconstants import CPC_MODEL_464
+from fsgamesys.platforms.spectrum import SPECTRUM_MODEL_PLUS3
 from launcher.context import get_config
 from launcher.i18n import gettext
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
@@ -24,7 +24,7 @@ class RemovableMediaGroup(FloppiesGroup):
         self._main = main
         self._c64_model = ""
         self._cpc_model = ""
-        self._zxs_model = ""
+        self._spectrum_model = ""
 
         self._ines_header_widget = INesHeaderWidget(self)
         self._ines_header_widget.hide()
@@ -45,7 +45,7 @@ class RemovableMediaGroup(FloppiesGroup):
                 Option.AMIGA_MODEL,
                 Option.C64_MODEL,
                 Option.CPC_MODEL,
-                Option.ZXS_MODEL,
+                Option.SPECTRUM_MODEL,
             ],
         )
 
@@ -65,8 +65,8 @@ class RemovableMediaGroup(FloppiesGroup):
         self._cpc_model = value
         self.update_media_type()
 
-    def on_zxs_model_config(self, value):
-        self._zxs_model = value
+    def on_spectrum_model_config(self, value):
+        self._spectrum_model = value
         self.update_media_type()
 
     def update_media_type(self):
@@ -88,8 +88,8 @@ class RemovableMediaGroup(FloppiesGroup):
             self.set_mode(self.CD_MODE)
         elif self.__platform in [Platform.ST]:
             self.set_mode(self.FLOPPY_MODE)
-        elif self.__platform in [Platform.ZXS]:
-            if self._zxs_model == ZXS_MODEL_PLUS3:
+        elif self.__platform in [Platform.SPECTRUM]:
+            if self._spectrum_model == SPECTRUM_MODEL_PLUS3:
                 self.set_mode(self.FLOPPY_MODE)
             else:
                 self.set_mode(self.TAPE_MODE)
@@ -102,7 +102,11 @@ class RemovableMediaGroup(FloppiesGroup):
                 self._a78_header_widget.show()
                 self._command_widget.hide()
                 self._ines_header_widget.hide()
-            elif self.__platform in [Platform.CPC, Platform.DOS, Platform.ZXS]:
+            elif self.__platform in [
+                Platform.CPC,
+                Platform.DOS,
+                Platform.SPECTRUM,
+            ]:
                 self.selectors[1].hide()
                 self._a78_header_widget.hide()
                 self._command_widget.show()

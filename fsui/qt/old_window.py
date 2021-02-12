@@ -2,7 +2,7 @@ import traceback
 import weakref
 
 import fsboot
-from fsbc.system import macosx
+from fscore.system import System
 from fsui.qt.image import Image
 from fsui.qt.qparent import QParent
 
@@ -54,7 +54,7 @@ class RealWindow(QMainWindow):
         self.margins = Margins()
 
         flags = Qt.Window
-        if macosx:
+        if System.macos:
             flags &= ~Qt.WindowFullscreenButtonHint
 
         if border:

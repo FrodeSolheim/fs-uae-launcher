@@ -67,7 +67,7 @@ import fsbc.desktop
 import fsboot
 import fstd.desktop
 from fsbc.settings import Settings
-from fsgs.options.option import Option
+from fsgamesys.options.option import Option
 
 
 def open_url_in_browser(url):

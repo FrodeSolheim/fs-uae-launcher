@@ -1,4 +1,4 @@
-from fsgs.platform import Platform
+from fsgamesys.platforms.platform import Platform
 from fsui import HorizontalLayout, MultiLineLabel
 from launcher.i18n import gettext
 from launcher.option import Option

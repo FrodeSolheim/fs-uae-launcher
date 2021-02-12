@@ -17,6 +17,7 @@ class Window(fsui.Window):
     ):
         self.theme = get_launcher_theme(self)
         window_parent = None
+        # window_parent = parent
         border = self.theme.titlebar_system()
         super().__init__(
             window_parent,

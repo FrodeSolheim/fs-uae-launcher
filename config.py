@@ -10,7 +10,7 @@ package_map = {
     "arcade": ".",
     "fsbc": ".",
     "fsboot": ".",
-    "fsgs": ".",
+    "fsgamesys": ".",
     "fspy": ".",
     "fstd": ".",
     "fsui": ".",

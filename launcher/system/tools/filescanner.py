@@ -1,6 +1,7 @@
 import fsui
-from fsgs.amiga.amiga import Amiga
-from fsgs.context import fsgs
+from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.context import fsgs
+from fsgamesys.product import Product
 from launcher.i18n import gettext
 from launcher.launcher_signal import LauncherSignal
 from launcher.scanner import Scanner
@@ -47,14 +48,14 @@ class FileScannerWindow(Window):
         # self.update_game_database = True
 
         if not minimal:
-            self.scan_kickstart_group = ScanKickstartGroup(self)
-            layout.add(self.scan_kickstart_group, fill=True)
-
-            layout.add_spacer(20)
-
-            label = fsui.HeadingLabel(
-                self, gettext("Scan for Kickstarts, Files and Configurations")
-            )
+            if Product.includes_amiga():
+                self.scan_kickstart_group = ScanKickstartGroup(self)
+                layout.add(self.scan_kickstart_group, fill=True)
+                layout.add_spacer(20)
+                heading = gettext("Scan for Kickstarts, Files and Configurations")
+            else:
+                heading = gettext("Scan for ROMs, media and config files")
+            label = fsui.HeadingLabel(self, heading)
             layout.add(label, margin_bottom=10)
 
             self.scan_paths_group = ScanPathsGroup(self)

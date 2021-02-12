@@ -1,5 +1,5 @@
 import fsui
-from fsgs.context import fsgs
+from fsgamesys.context import fsgs
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 

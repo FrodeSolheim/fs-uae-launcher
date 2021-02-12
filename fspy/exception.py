@@ -81,7 +81,7 @@ def initialize_sentry():
     try:
         import sentry_sdk
     except ImportError:
-        pass
+        sentry_sdk = None
 
     # FIXME: Only init sentry when we know the user has accepted automatic bug
     # reports.
@@ -92,12 +92,13 @@ def initialize_sentry():
     # Setting in FS-UAE Launcer -> Prefs -> Privacy ?
     # Or maybe a checkbox in exception dialogs?
     excepthook = sys.excepthook
-    try:
-        sentry_sdk.init(
-            "https://de692f5459fc4ee2bc5c6bd86ed56394@sentry.io/4581716"
-        )
-    except Exception:
-        traceback.print_exc()
+    if sentry_sdk is not None:
+        try:
+            sentry_sdk.init(
+                "https://de692f5459fc4ee2bc5c6bd86ed56394@sentry.io/4581716"
+            )
+        except Exception:
+            traceback.print_exc()
     # Easiest way to disable the Sentry's excepthook integration? We want to
     # handle the excepthook ourselves.
     sys.excepthook = excepthook

@@ -29,11 +29,13 @@ class Launcher2SidePanel(Panel):
 
         self.choice = Choice(self, ["Game front cover",])
         hori_layout.add(self.choice, expand=True)
+        self.choice.disable()  # Currently not implemented
 
         # FIXME: Only enable button if screen is big enough for expanded
         # window?
         self.add_button = IconButton(self, "add_button.png")
         hori_layout.add(self.add_button, margin_left=10)
+        self.add_button.disable()  # Currently not implemented
 
         self.book = Book(self)
         self.layout.add(self.book, expand=True, fill=True)

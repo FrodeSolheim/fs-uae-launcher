@@ -1,6 +1,6 @@
 import os
 
-from fsbc.system import macosx
+from fscore.system import System
 from fsboot import executable_dir
 
 
@@ -25,7 +25,7 @@ def launcher_data_file_path(relative):
     # FIXME: check plugin mode
     plugin_mode = True
     if plugin_mode:
-        if macosx:
+        if System.macos:
             # Need to go further up in the hierarchy due to being bundled
             # insidean application bundle.
             path = os.path.join(executable_dir(),
@@ -43,7 +43,7 @@ def launcher_data_file_path(relative):
             return path
 
     # FIXME: Move up?
-    if macosx:
+    if System.macos:
         path = os.path.join(executable_dir(), "..", "Resources", relative)
     else:
         path = os.path.join(

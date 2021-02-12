@@ -1,4 +1,5 @@
 from fsui import Image, Panel
+from fsgamesys.product import Product
 from launcher.i18n import gettext
 from launcher.panels.additionalconfigpanel import AdditionalConfigPanel
 from launcher.panels.cdpanel import CDPanel
@@ -41,58 +42,65 @@ class ConfigPanel(Panel):
             gettext("Config"),
             gettext("Main configuration options"),
         )
-        self.add_page(
-            column,
-            FloppiesPanel,
-            "32x32/media-floppy",
-            gettext("Floppies"),
-            gettext("Floppy drives"),
-        )
-        self.add_page(
-            column,
-            CDPanel,
-            "32x32/media-optical",
-            gettext("CD-ROMs"),
-            gettext("CD-ROM drives"),
-        )
-        # noinspection SpellCheckingInspection
-        self.add_page(
-            column,
-            HardDrivesPanel,
-            "32x32/drive-harddisk",
-            gettext("Hard drives"),
-        )
-        self.add_page(
-            column,
-            InputPanel,
-            "32x32/applications-games",
-            gettext("Input"),
-            gettext("Input options"),
-        )
-        # self.add_scroll_page(
-        self.add_page(
-            column,
-            RomRamPanel,
-            "32x32/application-x-firmware",
-            gettext("Hardware"),
-            gettext("CPU, ROM & RAM"),
-        )
-        # self.add_scroll_page(
-        self.add_page(
-            column,
-            ExpansionsPanel,
-            "32x32/audio-card",
-            gettext("Expansions"),
-            gettext("Expansions"),
-        )
-        # self.add_scroll_page(
-        self.add_page(
-            column,
-            AdditionalConfigPanel,
-            "32x32/system-shutdown",
-            gettext("Additional Configuration"),
-            gettext("Additional configuration"),
-        )
+        if not Product.is_fs_fuse():
+            self.add_page(
+                column,
+                FloppiesPanel,
+                "32x32/media-floppy",
+                gettext("Floppies"),
+                gettext("Floppy drives"),
+            )
+        if not Product.is_fs_fuse():
+            self.add_page(
+                column,
+                CDPanel,
+                "32x32/media-optical",
+                gettext("CD-ROMs"),
+                gettext("CD-ROM drives"),
+            )
+        if not Product.is_fs_fuse():
+            # noinspection SpellCheckingInspection
+            self.add_page(
+                column,
+                HardDrivesPanel,
+                "32x32/drive-harddisk",
+                gettext("Hard drives"),
+            )
+        if not Product.is_fs_fuse():
+            self.add_page(
+                column,
+                InputPanel,
+                "32x32/applications-games",
+                gettext("Input"),
+                gettext("Input options"),
+            )
+        if not Product.is_fs_fuse():
+            # self.add_scroll_page(
+            self.add_page(
+                column,
+                RomRamPanel,
+                "32x32/application-x-firmware",
+                gettext("Hardware"),
+                gettext("CPU, ROM & RAM"),
+            )
+        if not Product.is_fs_fuse():
+            # self.add_scroll_page(
+            self.add_page(
+                column,
+                ExpansionsPanel,
+                "32x32/audio-card",
+                gettext("Expansions"),
+                gettext("Expansions"),
+            )
+        if not Product.is_fs_fuse():
+            # self.add_scroll_page(
+            self.add_page(
+                column,
+                AdditionalConfigPanel,
+                "32x32/system-shutdown",
+                gettext("Additional Configuration"),
+                gettext("Additional configuration"),
+            )
 
         self.select_tab(0, 0)
 

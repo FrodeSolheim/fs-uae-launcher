@@ -1,7 +1,7 @@
-import fsgs
+import fsgamesys
 import fsui
 from fsbc import settings
-from fsgs import fsgs_product
+from fsgamesys.product import Product
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
@@ -40,7 +40,7 @@ class SettingsDialog(PagedDialog):
         PagedDialog.__init__(
             self,
             parent,
-            "{} - {} Launcher".format(gettext("Settings"), fsgs_product()),
+            "{} - {} Launcher".format(gettext("Settings"), Product.base_name),
         )
 
         # FIXME: remove this once the dialog uses Window as base class
@@ -119,7 +119,7 @@ class SettingsDialog(PagedDialog):
         #     gettext("Logging"), LoggingSettingsPage,
         #     fsui.Icon("settings", "pkg:workspace"))
         self.add_page(
-            "{} Launcher".format(fsgs_product()),
+            "{} Launcher".format(Product.base_name),
             LauncherSettingsPage,
             fsui.Icon("fs-uae-launcher", "pkg:launcher"),
             bold=True,
@@ -134,7 +134,7 @@ class SettingsDialog(PagedDialog):
             GameDatabaseSettingsPage,
             fsui.Icon("database-settings", "pkg:workspace"),
         )
-        if fsgs.openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
+        if fsgamesys.openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
             self.add_page(
                 gettext("Game Platforms"),
                 GamePlatformsSettingsPage,
@@ -157,7 +157,7 @@ class SettingsDialog(PagedDialog):
         #     gettext("Maintenance"), MaintenanceSettingsPage,
         #     fsui.Icon("maintenance", "pkg:workspace"))
         self.add_page(
-            "{} Arcade".format(fsgs_product()),
+            "{} Arcade".format(Product.base_name),
             ArcadeSettingsPage,
             fsui.Icon("fs-uae-arcade", "pkg:launcher"),
             bold=True,

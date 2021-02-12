@@ -1,5 +1,5 @@
 from launcher.system.classes.window import Window
-from fsgs.ogd.refresh import DatabaseRefreshTask
+from fsgamesys.ogd.refresh import DatabaseRefreshTask
 import fsui
 from fsui import VerticalLayout
 from fsui.extra.iconheader import IconHeader

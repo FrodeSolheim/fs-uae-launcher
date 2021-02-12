@@ -5,12 +5,12 @@ from configparser import ConfigParser, NoSectionError
 
 from fsbc.paths import Paths
 from fsbc.signal import Signal
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.amiga import Amiga
-from fsgs.amiga.valueconfigloader import ValueConfigLoader
-from fsgs.checksumtool import ChecksumTool
-from fsgs.context import fsgs
-from fsgs.platform import PlatformHandler
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.amiga.valueconfigloader import ValueConfigLoader
+from fsgamesys.checksumtool import ChecksumTool
+from fsgamesys.context import fsgs
+from fsgamesys.platforms.platform import PlatformHandler
 from fspy.decorators import deprecated
 from launcher.option import Option
 from .launcher_settings import LauncherSettings

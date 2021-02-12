@@ -1,8 +1,8 @@
 from threading import Thread
 
-from fsgs.context import FSGameSystemContext
-from fsgs.input.enumeratehelper import EnumerateHelper
-from fsgs.platform import PlatformHandler
+from fsgamesys.context import FSGameSystemContext
+from fsgamesys.input.enumeratehelper import EnumerateHelper
+from fsgamesys.platforms.platform import PlatformHandler
 
 
 class RunHelper:

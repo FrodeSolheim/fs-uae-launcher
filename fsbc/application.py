@@ -7,7 +7,7 @@ import time
 import fsboot
 from fsbc.paths import Paths
 from fsbc.settings import Settings
-from fsbc.system import windows, macosx
+from fscore.system import System
 from fspy.decorators import memoize
 
 logger = logging.getLogger("APP")
@@ -133,9 +133,9 @@ class Application(object):
             base_dirs.append(os.path.join(script_dir, "share"))
 
         data_dirs.append(self.executable_dir())
-        if windows:
+        if System.windows:
             base_dirs.append(os.path.join(self.executable_dir(), "share"))
-        elif macosx:
+        elif System.macos:
             base_dirs.append(
                 os.path.join(self.executable_dir(), "..", "Resources", "share")
             )

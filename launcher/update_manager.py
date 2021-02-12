@@ -4,7 +4,7 @@ import traceback
 import requests
 
 from fsbc.application import Application
-from fsbc.system import windows, macosx, linux
+from fscore.system import System
 from fsbc.util import compare_versions, unused
 from fstd.desktop import open_url_in_browser
 from launcher.launcher_settings import LauncherSettings
@@ -34,11 +34,11 @@ class UpdateManager:
 
     @classmethod
     def _update_thread_function(cls):
-        if windows:
+        if System.windows:
             platform = "windows"
-        elif macosx:
+        elif System.macos:
             platform = "macosx"
-        elif linux:
+        elif System.linux:
             platform = "linux"
         else:
             platform = "other"

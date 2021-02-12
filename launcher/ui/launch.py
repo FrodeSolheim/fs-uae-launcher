@@ -1,7 +1,7 @@
 import sys
 
 import fsui
-from fsgs.drivers.gamedriver import GameDriver
+from fsgamesys.drivers.gamedriver import GameDriver
 from launcher.context import get_config
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings

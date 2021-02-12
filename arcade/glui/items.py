@@ -3,12 +3,12 @@ import os
 import random
 
 # from numpy import array, float32
-from fsgs.platform import PlatformHandler
+from fsgamesys.platforms.platform import PlatformHandler
 from arcade.glui.constants import TOP_ITEM_ARROW, TOP_ITEM_LEFT
 from arcade.glui.constants import ROW_NAME, ROW_PLATFORM
 
-from fsgs.Database import Database
-from fsgs.util.gamenameutil import GameNameUtil
+from fsgamesys.Database import Database
+from fsgamesys.util.gamenameutil import GameNameUtil
 from fspy.decorators import memoize
 from arcade.resources import resources, gettext
 from .font import BitmapFont

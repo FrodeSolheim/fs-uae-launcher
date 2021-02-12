@@ -1,6 +1,6 @@
 import fsui
-from fsgs.Database import Database
-from fsgs.ogd.client import OGDClient
+from fsgamesys.Database import Database
+from fsgamesys.ogd.client import OGDClient
 from fsui import Image, Choice
 from launcher.context import get_config
 from launcher.i18n import gettext

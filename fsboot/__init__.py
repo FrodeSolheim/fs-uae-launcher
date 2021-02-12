@@ -277,10 +277,21 @@ def base_dir():
         logger.debug("Base directory via custom path config: %s", repr(path))
         return path
 
-    if get("openretro") == "1":
-        path = os.path.join(documents_dir(True), "OpenRetro")
+    if get("base_dir_name"):
+        # path = os.path.join(documents_dir(True), get("base_dir_name"))
+        path = os.path.join(home_dir(), get("base_dir_name"))
+    elif get("openretro") == "1":
+        path = os.path.join(home_dir(), "OpenRetro")
     else:
-        path = os.path.join(documents_dir(True), "FS-UAE")
+        # Check new ~/FS-UAE directory first
+        path = os.path.join(home_dir(), "FS-UAE")
+        if not os.path.exists(path):
+            # FS-UAE uses Documents/FS-UAE for legacy reasons
+            path = os.path.join(documents_dir(), "FS-UAE")
+            if not os.path.exists(path):
+                # ~/Documents/FS-UAE did not exist, so go with ~/FS-UAE
+                path = os.path.join(home_dir(), "FS-UAE")
+
     if not os.path.exists(path):
         os.makedirs(path)
     # FIXME: normalize / case-normalize base dir?
@@ -301,17 +312,17 @@ def is_frozen():
 
 
 def setup_frozen_python_libs():
-    libs_dirs = [fsboot.executable_dir()]
+    libs_dirs = [executable_dir()]
     if sys.platform == "darwin":
         # Add .app/Contents/Python to libs_dirs
         libs_dir = os.path.abspath(
-            os.path.join(fsboot.executable_dir(), "..", "Python")
+            os.path.join(executable_dir(), "..", "Python")
         )
         print(libs_dir, os.path.exists(libs_dir))
         if os.path.exists(libs_dir):
             libs_dirs.append(libs_dir)
     libs_dir = os.path.abspath(
-        os.path.join(fsboot.executable_dir(), "..", "..", "Python")
+        os.path.join(executable_dir(), "..", "..", "Python")
     )
     print(libs_dir, os.path.exists(libs_dir))
     if os.path.exists(libs_dir):
@@ -319,7 +330,7 @@ def setup_frozen_python_libs():
     else:
         libs_dir = os.path.abspath(
             os.path.join(
-                fsboot.executable_dir(), "..", "..", "..", "..", "..", "Python"
+                executable_dir(), "..", "..", "..", "..", "..", "Python"
             )
         )
         print(libs_dir, os.path.exists(libs_dir))

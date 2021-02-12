@@ -10,17 +10,17 @@ import fsui
 from fsbc.settings import Settings
 from fsbc.task import Task
 from fsbc.util import is_uuid
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga import whdload
-from fsgs.application import ApplicationMixin
-from fsgs.archive import Archive
-from fsgs.context import fsgs, FSGameSystemContext
-from fsgs.download import Downloader
-from fsgs.filedatabase import FileDatabase
-from fsgs.input.enumeratehelper import EnumerateHelper
-from fsgs.options.constants2 import RUNNING__
-from fsgs.platform import PlatformHandler, PLATFORM_IDS
-from fsgs.util.archiveutil import ArchiveUtil
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.amiga import whdload
+from fsgamesys.application import ApplicationMixin
+from fsgamesys.archive import Archive
+from fsgamesys.context import fsgs, FSGameSystemContext
+from fsgamesys.download import Downloader
+from fsgamesys.filedatabase import FileDatabase
+from fsgamesys.input.enumeratehelper import EnumerateHelper
+from fsgamesys.options.constants2 import RUNNING__
+from fsgamesys.platforms.platform import PlatformHandler, PLATFORM_IDS
+from fsgamesys.util.archiveutil import ArchiveUtil
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
@@ -485,11 +485,11 @@ class LauncherApp(ApplicationMixin, fsui.Application):
     #     name = LauncherSettings.get("config_name")
     #     uuid = LauncherConfig.get("x_game_uuid")
 
-    #     from fsgs.saves import SaveHandler
+    #     from fsgamesys.saves import SaveHandler
 
     #     save_state_handler = SaveHandler(fsgs, name, platform, uuid)
 
-    #     from fsgs.amiga.launchhandler import LaunchHandler
+    #     from fsgamesys.amiga.launchhandler import LaunchHandler
 
     #     launch_handler = LaunchHandler(
     #         fsgs, name, prepared_config, save_state_handler

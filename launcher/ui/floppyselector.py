@@ -2,9 +2,9 @@ import os
 
 import fsui
 from fsbc.paths import Paths
-from fsgs.context import fsgs
-from fsgs.options.option import Option
-from fsgs.platforms import PLATFORM_ATARI
+from fsgamesys.context import fsgs
+from fsgamesys.options.option import Option
+from fsgamesys.platforms import PLATFORM_ATARI
 from launcher.context import get_config
 from launcher.helpers.cdmanager import CDManager
 from launcher.helpers.floppymanager import FloppyManager

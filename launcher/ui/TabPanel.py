@@ -1,4 +1,4 @@
-import fsbc.system
+from fscore.system import System
 import fsui
 from fsbc.util import unused
 from .Constants import Constants
@@ -139,7 +139,7 @@ class TabPanel(fsui.Panel):
                 dc.draw_rectangle(0, 0, w, h, bd_color)
             return
 
-        if fsbc.system.macosx:
+        if System.macos:
             # dc.draw_line(0, 0, w, 0, fsui.Color(198, 198, 198))
             # dc.draw_line(0, 0, w, 0, fsui.Color(188, 188, 188))
             dc.draw_line(0, 0, w, 0, fsui.Color(248, 248, 248))
@@ -158,7 +158,7 @@ class TabPanel(fsui.Panel):
         #     h -= 12
 
         color_1 = Skin.get_background_color()
-        if fsbc.system.macosx and False:
+        if System.macos and False:
             if selected:
                 color_2 = color_1
                 color_1 = fsui.Color(0xA7, 0xA7, 0xA7)
@@ -191,7 +191,7 @@ class TabPanel(fsui.Panel):
                 color_2 = fsui.Color(0x00, 0x00, 0x00, 0x20)
         dc.draw_vertical_gradient(x, y, w, h, color_1, color_2)
 
-        if fsbc.system.macosx and False and not selected and not hover:
+        if System.macos and False and not selected and not hover:
             dc.draw_line(
                 x, y + h - 1, x + w, y + h - 1, fsui.Color(0xA8, 0xA8, 0xA8)
             )
@@ -205,7 +205,7 @@ class TabPanel(fsui.Panel):
             theme = WorkspaceTheme.instance()
             line_color_1 = theme.title_separator_color
             line_color_2 = line_color_1
-        elif fsbc.system.macosx and False:
+        elif System.macos and False:
             line_color_1 = fsui.Color(0xA7, 0xA7, 0xA7)
             line_color_2 = Skin.get_background_color().mix(
                 fsui.Color(0xFF, 0xFF, 0xFF)

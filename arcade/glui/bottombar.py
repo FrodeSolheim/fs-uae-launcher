@@ -5,7 +5,7 @@ from arcade.glui.opengl import gl, fs_emu_blending, fs_emu_texturing
 from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
-from fsgs.platform import PlatformHandler
+from fsgamesys.platforms.platform import PlatformHandler
 
 COORDS = 0.0, 1.0, 1.0, 0.0
 

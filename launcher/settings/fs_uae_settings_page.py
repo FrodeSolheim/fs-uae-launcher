@@ -1,6 +1,6 @@
 import fsui
-from fsbc.system import linux
-from fsgs.options.option import Option
+from fscore.system import System
+from fsgamesys.options.option import Option
 from launcher.res import gettext
 from launcher.settings.settings_page import SettingsPage
 
@@ -22,7 +22,7 @@ class FSUAESettingsPage(SettingsPage):
         )
         self.layout.add(label, fill=True, margin_top=20)
 
-        if linux:
+        if System.linux:
             self.add_option(Option.GAME_MODE)
             self.add_option(Option.GOVERNOR_WARNING)
 

@@ -1,7 +1,7 @@
 import sys
 
 from fsbc.settings import Settings
-from fsgs.context import default_context
+from fsgamesys.context import default_context
 
 
 def app_main():
@@ -26,12 +26,12 @@ def app_main():
     # sys.exit(1)
     # fsgc.run_game()
 
-    from fsgs.platform import Platform
+    from fsgamesys.platforms.platform import Platform
 
     platform = Platform.create(fsgc.game.platform.id)
     driver = platform.driver(fsgc)
 
-    from fsgs.input.enumeratehelper import EnumerateHelper
+    from fsgamesys.input.enumeratehelper import EnumerateHelper
 
     device_helper = EnumerateHelper()
     device_helper.default_port_selection(driver.ports, driver.options)

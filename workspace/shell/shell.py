@@ -39,7 +39,7 @@ def workspace_open(path, args=None):
     elif path in ["C:FS-UAE", "FS-UAE", "SYS:System/FS-UAE"]:
         # FIXME: Spawn via "FS-UAE Launcher" instead, respecting Launcher
         # settings, etc.
-        from fsgs.amiga.fsuae import FSUAE
+        from fsgamesys.amiga.fsuae import FSUAE
 
         # FIXME: Other args
         FSUAE.start_with_args([workspace.path.host(args[0])])

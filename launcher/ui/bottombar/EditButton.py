@@ -1,4 +1,4 @@
-from fsgs.network import openretro_url_prefix
+from fsgamesys.network import openretro_url_prefix
 from fsui import Image
 from launcher.ui.bottombar.WebButton import WebButton
 from launcher.context import get_config

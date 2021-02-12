@@ -114,19 +114,18 @@ In the MSYS2 MinGW 64-bit shell:
 
 You need to have Xcode and command line tools instead.
 
-Download and install Python 3.6.8 (64-bit only installer) for macOS from
-[https://www.python.org/downloads/mac-osx/] (or a more recent 3.6.x version,
-if there is any)
+Download and install Python 3 (64-bit only installer) for macOS from
+[https://www.python.org/downloads/mac-osx/].
 
 Open a new terminal to make sure the new python3 is on the PATH. You should
 verify that pip3 is found in the correct place:
 
     $ which pip3
-    /Library/Frameworks/Python.framework/Versions/3.6/bin/pip3
+    /Library/Frameworks/Python.framework/Versions/3.9/bin/pip3
 
 Then run:
 
-    pip3 install lhafile requests pillow pyobjc pyqt5==5.9.2
+    pip3 install lhafile pillow pyobjc pyqt5 requests
 
 And finally, from the fs-uae-launcher source directory:
 

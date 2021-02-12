@@ -67,4 +67,4 @@ class WSIconWidget(IconWidget):
         if hasattr(self, "wsopen") and self.wsopen:
             from launcher.system.wsopen import wsopen
 
-            wsopen(self.wsopen, parent=self.window)
+            wsopen(self.wsopen, window=self.window, parent=self.window)

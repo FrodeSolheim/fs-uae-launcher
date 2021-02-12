@@ -6,8 +6,8 @@ from arcade.ui.arcade_window import (
     fullscreen,
     maximized,
 )
-from fsbc.settings import Settings
-from fsbc.system import macosx
+from fscore.settings import Settings
+from fscore.system import System
 from .gnome3 import running_in_gnome_3, handle_gnome_extensions
 import launcher.version
 from fsbc.init import initialize_application
@@ -18,10 +18,10 @@ K_UI_OPTION_AUTO_SHOW_MENU_BAR = 1 << 0
 
 def os_x_set_system_ui_mode(mode, option):
     # noinspection PyUnresolvedReferences
-    import objc
+    import objc # type: ignore
 
     # noinspection PyUnresolvedReferences
-    from Foundation import NSBundle
+    from Foundation import NSBundle # type: ignore
 
     bundle = NSBundle.bundleWithPath_(
         "/System/Library/Frameworks/Carbon.framework"
@@ -30,7 +30,7 @@ def os_x_set_system_ui_mode(mode, option):
         bundle, globals(), (("SetSystemUIMode", b"III", ""),)
     )
     # noinspection PyUnresolvedReferences
-    SetSystemUIMode(mode, option)
+    SetSystemUIMode(mode, option) # type: ignore
 
 
 def main():
@@ -47,7 +47,7 @@ def main():
     # use_top_clock = check_argument("top_clock") != "0"
     # use_top_logo = check_argument("top_logo") != "0"
 
-    if macosx:
+    if System.macos:
         if fullscreen() or maximized():
             if check_argument("system_autohide") == "1":
                 os_x_set_system_ui_mode(
@@ -68,7 +68,7 @@ def main():
             # We want a normal window.
             pass
 
-    Settings.instance().set("__arcade", "1")
+    Settings.set("__arcade", "1")
 
     # if windows:
     #     pass

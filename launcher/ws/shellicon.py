@@ -1,6 +1,6 @@
 import zlib
 
-from fsgs.amiga.iconparser import IconParser
+from fsgamesys.amiga.iconparser import IconParser
 from fsui import Image
 
 

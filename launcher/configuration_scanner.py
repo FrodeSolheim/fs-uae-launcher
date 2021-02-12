@@ -1,7 +1,7 @@
 import os
 
-from fsgs.filedatabase import FileDatabase
-from fsgs.util.gamenameutil import GameNameUtil
+from fsgamesys.filedatabase import FileDatabase
+from fsgamesys.util.gamenameutil import GameNameUtil
 from .i18n import gettext
 
 

@@ -1,4 +1,4 @@
-from fsgs.options.constants2 import (
+from fsgamesys.options.constants2 import (
     PARENT_X__,
     PARENT_Y__,
     PARENT_W__,

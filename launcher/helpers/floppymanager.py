@@ -1,10 +1,10 @@
 import os
 
 from fsbc.paths import Paths
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.amiga import Amiga
-from fsgs.archive import Archive
-from fsgs.checksumtool import ChecksumTool
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.archive import Archive
+from fsgamesys.checksumtool import ChecksumTool
 from launcher.i18n import gettext
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
 

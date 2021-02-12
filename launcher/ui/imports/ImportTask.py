@@ -5,9 +5,9 @@ import traceback
 
 import fsui
 from fsbc.path import is_same_file
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.rommanager import ROMManager
-from fsgs.filedatabase import FileDatabase
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.amiga.rommanager import ROMManager
+from fsgamesys.filedatabase import FileDatabase
 from ...i18n import gettext
 from ...launcher_signal import LauncherSignal
 

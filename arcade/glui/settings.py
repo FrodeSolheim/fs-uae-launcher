@@ -2,7 +2,7 @@ import os
 
 # import pygame
 from fsbc.user import get_home_dir, get_documents_dir
-from fsbc.system import windows
+from fscore.system import System
 from fspy.decorators import memoize
 
 
@@ -22,7 +22,7 @@ class Settings(object):
     profile_dir_path = None
     # use_fullscreen = False
 
-    if windows:
+    if System.windows:
         # fullscreen_menu = False
         window_decorations = False
     else:
@@ -41,7 +41,7 @@ class Settings(object):
         path = []
         if cls.games_dir_path:
             path.extend(cls.games_dir_path)
-        elif windows:
+        elif System.windows:
             path.append(
                 os.path.join(get_documents_dir(), "Games (Ku Game System)")
             )
@@ -62,7 +62,7 @@ class Settings(object):
     def get_profile_dir(cls):
         if cls.profile_dir_path:
             return cls.profile_dir_path
-        elif windows:
+        elif System.windows:
             return os.path.join(
                 get_documents_dir(), "Gamer Profile (Ku Game System)"
             )

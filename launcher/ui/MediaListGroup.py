@@ -2,10 +2,10 @@ import os
 
 import fsui
 from fsbc.paths import Paths
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.amiga import Amiga
-from fsgs.checksumtool import ChecksumTool
-from fsgs.context import fsgs
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.checksumtool import ChecksumTool
+from fsgamesys.context import fsgs
 from launcher.context import get_config
 from launcher.helpers.cdmanager import CDManager
 from launcher.helpers.floppymanager import FloppyManager

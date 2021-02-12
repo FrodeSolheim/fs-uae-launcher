@@ -1,4 +1,4 @@
-from fsgs.ogd.client import OGDClient
+from fsgamesys.ogd.client import OGDClient
 import fsui
 from fsbc.application import app
 

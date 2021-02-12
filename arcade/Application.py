@@ -1,5 +1,5 @@
 import fsui
-from fsgs.application import ApplicationMixin
+from fsgamesys.application import ApplicationMixin
 
 
 class Application(ApplicationMixin, fsui.Application):

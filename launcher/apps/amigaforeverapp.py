@@ -1,9 +1,9 @@
 import os
 
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.context import FSGameSystemContext
-from fsgs.input.enumeratehelper import EnumerateHelper
-from fsgs.platform import PlatformHandler
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.context import FSGameSystemContext
+from fsgamesys.input.enumeratehelper import EnumerateHelper
+from fsgamesys.platforms.platform import PlatformHandler
 
 
 def app_main():

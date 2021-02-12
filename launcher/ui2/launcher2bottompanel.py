@@ -1,6 +1,6 @@
 import os
 
-from fsgs.options.constants2 import (
+from fsgamesys.options.constants2 import (
     CONFIG_PATH__,
     GAME_NAME,
     PROGRESS__,
@@ -48,8 +48,12 @@ class Launcher2LaunchPanel(Panel):
         # horilayout.add_spacer(0, expand=True)
         self.volumebutton = VolumeButton(self)
         horilayout.add(self.volumebutton, fill=True, margin_left=10)
+        self.volumebutton.disable()  # Currently not implemented properly
+
         self.monitorbutton = MonitorButton(self)
         horilayout.add(self.monitorbutton, fill=True, margin_left=10)
+        self.monitorbutton.disable()  # Currently not implemented properly
+
         self.fullscreentogglebutton = FullscreenToggleButton(self)
         horilayout.add(self.fullscreentogglebutton, fill=True, margin_left=10)
         self.startbutton = StartButton(self, dialog=False)

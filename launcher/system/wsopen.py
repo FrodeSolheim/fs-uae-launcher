@@ -80,22 +80,29 @@ SYSTEM_PREFS_WORKSPACE = "system:prefs/workspace"
 window_registry = {}
 
 
-def simple_window_cache(window_class, window_key):
+def simple_window_cache(window_class, window_key, window=None, parent=None):
     try:
-        window = window_registry[window_key]
+        win = window_registry[window_key]
     except LookupError:
         pass
     else:
-        window.raise_and_activate()
+        win.raise_and_activate()
         return
-    window = window_class(None)
+    win = window_class(None)
 
     def remove_window():
         del window_registry[window_key]
 
-    window_registry[window_key] = window
-    window.closed.connect(remove_window)
-    window.show()
+    window_registry[window_key] = win
+    win.closed.connect(remove_window)
+    win.show()
+    # if parent is not None:
+    #     print("\n\nCENTER ON PARENT\n\n")
+    #     window.center_on_parent()
+    if window is not None:
+        print("\n\nCENTER ON WINDOW\n\n")
+        win.center_on_window(window)
+
 
 
 def wsopen_workspace(*, parent=None):
@@ -125,29 +132,30 @@ def wsopen_guru2(*, parent=None):
     print(1 / 0)
 
 
-def wsopen_launcher(*, parent=None):
+def wsopen_launcher(*, parent=None, **kwargs):
     from launcher.ui2.launcher2window import Launcher2Window
 
     window = Launcher2Window(parent=parent)
     window.show()
 
 
-def wsopen_shell(path, args=None, **kwargs):
+def wsopen_shell(path, args=None, window=None, parent=None, **kwargs):
+    print(f"wsopen_shell {path} window={window} parent={parent}")
     def ShellWindowWrapper(parent):
         position, size = shell_window_geometry(path)
-        window = ShellWindow(None, path)
+        win = ShellWindow(parent, path)
         if position is None and size is None:
             pass
         elif position is None:
-            window.set_size(size)
+            win.set_size(size)
         else:
-            window.set_position_and_size(position, size)
-        return window
+            win.set_position_and_size(position, size)
+        return win
 
-    simple_window_cache(ShellWindowWrapper, path)
+    simple_window_cache(ShellWindowWrapper, path, window=window, parent=parent)
 
 
-def wsopen_prefs_window(name, *, parent=None):
+def wsopen_prefs_window(name, *, window=None, parent=None):
     print("wsopen_prefs_window", name)
     window_class = {
         SYSTEM_PREFS_ADVANCED: AdvancedPrefsWindow,
@@ -176,7 +184,7 @@ def wsopen_prefs_window(name, *, parent=None):
         SYSTEM_PREFS_WHDLOAD: WHDLoadPrefsWindow,
         SYSTEM_PREFS_WORKSPACE: WorkspacePrefsWindow,
     }[name]
-    simple_window_cache(window_class, name)
+    simple_window_cache(window_class, name, window=window, parent=parent)
 
 
 # def run_execute_dialog():
@@ -191,11 +199,12 @@ def wsopen_prefs_window(name, *, parent=None):
 #     #     wsopen(command)
 
 
-def wsopen(name, args=None, *, parent=None):
+def wsopen(name, args=None, *, window=None, parent=None):
     # FIXME: Case insensitive
-    print("WSOpen name={} parent={}".format(repr(name), repr(parent)))
+    print(f"WSOpen name={name} window={window} parent={parent}")
     kwargs = {
         "parent": parent,
+        "window": window
     }
 
     name_lower = name.lower()
@@ -228,24 +237,24 @@ def wsopen(name, args=None, *, parent=None):
     #     return wsopen_prefs_window(name, parent=parent)
 
     elif name_lower == "system:prefs/platforms":
-        return wsopen_shell(name_lower, **kwargs)
+        return wsopen_shell(name_lower, window=window, **kwargs)
 
     elif name_lower.startswith("system:prefs/platforms"):
-        return wsopen_prefs_window(name_lower, parent=parent)
+        return wsopen_prefs_window(name_lower, window=window)
 
     elif name_lower.startswith("system:prefs/"):
-        return wsopen_prefs_window(name_lower, parent=parent)
+        return wsopen_prefs_window(name_lower, window=window)
 
     elif name_lower == "system:tools/calculator":
-        simple_window_cache(CalculatorWindow, name_lower)
+        simple_window_cache(CalculatorWindow, name_lower, window=window)
         return
 
     elif name_lower == "system:tools/filescanner":
-        simple_window_cache(FileScannerWindow, name_lower)
+        simple_window_cache(FileScannerWindow, name_lower, window=window)
         return
 
     elif name_lower == "system:tools/databaseupdater":
-        simple_window_cache(DatabaseUpdaterWindow, name_lower)
+        simple_window_cache(DatabaseUpdaterWindow, name_lower, window=window)
         return
 
     elif name_lower == "system:utilities/checksum":
@@ -254,16 +263,16 @@ def wsopen(name, args=None, *, parent=None):
         return
 
     elif name_lower == "system:utilities/clock":
-        simple_window_cache(ClockWindow, name_lower)
+        simple_window_cache(ClockWindow, name_lower, window=window)
         return
 
     elif name_lower == "system:utilities/multiview":
-        simple_window_cache(MultiViewWindow, name_lower)
+        simple_window_cache(MultiViewWindow, name_lower, window=window)
         return
 
     elif name_lower == "special:execute":
         # run_execute_dialog()
-        simple_window_cache(ExecuteDialog, name_lower)
+        simple_window_cache(ExecuteDialog, name_lower, window=window)
         return
 
     elif shell_isdir(name_lower):

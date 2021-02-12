@@ -5,11 +5,11 @@ from io import BytesIO as StringIO
 
 import fsui
 from fsbc.task import Task
-from fsgs.archive import Archive
-from fsgs.filedatabase import FileDatabase
-from fsgs.amiga.rommanager import ROMManager
-from fsgs.context import fsgs
-from fsgs.ogd.client import OGDClient
+from fsgamesys.archive import Archive
+from fsgamesys.filedatabase import FileDatabase
+from fsgamesys.amiga.rommanager import ROMManager
+from fsgamesys.context import fsgs
+from fsgamesys.ogd.client import OGDClient
 from fsui.extra.iconheader import IconHeader
 from launcher.res import gettext
 from launcher.ui.widgets import CloseButton

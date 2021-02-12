@@ -3,11 +3,11 @@ import time
 import traceback
 
 import fsui
-from fsgs.Database import Database
-from fsgs.ogd.context import SynchronizerContext
-from fsgs.ogd.game_rating_synchronizer import GameRatingSynchronizer
-from fsgs.ogd.lists import ListsSynchronizer
-from fsgs.ogd.meta import MetaSynchronizer
+from fsgamesys.Database import Database
+from fsgamesys.ogd.context import SynchronizerContext
+from fsgamesys.ogd.game_rating_synchronizer import GameRatingSynchronizer
+from fsgamesys.ogd.lists import ListsSynchronizer
+from fsgamesys.ogd.meta import MetaSynchronizer
 from launcher.configuration_scanner import ConfigurationScanner
 from launcher.filescanner import FileScanner
 from launcher.gamescanner import GameScanner

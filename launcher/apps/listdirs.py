@@ -1,5 +1,5 @@
 from fsbc.settings import Settings
-from fsgs.FSGSDirectories import FSGSDirectories
+from fsgamesys.FSGSDirectories import FSGSDirectories
 
 """
 Debug script used to dump information about detected plugins

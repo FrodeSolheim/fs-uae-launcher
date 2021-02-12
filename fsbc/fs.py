@@ -2,8 +2,7 @@ import functools
 import os
 import sys
 
-# noinspection PyUnresolvedReferences
-from fsbc.system import windows, macosx
+from fscore.system import System
 
 # noinspection PyUnresolvedReferences
 from fsbc.user import get_data_dir
@@ -63,9 +62,9 @@ def get_app_data_dir(app=None):
 def get_app_config_dir(app=None):
     if not app:
         app = get_app_id()
-    if windows:
+    if System.windows:
         path = os.path.join(get_app_data_dir())
-    elif macosx:
+    elif System.macosx:
         path = os.path.join(get_home_dir(), "Library", "Preferences", app)
     else:
         path = os.path.join(get_home_dir(), ".config")

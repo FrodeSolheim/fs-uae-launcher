@@ -1,6 +1,6 @@
 from arcade.resources import resources
 import fsbc.settings as settings
-from fsgs.options.option import Option
+from fsgamesys.options.option import Option
 
 
 class ArcadeTheme:

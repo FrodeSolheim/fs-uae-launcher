@@ -1,4 +1,4 @@
-import fsbc.system
+from fscore.system import System
 import fsboot
 from fspy.decorators import memoize
 import fsui
@@ -89,11 +89,11 @@ class Skin(object):
             return None
         elif cls.fws():
             return None
-        elif fsbc.system.windows:
+        elif System.windows:
             # FIXME: Should really just check for Windows XP here, or maybe
             # just remove it altogether.
             return fsui.Color(LEVEL, LEVEL, LEVEL)
-        elif fsbc.system.macosx:
+        elif System.macos:
             return fsui.Color(237, 237, 237)
         return None
 

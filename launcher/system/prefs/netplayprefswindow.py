@@ -1,4 +1,4 @@
-from fsgs.options.option import Option
+from fsgamesys.options.option import Option
 from launcher.i18n import gettext
 from launcher.system.prefs.baseprefspanel import BasePrefsPanel
 from launcher.system.prefs.baseprefswindow import BasePrefsWindow

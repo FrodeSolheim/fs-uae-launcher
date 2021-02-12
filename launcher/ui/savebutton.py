@@ -4,10 +4,10 @@ import io
 import os
 import time
 
-from fsgs.Database import Database
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.context import fsgs
-from fsgs.filedatabase import FileDatabase
+from fsgamesys.Database import Database
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.context import fsgs
+from fsgamesys.filedatabase import FileDatabase
 from launcher.configuration_scanner import ConfigurationScanner
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig

@@ -1,6 +1,6 @@
 import sys
 
-from fsgs.plugins.pluginmanager import PluginManager
+from fsgamesys.plugins.pluginmanager import PluginManager
 
 """
 DOSBox-FS launcher script used for testing.

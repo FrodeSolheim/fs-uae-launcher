@@ -1,9 +1,10 @@
 import fsui
 from fsbc.settings import Settings
 from fsbc.util import unused
-from fsgs import openretro
-from fsgs.amiga.amiga import Amiga
-from fsgs.context import fsgs
+from fsgamesys import openretro
+from fsgamesys.product import Product
+from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.context import fsgs
 from launcher.context import get_config
 from launcher.helpers.cdmanager import CDManager
 from launcher.helpers.floppymanager import FloppyManager
@@ -66,16 +67,18 @@ class ModelGroup(fsui.Panel):
             heading_label = fsui.HeadingLabel(
                 self, gettext("Platform & Model")
             )
-            self.model_title_layout.add(heading_label, margin=10)
+            # self.model_title_layout.add(heading_label, margin=10)
             # platform_group = ConfigWidgetFactory(
             #     check=False, label=False).create(self, Option.PLATFORM)
             # self.model_title_layout.add(platform_group, margin_left=20)
             # Adding label to get the vertical spacing correct.
             # heading_label = fsui.HeadingLabel(self, "")
             # self.model_title_layout.add(heading_label, margin=10)
-        else:
+        elif Product.base_name == "FS-UAE":
             heading_label = fsui.HeadingLabel(self, gettext("Amiga Model"))
-            self.model_title_layout.add(heading_label, margin=10)
+        else:
+            heading_label = fsui.HeadingLabel(self, gettext("Model"))
+        self.model_title_layout.add(heading_label, margin=10)
 
         self.model_title_layout.add_spacer(0, expand=True)
         self.model_title_layout.add(

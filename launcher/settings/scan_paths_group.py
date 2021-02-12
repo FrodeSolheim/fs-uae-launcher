@@ -1,6 +1,6 @@
 import fsui
 from fsbc.util import unused
-from fsgs.FSGSDirectories import FSGSDirectories
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.ui.IconButton import IconButton

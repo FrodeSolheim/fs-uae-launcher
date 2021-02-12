@@ -4,7 +4,7 @@ import traceback
 import zlib
 from fsbc.resources import Resources
 import fsui
-from fsgs.FSGSDirectories import FSGSDirectories
+from fsgamesys.FSGSDirectories import FSGSDirectories
 
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext

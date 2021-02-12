@@ -1,5 +1,5 @@
 import fsui
-from fsgs.plugins.pluginmanager import PluginManager
+from fsgamesys.plugins.pluginmanager import PluginManager
 from launcher.res import gettext
 from launcher.settings.settings_page import SettingsPage
 

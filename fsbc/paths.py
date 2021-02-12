@@ -4,7 +4,7 @@ import sys
 import unicodedata
 
 import fsboot
-from fsbc.system import windows, macosx
+from fscore.system import System
 
 
 class Paths(object):
@@ -106,7 +106,7 @@ class Paths(object):
         # is already correct. The reason for not simply returning the path
         # as-is on Linux, is that this function can find files in directories
         # (portable version) when the directory is specified with wrong case.
-        if not windows and not macosx:
+        if not System.windows and not System.macos:
             if os.path.exists(path):
                 return path
 
@@ -118,7 +118,7 @@ class Paths(object):
         elif drive:
             # on Windows, add / to make drive a valid path
             drive += "/"
-        if len(p) > 1 and (p.endswith("/") or (windows and p.endswith("\\"))):
+        if len(p) > 1 and (p.endswith("/") or (System.windows and p.endswith("\\"))):
             removed_separator = p[-1]
             p = p[:-1]
 
@@ -140,7 +140,7 @@ class Paths(object):
         for part in parts:
             part_compare = part
             part_compare = part_compare.lower()
-            if macosx:
+            if System.macos:
                 part_compare = unicodedata.normalize("NFC", part_compare)
             # print("part is", part)
             if os.path.isdir(combined):
@@ -150,7 +150,7 @@ class Paths(object):
                     #     print(os.listdir(combined))
                     name_compare = name
                     name_compare = name_compare.lower()
-                    if macosx:
+                    if System.macos:
                         name_compare = unicodedata.normalize(
                             "NFC", name_compare
                         )

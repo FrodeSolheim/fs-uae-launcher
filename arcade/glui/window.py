@@ -6,14 +6,14 @@ from collections import deque
 
 from arcade.gamecentersettings import ArcadeSettings
 from fsbc import settings
-from fsgs.FSGSDirectories import FSGSDirectories
+from fsgamesys.FSGSDirectories import FSGSDirectories
 
 from arcade.gamecenter import GameCenter
 from arcade.resources import resources
-from fsbc.system import windows
-from fsgs.options.option import Option
-from fsgs.platform import PlatformHandler
-from fsgs.util.gamenameutil import GameNameUtil
+from fscore.system import System
+from fsgamesys.options.option import Option
+from fsgamesys.platforms.platform import PlatformHandler
+from fsgamesys.util.gamenameutil import GameNameUtil
 
 # from arcade.main import Main
 from arcade.resources import logger
@@ -341,7 +341,7 @@ def show():
     # fade_from is used on init_display, so we initialize this
     # color here. Set alpha to 2.0 to force 1 second of solid
     # color in combination with 2 sec. animation below
-    if False and windows and not Settings.fullscreen_menu:
+    if False and System.windows and not Settings.fullscreen_menu:
         State.get().fade_from = (1.0, 1.0, 1.0, 2.0)
         State.get().fade_to = (1.0, 1.0, 1.0, 0.0)
     else:

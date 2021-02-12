@@ -1,4 +1,4 @@
-from fsgs.context import default_context
+from fsgamesys.context import default_context
 from launcher.system.classes.window import Window
 from launcher.system.classes.windowresizehandle import WindowResizeHandle
 from launcher.system.exceptionhandler import exceptionhandler

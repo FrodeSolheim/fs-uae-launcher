@@ -8,8 +8,8 @@ from arcade.glui.imageloader import ImageLoader
 from arcade.glui.input import InputHandler
 from arcade.ui.event import Event
 from arcade.ui.gl_widget import GLWidget
-from fsbc.settings import Settings
-from fsbc.system import macosx
+from fscore.settings import Settings
+from fscore.system import System
 from fsui.qt import init_qt, Qt, QWidget, QKeyEvent
 
 CURSOR_SHOW_DURATION = 5.0
@@ -41,7 +41,7 @@ def fullscreen():
     #     return False
     value = check_argument("fullscreen")
     if not value:
-        value = Settings.instance().get("arcade_fullscreen")
+        value = Settings.get("arcade_fullscreen")
     return value != "0"
 
 
@@ -55,14 +55,14 @@ def maximized():
     if value:
         return True
     else:
-        value = Settings.instance().get("arcade_maximized")
+        value = Settings.get("arcade_maximized")
         return value == "1"
 
 
 def monitor():
     value = check_argument("monitor")
     if not value:
-        value = Settings.instance().get("monitor")
+        value = Settings.get("monitor")
     if not value:
         value = "middle-left"
     return value
@@ -143,8 +143,8 @@ class ArcadeWindow(fsui.Window):
         if fullscreen():
             geometry = screen_geometry()
             self.set_fullscreen(True, geometry)
-            Settings.instance().set("__cursor_x", geometry[2])
-            Settings.instance().set("__cursor_y", geometry[3])
+            Settings.set("__cursor_x", geometry[2])
+            Settings.set("__cursor_y", geometry[3])
         elif maximized():
             x, y, w, h = screen_geometry()
             self.set_maximized(True, (x, y, 960, 540))
@@ -298,7 +298,7 @@ class QtWindow(QWidget):
 
     def keyPressEvent(self, event):
         def modifier():
-            if macosx:
+            if System.macos:
                 # This should correspond to the Cmd key(s) on OS X
                 return int(event.modifiers()) & Qt.ControlModifier
             else:

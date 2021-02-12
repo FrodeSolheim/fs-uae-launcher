@@ -14,7 +14,7 @@ from launcher.ws.wsiconwidget import WSIconWidget
 class ShellWindow(Window):
     def __init__(self, parent, path):
         self.path = shell_realcase(path)
-        print("ShellWindow path =", self.path)
+        print("ShellWindow path =", self.path, "parent =", parent)
         name = shell_basename(self.path)
         if name.endswith(":"):
             name = name[:-1]

@@ -11,7 +11,7 @@ from typing import Dict, Tuple
 import fsboot
 from fsbc.signal import Signal
 from fsbc.util import Version
-from fspy.decorators import deprecated
+from fscore.deprecated import deprecated
 from launcher.version import VERSION
 
 
@@ -31,6 +31,7 @@ class Settings(object):
         self.app = app
         self.path = path
         self.values = {}  # type: Dict[str, str]
+        self.defaults = {}  # type: Dict[str, str]
         self._provider = SettingsProvider()
         self._loaded = False
         self._loading = False
@@ -43,10 +44,14 @@ class Settings(object):
     def set_provider(self, provider):
         self._provider = provider
 
-    def get(self, key: str, default="") -> str:
+    def get(self, key: str, default: str = "") -> str:
         if not self._loading:
             self.load()
-        return self.values.get(key, default)
+        if not key in self.values:
+            if key in self.defaults:
+                return self.defaults[key]
+            return default
+        return self.values[key]
 
     def set(self, key: str, value: str) -> None:
         if not self._loading:

@@ -3,7 +3,7 @@ import subprocess
 import sys
 import traceback
 
-from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
+from fsgamesys.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
@@ -413,7 +413,7 @@ class DeviceManager:
         for p in [1, 2, 3, 4]:
             auto_fill(p, "mouse")
         # FIXME: Hack, circular dependency
-        from fsgs.platform import Platform
+        from fsgamesys.platforms.platform import Platform
 
         if platform == Platform.C64:
             port_order = [2, 1, 3, 4]

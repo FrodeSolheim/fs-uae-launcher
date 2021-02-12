@@ -1,7 +1,7 @@
-from fsgs.Database import Database
-from fsgs.config.configloader import ConfigLoader
-from fsgs.context import fsgs
-from fsgs.options.constants2 import (
+from fsgamesys.Database import Database
+from fsgamesys.config.configloader import ConfigLoader
+from fsgamesys.context import fsgs
+from fsgamesys.options.constants2 import (
     PARENT_UUID,
     VARIANT_RATING__,
     VARIANT_UUID__,

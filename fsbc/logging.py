@@ -82,7 +82,7 @@ def setup_logging(log_name):
     #         sys.stderr = NullOutput()
 
     # FIXME: remove dependency on fsgs here!
-    from fsgs.FSGSDirectories import FSGSDirectories
+    from fsgamesys.FSGSDirectories import FSGSDirectories
 
     logs_dir = FSGSDirectories.get_logs_dir()
     log_file = os.path.join(logs_dir, log_name)

@@ -1,5 +1,5 @@
 import fsui
-from fsgs.platform import Platform
+from fsgamesys.platforms.platform import Platform
 from launcher.option import Option
 from launcher.settings.option_ui import OptionUI
 

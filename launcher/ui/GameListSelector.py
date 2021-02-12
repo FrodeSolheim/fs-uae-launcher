@@ -2,8 +2,8 @@ import logging
 
 import fsui
 from fsbc.application import app
-from fsgs.Database import Database
-from fsgs.options.option import Option
+from fsgamesys.Database import Database
+from fsgamesys.options.option import Option
 from launcher.i18n import gettext
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 

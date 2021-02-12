@@ -1,6 +1,6 @@
 import fsui
-from fsgs.amiga.amiga import Amiga
-from fsgs.context import fsgs
+from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.context import fsgs
 from launcher.i18n import gettext
 from launcher.launcher_signal import LauncherSignal
 from launcher.scanner import Scanner

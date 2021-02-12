@@ -1,6 +1,6 @@
 import os
 
-from fsgs.util.gamenameutil import GameNameUtil
+from fsgamesys.util.gamenameutil import GameNameUtil
 
 
 class DiskUtil(object):

@@ -4,16 +4,17 @@ import time
 from binascii import hexlify
 from functools import lru_cache
 
-from fsgs import openretro, OPENRETRO_DEFAULT_DATABASES
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.GameDatabase import IncompleteGameException
-from fsgs.GameDatabaseClient import GameDatabaseClient
-from fsgs.context import fsgs
-from fsgs.filedatabase import FileDatabase
-from fsgs.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
-from fsgs.ogd.locker import LockerSynchronizer
-from fsgs.options.option import Option
-from fsgs.util.gamenameutil import GameNameUtil
+from fsgamesys import OPENRETRO_DEFAULT_DATABASES
+from fsgamesys.product import Product
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.GameDatabase import IncompleteGameException
+from fsgamesys.GameDatabaseClient import GameDatabaseClient
+from fsgamesys.context import fsgs
+from fsgamesys.filedatabase import FileDatabase
+from fsgamesys.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
+from fsgamesys.ogd.locker import LockerSynchronizer
+from fsgamesys.options.option import Option
+from fsgamesys.util.gamenameutil import GameNameUtil
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 
@@ -28,7 +29,7 @@ class GameDatabaseIterator:
     def _check_platform(self, platform_option):
         if LauncherSettings.get(platform_option) == "1":
             return True
-        if platform_option in [
+        if Product.includes_amiga() and platform_option in [
             Option.AMIGA_DATABASE,
             Option.CD32_DATABASE,
             Option.CDTV_DATABASE,
@@ -36,7 +37,7 @@ class GameDatabaseIterator:
             if LauncherSettings.get(platform_option) != "0":
                 return True
             return False
-        if openretro and platform_option in OPENRETRO_DEFAULT_DATABASES:
+        if Product.is_openretro() and platform_option in OPENRETRO_DEFAULT_DATABASES:
             if LauncherSettings.get(platform_option) == "0":
                 return False
             return True
@@ -91,14 +92,16 @@ class GameDatabaseIterator:
             yield "SMS", self.fsgc.game_database("SMS")
         if self._check_platform(Option.SNES_DATABASE):
             yield "SNES", self.fsgc.game_database("SNES")
+        if self._check_platform(Option.SPECTRUM_DATABASE):
+            yield "Spectrum", self.fsgc.game_database("Spectrum")
         if self._check_platform(Option.ST_DATABASE):
             yield "AtariST", self.fsgc.game_database("AtariST")
         if self._check_platform(Option.TG16_DATABASE):
             yield "TG16", self.fsgc.game_database("TG16")
         if self._check_platform(Option.TGCD_DATABASE):
             yield "TGCD", self.fsgc.game_database("TGCD")
-        if self._check_platform(Option.ZXS_DATABASE):
-            yield "ZXS", self.fsgc.game_database("ZXS")
+        # if self._check_platform(Option.ZXS_DATABASE):
+        #     yield "ZXS", self.fsgc.game_database("ZXS")
         if custom:
             for name in self.custom_database_names():
                 yield name, self.fsgc.game_database(name)
@@ -141,9 +144,11 @@ class GameScanner(object):
             self.on_status((title, status))
 
     def update_game_database(self):
+        print("update_game_database:")
         for database_name, game_database in GameDatabaseIterator(
             self.fsgc
         ).game_databases(custom=False):
+            print(" - {}".format(database_name))
             with game_database:
                 self._update_game_database(database_name, game_database)
             if self.stop_check():
@@ -152,7 +157,7 @@ class GameScanner(object):
         #     self._update_game_database(game_database)
         #     if self.stop_check():
         #         return
-
+        print("update_game_database done")
         synchronizer = LockerSynchronizer(
             self.context, on_status=self.on_status, stop_check=self.stop_check
         )

@@ -1,8 +1,8 @@
 from fsbc.task import Task
-from fsgs.Database import Database
-from fsgs.LockerDatabase import LockerDatabase
-from fsgs.context import fsgs
-from fsgs.filedatabase import FileDatabase
+from fsgamesys.Database import Database
+from fsgamesys.LockerDatabase import LockerDatabase
+from fsgamesys.context import fsgs
+from fsgamesys.filedatabase import FileDatabase
 from launcher.i18n import gettext
 
 

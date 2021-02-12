@@ -1,9 +1,10 @@
-from fsgs import openretro
-from fsgs.Database import Database
-from fsgs.config.configloader import ConfigLoader
-from fsgs.options.constants2 import PARENT_UUID
-from fsgs.platform import PlatformHandler
-from fsgs.util.gamenameutil import GameNameUtil
+from fsgamesys import openretro
+from fsgamesys.product import Product
+from fsgamesys.Database import Database
+from fsgamesys.config.configloader import ConfigLoader
+from fsgamesys.options.constants2 import PARENT_UUID
+from fsgamesys.platforms.platform import PlatformHandler
+from fsgamesys.util.gamenameutil import GameNameUtil
 from fsui import VerticalItemView, Image, Color, Font
 from fsui import get_window
 from launcher.context import get_config, get_gscontext
@@ -190,7 +191,7 @@ class ConfigListView(VerticalItemView):
     def get_item_text(self, index):
         item = self.items[index]
         name = item[str("name")]
-        platform = item[str("platform")] or ""
+        platform_id = item[str("platform")] or ""
         if "[" in name:
             name, extra = name.split("[", 1)
             name = name.strip()
@@ -199,14 +200,14 @@ class ConfigListView(VerticalItemView):
             extra = ""
         sep = " \u00b7 "
         name = name.replace("\n", " \u00b7 ")
-        if platform == "Amiga" and not openretro:
+        if platform_id == Product.default_platform_id:
             platform = ""
-        elif platform:
-            platform = sep + PlatformHandler.get_platform_name(platform)
-            # if not extra:
-            #     sep = ""
-            # return "{0}{1}{2}{3}".format(name, sep, extra, "")
-        # else:
+        elif platform_id == "Amiga" and not openretro:
+            platform = ""
+        elif platform_id:
+            platform = sep + PlatformHandler.get_platform_name(platform_id)
+        else:
+            platform = ""
         text = "{0}{1}{2}".format(name, extra, platform) or "Missing Name"
         return text
 

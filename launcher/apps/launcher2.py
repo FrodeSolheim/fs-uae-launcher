@@ -3,8 +3,8 @@ import sys
 import traceback
 
 from fsboot import executable_dir
-from fsbc.settings import Settings
-from fsgs.options.constants import WORKSPACE_ON_STARTUP
+from fscore.settings import Settings
+from fsgamesys.options.constants import WORKSPACE_ON_STARTUP
 from fsui.qt import QFontDatabase
 from fsui.qt import init_qt
 from launcher.context import get_global_theme
@@ -14,7 +14,6 @@ from launcher.system.classes.theme import initialize_qt_style
 from launcher.system.exceptionhandler import install_exception_display_function
 from launcher.system.exceptionhandler import software_failure
 from launcher.system.wsopen import wsopen
-from fsbc.system import macosx
 
 
 class Application:
@@ -90,7 +89,7 @@ def _app_main_2(qapplication, appname):
     app = Application()
 
     if appname.lower().endswith(":launcher"):
-        if Settings.instance().get(WORKSPACE_ON_STARTUP) == "1":
+        if Settings.get(WORKSPACE_ON_STARTUP) == "1":
             wsopen("C:LoadWB")
 
     if appname:

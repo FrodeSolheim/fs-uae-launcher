@@ -1,7 +1,8 @@
 import os
 
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.directories import temp_directory
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.directories import temp_directory
+from fsgamesys.product import Product
 from launcher.ws.shellicon import ShellIcon
 
 trace = True
@@ -43,6 +44,12 @@ def shell_icons(path):
     pass
 
 
+def entries(obj):
+    if callable(obj["entries"]):
+        return obj["entries"]()
+    return obj["entries"]
+
+
 def shell_isdir(path):
     """
     >>> shell_isdir('System:')
@@ -57,7 +64,7 @@ def shell_isdir(path):
         for part in parts:
             part = part.lower()
             try:
-                obj = obj["entries"][part]
+                obj = entries(obj)[part]
             except KeyError:
                 return False
         return "entries" in obj
@@ -79,8 +86,8 @@ def shell_listdir(path):
         obj = vfs
         for part in parts:
             part = part.lower()
-            obj = obj["entries"][part]
-        result = [entry["name"] for entry in obj["entries"].values()]
+            obj = entries(obj)[part]
+        result = [entry["name"] for entry in entries(obj).values()]
         return list(sorted(result))
     else:
         volume_dir = volume_host_path(volume)
@@ -154,7 +161,7 @@ def shell_realcase(path):
                 result.append("/")
             part = part.lower()
             try:
-                obj = obj["entries"][part]
+                obj = entries(obj)[part]
             except KeyError:
                 return None
             result.append(obj["name"])
@@ -271,7 +278,7 @@ def shell_window_geometry(path):
     for part in parts:
         part = part.lower()
         try:
-            obj = obj["entries"][part]
+            obj = entries(obj)[part]
         except KeyError:
             return (None, None)
     if "size" in obj:
@@ -308,111 +315,202 @@ vfs_platforms = {
     "name": "Platforms",
     # ...
     "entries": {
-        "amstradcpc": {"name": "AmstradCPC",},
+        "amstradcpc": {
+            "name": "AmstradCPC",
+        },
         "amstradcpc.info": {"name": "AmstradCPC.info"},
-        "arcade": {"name": "Arcade",},
+        "arcade": {
+            "name": "Arcade",
+        },
         "arcade.info": {"name": "Arcade.info"},
-        "atari7800": {"name": "Atari7800",},
+        "atari7800": {
+            "name": "Atari7800",
+        },
         "atari7800.info": {"name": "Atari7800.info"},
-        "atarist": {"name": "AtariST",},
+        "atarist": {
+            "name": "AtariST",
+        },
         "atarist.info": {"name": "AtariST.info"},
-        "commodore64": {"name": "Commodore64",},
+        "commodore64": {
+            "name": "Commodore64",
+        },
         "commodore64.info": {"name": "Commodore64.info"},
-        "dos": {"name": "DOS",},
+        "dos": {
+            "name": "DOS",
+        },
         "dos.info": {"name": "DOS.info"},
-        "gameboy": {"name": "GameBoy",},
+        "gameboy": {
+            "name": "GameBoy",
+        },
         "gameboy.info": {"name": "GameBoy.info"},
-        "gameboyadvance": {"name": "GameBoyAdvance",},
+        "gameboyadvance": {
+            "name": "GameBoyAdvance",
+        },
         "gameboyadvance.info": {"name": "GameBoyAdvance.info"},
-        "gameboycolor": {"name": "GameBoyColor",},
+        "gameboycolor": {
+            "name": "GameBoyColor",
+        },
         "gameboycolor.info": {"name": "GameBoyColor.info"},
-        "mastersystem": {"name": "MasterSystem",},
+        "mastersystem": {
+            "name": "MasterSystem",
+        },
         "mastersystem.info": {"name": "MasterSystem.info"},
-        "megadrive": {"name": "MegaDrive",},
+        "megadrive": {
+            "name": "MegaDrive",
+        },
         "megadrive.info": {"name": "MegaDrive.info"},
-        "neogeo": {"name": "Neo-Geo",},
+        "neogeo": {
+            "name": "Neo-Geo",
+        },
         "neogeo.info": {"name": "Neo-Geo.info"},
-        "nintendo": {"name": "Nintendo",},
+        "nintendo": {
+            "name": "Nintendo",
+        },
         "nintendo.info": {"name": "Nintendo.info"},
-        "playstation": {"name": "PlayStation",},
+        "playstation": {
+            "name": "PlayStation",
+        },
         "playstation.info": {"name": "PlayStation.info"},
-        "supernintendo": {"name": "SuperNintendo",},
+        "supernintendo": {
+            "name": "SuperNintendo",
+        },
         "supernintendo.info": {"name": "SuperNintendo.info"},
-        "turbografx-16": {"name": "TurboGrafx-16",},
+        "turbografx-16": {
+            "name": "TurboGrafx-16",
+        },
         "turbografx-16.info": {"name": "TurboGrafx-16.info"},
-        "turbografx-cd": {"name": "TurboGrafx-CD",},
+        "turbografx-cd": {
+            "name": "TurboGrafx-CD",
+        },
         "turbografx-cd.info": {"name": "TurboGrafx-CD.info"},
-        "zxspectrum": {"name": "ZXSpectrum",},
+        "zxspectrum": {
+            "name": "ZXSpectrum",
+        },
         "zxspectrum.info": {"name": "ZXSpectrum.info"},
     },
 }
 
+
+def vfs_prefs_entries():
+    result = {
+        "advanced": {
+            "name": "Advanced",
+        },
+        "advanced.info": {"name": "Advanced.info"},
+        "privacy": {
+            "name": "Privacy",
+        },
+        "privacy.info": {"name": "Privacy.info"},
+    }
+    if Product.is_fs_uae():
+        result.update(
+            {
+                # # self.iconview.add_icon(label="Input")
+                # # FIXME: Should be a tool or utility instead?
+                # # self.iconview.add_icon(label="Janitor")
+                "appearance": {
+                    "name": "Appearance",
+                },
+                "appearance.info": {"name": "Appearance.info"},
+                "arcade": {
+                    "name": "Arcade",
+                },
+                "arcade.info": {"name": "Arcade.info"},
+                # "backup": {"name": "Backup",},
+                # "backup.info": {"name": "Backup.info"},
+                "controller": {
+                    "name": "Controller",
+                },
+                "controller.info": {"name": "Controller.info"},
+                # "directory": {"name": "Directory",},
+                # "directory.info": {"name": "Directory.info"},
+                "filedatabase": {
+                    "name": "FileDatabase",
+                },
+                "filedatabase.info": {"name": "FileDatabase.info"},
+                # "firmware": {"name": "Firmware",},
+                # "firmware.info": {"name": "Firmware.info"},
+                # "font": {"name": "Font",},
+                # "font.info": {"name": "Font.info"},
+                "gamedatabase": {
+                    "name": "GameDatabase",
+                },
+                "gamedatabase.info": {"name": "GameDatabase.info"},
+                "keyboard": {
+                    "name": "Keyboard",
+                },
+                "keyboard.info": {"name": "Keyboard.info"},
+                "locale": {
+                    "name": "Locale",
+                },
+                "locale.info": {"name": "Locale.info"},
+                "logging": {
+                    "name": "Logging",
+                },
+                "logging.info": {"name": "Logging.info"},
+                "midi": {
+                    "name": "MIDI",
+                },
+                "midi.info": {"name": "MIDI.info"},
+                "mouse": {
+                    "name": "Mouse",
+                },
+                "mouse.info": {"name": "Mouse.info"},
+                # "netplay": {"name": "NetPlay",},
+                # "netplay.info": {"name": "NetPlay.info"},
+                "opengl": {
+                    "name": "OpenGL",
+                },
+                "opengl.info": {"name": "OpenGL.info"},
+                "openretro": {
+                    "name": "OpenRetro",
+                },
+                "openretro.info": {"name": "OpenRetro.info"},
+                # "overscan": {"name": "Overscan",},
+                # "overscan.info": {"name": "Overscan.info"},
+                "platforms": vfs_platforms,
+                "platforms.info": {"name": "Platforms.info"},
+                "plugin": {
+                    "name": "Plugin",
+                },
+                "plugin.info": {"name": "Plugin.info"},
+                "power": {
+                    "name": "Power",
+                },
+                "power.info": {"name": "Power.info"},
+                "screenmode": {
+                    "name": "ScreenMode",
+                },
+                "screenmode.info": {"name": "ScreenMode.info"},
+                "sound": {
+                    "name": "Sound",
+                },
+                "sound.info": {"name": "Sound.info"},
+                "storage": {
+                    "name": "Storage",
+                },
+                "storage.info": {"name": "Storage.info"},
+                "video": {
+                    "name": "Video",
+                },
+                "video.info": {"name": "Video.info"},
+                "whdload": {
+                    "name": "WHDLoad",
+                },
+                "whdload.info": {"name": "WHDLoad.info"},
+                "workspace": {
+                    "name": "Workspace",
+                },
+                "workspace.info": {"name": "Workspace.info"},
+            }
+        )
+    return result
+
+
 vfs_prefs = {
     "name": "Prefs",
     # ...
-    "entries": {
-        # # self.iconview.add_icon(label="Input")
-        # # FIXME: Should be a tool or utility instead?
-        # # self.iconview.add_icon(label="Janitor")
-        "advanced": {"name": "Advanced",},
-        "advanced.info": {"name": "Advanced.info"},
-        "appearance": {"name": "Appearance",},
-        "appearance.info": {"name": "Appearance.info"},
-        "arcade": {"name": "Arcade",},
-        "arcade.info": {"name": "Arcade.info"},
-        # "backup": {"name": "Backup",},
-        # "backup.info": {"name": "Backup.info"},
-        "controller": {"name": "Controller",},
-        "controller.info": {"name": "Controller.info"},
-        # "directory": {"name": "Directory",},
-        # "directory.info": {"name": "Directory.info"},
-        "filedatabase": {"name": "FileDatabase",},
-        "filedatabase.info": {"name": "FileDatabase.info"},
-        # "firmware": {"name": "Firmware",},
-        # "firmware.info": {"name": "Firmware.info"},
-        # "font": {"name": "Font",},
-        # "font.info": {"name": "Font.info"},
-        "gamedatabase": {"name": "GameDatabase",},
-        "gamedatabase.info": {"name": "GameDatabase.info"},
-        "keyboard": {"name": "Keyboard",},
-        "keyboard.info": {"name": "Keyboard.info"},
-        "locale": {"name": "Locale",},
-        "locale.info": {"name": "Locale.info"},
-        "logging": {"name": "Logging",},
-        "logging.info": {"name": "Logging.info"},
-        "midi": {"name": "MIDI",},
-        "midi.info": {"name": "MIDI.info"},
-        "mouse": {"name": "Mouse",},
-        "mouse.info": {"name": "Mouse.info"},
-        # "netplay": {"name": "NetPlay",},
-        # "netplay.info": {"name": "NetPlay.info"},
-        "opengl": {"name": "OpenGL",},
-        "opengl.info": {"name": "OpenGL.info"},
-        "openretro": {"name": "OpenRetro",},
-        "openretro.info": {"name": "OpenRetro.info"},
-        # "overscan": {"name": "Overscan",},
-        # "overscan.info": {"name": "Overscan.info"},
-        "platforms": vfs_platforms,
-        "platforms.info": {"name": "Platforms.info"},
-        "plugin": {"name": "Plugin",},
-        "plugin.info": {"name": "Plugin.info"},
-        "power": {"name": "Power",},
-        "power.info": {"name": "Power.info"},
-        "privacy": {"name": "Privacy",},
-        "privacy.info": {"name": "Privacy.info"},
-        "screenmode": {"name": "ScreenMode",},
-        "screenmode.info": {"name": "ScreenMode.info"},
-        "sound": {"name": "Sound",},
-        "sound.info": {"name": "Sound.info"},
-        "storage": {"name": "Storage",},
-        "storage.info": {"name": "Storage.info"},
-        "video": {"name": "Video",},
-        "video.info": {"name": "Video.info"},
-        "whdload": {"name": "WHDLoad",},
-        "whdload.info": {"name": "WHDLoad.info"},
-        "workspace": {"name": "Workspace",},
-        "workspace.info": {"name": "Workspace.info"},
-    },
+    "entries": vfs_prefs_entries,
 }
 
 vfs_tools = {
@@ -420,11 +518,17 @@ vfs_tools = {
     "size": {"width": 400, "height": 300},
     # ...
     "entries": {
-        "calculator": {"name": "Calculator",},
+        "calculator": {
+            "name": "Calculator",
+        },
         "calculator.info": {"name": "Calculator.info"},
-        "databaseupdater": {"name": "DatabaseUpdater",},
+        "databaseupdater": {
+            "name": "DatabaseUpdater",
+        },
         "databaseupdater.info": {"name": "DatabaseUpdater.info"},
-        "filescanner": {"name": "FileScanner",},
+        "filescanner": {
+            "name": "FileScanner",
+        },
         "filescanner.info": {"name": "FileScanner.info"},
     },
 }
@@ -434,11 +538,17 @@ vfs_utilities = {
     "size": {"width": 400, "height": 200},
     # ...
     "entries": {
-        "checksum": {"name": "Checksum",},
+        "checksum": {
+            "name": "Checksum",
+        },
         "checksum.info": {"name": "Checksum.info"},
-        "clock": {"name": "Clock",},
+        "clock": {
+            "name": "Clock",
+        },
         "clock.info": {"name": "Clock.info"},
-        "multiview": {"name": "MultiView",},
+        "multiview": {
+            "name": "MultiView",
+        },
         "multiview.info": {"name": "MultiView.info"},
     },
 }
@@ -447,9 +557,13 @@ vfs_system = {
     "name": "System:",
     "size": {"width": 600, "height": 300},
     "entries": {
-        "arcade": {"name": "Arcade",},
+        "arcade": {
+            "name": "Arcade",
+        },
         "arcade.info": {"name": "Arcade.info"},
-        "launcher": {"name": "Launcher",},
+        "launcher": {
+            "name": "Launcher",
+        },
         "launcher.info": {"name": "Launcher.info"},
         "prefs": vfs_prefs,
         "prefs.info": {"name": "Prefs.info"},

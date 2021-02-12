@@ -1,5 +1,5 @@
 from fsui import Panel
-from fsgs.options.constants import WORKSPACE_WINDOW_TITLE
+from fsgamesys.options.constants import WORKSPACE_WINDOW_TITLE
 from launcher.i18n import gettext
 from launcher.system.prefs.baseprefspanel import BasePrefsPanel
 from launcher.system.prefs.baseprefswindow import BasePrefsWindow

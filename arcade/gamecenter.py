@@ -1,14 +1,14 @@
 import os
 
-from fsbc.system import windows, macosx
+from fscore.system import System
 
 
 class GameCenter(object):
     @classmethod
     def register_user_activity(cls):
-        if windows:
+        if System.windows:
             pass
-        elif macosx:
+        elif System.macos:
             pass
         else:
             path = "/tmp/fs-game-center-activity"

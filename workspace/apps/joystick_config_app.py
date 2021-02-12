@@ -8,10 +8,10 @@ from io import TextIOWrapper
 
 import fsui
 from fsbc.application import Application
-from fsbc.system import platform
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.fsuaedevicehelper import FSUAEDeviceHelper
-from fsgs.input.inputdevice import InputDevice
+from fscore.system import System
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.amiga.fsuaedevicehelper import FSUAEDeviceHelper
+from fsgamesys.input.inputdevice import InputDevice
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.ui.skin import Skin
@@ -335,7 +335,7 @@ class JoystickConfigWindow(fsui.Window):
                     name += "_"
         name = name.strip("_")
         return "{0}_{1}_{2}_{3}_{4}_{5}".format(
-            name, buttons, axes, hats, balls, platform
+            name, buttons, axes, hats, balls, System.platform
         )
 
     def get_joystick_guid(self):
@@ -477,11 +477,11 @@ class JoystickConfigWindow(fsui.Window):
         name = name.replace(",", "%2C")
         # if device_make or device_model:
         #     name = "{} {}".format(device_make, device_model).strip()
-        if platform == "linux":
+        if System.linux:
             platform_str = "Linux"
-        elif platform == "macos":
+        elif System.macos:
             platform_str = "Mac OS X"
-        elif platform == "windows":
+        elif System.windows:
             platform_str = "Windows"
         else:
             platform_str = "Unknown"
@@ -526,7 +526,7 @@ class JoystickConfigWindow(fsui.Window):
         config = [
             "[fs-uae-controller]",
             "name = {}".format(device_name),
-            "platform = {}".format(platform),
+            "platform = {}".format(System.platform),
             "",
             "[device]",
             # "make = {}".format(device_make),

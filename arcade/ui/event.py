@@ -1,7 +1,7 @@
 from functools import lru_cache
 
-from fsgs.util import sdl2
-from fsbc.system import macosx
+from fsgamesys.util import sdl2
+from fscore.system import System
 from fsui.qt import Qt, QEvent
 
 
@@ -71,7 +71,7 @@ class Event:
 
 def get_key(ev):
     print("Qt key:", ev.key(), int(ev.modifiers()), Qt.KeypadModifier)
-    if macosx:
+    if System.macos:
         # FIXME: TODO: CHECK
         # if ev.key() == Qt.Key_Meta:
         #     print("Control key, native virtual code:", ev.nativeVirtualCode())
@@ -93,7 +93,7 @@ def get_key(ev):
     # On OS X, the KeypadModifier value will also be set when an arrow
     # key is pressed as the arrow keys are considered part of the keypad.
     # http://doc.qt.io/qt-5/qt.html#KeyboardModifier-enum
-    macos_arrow_key = macosx and ev.key() in [
+    macos_arrow_key = System.macos and ev.key() in [
         Qt.Key_Left,
         Qt.Key_Right,
         Qt.Key_Up,

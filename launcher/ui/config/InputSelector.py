@@ -1,7 +1,7 @@
 import sys
 
 import fsui
-from fsgs.platform import Platform
+from fsgamesys.platforms.platform import Platform
 from launcher.context import get_config
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext

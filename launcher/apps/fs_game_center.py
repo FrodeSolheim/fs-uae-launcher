@@ -8,7 +8,7 @@ def app_main():
 
     application = Application("fs-game-center")
 
-    from fsgs.http.server import http_server_main
+    from fsgamesys.http.server import http_server_main
     import threading
 
     def http_server_thread():
@@ -23,7 +23,7 @@ def app_main():
 
         ctypes.CDLL("libGL.so.1", ctypes.RTLD_GLOBAL)
 
-    from fsgs.ui.qwindow import GameCenterView
+    from fsgamesys.ui.qwindow import GameCenterView
 
     window = GameCenterView()
     from fsui.qt import Qt

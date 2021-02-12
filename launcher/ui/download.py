@@ -6,10 +6,10 @@ import fsui
 from fsbc.application import app
 from fsbc.signal import Signal
 from fsbc.task import Task
-from fsgs.Database import Database
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.download import Downloader
-from fsgs.ogd.context import SynchronizerContext
+from fsgamesys.Database import Database
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.download import Downloader
+from fsgamesys.ogd.context import SynchronizerContext
 from fsui.extra.iconheader import IconHeader
 from launcher.filescanner import FileScanner
 from launcher.gamescanner import GameScanner

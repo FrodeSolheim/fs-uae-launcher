@@ -1,5 +1,5 @@
 import fsui
-from fsgs.options.option import Option
+from fsgamesys.options.option import Option
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
