@@ -1,0 +1,2 @@
+class DeveloperMode:
+    enabled = False
