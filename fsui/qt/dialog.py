@@ -1,9 +1,8 @@
 import weakref
 
-from fsui.qt import Qt, QDialog
+from fsui.qt import QDialog, Qt
 from fsui.qt.qparent import QParent
 from fsui.qt.toplevelwidget import TopLevelWidget
-
 
 # def hmm(*args, **kwargs):
 #     print("---------------------------------------------------------")
@@ -52,8 +51,9 @@ class DialogWrapper(QDialog):
 
 
 def check_refs(r):
-    import fsui
     import gc
+
+    import fsui
 
     gc.collect()
     obj = r()

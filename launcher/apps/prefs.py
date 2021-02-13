@@ -1,7 +1,6 @@
 import os
 
-from fsui.qt import QFontDatabase
-from fsui.qt import init_qt
+from fsui.qt import QFontDatabase, init_qt
 from launcher.system.classes.theme import initialize_qt_style
 
 

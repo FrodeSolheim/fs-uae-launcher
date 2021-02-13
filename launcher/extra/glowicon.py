@@ -3,9 +3,10 @@ import os
 import sys
 
 sys.path.insert(0, "../git/fs-uae-master/fs-uae-launcher")
+from PIL import Image, ImageFilter
+
 # from fsui.qt.qt import QApplication
 from fsui.qt.qt import QImage, QPainter, QSvgRenderer
-from PIL import Image, ImageFilter
 
 """
 Module for creating glow-icon-alike effects on icons.

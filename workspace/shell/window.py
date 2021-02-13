@@ -1,11 +1,9 @@
 import threading
-import traceback
-
 import time
+import traceback
 
 import workspace.sys
 from workspace import ui
-
 
 COLOR = (0x44, 0x44, 0x44)
 
@@ -62,7 +60,7 @@ class ShellWidget(ui.Canvas):
         self.execute(argv)
 
         # FIXME: Using Qt directly
-        from fsui.qt import Qt, QPainter, QPixmap
+        from fsui.qt import QPainter, QPixmap, Qt
 
         self._widget.setFocusPolicy(Qt.StrongFocus)
 

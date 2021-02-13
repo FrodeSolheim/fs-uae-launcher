@@ -9,8 +9,9 @@ from arcade.glui.state import State
 from arcade.glui.texture import Texture
 from arcade.glui.topmenu import GameCenterItem
 from fsgamesys.drivers.gamedriver import GameDriver
-from fsgamesys.input.inputdevice import InputDevice
 from fsgamesys.input.devicemanager import DeviceManager
+from fsgamesys.input.inputdevice import InputDevice
+
 from .launchmenu import LaunchMenu
 
 

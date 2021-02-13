@@ -1,10 +1,10 @@
-from fsgamesys.ogd.client import OGDClient
 import fsui
 from fsbc.application import app
-from launcher.ui.widgets import CloseButton
+from fsgamesys.ogd.client import OGDClient
 
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
+from launcher.ui.widgets import CloseButton
 from workspace.ui.theme import WorkspaceTheme
 
 

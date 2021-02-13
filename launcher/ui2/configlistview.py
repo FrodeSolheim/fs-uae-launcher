@@ -1,12 +1,11 @@
 from fsgamesys import openretro
-from fsgamesys.product import Product
-from fsgamesys.Database import Database
 from fsgamesys.config.configloader import ConfigLoader
+from fsgamesys.Database import Database
 from fsgamesys.options.constants2 import PARENT_UUID
 from fsgamesys.platforms.platform import PlatformHandler
+from fsgamesys.product import Product
 from fsgamesys.util.gamenameutil import GameNameUtil
-from fsui import VerticalItemView, Image, Color, Font
-from fsui import get_window
+from fsui import Color, Font, Image, VerticalItemView, get_window
 from launcher.context import get_config, get_gscontext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings

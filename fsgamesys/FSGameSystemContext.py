@@ -4,13 +4,13 @@ import threading
 import weakref
 
 from fsbc.paths import Paths
+from fsgamesys.archive import Archive
 from fsgamesys.BaseContext import BaseContext
 from fsgamesys.Database import Database
-from fsgamesys.GameDatabase import GameDatabase, IncompleteGameException
-from fsgamesys.LockerDatabase import LockerDatabase
-from fsgamesys.archive import Archive
 from fsgamesys.download import Downloader, offline_mode
 from fsgamesys.filedatabase import FileDatabase
+from fsgamesys.GameDatabase import GameDatabase, IncompleteGameException
+from fsgamesys.LockerDatabase import LockerDatabase
 from fsgamesys.network import is_http_url
 from fsgamesys.ogd.locker import is_locker_enabled, open_locker_uri
 from fsgamesys.plugins.pluginmanager import PluginManager

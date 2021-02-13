@@ -1,10 +1,11 @@
-from fscore.system import System
 import fsboot
-from fspy.decorators import memoize
 import fsui
-from .Constants import Constants
+from fscore.system import System
+from fspy.decorators import memoize
+
 from ..launcher_settings import LauncherSettings
 from ..option import Option
+from .Constants import Constants
 
 try:
     import workspace

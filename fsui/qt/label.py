@@ -1,7 +1,7 @@
 from urllib.parse import unquote_plus
 
 from fsui.qt.qparent import QParent
-from fsui.qt.qt import Qt, QLabel
+from fsui.qt.qt import QLabel, Qt
 from fsui.qt.widget import Widget
 
 

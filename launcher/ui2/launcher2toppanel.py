@@ -1,8 +1,8 @@
 from fsui import HorizontalLayout, Panel
 from launcher.panels.additionalconfigpanel import CustomConfigButton
+from launcher.ui2.openretroeditbutton import OpenRetroEditButton
 from launcher.ui2.ratingchoice import RatingChoice
 from launcher.ui2.variantchoice import VariantChoice
-from launcher.ui2.openretroeditbutton import OpenRetroEditButton
 
 
 class Launcher2TopPanel(Panel):

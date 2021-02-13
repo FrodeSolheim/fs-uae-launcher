@@ -1,5 +1,6 @@
-import os
 import json
+import os
+
 from fsgamesys.options.option import Option
 from fsgamesys.platforms.loader import SimpleLoader
 from fsgamesys.platforms.spectrum import SPECTRUM_MODEL_48K

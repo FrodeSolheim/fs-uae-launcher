@@ -1,5 +1,5 @@
-from fsui import Image, Panel
 from fsgamesys.product import Product
+from fsui import Image, Panel
 from launcher.i18n import gettext
 from launcher.panels.additionalconfigpanel import AdditionalConfigPanel
 from launcher.panels.cdpanel import CDPanel
@@ -9,11 +9,11 @@ from launcher.panels.harddrivespanel import HardDrivesPanel
 from launcher.panels.inputpanel import InputPanel
 from launcher.panels.mainpanel import MainPanel
 from launcher.panels.romrampanel import RomRamPanel
-from launcher.ui.Constants import Constants
-from launcher.ui.book import Book
-from launcher.ui.config.configscrollarea import ConfigScrollArea
 from launcher.ui2.tabbutton import TabButton
 from launcher.ui2.tabpanel import TabPanel
+from launcher.ui.book import Book
+from launcher.ui.config.configscrollarea import ConfigScrollArea
+from launcher.ui.Constants import Constants
 
 
 class ConfigPanel(Panel):

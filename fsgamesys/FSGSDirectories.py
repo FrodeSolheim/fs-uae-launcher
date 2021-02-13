@@ -6,10 +6,9 @@ from configparser import ConfigParser
 
 import fsboot
 from fsbc.paths import Paths
+from fsbc.user import get_common_documents_dir, get_documents_dir
 from fscore.settings import Settings
 from fscore.system import System
-from fsbc.user import get_common_documents_dir
-from fsbc.user import get_documents_dir
 from fsgamesys.product import Product
 
 

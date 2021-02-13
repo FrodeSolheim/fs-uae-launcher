@@ -95,36 +95,36 @@ class Platform(PlatformHandler):
 
 
 from fsgamesys.platforms.amiga import AmigaPlatformHandler
-from fsgamesys.platforms.cpc.cpcplatform import CpcPlatform
 from fsgamesys.platforms.arcade.arcadeplatform import ArcadePlatformHandler
-from fsgamesys.platforms.atari_2600 import Atari2600PlatformHandler
 from fsgamesys.platforms.atari5200 import Atari5200PlatformHandler
 from fsgamesys.platforms.atari7800 import Atari7800PlatformHandler
 from fsgamesys.platforms.atari.atariplatform import AtariSTPlatform
+from fsgamesys.platforms.atari_2600 import Atari2600PlatformHandler
 from fsgamesys.platforms.cd32 import CD32PlatformHandler
 from fsgamesys.platforms.cdtv import CDTVPlatformHandler
 from fsgamesys.platforms.commodore64 import Commodore64Platform
+from fsgamesys.platforms.cpc.cpcplatform import CpcPlatform
 from fsgamesys.platforms.dos.dosplatform import DOSPlatformHandler
 from fsgamesys.platforms.gameboy import GameBoyPlatform
 from fsgamesys.platforms.gameboyadvance import GameBoyAdvancePlatform
 from fsgamesys.platforms.gameboycolor import GameBoyColorPlatform
+from fsgamesys.platforms.gamecube import GameCubePlatform
 from fsgamesys.platforms.gamegear import GameGearPlatform
 from fsgamesys.platforms.lynx import LynxPlatformHandler
 from fsgamesys.platforms.mastersystem import MasterSystemPlatform
 from fsgamesys.platforms.megadrive import MegaDrivePlatform
 from fsgamesys.platforms.msx import MsxPlatformHandler
+from fsgamesys.platforms.neogeo import NeoGeoPlatform
+from fsgamesys.platforms.nintendo import NintendoPlatform
 from fsgamesys.platforms.nintendo64 import Nintendo64Platform
 from fsgamesys.platforms.nintendods import NintendoDSPlatform
-from fsgamesys.platforms.neogeo import NeoGeoPlatform
-from fsgamesys.platforms.gamecube import GameCubePlatform
-from fsgamesys.platforms.nintendo import NintendoPlatform
 from fsgamesys.platforms.playstation import PlayStationPlatform
-from fsgamesys.platforms.supernintendo import SuperNintendoPlatformHandler
-from fsgamesys.platforms.turbografx16 import TurboGrafx16Platform
-from fsgamesys.platforms.turbografxcd import TurboGrafxCDPlatform
 
 # from fsgamesys.platforms.zxspectrum import SpectrumPlatform
 from fsgamesys.platforms.spectrum import SpectrumPlatform
+from fsgamesys.platforms.supernintendo import SuperNintendoPlatformHandler
+from fsgamesys.platforms.turbografx16 import TurboGrafx16Platform
+from fsgamesys.platforms.turbografxcd import TurboGrafxCDPlatform
 
 
 class UnsupportedPlatform(PlatformHandler):

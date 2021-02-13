@@ -5,6 +5,7 @@ from binascii import unhexlify
 # FIXME: remove dependency on launcher, have the Launcher tell this class
 # the path instead
 from fsgamesys.FSGSDirectories import FSGSDirectories
+
 from .BaseDatabase import BaseDatabase
 
 VERSION = 1

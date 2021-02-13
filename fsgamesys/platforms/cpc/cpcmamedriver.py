@@ -19,12 +19,11 @@ from fsgamesys.drivers.messdriver import MessDriver
 from fsgamesys.options.option import Option
 from fsgamesys.platforms.cpc.cpcconstants import (
     CPC_JOYSTICK_TYPE,
-    CPC_MAME_ROMS_6128,
     CPC_MAME_ROMS_464,
     CPC_MAME_ROMS_664,
+    CPC_MAME_ROMS_6128,
     CPC_PORTS,
 )
-
 
 # <port tag=":controller_type" type="CONFIG" mask="3" defvalue="0" value="1" />
 # <port tag=":green_display" type="CONFIG" mask="1" defvalue="0" value="1" />

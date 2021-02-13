@@ -1,8 +1,7 @@
 import logging
 import os
-import sys
-
 import subprocess
+import sys
 
 import workspace.path
 from fsgamesys.plugins.pluginmanager import PluginManager

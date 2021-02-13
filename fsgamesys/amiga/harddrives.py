@@ -10,11 +10,10 @@ from fsgamesys.amiga.launchhandler import (
     encode_file_comment,
     system_configuration,
 )
+from fsgamesys.amiga.types import ConfigType, FilesType
 from fsgamesys.amiga.whdload import prepare_whdload_system_volume
 from fsgamesys.amiga.xpkmaster import prepare_xpkmaster_files
 from fsgamesys.network import is_http_url
-
-from fsgamesys.amiga.types import ConfigType, FilesType
 
 
 def prepare_amiga_hard_drives(config: ConfigType, files):

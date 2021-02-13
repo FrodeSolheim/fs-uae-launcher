@@ -1,12 +1,12 @@
 from fsgamesys.context import default_context
+from launcher.helpers.implicitconfighandler import ImplicitConfigHandler
+from launcher.settings import get_launcher_window_title
 from launcher.system.classes.window import Window
 from launcher.system.classes.windowresizehandle import WindowResizeHandle
 from launcher.system.exceptionhandler import exceptionhandler
 from launcher.ui2.launcher2panel import Launcher2Panel
 from launcher.ui2.mainmenu import MainMenu
-from launcher.helpers.implicitconfighandler import ImplicitConfigHandler
 from launcher.ui.imageloader import ImageLoader
-from launcher.settings import get_launcher_window_title
 
 
 class Launcher2Window(Window):

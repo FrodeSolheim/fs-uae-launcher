@@ -3,7 +3,6 @@ import weakref
 from fspy.decorators import deprecated
 from fsui.qt import QObject
 
-
 # Inheriting from QObject in order to be able to have signals associated
 # with subclasses of Group.
 

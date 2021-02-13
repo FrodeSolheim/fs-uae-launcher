@@ -1,18 +1,18 @@
 import fsui
 from fsgamesys.Database import Database
 from fsgamesys.ogd.client import OGDClient
-from fsui import Image, Choice
+from fsui import Choice, Image
 from launcher.context import get_config
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
+from launcher.ui.behaviors.configbehavior import ConfigBehavior
+from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 from launcher.ui.ConfigGroup import ConfigGroup
 from launcher.ui.ConfigurationsBrowser import ConfigurationsBrowser
 from launcher.ui.GameListSelector import GameListSelector
-from launcher.ui.VariantsBrowser import VariantsBrowser
-from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 from launcher.ui.newconfigbutton import NewConfigButton
 from launcher.ui.skin import Skin
+from launcher.ui.VariantsBrowser import VariantsBrowser
 
 
 class ConfigurationsPanel(fsui.Panel):

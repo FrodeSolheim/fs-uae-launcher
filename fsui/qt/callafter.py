@@ -1,5 +1,6 @@
 import queue
 import traceback
+
 from fsui.qt import QCoreApplication, QEvent, QObject
 
 

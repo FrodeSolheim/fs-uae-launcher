@@ -156,11 +156,17 @@ def _thread_bootstrap_2_7(self):
 
     # noinspection PyProtectedMember
     # noinspection PyUnresolvedReferences
-    from threading import _active_limbo_lock, _active, _limbo, _trace_hook
-
     # noinspection PyProtectedMember
     # noinspection PyUnresolvedReferences
-    from threading import _profile_hook, _sys, _get_ident
+    from threading import (
+        _active,
+        _active_limbo_lock,
+        _get_ident,
+        _limbo,
+        _profile_hook,
+        _sys,
+        _trace_hook,
+    )
 
     try:
         self._set_ident()

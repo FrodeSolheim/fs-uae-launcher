@@ -6,8 +6,8 @@ import fsui
 
 # FIXME: Remove dependency on arcade package (move stuff into fsgs instead)
 from arcade.glui.imageloader import get_file_for_sha1_cached
-from launcher.ui.Constants import Constants
 from launcher.launcher_signal import LauncherSignal
+from launcher.ui.Constants import Constants
 
 # COVER_SIZE = (258, 344)
 COVER_SIZE = (252, 336)

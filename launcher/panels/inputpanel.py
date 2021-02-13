@@ -1,7 +1,7 @@
 import fsui
+from launcher.ui.config.configpanel import ConfigPanel
 from launcher.ui.config.InputGroup import InputGroup
 from launcher.ui.skin import Skin
-from launcher.ui.config.configpanel import ConfigPanel
 
 
 class InputPanel(ConfigPanel):

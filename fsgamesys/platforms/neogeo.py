@@ -2,8 +2,8 @@ import json
 
 from fsgamesys.drivers.mamedriver import MameDriver
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.arcade.arcadeplatform import ArcadeLoader
+from fsgamesys.platforms.platform import Platform
 
 NEOGEO_PLATFORM_ID = "neogeo"
 NEOGEO_PLATFORM_NAME = "Neo-Geo"

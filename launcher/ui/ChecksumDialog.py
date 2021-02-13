@@ -2,6 +2,7 @@ import hashlib
 
 import fsui
 from fsbc.util import unused
+
 from ..i18n import gettext
 
 

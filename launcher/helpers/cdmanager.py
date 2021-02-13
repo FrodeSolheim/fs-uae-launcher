@@ -1,6 +1,6 @@
 from fsbc.paths import Paths
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from launcher.i18n import gettext
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
 

@@ -1,8 +1,7 @@
 import fsui
 from fsgamesys.options.option import Option
-from launcher.launcher_settings import LauncherSettings
-
 from fsui.theme import Theme
+from launcher.launcher_settings import LauncherSettings
 
 
 class WorkspaceTheme(Theme):

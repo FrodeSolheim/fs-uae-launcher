@@ -1,7 +1,7 @@
 from fsui import Image
-from launcher.ui.statusbar.StatusElement import StatusElement
-from launcher.i18n import gettext
 from launcher.context import get_config
+from launcher.i18n import gettext
+from launcher.ui.statusbar.StatusElement import StatusElement
 
 
 class PlayersElement(StatusElement):

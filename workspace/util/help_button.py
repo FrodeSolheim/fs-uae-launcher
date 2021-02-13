@@ -1,6 +1,6 @@
-from fsbc.desktop import open_url_in_browser
 import workspace
 import workspace.ui
+from fsbc.desktop import open_url_in_browser
 
 
 class HelpButton(workspace.ui.ImageButton):

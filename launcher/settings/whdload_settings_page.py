@@ -7,7 +7,6 @@ from launcher.system.classes.filepickerfield import FilePickerField
 from launcher.system.classes.optionhelpbutton import OptionHelpButton
 from launcher.system.prefs.defaultprefsbutton import DefaultPrefsButton
 
-
 # TODO: Show warning symbol when whdload_path is not found
 # TODO: Show warning symbol when whdload_key_path is not found
 # TODO: Show warning symbol on version when whdload_path is set

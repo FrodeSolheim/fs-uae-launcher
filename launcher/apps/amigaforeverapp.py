@@ -1,7 +1,7 @@
 import os
 
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.context import FSGameSystemContext
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.input.enumeratehelper import EnumerateHelper
 from fsgamesys.platforms.platform import PlatformHandler
 

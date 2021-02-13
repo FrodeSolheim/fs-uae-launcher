@@ -13,6 +13,9 @@ import sys
 sys.exit(0)
 
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
+import _sysconfigdata_m_darwin_darwin
+
+# noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import idna.idnadata
 
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
@@ -35,6 +38,3 @@ import pkg_resources._vendor.six
 
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import PyQt5.sip
-
-# noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
-import _sysconfigdata_m_darwin_darwin

@@ -1,6 +1,6 @@
 from fsgamesys.knownfiles import KnownFile
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import CDPlatformLoader
+from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.turbografx16 import TurboGrafx16MednafenDriver
 
 TGCD_PLATFORM_ID = "tgcd"

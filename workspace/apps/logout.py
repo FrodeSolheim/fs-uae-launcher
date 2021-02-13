@@ -1,6 +1,6 @@
-from fsgamesys.ogd.client import OGDClient
 import fsui
 from fsbc.application import app
+from fsgamesys.ogd.client import OGDClient
 
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext

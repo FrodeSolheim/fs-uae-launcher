@@ -4,8 +4,8 @@ import traceback
 import requests
 
 from fsbc.application import Application
-from fscore.system import System
 from fsbc.util import compare_versions, unused
+from fscore.system import System
 from fstd.desktop import open_url_in_browser
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal

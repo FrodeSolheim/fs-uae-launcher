@@ -1,6 +1,6 @@
 from fsbc.resources import Resources
 from fsui.qt.image import Image
-from fsui.qt.qt import QPixmap, QImage, QIcon
+from fsui.qt.qt import QIcon, QImage, QPixmap
 
 
 class Icon:

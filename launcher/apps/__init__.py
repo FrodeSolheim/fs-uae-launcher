@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import sys
 
-from fscore.settings import Settings
-import launcher.version
 import fsgamesys
+import launcher.version
+from fscore.settings import Settings
 from fsgamesys.product import Product
 from launcher.option import Option
 
@@ -48,6 +48,7 @@ def find_app(app):
 
     if ":" in app:
         from functools import partial
+
         from launcher.apps.launcher2 import wsopen_main
 
         app_main = partial(wsopen_main, app)

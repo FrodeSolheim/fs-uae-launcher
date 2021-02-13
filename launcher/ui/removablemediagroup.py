@@ -1,9 +1,9 @@
 import fsui
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.commodore64 import C64_MODEL_C64C_1541_II
 from fsgamesys.platforms.cpc.cpcconstants import CPC_MODEL_464
+from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.spectrum import SPECTRUM_MODEL_PLUS3
 from launcher.context import get_config
 from launcher.i18n import gettext

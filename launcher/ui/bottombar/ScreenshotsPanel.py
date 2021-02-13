@@ -1,11 +1,12 @@
 import fsui
 from fsbc.util import unused
-from .BottomPanel import BottomPanel
 from launcher.ui.Constants import Constants
 from launcher.ui.imageloader import ImageLoader
-from ..skin import Skin
+
 from ...game_paths import GamePaths
 from ...launcher_settings import LauncherSettings
+from ..skin import Skin
+from .BottomPanel import BottomPanel
 
 BORDER = 20
 

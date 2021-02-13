@@ -1,4 +1,4 @@
-from fsui import Label, Font, TextArea
+from fsui import Font, Label, TextArea
 from launcher.system.classes.window import Window
 from launcher.system.classes.windowresizehandle import WindowResizeHandle
 from launcher.ws.shell import shell_hostpath, shell_realcase

@@ -1,8 +1,8 @@
 from functools import lru_cache
 
-from fsgamesys.util import sdl2
 from fscore.system import System
-from fsui.qt import Qt, QEvent
+from fsgamesys.util import sdl2
+from fsui.qt import QEvent, Qt
 
 
 class KeySym:

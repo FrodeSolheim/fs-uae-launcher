@@ -1,6 +1,6 @@
 from weakref import ref
 
-from fsui.qt.qt import Qt, QDesktopWidget, QSignal
+from fsui.qt.qt import QDesktopWidget, QSignal, Qt
 
 _windows = set()
 

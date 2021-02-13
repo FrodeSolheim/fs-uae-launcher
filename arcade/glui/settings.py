@@ -1,7 +1,7 @@
 import os
 
 # import pygame
-from fsbc.user import get_home_dir, get_documents_dir
+from fsbc.user import get_documents_dir, get_home_dir
 from fscore.system import System
 from fspy.decorators import memoize
 

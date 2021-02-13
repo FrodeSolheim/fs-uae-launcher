@@ -1,6 +1,7 @@
-from fscore.system import System
 import fsui
 from fsbc.util import unused
+from fscore.system import System
+
 from .Constants import Constants
 from .skin import Skin
 

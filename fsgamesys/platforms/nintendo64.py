@@ -1,12 +1,12 @@
 import os
 
 from fsbc import settings
-from fsgamesys.drivers.gamedriver import GameDriver, Emulator
+from fsgamesys.drivers.gamedriver import Emulator, GameDriver
 from fsgamesys.drivers.retroarchdriver import RetroArchDriver
 from fsgamesys.input.mapper import InputMapper
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 N64_PLATFORM_ID = "n64"
 N64_PLATFORM_NAME = "Nintendo 64"

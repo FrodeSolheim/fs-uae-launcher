@@ -5,10 +5,10 @@ from io import BytesIO as StringIO
 
 import fsui
 from fsbc.task import Task
-from fsgamesys.archive import Archive
-from fsgamesys.filedatabase import FileDatabase
 from fsgamesys.amiga.rommanager import ROMManager
+from fsgamesys.archive import Archive
 from fsgamesys.context import fsgs
+from fsgamesys.filedatabase import FileDatabase
 from fsgamesys.ogd.client import OGDClient
 from fsui.extra.iconheader import IconHeader
 from launcher.res import gettext

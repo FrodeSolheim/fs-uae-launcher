@@ -8,17 +8,17 @@ from fsui.qt.qparent import QParent
 
 # from fsui import default_window_center, default_window_parent
 from fsui.qt.qt import (
+    QDesktopWidget,
+    QEvent,
     QMainWindow,
     QObject,
-    QSignal,
-    QWidget,
-    Qt,
-    QDesktopWidget,
     QPainter,
     QPoint,
     QRect,
+    QSignal,
+    Qt,
+    QWidget,
     init_qt,
-    QEvent,
 )
 
 windows = set()

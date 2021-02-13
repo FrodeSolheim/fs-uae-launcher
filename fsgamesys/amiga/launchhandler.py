@@ -12,8 +12,6 @@ from fsbc.paths import Paths
 from fsbc.resources import Resources
 from fsbc.task import TaskFailure, current_task
 from fsbc.util import is_sha1
-from fsgamesys.FSGSDirectories import FSGSDirectories
-from fsgamesys.GameChangeHandler import GameChangeHandler
 from fsgamesys.amiga.adffileextractor import ADFFileExtractor
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.amiga.configwriter import ConfigWriter
@@ -27,6 +25,8 @@ from fsgamesys.amiga.workbenchextractor import WorkbenchExtractor
 from fsgamesys.archive import Archive
 from fsgamesys.download import Downloader
 from fsgamesys.drivers.gamedriver import GameDriver
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.GameChangeHandler import GameChangeHandler
 from fsgamesys.knownfiles import (
     ACTION_REPLAY_MK_II_2_14_MOD_ROM,
     ACTION_REPLAY_MK_II_2_14_ROM,
@@ -37,7 +37,6 @@ from fsgamesys.network import is_http_url
 from fsgamesys.options.option import Option
 from fsgamesys.res import gettext
 from fsgamesys.util.gamenameutil import GameNameUtil
-
 
 # FIXME: Support relative_temp_feature for unpacked archives-as-HD as well
 

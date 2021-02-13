@@ -2,7 +2,7 @@ import atexit
 import json
 import subprocess
 import traceback
-from queue import Queue, Empty
+from queue import Empty, Queue
 from threading import Thread
 
 from fsgamesys.amiga.fsuaedevicehelper import FSUAEDeviceHelper

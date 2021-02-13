@@ -1,7 +1,7 @@
 import fsui
 from fsui import get_window
-from launcher.context import get_settings
-from launcher.context import get_theme
+from launcher.context import get_settings, get_theme
+
 from .titlebarbutton import TitleBarButton
 
 

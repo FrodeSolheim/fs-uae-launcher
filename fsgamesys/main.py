@@ -4,9 +4,9 @@ import sys
 from configparser import ConfigParser
 
 import fsbc.application
-from fsgamesys.Database import Database
 from fsgamesys.application import ApplicationMixin
 from fsgamesys.context import fsgs
+from fsgamesys.Database import Database
 from fsgamesys.util.gamenameutil import GameNameUtil
 
 

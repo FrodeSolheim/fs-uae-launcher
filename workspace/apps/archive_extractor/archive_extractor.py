@@ -1,8 +1,7 @@
 import workspace
 import workspace.ui
-from workspace.util.help_button import HelpButton
 from workspace.util.browse_button import BrowseButton
-
+from workspace.util.help_button import HelpButton
 
 # FIXME: Extract ADF files as well
 

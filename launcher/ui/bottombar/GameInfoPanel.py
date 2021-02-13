@@ -1,13 +1,13 @@
 import fsui
+from launcher.context import get_config
+from launcher.game_paths import GamePaths
+from launcher.launcher_settings import LauncherSettings
 from launcher.ui.bottombar.BottomPanel import BottomPanel
 from launcher.ui.bottombar.EditButton import EditButton
 from launcher.ui.bottombar.WebButton import WebButton
 from launcher.ui.Constants import Constants
 from launcher.ui.imageloader import ImageLoader
 from launcher.ui.skin import Skin
-from launcher.game_paths import GamePaths
-from launcher.launcher_settings import LauncherSettings
-from launcher.context import get_config
 
 BORDER = 20
 

@@ -1,4 +1,4 @@
-from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.text import TextRenderer
 
 DISPLAY_FPS = False

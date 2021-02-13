@@ -3,10 +3,10 @@ import os
 from fsgamesys import Option
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.amiga.configwriter import ConfigWriter
-from fsgamesys.amiga.launchhandler import LaunchHandler
 from fsgamesys.amiga.installfiles import install_files
+from fsgamesys.amiga.launchhandler import LaunchHandler
 from fsgamesys.amiga.prepareamiga import prepare_amiga
-from fsgamesys.drivers.gamedriver import GameDriver, Emulator
+from fsgamesys.drivers.gamedriver import Emulator, GameDriver
 from launcher.version import VERSION
 
 AMIGA_JOYSTICK = {

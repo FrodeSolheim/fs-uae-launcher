@@ -1,9 +1,9 @@
 from fsui import Color, Image, Panel
+from fsui.context import get_window
 from launcher.system.classes.configdispatch import ConfigDispatch
-from launcher.ui.imageloader import ImageLoader
 from launcher.system.exceptionhandler import exceptionhandler
 from launcher.ui2.screenshotpanel import ScreenshotPanel
-from fsui.context import get_window
+from launcher.ui.imageloader import ImageLoader
 
 
 class ScreenshotsPanel(Panel):

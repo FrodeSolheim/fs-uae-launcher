@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import os
-import sys
 import shutil
 import subprocess
+import sys
 
 strip = False
 rpath = False

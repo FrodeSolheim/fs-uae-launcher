@@ -1,8 +1,5 @@
 from fsgamesys.options.option import Option
-from fsui import (
-    Panel,
-    MultiLineLabel,
-)
+from fsui import MultiLineLabel, Panel
 from launcher.i18n import gettext
 from launcher.settings.option_ui import OptionUI
 from launcher.system.prefs.baseprefswindow import BasePrefsWindow

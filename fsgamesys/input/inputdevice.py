@@ -4,8 +4,8 @@ from configparser import ConfigParser
 
 from fsbc.resources import Resources
 from fscore.system import System
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.context import fsgs
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from fspy.decorators import memoize
 
 

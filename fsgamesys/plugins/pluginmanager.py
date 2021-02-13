@@ -7,8 +7,8 @@ from configparser import ConfigParser, NoSectionError
 from operator import attrgetter
 
 import fsboot
-from fscore.system import System
 from fsbc.util import Version
+from fscore.system import System
 from fsgamesys.FSGSDirectories import FSGSDirectories
 
 X86_MACHINES = ["x86", "i386", "i486", "i586", "i686"]

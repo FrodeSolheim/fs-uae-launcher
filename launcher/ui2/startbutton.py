@@ -1,13 +1,12 @@
 from fsgamesys.options.constants2 import (
+    PARENT_H__,
+    PARENT_W__,
     PARENT_X__,
     PARENT_Y__,
-    PARENT_W__,
-    PARENT_H__,
 )
 from fsui import Button, Icon
 from fsui.context import get_window
-from launcher.context import get_config
-from launcher.context import get_gscontext
+from launcher.context import get_config, get_gscontext
 from launcher.i18n import gettext
 from launcher.system.classes.configdispatch import ConfigDispatch
 from launcher.system.exceptionhandler import exceptionhandler

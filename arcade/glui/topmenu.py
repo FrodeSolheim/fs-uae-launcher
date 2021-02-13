@@ -1,20 +1,19 @@
 import os
 import time
 
-from fsgamesys.product import Product
 from arcade.gamecentersettings import GameCenterSettings
-from arcade.glui.constants import TOP_ITEM_LEFT
-from arcade.glui.constants import TOP_ITEM_NOBORDER
+from arcade.glui.constants import TOP_ITEM_LEFT, TOP_ITEM_NOBORDER
 from arcade.glui.font import BitmapFont
 from arcade.glui.items import MenuItem, create_item_menu
 from arcade.glui.navigatable import Navigatable
-from arcade.glui.opengl import gl, fs_emu_blending
+from arcade.glui.opengl import fs_emu_blending, gl
 from arcade.glui.sdl import *
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
 from arcade.resources import gettext
 from fsbc.application import app
 from fsbc.settings import Settings
+from fsgamesys.product import Product
 
 
 def post_quit_event():

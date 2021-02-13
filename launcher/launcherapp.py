@@ -10,16 +10,16 @@ import fsui
 from fsbc.settings import Settings
 from fsbc.task import Task
 from fsbc.util import is_uuid
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.amiga import whdload
 from fsgamesys.application import ApplicationMixin
 from fsgamesys.archive import Archive
-from fsgamesys.context import fsgs, FSGameSystemContext
+from fsgamesys.context import FSGameSystemContext, fsgs
 from fsgamesys.download import Downloader
 from fsgamesys.filedatabase import FileDatabase
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.input.enumeratehelper import EnumerateHelper
 from fsgamesys.options.constants2 import RUNNING__
-from fsgamesys.platforms.platform import PlatformHandler, PLATFORM_IDS
+from fsgamesys.platforms.platform import PLATFORM_IDS, PlatformHandler
 from fsgamesys.util.archiveutil import ArchiveUtil
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig

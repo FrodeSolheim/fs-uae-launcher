@@ -1,6 +1,6 @@
 from fsui.context import get_theme
 from fsui.qt.qparent import QParent
-from fsui.qt.qt import QPushButton, QSignal, QSize, QFontMetrics
+from fsui.qt.qt import QFontMetrics, QPushButton, QSignal, QSize
 from fsui.qt.widget import Widget
 
 

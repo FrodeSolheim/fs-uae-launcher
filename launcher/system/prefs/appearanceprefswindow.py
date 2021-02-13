@@ -1,12 +1,12 @@
 from fsgamesys.options.option import Option
 from fsui import (
     Color,
-    Label,
     Group,
-    Panel,
-    get_window,
     HorizontalLayout,
+    Label,
+    Panel,
     TextField,
+    get_window,
 )
 from launcher.context import get_settings
 from launcher.i18n import gettext

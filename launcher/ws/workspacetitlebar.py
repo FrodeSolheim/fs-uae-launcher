@@ -1,14 +1,11 @@
-from fsui import Color, Image
-from fsui import Panel, HorizontalLayout
-from fsui import get_window
-from launcher.context import get_settings
-from launcher.context import get_theme
+from fsui import Color, HorizontalLayout, Image, Panel, get_window
+from launcher.context import get_settings, get_theme
+from launcher.settings import get_workspace_window_title
 from launcher.settings.fullscreentogglebutton import FullscreenToggleButtonBase
 from launcher.settings.monitorbutton import MonitorButtonBase
 from launcher.settings.volumebutton import VolumeButtonBase
 from launcher.system.classes.titlebarbutton import TitleBarButton
 from launcher.system.exceptionhandler import exceptionhandler
-from launcher.settings import get_workspace_window_title
 
 
 class WorkspaceTitleBar(Panel):

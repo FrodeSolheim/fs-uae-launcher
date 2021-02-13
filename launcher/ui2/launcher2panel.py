@@ -1,4 +1,4 @@
-from fsui import Panel, HorizontalLayout
+from fsui import HorizontalLayout, Panel
 from launcher.ui2.launcher2leftpanel import Launcher2LeftPanel
 from launcher.ui2.launcher2rightpanel import Launcher2RightPanel
 

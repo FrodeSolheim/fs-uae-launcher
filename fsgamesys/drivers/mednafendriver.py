@@ -10,7 +10,7 @@ from functools import lru_cache
 from fsbc.paths import Paths
 from fscore.system import System
 from fsgamesys.archive import Archive
-from fsgamesys.drivers.gamedriver import GameDriver, Emulator
+from fsgamesys.drivers.gamedriver import Emulator, GameDriver
 from fsgamesys.input.enumeratehelper import EnumerateHelper
 from fsgamesys.input.mapper import InputMapper
 from fsgamesys.options.option import Option

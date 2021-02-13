@@ -1,9 +1,9 @@
 import fsui
+from launcher.ui.config.configpanel import ConfigPanel
 from launcher.ui.config.InputGroup import InputGroup
 from launcher.ui.config.modelgroup import ModelGroup
 from launcher.ui.removablemediagroup import RemovableMediaGroup
 from launcher.ui.skin import Skin
-from launcher.ui.config.configpanel import ConfigPanel
 
 
 class MainPanel(ConfigPanel):

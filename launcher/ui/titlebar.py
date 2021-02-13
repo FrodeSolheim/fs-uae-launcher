@@ -1,4 +1,4 @@
-from fsui import Button, Color, get_mouse_position, HorizontalLayout, Panel
+from fsui import Button, Color, HorizontalLayout, Panel, get_mouse_position
 
 
 class TitleBar(Panel):

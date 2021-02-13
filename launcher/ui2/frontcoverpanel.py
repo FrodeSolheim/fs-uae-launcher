@@ -1,8 +1,8 @@
 from fsui import Color, Image, Panel
 from launcher.system.classes.configdispatch import ConfigDispatch
-from launcher.ui.imageloader import ImageLoader
 from launcher.system.exceptionhandler import exceptionhandler
 from launcher.ui2.screenshotpanel import ScreenshotPanel
+from launcher.ui.imageloader import ImageLoader
 
 COVER_SIZE = (252, 336)
 

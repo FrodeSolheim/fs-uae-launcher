@@ -30,8 +30,8 @@ import shutil
 
 from fsbc.path import str_path
 from fscore.system import System
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.drivers.gamedriver import GameDriver
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.options.option import Option
 from fsgamesys.saves import SaveHandler
 

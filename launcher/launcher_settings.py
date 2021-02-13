@@ -1,6 +1,7 @@
 from fsbc.settings import Settings
 from fsbc.user import get_user_name
 from launcher.option import Option
+
 from .launcher_signal import LauncherSignal
 
 

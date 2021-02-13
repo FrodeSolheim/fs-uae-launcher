@@ -2,9 +2,8 @@ import time
 
 import requests
 
-from fsgamesys.network import openretro_url_prefix, is_http_url
+from fsgamesys.network import is_http_url, openretro_url_prefix
 from fsgamesys.res import gettext
-
 
 # FIXME: Overlap in code/functionality with GameDatabaseSynchronizer
 

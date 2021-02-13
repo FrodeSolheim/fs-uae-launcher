@@ -2,9 +2,9 @@ import fsui
 from fsbc.settings import Settings
 from fsbc.util import unused
 from fsgamesys import openretro
-from fsgamesys.product import Product
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.context import fsgs
+from fsgamesys.product import Product
 from launcher.context import get_config
 from launcher.helpers.cdmanager import CDManager
 from launcher.helpers.floppymanager import FloppyManager

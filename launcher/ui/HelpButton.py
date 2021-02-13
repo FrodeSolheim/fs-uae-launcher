@@ -1,4 +1,5 @@
 from fsbc.desktop import open_url_in_browser
+
 from .IconButton import IconButton
 
 

@@ -3,6 +3,7 @@ from fsgamesys import openretro
 from fsgamesys.Database import Database
 from fsgamesys.platforms.platform import PlatformHandler
 from fsgamesys.util.gamenameutil import GameNameUtil
+
 from ..launcher_config import LauncherConfig
 from ..launcher_settings import LauncherSettings
 

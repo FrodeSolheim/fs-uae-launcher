@@ -1,6 +1,7 @@
 import fsui
-from .ImportDialog import ImportDialog
+
 from ...i18n import gettext
+from .ImportDialog import ImportDialog
 
 
 class ImportGroup(fsui.Group):

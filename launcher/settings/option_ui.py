@@ -3,7 +3,7 @@ from fsbc.application import app
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
-from launcher.settings.override_warning import OverrideWarning, OptionWarning
+from launcher.settings.override_warning import OptionWarning, OverrideWarning
 from launcher.system.classes.optionhelpbutton import OptionHelpButton
 
 

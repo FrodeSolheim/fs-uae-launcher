@@ -1,14 +1,14 @@
 import traceback
 
 import fsui
-from fsgamesys.Database import Database
 from fsgamesys.context import fsgs
-from launcher.ui.ConfigGroup import ConfigGroup
+from fsgamesys.Database import Database
+from launcher.context import get_config, get_gscontext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
+from launcher.ui.ConfigGroup import ConfigGroup
 from launcher.ui.newconfigbutton import NewConfigButton
-from launcher.context import get_config, get_gscontext
 
 
 class LastVariants(object):

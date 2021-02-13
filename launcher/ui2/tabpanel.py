@@ -1,5 +1,5 @@
 from fsbc.util import unused
-from fsui import Panel, HorizontalLayout
+from fsui import HorizontalLayout, Panel
 from fsui.context import get_theme
 from launcher.ui.skin import Skin
 

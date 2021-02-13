@@ -1,6 +1,6 @@
 from fsui.context import get_theme
 from fsui.qt.qparent import QParent
-from fsui.qt.qt import QSpinBox, QFontMetrics
+from fsui.qt.qt import QFontMetrics, QSpinBox
 from fsui.qt.signal import Signal, SignalWrapper
 from fsui.qt.widget import Widget
 

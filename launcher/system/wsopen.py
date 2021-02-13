@@ -36,9 +36,9 @@ from launcher.system.utilities.checksum import ChecksumWindow
 from launcher.system.utilities.clock import ClockWindow
 from launcher.system.utilities.multiview import MultiView, MultiViewWindow
 from launcher.ws.shell import (
+    shell_icon,
     shell_isdir,
     shell_realcase,
-    shell_icon,
     shell_window_geometry,
 )
 from launcher.ws.shellwindow import ShellWindow

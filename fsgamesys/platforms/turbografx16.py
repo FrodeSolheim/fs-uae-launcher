@@ -1,6 +1,6 @@
 from fsgamesys.drivers.mednafendriver import MednafenDriver
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import CartridgePlatformLoader
+from fsgamesys.platforms.platform import Platform
 
 """
 Some information from https://en.wikipedia.org/wiki/TurboGrafx-16:

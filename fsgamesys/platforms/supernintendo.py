@@ -6,8 +6,8 @@ from fsgamesys import Option
 from fsgamesys.drivers.mednafendriver import MednafenDriver
 from fsgamesys.drivers.messdriver import MessDriver
 from fsgamesys.drivers.retroarchdriver import RetroArchDriver
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 
 class SuperNintendoPlatformHandler(Platform):

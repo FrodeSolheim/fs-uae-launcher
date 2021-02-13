@@ -2,13 +2,14 @@ import os
 import shutil
 import traceback
 import zlib
-from fsbc.resources import Resources
+
 import fsui
+from fsbc.resources import Resources
 from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsui.extra.iconheader import IconHeader
 
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
-from fsui.extra.iconheader import IconHeader
 from workspace.ui.theme import WorkspaceTheme
 
 

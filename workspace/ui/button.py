@@ -1,4 +1,5 @@
 import fsui
+
 from .canvas import Canvas
 from .painter import Painter
 

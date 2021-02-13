@@ -1,11 +1,11 @@
 import os
 
 from fsbc import settings
-from fsgamesys.drivers.gamedriver import GameDriver, Emulator
+from fsgamesys.drivers.gamedriver import Emulator, GameDriver
 from fsgamesys.knownfiles import KnownFile
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 NDS_PLATFORM_NAME = "Nintendo DS"
 NDS_CONTROLLER = {

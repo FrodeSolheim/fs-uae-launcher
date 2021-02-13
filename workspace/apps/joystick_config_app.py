@@ -9,8 +9,8 @@ from io import TextIOWrapper
 import fsui
 from fsbc.application import Application
 from fscore.system import System
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.amiga.fsuaedevicehelper import FSUAEDeviceHelper
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.input.inputdevice import InputDevice
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext

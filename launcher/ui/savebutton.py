@@ -4,16 +4,16 @@ import io
 import os
 import time
 
-from fsgamesys.Database import Database
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.context import fsgs
+from fsgamesys.Database import Database
 from fsgamesys.filedatabase import FileDatabase
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from launcher.configuration_scanner import ConfigurationScanner
+from launcher.context import get_config
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.ui.IconButton import IconButton
-from launcher.context import get_config
 
 
 class SaveButton(IconButton):

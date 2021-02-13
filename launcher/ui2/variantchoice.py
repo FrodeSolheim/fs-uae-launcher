@@ -1,12 +1,12 @@
-from fsgamesys.Database import Database
 from fsgamesys.config.configloader import ConfigLoader
 from fsgamesys.context import fsgs
+from fsgamesys.Database import Database
 from fsgamesys.options.constants2 import (
     PARENT_UUID,
     VARIANT_RATING__,
     VARIANT_UUID__,
 )
-from fsui import ItemChoice, Image, Color
+from fsui import Color, Image, ItemChoice
 from launcher.context import get_config
 from launcher.system.classes.configdispatch import ConfigDispatch
 

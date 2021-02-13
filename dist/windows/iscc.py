@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 import subprocess
+import sys
 
 program_files = os.getenv("ProgramFiles(x86)", "")
 if not program_files:

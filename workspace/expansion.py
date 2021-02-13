@@ -1,7 +1,7 @@
-import os
-import sys
-import platform
 import functools
+import os
+import platform
+import sys
 
 from fsgamesys.plugins.pluginmanager import PluginManager
 

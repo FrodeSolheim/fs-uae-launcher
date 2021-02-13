@@ -1,6 +1,6 @@
 from fsbc.application import app
 from fsgamesys.product import Product
-from fsui import Window, VerticalLayout, Icon, TextArea
+from fsui import Icon, TextArea, VerticalLayout, Window
 from fsui.extra.iconheader import IconHeader
 from launcher.i18n import gettext
 from launcher.ui.skin import LauncherTheme

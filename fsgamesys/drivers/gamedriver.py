@@ -9,18 +9,18 @@ from collections import defaultdict
 import fsboot
 from fsbc.application import Application
 from fsbc.resources import Resources
-from fscore.system import System
 from fsbc.task import current_task
-from fsgamesys.FSGSDirectories import FSGSDirectories
+from fscore.system import System
 from fsgamesys.amiga.fsuae import FSUAE
+from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.monitors.refreshratetool import RefreshRateTool
 from fsgamesys.options.constants2 import (
+    PARENT_H__,
+    PARENT_W__,
     PARENT_X__,
     PARENT_Y__,
-    PARENT_W__,
-    PARENT_H__,
 )
-from fsgamesys.plugins.pluginmanager import PluginManager, Executable
-from fsgamesys.monitors.refreshratetool import RefreshRateTool
+from fsgamesys.plugins.pluginmanager import Executable, PluginManager
 from fsgamesys.util.gamenameutil import GameNameUtil
 from launcher.option import Option
 
@@ -762,7 +762,7 @@ class GameDriver:
         front_sha1 = self.config["front_sha1"]
         if not front_sha1:
             return
-        from launcher.ui.imageloader import ImageLoadRequest, ImageLoader
+        from launcher.ui.imageloader import ImageLoader, ImageLoadRequest
 
         request = ImageLoadRequest()
         request.path = "sha1:" + front_sha1

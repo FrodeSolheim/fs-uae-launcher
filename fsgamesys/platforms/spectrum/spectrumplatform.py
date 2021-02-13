@@ -1,10 +1,10 @@
 from fscore.settings import Settings
 from fsgamesys.options.option import Option
 from fsgamesys.platforms.platform import Platform
-from fsgamesys.platforms.spectrum.spectrumloader import SpectrumLoader
 from fsgamesys.platforms.spectrum.fsfusespectrumdriver import (
     FsFuseSpectrumDriver,
 )
+from fsgamesys.platforms.spectrum.spectrumloader import SpectrumLoader
 
 
 class SpectrumPlatform(Platform):

@@ -44,8 +44,8 @@ from fscore.system import System
 from fsgamesys.drivers.gamedriver import GameDriver
 from fsgamesys.input.mapper import InputMapper
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 from fsgamesys.util import sdl2
 
 C64_MODEL_C64 = "c64"

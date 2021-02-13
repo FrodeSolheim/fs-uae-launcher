@@ -1,9 +1,7 @@
 import os
 
-from fsui import Signal, Panel, Color
-from fsui import get_window
+from fsui import Color, Panel, Signal, get_window
 from launcher.data import launcher_data_file
-
 
 # FIXME: Maybe, for TitleBarButton in particular, we want to disable the
 # feature where you want keep the button pressed while returning to the widget,

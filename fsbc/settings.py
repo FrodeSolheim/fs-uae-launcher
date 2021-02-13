@@ -14,7 +14,6 @@ from fsbc.util import Version
 from fscore.deprecated import deprecated
 from launcher.version import VERSION
 
-
 # from fspy.exception import set_automatic_error_reports
 
 

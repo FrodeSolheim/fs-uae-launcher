@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
+import subprocess
 import sys
 import time
-import subprocess
 
 do_sign = True
 tries = 0

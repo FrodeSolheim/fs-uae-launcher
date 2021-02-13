@@ -1,8 +1,8 @@
 from fsgamesys import Option
 from fsgamesys.drivers.mednafendriver import MednafenDriver
 from fsgamesys.knownfiles import KnownFile
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 PSX_PLATFORM_ID = "PSX"
 PSX_PLATFORM_NAME = "PlayStation"

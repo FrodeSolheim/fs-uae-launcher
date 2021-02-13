@@ -1,5 +1,5 @@
-from arcade.resources import resources
 import fsbc.settings as settings
+from arcade.resources import resources
 from fsgamesys.options.option import Option
 
 

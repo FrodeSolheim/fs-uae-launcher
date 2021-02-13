@@ -1,11 +1,11 @@
 from fsgamesys.monitors.screens import screen_rects
 from fsui import Color, Panel, VerticalLayout, Window
 from launcher.context import get_launcher_theme
+from launcher.settings import get_workspace_window_title
 from launcher.ws.shell import shell_volumes
 from launcher.ws.workspacemenu import WorkspaceMenu
 from launcher.ws.workspacetitlebar import WorkspaceTitleBar
 from launcher.ws.wsiconview import WSIconView
-from launcher.settings import get_workspace_window_title
 
 """
 Note: Qt.WindowStaysOnBottomHint is not implemented for macOS, so the

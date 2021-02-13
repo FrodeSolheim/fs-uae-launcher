@@ -1,5 +1,6 @@
 import fsui
 from fsui.qt import QObject, QSignal
+
 from .application import Application
 from .button import Button, CustomButton, FlatButton
 from .canvas import Canvas
@@ -15,7 +16,7 @@ from .painter import Painter
 from .panel import Panel
 from .text_area import TextArea
 from .text_field import TextField
-from .window import Window, TitlePanel, TitleSeparator
+from .window import TitlePanel, TitleSeparator, Window
 
 
 class Object(QObject):

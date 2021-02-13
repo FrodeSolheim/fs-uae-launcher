@@ -3,8 +3,8 @@ import os
 import sys
 import traceback
 
-from fsboot import executable_dir, is_frozen
 import launcher.version
+from fsboot import executable_dir, is_frozen
 
 
 def check_python_version():

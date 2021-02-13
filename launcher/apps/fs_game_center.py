@@ -8,8 +8,9 @@ def app_main():
 
     application = Application("fs-game-center")
 
-    from fsgamesys.http.server import http_server_main
     import threading
+
+    from fsgamesys.http.server import http_server_main
 
     def http_server_thread():
         return http_server_main()

@@ -1,6 +1,5 @@
 import re
-from typing import List, Union, Any
-
+from typing import Any, List, Union
 
 # Moved to fspy.decorators
 

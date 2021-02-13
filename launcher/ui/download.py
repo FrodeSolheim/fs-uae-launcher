@@ -7,12 +7,13 @@ from fsbc.application import app
 from fsbc.signal import Signal
 from fsbc.task import Task
 from fsgamesys.Database import Database
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.download import Downloader
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.ogd.context import SynchronizerContext
 from fsui.extra.iconheader import IconHeader
 from launcher.filescanner import FileScanner
 from launcher.gamescanner import GameScanner
+
 from ..i18n import gettext
 
 

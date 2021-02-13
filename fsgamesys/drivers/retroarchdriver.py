@@ -5,8 +5,8 @@ from typing import Optional
 
 import fsboot
 from fsgamesys import Option
+from fsgamesys.drivers.gamedriver import Emulator, GameDriver
 from fsgamesys.FSGSDirectories import FSGSDirectories
-from fsgamesys.drivers.gamedriver import GameDriver, Emulator
 from fsgamesys.input.mapper import InputMapper
 from fsgamesys.plugins.pluginmanager import PluginManager
 from fsgamesys.saves import SaveHandler
@@ -685,7 +685,7 @@ class RetroArchDriver(GameDriver):
 
         game_x, game_y, game_w, game_h = self.display_rect_fullscreen()
 
-        from fsui.qt import Qt, QImage, QPainter, QRect, QSize
+        from fsui.qt import QImage, QPainter, QRect, QSize, Qt
 
         image = QImage(
             QSize(screen_width, screen_height), QImage.Format_RGBA8888

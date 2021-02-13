@@ -1,6 +1,6 @@
 from fsgamesys.drivers.mednafen.lynxdriver import MednafenLynxDriver
-from fsgamesys.platforms.platform import PlatformHandler
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import PlatformHandler
 
 
 class LynxPlatformHandler(PlatformHandler):

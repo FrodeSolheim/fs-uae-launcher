@@ -2,8 +2,7 @@ import signal
 import sys
 
 from fsui import Application
-from fsui.qt import QFont
-from fsui.qt import QFontDatabase
+from fsui.qt import QFont, QFontDatabase
 from workspace.ui import Font
 
 

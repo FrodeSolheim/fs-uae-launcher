@@ -1,8 +1,8 @@
 from fsbc import settings
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.arcade.mamearcadedriver import MameArcadeDriver
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 
 class ArcadePlatformHandler(Platform):

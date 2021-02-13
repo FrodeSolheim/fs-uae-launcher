@@ -2,10 +2,9 @@ import logging
 import os
 import shutil
 import traceback
-from typing import List, Dict, DefaultDict, BinaryIO, Optional
+from typing import BinaryIO, DefaultDict, Dict, List, Optional
 
 from fsbc.settings import Settings
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.amiga.amigaconfig import AmigaConfig
 from fsgamesys.amiga.config import Config
 from fsgamesys.amiga.iconparser import IconParser
@@ -14,6 +13,7 @@ from fsgamesys.amiga.startupsequence import prepare_startup_sequence
 from fsgamesys.amiga.types import ConfigType, FilesType
 from fsgamesys.archive import Archive
 from fsgamesys.download import Downloader
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.options.constants import WHDLOAD_PRELOAD
 from fsgamesys.options.option import Option
 from fsgamesys.paths import fsgs_data_dir
@@ -389,7 +389,6 @@ def install_whdload_file(sha1, dest_dir, rel_path):
 
 
 from fsgamesys.FSGameSystemContext import FileContext
-
 
 # def copy_whdload_kickstart(base_dir, name, checksums):
 #     dest = os.path.join(base_dir, "Devs", "Kickstarts")

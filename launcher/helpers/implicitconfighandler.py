@@ -3,11 +3,11 @@ import weakref
 
 import fsui
 from fsbc.util import unused
+from launcher.context import get_config
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
-from launcher.ui.config.expand import expand_config, AbstractExpandFunctions
+from launcher.ui.config.expand import AbstractExpandFunctions, expand_config
 from launcher.ui.config.model import ImplicitConfig, normalize
-from launcher.context import get_config
 
 
 class ImplicitConfigHandler:

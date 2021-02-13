@@ -1,8 +1,8 @@
 import fsui
-from launcher.ui.MediaListGroup import MediaListGroup
-from launcher.ui.floppiesgroup import FloppiesGroup
-from launcher.ui.skin import Skin
 from launcher.ui.config.configpanel import ConfigPanel
+from launcher.ui.floppiesgroup import FloppiesGroup
+from launcher.ui.MediaListGroup import MediaListGroup
+from launcher.ui.skin import Skin
 
 
 class FloppiesPanel(ConfigPanel):

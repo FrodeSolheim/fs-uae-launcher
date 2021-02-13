@@ -3,7 +3,6 @@ import sys
 import time
 import weakref
 
-from fsgamesys.product import Product
 import fsgamesys
 import fstd.desktop
 import fsui
@@ -13,8 +12,9 @@ from fsbc.settings import get_setting
 from fsbc.util import unused
 from fsgamesys.context import default_context
 from fsgamesys.ogd.locker import is_locker_enabled
-from launcher.i18n import gettext
+from fsgamesys.product import Product
 from launcher.helpers.implicitconfighandler import ImplicitConfigHandler
+from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
@@ -29,19 +29,19 @@ from launcher.panels.inputpanel import InputPanel
 from launcher.panels.mainpanel import MainPanel
 from launcher.panels.quicksettingspanel import QuickSettingsPanel
 from launcher.panels.romrampanel import RomRamPanel
-from launcher.ui.ConfigurationsPanel import ConfigurationsPanel
-from launcher.ui.Constants import Constants
-from launcher.ui.WindowWithTabs import WindowWithTabs
 from launcher.ui.aboutdialog import AboutDialog
 from launcher.ui.book import Book
 from launcher.ui.bottombar.BottomPanel import BottomPanel
 from launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
 from launcher.ui.bottombar.ScreenshotsPanel import ScreenshotsPanel
 from launcher.ui.config.configscrollarea import ConfigScrollArea
+from launcher.ui.ConfigurationsPanel import ConfigurationsPanel
+from launcher.ui.Constants import Constants
 from launcher.ui.kickstartimportdialog import KickstartImportDialog
 from launcher.ui.launch import LaunchGroup
 from launcher.ui.skin import Skin
 from launcher.ui.statusbar.StatusBar import StatusBar
+from launcher.ui.WindowWithTabs import WindowWithTabs
 from launcher.update_manager import UpdateManager
 from workspace.apps.adf_creator_app import ADFCreatorWindow
 from workspace.apps.hdf_creator_app import HDFCreatorWindow

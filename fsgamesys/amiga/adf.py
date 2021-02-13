@@ -6,7 +6,7 @@ import sys
 from io import BytesIO
 
 # noinspection PyUnresolvedReferences
-from typing import List, Dict
+from typing import Dict, List
 
 B_SIZE = 512
 B_COUNT = 880 * 2

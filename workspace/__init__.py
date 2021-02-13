@@ -1,4 +1,5 @@
 import pkg_resources
+
 import launcher.version
 
 VERSION = launcher.version.VERSION

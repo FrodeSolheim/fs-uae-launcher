@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 import subprocess
+import sys
 
 p = subprocess.Popen("file --dereference `which python3`",
                      shell=True, stdout=subprocess.PIPE)
@@ -121,6 +121,7 @@ s("./standalone-linux.py --no-copy --strip --rpath='$ORIGIN/..' {package_dir}/im
 # s("rm {package_dir}/imageformats/*.so.*")
 
 from PyQt5 import QtCore
+
 dir0 = os.path.join(os.path.dirname(QtCore.__file__), "plugins")
 for libpath in QtCore.QCoreApplication.libraryPaths() + [dir0]:
     print(libpath)

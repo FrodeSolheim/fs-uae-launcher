@@ -5,14 +5,15 @@ import traceback
 from fsboot import executable_dir
 from fscore.settings import Settings
 from fsgamesys.options.constants import WORKSPACE_ON_STARTUP
-from fsui.qt import QFontDatabase
-from fsui.qt import init_qt
+from fsui.qt import QFontDatabase, init_qt
 from launcher.context import get_global_theme
 from launcher.data import launcher_data_file
 from launcher.launcherapp import LauncherApp
 from launcher.system.classes.theme import initialize_qt_style
-from launcher.system.exceptionhandler import install_exception_display_function
-from launcher.system.exceptionhandler import software_failure
+from launcher.system.exceptionhandler import (
+    install_exception_display_function,
+    software_failure,
+)
 from launcher.system.wsopen import wsopen
 
 

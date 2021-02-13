@@ -1,7 +1,7 @@
 from fsui import Color, Image, Panel
 from launcher.system.classes.configdispatch import ConfigDispatch
-from launcher.ui.imageloader import ImageLoader
 from launcher.system.exceptionhandler import exceptionhandler
+from launcher.ui.imageloader import ImageLoader
 
 # SCREEN_SIZE = (210, 134)
 SCREEN_SIZE = (200, 150)

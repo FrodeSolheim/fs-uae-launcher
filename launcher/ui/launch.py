@@ -8,8 +8,8 @@ from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.settings.fullscreentogglebutton import FullscreenToggleButton
 from launcher.settings.override_warning import OverrideWarning
-from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 from launcher.ui2.startbutton import StartButton
+from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
 
 class LaunchGroup(fsui.Group):

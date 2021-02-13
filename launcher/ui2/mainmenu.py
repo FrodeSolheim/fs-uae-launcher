@@ -1,11 +1,11 @@
 import weakref
-from fsgamesys.product import Product
+
 from fscore.developermode import DeveloperMode
+from fsgamesys.product import Product
 from fsui import PopupMenu
 from launcher.i18n import gettext
 from launcher.system.exceptionhandler import exceptionhandler
 from launcher.system.wsopen import wsopen
-
 
 # menu = fsui.PopupMenu()
 

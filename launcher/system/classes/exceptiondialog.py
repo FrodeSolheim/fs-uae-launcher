@@ -1,13 +1,14 @@
 from fsui import (
     Color,
     Dialog,
+    Font,
     Panel,
     TextArea,
     VerticalLayout,
-    Font,
     get_window,
 )
 from launcher.context import get_launcher_theme
+
 from .titlebar import TitleBar
 
 """

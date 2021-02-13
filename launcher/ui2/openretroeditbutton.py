@@ -1,7 +1,7 @@
 from fsbc.desktop import open_url_in_browser
 from fsgamesys.options.constants2 import VARIANT_UUID__
-from launcher.ui.IconButton import IconButton
 from launcher.context import get_config
+from launcher.ui.IconButton import IconButton
 
 
 class OpenRetroEditButton(IconButton):

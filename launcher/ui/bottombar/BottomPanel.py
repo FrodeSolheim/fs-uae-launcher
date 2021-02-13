@@ -1,4 +1,5 @@
 import fsui
+
 from ..skin import Skin
 
 BORDER_COLOR = (0xE5, 0xE5, 0xE5, 0xFF)

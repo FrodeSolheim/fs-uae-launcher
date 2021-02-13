@@ -2,7 +2,7 @@ import fsui
 from launcher.i18n import gettext
 from launcher.setup.setupwelcomepage import SetupWelcomePage
 from launcher.ui.skin import LauncherTheme
-from launcher.ui.widgets import PrevButton, NextButton, CloseButton
+from launcher.ui.widgets import CloseButton, NextButton, PrevButton
 
 
 class SetupWizardDialog(fsui.Window):

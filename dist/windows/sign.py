@@ -1,6 +1,6 @@
 import os
-import sys
 import subprocess
+import sys
 
 print("a")
 if os.path.exists("c:/signtool.py"):

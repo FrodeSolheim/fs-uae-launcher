@@ -1,13 +1,12 @@
 import datetime
 import math
 
-from fsui import Label, Font
-from fsui.qt import Qt, QRect, QWidget, QPainter, QBrush, QPen, QColor
+from fsui import Font, Label
+from fsui.qt import QBrush, QColor, QPainter, QPen, QRect, Qt, QWidget
 from fsui.qt.qparent import QParent
 from fsui.qt.widget import Widget
 from launcher.system.classes.window import Window
 from launcher.system.classes.windowresizehandle import WindowResizeHandle
-
 
 # TODO: Add support for alarm, digital display, date display on/off (etc) like
 # the original

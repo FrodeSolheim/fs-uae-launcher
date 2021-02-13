@@ -1,5 +1,6 @@
 import fsui
 from launcher.context import get_launcher_theme
+
 from .titlebar import TitleBar
 
 

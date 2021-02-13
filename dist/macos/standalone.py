@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 import shutil
 import subprocess
+import sys
 
 ignore_list = [
     "@rpath/QtCore.framework/Versions/5/QtCore",

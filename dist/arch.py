@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-import sys
 import platform
+import sys
+
 machine = platform.machine().lower()
 if machine in ["x86_64", "amd64", "i386", "i486", "i585", "i686"]:
     if platform.architecture()[0] == "32bit":

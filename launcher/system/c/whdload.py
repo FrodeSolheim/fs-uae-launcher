@@ -6,7 +6,6 @@ from collections import defaultdict
 from launcher.system.classes.runhelper import RunHelper
 from launcher.ws.shell import shell_hostpath, shell_realcase, shell_split
 
-
 # FIXME: Consider preventing the same slave from being started twice at the
 # same time (would be nice to be able to bring the existing  FS-UAE window to
 # the front instead).

@@ -1,6 +1,6 @@
 # import os
 # noinspection PyUnresolvedReferences
-from typing import Dict, IO, Optional
+from typing import IO, Dict, Optional
 from zipfile import ZipFile
 
 _archive: Optional[ZipFile] = None

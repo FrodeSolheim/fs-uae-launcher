@@ -1,7 +1,7 @@
 import os
 
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.directories import temp_directory
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.product import Product
 from launcher.ws.shellicon import ShellIcon
 

@@ -8,8 +8,8 @@ from fsgamesys.drivers.mednafendriver import MednafenDriver
 from fsgamesys.drivers.messdriver import MessDriver
 from fsgamesys.drivers.retroarchdriver import RetroArchDriver
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 NES_PLATFORM_ID = "nes"
 NES_PLATFORM_NAME = "Nintendo"

@@ -7,8 +7,8 @@ from fsgamesys.drivers.mednafendriver import MednafenDriver
 from fsgamesys.drivers.messdriver import MessDriver
 from fsgamesys.drivers.retroarchdriver import RetroArchDriver
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 SMD_MODEL_NTSC = "ntsc"
 SMD_MODEL_NTSC_J = "ntsc-j"

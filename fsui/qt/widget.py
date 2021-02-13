@@ -5,12 +5,12 @@ from fspy.decorators import deprecated
 from fsui.common.layout import Layout
 from fsui.qt import (
     QEvent,
-    Qt,
-    QObject,
     QFontMetrics,
-    QWidget,
+    QObject,
     QPalette,
     QPoint,
+    Qt,
+    QWidget,
 )
 from fsui.qt.color import Color
 from fsui.qt.font import Font

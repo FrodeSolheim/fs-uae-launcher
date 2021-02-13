@@ -1,8 +1,9 @@
 import fsui
-from .InputSelector import InputSelector
-from ..IconButton import IconButton
+
 from ...devicemanager import DeviceManager
 from ...i18n import gettext
+from ..IconButton import IconButton
+from .InputSelector import InputSelector
 
 
 # FIXME: Superclass was Group, but changed to Panel due to not being able

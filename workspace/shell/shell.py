@@ -7,7 +7,6 @@ import zipfile
 import workspace.path
 import workspace.ui
 
-
 STATE_NORMAL = 0
 STATE_SELECTED = 1
 

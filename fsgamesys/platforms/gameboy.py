@@ -3,8 +3,8 @@ import os
 
 from fsgamesys import Option
 from fsgamesys.drivers.mednafendriver import MednafenDriver
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 
 class GameBoyPlatform(Platform):

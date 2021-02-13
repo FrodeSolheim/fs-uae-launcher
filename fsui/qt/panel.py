@@ -5,7 +5,7 @@ from fsbc.util import unused
 from fsui.common.layout import VerticalLayout
 from fsui.qt.drawingcontext import DrawingContext
 from fsui.qt.qparent import QParent
-from fsui.qt.qt import Qt, QWidget, QPainter
+from fsui.qt.qt import QPainter, Qt, QWidget
 from fsui.qt.widget import Widget
 
 

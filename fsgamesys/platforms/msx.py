@@ -1,6 +1,6 @@
 from fsgamesys.drivers.mess.messmsxdriver import MessMsxDriver
-from fsgamesys.platforms.platform import PlatformHandler
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import PlatformHandler
 
 
 class MsxPlatformHandler(PlatformHandler):

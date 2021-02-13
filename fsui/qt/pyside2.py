@@ -1,6 +1,7 @@
 # pylint: disable=no-name-in-module
 
 # noinspection PyUnresolvedReferences
+# noinspection PyUnresolvedReferences
 from PySide2.QtCore import (
     QAbstractListModel,
     QCoreApplication,
@@ -13,17 +14,14 @@ from PySide2.QtCore import (
     QTimer,
     QUrl,
 )
-
-# noinspection PyUnresolvedReferences
 from PySide2.QtCore import Signal as QSignal
 
 # noinspection PyUnresolvedReferences
 from PySide2.QtGui import (
     QBrush,
+    QColor,
     QCursor,
     QDesktopServices,
-    QPalette,
-    QColor,
     QFont,
     QFontDatabase,
     QFontMetrics,
@@ -32,6 +30,7 @@ from PySide2.QtGui import (
     QKeyEvent,
     QLinearGradient,
     QPainter,
+    QPalette,
     QPen,
     QPixmap,
     QStandardItem,
@@ -49,8 +48,8 @@ from PySide2.QtSvg import QSvgRenderer
 from PySide2.QtWidgets import (
     QApplication,
     QCheckBox,
-    QComboBox,
     QColorDialog,
+    QComboBox,
     QDesktopWidget,
     QDialog,
     QFileDialog,

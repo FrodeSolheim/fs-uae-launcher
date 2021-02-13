@@ -1,7 +1,7 @@
 from fsgamesys.drivers.messdriver import MessDriver
 from fsgamesys.knownfiles import KnownFile
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 # noinspection SpellCheckingInspection
 A5200_ROM = KnownFile(

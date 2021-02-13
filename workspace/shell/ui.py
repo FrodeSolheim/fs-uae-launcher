@@ -4,7 +4,6 @@ import workspace.path
 import workspace.shell
 import workspace.ui
 
-
 ICON_WIDTH = 120
 ICON_HEIGHT = 100
 

@@ -1,9 +1,9 @@
 import fsui
 from launcher.i18n import gettext
+from launcher.ui.config.configpanel import ConfigPanel
 from launcher.ui.config.HardDriveGroup import HardDriveGroup
 from launcher.ui.config.WHDLoadGroup import WHDLoadGroup
 from launcher.ui.skin import Skin
-from launcher.ui.config.configpanel import ConfigPanel
 
 
 class HardDrivesPanel(ConfigPanel):

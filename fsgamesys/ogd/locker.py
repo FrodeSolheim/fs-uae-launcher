@@ -1,9 +1,9 @@
 import time
 
 from fsbc.settings import Settings
-from fsgamesys.LockerDatabase import LockerDatabase
 from fsgamesys.download import Downloader
 from fsgamesys.filedatabase import FileDatabase
+from fsgamesys.LockerDatabase import LockerDatabase
 from fsgamesys.network import openretro_url_prefix
 from fsgamesys.ogd.base import SynchronizerBase
 from fsgamesys.ogd.context import SynchronizerContext

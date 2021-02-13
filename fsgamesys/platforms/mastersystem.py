@@ -5,8 +5,8 @@ from fsbc import settings
 from fsgamesys.drivers.mednafendriver import MednafenDriver
 from fsgamesys.drivers.mess.messsmsdriver import MessSmsDriver
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 """
 FIXME: Some PAL games are 256x240, e.g. Fantastic Dizzy

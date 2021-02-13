@@ -5,15 +5,15 @@ from binascii import hexlify
 from functools import lru_cache
 
 from fsgamesys import OPENRETRO_DEFAULT_DATABASES
-from fsgamesys.product import Product
+from fsgamesys.context import fsgs
+from fsgamesys.filedatabase import FileDatabase
 from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.GameDatabase import IncompleteGameException
 from fsgamesys.GameDatabaseClient import GameDatabaseClient
-from fsgamesys.context import fsgs
-from fsgamesys.filedatabase import FileDatabase
 from fsgamesys.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
 from fsgamesys.ogd.locker import LockerSynchronizer
 from fsgamesys.options.option import Option
+from fsgamesys.product import Product
 from fsgamesys.util.gamenameutil import GameNameUtil
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings

@@ -1,7 +1,7 @@
 from fsui.context import get_theme
 from fsui.decorators import deprecated
 from fsui.qt.qparent import QParent
-from fsui.qt.qt import QLineEdit, QFontMetrics
+from fsui.qt.qt import QFontMetrics, QLineEdit
 from fsui.qt.signal import Signal, SignalWrapper
 from fsui.qt.widget import Widget
 

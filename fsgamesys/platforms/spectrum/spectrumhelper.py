@@ -1,10 +1,10 @@
 from fsgamesys.options.option import Option
 from fsgamesys.platforms.spectrum import (
     SPECTRUM_MODEL_48K,
+    SPECTRUM_MODEL_128,
     SPECTRUM_MODEL_PLUS2,
     SPECTRUM_MODEL_PLUS2A,
     SPECTRUM_MODEL_PLUS3,
-    SPECTRUM_MODEL_128,
 )
 
 

@@ -7,7 +7,6 @@ DEFAULT_ADDRESS = "127.0.0.1"
 # noinspection PyUnresolvedReferences
 import fsgamesys.web.handlers
 
-
 # class FSGSWebServerHandler(http.server.BaseHTTPRequestHandler):
 #
 #     # noinspection PyPep8Naming

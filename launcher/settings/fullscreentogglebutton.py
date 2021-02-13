@@ -1,5 +1,5 @@
 from fsbc.application import app
-from fsui import ImageButton, Image
+from fsui import Image, ImageButton
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 

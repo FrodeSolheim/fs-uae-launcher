@@ -1,7 +1,6 @@
 from fsgamesys.input.sdlkeycodes import sdl_key_codes
 from fsgamesys.util import sdl2
 
-
 # with open(os.expanduser('~/Desktop/keys.txt'), 'wb') as f:
 #     for key in sorted(sdl_key_codes.keys()):
 #         value = str(sdl_key_codes[key])

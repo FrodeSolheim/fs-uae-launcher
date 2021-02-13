@@ -2,10 +2,10 @@ import time
 import traceback
 
 from arcade.resources import logger
+from fsgamesys.input.devicemanager import DeviceManager
 from fsgamesys.input.eventlistener import EventListener
 from fsgamesys.input.inputdevice import InputDevice
 from fsgamesys.input.keyboard import Keyboard
-from fsgamesys.input.devicemanager import DeviceManager
 from fspy.decorators import memoize
 
 REPEAT_THRESHOLD = 0.300

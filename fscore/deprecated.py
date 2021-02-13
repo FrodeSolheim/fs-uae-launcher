@@ -1,7 +1,7 @@
 import traceback
 from functools import wraps
+from typing import Any, Callable, Dict, List, TypeVar, cast
 from warnings import warn
-from typing import Any, Callable, List, Dict, TypeVar, cast
 
 F = TypeVar("F", bound=Callable[..., Any])
 

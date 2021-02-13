@@ -2,22 +2,27 @@ import math
 import os
 import random
 
-# from numpy import array, float32
-from fsgamesys.platforms.platform import PlatformHandler
-from arcade.glui.constants import TOP_ITEM_ARROW, TOP_ITEM_LEFT
-from arcade.glui.constants import ROW_NAME, ROW_PLATFORM
-
-from fsgamesys.Database import Database
-from fsgamesys.util.gamenameutil import GameNameUtil
-from fspy.decorators import memoize
-from arcade.resources import resources, gettext
-from .font import BitmapFont
-from .opengl import gl, fs_emu_blending, fs_emu_texturing
-from .render import Render
+from arcade.glui.constants import (
+    ROW_NAME,
+    ROW_PLATFORM,
+    TOP_ITEM_ARROW,
+    TOP_ITEM_LEFT,
+)
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
 from arcade.glui.texturemanager import TextureManager
+from arcade.resources import gettext, resources
+from fsgamesys.Database import Database
+
+# from numpy import array, float32
+from fsgamesys.platforms.platform import PlatformHandler
+from fsgamesys.util.gamenameutil import GameNameUtil
+from fspy.decorators import memoize
+
 from .errordialog import show_exception
+from .font import BitmapFont
+from .opengl import fs_emu_blending, fs_emu_texturing, gl
+from .render import Render
 
 LIGHTING = False
 DIRTY_WHILE_NOT_LOADED = True

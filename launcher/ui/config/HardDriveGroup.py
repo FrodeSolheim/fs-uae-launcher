@@ -1,14 +1,14 @@
 import os
 
 import fsui
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.amiga import whdload
 from fsgamesys.checksumtool import ChecksumTool
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from launcher.context import get_config
 from launcher.i18n import gettext
+from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
-from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
 
 
 class HardDriveGroup(fsui.Panel):

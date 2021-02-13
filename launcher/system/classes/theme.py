@@ -1,7 +1,8 @@
 import fsui
 from fsui import Color, Font
 from fsui.qt import QColor, QFont, QPalette, QStyleFactory
-from fsui.theme import Theme as BaseTheme, Padding
+from fsui.theme import Padding
+from fsui.theme import Theme as BaseTheme
 from launcher.launcher_settings import LauncherSettings
 
 

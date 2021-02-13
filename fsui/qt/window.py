@@ -1,7 +1,7 @@
 import weakref
 
-from fscore.system import System
 from fscore.deprecated import deprecated
+from fscore.system import System
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QMainWindow, Qt, init_qt
 from fsui.qt.toplevelwidget import TopLevelWidget

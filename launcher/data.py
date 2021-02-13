@@ -1,7 +1,7 @@
 import os
 
-from fscore.system import System
 from fsboot import executable_dir
+from fscore.system import System
 
 
 def launcher_data_file_path(relative):

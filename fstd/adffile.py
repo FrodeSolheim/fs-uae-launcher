@@ -4,7 +4,7 @@ import hashlib
 import os
 import sys
 from io import BytesIO
-from typing import Dict, List, IO, Union
+from typing import IO, Dict, List, Union
 
 B_SIZE = 512
 B_COUNT = 880 * 2

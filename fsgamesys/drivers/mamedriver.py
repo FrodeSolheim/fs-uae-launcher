@@ -2,10 +2,10 @@ import filecmp
 import os
 import shutil
 
-from fscore.system import System
 from fsbc.task import current_task
+from fscore.system import System
+from fsgamesys.drivers.gamedriver import Emulator, GameDriver
 from fsgamesys.FSGSDirectories import FSGSDirectories
-from fsgamesys.drivers.gamedriver import GameDriver, Emulator
 from fsgamesys.input.mapper import InputMapper
 from fsgamesys.knownfiles import KnownFilePath
 from fsgamesys.options.option import Option

@@ -1,18 +1,19 @@
 import os
+
 from fsgamesys.drivers.gamedriver import GameDriver
-from fsgamesys.platforms.spectrum import SPECTRUM_PORTS
-from fsgamesys.platforms.spectrum.spectrumhelper import SpectrumHelper
+from fsgamesys.options.option import Option
 from fsgamesys.platforms.spectrum import (
+    SPECTRUM_CURSOR_JOYSTICK_TYPE,
+    SPECTRUM_KEMPSTON_JOYSTICK_TYPE,
     SPECTRUM_MODEL_48K,
+    SPECTRUM_MODEL_128,
     SPECTRUM_MODEL_PLUS2,
     SPECTRUM_MODEL_PLUS2A,
     SPECTRUM_MODEL_PLUS3,
-    SPECTRUM_MODEL_128,
-    SPECTRUM_CURSOR_JOYSTICK_TYPE,
+    SPECTRUM_PORTS,
     SPECTRUM_SINCLAIR_JOYSTICK_TYPE,
-    SPECTRUM_KEMPSTON_JOYSTICK_TYPE,
 )
-from fsgamesys.options.option import Option
+from fsgamesys.platforms.spectrum.spectrumhelper import SpectrumHelper
 
 
 def log_heading(heading):

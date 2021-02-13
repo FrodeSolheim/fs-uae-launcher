@@ -1,5 +1,4 @@
-from fsui import Color, Panel
-from fsui import get_mouse_position, get_theme
+from fsui import Color, Panel, get_mouse_position, get_theme
 from fsui.context import get_window
 
 

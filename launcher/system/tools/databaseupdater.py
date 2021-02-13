@@ -1,11 +1,11 @@
-from launcher.system.classes.window import Window
-from fsgamesys.ogd.refresh import DatabaseRefreshTask
 import fsui
+from fsgamesys.ogd.refresh import DatabaseRefreshTask
 from fsui import VerticalLayout
 from fsui.extra.iconheader import IconHeader
 
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
+from launcher.system.classes.window import Window
 
 # from launcher.ui.widgets import CloseButton
 from workspace.ui.theme import WorkspaceTheme

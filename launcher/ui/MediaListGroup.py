@@ -2,10 +2,10 @@ import os
 
 import fsui
 from fsbc.paths import Paths
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.checksumtool import ChecksumTool
 from fsgamesys.context import fsgs
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from launcher.context import get_config
 from launcher.helpers.cdmanager import CDManager
 from launcher.helpers.floppymanager import FloppyManager
@@ -13,13 +13,14 @@ from launcher.i18n import gettext
 
 # from launcher.launcher_config import LauncherConfig
 from launcher.option import Option
-from launcher.ui.IconButton import IconButton
-from launcher.ui.LauncherFilePicker import LauncherFilePicker
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
 from launcher.ui.behaviors.platformbehavior import (
     AMIGA_PLATFORMS,
     PlatformEnableBehavior,
 )
+from launcher.ui.IconButton import IconButton
+from launcher.ui.LauncherFilePicker import LauncherFilePicker
+
 
 # FIXME: Superclass was Group, but changed to Panel due to not being able
 # to disconnect from listening to config changes when closing window.

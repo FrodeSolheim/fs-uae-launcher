@@ -1,6 +1,6 @@
 from fsui.qt.color import Color
 from fsui.qt.font import Font
-from fsui.qt.qt import Qt, QPoint, QRect, QPen, QBrush, QLinearGradient, QColor
+from fsui.qt.qt import QBrush, QColor, QLinearGradient, QPen, QPoint, QRect, Qt
 
 
 class DrawingContext(object):

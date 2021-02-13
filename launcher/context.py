@@ -1,8 +1,8 @@
 # import weakref
+from fsgamesys.FSGameSystemContext import FSGameSystemContext
 from fsui.context import get_window
 from launcher.launcher_settings import LauncherSettings
 from launcher.system.classes.theme import Theme
-from fsgamesys.FSGameSystemContext import FSGameSystemContext
 
 
 def get_config(widget):

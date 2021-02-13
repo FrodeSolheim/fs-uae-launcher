@@ -3,7 +3,6 @@ import zlib
 from fsgamesys.amiga.iconparser import IconParser
 from fsui import Image
 
-
 # FIXME: Add support for GlowIcons with palette data ONLY in the first image
 # FIXME: When scaling icons to 150%, maybe a transparent row and/or column to
 # make the icon size a multiple of two before scaling - could give slightly

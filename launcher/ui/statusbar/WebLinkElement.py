@@ -1,10 +1,9 @@
 from fsbc.desktop import open_url_in_browser
-from fsui import Image, HorizontalLayout, Menu
+from fsui import HorizontalLayout, Image, Menu
+from launcher.context import get_config
+from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.ui.statusbar.StatusElement import StatusElement
-from launcher.i18n import gettext
-from launcher.context import get_config
-
 
 url_descriptions = [
     ("database_url", "Game Database Entry"),

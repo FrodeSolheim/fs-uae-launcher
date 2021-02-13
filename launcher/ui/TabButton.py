@@ -1,7 +1,7 @@
 import fsui
 from launcher.ui.Constants import Constants
-from launcher.ui.TabPanel import TabPanel
 from launcher.ui.skin import Skin
+from launcher.ui.TabPanel import TabPanel
 
 
 class TabButton(fsui.Panel):

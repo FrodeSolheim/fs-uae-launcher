@@ -1,12 +1,19 @@
 import json
 import traceback
 
-from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.texture import Texture
 from arcade.resources import resources
 from fspy.decorators import memoize
-from fsui.qt import QFontDatabase, QPainter, QImage, QFontMetrics, QPoint
-from fsui.qt import QPen, QColor
+from fsui.qt import (
+    QColor,
+    QFontDatabase,
+    QFontMetrics,
+    QImage,
+    QPainter,
+    QPen,
+    QPoint,
+)
 
 CACHE_SIZE = 100
 text_cache = []

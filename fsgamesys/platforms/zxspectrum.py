@@ -22,8 +22,8 @@ from fsbc import settings
 from fsgamesys.drivers.gamedriver import GameDriver
 from fsgamesys.drivers.messdriver import MessDriver
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 # from fsgamesys.platforms.zxs.fusespectrumdriver import FuseSpectrumDriver
 # from fsgamesys.platforms.zxs.messspectrumdriver import MessSpectrumDriver
@@ -91,9 +91,8 @@ def log_heading(heading):
     # print("-" * 79)
 
 
-from fsgamesys.platforms.spectrum.spectrumplatform import SpectrumPlatform
 from fsgamesys.platforms.spectrum.spectrumloader import SpectrumLoader
-
+from fsgamesys.platforms.spectrum.spectrumplatform import SpectrumPlatform
 
 ZXS_KEMPSTON_JOYSTICK_TYPE = "kempston"
 ZXS_KEMPSTON_JOYSTICK = {

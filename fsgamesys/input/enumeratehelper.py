@@ -5,6 +5,7 @@ import traceback
 from fsgamesys import Option
 from fsgamesys.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 from launcher.devicemanager import DeviceManager
+
 from .device import Device
 
 

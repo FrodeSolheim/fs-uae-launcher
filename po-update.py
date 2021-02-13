@@ -2,8 +2,8 @@
 
 import os
 import shutil
-import tempfile
 import subprocess
+import tempfile
 
 dirs = ["arcade", "fsui", "fsbc", "fsgs", "launcher", "workspace"]
 files = []

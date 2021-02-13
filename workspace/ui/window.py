@@ -1,9 +1,10 @@
 import pkg_resources
+
 import fsui
 from fsui.qt.old_window import RealWindow
+
 from .application import Application
 from .theme import WorkspaceTheme
-
 
 TEXT_SPACING = 2
 

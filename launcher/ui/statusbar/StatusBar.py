@@ -1,12 +1,13 @@
 from fsbc.util import unused
-from fsui import Panel, Color, VerticalLayout, HorizontalLayout, Image
+from fsui import Color, HorizontalLayout, Image, Panel, VerticalLayout
+
+from ...launcher_config import LauncherConfig
+from ..skin import Skin
 from .LanguageElement import LanguageElement
 from .PlayersElement import PlayersElement
 from .ProtectionElement import ProtectionElement
 from .WarningsElement import WarningsElement
 from .WebLinkElement import WebLinkElement
-from ..skin import Skin
-from ...launcher_config import LauncherConfig
 
 
 class StatusBar(Panel):

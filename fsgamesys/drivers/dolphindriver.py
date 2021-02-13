@@ -1,7 +1,7 @@
 import os
 
 from fscore.system import System
-from fsgamesys.drivers.gamedriver import GameDriver, Emulator
+from fsgamesys.drivers.gamedriver import Emulator, GameDriver
 from fsgamesys.input.mapper import InputMapper
 
 

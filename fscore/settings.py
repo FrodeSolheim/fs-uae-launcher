@@ -1,7 +1,6 @@
 import fsbc.settings
 from fscore.deprecated import deprecated
 
-
 # def setting(name):
 #     pass
 

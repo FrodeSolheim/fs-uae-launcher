@@ -3,6 +3,7 @@ import os
 import fsui
 from fsbc.paths import Paths
 from fsgamesys.FSGSDirectories import FSGSDirectories
+
 from .launcher_config import LauncherConfig
 from .launcher_settings import LauncherSettings
 from .ui.Constants import Constants

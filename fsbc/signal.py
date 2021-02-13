@@ -1,6 +1,6 @@
 import threading
 import traceback
-from typing import Dict, List, Any, Tuple
+from typing import Any, Dict, List, Tuple
 from weakref import ref
 
 main_thread_id = threading.current_thread().ident

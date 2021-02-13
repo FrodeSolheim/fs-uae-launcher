@@ -1,5 +1,5 @@
-from launcher.ui.statusbar.StatusElement import StatusElement
 from launcher.context import get_config
+from launcher.ui.statusbar.StatusElement import StatusElement
 
 
 class LanguageElement(StatusElement):

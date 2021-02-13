@@ -1,11 +1,11 @@
 from arcade.arcadetheme import ArcadeTheme
-from fsui.qt import QImage
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 
 # import numpy
 # from PIL import Image
 # from fsbc.Application import app
 from arcade.resources import resources
-from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
+from fsui.qt import QImage
 
 
 class Texture(object):

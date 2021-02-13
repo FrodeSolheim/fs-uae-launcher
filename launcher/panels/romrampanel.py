@@ -1,15 +1,15 @@
 import os
 
 import fsui
-from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.checksumtool import ChecksumTool
+from fsgamesys.FSGSDirectories import FSGSDirectories
 from launcher.context import get_config
 from launcher.i18n import gettext
 from launcher.option import Option
-from launcher.ui.IconButton import IconButton
-from launcher.ui.LauncherFilePicker import LauncherFilePicker
 from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
 from launcher.ui.config.configpanel import ConfigPanel
+from launcher.ui.IconButton import IconButton
+from launcher.ui.LauncherFilePicker import LauncherFilePicker
 from launcher.ui.options import ConfigWidgetFactory
 
 

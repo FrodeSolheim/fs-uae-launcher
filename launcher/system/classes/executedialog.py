@@ -1,13 +1,6 @@
-from fsui import (
-    Button,
-    HorizontalLayout,
-    Label,
-    TextField,
-    VerticalLayout,
-)
+from fsui import Button, HorizontalLayout, Label, TextField, VerticalLayout
 from launcher.i18n import gettext
 from launcher.system.classes.window import Window
-
 
 # TODO: Make escape key close the dialog
 

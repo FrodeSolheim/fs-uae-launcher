@@ -1,8 +1,8 @@
 import os
 
 from fsgamesys.drivers.dolphindriver import DolphinDriver, DolphinInputMapper
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 NGC_PLATFORM_NAME = "GameCube"
 NGC_CONTROLLER = {

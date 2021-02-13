@@ -1,3 +1,4 @@
+import launcher.version
 from arcade.Application import Application
 from arcade.glui.imageloader import ImageLoader
 from arcade.ui.arcade_window import (
@@ -6,11 +7,11 @@ from arcade.ui.arcade_window import (
     fullscreen,
     maximized,
 )
+from fsbc.init import initialize_application
 from fscore.settings import Settings
 from fscore.system import System
-from .gnome3 import running_in_gnome_3, handle_gnome_extensions
-import launcher.version
-from fsbc.init import initialize_application
+
+from .gnome3 import handle_gnome_extensions, running_in_gnome_3
 
 K_UI_MODE_ALL_HIDDEN = 3
 K_UI_OPTION_AUTO_SHOW_MENU_BAR = 1 << 0

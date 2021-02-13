@@ -1,12 +1,12 @@
 from fsbc.settings import Settings
 from fsgamesys import openretro
-from fsgamesys.product import Product
+from fsgamesys.options.constants2 import PARENT_UUID
 from fsgamesys.options.option import Option
+from fsgamesys.product import Product
+from launcher.context import get_config
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.ui.IconButton import IconButton
-from fsgamesys.options.constants2 import PARENT_UUID
-from launcher.context import get_config
 
 
 class NewConfigButton(IconButton):

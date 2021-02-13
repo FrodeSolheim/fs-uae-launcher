@@ -4,8 +4,8 @@ from binascii import unhexlify
 
 from fsgamesys import Option
 from fsgamesys.drivers.messdriver import MessDriver
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 A7800_PLATFORM_ID = "a7800"
 A7800_PLATFORM_NAME = "Atari 7800"

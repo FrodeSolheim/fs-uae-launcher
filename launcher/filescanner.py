@@ -6,6 +6,7 @@ from fsbc.paths import Paths
 from fsgamesys.amiga.rommanager import ROMManager
 from fsgamesys.archive import Archive, archive_extensions
 from fsgamesys.filedatabase import FileDatabase
+
 from .i18n import gettext
 
 

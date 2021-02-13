@@ -2,6 +2,7 @@ import os
 
 from fsgamesys.filedatabase import FileDatabase
 from fsgamesys.util.gamenameutil import GameNameUtil
+
 from .i18n import gettext
 
 

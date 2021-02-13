@@ -4,10 +4,10 @@ from functools import wraps
 
 from fspy.exception import (
     HandledException,
-    handle_exception_before_display,
     handle_exception_after_display,
+    handle_exception_before_display,
+    set_exception_display_function,
 )
-from fspy.exception import set_exception_display_function
 from launcher.system.classes.exceptiondialog import ExceptionDialog
 
 """

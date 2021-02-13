@@ -1,7 +1,7 @@
 from weakref import ref
 
 from fspy.decorators import deprecated
-from fsui.qt.qt import Qt, QDesktopWidget, QSignal, QEvent
+from fsui.qt.qt import QDesktopWidget, QEvent, QSignal, Qt
 from fsui.qt.widget import Widget
 
 _windows = set()

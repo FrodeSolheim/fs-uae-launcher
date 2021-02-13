@@ -2,13 +2,13 @@ import json
 
 from fsbc import settings
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.atari.hatariataridriver import (
+    ST_MODEL_1040STFM,
     HatariDriver,
     HatariFsDriver,
-    ST_MODEL_1040STFM,
 )
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 
 class AtariSTPlatform(Platform):

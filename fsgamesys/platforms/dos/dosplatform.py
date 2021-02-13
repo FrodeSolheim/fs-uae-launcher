@@ -1,6 +1,6 @@
-from fsgamesys.platforms.platform import PlatformHandler
 from fsgamesys.platforms.dos.dosboxdosdriver import DosBoxDosDriver
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import PlatformHandler
 
 
 class DOSPlatformHandler(PlatformHandler):

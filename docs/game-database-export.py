@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from binascii import hexlify
 import json
 import sqlite3
 import sys
 import zlib
+from binascii import hexlify
 
 
 def main():

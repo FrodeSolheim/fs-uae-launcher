@@ -17,13 +17,13 @@
 
 from fsbc import settings
 from fsgamesys.options.option import Option
-from fsgamesys.platforms.platform import Platform
 from fsgamesys.platforms.cpc.cpcconstants import CPC_MODEL_464
 from fsgamesys.platforms.cpc.cpcmamedriver import (
     CpcMameDriver,
     CpcMameFsDriver,
 )
 from fsgamesys.platforms.loader import SimpleLoader
+from fsgamesys.platforms.platform import Platform
 
 
 class CpcPlatform(Platform):

@@ -87,7 +87,7 @@ class GL:
             # a problem if comma is used as a decimal separator (problem
             # parsing the OpenGL version)
             locale.setlocale(locale.LC_NUMERIC, str("C"))
-        from .pyopengl import pyopengl_globals, filter_global
+        from .pyopengl import filter_global, pyopengl_globals
 
         for name in list(pyopengl_globals()):
             if filter_global(name):
@@ -126,9 +126,6 @@ if False:
 
     # noinspection PyUnresolvedReferences
     import logging
-
-    # noinspection PyUnresolvedReferences
-    import OpenGL.platform.win32
 
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays._buffers
@@ -182,3 +179,6 @@ if False:
 
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.vbo
+
+    # noinspection PyUnresolvedReferences
+    import OpenGL.platform.win32

@@ -5,6 +5,7 @@ from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.context import fsgs
 from fsgamesys.plugins.pluginmanager import PluginManager
 from fsui import Image
+from launcher.context import get_config
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
@@ -17,7 +18,6 @@ from launcher.ui.download import DownloadGameWindow
 from launcher.ui.kickstartimportdialog import KickstartImportDialog
 from launcher.ui.statusbar.StatusElement import StatusElement
 from launcher.update_manager import UpdateManager
-from launcher.context import get_config
 
 ERROR_LEVEL = 0
 WARNING_LEVEL = 1
