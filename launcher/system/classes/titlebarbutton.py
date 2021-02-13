@@ -22,7 +22,7 @@ class TitleBarButton(Panel):
         image=None,
         icon_name=None,
         fgcolor=None,
-        fgcolor_inactive=None
+        fgcolor_inactive=None,
     ):
         super().__init__(parent)
         self.set_min_size((size))
@@ -38,10 +38,10 @@ class TitleBarButton(Panel):
         else:
             self._image = None
             with launcher_data_file(f"Icons/{icon_name}.svg") as f:
-            # with open(
-            #     os.path.expanduser("~/openretro/icons/" + icon_name + ".svg"),
-            #     "rb",
-            # ) as f:
+                # with open(
+                #     os.path.expanduser("~/openretro/icons/" + icon_name + ".svg"),
+                #     "rb",
+                # ) as f:
                 self._svg = Svg(f.read())
 
         self.update_background_color()

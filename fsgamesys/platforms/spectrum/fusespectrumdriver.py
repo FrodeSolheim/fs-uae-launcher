@@ -10,7 +10,7 @@ from fsgamesys.platforms.spectrum import (
     SPECTRUM_MODEL_128,
     SPECTRUM_CURSOR_JOYSTICK_TYPE,
     SPECTRUM_SINCLAIR_JOYSTICK_TYPE,
-    SPECTRUM_KEMPSTON_JOYSTICK_TYPE
+    SPECTRUM_KEMPSTON_JOYSTICK_TYPE,
 )
 from fsgamesys.options.option import Option
 
@@ -72,7 +72,7 @@ class FuseSpectrumDriver(GameDriver):
             SPECTRUM_MODEL_128: "128",
             SPECTRUM_MODEL_PLUS2: "plus2",
             SPECTRUM_MODEL_PLUS2A: "plus2a",
-            SPECTRUM_MODEL_PLUS3: "plus3"
+            SPECTRUM_MODEL_PLUS3: "plus3",
         }[model]
         self.fuse_options["machine"] = fuse_machine
 

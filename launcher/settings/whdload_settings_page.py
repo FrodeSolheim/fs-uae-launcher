@@ -50,7 +50,10 @@ class WHDLoadSettingsPage(SettingsPage):
         #     ),
         # )
 
-        label = fsui.Label(self, gettext("WHDLoad.key file:"),)
+        label = fsui.Label(
+            self,
+            gettext("WHDLoad.key file:"),
+        )
         self.layout.add(label, margin_top=20)
 
         horilayout = fsui.HorizontalLayout()
@@ -67,7 +70,10 @@ class WHDLoadSettingsPage(SettingsPage):
         helpbutton = OptionHelpButton(self, Option.WHDLOAD_KEY_PATH)
         horilayout.add(helpbutton, fill=True, margin_left=10)
 
-        label = fsui.Label(self, gettext("Custom WHDLoad executable:"),)
+        label = fsui.Label(
+            self,
+            gettext("Custom WHDLoad executable:"),
+        )
         self.layout.add(label, margin_top=20)
 
         horilayout = fsui.HorizontalLayout()

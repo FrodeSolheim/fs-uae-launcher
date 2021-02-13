@@ -118,7 +118,9 @@ class Paths(object):
         elif drive:
             # on Windows, add / to make drive a valid path
             drive += "/"
-        if len(p) > 1 and (p.endswith("/") or (System.windows and p.endswith("\\"))):
+        if len(p) > 1 and (
+            p.endswith("/") or (System.windows and p.endswith("\\"))
+        ):
             removed_separator = p[-1]
             p = p[:-1]
 

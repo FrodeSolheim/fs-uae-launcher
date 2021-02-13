@@ -22,6 +22,7 @@ from fsgamesys.amiga.rommanager import ROMManager
 from fsgamesys.amiga.roms import CD32_FMV_ROM, PICASSO_IV_74_ROM
 from fsgamesys.amiga.workbenchdata import workbench_disks_with_setpatch_39_6
 from fsgamesys.amiga.workbenchextractor import WorkbenchExtractor
+
 # from fsgamesys.amiga.xpkmaster import install_xpkmaster_files
 from fsgamesys.archive import Archive
 from fsgamesys.download import Downloader
@@ -399,7 +400,9 @@ class LaunchHandler(object):
             data = zlib.decompress(data)
             save_disk_sha1 = hashlib.sha1(data).hexdigest()
             # save_disk = os.path.join(self.temp_dir, "Save Disk.adf")
-            save_disk = os.path.join(self.temp_dir, save_disk_sha1[:8].upper() + ".adf")
+            save_disk = os.path.join(
+                self.temp_dir, save_disk_sha1[:8].upper() + ".adf"
+            )
             with open(save_disk, "wb") as f:
                 f.write(data)
             self.config[f"floppy_image_{save_image}"] = save_disk

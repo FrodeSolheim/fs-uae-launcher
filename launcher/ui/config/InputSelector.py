@@ -50,10 +50,16 @@ class InputSelector(fsui.Panel):
 
         if port < 2:
             self.joystick_mode_values.extend(
-                ["mouse", "cd32 gamepad",]
+                [
+                    "mouse",
+                    "cd32 gamepad",
+                ]
             )
             self.joystick_mode_titles.extend(
-                [gettext("Amiga Mouse"), gettext("CD32 Pad"),]
+                [
+                    gettext("Amiga Mouse"),
+                    gettext("CD32 Pad"),
+                ]
             )
 
         self.mode_choice = fsui.Choice(self, self.joystick_mode_titles)
@@ -86,7 +92,8 @@ class InputSelector(fsui.Panel):
         self.layout.add(self.device_choice, expand=True)
 
         self.layout.add(
-            InputPortDeviceChoice(self, non_amiga_port_gui_index), expand=True,
+            InputPortDeviceChoice(self, non_amiga_port_gui_index),
+            expand=True,
         )
 
         if port < 4 and autofire_button:
@@ -374,7 +381,8 @@ class InputPortDeviceChoice(fsui.ComboBox):
         # Must check platform before device option key
         self.on_config(Option.PLATFORM, config.get(Option.PLATFORM))
         self.on_config(
-            self.device_option_key, config.get(self.device_option_key),
+            self.device_option_key,
+            config.get(self.device_option_key),
         )
         # self.changed.connect(self.__changed)
         self.set_index(0)

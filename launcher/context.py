@@ -5,7 +5,7 @@ from launcher.system.classes.theme import Theme
 from fsgamesys.FSGameSystemContext import FSGameSystemContext
 
 
-def get_config(widget) :
+def get_config(widget):
     return get_gscontext(widget).config
 
 

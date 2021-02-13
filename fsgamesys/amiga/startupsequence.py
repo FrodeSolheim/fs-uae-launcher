@@ -20,9 +20,9 @@ def prepare_startup_sequence(command, *, setpatch=None) -> bytes:
                 )
             else:
                 data.append(
-                    setpatch_not_found_sequence.replace(
-                        "\r\n", "\n"
-                    ).encode("ISO-8859-1")
+                    setpatch_not_found_sequence.replace("\r\n", "\n").encode(
+                        "ISO-8859-1"
+                    )
                 )
         data.append(command.replace("\r\n", "\n").encode("ISO-8859-1"))
 

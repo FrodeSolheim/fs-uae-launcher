@@ -6,6 +6,7 @@ from fsgamesys.platforms.spectrum.fsfusespectrumdriver import (
     FsFuseSpectrumDriver,
 )
 
+
 class SpectrumPlatform(Platform):
     PLATFORM_NAME = "ZX Spectrum"
 

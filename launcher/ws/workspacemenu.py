@@ -11,11 +11,13 @@ class WorkspaceMenu(PopupMenu):
         super().__init__()
 
         self.add_item(
-            gettext("Execute command..."), self.__on_execute_command,
+            gettext("Execute command..."),
+            self.__on_execute_command,
         )
         self.add_separator()
         self.add_item(
-            gettext("Trigger exception..."), self.__on_cause_exception,
+            gettext("Trigger exception..."),
+            self.__on_cause_exception,
         )
         self.add_item(
             gettext("Trigger exception (chained)..."),

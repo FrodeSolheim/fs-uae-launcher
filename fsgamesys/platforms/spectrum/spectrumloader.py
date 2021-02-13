@@ -4,6 +4,7 @@ from fsgamesys.options.option import Option
 from fsgamesys.platforms.loader import SimpleLoader
 from fsgamesys.platforms.spectrum import SPECTRUM_MODEL_48K
 
+
 class SpectrumLoader(SimpleLoader):
     def load_files(self, values):
         file_list = json.loads(values["file_list"])

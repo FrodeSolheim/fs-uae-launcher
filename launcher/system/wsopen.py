@@ -104,7 +104,6 @@ def simple_window_cache(window_class, window_key, window=None, parent=None):
         win.center_on_window(window)
 
 
-
 def wsopen_workspace(*, parent=None):
     from launcher.ws.workspacewindow import WorkspaceWindow
 
@@ -141,6 +140,7 @@ def wsopen_launcher(*, parent=None, **kwargs):
 
 def wsopen_shell(path, args=None, window=None, parent=None, **kwargs):
     print(f"wsopen_shell {path} window={window} parent={parent}")
+
     def ShellWindowWrapper(parent):
         position, size = shell_window_geometry(path)
         win = ShellWindow(parent, path)
@@ -202,10 +202,7 @@ def wsopen_prefs_window(name, *, window=None, parent=None):
 def wsopen(name, args=None, *, window=None, parent=None):
     # FIXME: Case insensitive
     print(f"WSOpen name={name} window={window} parent={parent}")
-    kwargs = {
-        "parent": parent,
-        "window": window
-    }
+    kwargs = {"parent": parent, "window": window}
 
     name_lower = name.lower()
     if name_lower.startswith("c:"):

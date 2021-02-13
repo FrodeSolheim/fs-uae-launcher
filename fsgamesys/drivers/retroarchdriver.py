@@ -438,8 +438,10 @@ class RetroArchDriver(GameDriver):
                     for gamepad_input, action in gamepad_mapping.items():
                         for remap_id, action_2 in retropad_mapping.items():
                             if action == action_2:
-                                remap_name = self.retroarch_remap_name_for_port(
-                                    gamepad_input, port.index
+                                remap_name = (
+                                    self.retroarch_remap_name_for_port(
+                                        gamepad_input, port.index
+                                    )
                                 )
                                 print(remap_name, remap_id)
                                 remap_dict[remap_name] = remap_id

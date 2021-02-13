@@ -283,7 +283,9 @@ class PluginManager:
             # FIXME: Check that this contains something known first?
             # System/Plugins/
             plugins_dir = os.path.normpath(
-                os.path.join(fsboot.executable_dir(), escape_exe_dir, "Plugins")
+                os.path.join(
+                    fsboot.executable_dir(), escape_exe_dir, "Plugins"
+                )
             )
             result.append(plugins_dir)
 

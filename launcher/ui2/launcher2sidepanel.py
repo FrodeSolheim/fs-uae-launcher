@@ -27,7 +27,12 @@ class Launcher2SidePanel(Panel):
             margin_bottom=0,
         )
 
-        self.choice = Choice(self, ["Game front cover",])
+        self.choice = Choice(
+            self,
+            [
+                "Game front cover",
+            ],
+        )
         hori_layout.add(self.choice, expand=True)
         self.choice.disable()  # Currently not implemented
 

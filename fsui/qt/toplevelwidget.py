@@ -232,7 +232,7 @@ class TopLevelWidget(Widget):
 
     def on_window_focus_changed(self):
         """Overrides the base function and emits a signal by default.
-        
+
         Only top-level widgets does this. Normal widgets only have the
         on_window_focus_changed method."""
         # print("TopLevelWindow.window_focus_changed")

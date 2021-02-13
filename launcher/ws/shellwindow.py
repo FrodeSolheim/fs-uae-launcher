@@ -23,7 +23,9 @@ class ShellWindow(Window):
         height = WSIconWidget.ICON_WIDGET_HEIGHT * 4 + 40 + 20 + 10
 
         super().__init__(
-            parent, title=name, size=(width, height),
+            parent,
+            title=name,
+            size=(width, height),
         )
         # self.set_background_color(fsui.Color(0x808080))
         # self.set_background_color(fsui.Color(0xAEAEAE))

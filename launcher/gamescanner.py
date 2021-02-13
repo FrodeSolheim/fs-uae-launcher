@@ -37,7 +37,10 @@ class GameDatabaseIterator:
             if LauncherSettings.get(platform_option) != "0":
                 return True
             return False
-        if Product.is_openretro() and platform_option in OPENRETRO_DEFAULT_DATABASES:
+        if (
+            Product.is_openretro()
+            and platform_option in OPENRETRO_DEFAULT_DATABASES
+        ):
             if LauncherSettings.get(platform_option) == "0":
                 return False
             return True

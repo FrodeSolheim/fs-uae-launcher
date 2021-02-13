@@ -117,7 +117,8 @@ class KickstartGroup(fsui.Panel):
             config.set("kickstart_ext_file", "")
         else:
             config.set(
-                "kickstart_ext_file", config.get("x_kickstart_ext_file"),
+                "kickstart_ext_file",
+                config.get("x_kickstart_ext_file"),
             )
         config.update_kickstart()
 

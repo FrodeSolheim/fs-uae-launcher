@@ -269,7 +269,9 @@ def base_dir():
         logger.debug("Checking fsuae_path_base_dir")
         path = os.environ.get("fsuae_path_base_dir", "")
         if path:
-            logger.debug("Base directory via fsuae_path_base_dir: %s", repr(path))
+            logger.debug(
+                "Base directory via fsuae_path_base_dir: %s", repr(path)
+            )
             return path
 
     path = custom_path("base-dir")

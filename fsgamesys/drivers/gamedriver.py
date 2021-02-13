@@ -359,7 +359,6 @@ class GameDriver:
         return FSGSDirectories.screenshots_output_dir()
 
     def screenshots_prefix(self):
-
         def create_nice_name(name):
             result = []
             ALLOWED = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -367,7 +366,7 @@ class GameDriver:
                 if char in ALLOWED:
                     result.append(char)
                 else:
-                    if len(result) == 0 or result[-1] != "-": 
+                    if len(result) == 0 or result[-1] != "-":
                         result.append("-")
             return "".join(result)
 
@@ -722,7 +721,8 @@ class GameDriver:
             # FIXME: Maybe build into FSEMU emulators instead?
             if self.emulator.name:
                 env["FSEMU_WINDOW_TITLE"] = "{}  ·  {}".format(
-                    self.emulator.name, self._model_name)
+                    self.emulator.name, self._model_name
+                )
             else:
                 env["FSEMU_WINDOW_TITLE"] = self._model_name
             # env["FSEMU_WINDOW_TITLE"] = self._model_name
@@ -813,7 +813,6 @@ class GameDriver:
 
         # x = parent_x + (parent_w - width) // 2
         # y = parent_y + (parent_h - height) // 2
-
 
         # if width is not None and height is not None:
         #     env["FSEMU_WINDOW_W"] = str(width)

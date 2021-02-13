@@ -3,9 +3,7 @@ from fsgamesys.amiga.whdload import install_whdload_file
 
 def prepare_xpkmaster_files(dest_dir, *, files):
     for relative_path, sha1 in xpkmaster_file_map.items():
-        files[dest_dir + "/" + relative_path] = {
-            "sha1": sha1
-        }
+        files[dest_dir + "/" + relative_path] = {"sha1": sha1}
         # file_dest_dir = os.path.join(dest_dir, os.path.dirname(name))
         # self.install_whdload_file(sha1, file_dest_dir, value)
         # install_whdload_file(sha1, destdir, relative_path)

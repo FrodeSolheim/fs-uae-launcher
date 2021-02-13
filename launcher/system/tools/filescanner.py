@@ -52,7 +52,9 @@ class FileScannerWindow(Window):
                 self.scan_kickstart_group = ScanKickstartGroup(self)
                 layout.add(self.scan_kickstart_group, fill=True)
                 layout.add_spacer(20)
-                heading = gettext("Scan for Kickstarts, Files and Configurations")
+                heading = gettext(
+                    "Scan for Kickstarts, Files and Configurations"
+                )
             else:
                 heading = gettext("Scan for ROMs, media and config files")
             label = fsui.HeadingLabel(self, heading)

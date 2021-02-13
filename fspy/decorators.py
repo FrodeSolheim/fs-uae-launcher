@@ -48,7 +48,7 @@ def memoize(func):
 
 def initializer(func):
     """Decorator to call the function only once.
-    
+
     The function will not return anything, and if an exception happens during
     first (and only) execution, nothing will happen on subsequent calls.
     """

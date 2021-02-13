@@ -165,7 +165,8 @@ class FloppySelector(fsui.Panel):
         config = get_config(self)
         self.on_config(self.config_key, config.get(self.config_key))
         self.on_config(
-            self.config_key_implicit, config.get(self.config_key_implicit),
+            self.config_key_implicit,
+            config.get(self.config_key_implicit),
         )
 
     def update_enable(self):

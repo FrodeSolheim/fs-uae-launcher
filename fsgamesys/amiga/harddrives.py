@@ -271,7 +271,7 @@ def prepare_game_hard_drive(
     dir_name = drive
     # dir_path = os.path.join(self.temp_dir, dir_name)
     # dir_path = os.path.join(config.run_dir(), "HardDrives", dir_name)
-    
+
     # dir_path = os.path.join("HardDrives", dir_name)
     dir_path = dir_name
 

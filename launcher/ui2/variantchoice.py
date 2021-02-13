@@ -192,9 +192,10 @@ class VariantChoice(ItemChoice):
                 variant["like_rating"],
                 variant["work_rating"],
             ) = game_database.get_ratings_for_game(variant["uuid"])
-            (variant["personal_rating"], _,) = database.get_ratings_for_game(
-                variant["uuid"]
-            )
+            (
+                variant["personal_rating"],
+                _,
+            ) = database.get_ratings_for_game(variant["uuid"])
 
             if variant["published"] == 0:
                 primary_sort = 1

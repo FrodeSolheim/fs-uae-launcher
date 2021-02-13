@@ -208,7 +208,8 @@ def load_icon_76x76(path, overlay=None):
         orig = Image.open(path)
     new = Image.new("RGBA", SIZE, (0, 0, 0, 0))
     new.paste(
-        orig, ((SIZE[0] - orig.size[0]) // 2, (SIZE[1] - orig.size[1]) // 2),
+        orig,
+        ((SIZE[0] - orig.size[0]) // 2, (SIZE[1] - orig.size[1]) // 2),
     )
 
     if overlay:

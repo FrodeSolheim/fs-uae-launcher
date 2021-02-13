@@ -140,7 +140,6 @@ ZXS_PORTS = [
 ]
 
 
-
 class MessSpectrumDriver(MessDriver):
     JOYSTICK = {
         "type": "joystick",

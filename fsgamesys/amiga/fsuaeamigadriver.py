@@ -218,9 +218,9 @@ class FSUAEAmigaDriver(GameDriver):
 
         self.launch_handler.prepare()
 
-
         run_dir = self.filesdir.path
         from fsgamesys.amiga.amigaconfig import AmigaConfig
+
         # config = AmigaConfig(self.options)
         self.options = self.launch_handler.config.copy()
 

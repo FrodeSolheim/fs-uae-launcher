@@ -86,7 +86,7 @@ class BaseDatabase(object):
         return self.connection.cursor()
 
     def create_cursor(self):
-        """"
+        """ "
         :deprecated:
         """
         return self.cursor()

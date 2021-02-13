@@ -2,8 +2,8 @@ import json
 
 from fsgamesys.options.option import Option
 
+
 class Config:
-    
     def __init__(self, config):
         self._config = config
         # self.run_dir = ""

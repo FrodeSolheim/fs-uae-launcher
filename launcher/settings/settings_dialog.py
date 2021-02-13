@@ -134,7 +134,10 @@ class SettingsDialog(PagedDialog):
             GameDatabaseSettingsPage,
             fsui.Icon("database-settings", "pkg:workspace"),
         )
-        if fsgamesys.openretro or settings.get(Option.PLATFORMS_FEATURE) == "1":
+        if (
+            fsgamesys.openretro
+            or settings.get(Option.PLATFORMS_FEATURE) == "1"
+        ):
             self.add_page(
                 gettext("Game Platforms"),
                 GamePlatformsSettingsPage,

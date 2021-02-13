@@ -1,5 +1,6 @@
 from fsgamesys.platforms.spectrum.fusespectrumdriver import FuseSpectrumDriver
 
+
 class FsFuseSpectrumDriver(FuseSpectrumDriver):
     def __init__(self, gscontext):
         super().__init__(gscontext, fsemu=True)

@@ -119,7 +119,8 @@ class TitleBar(fsui.Panel):
             "launcher_titlebar_uppercase",
         ]:
             self.on_setting(
-                option, get_settings(self).get(option),
+                option,
+                get_settings(self).get(option),
             )
         get_settings(self).add_listener(self)
 

@@ -7,19 +7,19 @@ from fscore.system import System
 if System.windows:
     # noinspection PyUnresolvedReferences
     try:
-        import win32api # type: ignore
+        import win32api  # type: ignore
     except ImportError:
         win32api = None
     # noinspection PyUnresolvedReferences
     try:
-        import win32con # type: ignore
+        import win32con  # type: ignore
     except ImportError:
         win32con = None
     EDS_RAWMODE = 2
 elif System.macos:
     # noinspection PyUnresolvedReferences
     try:
-        import Quartz # type: ignore
+        import Quartz  # type: ignore
     except ImportError:
         Quartz = None
 

@@ -7,6 +7,7 @@ def prepare_amiga_roms(config: ConfigType, files: FilesType):
     amiga_model = config.get("amiga_model", "A500")
     # To avoid circular import
     from fsgamesys.amiga.amiga import Amiga
+
     model_config = Amiga.get_model_config(amiga_model)
 
     roms = [("kickstart_file", model_config["kickstarts"])]
@@ -23,10 +24,9 @@ def prepare_amiga_roms(config: ConfigType, files: FilesType):
         # rom_path = f"ROMs/{rom_name}"
         # rom_path = f"{rom_name}"
         rom_path = rom_name
-        files[rom_path] = {
-            "sha1": sha1
-        }
+        files[rom_path] = {"sha1": sha1}
         config[config_key] = os.path.join(config["run_dir"], rom_path)
+
 
 A1000_KICKSTARTS = [
     # amiga-os-120.rom (decrypted)

@@ -122,6 +122,7 @@ from fsgamesys.platforms.playstation import PlayStationPlatform
 from fsgamesys.platforms.supernintendo import SuperNintendoPlatformHandler
 from fsgamesys.platforms.turbografx16 import TurboGrafx16Platform
 from fsgamesys.platforms.turbografxcd import TurboGrafxCDPlatform
+
 # from fsgamesys.platforms.zxspectrum import SpectrumPlatform
 from fsgamesys.platforms.spectrum import SpectrumPlatform
 

@@ -14,6 +14,7 @@ archive_extensions = [".zip", ".rp9"]
 comments_as_bytes = True
 
 from lhafile import LhaFile
+
 archive_extensions.append(".lha")
 
 try:
@@ -205,7 +206,9 @@ class LhaHandler(object):
             # decode zipfile comments as ISO-8859-1 instead...
             comment = comment.encode("ISO-8859-1")
         return ArchiveFileInfo(
-            filename=info.filename, file_size=info.file_size, comment=comment,
+            filename=info.filename,
+            file_size=info.file_size,
+            comment=comment,
         )
 
     def getinfo(self, name):

@@ -1,6 +1,7 @@
 import fsboot
 import fsui
 from fsgamesys.product import Product
+
 # from fsgamesys import openretro
 from fsui.extra.taskdialog import TaskDialog
 from launcher.option import Option

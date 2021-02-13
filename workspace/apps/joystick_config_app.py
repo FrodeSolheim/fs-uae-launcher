@@ -485,19 +485,23 @@ class JoystickConfigWindow(fsui.Window):
             platform_str = "Windows"
         else:
             platform_str = "Unknown"
-        mapping_str = "{guid},{name}{comma}{mapping},platform:{platform},".format(
-            guid=guid,
-            name=name,
-            comma=("," if mapping else ""),
-            mapping=",".join(sorted_mapping),
-            platform=platform_str,
+        mapping_str = (
+            "{guid},{name}{comma}{mapping},platform:{platform},".format(
+                guid=guid,
+                name=name,
+                comma=("," if mapping else ""),
+                mapping=",".join(sorted_mapping),
+                platform=platform_str,
+            )
         )
-        mapping_str_2 = "axes:{axes},balls:{balls},buttons:{buttons},hats:{hats},".format(
-            axes=axes,
-            balls=balls,
-            buttons=buttons,
-            hats=hats,
-            platform=platform_str,
+        mapping_str_2 = (
+            "axes:{axes},balls:{balls},buttons:{buttons},hats:{hats},".format(
+                axes=axes,
+                balls=balls,
+                buttons=buttons,
+                hats=hats,
+                platform=platform_str,
+            )
         )
 
         # mapping_str = "{guid},{name}{comma}{mapping},axes:{axes},balls:{balls},buttons:{buttons},hats:{hats},platform:{platform},".format(

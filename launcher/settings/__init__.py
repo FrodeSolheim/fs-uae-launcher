@@ -5,6 +5,7 @@ from fsgamesys.options.constants import (
 )
 from fsgamesys.product import Product
 
+
 def get_setting(name):
     return Settings.instance().get(name)
 

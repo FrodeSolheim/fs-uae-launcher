@@ -372,7 +372,8 @@ class LauncherApp(ApplicationMixin, fsui.Application):
                 if config.get(
                     "download_terms"
                 ) and not Downloader.check_terms_accepted(
-                    config.get("download_file"), config.get("download_terms"),
+                    config.get("download_file"),
+                    config.get("download_terms"),
                 ):
                     from .ui.launcherwindow import LauncherWindow
 

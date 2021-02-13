@@ -28,14 +28,16 @@ def launcher_data_file_path(relative):
         if System.macos:
             # Need to go further up in the hierarchy due to being bundled
             # insidean application bundle.
-            path = os.path.join(executable_dir(),
-                                "..",
-                                "..",
-                                "..",
-                                "..",
-                                "..",
-                                "Data",
-                                relative)
+            path = os.path.join(
+                executable_dir(),
+                "..",
+                "..",
+                "..",
+                "..",
+                "..",
+                "Data",
+                relative,
+            )
         else:
             path = os.path.join(executable_dir(), "..", "..", "Data", relative)
         paths.append(path)
@@ -47,7 +49,8 @@ def launcher_data_file_path(relative):
         path = os.path.join(executable_dir(), "..", "Resources", relative)
     else:
         path = os.path.join(
-            executable_dir(), "..", "share", "fs-uae-launcher", relative)
+            executable_dir(), "..", "share", "fs-uae-launcher", relative
+        )
     paths.append(path)
     if os.path.exists(path):
         return path

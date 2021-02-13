@@ -10,7 +10,7 @@ CHUNK_SIZE = 65536
 
 def install_files(files, install_dir, file_sha1_to_stream):
     """Install files needed to run a game.
-    
+
     The return value of this function is a list of installed files with
     checksum. This list can be used to implemented efficient change handler
     (no need to re-index files before launch).
@@ -47,11 +47,9 @@ def install_files(files, install_dir, file_sha1_to_stream):
         #         if not data:
         #             break
         #         f.write(data)
-        installed_files.append({
-            "name": relative_path,
-            "sha1": written_sha1,
-            "size": written_size
-        })
+        installed_files.append(
+            {"name": relative_path, "sha1": written_sha1, "size": written_size}
+        )
 
     return installed_files
     # raise NotImplementedError("aaa")
@@ -78,7 +76,9 @@ def write_stream(stream, path, sha1=None):
     written_sha1 = sha1_obj.hexdigest()
     if sha1 is not None:
         if written_sha1 != sha1:
-            raise Exception(f"Written SHA-1 ({written_sha1}) does not match expected SHA-1 ({sha1})")
+            raise Exception(
+                f"Written SHA-1 ({written_sha1}) does not match expected SHA-1 ({sha1})"
+            )
     os.rename(dst_partial, dst)
     return written_sha1, written_size
 
@@ -102,7 +102,7 @@ def decrypt_amiromtype1_stream(stream, data):
 
     out_data = []
     result = {}
-    f = io.BytesIO(data[len("AMIROMTYPE1"):] + stream.read())
+    f = io.BytesIO(data[len("AMIROMTYPE1") :] + stream.read())
     sha1_obj = hashlib.sha1()
 
     while True:

@@ -129,7 +129,9 @@ class ConfigListView(VerticalItemView):
         }}
 
         """.format(
-                row_fg="#ffffff", row_bg=row_bg, base="#999999",
+                row_fg="#ffffff",
+                row_bg=row_bg,
+                base="#999999",
             )
         )
 

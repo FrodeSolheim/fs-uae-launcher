@@ -377,7 +377,6 @@ class ValueConfigLoader(object):
         elif key == "file_list":
             self.options["file_list"] = value
 
-
     def load_joystick_port_x_mode_option(self, key, value):
         value = value.lower()
         if "," not in value:

@@ -18,10 +18,10 @@ K_UI_OPTION_AUTO_SHOW_MENU_BAR = 1 << 0
 
 def os_x_set_system_ui_mode(mode, option):
     # noinspection PyUnresolvedReferences
-    import objc # type: ignore
+    import objc  # type: ignore
 
     # noinspection PyUnresolvedReferences
-    from Foundation import NSBundle # type: ignore
+    from Foundation import NSBundle  # type: ignore
 
     bundle = NSBundle.bundleWithPath_(
         "/System/Library/Frameworks/Carbon.framework"
@@ -30,7 +30,7 @@ def os_x_set_system_ui_mode(mode, option):
         bundle, globals(), (("SetSystemUIMode", b"III", ""),)
     )
     # noinspection PyUnresolvedReferences
-    SetSystemUIMode(mode, option) # type: ignore
+    SetSystemUIMode(mode, option)  # type: ignore
 
 
 def main():

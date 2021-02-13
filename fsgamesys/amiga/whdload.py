@@ -157,14 +157,10 @@ def prepare_whdload_system_volume_2(
 
     for key, value in binaries[whdload_version].items():
         # install_whdload_file(key, hd_dir, value)
-        files[hd_dir + "/" + value] = {
-            "sha1": key
-        }
+        files[hd_dir + "/" + value] = {"sha1": key}
     for key, value in support_files.items():
         # install_whdload_file(key, hd_dir, value)
-        files[hd_dir + "/" + value] = {
-            "sha1": key
-        }
+        files[hd_dir + "/" + value] = {"sha1": key}
 
     if config["__netplay_game"]:
         print(
@@ -190,9 +186,6 @@ def prepare_whdload_system_volume_2(
         #     shutil.copy(prefs_file, os.path.join(s_dir, "WHDLoad.prefs"))
         # else:
         #     print("[WHDLOAD] Prefs file not found in base dir (FS-UAE dir)")
-
-
-
 
     # if self.config.get("__netplay_game", ""):
     #     print("[WHDLOAD] WHDLoad base dir is not copied in net play mode")
@@ -227,8 +220,7 @@ def prepare_whdload_system_volume_2(
     setpatch = True
 
     data = prepare_startup_sequence(
-        whdload_sequence.format(slavedir, whdloadargs),
-        setpatch=setpatch
+        whdload_sequence.format(slavedir, whdloadargs), setpatch=setpatch
     )
     if data is not None:
         files[f"{s_dir}/Startup-Sequence"] = {"data": data}
@@ -553,7 +545,7 @@ def strip_whdload_slave_prefix(whdload_args: List[str]) -> List[str]:
 
 def fix_whdload_args(args: List[str]) -> str:
     """Converts args list to string and corrects args for a few icons.
-    
+
     The previously performed corrections are no longer necessary. A proper icon
     parser was written.
     """

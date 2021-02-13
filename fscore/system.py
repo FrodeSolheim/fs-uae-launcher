@@ -38,7 +38,7 @@ class System:
     macos = is_macos()
     windows = is_windows()
     x86_64 = is_x86_64()
-    
+
     if linux:
         platform = "linux"
     elif macos:
