@@ -113,6 +113,7 @@ class Downloader(object):
         src = PluginManager.instance().find_file_by_sha1(sha1)
         if src:
             dst = path
+            # FIXME: ~name.tmp ?
             dst_partial = dst + ".partial"
             sha1_obj = hashlib.sha1()
             with open(src, "rb") as fin:

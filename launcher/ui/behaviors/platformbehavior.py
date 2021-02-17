@@ -25,7 +25,7 @@ class PlatformBehavior:
             self.perform(platform in self.platforms)
 
     def __on_parent_destroy(self, *_):
-        print("PlatformBehavior: remove_listener", self)
+        # print("PlatformBehavior: remove_listener", self)
         config = get_config(self.widget())
         config.remove_listener(self)
 

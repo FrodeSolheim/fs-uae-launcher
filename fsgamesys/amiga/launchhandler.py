@@ -394,7 +394,7 @@ class LaunchHandler(object):
         save_image = max_image + 1
 
         if self.config.get("save_disk", "") != "0":
-            s = Resources("fsgs", "res").stream("amiga/adf_save_disk.dat")
+            s = Resources("fsgamesys", "res").stream("amiga/adf_save_disk.dat")
             data = s.read()
             data = zlib.decompress(data)
             save_disk_sha1 = hashlib.sha1(data).hexdigest()
@@ -853,6 +853,9 @@ class LaunchHandler(object):
     #     self.on_progress(gettext("Downloading {0}...".format(name)))
     #     Downloader.install_file_by_sha1(sha1, name, abs_path)
 
+
+
+    # COPIED TO installfiles
     def copy_setpatch(self, base_dir):
         dest = os.path.join(base_dir, "C")
         if not os.path.exists(dest):
@@ -884,6 +887,7 @@ class LaunchHandler(object):
         else:
             print("WARNING: did not find SetPatch 39.6")
 
+    # COPIED TO installfiles
     @staticmethod
     def extract_setpatch_39_6(wb_data, dest):
         extractor = ADFFileExtractor(wb_data)

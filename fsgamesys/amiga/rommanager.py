@@ -86,6 +86,21 @@ class ROMManager(object):
             file.write(result["data"])
         return result
 
+    rom_transformations = [
+        (
+            "c39bd9094d4e5f4e28c1411f3086950406062e87",
+            "891e9a547772fe0c6c19b610baf8bc4ea7fcb785",
+        ),
+        (
+            "90933936cce43ca9bc6bf375662c076b27e3c458",
+            "891e9a547772fe0c6c19b610baf8bc4ea7fcb785",
+        ),
+        (
+            "c3c481160866e60d085e436a24db3617ff60b5f9",
+            "5fe04842d04a489720f0f4bb0e46948199406f49",
+        ),
+    ]
+
     @classmethod
     def patch_rom(cls, rom):
         src_data = rom["data"]

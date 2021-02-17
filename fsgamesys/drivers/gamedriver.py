@@ -64,7 +64,7 @@ class GameDriver:
         self.__game_temp_file = None
 
         self.temp_root = TemporaryItem(
-            root=None, prefix="fsgs-", suffix="tmp", directory=True
+            root=None, prefix="fsgamesys-", suffix="tmp", directory=True
         )
         # # Default current working directory for the emulator.
         self.cwd = self.temp_dir("cwd")
@@ -633,6 +633,11 @@ class GameDriver:
             env["FSEMU_FULLSCREEN_W"] = str(w)
             env["FSEMU_FULLSCREEN_H"] = str(h)
 
+        monitor = self.options["monitor"]
+        if not monitor:
+            monitor = "middle-left"
+        env["FSEMU_MONITOR"] = monitor
+
         if self.use_fullscreen():
             fullscreen_mode = self.options[Option.FULLSCREEN_MODE]
             if fullscreen_mode == "window":
@@ -853,26 +858,26 @@ class GameDriver:
         if paths is None:
             paths = self.emulator_skin_paths()
         with open(paths["left"], "wb") as f:
-            f.write(Resources("fsgs").stream("res/emu/left.png").read())
+            f.write(Resources("fsgamesys").stream("res/emu/left.png").read())
         if env is not None:
             env["FSGS_BEZEL_LEFT"] = paths["left"]
             env["FSGS_SKIN_LEFT"] = paths["left"]
         if "left-overlay" in paths:
             with open(paths["left-overlay"], "wb") as f:
                 f.write(
-                    Resources("fsgs").stream("res/emu/left-overlay.png").read()
+                    Resources("fsgamesys").stream("res/emu/left-overlay.png").read()
                 )
             if env is not None:
                 env["FSGS_BEZEL_LEFT_OVERLAY"] = paths["left-overlay"]
         with open(paths["right"], "wb") as f:
-            f.write(Resources("fsgs").stream("res/emu/right.png").read())
+            f.write(Resources("fsgamesys").stream("res/emu/right.png").read())
         if env is not None:
             env["FSGS_BEZEL_RIGHT"] = paths["right"]
             env["FSGS_SKIN_RIGHT"] = paths["right"]
         if "right-overlay" in paths:
             with open(paths["right-overlay"], "wb") as f:
                 f.write(
-                    Resources("fsgs")
+                    Resources("fsgamesys")
                     .stream("res/emu/right-overlay.png")
                     .read()
                 )
@@ -1259,7 +1264,7 @@ class TemporaryNamedItem:
 
 class Emulator:
     def __init__(self, exe_name, name=None, path=None):
-        self.exe_name = name
+        self.exe_name = exe_name
         self.name = name
         # Use a system install executable instad of plugin
         self.path = path

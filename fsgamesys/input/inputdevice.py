@@ -134,14 +134,14 @@ class InputDevice(object):
 
     @classmethod
     def get_builtin_config_for_device_guid(cls, guid):
-        return Resources("fsgs").stream(
+        return Resources("fsgamesys").stream(
             "res/input/" + guid + ".fs-uae-controller"
         )
 
     # @classmethod
     # def get_builtin_config_file_for_device_guid(cls, guid):
     #     try:
-    #         path = Resources("fsgs").path(
+    #         path = Resources("fsgamesys").path(
     #             "res/input/" + guid + ".fs-uae-controller")
     #     except LookupError:
     #         return None
@@ -152,7 +152,7 @@ class InputDevice(object):
     def get_config_files():
         print("get_config_files")
         configs = {}
-        input_stream = Resources("fsgs").stream("res/input/manifest.txt")
+        input_stream = Resources("fsgamesys").stream("res/input/manifest.txt")
         print("opened input manifest")
         for line in input_stream.read().split(b"\n"):
             line = line.decode("UTF-8")
@@ -220,7 +220,7 @@ class InputDevice(object):
         print(path, os.path.exists(path))
         if path.startswith("fsgs:"):
             print("reading config from stream", path)
-            input_stream = Resources("fsgs").stream(path.split(":", 1)[1])
+            input_stream = Resources("fsgamesys").stream(path.split(":", 1)[1])
             input_stream = io.TextIOWrapper(input_stream, "UTF-8")
             cp.read_file(input_stream)
         else:

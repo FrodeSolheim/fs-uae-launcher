@@ -47,6 +47,9 @@ class FileScanner(object):
         self.extensions.add(".fs-uae")
 
         if True:
+            self.extensions.add(".fs-fuse")
+
+        if True:
             self.extensions.add(".bin")
 
             # Amstrad CPC

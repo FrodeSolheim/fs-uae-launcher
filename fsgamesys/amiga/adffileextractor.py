@@ -153,5 +153,5 @@ class ADFFileExtractor(object):
     def __init__(self, data):
         self.data = data
 
-    def extract_file(self, name):
+    def extract_file(self, name: str) -> bytes:
         return extract_file_from_adf_data(self.data, name)

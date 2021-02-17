@@ -3,6 +3,7 @@ import os
 from fsui import Color, Image, Panel, ScrollArea
 from launcher.ws.shell import shell_basename, shell_dirname, shell_icon
 from launcher.ws.wsiconwidget import WSIconWidget
+from fscore.application import Application
 
 
 class IconViewIconHolder:
@@ -213,8 +214,12 @@ class WSIconView(ScrollArea):
         #     label = label[:-1]
         # wsopen = path
 
+        # FIXME: Get proper data file path
         icon_dir = os.path.join(
-            "data", "Icons", shell_dirname(path).replace(":", "/")
+            Application.executable_dir(),
+            "data",
+            "Icons",
+            shell_dirname(path).replace(":", "/"),
         )
         print(icon_dir, label)
         normal_image = Image(os.path.join(icon_dir, label + ".png"))

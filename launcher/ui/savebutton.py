@@ -1,4 +1,5 @@
 import datetime
+from fsgamesys.platforms import PLATFORM_ID_SPECTRUM
 import hashlib
 import io
 import os
@@ -53,7 +54,7 @@ class SaveButton(IconButton):
             # FIXME: notify user
             return
 
-        file_name = name + ".fs-uae"
+        file_name = name + get_extension_for_config(config)
         path = os.path.join(
             FSGSDirectories.get_configurations_dir(), file_name
         )
@@ -113,3 +114,13 @@ class SaveButton(IconButton):
         LauncherSettings.set("__config_refresh", str(time.time()))
         # Settings.set("config_changed", "0")
         LauncherConfig.set("__changed", "0")
+
+
+def get_extension_for_config(config):
+    platform_id = config.get("platform")
+    if not platform_id:
+        platform_id = Product.default_platform
+    if platform_id == PLATFORM_ID_SPECTRUM:
+        return ".fs-fuse"
+    else:
+        return ".fs-uae"

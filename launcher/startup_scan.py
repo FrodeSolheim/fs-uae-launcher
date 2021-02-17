@@ -40,7 +40,10 @@ class StartupScan:
         print("... walk configs_dir")
         for dir_path, dir_names, file_names in os.walk(configs_dir):
             for file_name in file_names:
-                if not file_name.endswith(".fs-uae"):
+                # if not file_name.endswith(".fs-uae"):
+                #     continue
+                # FIXME: Move extension list somewhere else
+                if not file_name.endswith(".fs-uae") and not file_name.endswith(".fs-fuse"):
                     continue
                 path = Paths.join(dir_path, file_name)
                 if path in local_configs:

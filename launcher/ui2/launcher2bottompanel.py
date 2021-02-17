@@ -52,7 +52,7 @@ class Launcher2LaunchPanel(Panel):
 
         self.monitorbutton = MonitorButton(self)
         horilayout.add(self.monitorbutton, fill=True, margin_left=10)
-        self.monitorbutton.disable()  # Currently not implemented properly
+        # self.monitorbutton.disable()  # Currently not implemented properly
 
         self.fullscreentogglebutton = FullscreenToggleButton(self)
         horilayout.add(self.fullscreentogglebutton, fill=True, margin_left=10)

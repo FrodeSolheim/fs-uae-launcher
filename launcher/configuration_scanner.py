@@ -2,8 +2,9 @@ import os
 
 from fsgamesys.filedatabase import FileDatabase
 from fsgamesys.util.gamenameutil import GameNameUtil
+from fsgamesys.product import Product
 
-from .i18n import gettext
+from launcher.i18n import gettext
 
 
 class ConfigurationScanner:
@@ -31,7 +32,15 @@ class ConfigurationScanner:
             config_path_ids[database.decode_path(row[1])] = row[0]
 
         file_database = FileDatabase.get_instance()
-        configurations = file_database.find_files(ext=".fs-uae")
+
+        # FIXME: This is not good enough, we want to support multiple
+        # extensions when using OpenRetro Launcher at least.
+        if Product.base_name == "FS-Fuse":
+            extension = ".fs-fuse"
+        else:
+            extension = ".fs-uae"
+
+        configurations = file_database.find_files(ext=extension)
         for c in configurations:
             if self.stop_check():
                 break

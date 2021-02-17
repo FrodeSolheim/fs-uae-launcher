@@ -26,7 +26,7 @@ def temp_directory():
     global _temp_directory
     global _temp_directory_t
     if _temp_directory is None:
-        _temp_directory = tempfile.mkdtemp(prefix="fsgs-", suffix="")
+        _temp_directory = tempfile.mkdtemp(prefix="fsgamesys-", suffix="")
         print("FSGS TEMP directory is", _temp_directory)
     if _temp_directory_t is None:
         _temp_directory_t = os.path.join(_temp_directory, "T")
