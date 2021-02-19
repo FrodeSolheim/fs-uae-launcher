@@ -1,3 +1,4 @@
+from fsgamesys.amiga.amigaconstants import AmigaConstants
 import hashlib
 import json
 import os
@@ -899,7 +900,7 @@ class LaunchHandler(object):
         s.update(setpatch_data)
         print(s.hexdigest())
         # noinspection SpellCheckingInspection
-        if s.hexdigest() != "4d4aae988310b07726329e436b2250c0f769ddff":
+        if s.hexdigest() != AmigaConstants.SETPATCH_39_6_SHA1:
             return False
         with open(dest, "wb") as f:
             f.write(setpatch_data)

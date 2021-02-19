@@ -1,3 +1,5 @@
+from fsgamesys.amiga.adffileextractor import ADFFileExtractor
+from fsgamesys.amiga.amigaconstants import AmigaConstants
 import hashlib
 from io import BytesIO
 import os
@@ -7,7 +9,6 @@ from fsgamesys.amiga.workbenchdata import workbench_disks_with_setpatch_39_6
 from fsgamesys.archive import Archive
 
 CHUNK_SIZE = 65536
-SETPATCH_39_6SHA1 = "4d4aae988310b07726329e436b2250c0f769ddff"
 
 
 def install_files(files, install_dir, file_sha1_to_stream):
@@ -39,7 +40,7 @@ def install_files(files, install_dir, file_sha1_to_stream):
             os.makedirs(os.path.dirname(path))
 
         downloadable = False
-
+        optional = file_info.get("optional", False)
         if "data" in file_info:
             sha1 = file_info.get("sha1", None)
             stream = BytesIO(file_info["data"])
@@ -47,24 +48,41 @@ def install_files(files, install_dir, file_sha1_to_stream):
             sha1 = file_info["sha1"]
 
             # This isn't very nicely done, but it is a special case
-            if sha1 == SETPATCH_39_6SHA1:
+            if sha1 == AmigaConstants.SETPATCH_39_6_SHA1:
                 stream = setpatch_stream(file_sha1_to_stream)
+                # stream = None
+                if stream is None:
+                    if optional:
+                        print("SetPatch was not found, but marked as optional")
+                    else:
+                        raise Exception(
+                            "Could not find a suitable Workbench 3.0 disk to "
+                            "extract SetPatch from. Please make sure you have "
+                            "scanned a Workbench 3.0 disk."
+                        )
             else:
                 stream = file_sha1_to_stream(sha1)
             # if stream is None:
             #     stream = downloadable_file_sha1_to_stream(sha1)
-            if stream is None and can_download_file_sha1(sha1):
-                # Maybe downloading should be handled transparently in 
-                # file_sha1_to_stream instead...
-                downloadable = True
-            if stream is None and not downloadable:
-                raise Exception(
-                    f"Could not install file {relative_path}: "
-                    f"Did not find file with SHA-1 checksum {sha1}"
-                )
+
+        if stream is None and can_download_file_sha1(sha1):
+            # Maybe downloading should be handled transparently in
+            # file_sha1_to_stream instead...
+            downloadable = True
+
+        if stream is None and not downloadable:
+            if optional:
+                print("Option file {sha1} not found")
+                continue
+            raise Exception(
+                f"Could not install file {relative_path}: "
+                f"Did not find file with SHA-1 checksum {sha1}"
+            )
+
         if downloadable:
-            Downloader.install_file_by_sha1(sha1, os.path.basename(path), path)
-            written_sha1 = sha1
+            written_sha1, written_size = Downloader.install_file_by_sha1(
+                sha1, os.path.basename(path), path
+            )
         else:
             written_sha1, written_size = write_stream(stream, path, sha1=sha1)
         # with open(path, "wb") as f:
@@ -175,6 +193,10 @@ def decrypt_amiromtype1_stream(stream, data):
 
 
 def setpatch_stream(file_sha1_to_stream):
+    # Uncomment the following line to test how the system behaves when
+    # SetPatch is not found.
+    # workbench_disks_with_setpatch_39_6 = []
+
     for sha1 in workbench_disks_with_setpatch_39_6:
         # path = self.fsgs.file.find_by_sha1(checksum)
         stream = file_sha1_to_stream(sha1)
@@ -207,41 +229,6 @@ def setpatch_stream(file_sha1_to_stream):
         print("WARNING: did not find SetPatch 39.6")
 
 
-# def copy_setpatch(self, base_dir):
-#     dest = os.path.join(base_dir, "C")
-#     if not os.path.exists(dest):
-#         os.makedirs(dest)
-#     dest = os.path.join(dest, "SetPatch")
-#     for checksum in workbench_disks_with_setpatch_39_6:
-#         path = self.fsgs.file.find_by_sha1(checksum)
-#         if path:
-#             print("found WB DISK with SetPatch 39.6 at", path)
-#             try:
-#                 input_stream = self.fsgs.file.open(path)
-#             except Exception:
-#                 traceback.print_exc()
-#             else:
-#                 wb_data = input_stream.read()
-#                 # archive = Archive(path)
-#                 # if archive.exists(path):
-#                 #     f = archive.open(path)
-#                 #     wb_data = f.read()
-#                 #     f.close()
-#                 if self.extract_setpatch_39_6(wb_data, dest):
-#                     print("SetPatch installed")
-#                     self.setpatch_installed = True
-#                     break
-#                 else:
-#                     print("WARNING: extract_setpatch_39_6 returned False")
-#             # else:
-#             #     print("oops, path does not exist")
-#     else:
-#         print("WARNING: did not find SetPatch 39.6")
-
-
-from fsgamesys.amiga.adffileextractor import ADFFileExtractor
-
-
 def extract_setpatch_39_6(wb_data):
     extractor = ADFFileExtractor(wb_data)
     try:
@@ -253,17 +240,19 @@ def extract_setpatch_39_6(wb_data):
     # print(s.hexdigest())
     # noinspection SpellCheckingInspection
     sha1 = s.hexdigest()
-    if sha1 != SETPATCH_39_6SHA1:
+    if sha1 != AmigaConstants.SETPATCH_39_6_SHA1:
         raise Exception(
             f"Extracted SetPatch SHA-1 ({sha1} is not the expected "
-            f"{SETPATCH_39_6SHA1}"
+            f"{AmigaConstants.SETPATCH_39_6_SHA1}"
         )
     return BytesIO(setpatch_data)
     # with open(dest, "wb") as f:
     #     f.write(setpatch_data)
     # return True
 
+
 from fsgamesys.download import Downloader
+
 
 def can_download_file_sha1(sha1):
     # FIXME: This lis is not complete. This is currently the minimal set of
@@ -277,6 +266,7 @@ def can_download_file_sha1(sha1):
         "d6b706bfbfe637bd98cd657114eea630b7d2dcc7",
         "ebf3a1f53be665bb39a636007fda3b3e640998ba",
     }
+
 
 # def downloadable_file_sha1_to_stream(sha1):
 # def install_whdload_file(sha1, dest_dir, rel_path):

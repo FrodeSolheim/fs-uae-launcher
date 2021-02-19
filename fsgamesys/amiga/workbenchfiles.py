@@ -1,4 +1,7 @@
 # noinspection SpellCheckingInspection
+from fsgamesys.amiga.amigaconstants import AmigaConstants
+
+
 workbench_file_map = {
     "00917f88e78770f6b28562bede2cf64718325553": [
         ("05049a78b6574d2701f1b4560157f0c547910aeb", "C/Type"),
@@ -1659,7 +1662,7 @@ workbench_file_map = {
         ("ea7de9081bc485665be72746ace21355c87c1ab1", "S/DPat"),
         ("f8f9509aaaf10e99bd7c3694969af7f057648220", "S/DPat"),
     ],
-    "4d4aae988310b07726329e436b2250c0f769ddff": [
+    AmigaConstants.SETPATCH_39_6_SHA1: [
         ("08c4afde7a67e6aaee1f07af96e95e9bed897947", "C/SetPatch"),
         ("0e7f30223af254df0e2b91ea409f35c56d6164a6", "C/SetPatch"),
         ("4f4770caae5950eca4a2720e0424df052ced6a32", "C/SetPatch"),

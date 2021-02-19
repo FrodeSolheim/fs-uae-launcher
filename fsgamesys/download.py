@@ -1,6 +1,7 @@
 import hashlib
 import os
 import shutil
+from typing import Tuple
 from uuid import NAMESPACE_URL, uuid4, uuid5
 
 import requests
@@ -102,7 +103,7 @@ class Downloader(object):
         os.rename(temp_path, path)
 
     @classmethod
-    def install_file_by_sha1(cls, sha1, name, path):
+    def install_file_by_sha1(cls, sha1, name, path) -> Tuple[str, int]:
         print("[DOWNLOADER] install_file_by_sha1", sha1)
         # FIXME: Also find files from file database / plugins
 
@@ -110,6 +111,7 @@ class Downloader(object):
         if not os.path.exists(os.path.dirname(path)):
             os.makedirs(os.path.dirname(path))
 
+        written_size = 0
         src = PluginManager.instance().find_file_by_sha1(sha1)
         if src:
             dst = path
@@ -124,19 +126,24 @@ class Downloader(object):
                             break
                         fout.write(data)
                         sha1_obj.update(data)
+                        written_size += len(data)
             if sha1_obj.hexdigest() != sha1:
                 raise Exception("File from plugin does not match SHA-1")
             os.rename(dst_partial, dst)
-            return
+            return sha1_obj.hexdigest(), written_size
 
         cache_path = cls.get_cache_path(sha1)
         if os.path.exists(cache_path):
             print("[CACHE]", cache_path)
             # FIXME: Atomic copy utility function?
+            # FIXME: Actually, maybe better instead of open stream and copy
+            # manually, and verify SHA-1
             shutil.copy(cache_path, path)
             # so we later can delete least accessed files in cache...
             os.utime(cache_path, None)
-            return
+            written_size = os.path.getsize(path)
+            # FIXME: Return actual verified SHA-1 instead
+            return sha1, written_size
         url = cls.sha1_to_url(sha1, name)
         print("[DOWNLOADER]", url)
         raise_exception_in_offline_mode()
@@ -149,6 +156,7 @@ class Downloader(object):
                 for chunk in r.iter_content(chunk_size=65536):
                     h.update(chunk)
                     output.write(chunk)
+                    written_size += len(chunk)
         finally:
             r.close()
         if h.hexdigest() != sha1:
@@ -162,6 +170,8 @@ class Downloader(object):
 
         # Move downloaded file into file position (atomic)
         os.rename(temp_path, path)
+
+        return h.hexdigest(), written_size
 
     @classmethod
     def sha1_to_url(cls, sha1, name):

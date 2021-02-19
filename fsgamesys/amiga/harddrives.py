@@ -1,3 +1,4 @@
+from fsgamesys.amiga.amigaconstants import AmigaConstants
 import hashlib
 import os
 from typing import Optional
@@ -245,8 +246,10 @@ def prepare_dh0_files(config: ConfigType, files: FilesType):
 
 
 def prepare_setpatch(hd_dir: str, files: FilesType):
+    # FIXME: Only optional if not using netplay?
     files[f"{hd_dir}/C/SetPatch"] = {
-        "sha1": "4d4aae988310b07726329e436b2250c0f769ddff"
+        "sha1": AmigaConstants.SETPATCH_39_6_SHA1,
+        "optional": True,
     }
 
 
