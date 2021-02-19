@@ -136,6 +136,12 @@ class FuseSpectrumDriver(GameDriver):
         #     install_rom("plus3-3", SPECTRUM_PLUS3_3_ROM)
 
         if self.fsemu:
+            for key, value in self.options.items():
+                if key.startswith("fuse_") and value != "":
+                    # Add option but strip fuse_ prefix
+                    self.fuse_options[key[5:]] = value
+
+        if self.fsemu:
             config_file = self.temp_file(".fs-fuse")
             with open(config_file.path, "w") as f:
                 f.write("[fs-fuse]\n")
@@ -312,14 +318,16 @@ class FuseSpectrumDriver(GameDriver):
             # self.emulator.args.extend(["--traps"])
             self.fuse_options["accelerateloader"] = "1"
             self.fuse_options["fastload"] = "1"
-            self.fuse_options["traps"] = "1"
+            self.fuse_options["slttraps"] = "1"
+            self.fuse_options["tapetraps"] = "1"
         else:
             # self.emulator.args.extend(["--no-accelerate-loader"])
             # self.emulator.args.extend(["--no-fastload"])
             # self.emulator.args.extend(["--no-traps"])
             self.fuse_options["accelerateloader"] = "0"
             self.fuse_options["fastload"] = "0"
-            self.fuse_options["traps"] = "0"
+            self.fuse_options["slttraps"] = "0"
+            self.fuse_options["tapetraps"] = "0"
 
     def configure_video(self):
         log_heading("Configure video")
