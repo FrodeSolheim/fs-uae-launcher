@@ -6,6 +6,13 @@ from fsui.theme import Theme as BaseTheme
 from launcher.launcher_settings import LauncherSettings
 
 
+def set_colors(
+    palette: QPalette, role, normal: QColor, disabled: QColor = None
+):
+    palette.setColor(role, QColor(normal))
+    palette.setColor(QPalette.Disabled, role, QColor(disabled))
+
+
 def initialize_qt_style(qapplication, theme):
     print("Available QT styles:", QStyleFactory.keys())
     qapplication.setStyle(QStyleFactory.create("Fusion"))
@@ -15,15 +22,44 @@ def initialize_qt_style(qapplication, theme):
     # color = fsui.Color(0xAEAEAE).lighten(0.065)
     color = fsui.Color(0xAEAEAE).lighten(0.05)
     background = QColor(color.to_hex())
+
+    text = "#000000"
+    text_disabled = "#777777"
+
     pa.setColor(QPalette.Window, background)
     pa.setColor(QPalette.AlternateBase, background)
     pa.setColor(QPalette.Button, background)
 
-    pa.setColor(QPalette.Base, QColor(0xE8, 0xE8, 0xE8))
+    pa.setColor(QPalette.Highlight, QColor(0x66, 0x88, 0xBB))
+
+    set_colors(pa, QPalette.Base, "#E8E8E8", "#C0C0C0")
+
+    set_colors(pa, QPalette.Text, text, text_disabled)
+    set_colors(pa, QPalette.WindowText, text, text_disabled)
+    set_colors(pa, QPalette.ButtonText, text, text_disabled)
+
+    # pa.setColor(QPalette.Base, QColor(0xE8, 0xE8, 0xE8))
+    # pa.setColor(QPalette.Disabled, QPalette.Base, QColor(0xC0, 0xC0, 0xC0))
+
+    # pa.setColor(QPalette.Text, QColor(0xFF, 0x00, 0x00))
+    # pa.setColor(QPalette.Disabled, QPalette.Text, QColor(0xFF, 0x00, 0x00))
+
+    # Labels
+
+    # pa.setColor(QPalette.WindowText, QColor(0x00, 0xFF, 0x00))
+    # pa.setColor(
+    #     QPalette.Disabled, QPalette.WindowText, QColor(0x00, 0x88, 0x00)
+    # )
+
+    # Buttons
+    # pa.setColor(QPalette.ButtonText, QColor(0x00, 0xFF, 0x00))
+    # pa.setColor(
+    #     QPalette.Disabled, QPalette.ButtonText, QColor(0x00, 0x88, 0x00)
+    # )
+
     # pa.setColor(QPalette.Base, QColor(0xEE, 0xEE, 0xEE))
     # pa.setColor(QPalette.Base, QColor(0xFF, 0xFF, 0xFF))
-    pa.setColor(QPalette.Disabled, QPalette.Base, QColor(0xC0, 0xC0, 0xC0))
-    pa.setColor(QPalette.Disabled, QPalette.Text, QColor(0x66, 0x66, 0x66))
+    # pa.setColor(QPalette.Disabled, QPalette.Text, QColor(0x66, 0x66, 0x66))
 
     # pa.setColor(QPalette.Mid, QColor(0xFF, 0x00, 0x00))
 
@@ -31,7 +67,6 @@ def initialize_qt_style(qapplication, theme):
     # pa.setColor(QPalette.AlternateBase, QColor("#aeaeae"))
     # pa.setColor(QPalette.Button, QColor("#aeaeae"))
 
-    pa.setColor(QPalette.Highlight, QColor(0x66, 0x88, 0xBB))
     qapplication.setPalette(pa)
 
     # pa.setColor(QPalette.Window, QColor(0x50, 0x50, 0x50))
