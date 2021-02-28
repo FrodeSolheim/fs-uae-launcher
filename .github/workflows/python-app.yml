@@ -7,6 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
+
   # Linux_x86-64:
   #   runs-on: ubuntu-18.04
 
@@ -100,20 +101,13 @@ jobs:
       run: |
         echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH  
 
-    - name: Check Python version
+    - name: Install pipenv
       run: |
-        which python3
-        python3 --version
-        which python3.9
-        python3.9 --version
+        python3 -m pip install --upgrade pip pipenv
 
     - name: Update version
       run: |
         fsbuild/version --update --auto
-
-    - name: Install pipenv
-      run: |
-        python3 -m pip install --upgrade pip pipenv
 
     - name: Run pipenv install
       run: |
@@ -121,7 +115,7 @@ jobs:
 
     - name: Build
       run: |
-        fsbuild/build
+        pipenv run fsbuild/build
 
     - name: Bundle
       run: |
@@ -145,7 +139,6 @@ jobs:
       env:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
-
 
   # Windows_x86-64:
   #   runs-on: windows-2016
