@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
@@ -36,6 +38,9 @@ jobs:
         python3.9 --version
         which pipenv
         pipenv --version
+
+    - name: Update version
+      run: fsbuild/version --update --auto
 
     - name: Run pipenv install
       run: |
