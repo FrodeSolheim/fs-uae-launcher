@@ -168,7 +168,7 @@ jobs:
     - name: Create python3 alias in virtualenv
       shell: msys2 {0}
       run: |
-        pipenv run msys2 cp '$VIRTUAL_ENV/Scripts/python.exe' '$VIRTUAL_ENV/Scripts/python3.exe'
+        pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
 
     - name: Build
       run: |
