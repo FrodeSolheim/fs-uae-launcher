@@ -3,13 +3,18 @@
 /build/
 /build-dir/
 /build.fs/
+/data/Background.jpg.png
+/data/Icons/
+/debian/*debhelper*
 /debian/.debhelper/
+/debian/files
 /debian/files
 /debian/fs-uae-launcher
 /debian/fs-uae-launcher.debhelper.log
 /debian/fs-uae-launcher.postinst.debhelper
 /debian/fs-uae-launcher.prerm.debhelper
 /debian/fs-uae-launcher.substvars
+/debian/*substvars*
 /dist.fs/
 .DS_Store
 *.egg-info
@@ -22,7 +27,6 @@ fs-uae-launcher_*
 /Launcher-*
 /Launcher_*
 Lib
-/Makefile
 *.mo
 /.mypy_cache/
 *.pot

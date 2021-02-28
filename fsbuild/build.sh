@@ -1,6 +1,8 @@
 . ./PACKAGE.FS
 . fsbuild/system.sh
 
+make
+
 BUILDDIR=fsbuild/_build
 
 rm -Rf $BUILDDIR/pyinstaller
