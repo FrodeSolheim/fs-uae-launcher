@@ -158,7 +158,7 @@ jobs:
 
     - name: Build
       run: |
-        pipenv run fsbuild/build
+        pipenv run msys2 fsbuild/build
 
     - name: Bundle
       run: |
