@@ -7,6 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
+
   Linux_x86-64:
     runs-on: ubuntu-18.04
 
@@ -57,6 +58,93 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: Linux_x86-64
+        path: fsbuild/_dist/*
+
+    - name: Install dropbox package
+      if: github.ref == 'ref/head/master'
+      run: python3 -m pip install dropbox
+
+    - name: Upload build to Dropbox folder
+      if: github.ref == 'ref/head/master'
+      run: fsbuild/upload
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+
+  macOS_x86-64:
+    runs-on: macos-10.15
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Check Python version
+      run: |
+        which python3
+        python3 --version
+        which python3.9
+        python3.9 --version
+
+    - name: Download Python
+      run: |
+        wget https://www.python.org/ftp/python/3.9.2/python-3.9.2-macosx10.9.pkg
+        echo "86e099ad1cee81e2b84680de69ac7200fe2b4e86e5c410f0eb5effd12db72862 *python-3.9.2-macosx10.9.pkg" > SHA256SUMS
+        shasum -c SHA256SUMS
+
+    - name: Install Python
+      run: |
+        sudo installer -pkg python-3.9.2-macosx10.9.pkg -target /
+
+    - name: Add Python to PATH
+      run: |
+        echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH  
+
+    - name: Download pyinstaller source
+      run: |
+        wget https://github.com/pyinstaller/pyinstaller/releases/download/v4.2/PyInstaller-4.2.tar.gz
+        echo "f5c0eeb2aa663cce9a5404292c0195011fa500a6501c873a466b2e8cad3c950c *PyInstaller-4.2.tar.gz" > SHA256SUMS
+        shasum -c SHA256SUMS
+        tar xf PyInstaller-4.2.tar.gz
+
+    - name: Patch pyinstaller and compile bootloader
+      run: |
+        cd pyinstaller-4.2/bootloader
+        sed -i.bak s#%s%cbase_library.zip#%s%c../Resources/base_library.zip#g src/pyi_pythonlib.c
+        ./waf all
+
+    - name: Install pipenv
+      run: |
+        python3 -m pip install --upgrade pip pipenv
+
+    - name: Update version
+      run: |
+        fsbuild/version --update --auto
+
+    - name: Run pipenv install
+      run: |
+        pipenv install --deploy
+
+    - name: Install custom version of pyinstaller
+      run: |
+        pipenv uninstall pyinstaller
+        pipenv install `pwd`/pyinstaller-4.2
+
+    - name: Build
+      run: |
+        pipenv run fsbuild/build
+
+    - name: Bundle
+      run: |
+        fsbuild/bundle
+
+    - name: Archive
+      run: fsbuild/archive
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: macos_x86-64
         path: fsbuild/_dist/*
 
     - name: Install dropbox package
@@ -141,7 +229,7 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: Linux_x86-64
+        name: Windows_x86-64
         path: fsbuild/_dist/*
 
     - name: Install dropbox package
