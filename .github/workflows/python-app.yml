@@ -85,13 +85,16 @@ jobs:
       run: |
        python3 -c "import sys; print(sys.path)"
 
+    - name: Check PATH
+      run: |
+       set PATH
+
     - uses: msys2/setup-msys2@v2
 
-    - name: Check Python version
+    - name: Check PATH
       shell: msys2 {0}
       run: |
-        which python3
-        python3 --version
+        echo $PATH
 
     - name: Install dependencies
       run: |
