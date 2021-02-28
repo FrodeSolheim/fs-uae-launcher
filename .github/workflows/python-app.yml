@@ -85,8 +85,8 @@ jobs:
         fetch-depth: 0
 
     - uses: msys2/setup-msys2@v2
-      with:
-        path-type: inherit
+      # with:
+      #   path-type: inherit
 
     - name: Download Python
       run: |
@@ -98,6 +98,11 @@ jobs:
       run: |
         DIR
         START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
+
+    -name: Add Python to PATH
+      run: |
+      echo $LOCALAPPDATA/Programs/Python/Python39/Scripts >> $GITHUB_PATH  
+      echo $LOCALAPPDATA/Programs/Python/Python39 >> $GITHUB_PATH
 
     - name: Check PATH
       shell: msys2 {0}
@@ -116,25 +121,15 @@ jobs:
 
     - name: Check Python version
       run: |
-       python -c "import sys; print(sys.path)"
+       python3 -c "import sys; print(sys.path)"
 
-    - name: Check PATH
-      run: |
-       $Env:Path
+    # - name: Check PATH
+    #   run: |
+    #    $Env:Path
 
-    - uses: msys2/setup-msys2@v2
-      with:
-        path-type: inherit
-
-    - name: Check PATH
-      shell: msys2 {0}
-      run: |
-        echo $PATH
-
-    - name: Env
-      shell: msys2 {0}
-      run: |
-        env
+    # - uses: msys2/setup-msys2@v2
+    #   with:
+    #     path-type: inherit
 
     - name: Install dependencies
       run: |
