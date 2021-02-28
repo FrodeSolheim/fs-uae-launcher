@@ -1,7 +1,7 @@
 . ./PACKAGE.FS
 . fsbuild/system.sh
 
-# make
+make
 
 BUILDDIR=fsbuild/_build
 
