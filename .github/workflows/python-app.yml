@@ -74,20 +74,50 @@ jobs:
     #   run:
     #     shell: msys2 {0}
        
+    defaults:
+      run:
+        shell: msys2 {0}
+
     steps:
 
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
+    - uses: msys2/setup-msys2@v2
       with:
-        python-version: 3.9
+        path-type: inherit
+
+    - name: Download Python
+      run: |
+        wget https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe
+        # FIXME: Check SHA-1
+
+    - name: Install Python
+      shell: cmd
+      run: |
+        DIR
+        START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
+        # FIXME: Check SHA-1
+
+    - name: Check PATH
+      shell: msys2 {0}
+      run: |
+        echo $PATH
+
+    - name: Env
+      shell: msys2 {0}
+      run: |
+        env
+
+    # - name: Set up Python 3.9
+    #   uses: actions/setup-python@v2
+    #   with:
+    #     python-version: 3.9
 
     - name: Check Python version
       run: |
-       python3 -c "import sys; print(sys.path)"
+       python -c "import sys; print(sys.path)"
 
     - name: Check PATH
       run: |
