@@ -39,7 +39,7 @@ jobs:
 
     - name: Run pipenv install
       run: |
-        pipenv install
+        pipenv install --deploy
         
     - name: Build
       run: |
