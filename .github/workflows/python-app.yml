@@ -99,7 +99,7 @@ jobs:
         DIR
         START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
 
-    -name: Add Python to PATH
+    - name: Add Python to PATH
       run: |
         echo $LOCALAPPDATA/Programs/Python/Python39/Scripts >> $GITHUB_PATH  
         echo $LOCALAPPDATA/Programs/Python/Python39 >> $GITHUB_PATH
