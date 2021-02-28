@@ -88,6 +88,7 @@ jobs:
       with:
         install: >-
           make
+          zip
         path-type: inherit
         update: true
 
