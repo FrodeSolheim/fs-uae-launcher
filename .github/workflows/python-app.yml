@@ -101,6 +101,19 @@ jobs:
       run: |
         echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH  
 
+    - name: Download pyinstaller source
+      run: |
+        wget https://github.com/pyinstaller/pyinstaller/releases/download/v4.2/PyInstaller-4.2.tar.gz
+        echo "f5c0eeb2aa663cce9a5404292c0195011fa500a6501c873a466b2e8cad3c950c *PyInstaller-4.2.tar.gz" > SHA256SUMS
+        shasum -c SHA256SUMS
+        tar xf PyInstaller-4.2.tar.gz
+
+    - name: Patch pyinstaller and compile bootloader
+      run: |
+        cd pyinstaller-4.2/bootloader
+        sed -i.bak s#%s%cbase_library.zip#%s%c../Resources/base_library.zi#g src/pyi_pythonlib.c
+        ./waf all
+
     - name: Install pipenv
       run: |
         python3 -m pip install --upgrade pip pipenv
@@ -112,6 +125,11 @@ jobs:
     - name: Run pipenv install
       run: |
         pipenv install --deploy
+
+    - name: Install custom version of pyinstaller
+      run: |
+        pipenv uninstall pyinstaller
+        pipenv install `pwd`/pyinstaller-4.2
 
     - name: Build
       run: |
