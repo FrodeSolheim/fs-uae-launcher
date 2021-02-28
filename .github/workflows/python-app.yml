@@ -89,7 +89,6 @@ jobs:
       run: |
        $Env:Path
 
-  steps:
     - uses: msys2/setup-msys2@v2
 
     - name: Check PATH
