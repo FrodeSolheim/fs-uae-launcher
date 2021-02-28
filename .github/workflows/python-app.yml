@@ -49,7 +49,23 @@ jobs:
       run: |
         pipenv run fsbuild/bundle
 
+    - name: Archive
+      run: fsbuild/archive
 
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Linux_x86-64
+
+        path: fsbuild/_dist/*
+
+    - name: Install dropbox package
+      run: python3 -m pip install dropbox
+
+    - name: Upload build to Dropbox folder
+      run: fsbuild/upload
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
 
 
  
