@@ -85,18 +85,17 @@ jobs:
         fetch-depth: 0
 
     - uses: msys2/setup-msys2@v2
-      # with:
-      #   path-type: inherit
+      with:
+        path-type: inherit
 
     - name: Download Python
       run: |
         wget https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe
-        # FIXME: Check SHA-1
+        # FIXME: Check SHA-1?
 
     - name: Install Python
       shell: cmd
       run: |
-        DIR
         START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
 
     - name: Add Python to PATH
