@@ -4,16 +4,18 @@
 BUILDDIR=fsbuild/_build
 PLUGINDIR=$BUILDDIR/$PACKAGE_NAME_PRETTY
 BINDIR=$PLUGINDIR/$SYSTEM_OS/$SYSTEM_ARCH
-# For now:
-DATADIR=$BINDIR
 
 rm -Rf $PLUGINDIR
 mkdir -p $BINDIR
 
 if [ "$SYSTEM_OS" = "macOS" ]; then
-false
+cp -a $BUILDDIR/pyinstaller/$PACKAGE_NAME.app $BINDIR/
+# For now:
+DATADIR=$BINDIR/$PACKAGE_NAME.app/Contents/Resources/Data
 else
 cp -a $BUILDDIR/pyinstaller/$PACKAGE_NAME/* $BINDIR/
+# For now:
+DATADIR=$BINDIR
 fi
 
 mkdir -p $DATADIR

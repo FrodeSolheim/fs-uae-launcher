@@ -111,7 +111,7 @@ jobs:
     - name: Patch pyinstaller and compile bootloader
       run: |
         cd pyinstaller-4.2/bootloader
-        sed -i.bak s#%s%cbase_library.zip#%s%c../Resources/base_library.zi#g src/pyi_pythonlib.c
+        sed -i.bak s#%s%cbase_library.zip#%s%c../Resources/base_library.zip#g src/pyi_pythonlib.c
         ./waf all
 
     - name: Install pipenv
