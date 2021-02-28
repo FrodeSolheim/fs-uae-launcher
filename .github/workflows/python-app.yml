@@ -98,7 +98,6 @@ jobs:
       run: |
         DIR
         START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
-        # FIXME: Check SHA-1
 
     - name: Check PATH
       shell: msys2 {0}
