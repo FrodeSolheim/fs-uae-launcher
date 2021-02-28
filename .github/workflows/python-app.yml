@@ -87,7 +87,7 @@ jobs:
 
     - name: Check PATH
       run: |
-       set PATH
+       echo %PATH%
 
     - uses: msys2/setup-msys2@v2
 
@@ -95,6 +95,11 @@ jobs:
       shell: msys2 {0}
       run: |
         echo $PATH
+
+    - name: Env
+      shell: msys2 {0}
+      run: |
+        env
 
     - name: Install dependencies
       run: |
