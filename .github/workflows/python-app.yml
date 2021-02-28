@@ -176,7 +176,7 @@ jobs:
 
     - name: Bundle
       run: |
-        pipenv run fsbuild/bundle
+        fsbuild/bundle
 
     - name: Archive
       run: fsbuild/archive
