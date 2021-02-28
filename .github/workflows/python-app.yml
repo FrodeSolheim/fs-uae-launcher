@@ -102,11 +102,10 @@ jobs:
       run: |
         START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
 
-    - name: Create python3 and python3.9 aliases
+    - name: Create python3 alias
       run: |
         export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python39
         cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
-        cp $PYTHONDIR/python.exe $PYTHONDIR/python3.9.exe
 
     - name: Add Python to PATH
       run: |
@@ -165,6 +164,11 @@ jobs:
       shell: msys2 {0}
       run: |
         pipenv install --deploy
+
+    - name: Create python3 alias in virtualenv
+      shell: msys2 {0}
+      run: |
+        pipenv run msys2 cp '$VIRTUAL_ENV/Scripts/python.exe' '$VIRTUAL_ENV/Scripts/python3.exe'
 
     - name: Build
       run: |
