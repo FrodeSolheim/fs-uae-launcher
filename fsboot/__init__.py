@@ -309,7 +309,7 @@ def development():
     return result
 
 
-def is_frozen():
+def is_frozen() -> bool:
     return getattr(sys, "frozen", False)
 
 

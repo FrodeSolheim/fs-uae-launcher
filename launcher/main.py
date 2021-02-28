@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 import os
 import sys
-import traceback
 
+import fsboot
 import launcher.version
-from fsboot import executable_dir, is_frozen
 
 
 def check_python_version():
@@ -14,8 +13,9 @@ def check_python_version():
 
 
 def setup_fsgs_pythonpath():
-    if os.environ.get("FSGS_PYTHONPATH", ""):
-        sys.path.insert(0, os.environ.get("FSGS_PYTHONPATH"))
+    fsgs_pythonpath = os.environ.get("FSGS_PYTHONPATH")
+    if fsgs_pythonpath:
+        sys.path.insert(0, fsgs_pythonpath)
 
 
 def fix_mingw_path():
@@ -28,15 +28,15 @@ def print_version():
 
 
 def setup_frozen_qpa_platform_plugin_path():
-    if not is_frozen():
+    if not fsboot.is_frozen():
         return
-    os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
-        fsboot.executable_dir(), "platforms"
-    )
+    # os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
+    #     fsboot.executable_dir(), "platforms"
+    # )
 
 
 def setup_frozen_requests_ca_cert():
-    if not is_frozen():
+    if not fsboot.is_frozen():
         return
     data_dirs = [fsboot.executable_dir()]
     data_dir = os.path.abspath(

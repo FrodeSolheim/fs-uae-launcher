@@ -123,36 +123,51 @@ class Application(object):
 
     @memoize
     def data_dirs(self):
-        if self._data_dirs is not None:
-            return self._data_dirs
         data_dirs = []
-        base_dirs = []
+        # base_dirs = []
 
-        if len(sys.argv) > 0:
-            script_dir = os.path.dirname(sys.argv[0])
-            base_dirs.append(os.path.join(script_dir, "share"))
+        # if len(sys.argv) > 0:
+        #     script_dir = os.path.dirname(sys.argv[0])
+        #     base_dirs.append(os.path.join(script_dir, "share"))
 
-        data_dirs.append(self.executable_dir())
-        if System.windows:
-            base_dirs.append(os.path.join(self.executable_dir(), "share"))
-        elif System.macos:
-            base_dirs.append(
-                os.path.join(self.executable_dir(), "..", "Resources", "share")
-            )
+        if fsboot.is_frozen():
+            if System.macos:
+                data_dirs.append(
+                    os.path.normpath(
+                        os.path.join(
+                            self.executable_dir(), "..", "Resources", "Data"
+                        )
+                    )
+                )
+            else:
+                data_dirs.append(self.executable_dir())
+            
+            # FIXME: Plugin/Data directory as well
         else:
-            # FIXME: $XDG_DATA_DIRS, $XDG_DATA_HOME
-            base_dirs.append(
+            data_dirs.append(
                 os.path.normpath(
-                    os.path.join(self.executable_dir(), "..", "share")
+                    os.path.join(
+                        self.executable_dir(), "..", "share", self.name
+                    )
                 )
             )
-        for dir_name in base_dirs:
-            data_dir = os.path.join(dir_name, self.name)
-            logger.debug("* checking for data dir %s", data_dir)
-            if os.path.exists(data_dir):
-                data_dirs.append(data_dir)
-        self._data_dirs = data_dirs
-        logger.debug("data dirs: %s", repr(data_dirs))
+
+        # data_dirs.append(self.executable_dir())
+        # if System.windows:
+        #     base_dirs.append(os.path.join(self.executable_dir(), "share"))
+        # elif System.macos:
+        #     base_dirs.append(
+        #         os.path.join(self.executable_dir(), "..", "Resources", "Data")
+        #     )
+        # else:
+        # FIXME: $XDG_DATA_DIRS, $XDG_DATA_HOME
+        # for dir_name in base_dirs:
+        #     data_dir = os.path.join(dir_name, self.name)
+        #     logger.debug("* checking for data dir %s", data_dir)
+        #     if os.path.exists(data_dir):
+        #         data_dirs.append(data_dir)
+        # self._data_dirs = data_dirs
+        # logger.debug("data dirs: %s", repr(data_dirs))
         return data_dirs
 
     @memoize
@@ -162,7 +177,7 @@ class Application(object):
         """
         for data_dir in self.data_dirs():
             path = os.path.join(data_dir, name)
-            # print("- checking", path)
+            print("- checking", path)
             if os.path.exists(path):
                 return path
         raise LookupError(name)

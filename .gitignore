@@ -11,6 +11,7 @@
 /debian/fs-uae-launcher.prerm.debhelper
 /debian/fs-uae-launcher.substvars
 /dist.fs/
+.DS_Store
 *.egg-info
 /.flatpak-builder/
 fontconfig
@@ -29,6 +30,5 @@ Lib
 *.pyc
 *.pyo
 /repo/
-/setup.py
 /venv/
 /.vscode/.ropeproject/objectdb

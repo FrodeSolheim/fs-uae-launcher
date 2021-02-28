@@ -46,7 +46,7 @@ def launcher_data_file_path(relative):
 
     # FIXME: Move up?
     if System.macos:
-        path = os.path.join(executable_dir(), "..", "Resources", relative)
+        path = os.path.join(executable_dir(), "..", "Resources", "Data", relative)
     else:
         path = os.path.join(
             executable_dir(), "..", "share", "fs-uae-launcher", relative
