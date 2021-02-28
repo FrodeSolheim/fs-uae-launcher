@@ -120,14 +120,15 @@ jobs:
     - name: Update version
       shell: msys2 {0}
       run: |
-        # export PATH="$pythonLocation:$PATH"
+        pwd
+        ls
         fsbuild/version --update --auto
 
     - name: Run pipenv install
       shell: msys2 {0}
       run: |
         pipenv install --deploy
-        
+
     - name: Build
       run: |
         pipenv run fsbuild/build
