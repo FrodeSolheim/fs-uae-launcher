@@ -94,12 +94,19 @@ jobs:
     - name: Download Python
       run: |
         wget https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe
-        # FIXME: Check SHA-1?
+        echo "bc95bcbb879006d2a3e5f8bef6d7ec8b8e9368d4fe14e6cd4abdf1cd5166bcc3 *python-3.9.2-amd64.exe" > SHA256SUMS
+        sha256sum -c SHA256SUMS
 
     - name: Install Python
       shell: cmd
       run: |
         START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
+
+    - name: Create python3 and python3.9 aliases
+      run: |
+        export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python39
+        cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
+        cp $PYTHONDIR/python.exe $PYTHONDIR/python3.9.exe
 
     - name: Add Python to PATH
       run: |
