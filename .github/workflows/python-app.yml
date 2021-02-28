@@ -101,8 +101,8 @@ jobs:
 
     -name: Add Python to PATH
       run: |
-      echo $LOCALAPPDATA/Programs/Python/Python39/Scripts >> $GITHUB_PATH  
-      echo $LOCALAPPDATA/Programs/Python/Python39 >> $GITHUB_PATH
+        echo $LOCALAPPDATA/Programs/Python/Python39/Scripts >> $GITHUB_PATH  
+        echo $LOCALAPPDATA/Programs/Python/Python39 >> $GITHUB_PATH
 
     - name: Check PATH
       shell: msys2 {0}
