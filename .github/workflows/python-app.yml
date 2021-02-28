@@ -70,25 +70,20 @@ jobs:
   Windows_x86-64:
     runs-on: windows-2016
 
-    defaults:
-      run:
-        shell: msys2 {0}
+    # defaults:
+    #   run:
+    #     shell: msys2 {0}
 
     steps:
     - uses: msys2/setup-msys2@v2
-      with:
-        update: true
 
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip pipenv
-
     - name: Check Python version
+      shell: msys2 {0}
       run: |
         which python
         python --version
@@ -99,12 +94,25 @@ jobs:
         which pipenv
         pipenv --version
 
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip pipenv
+
+    - name: Check pipenv version
+      shell: msys2 {0}
+      run: |
+        which pipenv
+        pipenv --version
+
     - name: Update version
+      shell: msys2 {0}
       run: fsbuild/version --update --auto
 
     - name: Run pipenv install
+      shell: msys2 {0}
       run: |
         pipenv install --deploy
+
         
     - name: Build
       run: |
