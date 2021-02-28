@@ -69,11 +69,7 @@ jobs:
 
   Windows_x86-64:
     runs-on: windows-2016
-
-    # defaults:
-    #   run:
-    #     shell: msys2 {0}
-       
+      
     defaults:
       run:
         shell: msys2 {0}
@@ -113,61 +109,19 @@ jobs:
         echo $LOCALAPPDATA/Programs/Python/Python39/Scripts >> $GITHUB_PATH  
         echo $LOCALAPPDATA/Programs/Python/Python39 >> $GITHUB_PATH
 
-    - name: Check PATH
-      shell: msys2 {0}
+    - name: Update version
       run: |
-        echo $PATH
+        fsbuild/version --update --auto
 
-    - name: Env
-      shell: msys2 {0}
-      run: |
-        env
-
-    # - name: Set up Python 3.9
-    #   uses: actions/setup-python@v2
-    #   with:
-    #     python-version: 3.9
-
-    - name: Check Python version
-      run: |
-       python3 -c "import sys; print(sys.path)"
-
-    # - name: Check PATH
-    #   run: |
-    #    $Env:Path
-
-    # - uses: msys2/setup-msys2@v2
-    #   with:
-    #     path-type: inherit
-
-    - name: Install dependencies
+    - name: Install pipenv
       run: |
         python3 -m pip install --upgrade pip pipenv
 
-    - name: Check python version
-      shell: msys2 {0}
-      run: |
-        # export PATH="$pythonLocation:$PATH"
-        # which python
-        # python --version
-        which python3
-        python3 --version
-        # pipenv --version
-
-    - name: Update version
-      shell: msys2 {0}
-      run: |
-        pwd
-        ls
-        fsbuild/version --update --auto
-
     - name: Run pipenv install
-      shell: msys2 {0}
       run: |
         pipenv install --deploy
 
     - name: Create python3 alias in virtualenv
-      shell: msys2 {0}
       run: |
         pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
 
@@ -188,9 +142,11 @@ jobs:
         path: fsbuild/_dist/*
 
     - name: Install dropbox package
+      if: github.ref == "ref/head/master"
       run: python3 -m pip install dropbox
 
     - name: Upload build to Dropbox folder
+      if: github.ref == "ref/head/master"
       run: fsbuild/upload
       env:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
