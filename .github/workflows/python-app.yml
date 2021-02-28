@@ -172,7 +172,7 @@ jobs:
 
     - name: Build
       run: |
-        pipenv run msys2 fsbuild/build
+        pipenv run bash -c 'fsbuild/build'
 
     - name: Bundle
       run: |
