@@ -12,14 +12,14 @@ pyinstaller \
 	--specpath pyinstaller \
 	--distpath $BUILDDIR/pyinstaller \
 	$PACKAGE_NAME
-BINDIR=fsbuild/_build/pyinstaller/fs-uae-launcher
+BINDIR=fsbuild/_build/pyinstaller/$PACKAGE_NAME
 elif [ "$SYSTEM_OS" = "macOS" ]; then
 pyinstaller \
 	--windowed \
 	--specpath pyinstaller \
 	--distpath $BUILDDIR/pyinstaller \
 	$PACKAGE_NAME
-BINDIR=fsbuild/_build/pyinstaller/fs-uae-launcher.app/Contents/MacOS
+BINDIR=fsbuild/_build/pyinstaller/$PACKAGE_NAME.app/Contents/MacOS
 # Symlinks do not seem to work with notarization
 find $BINDIR -type l -delete
 else
@@ -27,7 +27,7 @@ pyinstaller \
 	--specpath pyinstaller \
 	--distpath $BUILDDIR/pyinstaller \
 	$PACKAGE_NAME
-BINDIR=fsbuild/_build/pyinstaller/fs-uae-launcher
+BINDIR=fsbuild/_build/pyinstaller/$PACKAGE_NAME
 fi
 
 # These do not work with macOS notarization, but might as well remove for all
