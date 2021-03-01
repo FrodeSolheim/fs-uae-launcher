@@ -30,8 +30,26 @@ jobs:
       run: |
         pipenv install --deploy
 
+    - name: Download pyinstaller source
+      run: |
+        wget https://github.com/pyinstaller/pyinstaller/releases/download/v4.2/PyInstaller-4.2.tar.gz
+        echo "f5c0eeb2aa663cce9a5404292c0195011fa500a6501c873a466b2e8cad3c950c *PyInstaller-4.2.tar.gz" > SHA256SUMS
+        shasum -c SHA256SUMS
+        tar xf PyInstaller-4.2.tar.gz
+
+    - name: Compile new bootloader for pyinstaller
+      run: |
+        cd pyinstaller-4.2/bootloader
+        CC="gcc -no-pie" ./waf all
+
+    - name: Replace pyinstaller with custom version
+      run: |
+        pipenv uninstall pyinstaller
+        pipenv install `pwd`/pyinstaller-4.2
+
     - name: Update version
-      run: fsbuild/version --update --auto
+      run: |
+        fsbuild/version --update --auto
 
     - name: Build
       run: |
@@ -42,7 +60,8 @@ jobs:
         pipenv run fsbuild/bundle
 
     - name: Archive
-      run: fsbuild/archive
+      run: |
+        fsbuild/archive
 
     - uses: actions/upload-artifact@v2
       with:
