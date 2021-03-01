@@ -78,5 +78,9 @@ def main(*, app):
         import launcher.apps
 
         launcher.apps.main()
+    elif app == "fs-fuse-launcher":
+        import launcher.apps
+
+        launcher.apps.main("fs-fuse-launcher")
     else:
         raise Exception(f"Unknown app {app}")

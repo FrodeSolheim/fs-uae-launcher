@@ -41,7 +41,7 @@ def find_app(app):
     if app in ["launcher", "fs-uae-launcher"]:
         app = "SYS:Launcher"
 
-    elif app == "fs-fuse":
+    elif app in ["fs-fuse-launcher", "fs-fuse"]:
         app = configure_launcher_app(
             "FS-Fuse", [Option.SPECTRUM_DATABASE], "spectrum"
         )
@@ -99,8 +99,7 @@ def find_app(app):
     return app_main
 
 
-def main():
-    app_name = ""
+def main(app_name = ""):
     # Check deprecated/legacy app options.
     if "--server" in sys.argv:
         sys.argv.remove("--server")
