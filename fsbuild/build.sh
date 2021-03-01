@@ -20,8 +20,6 @@ pyinstaller \
 	--distpath $BUILDDIR/pyinstaller \
 	$PACKAGE_NAME
 BINDIR=fsbuild/_build/pyinstaller/$PACKAGE_NAME.app/Contents/MacOS
-# Symlinks do not seem to work with notarization
-find $BINDIR -type l -delete
 else
 pyinstaller \
 	--specpath pyinstaller \
