@@ -26,24 +26,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip pipenv
 
-    - name: Check Python version
+    - name: Run pipenv install
       run: |
-        which python
-        python --version
-        which python3
-        python3 --version
-        which python3.9
-        python3.9 --version
-        which pipenv
-        pipenv --version
+        pipenv install --deploy
 
     - name: Update version
       run: fsbuild/version --update --auto
 
-    - name: Run pipenv install
-      run: |
-        pipenv install --deploy
-        
     - name: Build
       run: |
         pipenv run fsbuild/build
@@ -60,13 +49,11 @@ jobs:
         name: Linux_x86-64
         path: fsbuild/_dist/*
 
-    - name: Install dropbox package
-      if: github.ref == 'refs/heads/master'
-      run: python3 -m pip install dropbox
-
     - name: Upload build to Dropbox folder
       if: github.ref == 'refs/heads/master'
-      run: fsbuild/upload
+      run: |
+        python3 -m pip install dropbox
+        fsbuild/upload
       env:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
@@ -101,7 +88,7 @@ jobs:
       run: |
         echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH  
 
-    - name: Install pipenv
+    - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip pipenv
 
@@ -129,20 +116,18 @@ jobs:
         name: macos_x86-64
         path: fsbuild/_dist/*
 
-    - name: Install dropbox package
-      if: github.ref == 'refs/heads/master'
-      run: python3 -m pip install dropbox
-
     - name: Upload build to Dropbox folder
       if: github.ref == 'refs/heads/master'
-      run: fsbuild/upload
+      run: |
+        python3 -m pip install dropbox
+        fsbuild/upload
       env:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
 
   Windows_x86-64:
     runs-on: windows-2016
-      
+
     defaults:
       run:
         shell: msys2 {0}
@@ -172,21 +157,14 @@ jobs:
       run: |
         START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
 
-    - name: Create python3 alias
+    - name: Add Python to PATH
       run: |
         export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python39
         cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
+        echo $PYTHONDIR/Scripts >> $GITHUB_PATH
+        echo $PYTHONDIR >> $GITHUB_PATH
 
-    - name: Add Python to PATH
-      run: |
-        echo $LOCALAPPDATA/Programs/Python/Python39/Scripts >> $GITHUB_PATH  
-        echo $LOCALAPPDATA/Programs/Python/Python39 >> $GITHUB_PATH
-
-    - name: Update version
-      run: |
-        fsbuild/version --update --auto
-
-    - name: Install pipenv
+    - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip pipenv
 
@@ -197,6 +175,10 @@ jobs:
     - name: Create python3 alias in virtualenv
       run: |
         pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
+
+    - name: Update version
+      run: |
+        fsbuild/version --update --auto
 
     - name: Build
       run: |
@@ -214,13 +196,11 @@ jobs:
         name: Windows_x86-64
         path: fsbuild/_dist/*
 
-    - name: Install dropbox package
-      if: github.ref == 'refs/heads/master'
-      run: python3 -m pip install dropbox
-
     - name: Upload build to Dropbox folder
       if: github.ref == 'refs/heads/master'
-      run: fsbuild/upload
+      run: |
+        python3 -m pip install dropbox
+        fsbuild/upload
       env:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
