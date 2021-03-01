@@ -43,7 +43,7 @@ jobs:
         CC="gcc -no-pie" ./waf all
 
     - name: Replace pyinstaller with custom version
-       run: |
+      run: |
         pipenv uninstall pyinstaller
         pipenv install `pwd`/pyinstaller-4.2
 
