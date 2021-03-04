@@ -16,14 +16,14 @@ mkdir -p $PLUGIN_DATADIR
 cp -a data/* $PLUGIN_DATADIR/
 
 mkdir -p $PLUGIN_DATADIR/arcade
-cp -a ./arcade/res $PLUGIN_DATADIR/arcade/
+cp -a ./arcade/data $PLUGIN_DATADIR/arcade/
 mkdir -p $PLUGIN_DATADIR/launcher
-cp -a ./launcher/res $PLUGIN_DATADIR/launcher/
+cp -a ./launcher/data $PLUGIN_DATADIR/launcher/
 mkdir -p $PLUGIN_DATADIR/fsgamesys
-cp -a ./fsgamesys/res $PLUGIN_DATADIR/fsgamesys/
+cp -a ./fsgamesys/data $PLUGIN_DATADIR/fsgamesys/
 mkdir -p $PLUGIN_DATADIR/fsui
-cp -a ./fsui/res $PLUGIN_DATADIR/fsui/
+cp -a ./fsui/data $PLUGIN_DATADIR/fsui/
 mkdir -p $PLUGIN_DATADIR/workspace
-cp -a ./workspace/res $PLUGIN_DATADIR/workspace/
+cp -a ./workspace/data $PLUGIN_DATADIR/workspace/
 
 . fsbuild/plugin.post.sh

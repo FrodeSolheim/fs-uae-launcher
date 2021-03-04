@@ -1,9 +1,9 @@
 data = ../../../../data
 colorizeicon = ../../colorizeicon.sh
 
-launcher_res = ../../../../launcher/res
+launcher_data = ../../../../launcher/data
 
 all:
-	mkdir -p ${launcher_res}/16x16/
+	mkdir -p ${launcher_data}/16x16/
 
-	${colorizeicon} '#555555' cog.png ${launcher_res}/16x16/settings.png
+	${colorizeicon} '#555555' cog.png ${launcher_data}/16x16/settings.png

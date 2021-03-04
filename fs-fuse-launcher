@@ -6,7 +6,7 @@ from fsboot import setup_python_path
 
 from launcher.main import main
 
-main(app="openretro-launcher")
+main(app="fs-fuse-launcher")
 
 # Dummy imports for cx_Freeze
 import sys

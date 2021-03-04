@@ -82,5 +82,9 @@ def main(*, app):
         import launcher.apps
 
         launcher.apps.main("fs-fuse-launcher")
+    elif app == "openretro-launcher":
+        import launcher.apps
+
+        launcher.apps.main("openretro-launcher")
     else:
         raise Exception(f"Unknown app {app}")
