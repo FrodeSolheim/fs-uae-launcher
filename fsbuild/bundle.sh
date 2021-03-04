@@ -26,4 +26,7 @@ cp -a ./fsui/data $PLUGIN_DATADIR/fsui/
 mkdir -p $PLUGIN_DATADIR/workspace
 cp -a ./workspace/data $PLUGIN_DATADIR/workspace/
 
+PLUGIN_SKIP_APPIFY=1
+PLUGIN_SKIP_STANDALONE=1
+
 . fsbuild/plugin.post.sh
