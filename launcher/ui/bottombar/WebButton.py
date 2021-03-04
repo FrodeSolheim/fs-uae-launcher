@@ -10,7 +10,7 @@ class WebButton(Panel):
         if icon is not None:
             self.icon = icon
         else:
-            self.icon = Image("launcher:res/16x16/world.png")
+            self.icon = Image("launcher:/data/16x16/world.png")
         Panel.__init__(self, parent, paintable=True)
         # self.set_tooltip(tooltip)
         config = get_config(self)

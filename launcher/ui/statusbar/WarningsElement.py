@@ -37,9 +37,9 @@ JOYSTICK_KEYS = [
 class WarningsElement(StatusElement):
     def __init__(self, parent):
         StatusElement.__init__(self, parent)
-        self.error_icon = Image("launcher:res/16x16/error.png")
-        self.warning_icon = Image("launcher:res/16x16/warning_3.png")
-        self.notice_icon = Image("launcher:res/16x16/information.png")
+        self.error_icon = Image("launcher:/data/16x16/error.png")
+        self.warning_icon = Image("launcher:/data/16x16/warning_3.png")
+        self.notice_icon = Image("launcher:/data/16x16/information.png")
         self.icons = [self.error_icon, self.warning_icon, self.notice_icon]
         self.coordinates = []
         self.warnings = []

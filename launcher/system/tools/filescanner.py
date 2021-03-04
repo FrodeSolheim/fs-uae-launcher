@@ -194,8 +194,8 @@ class KickstartStatusGroup(fsui.Group):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
 
-        self.ok_image = fsui.Image("launcher:res/ok_emblem.png")
-        self.na_image = fsui.Image("launcher:res/na_emblem.png")
+        self.ok_image = fsui.Image("launcher:/data/ok_emblem.png")
+        self.na_image = fsui.Image("launcher:/data/na_emblem.png")
 
         self.icon = fsui.ImageView(self, self.na_image)
         self.layout.add(self.icon)
@@ -236,7 +236,7 @@ class ScanKickstartGroup(fsui.Group):
         self.layout.add(icon_layout, fill=True)
 
         icon_layout.add_spacer(20)
-        image = fsui.Image("launcher:res/kickstart.png")
+        image = fsui.Image("launcher:/data/kickstart.png")
         self.image_view = fsui.ImageView(self, image)
         icon_layout.add(self.image_view, valign=0.0, margin_right=10)
 
@@ -301,7 +301,7 @@ class ScanProgressGroup(fsui.Group):
         # self.layout.padding_right = 10
         # self.layout.padding_bottom = 10
 
-        # #image = fsui.Image("launcher:res/search_group.png")
+        # #image = fsui.Image("launcher:/data/search_group.png")
         # #self.image_view = fsui.ImageView(self, image)
         # self.layout.add_spacer(20)
         # #self.layout.add(self.image_view, valign=0.0)

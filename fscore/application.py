@@ -7,3 +7,7 @@ class Application:
     @memoize
     def executable_dir():
         return fsboot.executable_dir()
+
+    @staticmethod
+    def share_dir_name():
+        raise NotImplementedError()

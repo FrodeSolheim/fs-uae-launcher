@@ -1,36 +1,29 @@
-. ./PACKAGE.FS
-. fsbuild/system.sh
+#!/bin/sh
 
-BUILDDIR=fsbuild/_build
-PLUGINDIR=$BUILDDIR/$PACKAGE_NAME_PRETTY
-BINDIR=$PLUGINDIR/$SYSTEM_OS/$SYSTEM_ARCH
+set -e
 
-rm -Rf $PLUGINDIR
-mkdir -p $BINDIR
+. fsbuild/plugin.pre.sh
+
+mkdir -p $PLUGIN_BINDIR
 
 if [ "$SYSTEM_OS" = "macOS" ]; then
-cp -a $BUILDDIR/pyinstaller/$PACKAGE_NAME.app $BINDIR/
-# For now:
-DATADIR=$BINDIR/$PACKAGE_NAME.app/Contents/Resources/Data
+cp -a fsbuild/_build/pyinstaller/$PACKAGE_NAME.app $PLUGIN_BINDIR/
 else
-cp -a $BUILDDIR/pyinstaller/$PACKAGE_NAME/* $BINDIR/
-# For now:
-DATADIR=$BINDIR
+cp -a fsbuild/_build/pyinstaller/$PACKAGE_NAME/* $PLUGIN_BINDIR/
 fi
 
-mkdir -p $DATADIR
-cp -a data/* $DATADIR/
+mkdir -p $PLUGIN_DATADIR
+cp -a data/* $PLUGIN_DATADIR/
 
-mkdir -p $DATADIR/arcade
-cp -a ./arcade/res $DATADIR/arcade/
-mkdir -p $DATADIR/launcher
-cp -a ./launcher/res $DATADIR/launcher/
-mkdir -p $DATADIR/fsgamesys
-cp -a ./fsgamesys/res $DATADIR/fsgamesys/
-mkdir -p $DATADIR/fsui
-cp -a ./fsui/res $DATADIR/fsui/
-mkdir -p $DATADIR/workspace
-cp -a ./workspace/res $DATADIR/workspace/
+mkdir -p $PLUGIN_DATADIR/arcade
+cp -a ./arcade/res $PLUGIN_DATADIR/arcade/
+mkdir -p $PLUGIN_DATADIR/launcher
+cp -a ./launcher/res $PLUGIN_DATADIR/launcher/
+mkdir -p $PLUGIN_DATADIR/fsgamesys
+cp -a ./fsgamesys/res $PLUGIN_DATADIR/fsgamesys/
+mkdir -p $PLUGIN_DATADIR/fsui
+cp -a ./fsui/res $PLUGIN_DATADIR/fsui/
+mkdir -p $PLUGIN_DATADIR/workspace
+cp -a ./workspace/res $PLUGIN_DATADIR/workspace/
 
-echo $PACKAGE_VERSION > $PLUGINDIR/Version.txt
-echo $PACKAGE_VERSION > $BINDIR/Version.txt
+. fsbuild/plugin.post.sh

@@ -53,7 +53,7 @@ class StatusBar(Panel):
                 # ("", "flag-unknown"),
             ]
         ):
-            icon = Image("workspace:res/16x16/" + icon_name + ".png")
+            icon = Image("workspace:/data/16x16/" + icon_name + ".png")
             element = LanguageElement(self, language, icon)
             self.hori_layout.add(element, fill=True)
         self.hori_layout.add_spacer(16)
@@ -68,7 +68,7 @@ class StatusBar(Panel):
         #     ("mobygames_url", "mobygames_url_16"),
         #     ("wikipedia_url", "wikipedia_url_16"),
         # ]:
-        #     icon = Image("launcher:res/" + icon_name + ".png")
+        #     icon = Image("launcher:/data/" + icon_name + ".png")
         #     element = LinkButtonElement(self, config_key, icon)
         #     self.hori_layout.add(element)
 

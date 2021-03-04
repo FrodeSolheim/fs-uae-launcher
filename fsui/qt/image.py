@@ -1,4 +1,4 @@
-from fsbc.resources import Resources
+from fscore.resources import Resources
 from fsui.qt.qt import QColor, QIcon, QImage, QPixmap, QSize, Qt
 
 
@@ -32,7 +32,7 @@ class Image:
                 index = name.find(":")
                 if index > 1:
                     package, file_ = name.split(":", 1)
-                    stream = Resources(package).stream(file_)
+                    stream = Resources(package, "").stream(file_)
                     self.qimage.loadFromData(stream.read())
                 else:
                     print("loading image from", name)

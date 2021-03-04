@@ -29,22 +29,22 @@ class RatingChoice(Choice):
                 # gettext("Rate Variant"),
                 # gettext("Rate"),
                 "",
-                Image("launcher:res/16x16/bullet.png"),
+                Image("launcher:/data/16x16/bullet.png"),
             )
             self.add_item(
                 # gettext("Best Variant"),
                 gettext("Best"),
-                Image("launcher:res/16x16/rating_fav_2.png"),
+                Image("launcher:/data/16x16/rating_fav_2.png"),
             )
             self.add_item(
                 # gettext("Good Variant"),
                 gettext("Good"),
-                Image("launcher:res/16x16/thumb_up_2.png"),
+                Image("launcher:/data/16x16/thumb_up_2.png"),
             )
             self.add_item(
                 # gettext("Bad Variant"),
                 gettext("Bad"),
-                Image("launcher:res/16x16/thumb_down_2.png"),
+                Image("launcher:/data/16x16/thumb_down_2.png"),
             )
         self.set_tooltip(gettext("Rate variant"))
         # FIXME

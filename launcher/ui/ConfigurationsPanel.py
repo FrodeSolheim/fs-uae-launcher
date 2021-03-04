@@ -156,19 +156,19 @@ class RatingChoice(Choice):
         super().__init__(parent, [], cursor_keys=False)
         with self.changed.inhibit:
             self.add_item(
-                gettext("Rate Variant"), Image("launcher:res/16x16/bullet.png")
+                gettext("Rate Variant"), Image("launcher:/data/16x16/bullet.png")
             )
             self.add_item(
                 gettext("Best Variant"),
-                Image("launcher:res/16x16/rating_fav_2.png"),
+                Image("launcher:/data/16x16/rating_fav_2.png"),
             )
             self.add_item(
                 gettext("Good Variant"),
-                Image("launcher:res/16x16/thumb_up_2.png"),
+                Image("launcher:/data/16x16/thumb_up_2.png"),
             )
             self.add_item(
                 gettext("Bad Variant"),
-                Image("launcher:res/16x16/thumb_down_2.png"),
+                Image("launcher:/data/16x16/thumb_down_2.png"),
             )
         ConfigBehavior(self, ["variant_uuid"])
         SettingsBehavior(self, ["__variant_rating"])

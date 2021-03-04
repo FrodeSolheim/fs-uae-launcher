@@ -2,7 +2,7 @@ import io
 import os
 from configparser import ConfigParser
 
-from fsbc.resources import Resources
+from fscore.resources import Resources
 from fscore.system import System
 from fsgamesys.context import fsgs
 from fsgamesys.FSGSDirectories import FSGSDirectories
@@ -135,14 +135,14 @@ class InputDevice(object):
     @classmethod
     def get_builtin_config_for_device_guid(cls, guid):
         return Resources("fsgamesys").stream(
-            "res/input/" + guid + ".fs-uae-controller"
+            "input/" + guid + ".fs-uae-controller"
         )
 
     # @classmethod
     # def get_builtin_config_file_for_device_guid(cls, guid):
     #     try:
     #         path = Resources("fsgamesys").path(
-    #             "res/input/" + guid + ".fs-uae-controller")
+    #             "input/" + guid + ".fs-uae-controller")
     #     except LookupError:
     #         return None
     #     return path
@@ -152,7 +152,7 @@ class InputDevice(object):
     def get_config_files():
         print("get_config_files")
         configs = {}
-        input_stream = Resources("fsgamesys").stream("res/input/manifest.txt")
+        input_stream = Resources("fsgamesys").stream("input/manifest.txt")
         print("opened input manifest")
         for line in input_stream.read().split(b"\n"):
             line = line.decode("UTF-8")
@@ -165,9 +165,9 @@ class InputDevice(object):
                 file_name = parts[-1]
                 name, _ = os.path.splitext(file_name)
                 if len(parts) > 1:
-                    configs[parts[-2] + "_" + name] = "fsgs:res/input/" + path
+                    configs[parts[-2] + "_" + name] = "fsgamesys:input/" + path
                 # print(" -", path)
-                configs[name] = "fsgs:res/input/" + path
+                configs[name] = "fsgamesys:input/" + path
 
         # FIXME: fix dependency
         controllers_dir = fsgs.amiga.get_controllers_dir()
@@ -218,7 +218,7 @@ class InputDevice(object):
                 return
         cp = ConfigParser()
         print(path, os.path.exists(path))
-        if path.startswith("fsgs:"):
+        if path.startswith("fsgamesys:"):
             print("reading config from stream", path)
             input_stream = Resources("fsgamesys").stream(path.split(":", 1)[1])
             input_stream = io.TextIOWrapper(input_stream, "UTF-8")

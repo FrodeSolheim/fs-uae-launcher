@@ -65,16 +65,16 @@ class VolumeButton(VolumeButtonBase, ButtonWrapper):
             parent,
             [
                 Image(
-                    "launcher:res/icons/audio-volume-high_16/audio-volume-high.png"
+                    "launcher:/data/icons/audio-volume-high_16/audio-volume-high.png"
                 ),
                 Image(
-                    "launcher:res/icons/audio-volume-medium_16/audio-volume-medium.png"
+                    "launcher:/data/icons/audio-volume-medium_16/audio-volume-medium.png"
                 ),
                 Image(
-                    "launcher:res/icons/audio-volume-low_16/audio-volume-low.png"
+                    "launcher:/data/icons/audio-volume-low_16/audio-volume-low.png"
                 ),
                 Image(
-                    "launcher:res/icons/audio-volume-muted_16/audio-volume-muted.png"
+                    "launcher:/data/icons/audio-volume-muted_16/audio-volume-muted.png"
                 ),
             ],
         )
@@ -84,22 +84,22 @@ class VolumeButton(VolumeButtonBase, ButtonWrapper):
 
 # class VolumeButton(ImageButton):
 #     def __init__(self, parent):
-#         # self.volume_muted_icon = Image("launcher:res/windowed_16.png")
-#         # self.volume_half_icon = Image("launcher:res/windowed_16.png")
+#         # self.volume_muted_icon = Image("launcher:/data/windowed_16.png")
+#         # self.volume_half_icon = Image("launcher:/data/windowed_16.png")
 #         # FIXME: Start with empty icon?
 #         super().__init__(parent, Image.create_blank(16, 16))
 #         # super().__init__(parent, self.volume_full_icon)
 #         self.high_icon = Image(
-#             "launcher:res/icons/audio-volume-high_16/audio-volume-high.png"
+#             "launcher:/data/icons/audio-volume-high_16/audio-volume-high.png"
 #         )
 #         self.medium_icon = Image(
-#             "launcher:res/icons/audio-volume-medium_16/audio-volume-medium.png"
+#             "launcher:/data/icons/audio-volume-medium_16/audio-volume-medium.png"
 #         )
 #         self.low_icon = Image(
-#             "launcher:res/icons/audio-volume-low_16/audio-volume-low.png"
+#             "launcher:/data/icons/audio-volume-low_16/audio-volume-low.png"
 #         )
 #         self.muted_icon = Image(
-#             "launcher:res/icons/audio-volume-muted_16/audio-volume-muted.png"
+#             "launcher:/data/icons/audio-volume-muted_16/audio-volume-muted.png"
 #         )
 #         self.set_tooltip(gettext("Set the initial volume for the emulator"))
 #         self.set_min_width(40)

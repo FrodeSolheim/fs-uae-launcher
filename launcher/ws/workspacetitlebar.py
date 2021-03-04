@@ -147,8 +147,8 @@ class FullscreenToggleButton(FullscreenToggleButtonBase, ButtonWrapper):
         super().__init__(
             parent,
             [
-                Image("launcher:res/windowed_16.png"),
-                Image("launcher:res/fullscreen_16.png"),
+                Image("launcher:/data/windowed_16.png"),
+                Image("launcher:/data/fullscreen_16.png"),
             ],
         )
         self.set_tooltip(self.tooltip_text)
@@ -160,10 +160,10 @@ class MonitorButton(MonitorButtonBase, ButtonWrapper):
         super().__init__(
             parent,
             [
-                Image("launcher:res/16x16/monitor_left.png"),
-                Image("launcher:res/16x16/monitor_middle_left.png"),
-                Image("launcher:res/16x16/monitor_middle_right.png"),
-                Image("launcher:res/16x16/monitor_right.png"),
+                Image("launcher:/data/16x16/monitor_left.png"),
+                Image("launcher:/data/16x16/monitor_middle_left.png"),
+                Image("launcher:/data/16x16/monitor_middle_right.png"),
+                Image("launcher:/data/16x16/monitor_right.png"),
             ],
         )
         self.set_tooltip(self.tooltip_text)
@@ -176,16 +176,16 @@ class VolumeButton(VolumeButtonBase, ButtonWrapper):
             parent,
             [
                 Image(
-                    "launcher:res/icons/audio-volume-high_16/audio-volume-high.png"
+                    "launcher:/data/icons/audio-volume-high_16/audio-volume-high.png"
                 ),
                 Image(
-                    "launcher:res/icons/audio-volume-medium_16/audio-volume-medium.png"
+                    "launcher:/data/icons/audio-volume-medium_16/audio-volume-medium.png"
                 ),
                 Image(
-                    "launcher:res/icons/audio-volume-low_16/audio-volume-low.png"
+                    "launcher:/data/icons/audio-volume-low_16/audio-volume-low.png"
                 ),
                 Image(
-                    "launcher:res/icons/audio-volume-muted_16/audio-volume-muted.png"
+                    "launcher:/data/icons/audio-volume-muted_16/audio-volume-muted.png"
                 ),
             ],
         )

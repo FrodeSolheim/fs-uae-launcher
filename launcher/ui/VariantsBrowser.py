@@ -38,29 +38,29 @@ class VariantsBrowser(fsui.ItemChoice):
         self.items = []  # type: list [dict]
         # self.last_variants = LastVariants()
 
-        self.icon = fsui.Image("launcher:res/fsuae_config_16.png")
-        self.adf_icon = fsui.Image("launcher:res/adf_game_16.png")
-        self.ipf_icon = fsui.Image("launcher:res/ipf_game_16.png")
-        self.cd_icon = fsui.Image("launcher:res/cd_game_16.png")
-        self.hd_icon = fsui.Image("launcher:res/hd_game_16.png")
+        self.icon = fsui.Image("launcher:/data/fsuae_config_16.png")
+        self.adf_icon = fsui.Image("launcher:/data/adf_game_16.png")
+        self.ipf_icon = fsui.Image("launcher:/data/ipf_game_16.png")
+        self.cd_icon = fsui.Image("launcher:/data/cd_game_16.png")
+        self.hd_icon = fsui.Image("launcher:/data/hd_game_16.png")
         # self.missing_icon = fsui.Image(
-        #     "launcher:res/missing_game_16.png")
-        self.missing_icon = fsui.Image("launcher:res/16x16/delete_grey.png")
+        #     "launcher:/data/missing_game_16.png")
+        self.missing_icon = fsui.Image("launcher:/data/16x16/delete_grey.png")
         self.missing_color = fsui.Color(0xA8, 0xA8, 0xA8)
 
-        self.blank_icon = fsui.Image("launcher:res/16x16/blank.png")
-        self.bullet_icon = fsui.Image("launcher:res/16x16/bullet.png")
+        self.blank_icon = fsui.Image("launcher:/data/16x16/blank.png")
+        self.bullet_icon = fsui.Image("launcher:/data/16x16/bullet.png")
 
         self.manual_download_icon = fsui.Image(
-            "launcher:res/16x16/arrow_down_yellow.png"
+            "launcher:/data/16x16/arrow_down_yellow.png"
         )
         self.auto_download_icon = fsui.Image(
-            "launcher:res/16x16/arrow_down_green.png"
+            "launcher:/data/16x16/arrow_down_green.png"
         )
 
-        self.up_icon = fsui.Image("launcher:res/16x16/thumb_up_mod.png")
-        self.down_icon = fsui.Image("launcher:res/16x16/thumb_down_mod.png")
-        self.fav_icon = fsui.Image("launcher:res/rating_fav_16.png")
+        self.up_icon = fsui.Image("launcher:/data/16x16/thumb_up_mod.png")
+        self.down_icon = fsui.Image("launcher:/data/16x16/thumb_down_mod.png")
+        self.fav_icon = fsui.Image("launcher:/data/rating_fav_16.png")
 
         LauncherSettings.add_listener(self)
         self.on_setting("parent_uuid", LauncherSettings.get("parent_uuid"))

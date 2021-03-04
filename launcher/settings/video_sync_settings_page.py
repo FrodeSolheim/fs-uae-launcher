@@ -67,7 +67,7 @@ class VideoSyncSettingsPage(SettingsPage):
         self.layout.add(hori_layout, fill=True, margin_top=10)
         hori_layout.add(
             fsui.ImageView(
-                self, fsui.Image("launcher:res/16x16/world_link.png")
+                self, fsui.Image("launcher:/data/16x16/world_link.png")
             )
         )
         label = fsui.URLLabel(

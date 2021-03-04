@@ -158,7 +158,7 @@ class LaunchDialog(fsui.Window):
         hor_layout.padding_right = 20
         hor_layout.add_spacer(20)
 
-        image = fsui.Image("launcher:res/fs_uae_group.png")
+        image = fsui.Image("launcher:/data/fs_uae_group.png")
         self.image_view = fsui.ImageView(self, image)
         hor_layout.add(self.image_view, valign=0.0)
         hor_layout.add_spacer(20)

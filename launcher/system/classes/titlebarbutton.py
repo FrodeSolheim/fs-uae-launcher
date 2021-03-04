@@ -1,7 +1,7 @@
 import os
 
 from fsui import Color, Panel, Signal, get_window
-from launcher.data import launcher_data_file
+from fscore.applicationdata import ApplicationData
 
 # FIXME: Maybe, for TitleBarButton in particular, we want to disable the
 # feature where you want keep the button pressed while returning to the widget,
@@ -35,12 +35,9 @@ class TitleBarButton(Panel):
             self._svg = None
         else:
             self._image = None
-            with launcher_data_file(f"Icons/{icon_name}.svg") as f:
-                # with open(
-                #     os.path.expanduser("~/openretro/icons/" + icon_name + ".svg"),
-                #     "rb",
-                # ) as f:
-                self._svg = Svg(f.read())
+            self._svg = Svg(
+                ApplicationData.stream(f"Icons/{icon_name}.svg").read()
+            )
 
         self.update_background_color()
 

@@ -4,7 +4,7 @@ import traceback
 import zlib
 
 import fsui
-from fsbc.resources import Resources
+from fscore.resources import Resources
 from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsui.extra.iconheader import IconHeader
 
@@ -47,7 +47,7 @@ class ADFCreatorWindow(fsui.Window):
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_width(560)
         self.list_view.set_min_height(60)
-        icon = fsui.Image("workspace:res/16x16/floppy.png")
+        icon = fsui.Image("workspace:/data/16x16/floppy.png")
         self.list_view.add_item(
             gettext("ADF - Standard Floppy Disk Image"), icon
         )
@@ -247,7 +247,7 @@ class ADFCreatorWindow(fsui.Window):
         self.show_success(gettext("Disk image created") + ": " + name)
 
     def create_adf(self, f):
-        s = Resources("fsgamesys").stream("res/amiga/adf.dat")
+        s = Resources("fsgamesys").stream("amiga/adf.dat")
         data = s.read()
         data = zlib.decompress(data)
         f.write(data)
@@ -255,7 +255,7 @@ class ADFCreatorWindow(fsui.Window):
     def create_extended_adf(self, f):
         # Workbench 3.1 does not like the adf_extended file, created by
         # WinUAE (must check why)
-        s = Resources("fsgamesys").stream("res/amiga/adf_save_disk.dat")
+        s = Resources("fsgamesys").stream("amiga/adf_save_disk.dat")
         data = s.read()
         data = zlib.decompress(data)
         f.write(data)

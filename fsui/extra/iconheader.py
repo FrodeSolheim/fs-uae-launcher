@@ -8,7 +8,12 @@ class IconHeader(Group):
     ICON_RIGHT = 1
 
     def __init__(
-        self, parent, icon, title, subtitle="", icon_position=ICON_LEFT
+        self,
+        parent,
+        icon: fsui.Icon,
+        title,
+        subtitle="",
+        icon_position=ICON_LEFT,
     ):
         Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()

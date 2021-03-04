@@ -19,7 +19,7 @@ class ScanPathsGroup(fsui.Group):
 
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_height(130)
-        self.default_icon = fsui.Image("launcher:res/folder_16.png")
+        self.default_icon = fsui.Image("launcher:/data/folder_16.png")
         layout3.add(self.list_view, expand=True, fill=True)
         layout3.add_spacer(10)
 

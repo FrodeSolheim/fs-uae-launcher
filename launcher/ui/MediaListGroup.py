@@ -78,9 +78,9 @@ class MediaListGroup(fsui.Panel):
         PlatformEnableBehavior(self.list_view, platforms=platforms)
         self.list_view.on_activate_item = self.on_activate_item
         if self.cd_mode:
-            self.default_icon = fsui.Image("launcher:res/cdrom_16.png")
+            self.default_icon = fsui.Image("launcher:/data/cdrom_16.png")
         else:
-            self.default_icon = fsui.Image("launcher:res/floppy_16.png")
+            self.default_icon = fsui.Image("launcher:/data/floppy_16.png")
         # hori_layout.add(self.list_view, expand=True, fill=True, margin=10)
         self.layout.add(
             self.list_view, expand=True, fill=True, margin=10, margin_top=0

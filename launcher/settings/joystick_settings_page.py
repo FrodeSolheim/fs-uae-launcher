@@ -26,7 +26,7 @@ class JoystickSettingsPage(SettingsPage):
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_height(140)
         self.list_view.item_activated.connect(self.on_joystick_activated)
-        image = fsui.Image("workspace:res/16x16/gamepad.png")
+        image = fsui.Image("workspace:/data/16x16/gamepad.png")
         for device_name in DeviceManager.get_joystick_names():
             if DeviceManager.is_joystick(device_name):
                 self.list_view.add_item(device_name, icon=image)
@@ -59,7 +59,7 @@ class PreferredJoysticksGroup(fsui.Group):
         # self.layout.padding_left = 10
         # self.layout.padding_right = 10
 
-        # image = fsui.Image("launcher:res/joystick.png")
+        # image = fsui.Image("launcher:/data/joystick.png")
         # self.image_view = fsui.ImageView(self, image)
         # self.layout.add(self.image_view, valign=0.0)
 

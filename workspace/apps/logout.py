@@ -25,7 +25,7 @@ class LogoutWindow(fsui.Window):
         heading_layout = fsui.HorizontalLayout()
         self.layout.add(heading_layout)
         heading_layout.add(
-            fsui.ImageView(self, fsui.Image("workspace:res/48/password.png"))
+            fsui.ImageView(self, fsui.Image("workspace:/data/48/password.png"))
         )
         heading_layout.add_spacer(20)
         heading_layout_2 = fsui.VerticalLayout()

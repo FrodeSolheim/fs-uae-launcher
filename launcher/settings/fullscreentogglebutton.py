@@ -54,8 +54,8 @@ class FullscreenToggleButton(FullscreenToggleButtonBase, ButtonWrapper):
         super().__init__(
             parent,
             [
-                Image("launcher:res/windowed_16.png"),
-                Image("launcher:res/fullscreen_16.png"),
+                Image("launcher:/data/windowed_16.png"),
+                Image("launcher:/data/fullscreen_16.png"),
             ],
         )
         self.set_tooltip(self.tooltip_text)

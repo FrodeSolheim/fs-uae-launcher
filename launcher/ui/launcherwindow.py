@@ -513,7 +513,7 @@ class LauncherWindow(WindowWithTabs):
                 self.add_tab_spacer(64)
             else:
                 # if USE_MAIN_MENU:
-                icon = fsui.Image("launcher:res/32/main-menu.png")
+                icon = fsui.Image("launcher:/data/32/main-menu.png")
                 self.menu_button = self.add_tab_button(
                     None,
                     icon,
@@ -602,7 +602,7 @@ class LauncherWindow(WindowWithTabs):
             self.add_tab_spacer(10)
             self.add_tab_button(
                 self.toggle_quick_settings_sidebar,
-                fsui.Image("launcher:res/32/quick-settings-sidebar.png"),
+                fsui.Image("launcher:/data/32/quick-settings-sidebar.png"),
                 gettext("Toggle quick settings sidebar"),
                 right_padding=5,
             )
@@ -670,7 +670,7 @@ class LauncherWindow(WindowWithTabs):
     def _add_page(self, book, instance, icon_name, title, tooltip):
         book.add_page(instance)
         if icon_name:
-            icon = fsui.Image("launcher:res/{0}.png".format(icon_name))
+            icon = fsui.Image("launcher:/data/{0}.png".format(icon_name))
         else:
             icon = None
 

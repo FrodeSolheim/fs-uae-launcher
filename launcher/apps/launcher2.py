@@ -7,7 +7,7 @@ from fscore.settings import Settings
 from fsgamesys.options.constants import WORKSPACE_ON_STARTUP
 from fsui.qt import QFontDatabase, init_qt
 from launcher.context import get_global_theme
-from launcher.data import launcher_data_file
+from fscore.applicationdata import ApplicationData
 from launcher.launcherapp import LauncherApp
 from launcher.system.classes.theme import initialize_qt_style
 from launcher.system.exceptionhandler import (
@@ -56,8 +56,9 @@ def app_main(appname=None):
 
 
 def add_font(filename):
-    with launcher_data_file(filename) as f:
-        QFontDatabase.addApplicationFontFromData(f.read())
+    QFontDatabase.addApplicationFontFromData(
+        ApplicationData.stream(filename).read()
+    )
 
 
 def _app_main_1():

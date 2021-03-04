@@ -67,10 +67,10 @@ class MonitorButton(MonitorButtonBase, ButtonWrapper):
         super().__init__(
             parent,
             [
-                Image("launcher:res/16x16/monitor_left.png"),
-                Image("launcher:res/16x16/monitor_middle_left.png"),
-                Image("launcher:res/16x16/monitor_middle_right.png"),
-                Image("launcher:res/16x16/monitor_right.png"),
+                Image("launcher:/data/16x16/monitor_left.png"),
+                Image("launcher:/data/16x16/monitor_middle_left.png"),
+                Image("launcher:/data/16x16/monitor_middle_right.png"),
+                Image("launcher:/data/16x16/monitor_right.png"),
             ],
         )
         self.set_tooltip(self.tooltip_text)

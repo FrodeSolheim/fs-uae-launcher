@@ -2,7 +2,7 @@ import logging
 
 from pkg_resources import resource_stream
 
-from fsbc.resources import Resources as BaseResources
+from fscore.resources import Resources as BaseResources
 
 logger = logging.getLogger("arcade")
 
@@ -17,7 +17,7 @@ def ngettext(n, msg1, msg2):
 
 class Resources(BaseResources):
     def __init__(self, package):
-        BaseResources.__init__(self, package, "res")
+        BaseResources.__init__(self, package, "data")
         self.req = package
 
     def resource_pil_image(self, resource):

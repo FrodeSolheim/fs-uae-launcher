@@ -1,3 +1,4 @@
+from fscore.applicationdata import ApplicationData
 import os
 
 from fsui import Color, Image, Panel, ScrollArea
@@ -215,15 +216,28 @@ class WSIconView(ScrollArea):
         # wsopen = path
 
         # FIXME: Get proper data file path
+        # icon_dir = os.path.join(
+        #     Application.executable_dir(),
+        #     "data",
+        #     "Icons",
+        #     shell_dirname(path).replace(":", "/"),
+        # )
+        # print(icon_dir, label)
+
         icon_dir = os.path.join(
-            Application.executable_dir(),
-            "data",
             "Icons",
             shell_dirname(path).replace(":", "/"),
         )
-        print(icon_dir, label)
-        normal_image = Image(os.path.join(icon_dir, label + ".png"))
-        selected_image = Image(os.path.join(icon_dir, label + "_Selected.png"))
+        normal_image = Image(
+            ApplicationData.path_or_stream(
+                os.path.join(icon_dir, label + ".png")
+            )
+        )
+        selected_image = Image(
+            ApplicationData.path_or_stream(
+                os.path.join(icon_dir, label + "_Selected.png")
+            )
+        )
 
         # # FIXME
         # icon = Image(

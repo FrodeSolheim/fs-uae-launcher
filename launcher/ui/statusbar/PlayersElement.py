@@ -7,7 +7,7 @@ from launcher.ui.statusbar.StatusElement import StatusElement
 class PlayersElement(StatusElement):
     def __init__(self, parent):
         StatusElement.__init__(self, parent)
-        self.icon = Image("launcher:res/16x16/user.png")
+        self.icon = Image("launcher:/data/16x16/user.png")
         self.text = gettext("N/A")
         self.active = False
 

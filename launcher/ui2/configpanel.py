@@ -204,7 +204,7 @@ class ConfigPanel(Panel):
     def _add_page(self, book, instance, icon_name, title, tooltip):
         book.add_page(instance)
         if icon_name:
-            icon = Image("launcher:res/{0}.png".format(icon_name))
+            icon = Image("launcher:/data/{0}.png".format(icon_name))
         else:
             icon = None
 

@@ -6,7 +6,7 @@ from launcher.ui.behaviors.configbehavior import ConfigBehavior
 
 class WarningBase(fsui.ImageView):
     def __init__(self, parent):
-        self.warning_icon = fsui.Image("launcher:res/16x16/warning_2.png")
+        self.warning_icon = fsui.Image("launcher:/data/16x16/warning_2.png")
         self.no_warning_icon = fsui.Image.create_blank(16, 16)
         super().__init__(parent, self.no_warning_icon)
         self._warning_state = None

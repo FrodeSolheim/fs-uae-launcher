@@ -34,7 +34,7 @@ class JoystickConfigWindow(fsui.Window):
         self.theme = WorkspaceTheme.instance()
         self.layout = fsui.VerticalLayout()
 
-        self.image = fsui.Image("workspace:res/gamepad-config.png")
+        self.image = fsui.Image("workspace:/data/gamepad-config.png")
         self.joystick_panel = fsui.ImageView(self, self.image)
         self.layout.add(self.joystick_panel)
 

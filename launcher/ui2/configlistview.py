@@ -17,18 +17,18 @@ class ConfigListView(VerticalItemView):
     def __init__(self, parent):
         VerticalItemView.__init__(self, parent, border=False)
         self.items = []
-        self.game_icon = Image("launcher:res/16x16/controller.png")
-        self.config_icon = Image("launcher:res/fsuae_config_16.png")
+        self.game_icon = Image("launcher:/data/16x16/controller.png")
+        self.config_icon = Image("launcher:/data/fsuae_config_16.png")
         LauncherSettings.add_listener(self)
         self.update_search()
 
         self.manual_download_icon = Image(
-            "launcher:res/16x16/arrow_down_yellow.png"
+            "launcher:/data/16x16/arrow_down_yellow.png"
         )
         self.auto_download_icon = Image(
-            "launcher:res/16x16/arrow_down_green.png"
+            "launcher:/data/16x16/arrow_down_green.png"
         )
-        self.blank_icon = Image("launcher:res/16x16/blank.png")
+        self.blank_icon = Image("launcher:/data/16x16/blank.png")
         self.missing_color = Color(0xA8, 0xA8, 0xA8)
         self.unpublished_color = Color(0xCC, 0x00, 0x00)
 
@@ -241,7 +241,7 @@ class ConfigListView(VerticalItemView):
             if platform_id not in self.platform_icons:
                 try:
                     icon = Image(
-                        "launcher:res/16x16/{0}.png".format(platform_id)
+                        "launcher:/data/16x16/{0}.png".format(platform_id)
                     )
                 except Exception:
                     icon = self.game_icon

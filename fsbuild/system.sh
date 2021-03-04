@@ -8,5 +8,8 @@ case "`uname`" in
     *)       SYSTEM_OS=Unknown;;
 esac
 
-# FIXME
+# FIXME: Remove hardcoded value
 SYSTEM_ARCH=x86-64
+
+# FIXME: Deprecated alias
+SYSTEM=$SYSTEM_OS

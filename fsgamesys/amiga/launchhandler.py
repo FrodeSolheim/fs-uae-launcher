@@ -10,7 +10,7 @@ from typing import Dict, List
 from urllib.parse import unquote
 
 from fsbc.paths import Paths
-from fsbc.resources import Resources
+from fscore.resources import Resources
 from fsbc.task import TaskFailure, current_task
 from fsbc.util import is_sha1
 from fsgamesys.amiga.adffileextractor import ADFFileExtractor
@@ -395,7 +395,7 @@ class LaunchHandler(object):
         save_image = max_image + 1
 
         if self.config.get("save_disk", "") != "0":
-            s = Resources("fsgamesys", "res").stream("amiga/adf_save_disk.dat")
+            s = Resources("fsgamesys").stream("amiga/adf_save_disk.dat")
             data = s.read()
             data = zlib.decompress(data)
             save_disk_sha1 = hashlib.sha1(data).hexdigest()

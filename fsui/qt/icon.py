@@ -1,4 +1,4 @@
-from fsbc.resources import Resources
+from fscore.resources import Resources
 from fsui.qt.image import Image
 from fsui.qt.qt import QIcon, QImage, QPixmap
 
@@ -22,10 +22,10 @@ class Icon:
         assert self.path.startswith("pkg:")
         package = self.path[4:]
         try:
-            name = "res/{0}x{0}/{1}.png".format(size, self.name)
+            name = "{0}x{0}/{1}.png".format(size, self.name)
             stream = Resources(package).stream(name)
         except LookupError:
-            name = "res/{0}/{1}.png".format(size, self.name)
+            name = "{0}/{1}.png".format(size, self.name)
             stream = Resources(package).stream(name)
         return stream
 

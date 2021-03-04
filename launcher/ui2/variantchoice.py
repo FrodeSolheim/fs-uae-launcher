@@ -42,25 +42,25 @@ class VariantChoice(ItemChoice):
         # self.last_variants = LastVariants()
 
         self.missing_color = Color(0xA8, 0xA8, 0xA8)
-        self.icon = Image("launcher:res/fsuae_config_16.png")
-        self.adf_icon = Image("launcher:res/adf_game_16.png")
-        self.ipf_icon = Image("launcher:res/ipf_game_16.png")
-        self.cd_icon = Image("launcher:res/cd_game_16.png")
-        self.hd_icon = Image("launcher:res/hd_game_16.png")
+        self.icon = Image("launcher:/data/fsuae_config_16.png")
+        self.adf_icon = Image("launcher:/data/adf_game_16.png")
+        self.ipf_icon = Image("launcher:/data/ipf_game_16.png")
+        self.cd_icon = Image("launcher:/data/cd_game_16.png")
+        self.hd_icon = Image("launcher:/data/hd_game_16.png")
         # self.missing_icon = Image(
-        #     "launcher:res/missing_game_16.png")
-        self.missing_icon = Image("launcher:res/16x16/delete_grey.png")
-        self.blank_icon = Image("launcher:res/16x16/blank.png")
-        self.bullet_icon = Image("launcher:res/16x16/bullet.png")
+        #     "launcher:/data/missing_game_16.png")
+        self.missing_icon = Image("launcher:/data/16x16/delete_grey.png")
+        self.blank_icon = Image("launcher:/data/16x16/blank.png")
+        self.bullet_icon = Image("launcher:/data/16x16/bullet.png")
         self.manual_download_icon = Image(
-            "launcher:res/16x16/arrow_down_yellow.png"
+            "launcher:/data/16x16/arrow_down_yellow.png"
         )
         self.auto_download_icon = Image(
-            "launcher:res/16x16/arrow_down_green.png"
+            "launcher:/data/16x16/arrow_down_green.png"
         )
-        self.up_icon = Image("launcher:res/16x16/thumb_up_mod.png")
-        self.down_icon = Image("launcher:res/16x16/thumb_down_mod.png")
-        self.fav_icon = Image("launcher:res/rating_fav_16.png")
+        self.up_icon = Image("launcher:/data/16x16/thumb_up_mod.png")
+        self.down_icon = Image("launcher:/data/16x16/thumb_down_mod.png")
+        self.fav_icon = Image("launcher:/data/rating_fav_16.png")
 
         # LauncherSettings.add_listener(self)
         # self.on_setting("parent_uuid", LauncherSettings.get("parent_uuid"))

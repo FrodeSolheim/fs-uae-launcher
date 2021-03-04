@@ -8,7 +8,7 @@ from collections import defaultdict
 
 import fsboot
 from fsbc.application import Application
-from fsbc.resources import Resources
+from fscore.resources import Resources
 from fsbc.task import current_task
 from fscore.system import System
 from fsgamesys.amiga.fsuae import FSUAE
@@ -858,19 +858,19 @@ class GameDriver:
         if paths is None:
             paths = self.emulator_skin_paths()
         with open(paths["left"], "wb") as f:
-            f.write(Resources("fsgamesys").stream("res/emu/left.png").read())
+            f.write(Resources("fsgamesys").stream("emu/left.png").read())
         if env is not None:
             env["FSGS_BEZEL_LEFT"] = paths["left"]
             env["FSGS_SKIN_LEFT"] = paths["left"]
         if "left-overlay" in paths:
             with open(paths["left-overlay"], "wb") as f:
                 f.write(
-                    Resources("fsgamesys").stream("res/emu/left-overlay.png").read()
+                    Resources("fsgamesys").stream("emu/left-overlay.png").read()
                 )
             if env is not None:
                 env["FSGS_BEZEL_LEFT_OVERLAY"] = paths["left-overlay"]
         with open(paths["right"], "wb") as f:
-            f.write(Resources("fsgamesys").stream("res/emu/right.png").read())
+            f.write(Resources("fsgamesys").stream("emu/right.png").read())
         if env is not None:
             env["FSGS_BEZEL_RIGHT"] = paths["right"]
             env["FSGS_SKIN_RIGHT"] = paths["right"]
@@ -878,7 +878,7 @@ class GameDriver:
             with open(paths["right-overlay"], "wb") as f:
                 f.write(
                     Resources("fsgamesys")
-                    .stream("res/emu/right-overlay.png")
+                    .stream("emu/right-overlay.png")
                     .read()
                 )
             if env is not None:

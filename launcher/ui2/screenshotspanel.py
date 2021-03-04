@@ -11,10 +11,10 @@ class ScreenshotsPanel(Panel):
         super().__init__(parent)
         self.set_min_height(10 + 150 + 10)
         # self.image_loader = ImageLoader()
-        # default_image = Image("launcher:res/screenshot.png")
+        # default_image = Image("launcher:/data/screenshot.png")
         # default_image.resize(SCREEN_SIZE)
         default_image = None
-        overlay_image = Image("launcher:res/screenshot_overlay.png")
+        overlay_image = Image("launcher:/data/screenshot_overlay.png")
         image_loader = get_window(self).image_loader
 
         self.screenshotpanels = []

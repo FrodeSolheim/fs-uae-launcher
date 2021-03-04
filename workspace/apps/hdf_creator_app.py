@@ -48,7 +48,7 @@ class HDFCreatorWindow(fsui.DialogWindow):
         self.list_view = fsui.ListView(self)
         self.list_view.set_min_width(560)
         self.list_view.set_min_height(60)
-        icon = fsui.Image("workspace:res/16x16/hd-volume.png")
+        icon = fsui.Image("workspace:/data/16x16/hd-volume.png")
         self.list_view.add_item(
             gettext("HDF - Single Partition Hard Disk File"), icon
         )

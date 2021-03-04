@@ -33,11 +33,11 @@ class GameInfoPanel(BottomPanel):
         self.layout.padding_top = BORDER + 2
         self.layout.padding_bottom = Skin.get_bottom_margin()
 
-        self.default_image = fsui.Image("launcher:res/cover.png")
+        self.default_image = fsui.Image("launcher:/data/cover.png")
         # self.default_image.resize(Constants.COVER_SIZE)
-        self.cover_overlay = fsui.Image("launcher:res/cover_overlay.png")
+        self.cover_overlay = fsui.Image("launcher:/data/cover_overlay.png")
         self.cover_overlay_square = fsui.Image(
-            "launcher:res/cover_overlay_square.png"
+            "launcher:/data/cover_overlay_square.png"
         )
 
         if not self.cover_on_right:
