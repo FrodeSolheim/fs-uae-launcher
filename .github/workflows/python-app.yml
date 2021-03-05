@@ -16,7 +16,7 @@ jobs:
     - name: Install deb packages
       run: >-
         sudo apt install
-        unix2dos
+        dos2unix
 
     - uses: actions/checkout@v2
       with:
@@ -89,7 +89,7 @@ jobs:
 
     - name: Install brew packages
       run: |
-        brew install unix2dos
+        brew install dos2unix
 
     - uses: actions/checkout@v2
       with:
@@ -170,7 +170,7 @@ jobs:
       with:
         install: >-
           make
-          unix2dos
+          dos2unix
           zip
         path-type: inherit
         update: true
