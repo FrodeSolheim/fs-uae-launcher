@@ -13,6 +13,12 @@ jobs:
 
     steps:
 
+    steps:
+    - name: Install deb packages
+      run: >-
+        sudo apt install
+        unix2dos
+
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
@@ -81,6 +87,10 @@ jobs:
     runs-on: macos-10.15
 
     steps:
+
+    - name: Install brew packages
+      run: |
+        brew install unix2dos
 
     - uses: actions/checkout@v2
       with:
@@ -161,6 +171,7 @@ jobs:
       with:
         install: >-
           make
+          unix2dos
           zip
         path-type: inherit
         update: true
