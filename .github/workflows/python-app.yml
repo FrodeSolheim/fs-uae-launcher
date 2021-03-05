@@ -13,7 +13,6 @@ jobs:
 
     steps:
 
-    steps:
     - name: Install deb packages
       run: >-
         sudo apt install
