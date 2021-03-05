@@ -8,7 +8,9 @@ from fsgamesys.product import Product
 from launcher.option import Option
 
 
-def configure_launcher_app(base_name, databases, default_platform_id):
+def configure_launcher_app(
+    base_name, databases, default_platform_id, default_titlebar_color
+):
     Product.base_name = base_name
     for option_name in fsgamesys.OPENRETRO_DEFAULT_DATABASES:
         Option.get(option_name)["default"] = "0"
@@ -29,8 +31,7 @@ def configure_launcher_app(base_name, databases, default_platform_id):
     Config.set_default("platform", default_platform_id)
     Product.default_platform_id = default_platform_id
 
-    Settings.set_default("launcher_titlebar_bgcolor", "#c46262")
-    # Settings.set_default("launcher_titlebar_fgcolor", "#dee2f1")
+    Settings.set_default("launcher_titlebar_bgcolor", default_titlebar_color)
     import fsboot
 
     fsboot.set("base_dir_name", base_name)
@@ -43,7 +44,14 @@ def find_app(app):
 
     elif app in ["fs-fuse-launcher", "fs-fuse"]:
         app = configure_launcher_app(
-            "FS-Fuse", [Option.SPECTRUM_DATABASE], "spectrum"
+            "FS-Fuse", [Option.SPECTRUM_DATABASE], "spectrum", "#c46262"
+        )
+    elif app in ["openretro-launcher", "openretro"]:
+        app = configure_launcher_app(
+            "OpenRetro",
+            fsgamesys.OPENRETRO_DEFAULT_DATABASES,
+            "amiga",
+            "#6d62c4",
         )
 
     if ":" in app:
@@ -99,7 +107,9 @@ def find_app(app):
     return app_main
 
 
-def main(app_name = ""):
+def main(app_name=""):
+    # FIXME: This entire module is a mess and should be rewritten
+
     # Check deprecated/legacy app options.
     if "--server" in sys.argv:
         sys.argv.remove("--server")
@@ -129,10 +139,11 @@ def main(app_name = ""):
 
     if "--openretro" in sys.argv:
         sys.argv.remove("--openretro")
-        Product.base_name = "OpenRetro"
-        fsgamesys.openretro = True
-        for option_name in fsgamesys.OPENRETRO_DEFAULT_DATABASES:
-            Option.get(option_name)["default"] = "1"
+        app_name = "openretro-launcher"
+        # Product.base_name = "OpenRetro"
+        # fsgamesys.openretro = True
+        # for option_name in fsgamesys.OPENRETRO_DEFAULT_DATABASES:
+        #     Option.get(option_name)["default"] = "1"
 
     # Check for (fake) version override
     for arg in sys.argv:
