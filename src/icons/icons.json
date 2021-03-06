@@ -872,54 +872,63 @@
         "type": "glow"
     },
     "launcher/data/16x16/settings.png": {
+        "color": "#555555",
         "sources": [
             "fontawesome/16/cog.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/application-x-firmware.png": {
+        "color": "#555555",
         "sources": [
             "fontawesome/tabs/microchip.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/applications-games.png": {
+        "color": "#555555",
         "sources": [
             "fontawesome/tabs/gamepad.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/audio-card.png": {
+        "color": "#555555",
         "sources": [
             "fontawesome/tabs/memory.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/drive-harddisk.png": {
+        "color": "#555555",
         "sources": [
             "fontawesome/tabs/hdd.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/go-home.png": {
+        "color": "#555555",
         "sources": [
             "fontawesome/tabs/home.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/media-floppy.png": {
+        "color": "#555555",
         "sources": [
             "fontawesome/tabs/save.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/media-optical.png": {
+        "color": "#555555",
         "sources": [
             "fontawesome/tabs/compact-disc.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/system-shutdown.png": {
+        "color": "#555555",
         "sources": [
             "fontawesome/tabs/tasks.png"
         ],
