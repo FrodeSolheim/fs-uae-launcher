@@ -56,6 +56,9 @@ jobs:
       run: |
         fsbuild/version --update --auto
 
+    - name: Bootstrap
+      run: fsdeps/use fsbuild/bootstrap
+
     - name: Build
       run: |
         pipenv run fsbuild/build
@@ -127,6 +130,9 @@ jobs:
     - name: Update version
       run: |
         fsbuild/version --update --auto
+
+    - name: Bootstrap
+      run: fsdeps/use fsbuild/bootstrap
 
     - name: Build
       run: |
@@ -231,6 +237,9 @@ jobs:
     - name: Update version
       run: |
         fsbuild/version --update --auto
+
+    - name: Bootstrap
+      run: fsdeps/use fsbuild/bootstrap
 
     - name: Build
       run: |
