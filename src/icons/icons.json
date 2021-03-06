@@ -4,7 +4,7 @@
             "tango/64/drive-harddisk-4.svg",
             "tango/64/../../amigaforever/volumeoverlays/AmigaForever.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/AmigaForever_Selected.png": {
         "sources": [
@@ -17,7 +17,7 @@
         "sources": [
             "tango/64/drive-harddisk-4.svg"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/Data_Selected.png": {
         "sources": [
@@ -30,7 +30,7 @@
             "tango/64/drive-harddisk-4.svg",
             "tango/64/../../gnome/volume-overlays/applications-games.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/Games_Selected.png": {
         "sources": [
@@ -43,7 +43,7 @@
         "sources": [
             "tango/64/drive-harddisk-4.svg"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/Media_Selected.png": {
         "sources": [
@@ -51,11 +51,25 @@
         ],
         "type": "glow"
     },
+    "data/Icons/Shared.png": {
+        "sources": [
+            "tango/64/drive-harddisk-4.svg",
+            "shared/tango-software-update-available.png"
+        ],
+        "type": "normal"
+    },
+    "data/Icons/Shared_Selected.png": {
+        "sources": [
+            "tango/64/drive-harddisk-4.svg",
+            "shared/tango-software-update-available.png"
+        ],
+        "type": "glow"
+    },
     "data/Icons/Software.png": {
         "sources": [
             "tango/64/drive-harddisk-4.svg"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/Software_Selected.png": {
         "sources": [
@@ -68,6 +82,30 @@
             "tango/64/drive-harddisk-4.svg",
             "tango/64/../../overlays/fs-uae-volume.png"
         ],
+        "type": "normal"
+    },
+    "data/Icons/System/Arcade.png": {
+        "sources": [
+            "64/fs-uae-arcade.svg"
+        ],
+        "type": "normal"
+    },
+    "data/Icons/System/Arcade_Selected.png": {
+        "sources": [
+            "64/fs-uae-arcade.svg"
+        ],
+        "type": "glow"
+    },
+    "data/Icons/System/Launcher.png": {
+        "sources": [
+            "64/fs-uae-launcher.svg"
+        ],
+        "type": "normal"
+    },
+    "data/Icons/System/Launcher_Selected.png": {
+        "sources": [
+            "64/fs-uae-launcher.svg"
+        ],
         "type": "glow"
     },
     "data/Icons/System/Prefs.png": {
@@ -75,14 +113,14 @@
             "humanity/64/system-file-manager-8.svg",
             "humanity/64/../overlays/system-help.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Advanced.png": {
         "sources": [
             "humanity/64/menu-editor.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Advanced_Selected.png": {
         "sources": [
@@ -96,7 +134,7 @@
             "humanity/64/applications-graphics.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Appearance_Selected.png": {
         "sources": [
@@ -110,7 +148,7 @@
             "humanity/64/applications-arcade.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Arcade_Selected.png": {
         "sources": [
@@ -124,7 +162,7 @@
             "humanity/64/applications-simulation.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Controller_Selected.png": {
         "sources": [
@@ -138,7 +176,7 @@
             "humanity/64/network-server.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/FileDatabase_Selected.png": {
         "sources": [
@@ -152,7 +190,7 @@
             "humanity/64/applications-fonts.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Font_Selected.png": {
         "sources": [
@@ -166,7 +204,7 @@
             "humanity/64/network-server.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/GameDatabase_Selected.png": {
         "sources": [
@@ -180,7 +218,7 @@
             "humanity/64/input-keyboard.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Keyboard_Selected.png": {
         "sources": [
@@ -194,7 +232,7 @@
             "humanity/64/preferences-desktop-locale.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Locale_Selected.png": {
         "sources": [
@@ -208,7 +246,7 @@
             "humanity/64/logviewer.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Logging_Selected.png": {
         "sources": [
@@ -222,7 +260,7 @@
             "humanity/64/audio-card.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/MIDI_Selected.png": {
         "sources": [
@@ -236,7 +274,7 @@
             "humanity/64/input-mouse.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Mouse_Selected.png": {
         "sources": [
@@ -250,7 +288,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/NetPlay_Selected.png": {
         "sources": [
@@ -264,7 +302,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/OpenGL_Selected.png": {
         "sources": [
@@ -278,7 +316,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/OpenRetro_Selected.png": {
         "sources": [
@@ -292,7 +330,7 @@
             "humanity/64/view-fullscreen.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Overscan_Selected.png": {
         "sources": [
@@ -301,12 +339,18 @@
         ],
         "type": "glow"
     },
+    "data/Icons/System/Prefs/Platforms.png": {
+        "sources": [
+            "humanity/64/system-file-manager-8.svg"
+        ],
+        "type": "normal"
+    },
     "data/Icons/System/Prefs/Platforms/AmstradCPC.png": {
         "sources": [
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/AmstradCPC_Selected.png": {
         "sources": [
@@ -320,7 +364,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/Arcade_Selected.png": {
         "sources": [
@@ -334,7 +378,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/Atari7800_Selected.png": {
         "sources": [
@@ -348,7 +392,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/AtariST_Selected.png": {
         "sources": [
@@ -362,7 +406,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/Commodore64_Selected.png": {
         "sources": [
@@ -376,7 +420,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/DOS_Selected.png": {
         "sources": [
@@ -390,14 +434,14 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/GameBoyAdvance.png": {
         "sources": [
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/GameBoyAdvance_Selected.png": {
         "sources": [
@@ -411,7 +455,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/GameBoyColor_Selected.png": {
         "sources": [
@@ -432,7 +476,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/MasterSystem_Selected.png": {
         "sources": [
@@ -446,7 +490,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/MegaDrive_Selected.png": {
         "sources": [
@@ -460,7 +504,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/Neo-Geo_Selected.png": {
         "sources": [
@@ -474,7 +518,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/Nintendo_Selected.png": {
         "sources": [
@@ -488,7 +532,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/PlayStation_Selected.png": {
         "sources": [
@@ -502,7 +546,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/SuperNintendo_Selected.png": {
         "sources": [
@@ -516,7 +560,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/TurboGrafx-16_Selected.png": {
         "sources": [
@@ -530,7 +574,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/TurboGrafx-CD_Selected.png": {
         "sources": [
@@ -544,7 +588,7 @@
             "humanity/64/help-contents.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Platforms/ZXSpectrum_Selected.png": {
         "sources": [
@@ -553,12 +597,18 @@
         ],
         "type": "glow"
     },
+    "data/Icons/System/Prefs/Platforms_Selected.png": {
+        "sources": [
+            "humanity/64/system-file-manager-8.svg"
+        ],
+        "type": "glow"
+    },
     "data/Icons/System/Prefs/Plugin.png": {
         "sources": [
             "humanity/64/extension.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Plugin_Selected.png": {
         "sources": [
@@ -572,7 +622,7 @@
             "humanity/64/gnome-power-manager.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Power_Selected.png": {
         "sources": [
@@ -586,7 +636,7 @@
             "humanity/64/stock_person.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Privacy_Selected.png": {
         "sources": [
@@ -600,7 +650,7 @@
             "humanity/64/view-fullscreen.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/ScreenMode_Selected.png": {
         "sources": [
@@ -614,7 +664,7 @@
             "humanity/64/preferences-desktop-sound.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Sound_Selected.png": {
         "sources": [
@@ -628,7 +678,7 @@
             "tango/64/drive-harddisk-4.svg",
             "tango/64/../../humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Storage_Selected.png": {
         "sources": [
@@ -642,7 +692,7 @@
             "humanity/64/video-display.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Video_Selected.png": {
         "sources": [
@@ -656,7 +706,7 @@
             "humanity/64/application-x-lha.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/WHDLoad_Selected.png": {
         "sources": [
@@ -670,7 +720,7 @@
             "humanity/64/user-desktop.svg",
             "humanity/64/prefs-overlay.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Prefs/Workspace_Selected.png": {
         "sources": [
@@ -686,11 +736,18 @@
         ],
         "type": "glow"
     },
+    "data/Icons/System/Tools.png": {
+        "sources": [
+            "humanity/64/system-file-manager-8.svg",
+            "humanity/64/../../gnome/overlays/preferences-system.png"
+        ],
+        "type": "normal"
+    },
     "data/Icons/System/Tools/Calculator.png": {
         "sources": [
             "humanity/64/accessories-calculator.svg"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Tools/Calculator_Selected.png": {
         "sources": [
@@ -702,7 +759,7 @@
         "sources": [
             "humanity/64/system-software-update-2.svg"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Tools/DatabaseUpdater_Selected.png": {
         "sources": [
@@ -715,7 +772,7 @@
             "tango/64/drive-harddisk-4.svg",
             "tango/64/../overlays/system-search.png"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Tools/FileScanner_Selected.png": {
         "sources": [
@@ -724,11 +781,39 @@
         ],
         "type": "glow"
     },
+    "data/Icons/System/Tools_Selected.png": {
+        "sources": [
+            "humanity/64/system-file-manager-8.svg",
+            "humanity/64/../../gnome/overlays/preferences-system.png"
+        ],
+        "type": "glow"
+    },
+    "data/Icons/System/Utilities.png": {
+        "sources": [
+            "humanity/64/system-file-manager-8.svg",
+            "humanity/64/../overlays/applications-utilities.png"
+        ],
+        "type": "normal"
+    },
+    "data/Icons/System/Utilities/Checksum.png": {
+        "sources": [
+            "system/utilities/checksum/humanity-multipart-encrypted.svg",
+            "system/utilities/checksum/tango-application-certificate.png"
+        ],
+        "type": "normal"
+    },
+    "data/Icons/System/Utilities/Checksum_Selected.png": {
+        "sources": [
+            "system/utilities/checksum/humanity-multipart-encrypted.svg",
+            "system/utilities/checksum/tango-application-certificate.png"
+        ],
+        "type": "glow"
+    },
     "data/Icons/System/Utilities/Clock.png": {
         "sources": [
             "humanity/64/clock.svg"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Utilities/Clock_Selected.png": {
         "sources": [
@@ -740,11 +825,18 @@
         "sources": [
             "humanity/64/preview-file.svg"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/System/Utilities/MultiView_Selected.png": {
         "sources": [
             "humanity/64/preview-file.svg"
+        ],
+        "type": "glow"
+    },
+    "data/Icons/System/Utilities_Selected.png": {
+        "sources": [
+            "humanity/64/system-file-manager-8.svg",
+            "humanity/64/../overlays/applications-utilities.png"
         ],
         "type": "glow"
     },
@@ -759,7 +851,7 @@
         "sources": [
             "tango/64/drive-harddisk-4.svg"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/WHDLoad_Selected.png": {
         "sources": [
@@ -771,7 +863,7 @@
         "sources": [
             "tango/64/drive-harddisk-4.svg"
         ],
-        "type": "glow"
+        "type": "normal"
     },
     "data/Icons/Work_Selected.png": {
         "sources": [
@@ -779,57 +871,55 @@
         ],
         "type": "glow"
     },
+    "launcher/data/16x16/settings.png": {
+        "sources": [
+            "fontawesome/16/cog.png"
+        ],
+        "type": "colorize"
+    },
     "launcher/data/32x32/application-x-firmware.png": {
-        "color": "#555555",
         "sources": [
             "fontawesome/tabs/microchip.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/applications-games.png": {
-        "color": "#555555",
         "sources": [
             "fontawesome/tabs/gamepad.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/audio-card.png": {
-        "color": "#555555",
         "sources": [
             "fontawesome/tabs/memory.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/drive-harddisk.png": {
-        "color": "#555555",
         "sources": [
             "fontawesome/tabs/hdd.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/go-home.png": {
-        "color": "#555555",
         "sources": [
             "fontawesome/tabs/home.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/media-floppy.png": {
-        "color": "#555555",
         "sources": [
             "fontawesome/tabs/save.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/media-optical.png": {
-        "color": "#555555",
         "sources": [
             "fontawesome/tabs/compact-disc.png"
         ],
         "type": "colorize"
     },
     "launcher/data/32x32/system-shutdown.png": {
-        "color": "#555555",
         "sources": [
             "fontawesome/tabs/tasks.png"
         ],
