@@ -7,7 +7,7 @@ set -e
 mkdir -p $PLUGIN_BINDIR
 
 if [ "$SYSTEM_OS" = "macOS" ]; then
-cp -a fsbuild/_build/pyinstaller/$PACKAGE_NAME.app $PLUGIN_BINDIR/
+cp -a fsbuild/_build/pyinstaller/$PACKAGE_NAME.app $PLUGIN_BINDIR/$PACKAGE_NAME_PRETTY.app
 else
 cp -a fsbuild/_build/pyinstaller/$PACKAGE_NAME/* $PLUGIN_BINDIR/
 fi

@@ -14,10 +14,15 @@ class Resources(object):
         # self.resource_sha1s = {}
 
     def resource_name(self, name: str) -> str:
-        if self.subdir:
-            # return os.path.join(self.subdir, resource)
-            return self.subdir + "/" + name
-        return name
+        if name.startswith("/"):
+            # name has full path within package
+            return name[1:]
+        else:
+            # name is relative to some subdir (possibly empty)
+            if self.subdir:
+                # return os.path.join(self.subdir, resource)
+                return self.subdir + "/" + name
+            return name
 
     def stream(self, name: str) -> IO[bytes]:
         print("Resources.stream", name)
@@ -27,8 +32,9 @@ class Resources(object):
             return resource_stream(self.package, resource_name)
         except Exception as e:
             print(e)
+        relative_path = os.path.join(self.package, resource_name)
         try:
-            return ApplicationData.stream(self.path(name))
+            return ApplicationData.stream(relative_path)
         except FileNotFoundError:
             raise LookupError(name)
 
