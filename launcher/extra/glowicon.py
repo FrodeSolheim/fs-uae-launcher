@@ -288,13 +288,40 @@ def create_icon(output, sources, glow):
     save_icon(im, output)
 
 
+# def add_to_json(argv, glow=False):
+#     import json
+#     path = argv[1]
+#     with open(path.split("/data")[0] + "/src/icons/icons.json") as f:
+#         doc = json.load(f)
+#     sources = []
+#     for arg in argv[2:]:
+#         p1 = os.path.join(os.getcwd(), arg)
+#         # print(p1)
+#         p2 = os.path.normpath(os.path.join(os.getcwd(), path.split("/data")[0]))
+#         # print(p2)
+#         p = p1[len(p2) + 1 + 10:]
+#         # print(p)
+#         # assert False
+#         sources.append(p)
+#     doc["data/" + path.split("/data/")[1]] = {
+#         "type": "glow" if "glow" else "normal",
+#         "sources": sources
+#     }
+#     with open(path.split("/data")[0] + "/src/icons/icons.json", "w") as f:
+#         json.dump(doc, f, sort_keys=True, indent=4)
+
+
 def main():
     if "--base" in sys.argv:
         sys.argv.remove("--base")
+        # add_to_json(sys.argv)
         return create_icon(sys.argv[1], sys.argv[2:], glow=False)
     if "--glow" in sys.argv:
         sys.argv.remove("--glow")
+        # add_to_json(sys.argv, glow=True)
         return create_icon(sys.argv[1], sys.argv[2:], glow=True)
+
+    assert False
 
     path = sys.argv[1]
     if len(sys.argv) > 2:
@@ -303,6 +330,8 @@ def main():
         overlay = None
     if os.path.isdir(path):
         process_icon_in_directory(path, overlay=overlay)
+   
+    
 
 
 if __name__ == "__main__":

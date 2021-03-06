@@ -6,4 +6,4 @@ export PYTHONPATH="$SCRIPTDIR/../..;$PYTHONPATH"
 else
 export PYTHONPATH="$SCRIPTDIR/../..:$PYTHONPATH"
 fi
-python3 -m launcher.extra.glowicon "$@"
+python3 -m launcher.extra.glowicon --base "$@"

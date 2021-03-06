@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+import json
+import os
+
+def load_icons_json():
+    print("Reading src/icons/icons.json")
+    with open("src/icons/icons.json") as f:
+        return json.load(f)
+
+
+def write_icons_makefile(doc):
+    makefile = "src/icons/Makefile"
+    print(f"Writing {makefile}")
+    lines = [
+        "all: icons",
+        ""
+    ]
+    icons = []
+    dirnames = set()
+    for icon, info in doc.items():
+        filename = f"../../{icon}"
+        dirname = os.path.dirname(filename)
+        # dirnames.add(dirname)
+        icons.append(filename)
+        sources = " ".join(info["sources"])
+        # lines.append(f"{filename}: {dirname} {sources}")
+        lines.append(f"{filename}: {sources}")
+        script = info["type"]
+        lines.append(f"\tmkdir -p {dirname}")
+        args = []
+        if "color" in info:
+            args.append(f" \"{info['color']}\"")
+        lines.append(f"\t./{script}.sh{''.join(args)} {filename} {sources}")
+        lines.append("")
+    # for dirname in sorted(dirnames):
+    #     lines.append(f"{dirname}:")
+    #     lines.append(f"\tmkdir -p {dirname}")
+    #     lines.append("")
+    lines.append("ICONS = \\")
+    for i, icon in enumerate(icons):
+        end = "" if i == len(icons) - 1 else " \\"
+        lines.append(f"\t{icon}{end}")
+    lines.append("")
+    lines.append("icons: ${ICONS}")
+    with open(makefile, "wb") as f:
+        for line in lines:
+            f.write(line.encode("UTF-8"))
+            f.write(b"\n")
+
+
+def main():
+    write_icons_makefile(load_icons_json())
+    print("Bootstrapping is done")
+
+
+if __name__ == "__main__":
+    main()

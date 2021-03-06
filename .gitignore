@@ -3,8 +3,6 @@
 /build/
 /build-dir/
 /build.fs/
-/data/Background.jpg.png
-/data/Icons/
 /debian/*debhelper*
 /debian/.debhelper/
 /debian/files
@@ -34,6 +32,7 @@ Lib
 *.pyc
 /pyinstaller
 *.pyo
+/src/icons/Makefile
 /repo/
 /venv/
 /.vscode/.ropeproject/objectdb
