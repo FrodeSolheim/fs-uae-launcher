@@ -26,10 +26,10 @@ echo "name = $PACKAGE_NAME_PRETTY" >> $PLUGIN_DIR/Plugin.ini
 echo "version = $PACKAGE_VERSION" >> $PLUGIN_DIR/Plugin.ini
 unix2dos $PLUGIN_DIR/Plugin.ini
 
-echo $PACKAGE_VERSION > $PLUGIN_DIR/Version.txt
+echo "$PACKAGE_VERSION" > $PLUGIN_DIR/Version.txt
 unix2dos $PLUGIN_DIR/Version.txt
 
 if [ -d $PLUGIN_BINDIR ]; then
-echo $PACKAGE_VERSION > $PLUGIN_BINDIR/Version.txt
+echo "$PACKAGE_VERSION" > $PLUGIN_BINDIR/Version.txt
 unix2dos $PLUGIN_BINDIR/Version.txt
 fi

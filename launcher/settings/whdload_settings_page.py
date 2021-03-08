@@ -15,30 +15,48 @@ from launcher.system.prefs.defaultprefsbutton import DefaultPrefsButton
 
 
 class WHDLoadSettingsPage(SettingsPage):
+    WIDTH = 500
+
     def __init__(self, parent):
         super().__init__(parent)
+
+        # label = fsui.MultiLineLabel(
+        #     self,
+        #     gettext(
+        #         "These options only apply when you use the automatic WHDLoad "
+        #         "support in FS-UAE Launcher & Arcade. (*)"
+        #     ),
+        #     self.WIDTH,
+        # )
+        # self.layout.add(label, fill=True, margin_top=0, margin_bottom=20)
 
         self.add_option(
             Option.WHDLOAD_VERSION,
             margin_top=0,
             warnings=[(key_path_override_warning, [Option.WHDLOAD_PATH])],
         )
+        self.add_divider()
         # FIXME: Show units with grayed out text after the main label?
         # "Splash delay: [unit text in gray]"
         self.add_option(
             Option.WHDLOAD_SPLASH_DELAY,
             # gettext("Splash delay (1/50ths seconds)"),
             gettext("Splash delay"),
-            margin_top=10,
+            # margin_top=20,
         )
+        self.add_divider()
         self.add_option(
             Option.WHDLOAD_PRELOAD,
             gettext("Preload game into RAM"),
-            margin_top=10,
+            # margin_top=20,
         )
+        self.add_divider()
         self.add_option(
-            Option.WHDLOAD_QUIT_KEY, gettext("Quit key"), margin_top=10
+            Option.WHDLOAD_QUIT_KEY,
+            gettext("Quit key"),
+            # margin_top=20
         )
+        self.add_divider()
 
         # FIXME: Label should have a flag to enable HTML-like markup.
         # markup=True. Should default to false and "escape" special chars.
@@ -49,14 +67,17 @@ class WHDLoadSettingsPage(SettingsPage):
         #     ),
         # )
 
-        label = fsui.Label(
+        label = self.create_option_label(
             self,
-            gettext("WHDLoad.key file:"),
+            gettext("WHDLoad.key file"),
         )
-        self.layout.add(label, margin_top=20)
+        self.layout.add(
+            label,
+            margin_top=10
+        )
 
         horilayout = fsui.HorizontalLayout()
-        self.layout.add(horilayout, fill=True, margin_top=4)
+        self.layout.add(horilayout, fill=True, margin_top=6)
         self.whdload_key_path_picker = FilePickerField(
             self,
             path=get_settings(self).get(Option.WHDLOAD_KEY_PATH),
@@ -69,14 +90,19 @@ class WHDLoadSettingsPage(SettingsPage):
         helpbutton = OptionHelpButton(self, Option.WHDLOAD_KEY_PATH)
         horilayout.add(helpbutton, fill=True, margin_left=10)
 
-        label = fsui.Label(
+        self.add_divider()
+
+        label = self.create_option_label(
             self,
-            gettext("Custom WHDLoad executable:"),
+            gettext("Custom WHDLoad executable"),
         )
-        self.layout.add(label, margin_top=20)
+        self.layout.add(
+            label,
+            margin_top=10
+        )
 
         horilayout = fsui.HorizontalLayout()
-        self.layout.add(horilayout, fill=True, margin_top=4)
+        self.layout.add(horilayout, fill=True, margin_top=6)
         self.whdload_path_picker = FilePickerField(
             self,
             path=get_settings(self).get(Option.WHDLOAD_PATH),
@@ -89,16 +115,18 @@ class WHDLoadSettingsPage(SettingsPage):
         helpbutton = OptionHelpButton(self, Option.WHDLOAD_PATH)
         horilayout.add(helpbutton, fill=True, margin_left=10)
 
+        # self.add_divider()
+
         label = fsui.MultiLineLabel(
             self,
             gettext(
                 "These options only apply when you use the automatic WHDLoad "
-                "support in FS-UAE Launcher & Arcade. For example when "
+                "support in FS-UAE Launcher & Arcade, for example when "
                 "running WHDLoad variants from the online game database."
             ),
-            500,
+            self.WIDTH,
         )
-        self.layout.add(label, fill=True, margin_top=24)
+        self.layout.add(label, fill=True, margin_top=20)
 
         self.layout.add(
             DefaultPrefsButton(

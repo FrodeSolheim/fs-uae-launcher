@@ -194,6 +194,8 @@ def initialize_qt_style(qapplication, theme):
 
 
 class Theme(BaseTheme):
+    WIDGET_HEIGHT = 30
+
     def __init__(self):
         super().__init__()
 
@@ -222,6 +224,10 @@ class Theme(BaseTheme):
         self._titlebar_fgcolor_inactive = black
         self._window_bgcolor = black
 
+        self._dialog_bgcolor_default_str = "#BBBBBB"
+        self._dialog_bgcolor = black
+        self._update_color("dialog_bgcolor", self._dialog_bgcolor_default_str)
+
         # self._titlebar_bgcolor = fsui.Color(0x6688BB)
         # self._titlebar_bgcolor_inactive = fsui.Color(0x888888)
 
@@ -237,16 +243,17 @@ class Theme(BaseTheme):
         self._titlebar_uppercase_default_str = "1"
         self._titlebar_uppercase = True
 
+        PADDING = (self.WIDGET_HEIGHT - 22) // 2
         self._button_padding = Padding()
-        self._button_padding.top = 3
-        self._button_padding.bottom = 3
+        self._button_padding.top = PADDING
+        self._button_padding.bottom = PADDING
         self._choice_padding = Padding()
-        self._choice_padding.top = 3
-        self._choice_padding.bottom = 3
+        self._choice_padding.top = PADDING
+        self._choice_padding.bottom = PADDING
         self._textfield_padding = Padding()
-        self._textfield_padding.top = 3
+        self._textfield_padding.top = PADDING
         self._textfield_padding.right = 4
-        self._textfield_padding.bottom = 3
+        self._textfield_padding.bottom = PADDING
         self._textfield_padding.left = 4
 
         self.settings = LauncherSettings
@@ -268,6 +275,14 @@ class Theme(BaseTheme):
 
     def choice_padding(self):
         return self._choice_padding
+
+    def dialog_bgcolor(self):
+        return self._dialog_bgcolor
+
+    def label_vertical_padding(self):
+        # FIXME: See PrivacySettings how this is used
+        # (should be calculated)
+        return 5
 
     def textfield_padding(self):
         return self._textfield_padding
@@ -295,6 +310,9 @@ class Theme(BaseTheme):
 
     def titlebar_uppercase(self):
         return self._titlebar_uppercase
+
+    def widget_height(self):
+        return self.WIDGET_HEIGHT
 
     def window_bgcolor(self):
         return self._window_bgcolor

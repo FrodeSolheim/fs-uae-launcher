@@ -3,7 +3,7 @@ from fsui.context import get_theme
 
 # from launcher.ui.Constants import Constants
 from launcher.ui.skin import Skin
-
+from launcher.ui2.launcher2colors import Launcher2Colors
 
 class TabButton(Panel):
     activated = Signal()
@@ -49,9 +49,9 @@ class TabButton(Panel):
         dc = self.create_dc()
         selected = self.state == self.STATE_SELECTED
         if selected:
-            backgroundcolor = Color(0xC0C0C0)
+            backgroundcolor = Color(Launcher2Colors.CONFIG_PANEL_COLOR)
         elif self.hover:
-            backgroundcolor = Color(0xB8B8B8)
+            backgroundcolor = Color(0xB2B2B2)
         else:
             backgroundcolor = self.bgcolor
         dc.draw_rectangle(0, 0, size[0], size[1], backgroundcolor)

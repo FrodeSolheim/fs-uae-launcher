@@ -29,6 +29,9 @@ class Theme:
     def choice_padding(self):
         return self._choice_padding
 
+    def label_vertical_padding(self):
+        return 4
+
     def textfield_padding(self):
         return self._textfield_padding
 

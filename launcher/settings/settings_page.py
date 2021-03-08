@@ -15,9 +15,30 @@ class SettingsPage(fsui.Panel):
         self.icon_header = None
         self.options_on_page = set()
 
+    def create_option_label(self, parent, label):
+        return OptionUI.create_option_label(parent, label)
+
     def add_header(self, icon, title, subtitle=""):
         self.icon_header = SettingsHeader(self, icon, title, subtitle)
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
+
+    def add_divider(self): #, top_margin=10, bottom_margin=10):
+        OptionUI.add_divider(
+            self,
+            self.layout,
+            # top_margin=top_margin,
+            # bottom_margin=bottom_margin,
+        )
+        # # return
+        # panel = fsui.Panel(self)
+        # panel.set_background_color(fsui.Color(0xA2A2A2))
+        # panel.set_min_height(1)
+        # self.layout.add(
+        #     panel,
+        #     fill=True,
+        #     margin_top=top_margin,
+        #     margin_bottom=bottom_margin,
+        # )
 
     def add_option(
         self,

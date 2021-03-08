@@ -1,3 +1,4 @@
+from launcher.ui2.launcher2colors import Launcher2Colors
 from fsui import Color, HorizontalLayout, Panel, VerticalLayout
 
 # from launcher.ui2.launcher2runningpanel import Launcher2RunningPanel
@@ -29,7 +30,11 @@ class Launcher2RightPanel(Panel):
         # self.running_panel.set_visible(False)
 
         self.configpanel = ConfigPanel(self)
-        self.configpanel.set_background_color(Color(0xC0C0C0))
+        # FIXME: Refer to theme? dialog_bg_color?
+        self.configpanel.set_background_color(
+            Color(Launcher2Colors.CONFIG_PANEL_COLOR)
+        )
+        # self.configpanel.set_background_color(Color(0xBBBBBB))
         vertlayout.add(self.configpanel, fill=True, expand=True)
 
         self.bottom_panel = Launcher2BottomPanel(self)

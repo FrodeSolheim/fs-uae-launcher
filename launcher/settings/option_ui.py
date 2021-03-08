@@ -5,9 +5,31 @@ from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.settings.override_warning import OptionWarning, OverrideWarning
 from launcher.system.classes.optionhelpbutton import OptionHelpButton
-
+from fsui.context import get_theme
 
 class OptionUI(object):
+    @staticmethod
+    def create_option_label(parent, label):
+        label = fsui.HeadingLabel(parent, label)
+        theme = get_theme(parent)
+        label.set_min_height(theme.widget_height())
+        # label.set_background_color(fsui.Color(0xFF0000))
+        return label
+
+    @staticmethod
+    def add_divider(parent, layout, top_margin=12, bottom_margin=12):
+        # return
+        import fsui
+        panel = fsui.Panel(parent)
+        panel.set_background_color(fsui.Color(0xA2A2A2))
+        panel.set_min_height(1)
+        layout.add(
+            panel,
+            fill=True,
+            margin_top=top_margin,
+            margin_bottom=bottom_margin,
+        )
+
     @classmethod
     def create_group(
         cls,
@@ -27,7 +49,8 @@ class OptionUI(object):
         if not description:
             description = gettext(option["description"])
         if description:
-            group.label = fsui.Label(group, description + ":")
+            # group.label = fsui.HeadingLabel(group, description + ":")
+            group.label = cls.create_option_label(group, description)
             group.layout.add(group.label, margin_right=10)
             group.layout.add(OverrideWarning(group, name), margin_right=10)
         if warnings is not None:

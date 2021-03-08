@@ -1,3 +1,4 @@
+from launcher.ui2.launcher2colors import Launcher2Colors
 from fsui import Choice, Color, HorizontalLayout, Label, Panel
 from fsui.context import get_window
 from launcher.panels.additionalconfigpanel import CustomConfigButton
@@ -13,7 +14,7 @@ from launcher.ui.IconButton import IconButton
 class Launcher2SidePanel(Panel):
     def __init__(self, parent):
         super().__init__(parent)
-        self.set_background_color(Color(0xCCCCCC))
+        self.set_background_color(Color(Launcher2Colors.SIDE_PANEL_COLOR))
         # self.set_min_width(300)
         self.set_min_width(252 + 20 * 2)
 

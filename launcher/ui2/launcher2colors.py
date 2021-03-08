@@ -1,0 +1,3 @@
+class Launcher2Colors:
+    CONFIG_PANEL_COLOR = 0xBBBBBB
+    SIDE_PANEL_COLOR = 0xC6C6C6
