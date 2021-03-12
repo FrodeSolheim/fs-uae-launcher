@@ -9,6 +9,8 @@ from arcade.ui.arcade_window import (
 from fsbc.settings import Settings
 from fsbc.system import macosx
 from .gnome3 import running_in_gnome_3, handle_gnome_extensions
+import launcher.version
+from fsbc.init import initialize_application
 
 K_UI_MODE_ALL_HIDDEN = 3
 K_UI_OPTION_AUTO_SHOW_MENU_BAR = 1 << 0
@@ -33,6 +35,7 @@ def os_x_set_system_ui_mode(mode, option):
 
 def main():
     application = Application()
+    initialize_application("fs-uae-arcade", version=launcher.version.VERSION)
 
     # fs_width, fs_height = fsui.get_screen_size()
     # cursor_position = None

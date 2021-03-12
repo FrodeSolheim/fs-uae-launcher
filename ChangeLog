@@ -1,3 +1,13 @@
+Version 3.0.5:
+
+* Packaging change to satisfy Apple's changed notarization process (sigh).
+* Workaround for old file database entries with incorrect \ escape.
+
+Version 3.0.4:
+
+* Filename escaping for FS-UAE and .uaem comments when using .lha files as HDs.
+* Fixed bug in escaping of \ in archive.py.
+
 Version 3.0.3:
 
 * Fixed crash when starting the Launcher in a KDE environment.

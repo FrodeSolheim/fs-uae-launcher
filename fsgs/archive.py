@@ -170,6 +170,9 @@ class LhaHandler(object):
         name = name.replace("\\", "/")
         name = name.replace("%5c", "\\")
         name = name.replace("%25", "%")
+        # FIXME: Legacy workaround for existing entries with incorrect escape.
+        name = name.replace("%5f", "\\")
+
         # FIXME: a little hack here, LhaFile uses os.sep
         # as path separator
         name = name.replace("/", os.sep)

@@ -63,14 +63,8 @@ def init_qt():
             QApplication.setLibraryPaths([fsboot.executable_dir()])
 
     if getattr(sys, "frozen", False):
-        if sys.platform == "darwin":
-            # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
-            QApplication.setLibraryPaths(
-                [os.path.join(fsboot.executable_dir(), "..", "PlugIns")]
-            )
-        else:
-            # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
-            QApplication.setLibraryPaths([fsboot.executable_dir()])
+        # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
+        QApplication.setLibraryPaths([fsboot.executable_dir()])
 
     # Should not be necessary with Qt 5.2.x:
     # fix_qt_for_maverick()

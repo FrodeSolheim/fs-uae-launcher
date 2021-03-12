@@ -6,7 +6,9 @@ dname = fs-uae-launcher_$(ver_os_arch)
 macos =  Launcher.app/Contents/MacOS
 frameworks = Launcher.app/Contents/Frameworks
 resources = Launcher.app/Contents/Resources
-locale = Launcher.app/Contents/Locale
+data = Launcher.app/Contents/Resources/Data
+locale = Launcher.app/Contents/Resources/Locale
+python = Launcher.app/Contents/Resources/Python
 pylib = /Library/Frameworks/Python.framework/Versions/3.6/lib
 qtdir = $(pylib)/python3.6/site-packages/PyQt5/Qt
 
@@ -24,37 +26,54 @@ cxfreeze: clean
 
 	mkdir -p $(macos)
 	mkdir -p $(resources)
+
 	mkdir -p $(locale)
 	cp -pPR ../../share/locale/* $(locale)/
-	cp ../../cacert.pem $(macos)
+
+	mkdir -p $(data)
+	cp ../../cacert.pem $(data)/
+
+	mv ../../build/*/* $(macos)
+	mkdir -p ${python}
+	mv $(macos)/library.zip ${python}/library.zip
+
 	rm -Rf $(resources)/applications
 	rm -Rf $(resources)/icons
-	mv ../../build/*/* $(macos)
-
 	rm -Rf $(macos)/Qt*
 
 addqt:
-	mkdir -p Launcher.app/Contents/PlugIns/platforms
-	cp $(qtdir)/plugins/platforms/libqcocoa.dylib Launcher.app/Contents/PlugIns/platforms/
+	rm -Rf ${macos}/platforms
+	mkdir -p ${macos}/platforms
+	cp $(qtdir)/plugins/platforms/libqcocoa.dylib ${macos}/platforms/
 
-	mkdir -p Launcher.app/Contents/PlugIns/imageformats
-	cp $(qtdir)/plugins/imageformats/libqgif.dylib Launcher.app/Contents/PlugIns/imageformats/
-	cp $(qtdir)/plugins/imageformats/libqicns.dylib Launcher.app/Contents/PlugIns/imageformats/
-	cp $(qtdir)/plugins/imageformats/libqjpeg.dylib Launcher.app/Contents/PlugIns/imageformats/
+	rm -Rf ${macos}/imageformats
+	mkdir -p ${macos}/imageformats
+	cp $(qtdir)/plugins/imageformats/libqgif.dylib ${macos}/imageformats/
+	cp $(qtdir)/plugins/imageformats/libqicns.dylib ${macos}/imageformats/
+	cp $(qtdir)/plugins/imageformats/libqjpeg.dylib ${macos}/imageformats/
+	cp $(qtdir)/plugins/imageformats/libqsvg.dylib ${macos}/imageformats/
 
-	mkdir -p $(frameworks)
-	cp -r $(qtdir)/lib/QtCore.framework $(frameworks)/
-	cp -r $(qtdir)/lib/QtGui.framework $(frameworks)/
-	cp -r $(qtdir)/lib/QtWidgets.framework $(frameworks)/
-	cp -r $(qtdir)/lib/QtOpenGL.framework $(frameworks)/
-	cp -r $(qtdir)/lib/QtDBus.framework $(frameworks)/
-	cp -r $(qtdir)/lib/QtPrintSupport.framework $(frameworks)/
+	mkdir -p ${macos}/frameworks
+	# cp -r $(qtdir)/lib/QtCore.framework $(frameworks)/
+	# cp -r $(qtdir)/lib/QtGui.framework $(frameworks)/
+	# cp -r $(qtdir)/lib/QtWidgets.framework $(frameworks)/
+	# cp -r $(qtdir)/lib/QtOpenGL.framework $(frameworks)/
+	# cp -r $(qtdir)/lib/QtDBus.framework $(frameworks)/
+	# cp -r $(qtdir)/lib/QtPrintSupport.framework $(frameworks)/
+
+	cp $(qtdir)/lib/QtCore.framework/Versions/5/QtCore $(macos)/
+	cp $(qtdir)/lib/QtGui.framework/Versions/5/QtGui $(macos)/
+	cp $(qtdir)/lib/QtWidgets.framework/Versions/5/QtWidgets $(macos)/
+	cp $(qtdir)/lib/QtOpenGL.framework/Versions/5/QtOpenGL $(macos)/
+	cp $(qtdir)/lib/QtDBus.framework/Versions/5/QtDBus $(macos)/
+	cp $(qtdir)/lib/QtPrintSupport.framework/Versions/5/QtPrintSupport $(macos)/
+	cp $(qtdir)/lib/QtSvg.framework/Versions/5/QtSvg $(macos)/
 
 launcher: cxfreeze addqt
 	find Launcher.app -name *_debug.dylib -delete
 
-	rm -Rf $(macos)/imageformats
-	rm -Rf $(macos)/platforms
+	# rm -Rf $(macos)/imageformats
+	# rm -Rf $(macos)/platforms
 
 	rm -f $(macos)/PyQt5.QtNetwork.so
 	rm -f $(macos)/PyQt5.QtQml.so
@@ -81,29 +100,29 @@ launcher: cxfreeze addqt
 	rm -Rf $(macos)/oyoyo
 	rm -Rf $(macos)/workspace
 
-	zip -d $(macos)/library.zip amitools/\*
-	zip -d $(macos)/library.zip arcade/\*
-	zip -d $(macos)/library.zip fsbc/\*
-	zip -d $(macos)/library.zip fsgs/\*
-	zip -d $(macos)/library.zip fspy/\*
-	zip -d $(macos)/library.zip fstd/\*
-	zip -d $(macos)/library.zip fsui/\*
-	zip -d $(macos)/library.zip launcher/\*
-	zip -d $(macos)/library.zip OpenGL/\*
-	zip -d $(macos)/library.zip oyoyo/\*
-	zip -d $(macos)/library.zip workspace/\*
+	zip -d ${python}/library.zip amitools/\*
+	zip -d ${python}/library.zip arcade/\*
+	zip -d ${python}/library.zip fsbc/\*
+	zip -d ${python}/library.zip fsgs/\*
+	zip -d ${python}/library.zip fspy/\*
+	zip -d ${python}/library.zip fstd/\*
+	zip -d ${python}/library.zip fsui/\*
+	zip -d ${python}/library.zip launcher/\*
+	zip -d ${python}/library.zip OpenGL/\*
+	zip -d ${python}/library.zip oyoyo/\*
+	zip -d ${python}/library.zip workspace/\*
 
 	# This file differs between each build
-	zip -d $(macos)/library.zip BUILD_CONSTANTS.pyc
+	zip -d ${python}/library.zip BUILD_CONSTANTS.pyc
 	# Remove wrong-cased members from the archive
-	zip -d $(macos)/library.zip ConfigParser.pyc || true
-	zip -d $(macos)/library.zip Queue.pyc || true
+	zip -d ${python}/library.zip ConfigParser.pyc || true
+	zip -d ${python}/library.zip Queue.pyc || true
 	PYTHONPATH=../.. \
 		python3 -m fspy.zipfile deterministic \
-		--fix-pyc-timestamps $(macos)/library.zip
+		--fix-pyc-timestamps ${python}/library.zip
 
-	mkdir -p Launcher.app/Contents/Python
-	cp -a ../python/*.zip Launcher.app/Contents/Python/
+	mkdir -p ${python}
+	cp -a ../python/*.zip ${python}/
 
 bindist-launcher: launcher
 	rm -Rf "FS-UAE Launcher.app"

@@ -5,7 +5,7 @@ import sys
 import shutil
 import subprocess
 
-ignore_list = [
+nocopy_list = [
     "@rpath/QtCore.framework/Versions/5/QtCore",
     "@rpath/QtDBus.framework/Versions/5/QtDBus",
     "@rpath/QtGui.framework/Versions/5/QtGui",
@@ -31,9 +31,9 @@ def fix_qt_frameworks(app):
         resources = os.path.join(v5, "Resources")
         if not os.path.exists(resources):
             os.makedirs(resources)
-        library_link = os.path.join(framework_dir, name)
-        if not os.path.exists(library_link):
-            os.symlink(os.path.join("Versions", "Current", name), library_link)
+        # library_link = os.path.join(framework_dir, name)
+        # if not os.path.exists(library_link):
+        #     os.symlink(os.path.join("Versions", "Current", name), library_link)
         resources_link = os.path.join(framework_dir, "Resources")
         if not os.path.exists(resources_link):
             os.symlink("Versions/Current/Resources", resources_link)
@@ -120,8 +120,8 @@ def fix_binary(path, macos_dir):
             continue
 
         old = line.split(" ")[0]
-        if old in ignore_list:
-            continue
+        # if old in ignore_list:
+        #     continue
         if old == "@rpath/XCTest.framework/Versions/A/XCTest":
             continue
         if "Contents" in old:
@@ -220,7 +220,7 @@ def fix_iteration(app):
 def main():
     global libs_f
     app = sys.argv[1]
-    fix_qt_frameworks(app)
+    # fix_qt_frameworks(app)
     with open("libs.txt", "w") as libs_f:
         while True:
             changes = fix_iteration(app)
