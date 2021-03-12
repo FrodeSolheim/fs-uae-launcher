@@ -137,6 +137,10 @@ jobs:
       run: |
         pipenv install --deploy
 
+    - name: Run pipenv install pyobjc
+      run: |
+        pipenv install pyobjc
+
     - name: Update version
       run: |
         fsbuild/version --update --auto

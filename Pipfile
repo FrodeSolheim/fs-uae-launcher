@@ -15,7 +15,7 @@ mypy = "*"
 [packages]
 lhafile = "*"
 PyOpenGL = "*"
-PyQt5 = "*"
+PyQt5 = "==5.15.3"
 pillow = "*"
 requests = "*"
 sentry-sdk = "*"
@@ -23,7 +23,6 @@ pywin32-ctypes = "*"
 pyinstaller = "*"
 pefile = "*"
 macholib = "*"
-pyobjc = "*"
 
 [requires]
 python_version = "3.9"

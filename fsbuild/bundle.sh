@@ -32,6 +32,8 @@ cat > $PLUGIN_BINDIR/$PACKAGE_NAME_PRETTY.app/Contents/Info.plist <<EOF
         <string>APPL</string>
         <key>CFBundleShortVersionString</key>
         <string>$PACKAGE_VERSION_MAJOR.$PACKAGE_VERSION_MINOR.$PACKAGE_VERSION_REVISION</string>
+        <key>NSHighResolutionCapable</key>
+        <true/>
 </dict>
 </plist>
 EOF

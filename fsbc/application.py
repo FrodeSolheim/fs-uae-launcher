@@ -151,6 +151,12 @@ class Application(object):
             logger.debug("* checking for data dir %s", data_dir)
             if os.path.exists(data_dir):
                 data_dirs.append(data_dir)
+
+        if macosx:
+            data_dir = os.path.join(self.executable_dir(), "..", "Resources", "Data")
+            if os.path.exists(data_dir):
+                data_dirs.append(data_dir)
+
         self._data_dirs = data_dirs
         logger.debug("data dirs: %s", repr(data_dirs))
         return data_dirs
