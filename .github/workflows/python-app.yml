@@ -23,6 +23,7 @@ jobs:
       run: >-
         sudo apt install
         dos2unix
+        gettext
 
     - uses: actions/checkout@v2
       with:
@@ -83,7 +84,7 @@ jobs:
         path: fsbuild/_dist/*
 
     - name: Upload build to Dropbox folder
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/stable'
       run: |
         python3 -m pip install dropbox
         fsbuild/upload
@@ -180,7 +181,7 @@ jobs:
         path: fsbuild/_dist/*
 
     - name: Upload build to Dropbox folder
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/stable'
       run: |
         python3 -m pip install dropbox
         fsbuild/upload
@@ -264,7 +265,7 @@ jobs:
         path: fsbuild/_dist/*
 
     - name: Upload build to Dropbox folder
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/stable'
       run: |
         python3 -m pip install dropbox
         fsbuild/upload
