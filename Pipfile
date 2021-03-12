@@ -23,6 +23,9 @@ pywin32-ctypes = "*"
 pyinstaller = "*"
 pefile = "*"
 macholib = "*"
+pyobjc-core = {version = "", sys_platform = "== 'darwin'"}
+pyobjc-framework-Cocoa = {version = "", sys_platform = "== 'darwin'"}
+pyobjc-framework-Quartz = {version = "", sys_platform = "== 'darwin'"}
 
 [requires]
 python_version = "3.9"

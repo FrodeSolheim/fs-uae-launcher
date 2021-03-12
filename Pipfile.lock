@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "5ebb6093f8f5996ca1e71df8c29db1406cf4fea0e7a0d9b8b0ff7bd9b73ac140"
+            "sha256": "4b53e47ac65f4507c92ace694416e3c486053baa9342ed18334f456b69df2b4d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -185,6 +185,45 @@
                 "sha256:892310e6363655838485ee748bf1c5e5cade7963686d9af8650ee218a3e0b031"
             ],
             "version": "==2021.1"
+        },
+        "pyobjc-core": {
+            "hashes": [
+                "sha256:7913d7b20217c294900537faf58e5cc15942ed7af277bf05db25667d18255114",
+                "sha256:7cb329c4119044fe83bcb3c5d4794d636c706ff0cb7c1c77d36ef5c373100082",
+                "sha256:a0616d5d816b4471f8f782c3a9a8923d2cc85014d88ad4f7fec694be9e6ea349",
+                "sha256:afb38efd3f2960eb49eb78552d465cfd025a9d6efa06cd4cd8694dafbe7c6e06",
+                "sha256:f9fb45c9916f2a03ecd6b9ecde4c35d1d0f1a590ae2ea2372f9d9a360226ac1d",
+                "sha256:fff8e87358c6195a2937004f279050cce3d4c02cd77acd73c5ad367307def855"
+            ],
+            "index": "pypi",
+            "markers": "sys_platform == 'darwin'",
+            "version": "==7.1"
+        },
+        "pyobjc-framework-cocoa": {
+            "hashes": [
+                "sha256:1a4050f2d776f40c2409a151c6f7896420e936934b3bdbfabedf91509637ed9b",
+                "sha256:3f68f022f1f6d5985c418e10c6608c562fcf4bfe3714ec64fd10ce3dc6221bd4",
+                "sha256:67966152b3d38a0225176fceca2e9f56d849c8e7445548da09a00cb13155ec3e",
+                "sha256:b2ea3582c456827dc20e648c905fdbcf8d3dfae89434f981e9b761cd07262049",
+                "sha256:bef77eafaac5eaf1d91d479d5483fd02216caa3edc27e8f5adc9af0b3fecdac3",
+                "sha256:ecfefd4c48dae42275c18679c69f6f2fff970e711097515a0a8732fc10194018"
+            ],
+            "index": "pypi",
+            "markers": "sys_platform == 'darwin'",
+            "version": "==7.1"
+        },
+        "pyobjc-framework-quartz": {
+            "hashes": [
+                "sha256:04953c031fc35020682bd4613b9b5a9688bdb9eab7ed76fd8dcf028783568b4f",
+                "sha256:5bc7a4fb3ea80b5af6910cc27729a0774a96327a69583fcf28057cb2ffce33ac",
+                "sha256:7207a26244f02d4534ebb007fa55a9dc7c1b7fbb490d1e89e0d62cfd175e20f3",
+                "sha256:73102c9f4dbfa13275621014785ab3b684cf03ce93a4b0b270500c795349bea9",
+                "sha256:c0469d60d4a79fc252f74adaa8177d2c680621d858c1b8ef19c411e903e2c892",
+                "sha256:d8e0c086faf649f86386d0ed99194c6d0704b602576e2b258532b635b510b790"
+            ],
+            "index": "pypi",
+            "markers": "sys_platform == 'darwin'",
+            "version": "==7.1"
         },
         "pyopengl": {
             "hashes": [
