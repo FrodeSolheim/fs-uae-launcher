@@ -84,7 +84,10 @@ jobs:
         path: fsbuild/_dist/*
 
     - name: Upload build to Dropbox folder
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/stable'
+      if: >-
+        github.ref == 'refs/heads/master' ||
+        github.ref == 'refs/heads/dev' ||
+        github.ref == 'refs/heads/stable'
       run: |
         python3 -m pip install dropbox
         fsbuild/upload
@@ -181,7 +184,10 @@ jobs:
         path: fsbuild/_dist/*
 
     - name: Upload build to Dropbox folder
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/stable'
+      if: >-
+        github.ref == 'refs/heads/master' ||
+        github.ref == 'refs/heads/dev' ||
+        github.ref == 'refs/heads/stable'
       run: |
         python3 -m pip install dropbox
         fsbuild/upload
@@ -265,7 +271,10 @@ jobs:
         path: fsbuild/_dist/*
 
     - name: Upload build to Dropbox folder
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/stable'
+      if: >-
+        github.ref == 'refs/heads/master' ||
+        github.ref == 'refs/heads/dev' ||
+        github.ref == 'refs/heads/stable'
       run: |
         python3 -m pip install dropbox
         fsbuild/upload
