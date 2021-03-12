@@ -28,7 +28,7 @@ def update_version(path, version, version_3, strict=False):
 
 
 def main():
-    with open("VERSION", "r", encoding="ISO-8859-1", newline="") as f:
+    with open("VERSION.FS", "r", encoding="ISO-8859-1", newline="") as f:
         version = f.read().strip()
 
     parts = version.split(".")

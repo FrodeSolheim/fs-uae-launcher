@@ -22,5 +22,6 @@ Lib
 *.pot
 /.pybuild/
 *.pyc
+/pyinstaller/
 *.pyo
 /setup.py

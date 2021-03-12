@@ -20,47 +20,49 @@ def print_version():
 
 
 def frozen_qpa_platform_plugin_path():
-    import fsboot
-
-    os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
-        fsboot.executable_dir(), "platforms"
-    )
+    pass
+    # import fsboot
+    #
+    # os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
+    #     fsboot.executable_dir(), "platforms"
+    # )
 
 
 def frozen_python_libs():
-    import fsboot
+    pass
+    # import fsboot
 
-    libs_dirs = [fsboot.executable_dir()]
-    if sys.platform == "darwin":
-        # Add .app/Contents/Resources/Python to libs_dirs
-        libs_dir = os.path.abspath(
-            os.path.join(fsboot.executable_dir(), "..", "Resources", "Python")
-        )
-        print(libs_dir, os.path.exists(libs_dir))
-        if os.path.exists(libs_dir):
-            libs_dirs.append(libs_dir)
-        libs_dir = os.path.abspath(
-            os.path.join(
-                fsboot.executable_dir(), "..", "..", "..", "..", "..", "Python"
-            )
-        )
-        print(libs_dir, os.path.exists(libs_dir))
-        if os.path.exists(libs_dir):
-            libs_dirs.append(libs_dir)
-    else:
-        libs_dir = os.path.abspath(
-            os.path.join(fsboot.executable_dir(), "..", "..", "Python")
-        )
-        print(libs_dir, os.path.exists(libs_dir))
-        if os.path.exists(libs_dir):
-            libs_dirs.append(libs_dir)
+    # libs_dirs = [fsboot.executable_dir()]
+    # if sys.platform == "darwin":
+    #     # Add .app/Contents/Resources/Python to libs_dirs
+    #     libs_dir = os.path.abspath(
+    #         os.path.join(fsboot.executable_dir(), "..", "Resources", "Python")
+    #     )
+    #     print(libs_dir, os.path.exists(libs_dir))
+    #     if os.path.exists(libs_dir):
+    #         libs_dirs.append(libs_dir)
+    #     libs_dir = os.path.abspath(
+    #         os.path.join(
+    #             fsboot.executable_dir(), "..", "..", "..", "..", "..", "Python"
+    #         )
+    #     )
+    #     print(libs_dir, os.path.exists(libs_dir))
+    #     if os.path.exists(libs_dir):
+    #         libs_dirs.append(libs_dir)
+    # else:
+    #     libs_dir = os.path.abspath(
+    #         os.path.join(fsboot.executable_dir(), "..", "..", "Python")
+    #     )
+    #     print(libs_dir, os.path.exists(libs_dir))
+    #     if os.path.exists(libs_dir):
+    #         libs_dirs.append(libs_dir)
 
-    for libs_dir in libs_dirs:
-        for item in os.listdir(libs_dir):
-            if item.endswith(".zip"):
-                path = os.path.join(libs_dir, item)
-                print("adding", path)
-                sys.path.insert(0, path)
+    # for libs_dir in libs_dirs:
+    #     for item in os.listdir(libs_dir):
+    #         if item.endswith(".zip"):
+    #             path = os.path.join(libs_dir, item)
+    #             print("adding", path)
+    #             sys.path.insert(0, path)
 
 
 def frozen_requests_ca_cert():

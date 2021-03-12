@@ -189,7 +189,7 @@ def write(data):
 
 write(
     """\
-version := $(strip $(shell cat VERSION))
+version := $(strip $(shell cat VERSION.FS))
 build_dir := "."
 dist_name = {tar_name}-$(version)
 dist_dir := $(build_dir)/$(dist_name)
@@ -317,7 +317,7 @@ copy_files = [
     "README",
     "COPYING",
     "INSTALL",
-    "VERSION",
+    "VERSION.FS",
     "Makefile",
     "setup.py",
     "update-version",

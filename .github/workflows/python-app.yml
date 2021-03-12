@@ -1,0 +1,273 @@
+name: Python application
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+      - stable
+  pull_request:
+    branches:
+      - master
+      - dev
+      - stable
+
+jobs:
+
+  Linux_x86-64:
+    runs-on: ubuntu-18.04
+
+    steps:
+
+    - name: Install deb packages
+      run: >-
+        sudo apt install
+        dos2unix
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip pipenv
+
+    - name: Run pipenv install
+      run: |
+        pipenv install --deploy
+
+    - name: Download pyinstaller source
+      run: |
+        wget https://github.com/pyinstaller/pyinstaller/releases/download/v4.2/PyInstaller-4.2.tar.gz
+        echo "f5c0eeb2aa663cce9a5404292c0195011fa500a6501c873a466b2e8cad3c950c *PyInstaller-4.2.tar.gz" > SHA256SUMS
+        shasum -c SHA256SUMS
+        tar xf PyInstaller-4.2.tar.gz
+
+    - name: Compile new bootloader for pyinstaller
+      run: |
+        cd pyinstaller-4.2/bootloader
+        CC="gcc -no-pie" ./waf all
+
+    - name: Replace pyinstaller with custom version
+      run: |
+        pipenv uninstall pyinstaller
+        pipenv install `pwd`/pyinstaller-4.2
+
+    - name: Update version
+      run: |
+        fsbuild/version --update --auto
+
+    - name: Bootstrap
+      run: fsbuild/bootstrap
+
+    - name: Build
+      run: |
+        pipenv run fsbuild/build
+
+    - name: Bundle
+      run: |
+        pipenv run fsbuild/bundle
+
+    - name: Archive
+      run: |
+        fsbuild/archive
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Linux_x86-64
+        path: fsbuild/_dist/*
+
+    - name: Upload build to Dropbox folder
+      if: github.ref == 'refs/heads/master'
+      run: |
+        python3 -m pip install dropbox
+        fsbuild/upload
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+
+  macOS_x86-64:
+    runs-on: macos-10.15
+
+    steps:
+
+    - name: Install brew packages
+      run: |
+        brew install dos2unix
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Check Python version
+      run: |
+        which python3
+        python3 --version
+        which python3.9
+        python3.9 --version
+
+    - name: Download Python
+      run: |
+        wget https://www.python.org/ftp/python/3.9.2/python-3.9.2-macosx10.9.pkg
+        echo "86e099ad1cee81e2b84680de69ac7200fe2b4e86e5c410f0eb5effd12db72862 *python-3.9.2-macosx10.9.pkg" > SHA256SUMS
+        shasum -c SHA256SUMS
+
+    - name: Install Python
+      run: |
+        sudo installer -pkg python-3.9.2-macosx10.9.pkg -target /
+
+    - name: Add Python to PATH
+      run: |
+        echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH  
+
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip pipenv
+
+    - name: Run pipenv install
+      run: |
+        pipenv install --deploy
+
+    - name: Update version
+      run: |
+        fsbuild/version --update --auto
+
+    - name: Bootstrap
+      run: fsbuild/bootstrap
+
+    - name: Build
+      run: |
+        pipenv run fsbuild/build
+
+    - name: Bundle
+      run: |
+        fsbuild/bundle
+
+    - name: Prepare signing certificate
+      run: |
+        echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD build.keychain
+        security default-keychain -s build.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
+        security import certificate.p12 -k build.keychain -P $SIGNING_CERTIFICATE_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD build.keychain
+      env:
+        KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
+        SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+
+    - name: Sign
+      run: fsbuild/sign
+
+    - name: Notarize
+      run: fsbuild/notarize
+      env:
+        NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
+        NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}
+        NOTARIZATION_USERNAME: ${{ secrets.MACOS_NOTARIZATION_USERNAME }}
+
+    - name: Archive
+      run: fsbuild/archive
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: macos_x86-64
+        path: fsbuild/_dist/*
+
+    - name: Upload build to Dropbox folder
+      if: github.ref == 'refs/heads/master'
+      run: |
+        python3 -m pip install dropbox
+        fsbuild/upload
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+
+  Windows_x86-64:
+    runs-on: windows-2016
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: msys2/setup-msys2@v2
+      with:
+        install: >-
+          make
+          dos2unix
+          zip
+        path-type: inherit
+        update: true
+
+    - name: Download Python
+      run: |
+        wget https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe
+        echo "bc95bcbb879006d2a3e5f8bef6d7ec8b8e9368d4fe14e6cd4abdf1cd5166bcc3 *python-3.9.2-amd64.exe" > SHA256SUMS
+        sha256sum -c SHA256SUMS
+
+    - name: Install Python
+      shell: cmd
+      run: |
+        START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
+
+    - name: Add Python to PATH
+      run: |
+        export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python39
+        cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
+        echo $PYTHONDIR/Scripts >> $GITHUB_PATH
+        echo $PYTHONDIR >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip pipenv
+
+    - name: Run pipenv install
+      run: |
+        pipenv install --deploy
+
+    - name: Create python3 alias in virtualenv
+      run: |
+        pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
+
+    - name: Update version
+      run: |
+        fsbuild/version --update --auto
+
+    - name: Bootstrap
+      run: fsbuild/bootstrap
+
+    - name: Build
+      run: |
+        pipenv run bash -c 'fsbuild/build'
+
+    - name: Bundle
+      run: |
+        fsbuild/bundle
+
+    - name: Archive
+      run: fsbuild/archive
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Windows_x86-64
+        path: fsbuild/_dist/*
+
+    - name: Upload build to Dropbox folder
+      if: github.ref == 'refs/heads/master'
+      run: |
+        python3 -m pip install dropbox
+        fsbuild/upload
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
