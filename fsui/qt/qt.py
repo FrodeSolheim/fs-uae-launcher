@@ -69,6 +69,8 @@ def init_qt():
     # Should not be necessary with Qt 5.2.x:
     # fix_qt_for_maverick()
 
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+
     fsbc.desktop.set_open_url_in_browser_function(open_url_in_browser)
     qapplication = QtBaseApplication(sys.argv)
     initialize_qt_style(qapplication)

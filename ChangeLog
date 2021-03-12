@@ -1,3 +1,8 @@
+Version 3.1:
+
+* Build system update.
+* Better support for High-DPI displays in Windows.
+
 Version 3.0.5:
 
 * Packaging change to satisfy Apple's changed notarization process (sigh).

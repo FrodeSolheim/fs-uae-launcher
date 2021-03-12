@@ -8,6 +8,7 @@
 /debian/fs-uae-launcher.postinst.debhelper
 /debian/fs-uae-launcher.prerm.debhelper
 /debian/fs-uae-launcher.substvars
+.DS_Store
 *.egg-info
 fontconfig
 fs-uae-launcher-*

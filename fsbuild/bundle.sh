@@ -35,7 +35,8 @@ cat > $PLUGIN_BINDIR/$PACKAGE_NAME_PRETTY.app/Contents/Info.plist <<EOF
 </dict>
 </plist>
 EOF
-
+mkdir $PLUGIN_BINDIR/$PACKAGE_NAME_PRETTY.app/Contents/Resources/Locale
+cp -pPR share/locale/* $PLUGIN_BINDIR/$PACKAGE_NAME_PRETTY.app/Contents/Resources/Locale/
 else
 cp -a fsbuild/_build/pyinstaller/$PACKAGE_NAME/* $PLUGIN_BINDIR/
 fi

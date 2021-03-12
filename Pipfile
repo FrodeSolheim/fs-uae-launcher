@@ -23,6 +23,7 @@ pywin32-ctypes = "*"
 pyinstaller = "*"
 pefile = "*"
 macholib = "*"
+pyobjc = "*"
 
 [requires]
 python_version = "3.9"
