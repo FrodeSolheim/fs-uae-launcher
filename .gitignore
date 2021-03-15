@@ -32,7 +32,9 @@ Lib
 *.pyc
 /pyinstaller
 *.pyo
-/src/icons/Makefile
 /repo/
+/src/icons/Makefile
+*.swp
+*.tmp
 /venv/
 /.vscode/.ropeproject/objectdb
