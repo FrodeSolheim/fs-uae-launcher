@@ -16,7 +16,7 @@ class SuperNintendoPlatformHandler(Platform):
     def driver(self, fsgc):
         driver = settings.get(Option.SNES_EMULATOR)
         if not driver:
-            driver = "mednafen-fs"
+            driver = "mednafen"
 
         if driver == "mame":
             return MameSnesDriver(fsgc)
@@ -24,7 +24,7 @@ class SuperNintendoPlatformHandler(Platform):
             return MameFsSnesDriver(fsgc)
         elif driver == "mednafen":
             return MednafenSnesDriver(fsgc)
-        elif driver == "mednafen-fs":
+        elif driver == "fs-mednafen":
             return MednafenFsSnesDriver(fsgc)
         elif driver == "retroarch":
             return RetroArchBsnesDriver(fsgc, "bsnes")

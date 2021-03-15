@@ -397,6 +397,10 @@ def vfs_prefs_entries():
             "name": "Advanced",
         },
         "advanced.info": {"name": "Advanced.info"},
+        "controller": {
+            "name": "Controller",
+        },
+        "controller.info": {"name": "Controller.info"},
         "privacy": {
             "name": "Privacy",
         },
@@ -418,10 +422,6 @@ def vfs_prefs_entries():
                 "arcade.info": {"name": "Arcade.info"},
                 # "backup": {"name": "Backup",},
                 # "backup.info": {"name": "Backup.info"},
-                "controller": {
-                    "name": "Controller",
-                },
-                "controller.info": {"name": "Controller.info"},
                 # "directory": {"name": "Directory",},
                 # "directory.info": {"name": "Directory.info"},
                 "filedatabase": {

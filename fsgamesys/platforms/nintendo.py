@@ -86,18 +86,18 @@ class NintendoPlatform(Platform):
     def driver(fsgc):
         driver = settings.get(Option.NES_EMULATOR)
         if not driver:
-            driver = "mednafen-fs"
+            driver = "mednafen"
 
         # if driver == "higan":
         #     return HiganNesDriver(fsgc)
-        if driver == "mame":
+        if driver == "fs-mednafen":
+            return MednafenFsNesDriver(fsgc)
+        elif driver == "mame":
             return MameNesDriver(fsgc)
         elif driver == "mame-fs":
             return MameFsNesDriver(fsgc)
         elif driver == "mednafen":
             return MednafenNesDriver(fsgc)
-        elif driver == "mednafen-fs":
-            return MednafenFsNesDriver(fsgc)
         elif driver == "retroarch":
             return RetroArchMesenDriver(fsgc)
         elif driver == "retroarch/mesen":

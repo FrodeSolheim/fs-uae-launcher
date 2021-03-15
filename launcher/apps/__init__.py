@@ -31,7 +31,9 @@ def configure_launcher_app(
     Config.set_default("platform", default_platform_id)
     Product.default_platform_id = default_platform_id
 
-    Settings.set_default("launcher_titlebar_bgcolor", default_titlebar_color)
+    if default_titlebar_color is not None:
+        Settings.set_default("launcher_titlebar_bgcolor", default_titlebar_color)
+    # Settings.set_default("launcher_titlebar_fgcolor", "#cccccc")
     import fsboot
 
     fsboot.set("base_dir_name", base_name)
@@ -51,7 +53,9 @@ def find_app(app):
             "OpenRetro",
             fsgamesys.OPENRETRO_DEFAULT_DATABASES,
             "amiga",
-            "#6d62c4",
+            # "#945ebe",
+            # "#444444",
+            None
         )
 
     if ":" in app:

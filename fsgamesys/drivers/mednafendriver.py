@@ -24,7 +24,7 @@ class MednafenDriver(GameDriver):
         if vanilla or not fsemu:
             self.emulator = Emulator("mednafen")
         else:
-            self.emulator = Emulator("mednafen-fs")
+            self.emulator = Emulator("fs-mednafen")
         self.save_handler = MednafenSaveHandler(
             self.fsgc, options=self.options
         )

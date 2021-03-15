@@ -340,7 +340,7 @@ class Database(BaseDatabase):
                 continue
 
             if term.startswith("s:"):
-                from fsgamesys.platform import normalize_platform_id
+                from fsgamesys.platforms.platform import normalize_platform_id
 
                 term = "s:" + normalize_platform_id(term[2:])
                 exact_term = True
