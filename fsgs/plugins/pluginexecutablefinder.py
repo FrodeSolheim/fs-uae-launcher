@@ -153,7 +153,7 @@ def find_executable_in_dir_or_app(name: str, bin_dir: str, plugin_name: str):
     if check_executable(exe_file):
         return exe_file
     if System.macos:
-        app_name = "{plugin_name}.app"
+        app_name = f"{plugin_name}.app"
         exe_file = path.join(bin_dir, app_name, "Contents", "MacOS", exe_name)
         if check_executable(exe_file):
             return exe_file
