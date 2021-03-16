@@ -119,7 +119,7 @@ def find_side_by_side_app_executable(name: str):
     plugin_name = known_executables.get(name)
     if plugin_name is None:
         return None
-    app_name = "{plugin_name}.app"
+    app_name = f"{plugin_name}.app"
     bin_dir = path.join(fsboot.executable_dir(), "..", "..")
     exe_file = path.join(bin_dir, app_name, "Contents", "MacOS", name)
     if check_executable(exe_file):
