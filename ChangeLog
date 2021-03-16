@@ -1,6 +1,8 @@
 Version 3.1:
 
+* Some changes to how/where plugins are found.
 * Build system update.
+* Official builds created with pyinstaller.
 * Better support for High-DPI displays in Windows.
 
 Version 3.0.5:

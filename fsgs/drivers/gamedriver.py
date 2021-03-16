@@ -15,6 +15,7 @@ from fsbc.task import current_task
 from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.fsuae import FSUAE
 from launcher.option import Option
+from fsgs.plugins.pluginexecutablefinder import PluginExecutableFinder
 from fsgs.plugins.pluginmanager import PluginManager, Executable
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.util.gamenameutil import GameNameUtil
@@ -81,18 +82,12 @@ class GameDriver:
         self.files.install()
 
     def run(self):
-        executable = PluginManager.instance().find_executable(
-            self.emulator.name
-        )
-        if executable is None and self.emulator.allow_system_emulator:
-            executable_path = shutil.which(self.emulator.name)
-            if executable_path is not None:
-                executable = Executable(executable_path)
+        executable = PluginExecutableFinder().find_executable(self.emulator.name)
         if executable is None:
             raise LookupError(
                 "Could not find emulator " + repr(self.emulator.name)
             )
-        self.emulator.process = self.start_emulator(executable)
+        self.emulator.process = self.start_emulator(Executable(executable))
 
     def emulator_pid_file(self):
         return self.fsgc.settings[Option.EMULATOR_PID_FILE]

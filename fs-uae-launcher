@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+from fsboot import init
+
+init()
+
 import os
 import sys
 
