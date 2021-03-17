@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from fsboot import setup_python_path
+from fsboot import init
 
-# setup_python_path()
+init()
 
 from launcher.main import main
 

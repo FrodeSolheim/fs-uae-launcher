@@ -5,12 +5,8 @@ import traceback
 
 from fsbc.application import Application, app
 from fscore.system import System
+from fsgamesys.plugins.pluginexecutablefinder import PluginExecutableFinder
 from fsgamesys.plugins.pluginmanager import Plugin
-
-try:
-    getcwd = os.getcwdu
-except AttributeError:
-    getcwd = os.getcwd
 
 
 class FSUAE(object):
@@ -30,8 +26,8 @@ class FSUAE(object):
     @classmethod
     def start_with_args(cls, args, cwd=None, **kwargs):
         print("FSUAE.start_with_args:", args)
-        exe = cls.find_executable()
-        print("current dir (cwd): ", getcwd())
+        exe = PluginExecutableFinder().find_executable("fs-uae")
+        print("current dir (cwd): ", os.getcwd())
         if cwd is not None:
             print("cwd override:", cwd)
         print("using fs-uae executable:", exe)
@@ -79,120 +75,3 @@ class FSUAE(object):
             else:
                 print("[ENV] {} = {}".format(key, value))
                 env[key] = value
-
-    @classmethod
-    def find_executable(cls, executable="fs-uae", libexec=False):
-        application = Application.instance()
-
-        if os.path.basename(os.getcwd()).endswith("-private"):
-            # We are running FS-UAE Launcher from source directory. We then
-            # want to run the locally compiled fs-uae binary.
-            path = "../fs-uae-private/" + executable
-            if System.windows:
-                path += ".exe"
-            if os.path.isfile(path):
-                return os.path.abspath(path)
-            raise Exception("Could not find development FS-UAE executable")
-
-        if os.path.isdir("../fs-uae/src"):
-            # We are running FS-UAE Launcher from source directory. We then
-            # want to run the locally compiled fs-uae binary.
-            path = "../fs-uae/" + executable
-            if System.windows:
-                path += ".exe"
-            if os.path.isfile(path):
-                return os.path.abspath(path)
-            raise Exception("Could not find development FS-UAE executable")
-
-        if System.windows:
-            exe = os.path.join(
-                application.executable_dir(), executable + ".exe"
-            )
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    application.executable_dir(), "fs-uae", executable + ".exe"
-                )
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    application.executable_dir(), "..", executable + ".exe"
-                )
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    application.executable_dir(),
-                    "..",
-                    "..",
-                    "..",
-                    "FS-UAE",
-                    Plugin.os_name(True),
-                    Plugin.arch_name(True),
-                    executable + ".exe",
-                )
-        elif System.macos:
-            exe = os.path.join(application.executable_dir(), executable)
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    application.executable_dir(),
-                    "../FS-UAE.app/Contents/MacOS/" + executable,
-                )
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    application.executable_dir(),
-                    "../../../FS-UAE.app/Contents/MacOS/" + executable,
-                )
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    application.executable_dir(),
-                    "../../../FS-UAE Launcher.app/Contents/Resources/"
-                    "FS-UAE.app/Contents/MacOS/" + executable,
-                )
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    application.executable_dir(),
-                    "..",
-                    "..",
-                    "..",
-                    "..",
-                    "..",
-                    "..",
-                    "FS-UAE",
-                    Plugin.os_name(True),
-                    Plugin.arch_name(True),
-                    "FS-UAE.app/Contents/MacOS/" + executable,
-                )
-                print("checking", exe)
-        else:
-            print("application executable dir", application.executable_dir())
-            exe = os.path.join(application.executable_dir(), executable)
-            print("Checking side-by-side:", exe)
-            if not os.path.exists(exe) and libexec:
-                exe = os.path.join(
-                    application.executable_dir(), "..", "libexec", executable
-                )
-                print("Checking in $prefix/libexec:", exe)
-            # if not os.path.exists(exe):
-            #     exe = os.path.join(
-            #         application.executable_dir(), "..", "bin", executable
-            #     )
-            #     print("checking", exe)
-            # Find in plugin structure
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    application.executable_dir(),
-                    "..",
-                    "..",
-                    "..",
-                    "FS-UAE",
-                    Plugin.os_name(True),
-                    Plugin.arch_name(True),
-                    executable,
-                )
-                print("Checking plugin executable:", exe)
-            if not os.path.exists(exe):
-                print("Found ", exe)
-                return executable
-
-        if not os.path.exists(exe):
-            raise Exception(
-                "Could not find {0} executable".format(repr(executable))
-            )
-        return exe

@@ -4,13 +4,14 @@ import subprocess
 from fsbc.settings import Settings
 from fsgamesys.amiga.fsuae import FSUAE
 from fsgamesys.options.option import Option
+from fsgamesys.plugins.pluginexecutablefinder import PluginExecutableFinder
 
 
 class FSUAEDeviceHelper:
     @classmethod
     def start_with_args(cls, args, **kwargs):
         print("FSUAEDeviceHelper.start_with_args:", args)
-        exe = cls.find_executable()
+        exe = PluginExecutableFinder().find_executable("fs-uae-device-helper")
         print("Current dir (cwd): ", os.getcwd())
         print("Using executable:", exe)
         args = [exe] + args
@@ -26,10 +27,6 @@ class FSUAEDeviceHelper:
             **kwargs
         )
         return process
-
-    @classmethod
-    def find_executable(cls):
-        return FSUAE.find_executable("fs-uae-device-helper", libexec=True)
 
     @classmethod
     def maybe_add_fake_joysticks(cls, env):

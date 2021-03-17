@@ -75,6 +75,7 @@ class Plugin(BasePlugin):
     def __str__(self):
         return "<Plugin {0}".format(self.path)
 
+    # FIXME: Use function from pluginexecutablefinder
     @staticmethod
     def os_name(pretty=False):
         if System.windows:
@@ -99,6 +100,7 @@ class Plugin(BasePlugin):
                 return "Unknown"
             return "unknown"
 
+    # FIXME: Use function from pluginexecutablefinder
     @staticmethod
     def arch_name(pretty=False):
         if platform.machine().lower() in X86_ANY_MACHINES:

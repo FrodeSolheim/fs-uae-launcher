@@ -11,11 +11,11 @@ class ArcadePlatformHandler(Platform):
     def driver(self, fsgc):
         driver = settings.get(Option.ARCADE_EMULATOR)
         if not driver:
-            driver = "mame-fs"
+            driver = "mame"
 
         if driver == "mame":
             return MameArcadeDriver(fsgc)
-        elif driver == "mame-fs":
+        elif driver == "fs-mame":
             return MameArcadeDriver(fsgc, fsemu=True)
 
         return None

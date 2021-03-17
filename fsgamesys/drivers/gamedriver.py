@@ -5,6 +5,8 @@ import tempfile
 import traceback
 import warnings
 from collections import defaultdict
+from subprocess import Popen
+from typing import Union
 
 import fsboot
 from fsbc.application import Application
@@ -20,6 +22,7 @@ from fsgamesys.options.constants2 import (
     PARENT_X__,
     PARENT_Y__,
 )
+from fsgamesys.plugins.pluginexecutablefinder import PluginExecutableFinder
 from fsgamesys.plugins.pluginmanager import Executable, PluginManager
 from fsgamesys.util.gamenameutil import GameNameUtil
 from launcher.option import Option
@@ -109,24 +112,12 @@ class GameDriver:
         self.files.install()
 
     def run(self):
-        executable = None
-        if self.emulator.path:
-            # executable_path = shutil.which(self.emulator.exe_name)
-            if os.path.exists(self.emulator.path):
-                executable = Executable(self.emulator.path)
-        else:
-            executable = PluginManager.instance().find_executable(
-                self.emulator.exe_name
-            )
-        # if executable is None and self.emulator.allow_system_emulator:
-        #     executable_path = shutil.which(self.emulator.exe_name)
-        #     if executable_path is not None:
-        #         executable = Executable(executable_path)
+        executable = PluginExecutableFinder().find_executable(self.emulator.name)
         if executable is None:
             raise LookupError(
-                "Could not find emulator " + repr(self.emulator.exe_name)
+                "Could not find emulator " + repr(self.emulator.name)
             )
-        self.emulator.process = self.start_emulator(executable)
+        self.emulator.process = self.start_emulator(Executable(executable))
 
     def emulator_pid_file(self):
         return self.options[Option.EMULATOR_PID_FILE]
@@ -589,22 +580,6 @@ class GameDriver:
             root=self.temp_root, name=name, directory=False
         )
 
-    def start_emulator_from_plugin_resource(
-        self, provide_name, args=None, env_vars=None
-    ):
-        resource = self.fsgc.plugins.find_executable(provide_name)
-        if resource is None:
-            raise Exception("Could not find emulator " + repr(provide_name))
-        if env_vars is None:
-            env_vars = os.environ.copy()
-        # Set LD_LIBRARY_PATH for Linux plugins with bundled libraries
-        # EDIT: No longer doing, can cause problems for OpenGL drivers.
-        # Instead, use the standalone-linux.py script with rpath fixing.
-        # env_vars["LD_LIBRARY_PATH"] = os.path.dirname(resource.path)
-        return self.start_emulator(
-            "", args=args, env_vars=env_vars, executable=resource.path
-        )
-
     def set_environment_path(self, env, key, value):
         """Supports exporting paths with MBCS encoding as well on Windows."""
         env[key] = value
@@ -889,20 +864,6 @@ class GameDriver:
     def start_emulator(
         self, emulator, args=None, env_vars=None, executable=None, cwd=None
     ):
-        # if "/" in emulator:
-        #     if not executable:
-        #         executable = self.find_emulator_executable(emulator)
-        #     if not executable:
-        #         emulator = emulator.split("/")[-1]
-        #
-        # if not executable:
-        #     executable = self.find_emulator_executable("fs-" + emulator)
-        # if not executable:
-        #     executable = self.find_emulator_executable(emulator)
-        #
-        # if not executable:
-        #     raise Exception("could not find executable for " + emulator)
-
         args = []
         args.extend(self.emulator.args)
 
@@ -951,83 +912,6 @@ class GameDriver:
         process = emulator.popen(args, **kwargs)
         self.write_emulator_pid_file(self.emulator_pid_file(), process)
         return process
-
-    def find_emulator_executable(self, name):
-        # if os.path.isdir("../fs-uae/src"):
-        #     # running from source directory, we then want to find locally
-        #     # compiled binaries if available
-        #     path = "../fs-uae/fs-uae"
-        #     if System.windows:
-        #         path += ".exe"
-        #     if os.path.isfile(path):
-        #         return path
-        #     raise Exception("Could not find development FS-UAE executable")
-
-        if "/" in name:
-            package, name = name.split("/")
-        else:
-            package = name
-
-        if System.windows:
-            # first we check if the emulator is bundled inside the launcher
-            # directory
-            exe = os.path.join(fsboot.executable_dir(), package, name + ".exe")
-            if not os.path.exists(exe):
-                # for when the emulators are placed alongside the launcher /
-                # game center directory
-                exe = os.path.join(
-                    fsboot.executable_dir(), "..", package, name + ".exe"
-                )
-            if not os.path.exists(exe):
-                # when the emulators are placed alongside the fs-uae/ directory
-                # containing launcher/, for FS-UAE Launcher & FS-UAE Arcade
-                exe = os.path.join(
-                    fsboot.executable_dir(), "..", "..", package, name + ".exe"
-                )
-            if not os.path.exists(exe):
-                return None
-            return exe
-        elif System.macos:
-            exe = os.path.join(
-                fsboot.executable_dir(),
-                "..",
-                package + ".app",
-                "Contents",
-                "MacOS",
-                name,
-            )
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    fsboot.executable_dir(),
-                    "..",
-                    "..",
-                    "..",
-                    package + ".app",
-                    "Contents",
-                    "MacOS",
-                    name,
-                )
-            if not os.path.exists(exe):
-                exe = os.path.join(
-                    "/Applications",
-                    package + ".app",
-                    "Contents",
-                    "MacOS",
-                    name,
-                )
-            if not os.path.exists(exe):
-                return None
-            return exe
-
-        if os.path.exists("/opt/{0}/bin/{1}".format(package, name)):
-            return "/opt/{0}/bin/{1}".format(package, name)
-
-        if package == name:
-            for directory in os.environ["PATH"].split(":"):
-                path = os.path.join(directory, name)
-                if os.path.exists(path):
-                    return path
-        return None
 
     def get_game_refresh_rate(self):
         """Override in inherited classes to specify custom refresh rate."""
@@ -1263,14 +1147,14 @@ class TemporaryNamedItem:
 
 
 class Emulator:
-    def __init__(self, exe_name, name=None, path=None):
-        self.exe_name = exe_name
+    def __init__(self, name, path=None):
+        # self.exe_name = name
         self.name = name
         # Use a system install executable instad of plugin
         self.path = path
         self.args = []
         self.env = {}
-        self.process = None
+        self.process = None  # type: Union[Popen[str], None]
         self.allow_home_access = False
         # FIXME: Remove this, use path instead
         self.allow_system_emulator = False
