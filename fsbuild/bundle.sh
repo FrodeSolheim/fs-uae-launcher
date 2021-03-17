@@ -6,6 +6,7 @@ set -e
 
 mkdir -p $PLUGIN_BINDIR
 
+echo "Copying app..."
 if [ "$SYSTEM_OS" = "macOS" ]; then
 cp -a fsbuild/_build/pyinstaller/$PACKAGE_NAME.app \
     $PLUGIN_BINDIR/$PACKAGE_NAME_PRETTY.app
@@ -43,6 +44,7 @@ else
 cp -a fsbuild/_build/pyinstaller/$PACKAGE_NAME/* $PLUGIN_BINDIR/
 fi
 
+echo "Copying data files..."
 mkdir -p $PLUGIN_DATADIR/arcade
 cp -a ./arcade/res $PLUGIN_DATADIR/arcade/
 mkdir -p $PLUGIN_DATADIR/launcher
@@ -56,5 +58,15 @@ cp -a ./workspace/res $PLUGIN_DATADIR/workspace/
 
 PLUGIN_SKIP_APPIFY=1
 PLUGIN_SKIP_STANDALONE=1
+
+# echo "Removing unnecessary libraries from the bundle..."
+# if [ "$SYSTEM_OS" = "Windows" ]; then
+# sh fsbuild/bundle-clean-windows.sh $PLUGIN_BINDIR
+# elif [ "$SYSTEM_OS" = "macOS" ]; then
+# sh fsbuild/bundle-clean-macos.sh \
+#     $PLUGIN_BINDIR/$PACKAGE_NAME_PRETTY.app/Contents/MacOS
+# else
+# sh fsbuild/bundle-clean-linux.sh $PLUGIN_BINDIR
+# fi
 
 . fsbuild/plugin.post.sh

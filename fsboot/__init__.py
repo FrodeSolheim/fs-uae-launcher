@@ -1,11 +1,11 @@
 import ctypes
-import functools
 import getpass
 import logging
 import os
 import subprocess
 import sys
 import time
+from functools import lru_cache
 from typing import List
 
 
@@ -66,8 +66,9 @@ if "--logging" in sys.argv:
     sys.argv.remove("--logging")
 
 
-@functools.lru_cache()
+@lru_cache()
 def executable_dir():
+    """Returns the directory containing the executable (or main script)."""
     logger.debug("executable_dir")
     logger.debug("sys.executable = %s", sys.executable)
     if "python" in os.path.basename(sys.executable):
@@ -75,16 +76,43 @@ def executable_dir():
         # We do not want the directory of the (installed) python
         # interpreter, but rather the main application script.
         logger.debug("sys.argv[0] = %s", repr(sys.argv[0]))
-        path = os.path.dirname(sys.argv[0])
-        logger.debug("%s", repr(path))
-        path = os.path.join(os.getcwd(), path)
-        logger.debug("%s", repr(path))
-        path = os.path.normpath(path)
+        path = os.path.dirname( os.path.abspath(sys.argv[0]))
         logger.debug("%s", repr(path))
     else:
         path = os.path.dirname(sys.executable)
+    if not os.path.isabs(path):
+        logger.warning(
+            "WARNING: executable_dir %s is not absolute", repr(path)
+        )
+        print(
+            f"WARNING: executable_dir {repr(path)} is not absolute",
+            file=sys.stderr,
+        )
     logger.debug("executable_dir = %s", repr(path))
     return path
+
+
+@lru_cache()
+def app_dir():
+    """Returns the (absolute) directory containing the application.
+
+    This is the same as the executable_dir, except for macOS where the
+    directory containing the .app bundle is returned.
+    """
+    app_dir = executable_dir()
+    if is_macos() and is_frozen():
+        # Break out of .app/Contents/MacOS
+        app_dir = os.path.normpath(os.path.join(app_dir, "..", "..", ".."))
+    return app_dir
+
+
+@lru_cache()
+def plugin_dir():
+    """Returns the (absolute) directory containing the plugin (or None)."""
+    plugin_dir = os.path.join(app_dir(), "..", "..")
+    if os.path.exists(os.path.join(plugin_dir, "Plugin.ini")):
+        return plugin_dir
+    return None
 
 
 if sys.platform == "win32":
@@ -130,13 +158,13 @@ if sys.platform == "win32":
     _SHGetFolderPath.restype = err_unless_zero
 
 
-@functools.lru_cache()
+@lru_cache()
 def user_name():
     name = getpass.getuser()
     return name
 
 
-@functools.lru_cache()
+@lru_cache()
 def xdg_user_dir(name):
     try:
         process = subprocess.Popen(
@@ -150,7 +178,7 @@ def xdg_user_dir(name):
     return path
 
 
-@functools.lru_cache()
+@lru_cache()
 def home_dir():
     if sys.platform == "win32":
         path = csidl_dir(CSIDL_PROFILE)
@@ -161,7 +189,7 @@ def home_dir():
     return path
 
 
-@functools.lru_cache()
+@lru_cache()
 def documents_dir(create=False):
     if sys.platform == "win32":
         path = csidl_dir(CSIDL_PERSONAL)
@@ -182,7 +210,7 @@ def is_portable():
     return portable_dir() is not None
 
 
-@functools.lru_cache()
+@lru_cache()
 def portable_dir():
     path = executable_dir()
     last = ""
@@ -198,7 +226,7 @@ def portable_dir():
     return None
 
 
-@functools.lru_cache()
+@lru_cache()
 def common_data_dir(create=False):
     if sys.platform == "win32":
         path = csidl_dir(CSIDL_APPDATA)
@@ -213,12 +241,12 @@ def common_data_dir(create=False):
     return path
 
 
-@functools.lru_cache()
+@lru_cache()
 def app_data_dir(app):
     return os.path.join(common_data_dir(), app)
 
 
-@functools.lru_cache()
+@lru_cache()
 def app_config_dir(app):
     # if not app:
     #     app = get_app_id()
@@ -236,7 +264,7 @@ def app_config_dir(app):
     return path
 
 
-@functools.lru_cache()
+@lru_cache()
 def custom_path(name):
     if get("openretro") == "1":
         app_names = ["openretro"]
@@ -260,7 +288,7 @@ def custom_path(name):
     return path
 
 
-@functools.lru_cache()
+@lru_cache()
 def base_dir():
     logger.debug("Find base directory")
     for arg in sys.argv[1:]:
@@ -319,7 +347,7 @@ def base_dir():
     return path
 
 
-@functools.lru_cache()
+@lru_cache()
 def development():
     result = os.path.exists(os.path.join(executable_dir(), "setup.py"))
     logger.info("Development mode: %s", result)
@@ -424,16 +452,11 @@ class OverrideImporter(MetaPathFinder):
 
 
 def setup_python_path_frozen():
+    """Allow overriding code from Plugin/Python directory."""
     print("setup_python_path_frozen")
-    # global _plugin_code_override
     global _python_dir
-    # Break out of OS/Arch directories
-    path = os.path.join(executable_dir(), "..", "..")
-    if is_macos():
-        # Also break out of Contents/MacOS directories
-        path = os.path.join(path, "..", "..")
-    # Allow overriding code from Plugin/Python directory
-    python_dir = os.path.abspath(os.path.join(path, "Python"))
+    base_dir = plugin_dir() or app_dir()
+    python_dir = os.path.join(base_dir, "Python")
     print("Check", python_dir)
     if os.path.exists(python_dir):
         # sys.path.insert(0, python_dir)
@@ -441,10 +464,6 @@ def setup_python_path_frozen():
         _python_dir = python_dir
         sys.meta_path.insert(0, OverrideImporter())
         print("sys.meta_path", sys.meta_path)
-
-
-# _python_dir = "aaa"
-# sys.meta_path.insert(1, CustomImporter())
 
 
 def setup_python_path():
