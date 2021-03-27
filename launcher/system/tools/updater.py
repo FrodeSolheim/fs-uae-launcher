@@ -627,8 +627,8 @@ class UpdateTask(Task):
     def installUpdate(self, packageName):
         """Downloads and extracts package into `PackageName.next` directory"""
         if self.isLauncherUpdate(packageName):
-            log.info(f"Launcher update is not installed now (restart)")
-            self.setProgress(f"Launcher update is postponed for restart")
+            log.info("Launcher update is not installed now (restart)")
+            self.setProgress("Launcher update is postponed for restart")
             return False
         self.setProgress(f"Installing update for {packageName}")
         nextDir = self.getPackageNextDirectory(packageName)
@@ -647,7 +647,7 @@ class UpdateTask(Task):
                     break
                 # log.info("Removing directory {oldDir}")
                 # shutil.rmtree(oldDir)
-            log.info("Renaming directory {packageDir} -> {oldPackageDir}")
+            log.info(f"Renaming directory {packageDir} -> {oldPackageDir}")
             # FIXME: Try catch on this, if failing, tell user to restart the
             # Launcher instead?
             try:
@@ -663,7 +663,7 @@ class UpdateTask(Task):
             try:
                 shutil.rmtree(oldDir)
             except Exception:
-                log.exception("Failed to completely clean up {oldDir}")
-        log.info("Renaming directory {nextDir} -> {packageDir}")
+                log.exception(f"Failed to completely clean up {oldDir}")
+        log.info(f"Renaming directory {nextDir} -> {packageDir}")
         os.rename(nextDir, packageDir)
         return False

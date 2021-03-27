@@ -13,9 +13,21 @@ import subprocess
 log = logging.getLogger(__name__)
 
 
+outputDebugString = None
+
+def debug(message):
+    global outputDebugString
+    if sys.platform == "win32":
+        if outputDebugString is None:
+            import ctypes
+            outputDebugString = ctypes.windll.kernel32.OutputDebugStringW
+        outputDebugString(message)
+    print(message)
+
+
 def check_python_version():
     if sys.version_info[0] < 3 or sys.version_info[1] < 6:
-        print("You need at least Python 3.6 to run FS-UAE Launcher")
+        debug("You need at least Python 3.6 to run FS-UAE Launcher")
         sys.exit(1)
 
 
@@ -49,7 +61,8 @@ def setup_frozen_requests_ca_cert():
     data_dir = os.path.abspath(
         os.path.join(fsboot.executable_dir(), "..", "..", "Data")
     )
-    print(data_dir, os.path.exists(data_dir))
+    debug(data_dir)
+    debug(str(os.path.exists(data_dir)))
     if os.path.exists(data_dir):
         data_dirs.append(data_dir)
     else:
@@ -58,13 +71,14 @@ def setup_frozen_requests_ca_cert():
                 fsboot.executable_dir(), "..", "..", "..", "..", "..", "Data"
             )
         )
-        print(data_dir, os.path.exists(data_dir))
+        debug(data_dir)
+        debug(str(os.path.exists(data_dir)))
         if os.path.exists(data_dir):
             data_dirs.append(data_dir)
     for data_dir in data_dirs:
         path = os.path.join(data_dir, "cacert.pem")
         if os.path.exists(path):
-            print("[HTTP] Using {}".format(path))
+            debug("[HTTP] Using {}".format(path))
             os.environ["REQUESTS_CA_BUNDLE"] = path
             break
 
@@ -94,12 +108,12 @@ def cleanPluginOldDirectory(pluginDir) -> bool:
     if not os.path.exists(pluginOldDir):
         return True
     # Try to delete old dir, but do not fail if not successful
-    print(f"Delete {pluginOldDir}")
+    debug(f"Delete {pluginOldDir}")
     try:
         shutil.rmtree(pluginOldDir)
         return True
     except Exception:
-        print("Failed to completely clean up {pluginOldDir}")
+        debug(f"Failed to completely clean up {pluginOldDir}")
         log.exception("Failed to completely clean up {pluginOldDir}")
         return False
 
@@ -110,7 +124,7 @@ def cleanLauncherOldDirectory() -> bool:
 
 # FIXME: Move to update module
 def moveOldPluginDirectory(pluginDir) -> bool:
-    print("Move away old plugin directory {pluginDir}")
+    debug(f"Move away old plugin directory {pluginDir}")
     pluginOldDir = getPluginOldDirectory(pluginDir)
     if not os.path.exists(pluginOldDir):
         os.makedirs(pluginOldDir)
@@ -124,13 +138,13 @@ def moveOldPluginDirectory(pluginDir) -> bool:
             break
         # log.info("Removing directory {oldDir}")
         # shutil.rmtree(oldDir)
-    print("Renaming directory {packageDir} -> {oldPackageDir}")
+    debug(f"Renaming directory {pluginDir} -> {pluginOldNumberedDir}")
     # FIXME: Try catch on this, if failing, tell user to restart the
     # Launcher instead?
     try:
         os.rename(pluginDir, pluginOldNumberedDir)
     except Exception:
-        print("Could not move away old package")
+        debug("Could not move away old package")
         log.exception("Could not move away old package")
         # FIXME: Register that a restart is needed
         # self.setProgress(
@@ -157,10 +171,10 @@ def findLauncherExecutable(pluginDir):
     else:
         executable = os.path.join(binDir, exeName)
     if os.path.exists(executable):
-        print("Plugin launcher executable exists:", executable)
+        debug(f"Plugin launcher executable {executable} exists")
         return executable
     else:
-        print("Plugin launcher executable does not exist:", executable)
+        debug(f"Plugin launcher executable {executable} does not exist")
         return None
 
 
@@ -169,22 +183,23 @@ from configparser import ConfigParser
 
 
 def maybeRunNewerVersionFromPlugin():
+    pluginName = getLauncherPluginName()
     launcherDir = getLauncherPluginDirectory()
     launcherNextDir = f"{launcherDir}.next"
     if os.path.exists(launcherNextDir):
-        print(f"{launcherNextDir} exists")
+        debug(f"{launcherNextDir} exists")
         if os.path.exists(launcherDir):
-            print(f"{launcherDir} exists, move away")
+            debug(f"{launcherDir} exists, move away")
             if not moveOldPluginDirectory(launcherDir):
-                print("WARNING: Could not move {launcherDir}")
+                debug(f"WARNING: Could not move {launcherDir}")
 
         if os.path.exists(launcherDir):
             # Was not moved away
-            print("Cannot install update for {pluginName}")
+            debug(f"Cannot install update for {pluginName}")
             # FIXME: GUI warning?
-            log.warning("Cannot install update for {pluginName}")
+            log.warning(f"Cannot install update for {pluginName}")
         else:
-            print("Renaming directory {launcherNextDir} -> {launcherDir}")
+            debug(f"Renaming directory {launcherNextDir} -> {launcherDir}")
             os.rename(launcherNextDir, launcherDir)
 
     if os.path.exists(launcherDir):
@@ -195,26 +210,26 @@ def maybeRunNewerVersionFromPlugin():
         try:
             pluginVersion = Updater.getPluginVersionFromDirectory(launcherDir)
             if Version(pluginVersion) > Version(VERSION):
-                print(
+                debug(
                     f"Plugin version ({pluginVersion}) "
                     f"> running version ({VERSION})"
                 )
             else:
-                print(
+                debug(
                     f"Plugin version ({pluginVersion}) "
                     f"<= running version ({VERSION})"
                 )
-                print("Will continue using current executable")
+                debug("Will continue using current executable")
                 return False
         except Exception:
             traceback.print_exc()
-            print("Problem comparing Launcher version")
-            print("Will continue using current executable")
+            debug("Problem comparing Launcher version")
+            debug("Will continue using current executable")
             return False
 
         if fsboot.development():
-            print("Development mode, will not run plugin executable")
-            print("Will continue using current executable")
+            debug("Development mode, will not run plugin executable")
+            debug("Will continue using current executable")
             return False
 
         launcherExecutable = findLauncherExecutable(launcherDir)
@@ -227,7 +242,7 @@ def maybeRunNewerVersionFromPlugin():
 
         args = sys.argv.copy()
         args[0] = launcherExecutable
-        print("Running execv with args:", args)
+        debug(f"Running execv with args {repr(args)}")
         os.execv(args[0], args)
 
 
