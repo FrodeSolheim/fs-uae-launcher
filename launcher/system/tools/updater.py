@@ -42,44 +42,44 @@ log = logging.getLogger(__name__)
 #     format="%(levelname)s:%(name)s:%(funcName)s:%(message)s",
 # )
 
-logging.config.dictConfig(
-    {
-        "version": 1,
-        "formatters": {
-            "logformatter": {
-                # "format": "%(asctime)s:%(levelname)s:%(name)s:%(funcName)s:%(message)s",
-                # "format": "%(name)s:%(funcName)s:%(message)s",
-                "format": "%(message)s",
-            },
-            "traceformatter": {
-                # "format": "%(asctime)s:%(process)s:%(levelname)s:%(filename)s:"
-                # "%(lineno)s:%(name)s:%(funcName)s:%(message)s",
-                "format": "%(name)s:%(funcName)s:%(message)s",
-            },
-        },
-        "handlers": {
-            "loghandler": {
-                "class": "logging.FileHandler",
-                "level": logging.DEBUG,
-                "formatter": "logformatter",
-                "filename": "app.log",
-            },
-            "tracehandler": {
-                "class": "logging.StreamHandler",
-                "level": TRACE,
-                "formatter": "traceformatter",
-                "stream": sys.stdout,
-                # "filename": "trace.log",
-            },
-        },
-        "loggers": {
-            "launcher.system": {
-                "level": TRACE,
-                "handlers": ["tracehandler", "loghandler"],
-            },
-        },
-    }
-)
+# 'logging.config.dictConfig(
+#     {
+#         "version": 1,
+#         "formatters": {
+#             "logformatter": {
+#                 # "format": "%(asctime)s:%(levelname)s:%(name)s:%(funcName)s:%(message)s",
+#                 # "format": "%(name)s:%(funcName)s:%(message)s",
+#                 "format": "%(message)s",
+#             },
+#             "traceformatter": {
+#                 # "format": "%(asctime)s:%(process)s:%(levelname)s:%(filename)s:"
+#                 # "%(lineno)s:%(name)s:%(funcName)s:%(message)s",
+#                 "format": "%(name)s:%(funcName)s:%(message)s",
+#             },
+#         },
+#         "handlers": {
+#             "loghandler": {
+#                 "class": "logging.FileHandler",
+#                 "level": logging.DEBUG,
+#                 "formatter": "logformatter",
+#                 "filename": "app.log",
+#             },
+#             "tracehandler": {
+#                 "class": "logging.StreamHandler",
+#                 "level": TRACE,
+#                 "formatter": "traceformatter",
+#                 "stream": sys.stdout,
+#                 # "filename": "trace.log",
+#             },
+#         },
+#         "loggers": {
+#             "launcher.system": {
+#                 "level": TRACE,
+#                 "handlers": ["tracehandler", "loghandler"],
+#             },
+#         },
+#     }
+# )'
 
 
 @traced
