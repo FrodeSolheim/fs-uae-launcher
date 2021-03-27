@@ -626,10 +626,10 @@ class UpdateTask(Task):
 
     def installUpdate(self, packageName):
         """Downloads and extracts package into `PackageName.next` directory"""
-        if self.isLauncherUpdate(packageName):
-            log.info("Launcher update is not installed now (restart)")
-            self.setProgress("Launcher update is postponed for restart")
-            return False
+        # if self.isLauncherUpdate(packageName):
+        #     log.info("Launcher update is not installed now (restart)")
+        #     self.setProgress("Launcher update is postponed for restart")
+        #     return False
         self.setProgress(f"Installing update for {packageName}")
         nextDir = self.getPackageNextDirectory(packageName)
         packageDir = self.getPackageDirectory(packageName)
