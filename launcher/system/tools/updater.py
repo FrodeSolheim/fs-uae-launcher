@@ -147,7 +147,7 @@ class UpdaterWindow(Window):
                     style={"fontWeight": "bold"},
                 )
                 Label(gettext("Updates the Launcher and plugins for you"))
-            ImageView(fsui.Image("workspace:/data/48/password.png"))
+            ImageView(fsui.Image("workspace:/data/48/plugins.png"))
         self.textArea = TextArea(
             parent=self,
             readOnly=True,
@@ -221,9 +221,10 @@ class UpdaterWindow(Window):
             for update in updates:
                 systems = set()
                 for archive in update["archives"]:
-                    for osName in archive.get("operatingSystems", []):
-                        for archName in archive.get("architectures", []):
-                            systems.add(f"{osName}_{archName}")
+                    systems.update(archive["systems"])
+                    # for osName in archive.get("operatingSystems", []):
+                    #     for archName in archive.get("architectures", []):
+                    #         systems.add(f"{osName}_{archName}")
                     # operatingSystems.update(
                     #     archive.get("operatingSystems", [])
                     # )
