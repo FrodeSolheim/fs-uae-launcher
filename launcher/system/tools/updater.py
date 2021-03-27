@@ -640,7 +640,7 @@ class UpdateTask(Task):
     def installUpdate(self, packageName):
         """Installs package from `PackageName.next` to `PackageName`"""
         if self.isLauncherUpdate(packageName):
-            if System.isWindows():
+            if System.isWindows() or True:
                 return self.installUpdateWindows(packageName)
 
         # if self.isLauncherUpdate(packageName):
@@ -687,14 +687,24 @@ class UpdateTask(Task):
 
     def installUpdateWindows(self, packageName):
         self.setProgress(f"Installing update for {packageName}....")
+        try:
+            self.installUpdateWindows2(packageName)
+        except Exception as e:
+            self.setProgress(
+                f"WARNING: A failure occurred during installation of "
+                f"{packageName} and it may now be in an inconsistent state."
+            )
+            self.setProgress(
+                f"You should download and re-install {packageName} manually!")
+            self.setProgress(
+                "FIXME: Write about .next directory and manually moving it "
+                "into place. Also suggest to open Explorer for the user?")
+            raise e
+
+    def installUpdateWindows2(self, packageName):
         srcDir = self.getPackageNextDirectory(packageName)
         dstDir = self.getPackageDirectory(packageName)
-
         dstFileList = self.createFileList(dstDir)
-        # srcFileList = self.createFileList(srcDir)
-
-        # from pprint import pprint
-        # pprint(dstFileList)
 
         for dirPath, dirNames, fileNames in os.walk(srcDir):
             relativeDirPath = dirPath[len(srcDir) + 1 :]
