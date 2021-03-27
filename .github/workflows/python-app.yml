@@ -213,6 +213,7 @@ jobs:
         install: >-
           make
           dos2unix
+          tar
           zip
         path-type: inherit
         update: true
