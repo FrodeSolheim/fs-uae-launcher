@@ -185,22 +185,23 @@ from configparser import ConfigParser
 def maybeRunNewerVersionFromPlugin():
     pluginName = getLauncherPluginName()
     launcherDir = getLauncherPluginDirectory()
-    launcherNextDir = f"{launcherDir}.next"
-    if os.path.exists(launcherNextDir):
-        debug(f"{launcherNextDir} exists")
-        if os.path.exists(launcherDir):
-            debug(f"{launcherDir} exists, move away")
-            if not moveOldPluginDirectory(launcherDir):
-                debug(f"WARNING: Could not move {launcherDir}")
 
-        if os.path.exists(launcherDir):
-            # Was not moved away
-            debug(f"Cannot install update for {pluginName}")
-            # FIXME: GUI warning?
-            log.warning(f"Cannot install update for {pluginName}")
-        else:
-            debug(f"Renaming directory {launcherNextDir} -> {launcherDir}")
-            os.rename(launcherNextDir, launcherDir)
+    # launcherNextDir = f"{launcherDir}.next"
+    # if os.path.exists(launcherNextDir):
+    #     debug(f"{launcherNextDir} exists")
+    #     if os.path.exists(launcherDir):
+    #         debug(f"{launcherDir} exists, move away")
+    #         if not moveOldPluginDirectory(launcherDir):
+    #             debug(f"WARNING: Could not move {launcherDir}")
+
+    #     if os.path.exists(launcherDir):
+    #         # Was not moved away
+    #         debug(f"Cannot install update for {pluginName}")
+    #         # FIXME: GUI warning?
+    #         log.warning(f"Cannot install update for {pluginName}")
+    #     else:
+    #         debug(f"Renaming directory {launcherNextDir} -> {launcherDir}")
+    #         os.rename(launcherNextDir, launcherDir)
 
     if os.path.exists(launcherDir):
         # FIXME: Move to fscore.version?

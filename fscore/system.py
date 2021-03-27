@@ -62,3 +62,15 @@ class System:
         if is_x86_family():
             return "x86-64" if is_64_bit() else "x86"
         return "Unknown"
+
+    @classmethod
+    def isWindows(cls):
+        return cls.windows
+
+    @classmethod
+    def isLinux(cls):
+        return cls.linux
+
+    @classmethod
+    def isMacOS(cls):
+        return cls.macos

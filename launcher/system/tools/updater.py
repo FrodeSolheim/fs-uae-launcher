@@ -329,7 +329,14 @@ def findUpdates(availableUpdates):
         return System.getOperatingSystem()
 
     def getInstalledVersion(packageName) -> Optional[str]:
-        # return "1.0.0"
+        if packageName == Product.getLauncherPluginName():
+            if fsboot.development():
+                # We don't want the fake version number to confuse the
+                # updater in development mode.
+                pass
+            else:
+                from launcher.version import VERSION
+                return VERSION
         return Updater.getPluginVersion(packageName)
 
     def checkSystemRequirement(version, value):
@@ -431,21 +438,27 @@ class CheckForUpdatesTask(Task):
                             "systems": ["Linux_x86-64"],
                             "version": "4.0.53-dev",
                             "url": "https://github.com/FrodeSolheim/fs-uae-launcher/releases/download/v4.0.53-dev/FS-UAE-Launcher_4.0.53-dev_Linux_x86-64.tar.xz",
-                            "checksums": {"sha256": "0d88d9d622370c1dbf86aa0886d71df9c1a92b5ee9990dfe3ec0fd338c652890"},
+                            "checksums": {
+                                "sha256": "0d88d9d622370c1dbf86aa0886d71df9c1a92b5ee9990dfe3ec0fd338c652890"
+                            },
                         },
                         {
                             "branches": ["Master", "Stable", "Dev"],
                             "systems": ["macOS_x86-64"],
                             "version": "4.0.53-dev",
                             "url": "https://github.com/FrodeSolheim/fs-uae-launcher/releases/download/v4.0.53-dev/FS-UAE-Launcher_4.0.53-dev_Linux_x86-64.tar.xz",
-                            "checksums": {"sha256": "b636b370f2964028534a376c06b6c765cc8bb55a3607495c9a6adcb6276a4cd0"},
+                            "checksums": {
+                                "sha256": "b636b370f2964028534a376c06b6c765cc8bb55a3607495c9a6adcb6276a4cd0"
+                            },
                         },
                         {
                             "branches": ["Master", "Stable", "Dev"],
                             "systems": ["Windows_x86-64"],
                             "version": "4.0.53-dev",
                             "url": "https://github.com/FrodeSolheim/fs-uae-launcher/releases/download/v4.0.53-dev/FS-UAE-Launcher_4.0.53-dev_macOS_x86-64.tar.xz",
-                            "checksums": {"sha256": "9c792fdae2169fd7176d940e866bf19f64e96467934b47c9c04187614548512d"},
+                            "checksums": {
+                                "sha256": "9c792fdae2169fd7176d940e866bf19f64e96467934b47c9c04187614548512d"
+                            },
                         },
                     ]
                 },
@@ -625,14 +638,18 @@ class UpdateTask(Task):
         return packageName == Product.getLauncherPluginName()
 
     def installUpdate(self, packageName):
-        """Downloads and extracts package into `PackageName.next` directory"""
+        """Installs package from `PackageName.next` to `PackageName`"""
+        if self.isLauncherUpdate(packageName):
+            if System.isWindows():
+                return self.installUpdateWindows(packageName)
+
         # if self.isLauncherUpdate(packageName):
         #     log.info("Launcher update is not installed now (restart)")
         #     self.setProgress("Launcher update is postponed for restart")
         #     return False
         self.setProgress(f"Installing update for {packageName}")
-        nextDir = self.getPackageNextDirectory(packageName)
         packageDir = self.getPackageDirectory(packageName)
+        nextDir = self.getPackageNextDirectory(packageName)
         if os.path.exists(packageDir):
             oldDir = f"{packageDir}.old"
             if not os.path.exists(oldDir):
@@ -667,3 +684,99 @@ class UpdateTask(Task):
         log.info(f"Renaming directory {nextDir} -> {packageDir}")
         os.rename(nextDir, packageDir)
         return False
+
+    def installUpdateWindows(self, packageName):
+        self.setProgress(f"Installing update for {packageName}....")
+        srcDir = self.getPackageNextDirectory(packageName)
+        dstDir = self.getPackageDirectory(packageName)
+
+        dstFileList = self.createFileList(dstDir)
+        # srcFileList = self.createFileList(srcDir)
+
+        # from pprint import pprint
+        # pprint(dstFileList)
+
+        for dirPath, dirNames, fileNames in os.walk(srcDir):
+            relativeDirPath = dirPath[len(srcDir) + 1 :]
+            # print("relative", relativeDirPath)
+            for dirName in dirNames:
+                dstPath = os.path.join(dstDir, relativeDirPath, dirName)
+                print(f"Ensuring directory {dstPath}")
+                if not os.path.exists(dstPath):
+                    os.makedirs(dstPath)
+                try:
+                    dstFileList.remove(os.path.normcase(dstPath))
+                except ValueError:
+                    pass
+            for fileName in fileNames:
+                srcPath = os.path.join(srcDir, relativeDirPath, fileName)
+                dstPath = os.path.join(dstDir, relativeDirPath, fileName)
+                # path = os.path.normpath(os.path.join(dirPath, fileName))
+                # fileList.add(f"path/")
+                # fileList.append(path)
+                if os.path.exists(dstPath):
+                    self.removeOrRename(dstPath)
+                print(f"Copying -> {dstPath}")
+                shutil.copy(srcPath, dstPath)
+                try:
+                    dstFileList.remove(os.path.normcase(dstPath))
+                except ValueError:
+                    pass
+
+        print("Remaining entries", dstFileList)
+        for path in reversed(dstFileList):
+            print(f"File/dir is remaining: {path}")
+            if os.path.isfile(path):
+                try:
+                    self.removeOrRename(path)
+                except IOError:
+                    print(f"Failed to delete remaining file {path}")
+                    # FIXME: Register for future deletion?
+            if os.path.isdir(path):
+                try:
+                    print(f"Removing directory {path}")
+                    os.rmdir(path)
+                except IOError:
+                    print(f"Failed to delete remaining directory {path}")
+                    # FIXME: Register for future deletion?
+
+        # Finally, if successful, rename source directory
+        self.setProgress(f"Cleaning up...")
+        print(f"Deleting directory {srcDir} recursively...")
+        shutil.rmtree(srcDir)
+
+    def removeOrRename(self, path):
+        try:
+            print(f"Trying to remove file {path}")
+            os.remove(path)
+        except IOError:
+            print(f"Could not remove file {path}")
+            # If this does not work, an exception will be thrown
+            print(f"Trying to rename file {path}")
+            newPath = f"{path}.__del__"
+            k = 1
+            while os.path.exists(newPath):
+                k += 1
+                newPath = f"{path}.{k}.__del__"
+            os.rename(path, newPath)
+
+    def createFileList(self, dir):
+        # fileList = set()
+        # We use a list here to keep the order. When we delete remaining
+        # entries, we want to delete in reverse order so parent directories
+        # are deleted at the end.
+        fileList = []
+        for dirPath, dirNames, fileNames in os.walk(dir):
+            for dirName in dirNames:
+                path = os.path.normcase(
+                    os.path.normpath(os.path.join(dirPath, dirName))
+                )
+                # fileList.add(path)
+                fileList.append(path)
+            for fileName in fileNames:
+                path = os.path.normcase(
+                    os.path.normpath(os.path.join(dirPath, fileName))
+                )
+                # fileList.add(path)
+                fileList.append(path)
+        return fileList
