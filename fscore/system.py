@@ -18,8 +18,8 @@ def is_64_bit():
     return platform.architecture()[0] == "64bit"
 
 
-def is_x86_64():
-    if platform.machine().lower() in [
+def is_x86_family():
+    return platform.machine().lower() in [
         "x86_64",
         "x86-64",
         "amd64",
@@ -27,10 +27,11 @@ def is_x86_64():
         "i486",
         "i586",
         "i686",
-    ]:
-        return is_64_bit()
-    else:
-        return False
+    ]
+
+
+def is_x86_64():
+    return is_64_bit() and is_x86_family()
 
 
 class System:
@@ -41,9 +42,23 @@ class System:
 
     if linux:
         platform = "linux"
+        _operatingSystem = "Linux"
     elif macos:
         platform = "macos"
+        _operatingSystem = "macOS"
     elif windows:
         platform = "windows"
+        _operatingSystem = "Windows"
     else:
         platform = "unknown"
+        _operatingSystem = "Unknown"
+
+    @classmethod
+    def getOperatingSystem(cls):
+        return cls._operatingSystem
+
+    @classmethod
+    def getCpuArchitecture(cls):
+        if is_x86_family():
+            return "x86-64" if is_64_bit() else "x86"
+        return "Unknown"

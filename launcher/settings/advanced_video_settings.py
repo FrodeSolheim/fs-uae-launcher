@@ -2,11 +2,16 @@ import fsui
 from launcher.i18n import gettext
 from launcher.option import Option
 from launcher.settings.settings_page import SettingsPage
+from launcher.system.prefs.common.notworking import NotWorkingWarningPanel
 
 
 class AdvancedVideoSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
+
+        NotWorkingWarningPanel(parent=self)
+        self.layout.add_spacer(20)
+
         icon = fsui.Icon("video-settings", "pkg:workspace")
         gettext("Advanced Video Settings")
         title = gettext("Advanced Video")

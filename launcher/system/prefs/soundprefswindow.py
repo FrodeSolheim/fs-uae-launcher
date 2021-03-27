@@ -1,6 +1,6 @@
 from launcher.i18n import gettext
 from launcher.settings.audio_settings_page import AudioSettingsPage
-from launcher.system.prefs.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
 
 
 class SoundPrefsWindow(BasePrefsWindow):

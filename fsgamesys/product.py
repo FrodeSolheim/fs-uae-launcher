@@ -22,3 +22,7 @@ class Product:
     @classmethod
     def is_openretro(cls):
         return cls.base_name == "OpenRetro"
+
+    @classmethod
+    def getLauncherPluginName(cls):
+        return f"{cls.base_name}-Launcher"

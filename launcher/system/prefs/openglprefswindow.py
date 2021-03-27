@@ -1,8 +1,9 @@
 from fsgamesys.options.option import Option
 from fsui import MultiLineLabel
 from launcher.i18n import gettext
-from launcher.system.prefs.baseprefspanel import BasePrefsPanel
-from launcher.system.prefs.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.common.baseprefspanel import BasePrefsPanel
+from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.common.notworking import NotWorkingWarningPanel
 
 
 class OpenGLPrefsWindow(BasePrefsWindow):
@@ -18,6 +19,10 @@ class OpenGLPrefsPanel(BasePrefsPanel):
         # FIXME
         self.set_min_size((540, 100))
         self.layout.set_padding(20, 0, 20, 20)
+
+        self.layout.add_spacer(20)
+        NotWorkingWarningPanel(parent=self)
+        self.layout.add_spacer(10)
 
         self.add_option(Option.FSAA)
         self.add_option(Option.TEXTURE_FILTER)

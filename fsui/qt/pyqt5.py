@@ -67,3 +67,6 @@ from PyQt5.QtWidgets import (
     QTextEdit,
     QWidget,
 )
+
+# Needed for rxpy scheduler
+from PyQt5 import QtCore

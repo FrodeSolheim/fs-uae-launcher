@@ -89,7 +89,7 @@ class Window(TopLevelWidget):
 
     def __init__(
         self,
-        parent,
+        parent=None,
         title="",
         border=True,
         minimizable=True,

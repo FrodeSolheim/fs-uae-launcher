@@ -3,7 +3,7 @@ from fsgamesys.options.option import Option
 from fsui import MultiLineLabel, Panel
 from launcher.i18n import gettext
 from launcher.settings.option_ui import OptionUI
-from launcher.system.prefs.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
 from launcher.system.prefs.defaultprefsbutton import DefaultPrefsButton
 
 

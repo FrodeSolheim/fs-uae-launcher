@@ -21,7 +21,7 @@ class ScreenshotsPanel(BottomPanel):
         def get_min_width():
             return 0
 
-        # def get_min_height():
+        # def get_min_height(width):
         #     return Constants.SCREEN_SIZE[1] + 2 * BORDER
         self.layout.get_min_width = get_min_width
         # self.layout.get_min_height = get_min_height

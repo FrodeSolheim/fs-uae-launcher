@@ -128,23 +128,28 @@ specific game requires, so it installs all of them. The following kickstart
 ROM images must be present in your file database:
 
 SHA-1: `11f9e62cf299f72184835b7b2a70a16333fc0d88`, known as:
-- Kickstart v1.2 r33.180 (1986-10)(Commodore)(A500-A1000-A2000)[!].rom
-- kick33180.A500
+- `Kickstart v1.2 r33.180 (1986-10)(Commodore)(A500-A1000-A2000)[!].rom`
+- `kick33180.A500`
+- `amiga-os-120.rom` (Amiga Forever)
 
 SHA-1: `891e9a547772fe0c6c19b610baf8bc4ea7fcb785`, known as:
-- Kickstart v1.3 r34.005 (1987-12)(Commodore)(A500-A1000-A2000-CDTV)[!].rom
-- kick34005.A500
+- `Kickstart v1.3 r34.005 (1987-12)(Commodore)(A500-A1000-A2000-CDTV)[!].rom`
+- `kick34005.A500`
+- `amiga-os-130.rom` (Amiga Forever)
 
 SHA-1: `e21545723fe8374e91342617604f1b3d703094f1`, known as:
-- Kickstart v3.1 r40.068 (1993-12)(Commodore)(A1200)[!].rom
-- kick40068.A1200
+- `Kickstart v3.1 r40.068 (1993-12)(Commodore)(A1200)[!].rom`
+- `kick40068.A1200`
+- `amiga-os-310-a1200.rom` (Amiga Forever)
 
 SHA-1: `5fe04842d04a489720f0f4bb0e46948199406f49`, known as:
-- Kickstart v3.1 r40.068 (1993-12)(Commodore)(A4000)[!].rom
-- kick40068.A4000
+- `Kickstart v3.1 r40.068 (1993-12)(Commodore)(A4000)[!].rom`
+- `kick40068.A4000`
+- `amiga-os-310-a4000.rom` (Amiga Forever)
 
 If you do not have these kickstart ROM files, then you get these as part of
-Amiga Forever (at least the Plus edition).
+Amiga Forever (at least the Plus edition). See
+https://www.amigaforever.com/kb/15-120 for more information about relevant kickstart files included in the Amiga Forever package.
 
 ## Saving games
 

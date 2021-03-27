@@ -6,6 +6,7 @@ from fsui import PopupMenu
 from launcher.i18n import gettext
 from launcher.system.exceptionhandler import exceptionhandler
 from launcher.system.wsopen import wsopen
+from launcher.system.tools.updater import Updater
 
 # menu = fsui.PopupMenu()
 
@@ -89,6 +90,10 @@ class MainMenu(PopupMenu):
             self.add_item(gettext("Tools"), self.__on_tools)
             self.add_item(gettext("Utilities"), self.__on_utilities)
 
+        self.add_separator()
+        self.add_item(gettext("Check for updates..."), self.onCheckForUpdates)
+
+
         # self.add_item(gettext("Advanced"), self.__on_advanced_preferences)
         # self.add_item(gettext("Appearance"), self.__on_appearance_preferences)
         # self.add_item(gettext("WHDLoad"), self.__on_whdload_preferences)
@@ -99,6 +104,12 @@ class MainMenu(PopupMenu):
         #     gettext("About..."),
         #     self.__on_about,
         # )
+
+    def getWindow(self):
+        return self._parent_ref()
+
+    def onCheckForUpdates(self):
+        Updater.open(window=self.getWindow())
 
     def __on_about(self):
         print("on_about")
@@ -134,25 +145,25 @@ class MainMenu(PopupMenu):
         print(1 / 0)
 
     def __on_database_updater(self):
-        wsopen("SYS:Tools/DatabaseUpdater", window=self._parent_ref())
+        wsopen("SYS:Tools/DatabaseUpdater", window=self.getWindow())
 
     def __on_execute_command(self):
         wsopen("Special:Execute")
 
     def __on_file_scanner(self):
-        wsopen("SYS:Tools/FileScanner", window=self._parent_ref())
+        wsopen("SYS:Tools/FileScanner", window=self.getWindow())
 
     def __on_new_window(self):
         wsopen("SYS:Launcher")
 
     def __on_preferences(self):
-        wsopen("SYS:Prefs", window=self._parent_ref())
+        wsopen("SYS:Prefs", window=self.getWindow())
 
     def __on_tools(self):
-        wsopen("SYS:Tools", window=self._parent_ref())
+        wsopen("SYS:Tools", window=self.getWindow())
 
     def __on_utilities(self):
-        wsopen("SYS:Utilities", window=self._parent_ref())
+        wsopen("SYS:Utilities", window=self.getWindow())
 
     def __on_whdload_preferences(self):
-        wsopen("SYS:Prefs/WHDLoad", window=self._parent_ref())
+        wsopen("SYS:Prefs/WHDLoad", window=self.getWindow())

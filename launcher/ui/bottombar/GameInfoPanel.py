@@ -24,7 +24,7 @@ class GameInfoPanel(BottomPanel):
 
         self.layout = fsui.HorizontalLayout()
 
-        # def get_min_height():
+        # def get_min_height(width):
         #     return Constants.COVER_SIZE[1] + 2 * BORDER
         # self.layout.get_min_height = get_min_height
 

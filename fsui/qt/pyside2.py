@@ -67,3 +67,5 @@ from PySide2.QtWidgets import (
     QTextEdit,
     QWidget,
 )
+
+from PySide2 import QtCore

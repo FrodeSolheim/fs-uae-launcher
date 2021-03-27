@@ -41,6 +41,7 @@ from fsui.qt.textarea import TextArea
 from fsui.qt.textfield import PasswordField, TextField
 from fsui.qt.timer import IntervalTimer
 from fsui.qt.verticalitemview import VerticalItemView
+from fsui.qt.widget import Widget
 from fsui.qt.window import Window
 
 default_window_parent = []

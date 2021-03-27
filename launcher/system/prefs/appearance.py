@@ -1,3 +1,4 @@
+from launcher.system.classes.windowcache import WindowCache
 from fsgamesys.options.option import Option
 from fsui import (
     Color,
@@ -10,17 +11,28 @@ from fsui import (
 )
 from launcher.context import get_settings
 from launcher.i18n import gettext
-from launcher.system.prefs.baseprefspanel import BasePrefsPanel
-from launcher.system.prefs.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.common.baseprefspanel import BasePrefsPanel
+from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow, BasePrefsWindow2
 from launcher.system.prefs.defaultprefsbutton import DefaultPrefsButton
 from launcher.ui.IconButton import IconButton
 
 
-class AppearancePrefsWindow(BasePrefsWindow):
-    def __init__(self, parent):
-        super().__init__(parent, title=gettext("Appearance preferences"))
-        self.panel = AppearancePrefsPanel(self)
-        self.layout.add(self.panel, fill=True, expand=True)
+def wsopen(window=None, **kwargs):
+    WindowCache.open(AppearancePrefsWindow, centerOnWindow=window)
+
+
+class AppearancePrefsWindow(BasePrefsWindow2):
+    def __init__(self):
+        super().__init__(
+            gettext("Appearance preferences"), AppearancePrefsPanel
+        )
+
+
+# class AppearancePrefsWindow(BasePrefsWindow):
+#     def __init__(self, parent=None):
+#         super().__init__(parent, title=gettext("Appearance preferences"))
+#         self.panel = AppearancePrefsPanel(self)
+#         self.layout.add(self.panel, fill=True, expand=True)
 
 
 class ColorSettingIndicator(Panel):

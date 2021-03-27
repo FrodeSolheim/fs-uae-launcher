@@ -1,3 +1,4 @@
+from launcher.system.prefs.common.notworking import NotWorkingWarningPanel
 import fsui
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
@@ -14,6 +15,9 @@ class VideoSyncSettingsPage(SettingsPage):
             "Synchronize FS-UAE with your display for " "smooth video"
         )
         self.add_header(icon, title, subtitle)
+
+        NotWorkingWarningPanel(parent=self)
+        self.layout.add_spacer(20)
 
         label = fsui.MultiLineLabel(
             self,

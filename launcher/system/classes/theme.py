@@ -1,3 +1,4 @@
+from typing import Union
 import fsui
 from fsui import Color, Font
 from fsui.qt import QColor, QFont, QPalette, QStyleFactory
@@ -7,7 +8,7 @@ from launcher.launcher_settings import LauncherSettings
 
 
 def set_colors(
-    palette: QPalette, role, normal: QColor, disabled: QColor = None
+    palette: QPalette, role, normal: Union[QColor, str], disabled: Union[QColor, str] = None
 ):
     palette.setColor(role, QColor(normal))
     palette.setColor(QPalette.Disabled, role, QColor(disabled))
@@ -20,8 +21,10 @@ def initialize_qt_style(qapplication, theme):
     pa = QPalette()
     # background = QColor("#f6f5f4")
     # color = fsui.Color(0xAEAEAE).lighten(0.065)
-    color = fsui.Color(0xAEAEAE).lighten(0.05)
-    background = QColor(color.to_hex())
+
+    # color = fsui.Color(0xAEAEAE).lighten(0.05)
+    # background = QColor(color.to_hex())
+    background = QColor("#C2C2C2")
 
     text = "#000000"
     text_disabled = "#777777"

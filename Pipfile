@@ -23,6 +23,8 @@ pywin32-ctypes = "*"
 pyinstaller = "*"
 pefile = "*"
 macholib = "*"
+rx = "*"
+autologging = "*"
 
 [requires]
 python_version = "3.9"

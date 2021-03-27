@@ -22,7 +22,7 @@ def QParent(parent, window=False):
             # print("real_widget")
             return parent.real_widget()
     if hasattr(parent, "get_container"):
-        print("get_container")
+        # print("get_container")
         return parent.get_container()
     if isinstance(parent, QWidget):
         return parent

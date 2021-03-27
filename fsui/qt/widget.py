@@ -17,6 +17,7 @@ from fsui.qt.font import Font
 from fsui.qt.mouse import get_mouse_position
 from fsui.qt.signal import Signal
 
+# import fsui.qt.window
 
 # noinspection PyPep8Naming
 class Widget(QObject):
@@ -127,37 +128,130 @@ class Widget(QObject):
     def get_font(self):
         return self.font()
 
-    def get_min_height(self):
-        widget = getattr(self, "_widget", self)
-        assert isinstance(widget, QWidget)
-        height = 0
-        if hasattr(self, "min_height"):
-            if self.min_height:
-                height = max(self.min_height, height)
-        if hasattr(self, "layout") and isinstance(self.layout, Layout):
-            height = max(self.layout.get_min_height(), height)
-            return height
-        return max(height, widget.minimumSizeHint().height())
-        # return max(height, widget.minimumHeight())
+    def ideal_height(self, width):
+        return self.ideal_size_for_dimension(1, width=width)
 
-    def get_min_width(self):
+    def ideal_width(self):
+        return self.ideal_size_for_dimension(0)
+
+    def ideal_size(self):
+        width = self.ideal_width()
+        height = self.ideal_height(width)
+        return (width, height)
+
+    def ideal_size_for_dimension(self, d, width=None):
         widget = getattr(self, "_widget", self)
-        width = 0
-        if hasattr(self, "min_width"):
-            if self.min_width:
-                width = max(self.min_width, width)
+        size = 0
+
+        style = getattr(self, "style", {})
+        min_size = style.get("minWidth" if d == 0 else "minHeight")
+        max_size = style.get("maxWidth" if d == 0 else "maxHeight")
+        size = style.get("width" if d == 0 else "height")
+
+        if min_size is None:
+            min_size = getattr(self, "min_width" if d == 0 else "min_height", None)
+            # min_width = self.min_width
+
+        def clamp_size(size, min_size, max_size):
+            if max_size is not None:
+                size = min(size, max_size)
+            if min_size is not None:
+                size = max(size, min_size)
+            return size
+
+        if size is not None:
+            if max_size is not None:
+                size = min(size, max_size)
+            if min_size is not None:
+                size = max(size, min_size)
+            return clamp_size(size, min_size, max_size)
+
         if hasattr(self, "layout") and isinstance(self.layout, Layout):
-            width = max(self.layout.get_min_width(), width)
-            return width
+            if d == 0:
+                size = self.layout.get_min_width()
+            else:
+                size = self.layout.get_min_height(width)
+            # if hasattr(self, "style"):
+            if d == 0:
+                size += style.get("paddingLeft", 0) + style.get("paddingRight", 0)
+            else:
+                size += style.get("paddingTop", 0) + style.get("paddingBottom", 0)
+            # size = max(layout_size, size)
+            # return size
+            return clamp_size(size, min_size, max_size)
         # result = max(width, widget.minimumSizeHint().width())
         # if widget.maximumWidth():
         #     print(widget.maximumWidth())
         #     return min(result, widget.maximumWidth())
         # return min(result, widget.maximumWidth())
         # return result
-        result = max(width, widget.minimumSizeHint().width())
-        return min(result, widget.maximumWidth())
-        # return max(width, widget.minimumWidth())
+        if d == 0:
+            # result = max(size, widget.minimumSizeHint().width())
+            size = widget.minimumSizeHint().width()
+        else:
+            # result = max(size, widget.minimumSizeHint().height())
+            size = widget.minimumSizeHint().height()
+        # return min(result, widget.maximumWidth())
+        if max_size is not None:
+            size = min(size, max_size)
+        if min_size is not None:
+            size = max(size, min_size)
+        return clamp_size(size, min_size, max_size)
+
+    def get_min_height(self, width):
+        return self.ideal_size_for_dimension(1, width=width)
+        # widget = getattr(self, "_widget", self)
+        # assert isinstance(widget, QWidget)
+        # height = 0
+        # if hasattr(self, "min_height"):
+        #     if self.min_height:
+        #         height = max(self.min_height, height)
+        # if hasattr(self, "layout") and isinstance(self.layout, Layout):
+        #     layout_height = self.layout.get_min_height(width)
+            
+        #     if hasattr(self, "style"):
+        #         print(self, "layout_height", layout_height)
+        #         layout_height += self.style.padding_top + self.style.padding_bottom
+        #         # if self.style.padding_top or self.style.padding_bottom:
+        #         print("+ padding", self.style.padding_top, self.style.padding_bottom)
+        #     height = max( layout_height, height)
+        #     return height
+        # return max(height, widget.minimumSizeHint().height())
+        # # return max(height, widget.minimumHeight())
+
+    def get_min_width(self):
+        return self.ideal_size_for_dimension(0)
+        # widget = getattr(self, "_widget", self)
+        # width = 0
+
+        # style = getattr(self, "style", {})
+        # min_width = style.get("minWidth")
+        # max_width = style.get("maxWidth")
+        # width = style.get("width")
+
+        # if min_width is None and hasattr(self, "min_width"):
+        #     min_width = self.min_width
+
+        # if hasattr(self, "min_width"):
+        #     if self.min_width:
+        #         width = max(self.min_width, width)
+        # if hasattr(self, "width"):
+        #     pass
+        # if hasattr(self, "layout") and isinstance(self.layout, Layout):
+        #     layout_width = self.layout.get_min_width()
+        #     if hasattr(self, "style"):
+        #         layout_width += self.style.padding_left + self.style.padding_right
+        #     width = max(layout_width, width)
+        #     return width
+        # # result = max(width, widget.minimumSizeHint().width())
+        # # if widget.maximumWidth():
+        # #     print(widget.maximumWidth())
+        # #     return min(result, widget.maximumWidth())
+        # # return min(result, widget.maximumWidth())
+        # # return result
+        # result = max(width, widget.minimumSizeHint().width())
+        # return min(result, widget.maximumWidth())
+        # # return max(width, widget.minimumWidth())
 
     @deprecated
     def get_parent(self):
@@ -230,7 +324,16 @@ class Widget(QObject):
 
     def on_resize(self):
         if hasattr(self, "layout") and isinstance(self.layout, Layout):
-            self.layout.set_size(self.size())
+            if hasattr(self, "style"):
+                x = self.style.padding_left
+                y = self.style.padding_top
+                width, height = self.size()
+                width -= x + self.style.padding_right
+                height -= y + self.style.padding_bottom
+                self.layout.set_position((x, y))
+                self.layout.set_size((width, height))
+            else:
+                self.layout.set_size(self.size())
             self.layout.update()
         self.resized.emit()
 
@@ -396,5 +499,11 @@ class Widget(QObject):
         # noinspection PyCallingNonCallable
         return self._window()
 
+    def getWindow(self):
+        return self._window()
+
     def window_focus(self):
         return self.__window_focus
+
+
+# from fsui.qt.window import Window

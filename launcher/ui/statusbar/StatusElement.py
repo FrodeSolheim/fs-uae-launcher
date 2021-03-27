@@ -26,7 +26,7 @@ class StatusElement(Panel):
     def get_draw_operations(self):
         operations = []
         x = 0
-        h = self.get_min_height()
+        h = self.get_min_height(0)
         if self.icon:
             x += 6
             if self.active:
@@ -56,7 +56,7 @@ class StatusElement(Panel):
         operations.append(("null", None, x, 0))
         return operations
 
-    def get_min_height(self):
+    def get_min_height(self, width):
         return 28
 
     def get_min_width(self):

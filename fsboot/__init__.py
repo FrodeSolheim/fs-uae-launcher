@@ -288,6 +288,10 @@ def custom_path(name):
     return path
 
 
+def getBaseDirectory():
+    return base_dir()
+
+
 @lru_cache()
 def base_dir():
     logger.debug("Find base directory")
@@ -349,6 +353,9 @@ def base_dir():
 
 @lru_cache()
 def development():
+    # FIXME: Document option
+    if "--development-mode=0" in sys.argv:
+        return False
     result = os.path.exists(os.path.join(executable_dir(), "setup.py"))
     logger.info("Development mode: %s", result)
     return result

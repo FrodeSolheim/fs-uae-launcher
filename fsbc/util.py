@@ -37,7 +37,7 @@ def split_version(version_string: str) -> List[str]:
     pattern = re.compile(
         "^([0-9]{1,4})(?:\.([0-9]{1,4}))?"
         "(?:\.([0-9]{1,4}))?(?:\.([0-9]{1,4}))?"
-        "(~?[a-z0-9\.]*)?(?:[-_]([0-9]+))?$"
+        "([-~]?[a-z0-9\.]*)?(?:[-_]([0-9]+))?$"
     )
     m = pattern.match(version_string)
     if m is None:
@@ -45,7 +45,15 @@ def split_version(version_string: str) -> List[str]:
     return list(m.groups())
 
 
-class Version(object):
+class Version:
+    """
+    >>> Version("1.26.1.16-fs") == Version("1.26.1.16-fs")
+    True
+    >>> Version("1.26.1.16-fs") < Version("1.26.1.16-fs")
+    False
+    >>> Version("1.26.1.16-fs") > Version("1.26.1.16-fs")
+    False
+    """
     def __init__(self, version_string: str) -> None:
         self.string = version_string
         v = split_version(version_string)
@@ -77,11 +85,20 @@ class Version(object):
             mod_cmp = "~~" + mod_cmp
         return self.val, mod_cmp, self.release
 
+    def __eq__(self, other) -> bool:
+        return self.cmp_value() == other.cmp_value()
+
     def __lt__(self, other: "Version") -> bool:
         return self.cmp_value() < other.cmp_value()
 
+    def __le__(self, other: "Version") -> bool:
+        return self.cmp_value() <= other.cmp_value()
+
     def __gt__(self, other: "Version") -> bool:
         return self.cmp_value() > other.cmp_value()
+
+    def __ge__(self, other: "Version") -> bool:
+        return self.cmp_value() >= other.cmp_value()
 
     def __str__(self) -> str:
         return self.string
@@ -141,6 +158,8 @@ def compare_versions(a: Union[Version, str], b: Union[Version, str]):
     1
     >>> compare_versions("1.22.2fs0", "1.22.2")
     1
+    >>> compare_versions("1.26.1.16-fs", "1.26.1.16-fs")
+    0
     """
     # >>> compare_versions("2.6.0beta1", "2.6.0beta1.1")
     # -1

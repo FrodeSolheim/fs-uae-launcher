@@ -397,14 +397,26 @@ def vfs_prefs_entries():
             "name": "Advanced",
         },
         "advanced.info": {"name": "Advanced.info"},
+        "appearance": {
+            "name": "Appearance",
+        },
+        "appearance.info": {"name": "Appearance.info"},
         "controller": {
             "name": "Controller",
         },
         "controller.info": {"name": "Controller.info"},
+        "openretro": {
+            "name": "OpenRetro",
+        },
+        "openretro.info": {"name": "OpenRetro.info"},
         "privacy": {
             "name": "Privacy",
         },
         "privacy.info": {"name": "Privacy.info"},
+        "update": {
+            "name": "Update",
+        },
+        "update.info": {"name": "Update.info"},
     }
     if Product.is_fs_uae():
         result.update(
@@ -412,10 +424,7 @@ def vfs_prefs_entries():
                 # # self.iconview.add_icon(label="Input")
                 # # FIXME: Should be a tool or utility instead?
                 # # self.iconview.add_icon(label="Janitor")
-                "appearance": {
-                    "name": "Appearance",
-                },
-                "appearance.info": {"name": "Appearance.info"},
+
                 "arcade": {
                     "name": "Arcade",
                 },
@@ -462,10 +471,6 @@ def vfs_prefs_entries():
                     "name": "OpenGL",
                 },
                 "opengl.info": {"name": "OpenGL.info"},
-                "openretro": {
-                    "name": "OpenRetro",
-                },
-                "openretro.info": {"name": "OpenRetro.info"},
                 # "overscan": {"name": "Overscan",},
                 # "overscan.info": {"name": "Overscan.info"},
                 "platforms": vfs_platforms,

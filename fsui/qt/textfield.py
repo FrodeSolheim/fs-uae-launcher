@@ -18,6 +18,7 @@ class TextField(Widget):
         read_only=False,
         placeholder="",
         clearbutton=False,
+        passwordMode=False,
     ):
         super().__init__(parent, QLineEdit(text, QParent(parent)))
         # Widget.__init__(self, parent)
@@ -35,6 +36,8 @@ class TextField(Widget):
         self.changed = SignalWrapper(self, "changed")
         self.activated = SignalWrapper(self, "activated")
 
+        if passwordMode:
+            self._qwidget.setEchoMode(QLineEdit.Password)
         if placeholder:
             self._qwidget.setPlaceholderText(placeholder)
         if clearbutton:

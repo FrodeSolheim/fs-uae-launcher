@@ -65,7 +65,9 @@ class Layout(object):
     padding = property(get_padding, set_padding)
 
     def get_min_size(self):
-        return self.get_min_width(), self.get_min_height()
+        min_width = self.get_min_width()
+        min_height = self.get_min_height(min_width)
+        return min_width, min_height
 
     def insert(
         self,
@@ -215,9 +217,11 @@ class LinearLayout(Layout):
             if not child.element.visible():
                 continue
 
+            child_min_width = child.element.get_min_width()
+            child_min_height = child.element.get_min_height(child_min_width)
             child.min_size = [
-                child.element.get_min_width(),
-                child.element.get_min_height(),
+                child_min_width,
+                child_min_height,
             ]
 
             if child.expand < 0:
@@ -340,10 +344,10 @@ class HorizontalLayout(LinearLayout):
             return self.min_width
         return min_width
 
-    def get_min_height(self):
+    def get_min_height(self, width):
         min_height = 0
         for child in self.children:
-            h = child.element.get_min_height()
+            h = child.element.get_min_height(width)
             if child.fill == -1:
                 h = 0
             h += child.margin_top + child.margin_bottom
@@ -374,14 +378,14 @@ class VerticalLayout(LinearLayout):
             return self.min_width
         return min_width
 
-    def get_min_height(self):
+    def get_min_height(self, width):
         min_height = 0
         last_margin = 0
         for child in self.children:
             if hasattr(child.element, "explicitly_hidden"):
                 if child.element.explicitly_hidden():
                     continue
-            min_height += child.element.get_min_height()
+            min_height += child.element.get_min_height(width)
             min_height += max(last_margin, child.margin_top)
             last_margin = child.margin_bottom
         min_height += last_margin

@@ -136,7 +136,7 @@ class WindowHeader(fsui.Panel):
             self.layout.add(self.separator, fill=True)
 
     def height(self):
-        return self.layout.get_min_height()
+        return self.layout.get_min_height(0)
 
 
 class Window(fsui.Window):

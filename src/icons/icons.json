@@ -687,6 +687,20 @@
         ],
         "type": "glow"
     },
+    "data/Icons/System/Prefs/Update.png": {
+        "sources": [
+            "humanity/64/help-contents.svg",
+            "humanity/64/prefs-overlay.png"
+        ],
+        "type": "normal"
+    },
+    "data/Icons/System/Prefs/Update_Selected.png": {
+        "sources": [
+            "humanity/64/help-contents.svg",
+            "humanity/64/prefs-overlay.png"
+        ],
+        "type": "glow"
+    },
     "data/Icons/System/Prefs/Video.png": {
         "sources": [
             "humanity/64/video-display.svg",

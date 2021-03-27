@@ -2,7 +2,7 @@ import fsui
 from fsgamesys.options.option import Option
 from launcher.i18n import gettext
 from launcher.settings.settings_page import SettingsPage
-
+from launcher.system.prefs.common.notworking import NotWorkingWarningPanel
 
 class VideoSettingsPage(SettingsPage):
     def __init__(self, parent):
@@ -12,6 +12,8 @@ class VideoSettingsPage(SettingsPage):
         # title = gettext("Video")
         # subtitle = ""
         # self.add_header(icon, title, subtitle)
+        NotWorkingWarningPanel(parent=self)
+        self.layout.add_spacer(20)
 
         self.add_option("fullscreen", margin_top=0)
         self.add_option("monitor")

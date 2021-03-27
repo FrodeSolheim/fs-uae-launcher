@@ -25,7 +25,7 @@ class WebButton(Panel):
     def get_min_width(self):
         return 32
 
-    def get_min_height(self):
+    def get_min_height(self, width):
         return 24
 
     def get_url(self):

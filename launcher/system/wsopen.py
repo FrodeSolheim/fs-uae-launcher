@@ -1,8 +1,10 @@
+from typing import Dict
+from fsui import Window
 from launcher.system.c.whdload import WHDLoad
 from launcher.system.classes.executedialog import ExecuteDialog
 from launcher.system.exceptionhandler import exceptionhandler
 from launcher.system.prefs.advancedprefswindow import AdvancedPrefsWindow
-from launcher.system.prefs.appearanceprefswindow import AppearancePrefsWindow
+# from launcher.system.prefs.appearanceprefswindow import AppearancePrefsWindow
 from launcher.system.prefs.arcadeprefswindow import ArcadePrefsWindow
 from launcher.system.prefs.controllerprefswindow import ControllerPrefsWindow
 from launcher.system.prefs.directoryprefswindow import DirectoryPrefsWindow
@@ -19,7 +21,9 @@ from launcher.system.prefs.midiprefswindow import MidiPrefsWindow
 from launcher.system.prefs.mouseprefswindow import MousePrefsWindow
 from launcher.system.prefs.netplayprefswindow import NetPlayPrefsWindow
 from launcher.system.prefs.openglprefswindow import OpenGLPrefsWindow
-from launcher.system.prefs.openretroprefswindow import OpenRetroPrefsWindow
+from launcher.system.prefs.openretro.openretroprefswindow import (
+    OpenRetroPrefsWindow,
+)
 from launcher.system.prefs.overscanprefswindow import OverscanPrefsWindow
 from launcher.system.prefs.pluginprefswindow import PluginPrefsWindow
 from launcher.system.prefs.powerprefswindow import PowerPrefsWindow
@@ -77,7 +81,7 @@ SYSTEM_PREFS_WORKSPACE = "system:prefs/workspace"
 # restore correctly, but take into account new window dimension constraints
 # and monitors being removed (etc)
 
-window_registry = {}
+window_registry = {}  # type: Dict[str, Window]
 
 
 def simple_window_cache(window_class, window_key, window=None, parent=None):
@@ -157,9 +161,10 @@ def wsopen_shell(path, args=None, window=None, parent=None, **kwargs):
 
 def wsopen_prefs_window(name, *, window=None, parent=None):
     print("wsopen_prefs_window", name)
+
     window_class = {
         SYSTEM_PREFS_ADVANCED: AdvancedPrefsWindow,
-        SYSTEM_PREFS_APPEARANCE: AppearancePrefsWindow,
+        # SYSTEM_PREFS_APPEARANCE: AppearancePrefsWindow,
         SYSTEM_PREFS_ARCADE: ArcadePrefsWindow,
         SYSTEM_PREFS_CONTROLLER: ControllerPrefsWindow,
         # SYSTEM_PREFS_DIRECTORY: DirectoryPrefsWindow,
@@ -239,9 +244,6 @@ def wsopen(name, args=None, *, window=None, parent=None):
     elif name_lower.startswith("system:prefs/platforms"):
         return wsopen_prefs_window(name_lower, window=window)
 
-    elif name_lower.startswith("system:prefs/"):
-        return wsopen_prefs_window(name_lower, window=window)
-
     elif name_lower == "system:tools/calculator":
         simple_window_cache(CalculatorWindow, name_lower, window=window)
         return
@@ -272,6 +274,11 @@ def wsopen(name, args=None, *, window=None, parent=None):
         simple_window_cache(ExecuteDialog, name_lower, window=window)
         return
 
+    elif name_lower == "test:flexbox":
+        from launcher.experimental.flexbox.flexboxtestwindow import FlexboxTestWindow
+        simple_window_cache(FlexboxTestWindow, name_lower, window=window)
+        return
+
     elif shell_isdir(name_lower):
         return wsopen_shell(name_lower, **kwargs)
 
@@ -288,6 +295,24 @@ def wsopen(name, args=None, *, window=None, parent=None):
         else:
             if shell_isdir(name_lower[:-5]):
                 return wsopen_shell(name_lower[:-5], **kwargs)
+
+    elif name_lower.startswith("system:"):
+        try:
+            module_name = "launcher." + name_lower.replace(":", ".").replace("/", ".")
+            print("Try importing", module_name)
+            import importlib
+            module = importlib.import_module(module_name)
+        except ImportError:
+            pass
+        else:
+            print(module)
+            wsopen_function = getattr(module, "wsopen", None)
+            if callable(wsopen_function):
+                wsopen_function(window=window)
+            return
+
+    if name_lower.startswith("system:prefs/"):
+        return wsopen_prefs_window(name_lower, window=window)
 
     raise Exception("Could not open '{}' (Unrecognized)".format(name))
 

@@ -21,5 +21,5 @@ class Spacer(LightElement):
     def get_min_width(self):
         return self.width
 
-    def get_min_height(self):
+    def get_min_height(self, width):
         return self.height

@@ -1,8 +1,9 @@
+from launcher.system.prefs.common.notworking import NotWorkingWarningPanel
 from fsgamesys.options.option import Option
 from fsui import MultiLineLabel
 from launcher.i18n import gettext
-from launcher.system.prefs.baseprefspanel import BasePrefsPanel
-from launcher.system.prefs.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.common.baseprefspanel import BasePrefsPanel
+from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
 
 
 class LoggingPrefsWindow(BasePrefsWindow):
@@ -15,9 +16,10 @@ class LoggingPrefsWindow(BasePrefsWindow):
 class LoggingPrefsPanel(BasePrefsPanel):
     def __init__(self, parent):
         super().__init__(parent)
-        # FIXME
-        self.set_min_size((540, 100))
         self.layout.set_padding(20, 0, 20, 20)
+
+        self.layout.add_spacer(20)
+        NotWorkingWarningPanel(parent=self)
 
         label = MultiLineLabel(
             self,
@@ -26,7 +28,7 @@ class LoggingPrefsPanel(BasePrefsPanel):
                 "so only enable them when needed for testing or "
                 "debugging purposes."
             ),
-            640,
+            440,
         )
         self.layout.add(label, fill=True, margin_top=20)
 

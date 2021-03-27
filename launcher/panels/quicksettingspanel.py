@@ -198,7 +198,7 @@ class QuickSettingsPanel(fsui.Panel):
         if platform:
             PlatformSettingsDialog.open(self.window, platform)
 
-    def get_min_height(self):
+    def get_min_height(self, width):
         # Because we add a lot of controls, force min size to 0 to avoid
         # this control reporting too large min height at startup.
         return 0

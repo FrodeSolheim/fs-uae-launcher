@@ -48,6 +48,10 @@ def find_app(app):
         app = configure_launcher_app(
             "FS-Fuse", [Option.SPECTRUM_DATABASE], "spectrum", "#c46262"
         )
+    elif app in ["fs-mame-launcher", "fs-mame"]:
+        app = configure_launcher_app(
+            "FS-MAME", [Option.ARCADE_DATABASE], "arcade", "#c46262"
+        )
     elif app in ["openretro-launcher", "openretro"]:
         app = configure_launcher_app(
             "OpenRetro",

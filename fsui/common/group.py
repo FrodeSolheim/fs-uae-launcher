@@ -42,8 +42,8 @@ class Group(QObject):
     def get_min_width(self):
         return self.layout.get_min_width()
 
-    def get_min_height(self):
-        return self.layout.get_min_height()
+    def get_min_height(self, width):
+        return self.layout.get_min_height(width)
 
     def set_position(self, position):
         self.position = position

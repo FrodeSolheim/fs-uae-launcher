@@ -25,6 +25,7 @@ fs-uae-launcher_*
 /Launcher-*
 /Launcher_*
 Lib
+/*.log
 *.mo
 /.mypy_cache/
 *.pot

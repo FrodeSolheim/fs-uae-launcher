@@ -1,6 +1,6 @@
 from launcher.i18n import gettext
 from launcher.settings.video_settings_page import VideoSettingsPage
-from launcher.system.prefs.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
 
 
 class VideoPrefsWindow(BasePrefsWindow):

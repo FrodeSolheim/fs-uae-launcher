@@ -42,9 +42,15 @@ def retry(f):
                 return f(*args, **kwargs)
             except NonRetryableHTTPError as e:
                 raise e
+            except requests.HTTPError as e:
+                print("Got httperror", e)
+                if e.response.status_code in [400, 401, 403, 404]:
+                    raise e
+                print(repr(e))
             except Exception as e:
                 print(repr(e))
-                time.sleep(i * 0.5)
+            time.sleep(i * 0.5)
+
         return f(*args, **kwargs)
 
     return wrapper

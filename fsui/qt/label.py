@@ -51,19 +51,26 @@ class URLLabel(Label):
 
     def set_text(self, label):
         self._label = label
-        super().set_text(self._fix_label())
+        # super().set_text(self._fix_label())
+        self.update_text()
 
     def set_url(self, url):
         self._url = url
-        self.set_text(self._fix_label())
+        # self.set_text(self._fix_label())
+        self.update_text()
+
+    def update_text(self):
+        super().set_text(self._fix_label())
 
     def _fix_label(self):
         url = unquote_plus(self._url)
-        return '<a href="{0}">{1}</a>'.format(url, self._label)
+        fixed = '<a href="{0}">{1}</a>'.format(url, self._label)
+        print(fixed)
+        return fixed
 
-    def get_min_height(self):
+    def get_min_height(self, width):
         # because the underline seems to be cut off otherwise...
-        return super().get_min_height() + 1
+        return super().get_min_height(width) + 1
 
 
 class MultiLineLabel(Widget):
@@ -83,12 +90,13 @@ class MultiLineLabel(Widget):
     def set_text(self, label):
         self._qwidget.setText(label)
 
-    def get_min_height(self):
+    def get_min_height(self, width):
         # + 1 because of url underlines
         if hasattr(self, "min_width"):
             if self.min_width:
+                # FIXME: Use width...!
                 height = self._qwidget.heightForWidth(self.min_width) + 1
                 if hasattr(self, "min_height"):
                     return max(self.min_height, height)
                 return height
-        return super().get_min_height() + 1
+        return super().get_min_height(width) + 1

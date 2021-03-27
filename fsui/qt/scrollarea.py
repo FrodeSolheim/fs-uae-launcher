@@ -62,8 +62,9 @@ class ScrollArea(Widget):
 
     def on_resize(self):
         child = self.get_child()
-        height = child.get_min_height()
-        child.set_size((self._qwidget.viewport().width(), height))
+        width = self._qwidget.viewport().width()
+        height = child.get_min_height(width)
+        child.set_size((width, height))
 
     # @property
     # def size(self):
