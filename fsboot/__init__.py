@@ -355,7 +355,7 @@ def development():
     # FIXME: Document option
     if "--development-mode=0" in sys.argv:
         return False
-    result = os.path.exists(os.path.join(executable_dir(), "setup.py"))
+    result = os.path.exists(os.path.join(executable_dir(), "pyproject.toml"))
     logger.info("Development mode: %s", result)
     return result
 
