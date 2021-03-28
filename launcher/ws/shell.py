@@ -424,7 +424,6 @@ def vfs_prefs_entries():
                 # # self.iconview.add_icon(label="Input")
                 # # FIXME: Should be a tool or utility instead?
                 # # self.iconview.add_icon(label="Janitor")
-
                 "arcade": {
                     "name": "Arcade",
                 },
@@ -475,10 +474,10 @@ def vfs_prefs_entries():
                 # "overscan.info": {"name": "Overscan.info"},
                 "platforms": vfs_platforms,
                 "platforms.info": {"name": "Platforms.info"},
-                "plugin": {
-                    "name": "Plugin",
-                },
-                "plugin.info": {"name": "Plugin.info"},
+                # "plugin": {
+                #     "name": "Plugin",
+                # },
+                # "plugin.info": {"name": "Plugin.info"},
                 "power": {
                     "name": "Power",
                 },

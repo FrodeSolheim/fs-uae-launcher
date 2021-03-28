@@ -1,8 +1,7 @@
-from fscore.observable import Disposer, isObservable
-from launcher.experimental.flexbox.style import Style
 import fsui
-from launcher.experimental.flexbox.parentstack import ParentStack
-
+from fscore.observable import Disposer, isObservable
+from launcher.fswidgets2.parentstack import ParentStack
+from launcher.fswidgets2.style import Style
 
 # from weakref import WeakMethod
 

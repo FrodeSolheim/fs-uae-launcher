@@ -1,8 +1,8 @@
-from fscore.memoize import memoize
 import fsboot
+from fscore.memoize import memoize
+
 
 class Application:
-
     @staticmethod
     @memoize
     def executable_dir():

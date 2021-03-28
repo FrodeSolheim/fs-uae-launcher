@@ -1,18 +1,22 @@
-from fsui.common.layout import HorizontalLayout
-from launcher.system.special.logout import AsyncTaskRunner
 from fsgamesys.context import default_context
+from fsui import Button, Color, Label, Panel
+from fsui.common.layout import HorizontalLayout
 from launcher.helpers.implicitconfighandler import ImplicitConfigHandler
+from launcher.i18n import gettext
 from launcher.settings import get_launcher_window_title
 from launcher.system.classes.window import Window
 from launcher.system.classes.windowresizehandle import WindowResizeHandle
 from launcher.system.exceptionhandler import exceptionhandler
+from launcher.system.special.logout import AsyncTaskRunner
+from launcher.system.tools.updater import (
+    CheckForUpdatesTask,
+    Updater,
+    findUpdates,
+)
 from launcher.ui2.launcher2panel import Launcher2Panel
 from launcher.ui2.mainmenu import MainMenu
 from launcher.ui.imageloader import ImageLoader
 from launcher.version import VERSION
-from launcher.system.tools.updater import CheckForUpdatesTask, Updater, findUpdates
-from fsui import Button, Color, Label, Panel
-from launcher.i18n import gettext
 
 
 class UpdatesAvailablePanel(Panel):
@@ -49,7 +53,9 @@ class UpdatesAvailablePanel(Panel):
             (parentSize[0] - size[0], parentSize[1] - size[1]), size
         )
 
+
 from fscore.settings import Settings
+
 
 class Launcher2Window(Window):
     def __init__(self, parent):

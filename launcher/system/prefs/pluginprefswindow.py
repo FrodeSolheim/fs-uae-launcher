@@ -1,6 +1,6 @@
 from launcher.i18n import gettext
 from launcher.settings.plugins_settings_page import PluginsSettingsPage
-from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
 class PluginPrefsWindow(BasePrefsWindow):

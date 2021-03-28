@@ -1,7 +1,7 @@
 from fsgamesys.options.option import Option
 from launcher.i18n import gettext
-from launcher.system.prefs.common.baseprefspanel import BasePrefsPanel
-from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.components.baseprefspanel import BasePrefsPanel
+from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
 class PowerPrefsWindow(BasePrefsWindow):

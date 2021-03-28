@@ -1,5 +1,7 @@
 from autologging import traced
+
 from launcher.system.tools.updater import Updater
+
 
 # FIXME: Move updater here?
 @traced

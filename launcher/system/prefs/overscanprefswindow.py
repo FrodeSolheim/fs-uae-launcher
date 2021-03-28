@@ -1,6 +1,6 @@
 from fsui import Panel
 from launcher.i18n import gettext
-from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
 class OverscanPrefsWindow(BasePrefsWindow):

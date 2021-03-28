@@ -1,11 +1,12 @@
 import fsui
 from fsbc.application import app
+from fsui.context import get_theme
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.settings.override_warning import OptionWarning, OverrideWarning
 from launcher.system.classes.optionhelpbutton import OptionHelpButton
-from fsui.context import get_theme
+
 
 class OptionUI(object):
     @staticmethod
@@ -20,6 +21,7 @@ class OptionUI(object):
     def add_divider(parent, layout, top_margin=12, bottom_margin=12):
         # return
         import fsui
+
         panel = fsui.Panel(parent)
         panel.set_background_color(fsui.Color(0xA2A2A2))
         panel.set_min_height(1)

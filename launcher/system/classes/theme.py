@@ -1,4 +1,5 @@
 from typing import Union
+
 import fsui
 from fsui import Color, Font
 from fsui.qt import QColor, QFont, QPalette, QStyleFactory
@@ -8,7 +9,10 @@ from launcher.launcher_settings import LauncherSettings
 
 
 def set_colors(
-    palette: QPalette, role, normal: Union[QColor, str], disabled: Union[QColor, str] = None
+    palette: QPalette,
+    role,
+    normal: Union[QColor, str],
+    disabled: Union[QColor, str] = None,
 ):
     palette.setColor(role, QColor(normal))
     palette.setColor(QPalette.Disabled, role, QColor(disabled))

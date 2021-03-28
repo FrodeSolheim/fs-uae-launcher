@@ -156,7 +156,8 @@ class RatingChoice(Choice):
         super().__init__(parent, [], cursor_keys=False)
         with self.changed.inhibit:
             self.add_item(
-                gettext("Rate Variant"), Image("launcher:/data/16x16/bullet.png")
+                gettext("Rate Variant"),
+                Image("launcher:/data/16x16/bullet.png"),
             )
             self.add_item(
                 gettext("Best Variant"),

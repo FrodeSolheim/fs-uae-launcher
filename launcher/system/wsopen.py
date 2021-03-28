@@ -1,9 +1,11 @@
 from typing import Dict
+
 from fsui import Window
 from launcher.system.c.whdload import WHDLoad
 from launcher.system.classes.executedialog import ExecuteDialog
 from launcher.system.exceptionhandler import exceptionhandler
 from launcher.system.prefs.advancedprefswindow import AdvancedPrefsWindow
+
 # from launcher.system.prefs.appearanceprefswindow import AppearancePrefsWindow
 from launcher.system.prefs.arcadeprefswindow import ArcadePrefsWindow
 from launcher.system.prefs.controllerprefswindow import ControllerPrefsWindow
@@ -21,13 +23,13 @@ from launcher.system.prefs.midiprefswindow import MidiPrefsWindow
 from launcher.system.prefs.mouseprefswindow import MousePrefsWindow
 from launcher.system.prefs.netplayprefswindow import NetPlayPrefsWindow
 from launcher.system.prefs.openglprefswindow import OpenGLPrefsWindow
-from launcher.system.prefs.openretro.openretroprefswindow import (
-    OpenRetroPrefsWindow,
-)
+
+# from launcher.system.prefs.openretro.openretroprefswindow import (
+#     OpenRetroPrefsWindow,
+# )
 from launcher.system.prefs.overscanprefswindow import OverscanPrefsWindow
 from launcher.system.prefs.pluginprefswindow import PluginPrefsWindow
 from launcher.system.prefs.powerprefswindow import PowerPrefsWindow
-from launcher.system.prefs.privacyprefswindow import PrivacyPrefsWindow
 from launcher.system.prefs.screenmodeprefswindow import ScreenModePrefsWindow
 from launcher.system.prefs.soundprefswindow import SoundPrefsWindow
 from launcher.system.prefs.videoprefswindow import VideoPrefsWindow
@@ -69,7 +71,7 @@ SYSTEM_PREFS_OPENRETRO = "system:prefs/openretro"
 SYSTEM_PREFS_OVERSCAN = "system:prefs/overscan"
 SYSTEM_PREFS_PLUGIN = "system:prefs/plugin"
 SYSTEM_PREFS_POWER = "system:prefs/power"
-SYSTEM_PREFS_PRIVACY = "system:prefs/privacy"
+# SYSTEM_PREFS_PRIVACY = "system:prefs/privacy"
 SYSTEM_PREFS_SCREENMODE = "system:prefs/screenmode"
 SYSTEM_PREFS_SOUND = "system:prefs/sound"
 SYSTEM_PREFS_STORAGE = "system:prefs/storage"
@@ -177,11 +179,11 @@ def wsopen_prefs_window(name, *, window=None, parent=None):
         SYSTEM_PREFS_MOUSE: MousePrefsWindow,
         SYSTEM_PREFS_NETPLAY: NetPlayPrefsWindow,
         SYSTEM_PREFS_OPENGL: OpenGLPrefsWindow,
-        SYSTEM_PREFS_OPENRETRO: OpenRetroPrefsWindow,
+        # SYSTEM_PREFS_OPENRETRO: OpenRetroPrefsWindow,
         SYSTEM_PREFS_OVERSCAN: OverscanPrefsWindow,
         SYSTEM_PREFS_PLUGIN: PluginPrefsWindow,
         SYSTEM_PREFS_POWER: PowerPrefsWindow,
-        SYSTEM_PREFS_PRIVACY: PrivacyPrefsWindow,
+        # SYSTEM_PREFS_PRIVACY: PrivacyPrefsWindow,
         SYSTEM_PREFS_SCREENMODE: ScreenModePrefsWindow,
         SYSTEM_PREFS_SOUND: SoundPrefsWindow,
         SYSTEM_PREFS_STORAGE: DirectoryPrefsWindow,
@@ -275,7 +277,8 @@ def wsopen(name, args=None, *, window=None, parent=None):
         return
 
     elif name_lower == "test:flexbox":
-        from launcher.experimental.flexbox.flexboxtestwindow import FlexboxTestWindow
+        from launcher.fswidgets2.flexboxtestwindow import FlexboxTestWindow
+
         simple_window_cache(FlexboxTestWindow, name_lower, window=window)
         return
 
@@ -298,18 +301,25 @@ def wsopen(name, args=None, *, window=None, parent=None):
 
     elif name_lower.startswith("system:"):
         try:
-            module_name = "launcher." + name_lower.replace(":", ".").replace("/", ".")
+            module_name = "launcher." + name_lower.replace(":", ".").replace(
+                "/", "."
+            )
             print("Try importing", module_name)
             import importlib
+
             module = importlib.import_module(module_name)
         except ImportError:
             pass
         else:
             print(module)
+            WorkspaceObject = getattr(module, "WorkspaceObject", None)
+            if WorkspaceObject is not None:
+                WorkspaceObject.open(window=window)
+                return
             wsopen_function = getattr(module, "wsopen", None)
             if callable(wsopen_function):
                 wsopen_function(window=window)
-            return
+                return
 
     if name_lower.startswith("system:prefs/"):
         return wsopen_prefs_window(name_lower, window=window)

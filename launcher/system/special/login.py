@@ -1,33 +1,34 @@
-from launcher.experimental.flexbox.parentstack import ParentStack
-from launcher.experimental.flexbox.spacer import Spacer
-from launcher.experimental.flexbox.urllabel import UrlLabel
-from launcher.experimental.flexbox.texfield import TextField
-from launcher.system.classes.windowcache import WindowCache
 import fsui
 from fsbc.application import app
 from fsgamesys.ogd.client import OGDClient
-
-# from workspace.shell import SimpleApplication
-from launcher.res import gettext
-from launcher.ui.widgets import CloseButton
-from workspace.ui.theme import WorkspaceTheme
-from launcher.experimental.flexbox.button import Button
-from launcher.experimental.flexbox.label import Label
-from launcher.experimental.flexbox.imageview import ImageView
-from launcher.experimental.flexbox.window import Window
-from launcher.experimental.flexbox.flexcontainer import (
+from launcher.fswidgets2.button import Button
+from launcher.fswidgets2.flexcontainer import (
     FlexContainer,
     VerticalFlexContainer,
 )
+from launcher.fswidgets2.imageview import ImageView
+from launcher.fswidgets2.label import Label
+from launcher.fswidgets2.parentstack import ParentStack
+from launcher.fswidgets2.spacer import Spacer
+from launcher.fswidgets2.texfield import TextField
+from launcher.fswidgets2.urllabel import UrlLabel
+from launcher.fswidgets2.window import Window
+
+# from workspace.shell import SimpleApplication
+from launcher.res import gettext
+from launcher.system.classes.windowcache import WindowCache
+from launcher.ui.widgets import CloseButton
+from workspace.ui.theme import WorkspaceTheme
+
 
 def wsopen(window=None, **kwargs):
-    # window = OpenRetroPrefsWindow()
     WindowCache.open(LoginWindow, center_on_window=window)
 
 
 # FIXME: UrlLabels should be focusable and "clickable" with keyboard
 
 from fsui import Color, Panel
+
 
 class WidgetSizeSpinner(Panel):
     def __init__(self, visible=True):

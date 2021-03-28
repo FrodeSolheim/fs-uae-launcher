@@ -1,5 +1,4 @@
 import datetime
-from fsgamesys.platforms import PLATFORM_ID_SPECTRUM
 import hashlib
 import io
 import os
@@ -9,6 +8,7 @@ from fsgamesys.context import fsgs
 from fsgamesys.Database import Database
 from fsgamesys.filedatabase import FileDatabase
 from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.platforms import PLATFORM_ID_SPECTRUM
 from launcher.configuration_scanner import ConfigurationScanner
 from launcher.context import get_config
 from launcher.i18n import gettext

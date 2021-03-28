@@ -54,6 +54,7 @@ class Version:
     >>> Version("1.26.1.16-fs") > Version("1.26.1.16-fs")
     False
     """
+
     def __init__(self, version_string: str) -> None:
         self.string = version_string
         v = split_version(version_string)

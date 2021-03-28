@@ -1,10 +1,10 @@
-from fscore.applicationdata import ApplicationData
 import os
 
+from fscore.application import Application
+from fscore.applicationdata import ApplicationData
 from fsui import Color, Image, Panel, ScrollArea
 from launcher.ws.shell import shell_basename, shell_dirname, shell_icon
 from launcher.ws.wsiconwidget import WSIconWidget
-from fscore.application import Application
 
 
 class IconViewIconHolder:

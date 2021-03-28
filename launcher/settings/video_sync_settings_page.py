@@ -1,8 +1,10 @@
-from launcher.system.prefs.common.notworking import NotWorkingWarningPanel
 import fsui
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.settings.settings_page import SettingsPage
+from launcher.system.prefs.components.notworking import (
+    PrefsNotWorkingWarningPanel,
+)
 
 
 class VideoSyncSettingsPage(SettingsPage):
@@ -16,7 +18,7 @@ class VideoSyncSettingsPage(SettingsPage):
         )
         self.add_header(icon, title, subtitle)
 
-        NotWorkingWarningPanel(parent=self)
+        PrefsNotWorkingWarningPanel(parent=self)
         self.layout.add_spacer(20)
 
         label = fsui.MultiLineLabel(

@@ -1,7 +1,6 @@
 # noinspection SpellCheckingInspection
 from fsgamesys.amiga.amigaconstants import AmigaConstants
 
-
 workbench_file_map = {
     "00917f88e78770f6b28562bede2cf64718325553": [
         ("05049a78b6574d2701f1b4560157f0c547910aeb", "C/Type"),

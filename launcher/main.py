@@ -1,25 +1,26 @@
 #!/usr/bin/env python3
+import logging
 import os
+import shutil
+import subprocess
 import sys
 
 import fsboot
 import launcher.version
-
-import shutil
-import logging
 from fscore.system import System
-import subprocess
 
 log = logging.getLogger(__name__)
 
 
 outputDebugString = None
 
+
 def debug(message):
     global outputDebugString
     if sys.platform == "win32":
         if outputDebugString is None:
             import ctypes
+
             outputDebugString = ctypes.windll.kernel32.OutputDebugStringW
         outputDebugString(message)
     print(message)

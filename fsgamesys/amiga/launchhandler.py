@@ -1,4 +1,3 @@
-from fsgamesys.amiga.amigaconstants import AmigaConstants
 import hashlib
 import json
 import os
@@ -10,11 +9,12 @@ from typing import Dict, List
 from urllib.parse import unquote
 
 from fsbc.paths import Paths
-from fscore.resources import Resources
 from fsbc.task import TaskFailure, current_task
 from fsbc.util import is_sha1
+from fscore.resources import Resources
 from fsgamesys.amiga.adffileextractor import ADFFileExtractor
 from fsgamesys.amiga.amiga import Amiga
+from fsgamesys.amiga.amigaconstants import AmigaConstants
 from fsgamesys.amiga.configwriter import ConfigWriter
 from fsgamesys.amiga.fsuae import FSUAE
 from fsgamesys.amiga.rommanager import ROMManager
@@ -853,8 +853,6 @@ class LaunchHandler(object):
     #     name = os.path.basename(rel_path)
     #     self.on_progress(gettext("Downloading {0}...".format(name)))
     #     Downloader.install_file_by_sha1(sha1, name, abs_path)
-
-
 
     # COPIED TO installfiles
     def copy_setpatch(self, base_dir):

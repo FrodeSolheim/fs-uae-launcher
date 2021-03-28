@@ -2,6 +2,7 @@ import os
 from typing import IO
 
 from pkg_resources import resource_filename, resource_stream
+
 from fscore.applicationdata import ApplicationData
 
 # from .application import Application

@@ -1,6 +1,6 @@
 from launcher.i18n import gettext
 from launcher.settings.advanced_settings_page import AdvancedSettingsPage
-from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
 class AdvancedPrefsWindow(BasePrefsWindow):

@@ -1,9 +1,9 @@
+import hashlib
+import os
+from io import BytesIO
+
 from fsgamesys.amiga.adffileextractor import ADFFileExtractor
 from fsgamesys.amiga.amigaconstants import AmigaConstants
-import hashlib
-from io import BytesIO
-import os
-
 from fsgamesys.amiga.rommanager import ROMManager
 from fsgamesys.amiga.workbenchdata import workbench_disks_with_setpatch_39_6
 from fsgamesys.archive import Archive

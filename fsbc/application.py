@@ -141,7 +141,7 @@ class Application(object):
                 )
             else:
                 data_dirs.append(self.executable_dir())
-            
+
             # FIXME: Plugin/Data directory as well
         else:
             data_dirs.append(

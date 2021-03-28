@@ -1,7 +1,7 @@
-from fscore.observable import Disposer, isObservable
-from launcher.experimental.flexbox.style import Style
 import fsui
-from launcher.experimental.flexbox.parentstack import ParentStack
+from fscore.observable import Disposer, isObservable
+from launcher.fswidgets2.parentstack import ParentStack
+from launcher.fswidgets2.style import Style
 
 
 class Button(fsui.Button):
@@ -45,6 +45,6 @@ class Button(fsui.Button):
         return self.is_enabled()
 
     def get_min_height(self, width):
-        # FIXME: Default height if nothing else is specified. Implement via 
+        # FIXME: Default height if nothing else is specified. Implement via
         # default style?
         return 30

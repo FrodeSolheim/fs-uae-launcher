@@ -1,7 +1,7 @@
 import os
 
-from fsui import Color, Panel, Signal, get_window
 from fscore.applicationdata import ApplicationData
+from fsui import Color, Panel, Signal, get_window
 
 # FIXME: Maybe, for TitleBarButton in particular, we want to disable the
 # feature where you want keep the button pressed while returning to the widget,

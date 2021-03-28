@@ -2,7 +2,9 @@ import fsui
 from launcher.launcher_settings import LauncherSettings
 from launcher.res import gettext
 from launcher.settings.settings_page import SettingsPage
-from launcher.system.prefs.common.notworking import NotWorkingWarningPanel
+from launcher.system.prefs.components.notworking import (
+    PrefsNotWorkingWarningPanel,
+)
 
 
 class LanguageSettingsPage(SettingsPage):
@@ -13,7 +15,7 @@ class LanguageSettingsPage(SettingsPage):
         # subtitle = gettext("Set language for FS-UAE applications")
         # self.add_header(icon, title, subtitle)
 
-        NotWorkingWarningPanel(parent=self)
+        PrefsNotWorkingWarningPanel(parent=self)
         self.layout.add_spacer(20)
 
         hori_layout = fsui.HorizontalLayout()

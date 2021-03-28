@@ -1,6 +1,6 @@
 from launcher.i18n import gettext
 from launcher.settings.gamedatabasesettingspage import GameDatabaseSettingsPage
-from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
 class GameDatabasePrefsWindow(BasePrefsWindow):

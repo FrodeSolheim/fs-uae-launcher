@@ -8,4 +8,5 @@ class MainLoop:
     def schedule(cls, action: Callable):
         print("MainLoop.schedule", action)
         from fsui import call_after
+
         call_after(action)

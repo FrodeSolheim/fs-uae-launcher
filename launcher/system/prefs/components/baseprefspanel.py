@@ -5,6 +5,8 @@ from launcher.settings.option_ui import OptionUI
 class BasePrefsPanel(Panel):
     def __init__(self, parent):
         super().__init__(parent)
+
+        self.optionsOnPanel = set()
         # self.options_on_page = set()
 
     # def add_header(self, icon, title, subtitle=""):

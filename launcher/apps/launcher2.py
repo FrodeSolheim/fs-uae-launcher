@@ -3,11 +3,11 @@ import sys
 import traceback
 
 from fsboot import executable_dir
+from fscore.applicationdata import ApplicationData
 from fscore.settings import Settings
 from fsgamesys.options.constants import WORKSPACE_ON_STARTUP
 from fsui.qt import QFontDatabase, init_qt
 from launcher.context import get_global_theme
-from fscore.applicationdata import ApplicationData
 from launcher.launcherapp import LauncherApp
 from launcher.system.classes.theme import initialize_qt_style
 from launcher.system.exceptionhandler import (

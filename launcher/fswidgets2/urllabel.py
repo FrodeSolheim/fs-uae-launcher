@@ -1,6 +1,6 @@
-from launcher.experimental.flexbox.style import Style
 import fsui
-from launcher.experimental.flexbox.parentstack import ParentStack
+from launcher.fswidgets2.parentstack import ParentStack
+from launcher.fswidgets2.style import Style
 
 
 class UrlLabel(fsui.URLLabel):

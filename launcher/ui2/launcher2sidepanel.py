@@ -1,9 +1,9 @@
-from launcher.ui2.launcher2colors import Launcher2Colors
 from fsui import Choice, Color, HorizontalLayout, Label, Panel
 from fsui.context import get_window
 from launcher.panels.additionalconfigpanel import CustomConfigButton
 from launcher.system.classes.configdispatch import ConfigDispatch
 from launcher.ui2.frontcoverpanel import FrontCoverPanel
+from launcher.ui2.launcher2colors import Launcher2Colors
 from launcher.ui2.openretroeditbutton import OpenRetroEditButton
 from launcher.ui2.ratingchoice import RatingChoice
 from launcher.ui2.variantchoice import VariantChoice

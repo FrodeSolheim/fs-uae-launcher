@@ -1,26 +1,61 @@
-from typing import Callable, List
+import weakref
+from functools import wraps
+from typing import Any, Callable, Dict, List, TypeVar, cast
+from weakref import WeakMethod
+
+import fsui
 from fscore.observable import Disposable, Observable, mapOperator
-from launcher.experimental.flexbox.button import Button
-from launcher.experimental.flexbox.label import Label
-from launcher.experimental.flexbox.flexcontainer import FlexContainer
 from fsgamesys.platforms.platform import Platform
-from fsui import HorizontalLayout, MultiLineLabel
+from fsui import HorizontalLayout, MultiLineLabel, Window
+from launcher.fswidgets2.button import Button
+from launcher.fswidgets2.flexcontainer import (
+    FlexContainer,
+    Style,
+    VerticalFlexContainer,
+)
+from launcher.fswidgets2.flexlayout import FlexLayout
+from launcher.fswidgets2.label import Label
+from launcher.fswidgets2.parentstack import AsParent, ParentStack
 from launcher.i18n import gettext
+from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.settings.option_ui import OptionUI
 from launcher.settings.platformsettingsdialog import PlatformSettingsDialog
-from launcher.system.prefs.common.baseprefspanel import BasePrefsPanel
-from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
+from launcher.system.classes.shellobject import shellObject
+from launcher.system.classes.windowcache import WindowCache
+from launcher.system.classes.windowresizehandle import WindowResizeHandle
+from launcher.system.prefs.components.baseprefspanel import BasePrefsPanel
+from launcher.system.prefs.components.baseprefswindow import (
+    BasePrefsWindow,
+    BasePrefsWindow2,
+)
 from launcher.ui.IconButton import IconButton
-from launcher.experimental.flexbox.parentstack import AsParent, ParentStack
 
-# class FlexGrow():
-#     pass
+# F = TypeVar("F", bound=Callable[..., Any])
 
-import weakref
-from weakref import WeakMethod
 
-from launcher.launcher_settings import LauncherSettings
+# def constructor(function: F) -> F:
+#     @wraps(function)
+#     def wrapper(self, *args, **kwargs):
+#         ParentStack.push(self)
+#         try:
+#             return function(*args, **kwargs)
+#         finally:
+#             assert ParentStack.pop() == self
+
+#     return cast(F, wrapper)
+
+
+@shellObject
+class OpenRetroPrefs:
+    @staticmethod
+    def open(**kwargs):
+        WindowCache.open(OpenRetroPrefsWindow, **kwargs)
+
+
+class OpenRetroPrefsWindow(BasePrefsWindow2):
+    def __init__(self):
+        super().__init__("OpenRetro preferences", OpenRetroPrefsPanel)
 
 
 # class SettingsBehavior:
@@ -262,6 +297,7 @@ class LoginPanel(FlexContainer):
         print("Log in button")
         # LauncherSettings.set("database_username", "FooBar")
         from launcher.system.wsopen import wsopen
+
         wsopen("SYS:Special/Login", window=self.getWindow())
 
     def onLogOutButton(self):
@@ -272,6 +308,7 @@ class LoginPanel(FlexContainer):
         # else:
         #     LauncherSettings.set("database_username", "Foo")
         from launcher.system.wsopen import wsopen
+
         wsopen("SYS:Special/Logout", window=self.getWindow())
 
 

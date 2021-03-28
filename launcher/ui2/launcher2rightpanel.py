@@ -1,10 +1,10 @@
-from launcher.ui2.launcher2colors import Launcher2Colors
 from fsui import Color, HorizontalLayout, Panel, VerticalLayout
 
 # from launcher.ui2.launcher2runningpanel import Launcher2RunningPanel
 from launcher.system.classes.configdispatch import ConfigDispatch
 from launcher.ui2.configpanel import ConfigPanel
 from launcher.ui2.launcher2bottompanel import Launcher2BottomPanel
+from launcher.ui2.launcher2colors import Launcher2Colors
 from launcher.ui2.launcher2sidepanel import Launcher2SidePanel
 from launcher.ui2.launcher2toppanel import Launcher2TopPanel
 

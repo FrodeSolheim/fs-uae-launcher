@@ -1,38 +1,37 @@
-from fsgamesys.product import Product
-from fscore.system import System
+import hashlib
 import logging
 import logging.config
+import os
+import shutil
 import sys
+import tarfile
+import tempfile
 import time
+from configparser import ConfigParser
 from typing import Optional
-from fsbc.util import Version
-from launcher.system.prefs.update import UpdatePrefs
-from launcher.system.special.logout import AsyncTaskRunner, Task
 
+import requests
 from autologging import TRACE, traced
 
-import hashlib
 import fsui
-from launcher.experimental.flexbox.button import Button
-from launcher.experimental.flexbox.flexcontainer import (
+from fsbc.util import Version
+from fscore.system import System
+from fsgamesys.product import Product
+from launcher.fswidgets2.button import Button
+from launcher.fswidgets2.flexcontainer import (
     FlexContainer,
     VerticalFlexContainer,
 )
-from launcher.experimental.flexbox.imageview import ImageView
-from launcher.experimental.flexbox.label import Label
-from launcher.experimental.flexbox.window import Window
+from launcher.fswidgets2.imageview import ImageView
+from launcher.fswidgets2.label import Label
+from launcher.fswidgets2.spacer import Spacer
 from launcher.fswidgets2.textarea import TextArea
+from launcher.fswidgets2.window import Window
 from launcher.i18n import gettext
 from launcher.system.classes.windowcache import WindowCache
+from launcher.system.prefs.update import UpdatePrefs
 from launcher.system.special.login import WidgetSizeSpinner
-import logging
-import tempfile
-import requests
-import shutil
-import os
-import tarfile
-from launcher.experimental.flexbox.spacer import Spacer
-from configparser import ConfigParser
+from launcher.system.special.logout import AsyncTaskRunner, Task
 
 log = logging.getLogger(__name__)
 
@@ -336,6 +335,7 @@ def findUpdates(availableUpdates):
                 pass
             else:
                 from launcher.version import VERSION
+
                 return VERSION
         return Updater.getPluginVersion(packageName)
 
@@ -695,10 +695,12 @@ class UpdateTask(Task):
                 f"{packageName} and it may now be in an inconsistent state."
             )
             self.setProgress(
-                f"You should download and re-install {packageName} manually!")
+                f"You should download and re-install {packageName} manually!"
+            )
             self.setProgress(
                 "FIXME: Write about .next directory and manually moving it "
-                "into place. Also suggest to open Explorer for the user?")
+                "into place. Also suggest to open Explorer for the user?"
+            )
             raise e
 
     def installUpdateWindows2(self, packageName):

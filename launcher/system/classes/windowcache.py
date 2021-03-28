@@ -19,6 +19,7 @@ class WindowCache:
         cache_key: Optional[str] = None,
         center_on_window: Optional[Window] = None,
         centerOnWindow: Optional[Window] = None,
+        **kwargs
     ):
         cache_key_str = cache_key or repr(window_class)
         try:
@@ -45,5 +46,8 @@ class WindowCache:
 
         if centerOnWindow is not None:
             window.center_on_window(centerOnWindow)
+
+        if kwargs.get("window") is not None:
+            window.center_on_window(kwargs.get("window"))
 
         return window

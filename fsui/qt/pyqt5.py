@@ -2,6 +2,8 @@
 
 # noinspection PyUnresolvedReferences
 # noinspection PyUnresolvedReferences
+# Needed for rxpy scheduler
+from PyQt5 import QtCore
 from PyQt5.QtCore import (
     QAbstractListModel,
     QCoreApplication,
@@ -67,6 +69,3 @@ from PyQt5.QtWidgets import (
     QTextEdit,
     QWidget,
 )
-
-# Needed for rxpy scheduler
-from PyQt5 import QtCore

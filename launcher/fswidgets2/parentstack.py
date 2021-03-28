@@ -1,5 +1,7 @@
 from typing import List, Union
+
 from fsui import Widget
+
 
 class ParentStack:
     stack = []  # type: List[Union[Widget]]

@@ -5,8 +5,8 @@ from fsgamesys.product import Product
 from fsui import PopupMenu
 from launcher.i18n import gettext
 from launcher.system.exceptionhandler import exceptionhandler
-from launcher.system.wsopen import wsopen
 from launcher.system.tools.updater import Updater
+from launcher.system.wsopen import wsopen
 
 # menu = fsui.PopupMenu()
 
@@ -92,7 +92,6 @@ class MainMenu(PopupMenu):
 
         self.add_separator()
         self.add_item(gettext("Check for updates..."), self.onCheckForUpdates)
-
 
         # self.add_item(gettext("Advanced"), self.__on_advanced_preferences)
         # self.add_item(gettext("Appearance"), self.__on_appearance_preferences)

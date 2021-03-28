@@ -22,7 +22,7 @@ class SettingsPage(fsui.Panel):
         self.icon_header = SettingsHeader(self, icon, title, subtitle)
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
-    def add_divider(self): #, top_margin=10, bottom_margin=10):
+    def add_divider(self):  # , top_margin=10, bottom_margin=10):
         OptionUI.add_divider(
             self,
             self.layout,

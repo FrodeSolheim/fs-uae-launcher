@@ -149,7 +149,9 @@ class Widget(QObject):
         size = style.get("width" if d == 0 else "height")
 
         if min_size is None:
-            min_size = getattr(self, "min_width" if d == 0 else "min_height", None)
+            min_size = getattr(
+                self, "min_width" if d == 0 else "min_height", None
+            )
             # min_width = self.min_width
 
         def clamp_size(size, min_size, max_size):
@@ -173,9 +175,13 @@ class Widget(QObject):
                 size = self.layout.get_min_height(width)
             # if hasattr(self, "style"):
             if d == 0:
-                size += style.get("paddingLeft", 0) + style.get("paddingRight", 0)
+                size += style.get("paddingLeft", 0) + style.get(
+                    "paddingRight", 0
+                )
             else:
-                size += style.get("paddingTop", 0) + style.get("paddingBottom", 0)
+                size += style.get("paddingTop", 0) + style.get(
+                    "paddingBottom", 0
+                )
             # size = max(layout_size, size)
             # return size
             return clamp_size(size, min_size, max_size)
@@ -208,7 +214,7 @@ class Widget(QObject):
         #         height = max(self.min_height, height)
         # if hasattr(self, "layout") and isinstance(self.layout, Layout):
         #     layout_height = self.layout.get_min_height(width)
-            
+
         #     if hasattr(self, "style"):
         #         print(self, "layout_height", layout_height)
         #         layout_height += self.style.padding_top + self.style.padding_bottom
@@ -348,6 +354,9 @@ class Widget(QObject):
         pass
 
     def parent(self):
+        return self.getParent()
+
+    def getParent(self):
         if self._parent is None:
             return None
         # noinspection PyCallingNonCallable

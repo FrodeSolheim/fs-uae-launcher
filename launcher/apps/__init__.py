@@ -32,7 +32,9 @@ def configure_launcher_app(
     Product.default_platform_id = default_platform_id
 
     if default_titlebar_color is not None:
-        Settings.set_default("launcher_titlebar_bgcolor", default_titlebar_color)
+        Settings.set_default(
+            "launcher_titlebar_bgcolor", default_titlebar_color
+        )
     # Settings.set_default("launcher_titlebar_fgcolor", "#cccccc")
     import fsboot
 
@@ -59,7 +61,7 @@ def find_app(app):
             "amiga",
             # "#945ebe",
             # "#444444",
-            None
+            None,
         )
 
     if ":" in app:

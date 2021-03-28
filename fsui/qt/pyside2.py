@@ -2,6 +2,7 @@
 
 # noinspection PyUnresolvedReferences
 # noinspection PyUnresolvedReferences
+from PySide2 import QtCore
 from PySide2.QtCore import (
     QAbstractListModel,
     QCoreApplication,
@@ -67,5 +68,3 @@ from PySide2.QtWidgets import (
     QTextEdit,
     QWidget,
 )
-
-from PySide2 import QtCore

@@ -1,6 +1,6 @@
 from launcher.i18n import gettext
 from launcher.settings.keyboard_settings_page import KeyboardSettingsPage
-from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow
+from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
 class KeyboardPrefsWindow(BasePrefsWindow):

@@ -1,15 +1,17 @@
-from launcher.system.prefs.common.notworking import NotWorkingWarningPanel
 import fsui
 from launcher.i18n import gettext
 from launcher.option import Option
 from launcher.settings.settings_page import SettingsPage
+from launcher.system.prefs.components.notworking import (
+    PrefsNotWorkingWarningPanel,
+)
 
 
 class AudioSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
 
-        NotWorkingWarningPanel(parent=self)
+        PrefsNotWorkingWarningPanel(parent=self)
         self.layout.add_spacer(20)
 
         icon = fsui.Icon("audio-settings", "pkg:workspace")

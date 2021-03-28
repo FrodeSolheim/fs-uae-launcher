@@ -1,9 +1,8 @@
 import os
 
 from fsgamesys.filedatabase import FileDatabase
-from fsgamesys.util.gamenameutil import GameNameUtil
 from fsgamesys.product import Product
-
+from fsgamesys.util.gamenameutil import GameNameUtil
 from launcher.i18n import gettext
 
 

@@ -3,6 +3,7 @@
 import json
 import os
 
+
 def load_icons_json():
     print("Reading src/icons/icons.json")
     with open("src/icons/icons.json") as f:

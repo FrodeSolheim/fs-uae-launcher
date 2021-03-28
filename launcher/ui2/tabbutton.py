@@ -1,9 +1,10 @@
 from fsui import Color, Panel, Signal, VerticalLayout
 from fsui.context import get_theme
+from launcher.ui2.launcher2colors import Launcher2Colors
 
 # from launcher.ui.Constants import Constants
 from launcher.ui.skin import Skin
-from launcher.ui2.launcher2colors import Launcher2Colors
+
 
 class TabButton(Panel):
     activated = Signal()

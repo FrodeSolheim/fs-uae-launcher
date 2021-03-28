@@ -1,6 +1,8 @@
-from fsui.common.layout import Layout
 from typing import Literal, Tuple
+
 from autologging import traced
+
+from fsui.common.layout import Layout
 
 TOP = 0
 RIGHT = 1
@@ -167,7 +169,7 @@ class FlexLayout(Layout):
                 flex_basis + margin_start + margin_end
             )
             # if i > 0:
-            #     flex_basis_total_inc_margins 
+            #     flex_basis_total_inc_margins
 
             flex_grow_total += flex_grow
 

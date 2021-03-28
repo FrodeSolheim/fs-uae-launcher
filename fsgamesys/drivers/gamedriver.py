@@ -10,8 +10,8 @@ from typing import Union
 
 import fsboot
 from fsbc.application import Application
-from fscore.resources import Resources
 from fsbc.task import current_task
+from fscore.resources import Resources
 from fscore.system import System
 from fsgamesys.amiga.fsuae import FSUAE
 from fsgamesys.FSGSDirectories import FSGSDirectories
@@ -112,7 +112,9 @@ class GameDriver:
         self.files.install()
 
     def run(self):
-        executable = PluginExecutableFinder().find_executable(self.emulator.name)
+        executable = PluginExecutableFinder().find_executable(
+            self.emulator.name
+        )
         if executable is None:
             raise LookupError(
                 "Could not find emulator " + repr(self.emulator.name)
@@ -840,7 +842,9 @@ class GameDriver:
         if "left-overlay" in paths:
             with open(paths["left-overlay"], "wb") as f:
                 f.write(
-                    Resources("fsgamesys").stream("emu/left-overlay.png").read()
+                    Resources("fsgamesys")
+                    .stream("emu/left-overlay.png")
+                    .read()
                 )
             if env is not None:
                 env["FSGS_BEZEL_LEFT_OVERLAY"] = paths["left-overlay"]

@@ -1,10 +1,10 @@
-from fsgamesys.amiga.amigaconstants import AmigaConstants
 import hashlib
 import os
 from typing import Optional
 
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.amiga.amigaconfig import AmigaConfig
+from fsgamesys.amiga.amigaconstants import AmigaConstants
 from fsgamesys.amiga.config import Config
 from fsgamesys.amiga.launchhandler import (
     amiga_path_to_host_path,

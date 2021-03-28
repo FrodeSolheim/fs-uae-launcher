@@ -1,19 +1,39 @@
 from fsui import Button
 from launcher.context import get_settings
+from launcher.fswidgets2.parentstack import ParentStack
 from launcher.i18n import gettext
 
 
 class DefaultPrefsButton(Button):
-    def __init__(self, parent, *, options):
+    def __init__(self, parent=None, *, options=None):
+        autoParent = False
+        if parent is None:
+            parent = ParentStack.top()
+            autoParent = True
+
         super().__init__(parent, gettext("Reset to defaults"))
         self.activated.connect(self.__on_reset_to_defaults)
         settings = get_settings(self)
-        self.options = {option: settings.get(option) for option in options}
-        self.update_enabled_state()
 
         self.remove_listener = settings.add_listener(self)
         # FIXME: Implement
         # self.destroy.connect(settings.add_listener(self))
+        if autoParent:
+            parent.layout.add(self)
+
+        # Add automatically discovered settings
+        optionsOnPanel = None
+        while parent and optionsOnPanel is None:
+            parent = parent.getParent()
+            optionsOnPanel = getattr(parent, "optionsOnPanel", None)
+        options = options or []
+        if optionsOnPanel is not None:
+            options.extend(optionsOnPanel)
+            # for optionName in optionsOnPanel:
+            #     self.options[optionName] = settings.get(optionName)
+
+        self.options = {option: settings.get(option) for option in options}
+        self.update_enabled_state()
 
     def on_destroy(self):
         # self.remove_listener()

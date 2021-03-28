@@ -8,7 +8,6 @@ import time
 from functools import lru_cache
 from typing import List
 
-
 # The original argument list at boot time, before any modifications
 _argv = []  # type: List[str]
 
@@ -76,7 +75,7 @@ def executable_dir():
         # We do not want the directory of the (installed) python
         # interpreter, but rather the main application script.
         logger.debug("sys.argv[0] = %s", repr(sys.argv[0]))
-        path = os.path.dirname( os.path.abspath(sys.argv[0]))
+        path = os.path.dirname(os.path.abspath(sys.argv[0]))
         logger.debug("%s", repr(path))
     else:
         path = os.path.dirname(sys.executable)

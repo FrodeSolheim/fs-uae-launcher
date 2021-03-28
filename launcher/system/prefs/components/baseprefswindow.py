@@ -1,5 +1,5 @@
 # from launcher.system.classes.window import Window
-from launcher.experimental.flexbox.window import Window
+from launcher.fswidgets2.window import Window
 
 
 class BasePrefsWindow(Window):

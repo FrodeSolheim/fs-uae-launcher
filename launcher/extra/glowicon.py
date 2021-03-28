@@ -330,8 +330,6 @@ def main():
         overlay = None
     if os.path.isdir(path):
         process_icon_in_directory(path, overlay=overlay)
-   
-    
 
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-from launcher.system.classes.windowcache import WindowCache
 from fsgamesys.options.option import Option
 from fsui import (
     Color,
@@ -7,18 +6,29 @@ from fsui import (
     Label,
     Panel,
     TextField,
+    Window,
     get_window,
 )
 from launcher.context import get_settings
 from launcher.i18n import gettext
-from launcher.system.prefs.common.baseprefspanel import BasePrefsPanel
-from launcher.system.prefs.common.baseprefswindow import BasePrefsWindow, BasePrefsWindow2
-from launcher.system.prefs.defaultprefsbutton import DefaultPrefsButton
+from launcher.system.classes.shellobject import shellObject
+from launcher.system.classes.windowcache import WindowCache
+from launcher.system.prefs.components.baseprefspanel import BasePrefsPanel
+from launcher.system.prefs.components.baseprefswindow import (
+    BasePrefsWindow,
+    BasePrefsWindow2,
+)
+from launcher.system.prefs.components.defaultprefsbutton import (
+    DefaultPrefsButton,
+)
 from launcher.ui.IconButton import IconButton
 
 
-def wsopen(window=None, **kwargs):
-    WindowCache.open(AppearancePrefsWindow, centerOnWindow=window)
+@shellObject
+class AppearancePrefs:
+    @staticmethod
+    def open(**kwargs):
+        WindowCache.open(AppearancePrefsWindow, **kwargs)
 
 
 class AppearancePrefsWindow(BasePrefsWindow2):

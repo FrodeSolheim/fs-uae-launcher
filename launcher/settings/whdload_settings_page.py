@@ -5,7 +5,9 @@ from launcher.i18n import gettext
 from launcher.settings.settings_page import SettingsPage
 from launcher.system.classes.filepickerfield import FilePickerField
 from launcher.system.classes.optionhelpbutton import OptionHelpButton
-from launcher.system.prefs.defaultprefsbutton import DefaultPrefsButton
+from launcher.system.prefs.components.defaultprefsbutton import (
+    DefaultPrefsButton,
+)
 
 # TODO: Show warning symbol when whdload_path is not found
 # TODO: Show warning symbol when whdload_key_path is not found
@@ -71,10 +73,7 @@ class WHDLoadSettingsPage(SettingsPage):
             self,
             gettext("WHDLoad.key file"),
         )
-        self.layout.add(
-            label,
-            margin_top=10
-        )
+        self.layout.add(label, margin_top=10)
 
         horilayout = fsui.HorizontalLayout()
         self.layout.add(horilayout, fill=True, margin_top=6)
@@ -96,10 +95,7 @@ class WHDLoadSettingsPage(SettingsPage):
             self,
             gettext("Custom WHDLoad executable"),
         )
-        self.layout.add(
-            label,
-            margin_top=10
-        )
+        self.layout.add(label, margin_top=10)
 
         horilayout = fsui.HorizontalLayout()
         self.layout.add(horilayout, fill=True, margin_top=6)

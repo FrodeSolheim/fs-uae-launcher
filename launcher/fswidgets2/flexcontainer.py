@@ -1,7 +1,7 @@
-from launcher.experimental.flexbox.flexlayout import FlexLayout
 import fsui
-from launcher.experimental.flexbox.parentstack import ParentStack
-from launcher.experimental.flexbox.style import Style
+from launcher.fswidgets2.flexlayout import FlexLayout
+from launcher.fswidgets2.parentstack import ParentStack
+from launcher.fswidgets2.style import Style
 
 
 class FlexContainer(fsui.Panel):
@@ -23,9 +23,9 @@ class FlexContainer(fsui.Panel):
         #     raise Exception(f"Unsupported flexDirection {flex_direction}")
 
         # self.set_background_color(fsui.Color(0xff, 0x99, 0x99))
-        background_color = self.style.get("backgroundColor")
-        if background_color:
-            self.set_background_color(fsui.Color.from_hex(background_color))
+        backgroundColor = self.style.get("backgroundColor")
+        if backgroundColor:
+            self.set_background_color(fsui.Color.from_hex(backgroundColor))
         # if isinstance(parent, fsui.Window):
         parent.layout.add(self, fill=True, expand=True)
         # else:

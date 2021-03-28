@@ -1,8 +1,8 @@
-from launcher.experimental.flexbox.flexcontainer import FlexContainer
-from launcher.experimental.flexbox.label import Label
+from launcher.fswidgets2.flexcontainer import FlexContainer
+from launcher.fswidgets2.label import Label
 
 
-class NotWorkingWarningPanel(FlexContainer):
+class PrefsNotWorkingWarningPanel(FlexContainer):
     def __init__(self, parent=None):
         super().__init__(
             parent=parent, style={"backgroundColor": "#dddd99", "padding": 20}
