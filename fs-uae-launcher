@@ -39,8 +39,22 @@ import pkg_resources._vendor.six
 
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import PyQt5.sip
+
 import sentry_sdk.integrations
-import sentry_sdk.integrations._wsgi_common
+import sentry_sdk.integrations.argv
+import sentry_sdk.integrations.atexit
+import sentry_sdk.integrations.bottle
+import sentry_sdk.integrations.celery
+import sentry_sdk.integrations.dedupe
+import sentry_sdk.integrations.django
+import sentry_sdk.integrations.excepthook
+import sentry_sdk.integrations.falcon
+import sentry_sdk.integrations.flask
+import sentry_sdk.integrations.logging
+import sentry_sdk.integrations.modules
+import sentry_sdk.integrations.sanic
+import sentry_sdk.integrations.stdlib
+import sentry_sdk.integrations.threading
 
 # import sentry_sdk.integrations
 import sentry_sdk.integrations.aiohttp
@@ -54,9 +68,8 @@ import sentry_sdk.integrations.bottle
 import sentry_sdk.integrations.celery
 import sentry_sdk.integrations.chalice
 import sentry_sdk.integrations.dedupe
-import sentry_sdk.integrations.django
 import sentry_sdk.integrations.django.asgi
-
+import sentry_sdk.integrations.django
 # import sentry_sdk.integrations.django.middleware
 # import sentry_sdk.integrations.django.templates
 # import sentry_sdk.integrations.django.transactions
@@ -76,7 +89,6 @@ import sentry_sdk.integrations.rq
 import sentry_sdk.integrations.sanic
 import sentry_sdk.integrations.serverless
 import sentry_sdk.integrations.spark
-
 # import sentry_sdk.integrations.spark.spark_driver
 # import sentry_sdk.integrations.spark.spark_worker
 import sentry_sdk.integrations.sqlalchemy
@@ -84,4 +96,5 @@ import sentry_sdk.integrations.stdlib
 import sentry_sdk.integrations.threading
 import sentry_sdk.integrations.tornado
 import sentry_sdk.integrations.trytond
+import sentry_sdk.integrations._wsgi_common
 import sentry_sdk.integrations.wsgi

@@ -129,8 +129,3 @@ def normalize_path(path):
 
 # noinspection PyUnresolvedReferences
 from .user import get_home_dir
-
-# noinspection PyUnresolvedReferences
-# noinspection PyUnresolvedReferences
-# noinspection PyUnresolvedReferences
-from .util import Version, compare_versions, split_version

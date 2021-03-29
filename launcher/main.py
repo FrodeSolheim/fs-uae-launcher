@@ -8,6 +8,8 @@ import sys
 import fsboot
 import launcher.version
 from fscore.system import System
+from fsgamesys.product import Product
+from launcher.system.utilities.updater import Updater
 
 log = logging.getLogger(__name__)
 
@@ -82,10 +84,6 @@ def setup_frozen_requests_ca_cert():
             debug("[HTTP] Using {}".format(path))
             os.environ["REQUESTS_CA_BUNDLE"] = path
             break
-
-
-from fsgamesys.product import Product
-from launcher.system.tools.updater import Updater
 
 
 # FIXME: Move to update module?
@@ -206,7 +204,7 @@ def maybeRunNewerVersionFromPlugin():
 
     if os.path.exists(launcherDir):
         # FIXME: Move to fscore.version?
-        from fsbc.util import Version
+        from fscore.version import Version
         from launcher.version import VERSION
 
         try:
@@ -254,10 +252,13 @@ def main(*, app):
         sys.exit(0)
 
     # If successful, this call (using execv) will not return
-    maybeRunNewerVersionFromPlugin()
+    # FIXME: Problem using exec with PyQT on macOS (dual loaded QT libraries)
+    # FIXME: Exec does not work smoothly on Windows (new process does not
+    # replace current one, so synchronously waiting on the original does
+    # not work when it is replaced.
+    # maybeRunNewerVersionFromPlugin()
 
     cleanLauncherOldDirectory()
-    # sys.exit(0)
 
     check_python_version()
     setup_fsgs_pythonpath()

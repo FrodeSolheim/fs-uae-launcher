@@ -4,8 +4,9 @@ import traceback
 import requests
 
 from fsbc.application import Application
-from fsbc.util import compare_versions, unused
+from fsbc.util import unused
 from fscore.system import System
+from fscore.version import Version
 from fstd.desktop import open_url_in_browser
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
@@ -48,7 +49,7 @@ class UpdateManager:
         version_str = r.text.strip()
         print("Latest version available:", version_str)
         print("Current version:", VERSION)
-        result = compare_versions(version_str, VERSION)
+        result = Version.compare(version_str, VERSION)
         print("Update check result: ", result)
         if result > 0 and version_str != "9.9.9":
             web_url = "https://fs-uae.net/{0}/download/".format(cls.series())

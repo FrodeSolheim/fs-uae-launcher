@@ -1,10 +1,19 @@
 from fsui import Panel
 from launcher.i18n import gettext
+from launcher.system.classes.shellobject import shellObject
+from launcher.system.classes.windowcache import WindowCache
 from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
+@shellObject
+class Overscan:
+    @staticmethod
+    def open(**kwargs):
+        WindowCache.open(OverscanPrefsWindow, **kwargs)
+
+
 class OverscanPrefsWindow(BasePrefsWindow):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super().__init__(parent, title=gettext("Overscan preferences"))
         self.panel = OverscanPrefsPanel(self)
         self.layout.add(self.panel, fill=True, expand=True)

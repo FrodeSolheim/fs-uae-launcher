@@ -1,6 +1,8 @@
 from fsgamesys.options.option import Option
 from fsui import MultiLineLabel
 from launcher.i18n import gettext
+from launcher.system.classes.shellobject import shellObject
+from launcher.system.classes.windowcache import WindowCache
 from launcher.system.prefs.components.baseprefspanel import BasePrefsPanel
 from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 from launcher.system.prefs.components.notworking import (
@@ -8,8 +10,15 @@ from launcher.system.prefs.components.notworking import (
 )
 
 
+@shellObject
+class OpenGL:
+    @staticmethod
+    def open(**kwargs):
+        WindowCache.open(OpenGLPrefsWindow, **kwargs)
+
+
 class OpenGLPrefsWindow(BasePrefsWindow):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super().__init__(parent, title=gettext("OpenGL preferences"))
         self.panel = OpenGLPrefsPanel(self)
         self.layout.add(self.panel, fill=True, expand=True)

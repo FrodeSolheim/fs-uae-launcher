@@ -17,7 +17,7 @@ from launcher.translation import t
 
 
 @shellObject
-class UpdatePrefs:
+class Update:
     @staticmethod
     def open(**kwargs):
         WindowCache.open(UpdatePrefsWindow, **kwargs)

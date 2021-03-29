@@ -5,7 +5,7 @@ from fsgamesys.product import Product
 from fsui import PopupMenu
 from launcher.i18n import gettext
 from launcher.system.exceptionhandler import exceptionhandler
-from launcher.system.tools.updater import Updater
+from launcher.system.utilities.updater import Updater
 from launcher.system.wsopen import wsopen
 
 # menu = fsui.PopupMenu()
@@ -64,7 +64,7 @@ class MainMenu(PopupMenu):
             self.__on_file_scanner,
         )
         self.add_item(
-            gettext("Update game database..."),
+            gettext("Sync game database..."),
             self.__on_database_updater,
         )
 
@@ -85,13 +85,20 @@ class MainMenu(PopupMenu):
             )
             self.add_separator()
 
-        self.add_item(gettext("Preferences"), self.__on_preferences)
-        if Product.is_fs_uae():
-            self.add_item(gettext("Tools"), self.__on_tools)
-            self.add_item(gettext("Utilities"), self.__on_utilities)
+        # Utilities
+
+        # if Product.is_fs_uae():
+        #     self.add_item(gettext("Tools"), self.__on_tools)
+        #     # self.add_item(gettext("Utilities"), self.__on_utilities)
 
         self.add_separator()
+        self.add_item(gettext("Preferences"), self.__on_preferences)
+        self.add_item(gettext("Game controllers"), None)
+        self.add_separator()
+        self.add_item(gettext("Utilities"), self.__on_utilities)
         self.add_item(gettext("Check for updates..."), self.onCheckForUpdates)
+
+        # self.add_item(gettext("Check for updates..."), self.onCheckForUpdates)
 
         # self.add_item(gettext("Advanced"), self.__on_advanced_preferences)
         # self.add_item(gettext("Appearance"), self.__on_appearance_preferences)

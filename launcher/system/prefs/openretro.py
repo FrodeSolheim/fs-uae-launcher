@@ -47,7 +47,7 @@ from launcher.ui.IconButton import IconButton
 
 
 @shellObject
-class OpenRetroPrefs:
+class OpenRetro:
     @staticmethod
     def open(**kwargs):
         WindowCache.open(OpenRetroPrefsWindow, **kwargs)

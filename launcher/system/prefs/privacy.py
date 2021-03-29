@@ -5,6 +5,7 @@ from launcher.fswidgets2.flexcontainer import (
     VerticalFlexContainer,
 )
 from launcher.fswidgets2.panel import Panel
+from launcher.fswidgets2.text import Text
 from launcher.system.classes.shellobject import shellObject
 from launcher.system.classes.windowcache import WindowCache
 from launcher.system.prefs.components.baseprefspanel import BasePrefsPanel
@@ -19,7 +20,7 @@ from launcher.translation import t
 
 
 @shellObject
-class UpdatePrefs:
+class Privacy:
     @staticmethod
     def open(**kwargs):
         WindowCache.open(PrivacyPrefsWindow, **kwargs)
@@ -45,9 +46,12 @@ class PrivacyPrefsPanel(BasePrefsPanel):
                 description=t(
                     "When disabled, do not try to do anything over network "
                     "including version checks, automatic downloads, etc. "
-                    "FIXME: Not implemented everywhere in the app yet!"
                 ),
             ).disable()
+            Text(
+                "FIXME: Off-line mode is not fully implemented yet!",
+                style={"margin": 10},
+            )
             PrefsDivider()
             AutomaticVersionCheck()
             PrefsDivider()
@@ -60,6 +64,10 @@ class PrivacyPrefsPanel(BasePrefsPanel):
                     "to respect your privacy, but please consider enabling it "
                     "to help the developer detect and fix bugs."
                 ),
+            ).disable()
+            Text(
+                "FIXME: Automatic error reporting is currently always on!",
+                style={"margin": 10},
             )
             PrefsDivider()
             PrefsControl(

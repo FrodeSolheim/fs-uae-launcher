@@ -4,37 +4,36 @@ from fsui import Window
 from launcher.system.c.whdload import WHDLoad
 from launcher.system.classes.executedialog import ExecuteDialog
 from launcher.system.exceptionhandler import exceptionhandler
-from launcher.system.prefs.advancedprefswindow import AdvancedPrefsWindow
 
+# from launcher.system.prefs.advancedprefswindow import AdvancedPrefsWindow
 # from launcher.system.prefs.appearanceprefswindow import AppearancePrefsWindow
-from launcher.system.prefs.arcadeprefswindow import ArcadePrefsWindow
-from launcher.system.prefs.controllerprefswindow import ControllerPrefsWindow
-from launcher.system.prefs.directoryprefswindow import DirectoryPrefsWindow
-from launcher.system.prefs.filedatabaseprefswindow import (
-    FileDatabasePrefsWindow,
-)
-from launcher.system.prefs.gamedatabaseprefswindow import (
-    GameDatabasePrefsWindow,
-)
-from launcher.system.prefs.keyboardprefswindow import KeyboardPrefsWindow
-from launcher.system.prefs.localeprefswindow import LocalePrefsWindow
-from launcher.system.prefs.loggingprefswindow import LoggingPrefsWindow
-from launcher.system.prefs.midiprefswindow import MidiPrefsWindow
-from launcher.system.prefs.mouseprefswindow import MousePrefsWindow
-from launcher.system.prefs.netplayprefswindow import NetPlayPrefsWindow
-from launcher.system.prefs.openglprefswindow import OpenGLPrefsWindow
-
+# from launcher.system.prefs.arcadeprefswindow import ArcadePrefsWindow
+# from launcher.system.prefs.controllerprefswindow import ControllerPrefsWindow
+# from launcher.system.prefs.directoryprefswindow import DirectoryPrefsWindow
+# from launcher.system.prefs.filedatabaseprefswindow import (
+#     FileDatabasePrefsWindow,
+# )
+# from launcher.system.prefs.gamedatabaseprefswindow import (
+#     GameDatabasePrefsWindow,
+# )
+# from launcher.system.prefs.keyboardprefswindow import KeyboardPrefsWindow
+# from launcher.system.prefs.localeprefswindow import LocalePrefsWindow
+# from launcher.system.prefs.loggingprefswindow import LoggingPrefsWindow
+# from launcher.system.prefs.midiprefswindow import MidiPrefsWindow
+# from launcher.system.prefs.mouseprefswindow import MousePrefsWindow
+# from launcher.system.prefs.netplayprefswindow import NetPlayPrefsWindow
+# from launcher.system.prefs.openglprefswindow import OpenGLPrefsWindow
 # from launcher.system.prefs.openretro.openretroprefswindow import (
 #     OpenRetroPrefsWindow,
 # )
-from launcher.system.prefs.overscanprefswindow import OverscanPrefsWindow
-from launcher.system.prefs.pluginprefswindow import PluginPrefsWindow
-from launcher.system.prefs.powerprefswindow import PowerPrefsWindow
-from launcher.system.prefs.screenmodeprefswindow import ScreenModePrefsWindow
-from launcher.system.prefs.soundprefswindow import SoundPrefsWindow
-from launcher.system.prefs.videoprefswindow import VideoPrefsWindow
-from launcher.system.prefs.whdloadprefswindow import WHDLoadPrefsWindow
-from launcher.system.prefs.workspaceprefswindow import WorkspacePrefsWindow
+# from launcher.system.prefs.overscanprefswindow import OverscanPrefsWindow
+# from launcher.system.prefs.pluginprefswindow import PluginPrefsWindow
+# from launcher.system.prefs.powerprefswindow import PowerPrefsWindow
+# from launcher.system.prefs.screenmodeprefswindow import ScreenModePrefsWindow
+# from launcher.system.prefs.soundprefswindow import SoundPrefsWindow
+# from launcher.system.prefs.videoprefswindow import VideoPrefsWindow
+# from launcher.system.prefs.whdloadprefswindow import WHDLoadPrefsWindow
+# from launcher.system.prefs.workspaceprefswindow import WorkspacePrefsWindow
 from launcher.system.tools.calculator import CalculatorWindow
 from launcher.system.tools.databaseupdater import DatabaseUpdaterWindow
 from launcher.system.tools.filescanner import FileScannerWindow
@@ -161,37 +160,37 @@ def wsopen_shell(path, args=None, window=None, parent=None, **kwargs):
     simple_window_cache(ShellWindowWrapper, path, window=window, parent=parent)
 
 
-def wsopen_prefs_window(name, *, window=None, parent=None):
-    print("wsopen_prefs_window", name)
+# def wsopen_prefs_window(name, *, window=None, parent=None):
+#     print("wsopen_prefs_window", name)
 
-    window_class = {
-        SYSTEM_PREFS_ADVANCED: AdvancedPrefsWindow,
-        # SYSTEM_PREFS_APPEARANCE: AppearancePrefsWindow,
-        SYSTEM_PREFS_ARCADE: ArcadePrefsWindow,
-        SYSTEM_PREFS_CONTROLLER: ControllerPrefsWindow,
-        # SYSTEM_PREFS_DIRECTORY: DirectoryPrefsWindow,
-        SYSTEM_PREFS_FILEDATABASE: FileDatabasePrefsWindow,
-        SYSTEM_PREFS_GAMEDATABASE: GameDatabasePrefsWindow,
-        SYSTEM_PREFS_KEYBOARD: KeyboardPrefsWindow,
-        SYSTEM_PREFS_LOCALE: LocalePrefsWindow,
-        SYSTEM_PREFS_LOGGING: LoggingPrefsWindow,
-        SYSTEM_PREFS_MIDI: MidiPrefsWindow,
-        SYSTEM_PREFS_MOUSE: MousePrefsWindow,
-        SYSTEM_PREFS_NETPLAY: NetPlayPrefsWindow,
-        SYSTEM_PREFS_OPENGL: OpenGLPrefsWindow,
-        # SYSTEM_PREFS_OPENRETRO: OpenRetroPrefsWindow,
-        SYSTEM_PREFS_OVERSCAN: OverscanPrefsWindow,
-        SYSTEM_PREFS_PLUGIN: PluginPrefsWindow,
-        SYSTEM_PREFS_POWER: PowerPrefsWindow,
-        # SYSTEM_PREFS_PRIVACY: PrivacyPrefsWindow,
-        SYSTEM_PREFS_SCREENMODE: ScreenModePrefsWindow,
-        SYSTEM_PREFS_SOUND: SoundPrefsWindow,
-        SYSTEM_PREFS_STORAGE: DirectoryPrefsWindow,
-        SYSTEM_PREFS_VIDEO: VideoPrefsWindow,
-        SYSTEM_PREFS_WHDLOAD: WHDLoadPrefsWindow,
-        SYSTEM_PREFS_WORKSPACE: WorkspacePrefsWindow,
-    }[name]
-    simple_window_cache(window_class, name, window=window, parent=parent)
+#     window_class = {
+#         SYSTEM_PREFS_ADVANCED: AdvancedPrefsWindow,
+#         # SYSTEM_PREFS_APPEARANCE: AppearancePrefsWindow,
+#         SYSTEM_PREFS_ARCADE: ArcadePrefsWindow,
+#         SYSTEM_PREFS_CONTROLLER: ControllerPrefsWindow,
+#         # SYSTEM_PREFS_DIRECTORY: DirectoryPrefsWindow,
+#         SYSTEM_PREFS_FILEDATABASE: FileDatabasePrefsWindow,
+#         SYSTEM_PREFS_GAMEDATABASE: GameDatabasePrefsWindow,
+#         SYSTEM_PREFS_KEYBOARD: KeyboardPrefsWindow,
+#         SYSTEM_PREFS_LOCALE: LocalePrefsWindow,
+#         SYSTEM_PREFS_LOGGING: LoggingPrefsWindow,
+#         SYSTEM_PREFS_MIDI: MidiPrefsWindow,
+#         SYSTEM_PREFS_MOUSE: MousePrefsWindow,
+#         SYSTEM_PREFS_NETPLAY: NetPlayPrefsWindow,
+#         SYSTEM_PREFS_OPENGL: OpenGLPrefsWindow,
+#         # SYSTEM_PREFS_OPENRETRO: OpenRetroPrefsWindow,
+#         SYSTEM_PREFS_OVERSCAN: OverscanPrefsWindow,
+#         SYSTEM_PREFS_PLUGIN: PluginPrefsWindow,
+#         SYSTEM_PREFS_POWER: PowerPrefsWindow,
+#         # SYSTEM_PREFS_PRIVACY: PrivacyPrefsWindow,
+#         SYSTEM_PREFS_SCREENMODE: ScreenModePrefsWindow,
+#         SYSTEM_PREFS_SOUND: SoundPrefsWindow,
+#         # SYSTEM_PREFS_STORAGE: DirectoryPrefsWindow,
+#         SYSTEM_PREFS_VIDEO: VideoPrefsWindow,
+#         SYSTEM_PREFS_WHDLOAD: WHDLoadPrefsWindow,
+#         SYSTEM_PREFS_WORKSPACE: WorkspacePrefsWindow,
+#     }[name]
+#     simple_window_cache(window_class, name, window=window, parent=parent)
 
 
 # def run_execute_dialog():
@@ -243,8 +242,8 @@ def wsopen(name, args=None, *, window=None, parent=None):
     elif name_lower == "system:prefs/platforms":
         return wsopen_shell(name_lower, window=window, **kwargs)
 
-    elif name_lower.startswith("system:prefs/platforms"):
-        return wsopen_prefs_window(name_lower, window=window)
+    # elif name_lower.startswith("system:prefs/platforms"):
+    #     return wsopen_prefs_window(name_lower, window=window)
 
     elif name_lower == "system:tools/calculator":
         simple_window_cache(CalculatorWindow, name_lower, window=window)
@@ -321,8 +320,8 @@ def wsopen(name, args=None, *, window=None, parent=None):
                 wsopen_function(window=window)
                 return
 
-    if name_lower.startswith("system:prefs/"):
-        return wsopen_prefs_window(name_lower, window=window)
+    # if name_lower.startswith("system:prefs/"):
+    #     return wsopen_prefs_window(name_lower, window=window)
 
     raise Exception("Could not open '{}' (Unrecognized)".format(name))
 

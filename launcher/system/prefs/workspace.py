@@ -1,12 +1,21 @@
 from fsgamesys.options.constants import WORKSPACE_WINDOW_TITLE
 from fsui import Panel
 from launcher.i18n import gettext
+from launcher.system.classes.shellobject import shellObject
+from launcher.system.classes.windowcache import WindowCache
 from launcher.system.prefs.components.baseprefspanel import BasePrefsPanel
 from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
+@shellObject
+class Workspace:
+    @staticmethod
+    def open(**kwargs):
+        WindowCache.open(WorkspacePrefsWindow, **kwargs)
+
+
 class WorkspacePrefsWindow(BasePrefsWindow):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super().__init__(parent, title=gettext("Workspace preferences"))
         self.panel = WorkspacePrefsPanel(self)
         self.layout.add(self.panel, fill=True, expand=True)

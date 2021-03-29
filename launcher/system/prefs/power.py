@@ -1,11 +1,20 @@
 from fsgamesys.options.option import Option
 from launcher.i18n import gettext
+from launcher.system.classes.shellobject import shellObject
+from launcher.system.classes.windowcache import WindowCache
 from launcher.system.prefs.components.baseprefspanel import BasePrefsPanel
 from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
+@shellObject
+class Power:
+    @staticmethod
+    def open(**kwargs):
+        WindowCache.open(PowerPrefsWindow, **kwargs)
+
+
 class PowerPrefsWindow(BasePrefsWindow):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super().__init__(parent, title=gettext("Power preferences"))
         self.panel = PowerPrefsPanel(self)
         self.layout.add(self.panel, fill=True, expand=True)

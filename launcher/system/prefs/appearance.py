@@ -25,7 +25,7 @@ from launcher.ui.IconButton import IconButton
 
 
 @shellObject
-class AppearancePrefs:
+class Appearance:
     @staticmethod
     def open(**kwargs):
         WindowCache.open(AppearancePrefsWindow, **kwargs)

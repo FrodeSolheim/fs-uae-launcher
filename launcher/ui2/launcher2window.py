@@ -8,7 +8,7 @@ from launcher.system.classes.window import Window
 from launcher.system.classes.windowresizehandle import WindowResizeHandle
 from launcher.system.exceptionhandler import exceptionhandler
 from launcher.system.special.logout import AsyncTaskRunner
-from launcher.system.tools.updater import (
+from launcher.system.utilities.updater import (
     CheckForUpdatesTask,
     Updater,
     findUpdates,

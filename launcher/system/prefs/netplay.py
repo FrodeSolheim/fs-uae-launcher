@@ -1,7 +1,16 @@
 from fsgamesys.options.option import Option
 from launcher.i18n import gettext
+from launcher.system.classes.shellobject import shellObject
+from launcher.system.classes.windowcache import WindowCache
 from launcher.system.prefs.components.baseprefspanel import BasePrefsPanel
 from launcher.system.prefs.components.baseprefswindow import BasePrefsWindow
+
+
+@shellObject
+class NetPlay:
+    @staticmethod
+    def open(**kwargs):
+        WindowCache.open(NetPlayPrefsWindow, **kwargs)
 
 
 class NetPlayPrefsWindow(BasePrefsWindow):

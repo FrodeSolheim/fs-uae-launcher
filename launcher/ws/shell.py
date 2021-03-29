@@ -405,6 +405,14 @@ def vfs_prefs_entries():
             "name": "Controller",
         },
         "controller.info": {"name": "Controller.info"},
+        "filedatabase": {
+            "name": "FileDatabase",
+        },
+        "filedatabase.info": {"name": "FileDatabase.info"},
+        "gamedatabase": {
+            "name": "GameDatabase",
+        },
+        "gamedatabase.info": {"name": "GameDatabase.info"},
         "openretro": {
             "name": "OpenRetro",
         },
@@ -413,6 +421,10 @@ def vfs_prefs_entries():
             "name": "Privacy",
         },
         "privacy.info": {"name": "Privacy.info"},
+        "storage": {
+            "name": "Storage",
+        },
+        "storage.info": {"name": "Storage.info"},
         "update": {
             "name": "Update",
         },
@@ -432,18 +444,10 @@ def vfs_prefs_entries():
                 # "backup.info": {"name": "Backup.info"},
                 # "directory": {"name": "Directory",},
                 # "directory.info": {"name": "Directory.info"},
-                "filedatabase": {
-                    "name": "FileDatabase",
-                },
-                "filedatabase.info": {"name": "FileDatabase.info"},
                 # "firmware": {"name": "Firmware",},
                 # "firmware.info": {"name": "Firmware.info"},
                 # "font": {"name": "Font",},
                 # "font.info": {"name": "Font.info"},
-                "gamedatabase": {
-                    "name": "GameDatabase",
-                },
-                "gamedatabase.info": {"name": "GameDatabase.info"},
                 "keyboard": {
                     "name": "Keyboard",
                 },
@@ -490,10 +494,6 @@ def vfs_prefs_entries():
                     "name": "Sound",
                 },
                 "sound.info": {"name": "Sound.info"},
-                "storage": {
-                    "name": "Storage",
-                },
-                "storage.info": {"name": "Storage.info"},
                 "video": {
                     "name": "Video",
                 },
@@ -542,18 +542,18 @@ vfs_utilities = {
     "size": {"width": 400, "height": 200},
     # ...
     "entries": {
-        "checksum": {
-            "name": "Checksum",
-        },
-        "checksum.info": {"name": "Checksum.info"},
+        # "checksum": {
+        #     "name": "Checksum",
+        # },
+        # "checksum.info": {"name": "Checksum.info"},
         "clock": {
             "name": "Clock",
         },
         "clock.info": {"name": "Clock.info"},
-        "multiview": {
-            "name": "MultiView",
-        },
-        "multiview.info": {"name": "MultiView.info"},
+        # "multiview": {
+        #     "name": "MultiView",
+        # },
+        # "multiview.info": {"name": "MultiView.info"},
     },
 }
 

@@ -10,7 +10,7 @@ from typing import Dict, Tuple
 
 import fsboot
 from fsbc.signal import Signal
-from fsbc.util import Version
+from fscore.version import Version
 from fscore.deprecated import deprecated
 from launcher.version import VERSION
 
