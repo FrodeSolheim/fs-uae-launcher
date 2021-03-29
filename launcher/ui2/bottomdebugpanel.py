@@ -2,8 +2,8 @@ from fsui import Button, Color, HorizontalLayout, Panel
 from fsui.context import get_window
 from launcher.context import get_wsopen
 from launcher.settings.settings_dialog import SettingsDialog
-from launcher.system.exceptionhandler import exceptionhandler
-from launcher.system.wsopen import (
+from system.exceptionhandler import exceptionhandler
+from system.wsopen import (
     SYSTEM_C_LOADWB,
     SYSTEM_LAUNCHER,
     SYSTEM_PREFS,

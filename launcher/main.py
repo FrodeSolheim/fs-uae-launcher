@@ -9,7 +9,7 @@ import fsboot
 import launcher.version
 from fscore.system import System
 from fsgamesys.product import Product
-from launcher.system.utilities.updater import Updater
+from system.utilities.updater import Updater
 
 log = logging.getLogger(__name__)
 

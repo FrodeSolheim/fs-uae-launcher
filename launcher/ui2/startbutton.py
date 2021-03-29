@@ -8,8 +8,8 @@ from fsui import Button, Icon
 from fsui.context import get_window
 from launcher.context import get_config, get_gscontext
 from launcher.i18n import gettext
-from launcher.system.classes.configdispatch import ConfigDispatch
-from launcher.system.exceptionhandler import exceptionhandler
+from system.classes.configdispatch import ConfigDispatch
+from system.exceptionhandler import exceptionhandler
 
 
 class StartButton(Button):

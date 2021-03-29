@@ -1,9 +1,9 @@
 from fsui import Color, HorizontalLayout, Panel, TextField
 from launcher.context import get_settings
 from launcher.i18n import gettext
-from launcher.system.classes.configdispatch import ConfigDispatch
 from launcher.ui2.configlistview import ConfigListView
 from launcher.ui.newconfigbutton import NewConfigButton
+from system.classes.configdispatch import ConfigDispatch
 
 
 class SearchField(TextField):

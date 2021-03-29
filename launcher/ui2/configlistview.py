@@ -9,8 +9,8 @@ from fsui import Color, Font, Image, VerticalItemView, get_window
 from launcher.context import get_config, get_gscontext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
-from launcher.system.exceptionhandler import exceptionhandler
 from launcher.ui2.startbutton import StartButton
+from system.exceptionhandler import exceptionhandler
 
 
 class ConfigListView(VerticalItemView):

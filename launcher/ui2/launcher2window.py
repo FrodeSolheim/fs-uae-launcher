@@ -4,19 +4,15 @@ from fsui.common.layout import HorizontalLayout
 from launcher.helpers.implicitconfighandler import ImplicitConfigHandler
 from launcher.i18n import gettext
 from launcher.settings import get_launcher_window_title
-from launcher.system.classes.window import Window
-from launcher.system.classes.windowresizehandle import WindowResizeHandle
-from launcher.system.exceptionhandler import exceptionhandler
-from launcher.system.special.logout import AsyncTaskRunner
-from launcher.system.utilities.updater import (
-    CheckForUpdatesTask,
-    Updater,
-    findUpdates,
-)
 from launcher.ui2.launcher2panel import Launcher2Panel
 from launcher.ui2.mainmenu import MainMenu
 from launcher.ui.imageloader import ImageLoader
 from launcher.version import VERSION
+from system.classes.window import Window
+from system.classes.windowresizehandle import WindowResizeHandle
+from system.exceptionhandler import exceptionhandler
+from system.special.logout import AsyncTaskRunner
+from system.utilities.updater import CheckForUpdatesTask, Updater, findUpdates
 
 
 class UpdatesAvailablePanel(Panel):

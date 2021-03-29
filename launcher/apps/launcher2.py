@@ -9,12 +9,12 @@ from fsgamesys.options.constants import WORKSPACE_ON_STARTUP
 from fsui.qt import QFontDatabase, init_qt
 from launcher.context import get_global_theme
 from launcher.launcherapp import LauncherApp
-from launcher.system.classes.theme import initialize_qt_style
-from launcher.system.exceptionhandler import (
+from system.classes.theme import initialize_qt_style
+from system.exceptionhandler import (
     install_exception_display_function,
     software_failure,
 )
-from launcher.system.wsopen import wsopen
+from system.wsopen import wsopen
 
 
 class Application:

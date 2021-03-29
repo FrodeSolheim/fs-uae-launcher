@@ -65,6 +65,6 @@ class WSIconWidget(IconWidget):
     def on_left_dclick(self):
         print("on_left_dlick")
         if hasattr(self, "wsopen") and self.wsopen:
-            from launcher.system.wsopen import wsopen
+            from system.wsopen import wsopen
 
             wsopen(self.wsopen, window=self.window, parent=self.window)

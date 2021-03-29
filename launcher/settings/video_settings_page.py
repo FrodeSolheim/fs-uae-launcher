@@ -2,9 +2,7 @@ import fsui
 from fsgamesys.options.option import Option
 from launcher.i18n import gettext
 from launcher.settings.settings_page import SettingsPage
-from launcher.system.prefs.components.notworking import (
-    PrefsNotWorkingWarningPanel,
-)
+from system.prefs.components.notworking import PrefsNotWorkingWarningPanel
 
 
 class VideoSettingsPage(SettingsPage):

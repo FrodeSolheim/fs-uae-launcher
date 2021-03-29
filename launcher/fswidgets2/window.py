@@ -1,7 +1,7 @@
 from fsui import Color
 from launcher.fswidgets2.flexlayout import FlexLayout
 from launcher.fswidgets2.style import Style
-from launcher.system.classes.window import Window as BaseWindow
+from system.classes.window import Window as BaseWindow
 
 
 class Window(BaseWindow):

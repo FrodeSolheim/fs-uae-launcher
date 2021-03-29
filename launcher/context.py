@@ -2,7 +2,7 @@
 from fsgamesys.FSGameSystemContext import FSGameSystemContext
 from fsui.context import get_window
 from launcher.launcher_settings import LauncherSettings
-from launcher.system.classes.theme import Theme
+from system.classes.theme import Theme
 
 
 def get_config(widget):
@@ -22,7 +22,7 @@ def get_settings(widget):
 
 
 def get_wsopen(widget):
-    from launcher.system.wsopen import wsopen
+    from system.wsopen import wsopen
 
     return wsopen
 

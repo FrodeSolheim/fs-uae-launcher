@@ -1,7 +1,7 @@
 import os
 
 from fsui.qt import QFontDatabase, init_qt
-from launcher.system.classes.theme import initialize_qt_style
+from system.classes.theme import initialize_qt_style
 
 
 class Application:
@@ -56,7 +56,7 @@ def app_main():
     # window.show()
 
     app = Application()
-    from launcher.system.wsopen import wsopen
+    from system.wsopen import wsopen
 
     wsopen("SYS:Prefs/WHDLoad")
 

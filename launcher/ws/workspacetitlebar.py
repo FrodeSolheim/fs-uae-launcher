@@ -4,8 +4,8 @@ from launcher.settings import get_workspace_window_title
 from launcher.settings.fullscreentogglebutton import FullscreenToggleButtonBase
 from launcher.settings.monitorbutton import MonitorButtonBase
 from launcher.settings.volumebutton import VolumeButtonBase
-from launcher.system.classes.titlebarbutton import TitleBarButton
-from launcher.system.exceptionhandler import exceptionhandler
+from system.classes.titlebarbutton import TitleBarButton
+from system.exceptionhandler import exceptionhandler
 
 
 class WorkspaceTitleBar(Panel):

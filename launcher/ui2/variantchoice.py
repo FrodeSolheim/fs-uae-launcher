@@ -8,13 +8,13 @@ from fsgamesys.options.constants2 import (
 )
 from fsui import Color, Image, ItemChoice
 from launcher.context import get_config
-from launcher.system.classes.configdispatch import ConfigDispatch
 
 # from launcher.launcher_config import LauncherConfig
 # from launcher.launcher_settings import LauncherSettings
 # from launcher.launcher_signal import LauncherSignal
 from launcher.ui.ConfigGroup import ConfigGroup
 from launcher.ui.newconfigbutton import NewConfigButton
+from system.classes.configdispatch import ConfigDispatch
 
 # class LastVariants(object):
 #     def __init__(self):

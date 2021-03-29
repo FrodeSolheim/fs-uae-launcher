@@ -11,9 +11,9 @@ from launcher.i18n import gettext
 from launcher.settings.fullscreentogglebutton import FullscreenToggleButton
 from launcher.settings.monitorbutton import MonitorButton
 from launcher.settings.volumebutton import VolumeButton
-from launcher.system.classes.configdispatch import ConfigDispatch
 from launcher.ui2.screenshotspanel import ScreenshotsPanel
 from launcher.ui2.startbutton import StartButton
+from system.classes.configdispatch import ConfigDispatch
 
 
 class Launcher2LaunchPanel(Panel):

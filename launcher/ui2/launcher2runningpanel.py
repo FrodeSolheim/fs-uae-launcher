@@ -1,6 +1,6 @@
 # from fsui import Button, HorizontalLayout, Label, Panel, Color
 # from launcher.i18n import gettext
-# from launcher.system.classes.configdispatch import ConfigDispatch
+# from system.classes.configdispatch import ConfigDispatch
 
 
 # class Launcher2RunningPanel(Panel):

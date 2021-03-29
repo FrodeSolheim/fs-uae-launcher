@@ -1,9 +1,7 @@
 import fsui
 from launcher.i18n import gettext
 from launcher.settings.settings_page import SettingsPage
-from launcher.system.prefs.components.notworking import (
-    PrefsNotWorkingWarningPanel,
-)
+from system.prefs.components.notworking import PrefsNotWorkingWarningPanel
 
 
 class MouseSettingsPage(SettingsPage):

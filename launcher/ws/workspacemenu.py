@@ -1,8 +1,8 @@
 from fsui import PopupMenu
 from fsui.qt.toplevelwidget import _windows
 from launcher.i18n import gettext
-from launcher.system.exceptionhandler import exceptionhandler
-from launcher.system.wsopen import wsopen
+from system.exceptionhandler import exceptionhandler
+from system.wsopen import wsopen
 
 
 class WorkspaceMenu(PopupMenu):

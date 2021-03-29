@@ -2,6 +2,12 @@
 
 This is the README file for FS-UAE Launcher.
 
+## Notice for packagers
+
+The Launcher is undergoing restructuring, so packaging the Launcher for 
+3rd-party distribution might not be practial at the moment. Waiting until the
+situation stabilizes is recommended!
+
 ## Installing FS-UAE Launcher
 
 If you are using the source distribution and using a Linux-like system, you

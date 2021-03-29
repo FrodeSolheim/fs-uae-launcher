@@ -1,5 +1,3 @@
-from launcher.system.classes.window import Window
-from launcher.system.classes.windowresizehandle import WindowResizeHandle
 from launcher.ws.shell import (  # shell_name,
     shell_basename,
     shell_join,
@@ -8,6 +6,8 @@ from launcher.ws.shell import (  # shell_name,
 )
 from launcher.ws.wsiconview import WSIconView
 from launcher.ws.wsiconwidget import WSIconWidget
+from system.classes.window import Window
+from system.classes.windowresizehandle import WindowResizeHandle
 
 
 class ShellWindow(Window):

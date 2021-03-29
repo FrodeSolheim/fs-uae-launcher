@@ -2,9 +2,7 @@ import fsui
 from launcher.launcher_settings import LauncherSettings
 from launcher.res import gettext
 from launcher.settings.settings_page import SettingsPage
-from launcher.system.prefs.components.notworking import (
-    PrefsNotWorkingWarningPanel,
-)
+from system.prefs.components.notworking import PrefsNotWorkingWarningPanel
 
 
 class LanguageSettingsPage(SettingsPage):

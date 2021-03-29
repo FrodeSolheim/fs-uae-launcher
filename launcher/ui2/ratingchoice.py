@@ -7,10 +7,10 @@ from launcher.i18n import gettext
 
 # from launcher.launcher_config import LauncherConfig
 # from launcher.launcher_settings import LauncherSettings
-# from launcher.system.exceptionhandler import exceptionhandler
+# from system.exceptionhandler import exceptionhandler
 # from launcher.ui.behaviors.configbehavior import ConfigBehavior
 # from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
-from launcher.system.classes.configdispatch import ConfigDispatch
+from system.classes.configdispatch import ConfigDispatch
 
 
 class RatingChoice(Choice):
