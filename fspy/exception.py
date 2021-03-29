@@ -111,6 +111,7 @@ def maybe_send_exception(type_, value, tb):
             "Not sending automatic error report"
             " (automatic_error_reports = False)"
         )
+        return
     try:
         from sentry_sdk import capture_exception, push_scope
     except ImportError:

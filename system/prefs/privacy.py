@@ -62,10 +62,6 @@ class PrivacyPrefsPanel(BasePrefsPanel):
                     "to respect your privacy, but please consider enabling it "
                     "to help the developer detect and fix bugs."
                 ),
-            ).disable()
-            Text(
-                "FIXME: Automatic error reporting is currently always on!",
-                style={"margin": 10},
             )
             PrefsDivider()
             PrefsControl(
