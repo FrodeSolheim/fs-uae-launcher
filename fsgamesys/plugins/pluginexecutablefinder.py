@@ -1,5 +1,6 @@
 import platform
 from os import path
+from shutil import which
 from typing import Union
 
 import fsboot
@@ -52,6 +53,9 @@ def find_executable(name: str):
     if exe_file:
         return exe_file
     exe_file = find_executable_in_side_by_side_plugin(name)
+    if exe_file:
+        return exe_file
+    exe_file = find_executable_in_system(name)
     if exe_file:
         return exe_file
     return None
@@ -159,6 +163,14 @@ def find_executable_side_by_side(name: str):
     """Find executable side by side, for example in /usr/bin or similar."""
     print("- Find executable side-by-side")
     exe_file = path.join(fsboot.executable_dir(), get_exe_name(name))
+    if check_executable(exe_file):
+        return exe_file
+
+
+def find_executable_in_system(name: str):
+    """Find system installed executable"""
+    print("- Find executable in system environment")
+    exe_file = which(name)
     if check_executable(exe_file):
         return exe_file
 
