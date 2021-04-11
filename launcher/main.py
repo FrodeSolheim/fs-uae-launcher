@@ -2,13 +2,20 @@
 import logging
 import os
 import shutil
+import socket
 import subprocess
 import sys
 
 import fsboot
+import fsgamesys
 import launcher.version
+from fsbc.init import initialize_application
+from fscore.settings import Settings
 from fscore.system import System
 from fsgamesys.product import Product
+from launcher.apps.launcher2 import wsopen_main
+from launcher.option import Option
+from launcher.version import VERSION
 from system.utilities.updater import Updater
 
 log = logging.getLogger(__name__)
@@ -246,10 +253,78 @@ def maybeRunNewerVersionFromPlugin():
         os.execv(args[0], args)
 
 
-def main(*, app):
+def configureLauncherApp(
+    base_name, databases, default_platform_id, default_titlebar_color
+):
+    print(
+        "configureLauncherApp",
+        base_name,
+        databases,
+        default_platform_id,
+        default_titlebar_color,
+    )
+    Product.base_name = base_name
+    for option_name in fsgamesys.OPENRETRO_DEFAULT_DATABASES:
+        Option.get(option_name)["default"] = "0"
+        Settings.set_default(option_name, "0")
+    for option_name in [
+        Option.AMIGA_DATABASE,
+        Option.CD32_DATABASE,
+        Option.CDTV_DATABASE,
+    ]:
+        Option.get(option_name)["default"] = "0"
+        Settings.set_default(option_name, "0")
+    for option_name in databases:
+        Option.get(option_name)["default"] = "1"
+        Settings.set_default(option_name, "1")
+
+    from fsgamesys.config.config import Config
+
+    Config.set_default("platform", default_platform_id)
+    Product.default_platform_id = default_platform_id
+
+    if default_titlebar_color is not None:
+        Settings.set_default(
+            "launcher_titlebar_bgcolor", default_titlebar_color
+        )
+    # Settings.set_default("launcher_titlebar_fgcolor", "#cccccc")
+    import fsboot
+
+    fsboot.set("base_dir_name", base_name)
+    # return "SYS:Launcher"
+
+
+def main(*, app: str, brand: str):
     if "--version" in sys.argv:
         print_version()
         sys.exit(0)
+
+    check_python_version()
+    setup_fsgs_pythonpath()
+    fix_mingw_path()
+    setup_frozen_qpa_platform_plugin_path()
+    setup_frozen_requests_ca_cert()
+
+    if app == "Launcher":
+        Product.base_name = brand
+        if brand == "OpenRetro":
+            configureLauncherApp(
+                "OpenRetro",
+                fsgamesys.OPENRETRO_DEFAULT_DATABASES,
+                "amiga",
+                # "#945ebe",
+                # "#444444",
+                None,
+            )
+            appName = "openretro-launcher"
+        else:
+            appName = "fs-uae-launcher"
+        cleanLauncherOldDirectory()
+        initialize_application(appName, version=VERSION)
+        # app_main = partial(wsopen_main, app)
+        if len(sys.argv) > 1 and ":" in sys.argv[1]:
+            return wsopen_main(sys.argv[1])
+        return wsopen_main("SYS:Launcher")
 
     # If successful, this call (using execv) will not return
     # FIXME: Problem using exec with PyQT on macOS (dual loaded QT libraries)
@@ -258,13 +333,8 @@ def main(*, app):
     # not work when it is replaced.
     # maybeRunNewerVersionFromPlugin()
 
-    cleanLauncherOldDirectory()
-
-    check_python_version()
-    setup_fsgs_pythonpath()
-    fix_mingw_path()
-    setup_frozen_qpa_platform_plugin_path()
-    setup_frozen_requests_ca_cert()
+    # if app == "openretro-launcher":
+    #     pass
 
     if app == "fs-uae-arcade":
         pass

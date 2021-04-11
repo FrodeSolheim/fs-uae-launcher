@@ -19,7 +19,7 @@ from fsgamesys.saves import SaveHandler
 
 class MednafenDriver(GameDriver):
     # vanilla is old not, fsemu (inverted) is new
-    def __init__(self, fsgc, vanilla=False, fsemu=True):
+    def __init__(self, fsgc, vanilla=False, fsemu=False):
         super().__init__(fsgc)
         if vanilla or not fsemu:
             self.emulator = Emulator("mednafen")

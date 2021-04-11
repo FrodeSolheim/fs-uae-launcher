@@ -476,8 +476,8 @@ def vfs_prefs_entries():
                 "opengl.info": {"name": "OpenGL.info"},
                 # "overscan": {"name": "Overscan",},
                 # "overscan.info": {"name": "Overscan.info"},
-                "platforms": vfs_platforms,
-                "platforms.info": {"name": "Platforms.info"},
+                # "platforms": vfs_platforms,
+                # "platforms.info": {"name": "Platforms.info"},
                 # "plugin": {
                 #     "name": "Plugin",
                 # },
@@ -554,6 +554,10 @@ vfs_utilities = {
         #     "name": "MultiView",
         # },
         # "multiview.info": {"name": "MultiView.info"},
+        "updater": {
+            "name": "Updater",
+        },
+        "updater.info": {"name": "Updater.info"},
     },
 }
 

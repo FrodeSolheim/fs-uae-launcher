@@ -293,6 +293,9 @@ def getBaseDirectory():
 
 @lru_cache()
 def base_dir():
+    print("find base directory")
+    import traceback
+    traceback.print_stack()
     logger.debug("Find base directory")
     for arg in sys.argv[1:]:
         if arg.startswith("--base-dir="):

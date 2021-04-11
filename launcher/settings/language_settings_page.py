@@ -58,7 +58,7 @@ class LanguageSettingChoice(fsui.Choice):
         selected_language = LauncherSettings.get("language")
         k = 0
         selected_index = 0
-        for label, language_key, icon_name in LANGUAGE_ITEMS:
+        for label, language_key, icon_name in getLanguageItems():
             self.add_item(
                 label,
                 fsui.Image(
@@ -73,28 +73,29 @@ class LanguageSettingChoice(fsui.Choice):
 
     def on_changed(self):
         index = self.index()
-        LauncherSettings.set("language", LANGUAGE_ITEMS[index][1])
+        LauncherSettings.set("language", getLanguageItems()[index][1])
 
 
-LANGUAGE_ITEMS = [
-    # language name, language code, country flag code
-    (gettext("Automatic"), "", "unknown"),
-    ("Čeština", "cs", "cz"),
-    ("Dansk", "da", "dk"),
-    ("Deutsch", "de", "de"),
-    ("English", "en", "gb"),
-    ("Esperanto", "eo", "eo"),
-    ("Español", "es", "es"),
-    ("Français", "fr", "fr"),
-    ("Eλληνικά", "el", "gr"),  # greek
-    ("Italiano", "it", "it"),
-    ("Magyar", "hu", "hu"),  # hungarian
-    ("Nederlands", "nl", "nl"),
-    ("Norsk (bokmål)", "nb", "no"),
-    ("Polski", "pl", "pl"),
-    ("Português", "pt", "pt"),
-    ("Srpski", "sr", "rs"),  # srpski or српски
-    ("Svensk", "sv", "se"),
-    ("Suomi", "fi", "fi"),
-    ("Türkçe", "tr", "tr"),
-]
+def getLanguageItems():
+    return [
+        # language name, language code, country flag code
+        (gettext("Automatic"), "", "unknown"),
+        ("Čeština", "cs", "cz"),
+        ("Dansk", "da", "dk"),
+        ("Deutsch", "de", "de"),
+        ("English", "en", "gb"),
+        ("Esperanto", "eo", "eo"),
+        ("Español", "es", "es"),
+        ("Français", "fr", "fr"),
+        ("Eλληνικά", "el", "gr"),  # greek
+        ("Italiano", "it", "it"),
+        ("Magyar", "hu", "hu"),  # hungarian
+        ("Nederlands", "nl", "nl"),
+        ("Norsk (bokmål)", "nb", "no"),
+        ("Polski", "pl", "pl"),
+        ("Português", "pt", "pt"),
+        ("Srpski", "sr", "rs"),  # srpski or српски
+        ("Svensk", "sv", "se"),
+        ("Suomi", "fi", "fi"),
+        ("Türkçe", "tr", "tr"),
+    ]

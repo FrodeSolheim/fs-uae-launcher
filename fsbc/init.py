@@ -1,7 +1,7 @@
+import socket
+
 import fsbc.debug
 import fsbc.logging
-
-# import fsbc.unicode
 from fsbc.application import Application
 
 init_called = False
@@ -19,6 +19,8 @@ def initialize_application(
 ):
     global init_called, unicode_patched, logging_enabled, exception_handler_enabled
     init_called = True
+
+    socket.setdefaulttimeout(30.0)
 
     if name and enable_logging:
         fsbc.logging.setup_logging(name + ".log.txt")

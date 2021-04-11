@@ -689,14 +689,14 @@
     },
     "data/Icons/System/Prefs/Update.png": {
         "sources": [
-            "humanity/64/help-contents.svg",
+            "humanity/64/update-notifier.svg",
             "humanity/64/prefs-overlay.png"
         ],
         "type": "normal"
     },
     "data/Icons/System/Prefs/Update_Selected.png": {
         "sources": [
-            "humanity/64/help-contents.svg",
+            "humanity/64/update-notifier.svg",
             "humanity/64/prefs-overlay.png"
         ],
         "type": "glow"
@@ -851,6 +851,18 @@
         "sources": [
             "humanity/64/system-file-manager-8.svg",
             "humanity/64/../overlays/applications-utilities.png"
+        ],
+        "type": "glow"
+    },
+    "data/Icons/System/Utilities/Updater.png": {
+        "sources": [
+            "humanity/64/update-notifier.svg"
+        ],
+        "type": "normal"
+    },
+    "data/Icons/System/Utilities/Updater_Selected.png": {
+        "sources": [
+            "humanity/64/update-notifier.svg"
         ],
         "type": "glow"
     },

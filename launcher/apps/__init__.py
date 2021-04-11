@@ -8,61 +8,28 @@ from fsgamesys.product import Product
 from launcher.option import Option
 
 
-def configure_launcher_app(
-    base_name, databases, default_platform_id, default_titlebar_color
-):
-    Product.base_name = base_name
-    for option_name in fsgamesys.OPENRETRO_DEFAULT_DATABASES:
-        Option.get(option_name)["default"] = "0"
-        Settings.set_default(option_name, "0")
-    for option_name in [
-        Option.AMIGA_DATABASE,
-        Option.CD32_DATABASE,
-        Option.CDTV_DATABASE,
-    ]:
-        Option.get(option_name)["default"] = "0"
-        Settings.set_default(option_name, "0")
-    for option_name in databases:
-        Option.get(option_name)["default"] = "1"
-        Settings.set_default(option_name, "1")
-
-    from fsgamesys.config.config import Config
-
-    Config.set_default("platform", default_platform_id)
-    Product.default_platform_id = default_platform_id
-
-    if default_titlebar_color is not None:
-        Settings.set_default(
-            "launcher_titlebar_bgcolor", default_titlebar_color
-        )
-    # Settings.set_default("launcher_titlebar_fgcolor", "#cccccc")
-    import fsboot
-
-    fsboot.set("base_dir_name", base_name)
-    return "SYS:Launcher"
-
-
 def find_app(app):
+    print("find_app", app)
     if app in ["launcher", "fs-uae-launcher"]:
         app = "SYS:Launcher"
 
-    elif app in ["fs-fuse-launcher", "fs-fuse"]:
-        app = configure_launcher_app(
-            "FS-Fuse", [Option.SPECTRUM_DATABASE], "spectrum", "#c46262"
-        )
-    elif app in ["fs-mame-launcher", "fs-mame"]:
-        app = configure_launcher_app(
-            "FS-MAME", [Option.ARCADE_DATABASE], "arcade", "#c46262"
-        )
-    elif app in ["openretro-launcher", "openretro"]:
-        app = configure_launcher_app(
-            "OpenRetro",
-            fsgamesys.OPENRETRO_DEFAULT_DATABASES,
-            "amiga",
-            # "#945ebe",
-            # "#444444",
-            None,
-        )
+    # elif app in ["fs-fuse-launcher", "fs-fuse"]:
+    #     app = configure_launcher_app(
+    #         "FS-Fuse", [Option.SPECTRUM_DATABASE], "spectrum", "#c46262"
+    #     )
+    # elif app in ["fs-mame-launcher", "fs-mame"]:
+    #     app = configure_launcher_app(
+    #         "FS-MAME", [Option.ARCADE_DATABASE], "arcade", "#c46262"
+    #     )
+    # elif app in ["openretro-launcher", "openretro"]:
+    #     app = configure_launcher_app(
+    #         "OpenRetro",
+    #         fsgamesys.OPENRETRO_DEFAULT_DATABASES,
+    #         "amiga",
+    #         # "#945ebe",
+    #         # "#444444",
+    #         None,
+    #     )
 
     if ":" in app:
         from functools import partial
@@ -178,6 +145,9 @@ def main(app_name=""):
             if app_main is not None:
                 # Remove app name from sys.argv
                 del sys.argv[1]
+
+    print(app_main, app_name)
+    sys.exit(1)
 
     if app_main is None and not app_name:
         app_name = "fs-uae-launcher"
