@@ -1,5 +1,6 @@
 import ctypes
 import getpass
+import linecache
 import logging
 import os
 import subprocess
@@ -24,11 +25,33 @@ logger = logging.getLogger("BOOT")
 perf_counter_epoch = time.perf_counter()
 
 
+def enableFrozenTokenizeWorkaround():
+    """
+    Installs a replacement for linecache.updatecache to prevent an issue where
+    the tokenizer tries to parse the executable as a Python script when doing
+    tracebacks. Fixes errors like "SyntaxError: invalid or missing encoding
+    declaration" and " UnicodeDecodeError: 'utf-8' codec can't decode byte
+    0xa6 in position 0: invalid start byte".
+    """
+    originalUpdateCache = linecache.updatecache
+
+    def replacementUpdateCache(*args, **kwargs):
+        try:
+            return originalUpdateCache(*args, **kwargs)
+        except Exception as e:
+            print("Exception in linecache.updatecache:", str(e))
+            return []
+
+    linecache.updatecache = replacementUpdateCache
+
+
 def init():
     global _argv, _cwd
     _cwd = os.getcwd()
     _argv = sys.argv.copy()
 
+    if is_frozen():
+        enableFrozenTokenizeWorkaround()
     setup_python_path()
     print("sys.path =", sys.path)
 
@@ -294,8 +317,6 @@ def getBaseDirectory():
 @lru_cache()
 def base_dir():
     print("find base directory")
-    import traceback
-    traceback.print_stack()
     logger.debug("Find base directory")
     for arg in sys.argv[1:]:
         if arg.startswith("--base-dir="):

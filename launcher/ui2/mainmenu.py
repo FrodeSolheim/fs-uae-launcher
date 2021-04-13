@@ -5,8 +5,8 @@ from fsgamesys.product import Product
 from fsui import PopupMenu
 from launcher.i18n import gettext
 from system.exceptionhandler import exceptionhandler
-from system.utilities.updater import Updater
 from system.prefs.controller import Controller
+from system.utilities.updater import Updater
 from system.wsopen import wsopen
 
 # menu = fsui.PopupMenu()
@@ -94,7 +94,7 @@ class MainMenu(PopupMenu):
 
         self.add_separator()
         self.add_item(gettext("Preferences"), self.__on_preferences)
-        self.add_item(gettext("Game controllers"),  self.onGameControllers)
+        self.add_item(gettext("Game controllers"), self.onGameControllers)
         self.add_separator()
         self.add_item(gettext("Utilities"), self.__on_utilities)
         self.add_item(gettext("Check for updates..."), self.onCheckForUpdates)

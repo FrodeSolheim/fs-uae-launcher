@@ -390,7 +390,7 @@ class OpenRetroPrefsPanel(BasePrefsPanel):
             Platform.TGCD, Option.TGCD_DATABASE, "TurboGrafx-CD"
         )
         self.add_database_option(
-            Platform.ZXS, Option.ZXS_DATABASE, "ZX Spectrum"
+            Platform.SPECTRUM, Option.SPECTRUM_DATABASE, "ZX Spectrum"
         )
 
         # label = fsui.MultiLineLabel(

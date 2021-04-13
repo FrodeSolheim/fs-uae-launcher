@@ -31,12 +31,14 @@ class FuseSpectrumDriver(GameDriver):
         super().__init__(fsgs)
         self.fsemu = fsemu
         if fsemu:
-            self.emulator.name = "FS-Fuse"
-            self.emulator.exe_name = "fs-fuse"
+            # self.emulator.name = "FS-Fuse"
+            # self.emulator.exe_name = "fs-fuse"
+            self.emulator.name = "fs-fuse"
             self.emulator.allow_home_access = True
         else:
-            self.emulator.name = "Fuse"
-            self.emulator.exe_name = "fuse"
+            self.emulator.name = "fuse"
+            # self.emulator.name = "Fuse"
+            # self.emulator.exe_name = "fuse"
         self.helper = SpectrumHelper(self.options)
         # self.emulator.allow_system_emulator = True
         self.media_dir = self.temp_dir("Media")

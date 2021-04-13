@@ -10,8 +10,8 @@ from typing import Dict, Tuple
 
 import fsboot
 from fsbc.signal import Signal
-from fscore.version import Version
 from fscore.deprecated import deprecated
+from fscore.version import Version
 from launcher.version import VERSION
 
 # from fspy.exception import set_automatic_error_reports

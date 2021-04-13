@@ -1,14 +1,15 @@
 import logging
 from typing import Dict, Optional, Type
 
-from autologging import traced
-
 from fsui import Window
+
+# from autologging import traced
+
 
 log = logging.getLogger(__name__)
 
 
-@traced
+# @traced
 class WindowCache:
     cache = {}  # type: Dict[str, Window]
 
@@ -32,7 +33,7 @@ class WindowCache:
         window = window_class()
         cls.cache[cache_key_str] = window
 
-        @traced
+        # @traced
         def remove_window():
             log.debug("Remove window %s", window)
             del cls.cache[cache_key_str]

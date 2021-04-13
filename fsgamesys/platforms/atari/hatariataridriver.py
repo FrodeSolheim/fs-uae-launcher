@@ -101,9 +101,9 @@ class HatariDriver(GameDriver):
     def __init__(self, fsgc, fsemu=False):
         super().__init__(fsgc)
         if fsemu:
-            self.emulator.exe_name = "hatari-fs"
+            self.emulator.name = "hatari-fs"
         else:
-            self.emulator.exe_name = "hatari"
+            self.emulator.name = "hatari"
         self.floppies_dir = self.temp_dir("Media")
         self.tos_file = self.temp_file("tos.img")
         self.config_file = self.temp_file("hatari.cfg")

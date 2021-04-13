@@ -32,9 +32,8 @@ class CpcPlatform(Platform):
     @staticmethod
     def driver(fsgc):
         driver = settings.get(Option.CPC_EMULATOR)
-        driver = "mame-fs"
         if not driver:
-            driver = "mame-fs"
+            driver = "mame"
 
         if driver == "mame":
             return CpcMameDriver(fsgc)

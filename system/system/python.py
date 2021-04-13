@@ -6,6 +6,7 @@ from system.prefs.components.baseprefswindow import BasePrefsWindow
 
 # from pyqtgraph.console import ConsoleWidget as QConsoleWidget
 
+
 @shellObject
 class Python:
     @staticmethod
@@ -25,9 +26,7 @@ class ConsoleWidget(Widget):
     def __init__(self, parent):
         qwidget = QConsoleWidget(QParent(parent))
         super().__init__(parent, qwidget)
-        self.style = {
-            "flexGrow": 1
-        }
+        self.style = {"flexGrow": 1}
         # self._qwidget.clicked.connect(self.__on_clicked)
         # self._qwidget.resize(600, 600)
 

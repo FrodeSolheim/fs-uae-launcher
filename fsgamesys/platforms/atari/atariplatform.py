@@ -17,7 +17,7 @@ class AtariSTPlatform(Platform):
     def driver(self, fsgc):
         driver = settings.get(Option.ST_EMULATOR)
         if not driver:
-            driver = "hatari-fs"
+            driver = "hatari"
 
         if driver == "hatari":
             return HatariDriver(fsgc)

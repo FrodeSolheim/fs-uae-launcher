@@ -70,7 +70,10 @@ class MameDriver(GameDriver):
     def install_mame_hash_file(self, name):
         # FIXME: Better to find data file based on path/provides rather than
         # hardcoding plugin name, but...
-        plugin = PluginManager.instance().plugin("MAME-FS")
+        try:
+            plugin = PluginManager.instance().plugin("MAME-FS")
+        except LookupError:
+            plugin = PluginManager.instance().plugin("MAME")
         src = plugin.data_file_path("hash/" + name)
         hash_dir = os.path.join(self.cwd.path, "hash")
         if not os.path.exists(hash_dir):
@@ -212,7 +215,13 @@ class MameDriver(GameDriver):
             current_task.set_progress("Preparing ROM {name}".format(name=name))
             input_stream = self.fsgs.file.open(file_uri)
             if input_stream is None:
-                raise Exception("Cannot not find required ROM " + repr(name))
+                raise Exception(
+                    "Cannot not find required ROM "
+                    + repr(name)
+                    + " ("
+                    + sha1
+                    + ")"
+                )
             path = os.path.join(system_rom_path, name)
             with open(path, "wb") as f:
                 f.write(input_stream.read())

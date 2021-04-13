@@ -27,6 +27,10 @@ class Scanner:
     scan_for_files = False
 
     @classmethod
+    def stop(cls):
+        cls.stop_flag = True
+
+    @classmethod
     def stop_check(cls):
         return cls.stop_flag
 

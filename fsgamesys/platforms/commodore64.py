@@ -142,8 +142,8 @@ class Commodore64ViceDriver(GameDriver):
 
     def __init__(self, fsgs):
         super().__init__(fsgs)
-        self.fsemu = True
-        self.emulator.exe_name = "x64sc-fs"
+        self.fsemu = False
+        self.emulator.name = "x64sc"
         self.helper = Commodore64Helper(self.options)
 
     def prepare(self):
@@ -155,6 +155,15 @@ class Commodore64ViceDriver(GameDriver):
         if os.path.exists(dot_vice_dir):
             shutil.rmtree(dot_vice_dir)
         os.makedirs(dot_vice_dir)
+
+        config_file = self.temp_file("vice.cfg").path
+        with open(config_file, "w", encoding="UTF-8") as f:
+            self.create_vice_cfg(f)
+            self.configure_audio(f)
+            self.configure_input(f)
+            self.configure_video(f)
+        # Important: -config needs to be specified first
+        self.emulator.args.extend(["-config", config_file])
 
         # noinspection SpellCheckingInspection
         joymap_file = self.temp_file("joymap.vjm").path
@@ -174,14 +183,6 @@ class Commodore64ViceDriver(GameDriver):
         if System.windows:
             hotkey_file = hotkey_file.replace("/", "\\")
         self.emulator.args.extend(["-hotkeyfile", hotkey_file])
-
-        config_file = self.temp_file("vice.cfg").path
-        with open(config_file, "w", encoding="UTF-8") as f:
-            self.create_vice_cfg(f)
-            self.configure_audio(f)
-            self.configure_input(f)
-            self.configure_video(f)
-        self.emulator.args.extend(["-config", config_file])
 
         # self.emulator.args.extend(["-model", "c64"])
         if self.helper.model() == C64_MODEL_C64:
@@ -363,7 +364,8 @@ class Commodore64ViceDriver(GameDriver):
                 vice_device_type = VICE_KEY_SET_A + i
                 # assert False
             else:
-                vice_port_type = 0
+                vice_device_type = 0
+
             f.write("JoyPort{0}Device={1}\n".format(vice_port, vice_port_type))
             f.write("JoyDevice{0}={1}\n".format(vice_port, vice_device_type))
             print(

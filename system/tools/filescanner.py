@@ -27,14 +27,6 @@ class FileScannerWindow(Window):
         title = gettext("File scanner")
         super().__init__(parent, title=title, maximizable=False)
 
-        # interactive = True
-        # scan_for_files = True
-        # minimal = False
-
-        # def __init__(
-        #     self, parent, minimal=False, interactive=True, scan_for_files=True
-        # ):
-        # super().__init__(parent, gettext("Update File Database"))
         buttons, layout = fsui.DialogButtons.create_with_layout(
             self, create_parent_layout=False
         )
@@ -45,7 +37,6 @@ class FileScannerWindow(Window):
         self.interactive = interactive
         self.scan_for_files = scan_for_files
         self.update_game_database = False
-        # self.update_game_database = True
 
         if not minimal:
             if Product.includes_amiga():
@@ -68,50 +59,29 @@ class FileScannerWindow(Window):
         self.scan_progress_group = ScanProgressGroup(self)
         layout.add(self.scan_progress_group, fill=True)
 
-        # layout.add_spacer(20)
-        # layout.add_spacer(20)
-
-        # hor_layout = fsui.HorizontalLayout()
-        # layout.add(hor_layout, fill=True)
-
-        # hor_layout.add_spacer(10, expand=True)
         if interactive:
             self.scan_button = buttons.add_button(
                 fsui.Button(buttons, gettext("Scan"))
             )
-            # self.scan_button = fsui.Button(self, _("Scan"))
-            # hor_layout.add(self.scan_button)
-            # hor_layout.add_spacer(10)
             self.scan_button.activated.connect(self.on_scan_button)
         else:
             self.scan_button = None
 
-        # self.stop_button = fsui.Button(self, _("Abort"))
-        # hor_layout.add(self.stop_button)
         self.stop_button = buttons.add_button(
             fsui.Button(buttons, gettext("Stop"))
         )
         self.stop_button.activated.connect(self.on_stop_button)
 
-        # layout.add_spacer(10)
-
-        # self.set_size(layout.get_min_size())
-        # self.center_on_parent()
-
         self.old_title = ""
         self.old_status = ""
         self.has_started_scan = False
 
-        # self.timer = fsui.IntervalTimer(TIMER_INTERVAL)
-        # self.timer.activated.connect(self.on_timer)
         self.start_timer(TIMER_INTERVAL)
-        # self.closed.connect(self.timer.stop)
 
         if not self.interactive:
             self.start_scan()
 
-    def on_close(self):
-        Scanner.stop_flag = True
+        self.destroyed.connect(Scanner.stop)
 
     def set_scan_title(self, text):
         if not text:
@@ -151,7 +121,6 @@ class FileScannerWindow(Window):
             if self.scan_button is not None:
                 self.scan_button.set_enabled()
             self.stop_button.set_enabled(False)
-            # self.close_button.set_enabled()
             return
 
         status = Scanner.status
@@ -169,7 +138,6 @@ class FileScannerWindow(Window):
         self.set_scan_status(gettext("Please wait..."))
         paths = ScanPathsGroup.get_search_path()
 
-        # self.close_button.set_enabled(False)
         self.stop_button.set_enabled()
 
         Scanner.start(
@@ -179,13 +147,9 @@ class FileScannerWindow(Window):
             purge_other_dirs=True,
         )
 
-    # def on_close_button(self):
-    #     self.end_modal(False)
-
     # noinspection PyMethodMayBeStatic
     def on_stop_button(self):
         Scanner.stop_flag = True
-        # self.close_button.set_enabled()
 
 
 class KickstartStatusGroup(fsui.Group):
@@ -296,17 +260,6 @@ class ScanProgressGroup(fsui.Group):
     def __init__(self, parent):
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
-        # self.layout.padding_left = 10
-        # self.layout.padding_top = 10
-        # self.layout.padding_right = 10
-        # self.layout.padding_bottom = 10
-
-        # #image = fsui.Image("launcher:/data/search_group.png")
-        # #self.image_view = fsui.ImageView(self, image)
-        # self.layout.add_spacer(20)
-        # #self.layout.add(self.image_view, valign=0.0)
-        # self.layout.add_spacer(48)
-        # self.layout.add_spacer(20)
 
         self.layout2 = fsui.VerticalLayout()
         self.layout.add(self.layout2, fill=True, expand=True)
@@ -314,43 +267,6 @@ class ScanProgressGroup(fsui.Group):
         self.title_label = fsui.HeadingLabel(self, "")
         self.layout2.add(self.title_label, fill=True)
 
-        # self.layout2.add_spacer(10)
-        # hor_layout = fsui.HorizontalLayout()
-        # self.layout2.add(hor_layout)
-
-        # self.scan_label = fsui.Label(self, _("Scan for:"))
-        # hor_layout.add(self.scan_label)
-        # hor_layout.add_spacer(10)
-
-        # self.scan_roms = fsui.CheckBox(self, _("ROMs"))
-        # if Settings.get("scan_roms") == "1":
-        #     self.scan_roms.check()
-        # self.scan_roms.on_changed = self.on_change
-        # hor_layout.add(self.scan_roms)
-        # hor_layout.add_spacer(10)
-
-        # self.scan_files = fsui.CheckBox(self, _("Game Files"))
-        # if Settings.get("scan_files") == "1":
-        #     self.scan_files.check()
-        # self.scan_files.on_changed = self.on_change
-        # hor_layout.add(self.scan_files)
-        # hor_layout.add_spacer(10)
-
-        # self.scan_configs = fsui.CheckBox(self, _("Configurations"))
-        # if Settings.get("scan_configs") == "1":
-        #     self.scan_configs.check()
-        # self.scan_configs.on_changed = self.on_change
-        # hor_layout.add(self.scan_configs)
-        # hor_layout.add_spacer(10)
-
         self.layout2.add_spacer(10)
         self.status_label = fsui.Label(self, "")
         self.layout2.add(self.status_label, fill=True)
-
-        # def on_change(self):
-        #     value = "1" if self.scan_roms.checked() else "0"
-        #     Settings.set("scan_roms", value)
-        #     value = "1" if self.scan_files.checked() else "0"
-        #     Settings.set("scan_files", value)
-        #     value = "1" if self.scan_configs.checked() else "0"
-        #     Settings.set("scan_configs", value)

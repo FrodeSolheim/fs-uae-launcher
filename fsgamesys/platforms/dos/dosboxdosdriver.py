@@ -39,12 +39,14 @@ from fsgamesys.saves import SaveHandler
 class DosBoxDosDriver(GameDriver):
     def __init__(self, fsgs):
         super().__init__(fsgs)
-        if self.options[Option.DOS_EMULATOR] == "dosbox":
-            self.emulator.exe_name = "dosbox"
-        elif self.options[Option.DOS_EMULATOR] == "dosbox-svn":
-            self.emulator.exe_name = "dosbox-svn"
-        else:
-            self.emulator.exe_name = "dosbox-fs"
+        # if self.options[Option.DOS_EMULATOR] == "dosbox":
+        #     self.emulator.name = "dosbox"
+        # elif self.options[Option.DOS_EMULATOR] == "dosbox-svn":
+        #     self.emulator.name = "dosbox-svn"
+        # else:
+        #     self.emulator.name = "dosbox-fs"
+
+        self.emulator.name = "dosbox"
 
         self.save_handler = SaveHandler(self.fsgc, options=self.options)
 
