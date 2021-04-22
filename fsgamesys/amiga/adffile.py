@@ -6,7 +6,7 @@ import sys
 from io import BytesIO
 
 # noinspection PyUnresolvedReferences
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 B_SIZE = 512
 B_COUNT = 880 * 2
@@ -77,7 +77,7 @@ class FileInfo(object):
         self.header_block = -1
         self.name = ""
         self.path = ""
-        self.comment = None
+        self.comment: Optional[str] = None
         self.time = ""
         self.mode = 0
         self.size = 0
@@ -413,7 +413,7 @@ class ADFFile(object):
         for i, bn in enumerate(file_blocks_2):
             self.block_usage[bn].append(
                 "data block #{0} for file {1}".format(
-                    i + 1, file_info.path, bn
+                    i + 1, file_info.path
                 )
             )
 

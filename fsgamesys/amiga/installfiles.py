@@ -32,7 +32,7 @@ def install_files(files, install_dir, file_sha1_to_stream):
         print(path)
         print(file_info)
         # FIXME: Normalize and stuff?
-        if relative_path.endswith("/"):
+        if relative_path.endswith(os.sep):
             if not os.path.exists(path):
                 os.makedirs(path)
             continue

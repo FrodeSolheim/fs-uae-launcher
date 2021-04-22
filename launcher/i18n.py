@@ -126,3 +126,4 @@ def ngettext(n, msg1, msg2):
 
 translations = gettext_module.NullTranslations()
 _ = gettext
+t = gettext

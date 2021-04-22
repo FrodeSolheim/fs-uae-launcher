@@ -9,7 +9,7 @@ import os
 import sys
 import traceback
 
-from fsgamesys.amiga.adf import ADFFile
+from fsgamesys.amiga.adffile import ADFFile
 
 wb_133_startup_sequence = """\
 c:SetPatch >NIL: ;patch system functions

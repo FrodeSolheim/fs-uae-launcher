@@ -2,7 +2,7 @@ import hashlib
 import os
 import traceback
 
-from fsgamesys.amiga.adf import ADFFile
+from fsgamesys.amiga.adffile import ADFFile
 from fsgamesys.amiga.workbenchdata import (
     wb_204_files,
     wb_204_floppies,

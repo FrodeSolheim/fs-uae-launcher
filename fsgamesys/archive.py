@@ -4,6 +4,7 @@ import lzma
 import os
 import traceback
 from io import BytesIO
+from typing import List, Tuple
 
 from fspy.zipfile import ZipFile
 
@@ -17,14 +18,14 @@ from lhafile import LhaFile
 
 archive_extensions.append(".lha")
 
-try:
-    from fsbc.seven_zip_file import SevenZipFile
-except ImportError:
-    traceback.print_exc()
-    print("[ARCHIVE] SevenZipFile module import problem")
-    SevenZipFile = None
-else:
-    archive_extensions.append(".7z")
+# try:
+#     from fsbc.seven_zip_file import SevenZipFile
+# except ImportError:
+#     traceback.print_exc()
+#     print("[ARCHIVE] SevenZipFile module import problem")
+#     SevenZipFile = None
+# else:
+#     archive_extensions.append(".7z")
 
 archive_extensions_gz = [".gz", ".adz", ".roz"]
 archive_extensions.extend(archive_extensions_gz)
@@ -63,9 +64,9 @@ class ZipHandler(object):
     def infolist(self):
         return self.zip.infolist()
 
-    def list_files(self, sub_path):
+    def list_files(self, sub_path) -> List[str]:
         if sub_path:
-            return
+            return []
         return self.zip.namelist()
 
     def open(self, name):
@@ -73,7 +74,7 @@ class ZipHandler(object):
 
 
 class GzipHandler(object):
-    def __init__(self, path):
+    def __init__(self, path: str):
         self.path = path
         name, ext = os.path.splitext(os.path.basename(path))
         ext = ext.lower()
@@ -93,7 +94,7 @@ class GzipHandler(object):
 
     # FIXME: infolist
 
-    def list_files(self, sub_path):
+    def list_files(self, sub_path) -> List[str]:
         return [self.name]
 
     def open(self, name):
@@ -108,7 +109,7 @@ class GzipHandler(object):
 
 
 class XzHandler(object):
-    def __init__(self, path):
+    def __init__(self, path: str):
         self.path = path
         name, ext = os.path.splitext(os.path.basename(path))
         ext = ext.lower()
@@ -122,7 +123,7 @@ class XzHandler(object):
 
     # FIXME: infolist
 
-    def list_files(self, sub_path):
+    def list_files(self, sub_path) -> List[str]:
         return [self.name]
 
     def open(self, name):
@@ -136,32 +137,32 @@ class XzHandler(object):
         return lzma.open(self.path, "rb").read()
 
 
-class SevenZipHandler(object):
-    def __init__(self, path):
-        self.path = path
-        self.zip = SevenZipFile(self.path, "r")
+# class SevenZipHandler(object):
+#     def __init__(self, path):
+#         self.path = path
+#         self.zip = SevenZipFile(self.path, "r")
 
-    def exists(self, name):
-        try:
-            self.zip.getinfo(name)
-        except KeyError:
-            return False
-        else:
-            return True
+#     def exists(self, name):
+#         try:
+#             self.zip.getinfo(name)
+#         except KeyError:
+#             return False
+#         else:
+#             return True
 
-    # FIXME: infolist
+#     # FIXME: infolist
 
-    def list_files(self, sub_path):
-        if sub_path:
-            return
-        return self.zip.namelist()
+#     def list_files(self, sub_path):
+#         if sub_path:
+#             return
+#         return self.zip.namelist()
 
-    def open(self, name):
-        data = self.zip.read(name)
-        return io.BytesIO(data)
+#     def open(self, name):
+#         data = self.zip.read(name)
+#         return io.BytesIO(data)
 
-    def read(self, name):
-        return self.zip.read(name)
+#     def read(self, name):
+#         return self.zip.read(name)
 
 
 class LhaHandler(object):
@@ -222,13 +223,15 @@ class LhaHandler(object):
             result.append(self._formatinfo(info))
         return result
 
-    def list_files(self, sub_path):
+    def list_files(self, sub_path) -> List[str]:
         if sub_path:
-            return
+            return []
+        result = []
         for name in self._lhafile.namelist():
             # if name.endswith(str("/")):
             #     continue
-            yield self.decode_name(name)
+            result.append(self.decode_name(name))
+        return result
 
     def open(self, name):
         # LhaFile does not have open method
@@ -240,7 +243,7 @@ class NullHandler(object):
     def __init__(self, path):
         self.path = path
 
-    def list_files(self, _):
+    def list_files(self, _) -> List[str]:
         return []
 
     def open(self, path):
@@ -282,6 +285,9 @@ class SkipFilter:
             self.strip_left -= len(data)
         return self.stream.read(n)
 
+    def close(self):
+        self.stream.close()
+
 
 class ByteSwapWordsFilter:
     def __init__(self, stream):
@@ -299,11 +305,14 @@ class ByteSwapWordsFilter:
         io.seek(0)
         return io.getvalue()
 
+    def close(self):
+        self.stream.close()
+
 
 class Archive(object):
     extensions = archive_extensions
 
-    def __init__(self, path):
+    def __init__(self, path: str):
         self.path, self.sub_path = self.split_path(path)
         self._handler = None
 
@@ -313,7 +322,7 @@ class Archive(object):
     def dirname(self, path):
         return os.path.dirname(path)
 
-    def split_path(self, path):
+    def split_path(self, path) -> Tuple[str, str]:
         print("[ARCHIVE] Split path", path)
         if "#/" in path:
             parts = path.rsplit("#/", 1)
@@ -340,9 +349,9 @@ class Archive(object):
         print("[ARCHIVE] get_handler", self.path)
         name, ext = os.path.splitext(self.path)
         ext = ext.lower()
-        if ext == ".7z" and SevenZipFile is not None:
-            self._handler = SevenZipHandler(self.path)
-            return self._handler
+        # if ext == ".7z" and SevenZipFile is not None:
+        #     self._handler = SevenZipHandler(self.path)
+        #     return self._handler
         if ext in archive_extensions_gz:
             self._handler = GzipHandler(self.path)
             return self._handler
@@ -362,7 +371,7 @@ class Archive(object):
                 self._handler = NullHandler(self.path)
         return self._handler
 
-    def list_files(self):
+    def list_files(self) -> List[str]:
         result = []
         print("[ARCHIVE]", self.get_handler())
         for item in self.get_handler().list_files(self.sub_path):

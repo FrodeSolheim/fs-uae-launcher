@@ -133,7 +133,9 @@ class FSUAEAmigaDriver(GameDriver):
 
         if self.options["__netplay_game"]:
             print("\nfixing config for netplay game")
-            for key in [x for x in config.keys() if x.startswith("uae_")]:
+            for key in [
+                x for x in self.options.keys() if x.startswith("uae_")
+            ]:
                 print("* removing option", key)
                 del self.options[key]
 

@@ -46,7 +46,10 @@ class DosBoxDosDriver(GameDriver):
         # else:
         #     self.emulator.name = "dosbox-fs"
 
-        self.emulator.name = "dosbox"
+        if self.options[Option.DOS_EMULATOR] == "dosbox-staging":
+            self.emulator.name = "dosbox-staging"
+        else:
+            self.emulator.name = "dosbox"
 
         self.save_handler = SaveHandler(self.fsgc, options=self.options)
 

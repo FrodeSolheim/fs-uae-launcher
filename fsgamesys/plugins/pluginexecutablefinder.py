@@ -1,31 +1,13 @@
 import platform
 from os import path
-from typing import Union
+from typing import Optional
 
 import fsboot
 from fscore.system import System
 
-X86_MACHINES = ["x86", "i386", "i486", "i586", "i686"]
-X86_64_MACHINES = ["x86_64", "x86-64", "amd64"]
-X86_ANY_MACHINES = X86_MACHINES + X86_64_MACHINES
-
-# Mapping between executable name and plugin
-known_executables = {
-    "dosbox": "DOSBox",
-    "dosbox-staging": "DOSBox-Staging",
-    "fs-fuse": "FS-Fuse",
-    "fs-uae": "FS-UAE",
-    "fs-uae-device-helper": "FS-UAE",
-    "fuse": "Fuse",
-    "hatari": "Hatari",
-    "mame": "MAME",
-    "mednafen": "Mednafen",
-    "x64sc": "Vice",
-}
-
 
 class PluginExecutableFinder:
-    def find_executable(self, name: str):
+    def find_executable(self, name: str) -> Optional[str]:
         print("Find executable:", name)
         exe_file = find_executable(name)
         if exe_file:
@@ -34,6 +16,30 @@ class PluginExecutableFinder:
             return exe_file
         print("-> None")
         return None
+
+
+X86_MACHINES = ["x86", "i386", "i486", "i586", "i686"]
+X86_64_MACHINES = ["x86_64", "x86-64", "amd64"]
+X86_ANY_MACHINES = X86_MACHINES + X86_64_MACHINES
+
+# Mapping between executable name and plugin
+KNOWN_EXECUTABLES = {
+    "dosbox": "DOSBox",
+    "dosbox-staging": "DOSBox-Staging",
+    "fs-dosbox": "FS-DOSBox",
+    "fs-fuse": "FS-Fuse",
+    "fs-hatari": "FS-Hatari",
+    "fs-mame": "FS-MAME",
+    "fs-mednafen": "FS-Mednafen",
+    "fs-vice": "FS-Vice",
+    "fs-uae": "FS-UAE",
+    "fs-uae-device-helper": "FS-UAE",
+    "fuse": "Fuse",
+    "hatari": "Hatari",
+    "mame": "MAME",
+    "mednafen": "Mednafen",
+    "x64sc": "Vice",
+}
 
 
 def find_executable(name: str):
@@ -59,7 +65,7 @@ def find_executable(name: str):
 
 def find_executable_in_development_project_dir(name: str):
     print("- Find executable in development project dir")
-    plugin_name = known_executables.get(name)
+    plugin_name = KNOWN_EXECUTABLES.get(name)
     if plugin_name is None:
         return None
     project_dir_name = plugin_name.lower()
@@ -81,7 +87,7 @@ def find_executable_in_development_project_dir(name: str):
 
 def find_executable_in_plugins_dir(name: str):
     print("- Find executable in plugins dir")
-    plugin_name = known_executables.get(name)
+    plugin_name = KNOWN_EXECUTABLES.get(name)
     if plugin_name is None:
         return None
     base_dir = fsboot.base_dir()
@@ -109,7 +115,7 @@ def find_executable_in_plugins_dir(name: str):
 
 def find_executable_in_side_by_side_app_bundle(name: str):
     print("- Find executable in side-by-side app bundle")
-    plugin_name = known_executables.get(name)
+    plugin_name = KNOWN_EXECUTABLES.get(name)
     if plugin_name is None:
         return None
     exe_file = path.join(
@@ -121,7 +127,7 @@ def find_executable_in_side_by_side_app_bundle(name: str):
 
 def find_executable_in_side_by_side_plugin(name: str):
     print("- Find executable in side-by-side plugin")
-    plugin_name = known_executables.get(name)
+    plugin_name = KNOWN_EXECUTABLES.get(name)
     if plugin_name is None:
         return None
     plugin_dir = fsboot.plugin_dir()

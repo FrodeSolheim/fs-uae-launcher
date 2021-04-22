@@ -1,3 +1,4 @@
+from os import path
 import hashlib
 import os
 from typing import Optional
@@ -69,7 +70,11 @@ def prepare_amiga_hard_drive(config: ConfigType, drive_index: int, files):
         raise NotImplementedError()
         maybe_disable_save_states(config)
     else:
-        raise NotImplementedError()
+        # raise NotImplementedError()
+        # dest_dir = "DH0"
+        configKey = "hard_drive_{}".format(drive_index)
+        # if not config.get(configKey, ""):
+        config[configKey] = src
 
         # if ext in Archive.extensions:
         #     print("zipped hard drive", src)
@@ -125,20 +130,20 @@ def prepare_dh0_files(config: ConfigType, files: FilesType):
     s_dir = os.path.join(dest_dir, "S")
     # if not os.path.exists(s_dir):
     #     os.makedirs(s_dir)
-    files[s_dir + "/"] = {}
+    files[s_dir + os.sep] = {}
     libs_dir = os.path.join(dest_dir, "Libs")
     # if not os.path.exists(libs_dir):
     #     os.makedirs(libs_dir)
-    files[libs_dir + "/"] = {}
+    files[libs_dir + os.sep] = {}
 
     devs_dir = os.path.join(dest_dir, "Devs")
     # if not os.path.exists(devs_dir):
     #     os.makedirs(devs_dir)
-    files[devs_dir + "/"] = {}
+    files[devs_dir + os.sep] = {}
     fonts_dir = os.path.join(dest_dir, "Fonts")
     # if not os.path.exists(fonts_dir):
     #     os.makedirs(fonts_dir)
-    files[fonts_dir + "/"] = {}
+    files[fonts_dir + os.sep] = {}
 
     if hd_startup:
         config["hard_drive_0_priority"] = "6"
@@ -247,7 +252,7 @@ def prepare_dh0_files(config: ConfigType, files: FilesType):
 
 def prepare_setpatch(hd_dir: str, files: FilesType):
     # FIXME: Only optional if not using netplay?
-    files[f"{hd_dir}/C/SetPatch"] = {
+    files[path.join(hd_dir, "C", "SetPatch")] = {
         "sha1": AmigaConstants.SETPATCH_39_6_SHA1,
         "optional": True,
     }
@@ -297,10 +302,13 @@ def prepare_game_hard_drive(
         # amiga_rel_path = "/".join(amiga_rel_parts)
         amiga_rel_path = amiga_path_to_host_path(name[len(drive_prefix) :])
 
-        dst_file = os.path.join(dir_path, amiga_rel_path)
+        dst_file = path.join(dir_path, amiga_rel_path.replace("/", os.sep))
         print(repr(dst_file))
+        # x-Important to check the original name here and not the normalized path
+        # x-since normalization could have changed / to \ or even remove the
+        # x-trailing slash/backslash.
         # if name.endswith("/"):
-        if dst_file.endswith("/"):
+        if dst_file.endswith(os.sep):
             # os.makedirs(Paths.str(dst_file))
             files[dst_file] = {}
             continue

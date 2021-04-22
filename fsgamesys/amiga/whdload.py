@@ -1,5 +1,6 @@
 import logging
 import os
+from os import path
 import shutil
 import traceback
 from typing import BinaryIO, DefaultDict, Dict, List, Optional
@@ -25,24 +26,26 @@ def fsgs_whdload_data_dir():
 
 def find_whdload_slave(files, hd_dir, slave_name):
     slave_name = slave_name.lower()
+    hdDirWithSep = hd_dir + os.sep
+    print(f"Find WHDLoad slave (lower-case name: {slave_name})")
     for path in files.keys():
         print(path)
-        if not path.startswith(hd_dir + "/"):
+        if not path.startswith(hdDirWithSep):
             continue
         # try:
-        dirpath, filename = path.rsplit("/", 1)
+        dirpath, filename = path.rsplit(os.sep, 1)
         # except ValueError:
         #     dirpath = ""
         #     filename = path
         if filename.lower() == slave_name:
             print("[WHDLOAD] Found", filename)
-            found_slave = True
+            # found_slave = True
             slave_dir = dirpath[len(hd_dir) :]
             # whdload_dir = whdload_dir.replace("\\", "/")
             if not slave_dir:
                 # slave was found in root directory
                 pass
-            elif slave_dir[0] == "/":
+            elif slave_dir[0] == os.sep:
                 slave_dir = slave_dir[1:]
             return slave_dir
     return None
@@ -129,26 +132,26 @@ def prepare_whdload_system_volume_2(
 
     roms_dir = hd_dir
 
-    files[f"{roms_dir}/Devs/Kickstarts/kick33180.A500"] = {
+    files[path.join(roms_dir, "Devs", "Kickstarts", "kick33180.A500")] = {
         "sha1": "11f9e62cf299f72184835b7b2a70a16333fc0d88",
         "size": 0,
     }
-    files[f"{roms_dir}/Devs/Kickstarts/kick34005.A500"] = {
+    files[path.join(roms_dir, "Devs", "Kickstarts", "kick34005.A500")] = {
         "sha1": "891e9a547772fe0c6c19b610baf8bc4ea7fcb785",
         "size": 0,
     }
-    files[f"{roms_dir}/Devs/Kickstarts/kick40068.A1200"] = {
+    files[path.join(roms_dir, "Devs", "Kickstarts", "kick40068.A1200")] = {
         "sha1": "e21545723fe8374e91342617604f1b3d703094f1",
         "size": 0,
     }
-    files[f"{roms_dir}/Devs/Kickstarts/kick40068.A4000"] = {
+    files[path.join(roms_dir, "Devs", "Kickstarts" , "kick40068.A4000")] = {
         "sha1": "5fe04842d04a489720f0f4bb0e46948199406f49",
         "size": 0,
     }
 
     data = prepare_prefs_file(config)
     if data is not None:
-        files[s_dir + "/WHDLoad.prefs"] = {"data": data}
+        files[path.join(s_dir, "WHDLoad.prefs")] = {"data": data}
 
     # FIXME
     whdload_version = Config(config).whdload_version()
@@ -157,10 +160,10 @@ def prepare_whdload_system_volume_2(
 
     for key, value in binaries[whdload_version].items():
         # install_whdload_file(key, hd_dir, value)
-        files[hd_dir + "/" + value] = {"sha1": key}
+        files[path.join(hd_dir, value.replace("/", os.sep))] = {"sha1": key}
     for key, value in support_files.items():
         # install_whdload_file(key, hd_dir, value)
-        files[hd_dir + "/" + value] = {"sha1": key}
+        files[path.join(hd_dir, value.replace("/", os.sep))] = {"sha1": key}
 
     if config["__netplay_game"]:
         print(
@@ -223,7 +226,7 @@ def prepare_whdload_system_volume_2(
         whdload_sequence.format(slavedir, whdloadargs), setpatch=setpatch
     )
     if data is not None:
-        files[f"{s_dir}/Startup-Sequence"] = {"data": data}
+        files[path.join(s_dir, "Startup-Sequence")] = {"data": data}
 
 
 # def populate_whdload_system_volume(destdir, s_dir, *, config):

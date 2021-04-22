@@ -1,23 +1,28 @@
+
+class ADFFileExtractor(object):
+    def __init__(self, data: bytes):
+        self.data = data
+
+    def extract_file(self, name: str) -> bytes:
+        return extract_file_from_adf_data(self.data, name)
+
+
 # Simple ADF file extraction
 # Support for ADos OFS/FFS disks
 # Author: TheCyberDruid
 # Notes: Internal functions prefaced with adf_ for now.
-# ToDo: Convert functions to a class.
 # Version: 1.0
 
 BLOCK_SIZE = 512  # Size of a block on an ADos disk
 AMIGA_ULONG_SIZE = 4  # Size of an Amiga ULong variable
 
-if b"\0"[0] == 0:  # Python 3
 
-    def byte_value(x):
-        return x
-
-
-else:
-
-    def byte_value(x):
-        return ord(x)
+def byte_value(x):
+    # if b"\0"[0] == 0:  # Python 3
+    #     return x
+    # else:
+    #     return ord(x)
+    return x
 
 
 def convert_big_endian(big_endian):
@@ -133,7 +138,7 @@ def adf_parse_name(name):
     return name.split("/")
 
 
-def extract_file_from_adf_data(data, name):
+def extract_file_from_adf_data(data: bytes, name: str) -> bytes:
     ffs = adf_check_ffs(data)
     # name_parts = [x.encode("ISO-8859-1") for x in adf_parse_name(name)]
     name_parts = adf_parse_name(name)
@@ -141,17 +146,9 @@ def extract_file_from_adf_data(data, name):
     for name_part in name_parts:
         block = adf_find_file(name_part, adf_get_hashtable(block), data)
         if block == -1:
-            return -1
+            raise LookupError()
     fs = adf_get_file_size(block)
     filedata = adf_get_data_blocks(
         data, block, adf_get_file_block_count(block), ffs
     )
     return filedata[:fs]
-
-
-class ADFFileExtractor(object):
-    def __init__(self, data):
-        self.data = data
-
-    def extract_file(self, name: str) -> bytes:
-        return extract_file_from_adf_data(self.data, name)

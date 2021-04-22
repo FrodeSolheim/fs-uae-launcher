@@ -1,3 +1,4 @@
+from launcher.fswidgets2.style import Style
 import fsui
 from launcher.launcher_settings import LauncherSettings
 from launcher.settings.option_ui import OptionUI
@@ -14,6 +15,9 @@ class SettingsPage(fsui.Panel):
         self.layout.padding_right = 20
         self.icon_header = None
         self.options_on_page = set()
+        self.style = Style({
+            "flexGrow": 1
+        })
 
     def create_option_label(self, parent, label):
         return OptionUI.create_option_label(parent, label)

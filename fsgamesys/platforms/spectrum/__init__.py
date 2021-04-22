@@ -17,12 +17,13 @@
 from fsgamesys.knownfiles import KnownFile
 from fsgamesys.platforms import PLATFORM_ID_SPECTRUM
 
-SPECTRUM_MODEL_48K = "48k"
+from fsgamesys.platforms.zxspectrum.zxspectrum import ZXSpectrum
+SPECTRUM_MODEL_48K = ZXSpectrum.MODEL_48K
 # ZXS_MODEL_48K_IF2 = "spectrum/if2"
-SPECTRUM_MODEL_128 = "128"
-SPECTRUM_MODEL_PLUS2 = "plus2"
-SPECTRUM_MODEL_PLUS2A = "plus2a"
-SPECTRUM_MODEL_PLUS3 = "plus3"
+SPECTRUM_MODEL_128 = ZXSpectrum.MODEL_128
+SPECTRUM_MODEL_PLUS2 = ZXSpectrum.MODEL_PLUS2
+SPECTRUM_MODEL_PLUS2A = ZXSpectrum.MODEL_PLUS2A
+SPECTRUM_MODEL_PLUS3 = ZXSpectrum.MODEL_PLUS3
 
 SPECTRUM_48_ROM = KnownFile(
     "5ea7c2b824672e914525d1d5c419d71b84a426a2", PLATFORM_ID_SPECTRUM, "48.rom"

@@ -1,4 +1,5 @@
 import os
+from typing import List, Tuple
 
 from fsgamesys.amiga.types import ConfigType, FilesType
 
@@ -10,7 +11,9 @@ def prepare_amiga_roms(config: ConfigType, files: FilesType):
 
     model_config = Amiga.get_model_config(amiga_model)
 
-    roms = [("kickstart_file", model_config["kickstarts"])]
+    roms: List[Tuple[str, List[str]]] = [
+        ("kickstart_file", model_config["kickstarts"])
+    ]
     if config["kickstart_ext_file"] or model_config["ext_roms"]:
         # not all Amigas have extended ROMs
         roms.append(("kickstart_ext_file", model_config["ext_roms"]))

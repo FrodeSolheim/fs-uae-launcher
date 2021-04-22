@@ -1,6 +1,6 @@
 import fsui
 from fsgamesys.options.option import Option
-from launcher.i18n import gettext
+from launcher.i18n import t
 from launcher.settings.scan_paths_group import ScanPathsGroup
 from launcher.settings.settings_page import SettingsPage
 
@@ -9,20 +9,15 @@ class ScanSettingsPage(SettingsPage):
     def __init__(self, parent):
         super().__init__(parent)
         icon = fsui.Icon("indexing-settings", "pkg:workspace")
-        gettext("File Database Settings")
-        title = gettext("File Database")
-        subtitle = gettext(
-            "Choose what folders you want to scan for Amiga " "files"
+        t("File Database Settings")
+        title = t("File Database")
+        description = t(
+            "Choose what folders you want to scan for media files and ROMs"
         )
-        self.add_header(icon, title, subtitle)
+        # self.add_header(icon, title, description)
 
         self.layout.add(
-            fsui.MultiLineLabel(
-                self,
-                gettext(
-                    "Choose what folders you want to scan for Amiga " "files"
-                ),
-            ),
+            fsui.MultiLineLabel(self, description),
             fill=True,
             margin_bottom=10,
         )
