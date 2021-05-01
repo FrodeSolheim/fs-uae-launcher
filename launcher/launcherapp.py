@@ -578,8 +578,10 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         # make sure FS-UAE does not load other config files (Host.fs-uae)
         config["end_config"] = "1"
         # Make FS-UAE check that version matches (except for development)
-        if VERSION != "9.8.7dummy":
-            config[Option.EXPECT_VERSION] = VERSION
+        # Edit: The Launcher and FS-UAE will not have identical version
+        # numbers going forward.
+        # if VERSION != "9.8.7dummy":
+        #     config[Option.EXPECT_VERSION] = VERSION
 
         if config.get("__netplay_game", ""):
             print("\nfixing config for netplay game")
