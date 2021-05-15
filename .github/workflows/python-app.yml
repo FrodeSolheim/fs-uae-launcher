@@ -220,18 +220,18 @@ jobs:
 
     - name: Download Python
       run: |
-        wget https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe
-        echo "bc95bcbb879006d2a3e5f8bef6d7ec8b8e9368d4fe14e6cd4abdf1cd5166bcc3 *python-3.9.2-amd64.exe" > SHA256SUMS
+        wget https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe
+        echo "7628244cb53408b50639d2c1287c659f4e29d3dfdb9084b11aed5870c0c6a48a *python-3.8.10-amd64.exe" > SHA256SUMS
         sha256sum -c SHA256SUMS
 
     - name: Install Python
       shell: cmd
       run: |
-        START /WAIT python-3.9.2-amd64.exe /install /quiet PrependPath=1
+        START /WAIT python-3.8.10-amd64.exe /install /quiet PrependPath=1
 
     - name: Add Python to PATH
       run: |
-        export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python39
+        export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python38
         cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
         echo $PYTHONDIR/Scripts >> $GITHUB_PATH
         echo $PYTHONDIR >> $GITHUB_PATH
