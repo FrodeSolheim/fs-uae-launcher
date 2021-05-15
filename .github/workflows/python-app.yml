@@ -117,13 +117,13 @@ jobs:
 
     - name: Download Python
       run: |
-        wget https://www.python.org/ftp/python/3.9.2/python-3.9.2-macosx10.9.pkg
-        echo "86e099ad1cee81e2b84680de69ac7200fe2b4e86e5c410f0eb5effd12db72862 *python-3.9.2-macosx10.9.pkg" > SHA256SUMS
+        wget https://www.python.org/ftp/python/3.9.5/python-3.9.5-macosx10.9.pkg
+        echo "f65931e47676f8e835f70d4fc3cac0cb2ee9cd7393af4b90cc7f207d23437b75 *python-3.9.5-macosx10.9.pkg" > SHA256SUMS
         shasum -c SHA256SUMS
 
     - name: Install Python
       run: |
-        sudo installer -pkg python-3.9.2-macosx10.9.pkg -target /
+        sudo installer -pkg python-3.9.5-macosx10.9.pkg -target /
 
     - name: Add Python to PATH
       run: |
