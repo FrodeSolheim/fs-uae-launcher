@@ -242,7 +242,7 @@ jobs:
 
     - name: Run pipenv install
       run: |
-        pipenv install --deploy
+        pipenv install --python 3.8 --deploy
 
     - name: Create python3 alias in virtualenv
       run: |
