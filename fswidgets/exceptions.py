@@ -1,0 +1,2 @@
+class NoParentError(RuntimeError):
+    pass
