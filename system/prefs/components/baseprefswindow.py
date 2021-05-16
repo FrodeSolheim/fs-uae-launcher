@@ -1,9 +1,19 @@
 # from system.classes.window import Window
+from typing import Optional
+
+from fswidgets.style import Style
+from fswidgets.widget import Widget
 from launcher.fswidgets2.window import Window
 
 
 class BasePrefsWindow(Window):
-    def __init__(self, parent=None, *, title="", style=None):
+    def __init__(
+        self,
+        parent: Optional[Widget] = None,
+        *,
+        title: str = "",
+        style: Optional[Style] = None
+    ):
         super().__init__(parent, title=title, maximizable=False, style=style)
         self.set_background_color(self.theme.dialog_bgcolor())
 

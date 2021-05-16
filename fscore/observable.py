@@ -1,4 +1,6 @@
 # from rx import Observable as BaseObservable
+from typing import Any
+
 import rx
 import rx.disposable
 import rx.operators
@@ -20,7 +22,7 @@ Observable = rx.Observable
 Disposable = rx.disposable.Disposable
 
 
-def isObservable(obj):
+def isObservable(obj: Any):
     return hasattr(obj, "subscribe")
 
 

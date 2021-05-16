@@ -361,8 +361,8 @@ def show():
     InputHandler.open()
 
     on_resize((Render.get().display_width, Render.get().display_height))
-    image_loader = ImageLoader.get()
-    image_loader.start()
+    imageLoader = ImageLoader.get()
+    imageLoader.start()
     new_menu = create_main_menu()
     State.get().history.append(new_menu)
 

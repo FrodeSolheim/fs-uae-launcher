@@ -40,7 +40,7 @@ class WorkspaceTitleBar(Panel):
                 fgcolor=fgcolor,
                 fgcolor_inactive=fgcolor_inactive,
             )
-            self.menubutton.activated.connect(self.__on_menu_activated)
+            self.menubutton.activated.connect(self.__onMenu_activated)
             self.layout.add(self.menubutton)
             self.buttons.append(self.menubutton)
         else:
@@ -74,9 +74,9 @@ class WorkspaceTitleBar(Panel):
             )
         get_settings(self).add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         get_settings(self).remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     @exceptionhandler
     def on_setting(self, option, _):
@@ -119,16 +119,16 @@ class WorkspaceTitleBar(Panel):
         dc.draw_text(text, x, y)
 
     @exceptionhandler
-    def __on_menu_activated(self):
+    def __onMenu_activated(self):
         try:
-            on_menu = self.window.on_menu
+            onMenu = self.window.onMenu
         except AttributeError:
             print(
                 f"WARNING: Window {self.window} has menu enabled, but missing "
-                "on_menu method"
+                "onMenu method"
             )
             return
-        menu = on_menu()
+        menu = onMenu()
         if menu is None:
             return
         print("FIXME: Open menu")

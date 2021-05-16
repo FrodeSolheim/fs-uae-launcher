@@ -1,6 +1,7 @@
 import fsui
 from fsbc.application import app
 from fsgamesys.ogd.client import OGDClient
+from fswidgets.parentstack import ParentStack
 from launcher.fswidgets2.button import Button
 from launcher.fswidgets2.flexcontainer import (
     FlexContainer,
@@ -8,7 +9,6 @@ from launcher.fswidgets2.flexcontainer import (
 )
 from launcher.fswidgets2.imageview import ImageView
 from launcher.fswidgets2.label import Label
-from launcher.fswidgets2.parentstack import ParentStack
 from launcher.fswidgets2.spacer import Spacer
 from launcher.fswidgets2.texfield import TextField
 from launcher.fswidgets2.urllabel import UrlLabel

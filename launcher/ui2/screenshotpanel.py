@@ -18,7 +18,7 @@ sha1_keys = {
 
 class ScreenshotPanel(Panel):
     def __init__(
-        self, parent, index, image_loader, default_image, overlay_image
+        self, parent, index, imageLoader, default_image, overlay_image
     ):
         super().__init__(parent)
         self.index = index
@@ -29,7 +29,7 @@ class ScreenshotPanel(Panel):
         self._sha1 = ""
         self._request = None
         self._path = ""
-        self.image_loader = image_loader
+        self.imageLoader = imageLoader
         self.default_image = default_image
         self.overlay_image = overlay_image
         self.image = self.default_image
@@ -94,7 +94,7 @@ class ScreenshotPanel(Panel):
             # sizes are used for covers and screenshots.
             is_cover = self.index < 0
 
-            self._request = self.image_loader.load_image(
+            self._request = self.imageLoader.load_image(
                 path,
                 size=self.image_size,
                 on_load=self.__on_image_loaded,

@@ -17,10 +17,10 @@ class LanguageElement(StatusElement):
         config.add_listener(self)
         self.on_config("languages", config.get("languages"))
 
-    def on_destroy(self):
+    def onDestroy(self):
         config = get_config(self)
         config.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_config(self, key, value):
         if key == "languages":

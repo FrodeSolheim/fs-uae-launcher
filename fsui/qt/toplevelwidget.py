@@ -1,10 +1,27 @@
+from dataclasses import dataclass
+from logging import getLogger
+from typing import Optional, Set, cast
 from weakref import ref
 
 from fspy.decorators import deprecated
-from fsui.qt.qt import QDesktopWidget, QEvent, QSignal, Qt
-from fsui.qt.widget import Widget
+from fsui.qt.qt import QDesktopWidget, QSignal
+from fswidgets.qt.core import QEvent, QObject, Qt
+from fswidgets.qt.gui import QKeyEvent
+from fswidgets.qt.widgets import QWidget
+from fswidgets.types import Point, Size, WindowState
+from fswidgets.widget import Widget
 
-_windows = set()
+log = getLogger(__name__)
+
+_windows: Set["TopLevelWidget"] = set()
+
+
+@dataclass
+class WindowMargins:
+    top: int
+    right: int
+    bottom: int
+    left: int
 
 
 class TopLevelWidget(Widget):
@@ -17,7 +34,13 @@ class TopLevelWidget(Widget):
     # FIXME: Deprecated
     deactivated = QSignal()
 
-    def __init__(self, parent, qwidget, escape=False):
+    def __init__(
+        # FIXME: Rename escape to closeOnEscape
+        self,
+        parent: Optional[Widget],
+        qwidget: QWidget,
+        escape: bool = False,
+    ):
         super().__init__(parent, qwidget)
 
         # self._qwidget = qwidget
@@ -35,9 +58,7 @@ class TopLevelWidget(Widget):
 
         self.layout = None
 
-        # When size is specified before showing the window, we do not want to
-        # set size from layout.
-        self._size_specified = False
+        # self._windowSizeHasBeenSet = False
 
         self.close_listeners = []
 
@@ -45,15 +66,243 @@ class TopLevelWidget(Widget):
 
         # Maybe set to True as default? As the window will likely be activated
         # when shown?
-        self.__active = False
+        # self.__active = False
+
         self.__already_closed = False
         self.__centered_on_initial_show = False
-        self.__close_on_escape = escape
+
+        # self.__closeOnEscape = escape
+
+        self._nonMaximizedPosition = (0, 0)
+        self._nonMaximizedSize = (0, 0)
 
         # Hmm, needed, document why
         self._window = ref(self)
 
+        self.windowNormalBorders = WindowMargins(0, 0, 0, 0)
+        self.windowMaximizedBorders = WindowMargins(0, 0, 0, 0)
+        self.windowBorders = self.windowNormalBorders
+        self.windowMargins = WindowMargins(0, 0, 0, 0)
+
+        # Whether the widget has had its size set yet. Used by code to switch
+        # to fullscreen. Also, when size is specified before showing the window,
+        # we do not want to set size from layout.
+        self._windowSizeHasBeenSet = False
+
         _windows.add(self)
+
+    # -------------------------------------------------------------------------
+
+    def getTitle(self) -> str:
+        return self.qwidget.windowTitle()
+
+    def __handlePositionChange(self, position: Point):
+        maximized = self.isMaximized()
+        if maximized:
+            # self.windowBorders = self.windowMaximizedBorders
+            pass
+        else:
+            # self.windowBorders = self.windowNormalBorders
+            print("self._nonMaximizedPosition =", position)
+            self._nonMaximizedPosition = position
+
+    def __handleSizeChange(self, size: Size):
+        maximized = self.isMaximized()
+        if maximized:
+            # self.windowBorders = self.windowMaximizedBorders
+            pass
+        else:
+            # self.windowBorders = self.windowNormalBorders
+            print("self._nonMaximizedSize =", size)
+            self._nonMaximizedSize = size
+        self._windowSizeHasBeenSet = True
+
+    def isActive(self) -> bool:
+        return self.qwidget.isActiveWindow()
+
+    def isMaximized(self) -> bool:
+        return self.qwidget.windowState() == Qt.WindowMaximized
+
+    def maximize(self, maximize: bool = True):
+        """The maximize parameter is deprecated."""
+        self.setMaximized(maximize)
+
+    def minimize(self):
+        self.qwidget.setWindowState(Qt.WindowMinimized)
+
+    def onClose(self):
+        pass
+
+    def raiseAndActivate(self):
+        self.qwidget.raise_()
+        self.qwidget.activateWindow()
+
+    def setMaximized(self, maximized: bool):
+        # if maximized:
+        #     self._nonMaximizedPosition = self.getPosition()
+        #     self._nonMaximizedSize = self.getSize()
+        self.set_maximized(maximized)
+
+    def setTitle(self, title: str):
+        self.qwidget.setWindowTitle(title)
+
+    # -------------------------------------------------------------------------
+
+    def clientPositionToWindowPosition(self, position: Point):
+        return (
+            position[0] - self.windowBorders.left - self.windowMargins.left,
+            position[1] - self.windowBorders.top - self.windowMargins.top,
+        )
+
+    def clientSizeToWindowSize(self, size: Size):
+        return (
+            size[0]
+            + self.windowBorders.left
+            + self.windowBorders.right
+            + self.windowMargins.left
+            + self.windowMargins.right,
+            size[1]
+            + self.windowBorders.top
+            + self.windowBorders.bottom
+            + self.windowMargins.top
+            + self.windowMargins.bottom,
+        )
+
+    def windowPositionToClientPosition(self, position: Point):
+        return (
+            position[0] + self.windowBorders.left + self.windowMargins.left,
+            position[1] + self.windowBorders.top + self.windowMargins.top,
+        )
+
+    def windowSizeToClientSize(self, size: Size):
+        return (
+            size[0]
+            - self.windowBorders.left
+            - self.windowBorders.right
+            - self.windowMargins.left
+            - self.windowMargins.right,
+            size[1]
+            - self.windowBorders.top
+            - self.windowBorders.bottom
+            - self.windowMargins.top
+            - self.windowMargins.bottom,
+        )
+
+    def getPosition(self) -> Point:
+        return self.windowPositionToClientPosition(super().getPosition())
+
+    def getSize(self) -> Size:
+        return self.windowSizeToClientSize(super().getSize())
+
+    def setPosition(self, position: Point):
+        self.__handlePositionChange(position)
+        super().setPosition(self.clientPositionToWindowPosition(position))
+
+    def setSize(self, size: Size):
+        if size[0] == 0 or size[1] == 0:
+            log.warning("TopLevelWidget.setSize: Ignoring size", size)
+            return
+        self.__handleSizeChange(size)
+        # self._windowSizeHasBeenSet = True
+        # self.SetClientSize(size)
+        # print("FIXME:\n\nDialog.set_size")
+        # super().setSize(size)
+        super().setSize(self.clientSizeToWindowSize(size))
+
+    def setPositionAndSize(self, position: Point, size: Size):
+        self.__handlePositionChange(position)
+        self.__handleSizeChange(size)
+        super().setPositionAndSize(
+            self.clientPositionToWindowPosition(position),
+            self.clientSizeToWindowSize(size),
+        )
+
+    # def getClientPosition(self) -> Point:
+    #     """Same as getPosition. See getWindowPosition"""
+    #     return self.getPosition()
+
+    # def getClientSize(self) -> Size:
+    #     """Same as getSize, at least for now. See getWindowSize."""
+    #     return self.getSize()
+
+    # def setClientPosition(self, position: Point):
+    #     """Same as setPosition, at least for now. See setWindowPosition."""
+    #     self.setPosition(position)
+
+    # def setClientSize(self, size: Size):
+    #     """Same as setSize, at least for now. See setWindowSize."""
+    #     self.setSize(size)
+
+    def getWindowState(self) -> WindowState:
+        """Return position, size and maximization state in a data object."""
+        # pos = self.getClientPosition()
+        # size = self.getClientSize()
+        pos = self._nonMaximizedPosition
+        size = self._nonMaximizedSize
+        # pos = self.getPosition()
+        # size = self.getSize()
+        maximized = self.isMaximized()
+        return WindowState(
+            x=pos[0],
+            y=pos[1],
+            width=size[0],
+            height=size[1],
+            maximized=maximized,
+        )
+
+    def getWindowPosition(self) -> Point:
+        """Return window position including window decorations."""
+        return super().getPosition()
+
+    def getWindowSize(self) -> Size:
+        """Return window size including window decorations."""
+        return super().getSize()
+
+    def setWindowPosition(self, position: Point):
+        """Set window position including window decorations."""
+        super().setPosition(position)
+
+    def setWindowPositionAndSize(self, position: Point, size: Size):
+        """Set window position and size including window decorations."""
+        super().setPositionAndSize(position, size)
+
+    def setWindowSize(self, size: Size):
+        """Set window size including window decorations."""
+        super().setSize(size)
+
+    def getUnscaledPosition(self) -> Point:
+        x, y = self.getPosition()
+        scale = self.qwidget.devicePixelRatioF()
+        return round(x * scale), round(y * scale)
+
+    def getUnscaledSize(self) -> Size:
+        w, h = self.getSize()
+        scale = self.qwidget.devicePixelRatioF()
+        return round(w * scale), round(h * scale)
+
+    def getUnscaledWindowPosition(self) -> Point:
+        x, y = self.getWindowPosition()
+        scale = self.qwidget.devicePixelRatioF()
+        return round(x * scale), round(y * scale)
+
+    def getUnscaledWindowSize(self) -> Size:
+        w, h = self.getWindowSize()
+        scale = self.qwidget.devicePixelRatioF()
+        return round(w * scale), round(h * scale)
+
+    # -------------------------------------------------------------------------
+
+    def on_resize(self):
+        maximized = self.isMaximized()
+        if maximized:
+            self.windowBorders = self.windowMaximizedBorders
+        else:
+            self.windowBorders = self.windowNormalBorders
+        # self.contentMargins.top = self.windowBorders.top + self.windowMargins.top
+        # self.contentMargins.right = self.windowBorders.right + self.windowMargins.right
+        # self.contentMargins.bottom = self.windowBorders.bottom + self.windowMargins.bottom
+        # self.contentMargins.left = self.windowBorders.left + self.windowMargins.left
+        super().on_resize()
 
     # FIXME: REMOVE? close signal instead
     def add_close_listener(self, function):
@@ -63,7 +312,7 @@ class TopLevelWidget(Widget):
     def center_on_initial_show(self):
         if self.__centered_on_initial_show:
             return
-        if self.layout and not self._size_specified:
+        if self.layout and not self._windowSizeHasBeenSet:
             self.set_size(self.layout.get_min_size())
         self.on_resize()
         self.center_on_parent()
@@ -132,9 +381,11 @@ class TopLevelWidget(Widget):
     # def __destroyed(self):
     #     print(f"TopLevelWidget.__destroyed self={self}")
 
-    def eventFilter(self, obj, event):
-        event_type = event.type()
-        if event_type == QEvent.Close:
+    def eventFilter(self, a0: QObject, a1: QEvent):
+        obj = a0
+        event = a1
+        eventType = event.type()
+        if eventType == QEvent.Close:
             assert obj == self._qwidget
             # print(f"DialogWrapper.closeEvent self={self})")
             # super().closeEvent(event)
@@ -144,9 +395,11 @@ class TopLevelWidget(Widget):
             else:
                 self.__already_closed = True
                 _windows.remove(self)
+                self.onClose()
                 self.on_close()
-        elif event_type == QEvent.KeyPress:
-            if event.key() == Qt.Key_Escape:
+        elif eventType == QEvent.KeyPress:
+            keyEvent = cast(QKeyEvent, event)
+            if keyEvent.key() == Qt.Key_Escape:
                 if hasattr(self, "end_modal"):
                     self.end_modal(False)
                 self.close()
@@ -208,33 +461,20 @@ class TopLevelWidget(Widget):
 
     @deprecated
     def is_maximized(self):
-        return self.maximized()
+        return self.isMaximized()
 
-    def maximize(self, maximize=True):
-        if maximize:
-            self._qwidget.showMaximized()
-        else:
-            self._qwidget.setWindowState(Qt.WindowNoState)
-
+    @deprecated
     def maximized(self):
-        # return self.isMaximized()
-        return self._qwidget.windowState() == Qt.WindowMaximized
-        # print("FIXME: always returning False")
-        # return False
-
-    def minimize(self):
-        # self.setWindowState(Qt.WindowMinimized)
-        # return self._real_window.minimize()
-        self._qwidget.setWindowState(Qt.WindowMinimized)
+        return self.isMaximized()
 
     def on_close(self):
         self.closed.emit()
 
-    def on_window_focus_changed(self):
+    def onWindowFocusChanged(self):
         """Overrides the base function and emits a signal by default.
 
         Only top-level widgets does this. Normal widgets only have the
-        on_window_focus_changed method."""
+        onWindowFocusChanged method."""
         # print("TopLevelWindow.window_focus_changed")
         self.window_focus_changed.emit()
         # FIXME: Deprecated signals
@@ -255,21 +495,22 @@ class TopLevelWidget(Widget):
     #     pos = self._qwidget.pos()
     #     return pos.x(), pos.y()
 
+    @deprecated
     def raise_and_activate(self):
-        self._qwidget.raise_()
-        self._qwidget.activateWindow()
+        self.raiseAndActivate()
 
     def set_icon(self, icon):
-        self.setWindowIcon(icon.qicon())
+        self.qwidget.setWindowIcon(icon.qicon())
 
     def set_icon_from_path(self, _):
         print("FIXME: Window.set_icon_from_path")
 
     def set_initial_size_from_layout(self):
-        if self.layout and not self._size_specified:
+        if self.layout and not self._windowSizeHasBeenSet:
             self.set_size_from_layout()
 
-    def set_maximized(self, maximize=True, geometry=None):
+    @deprecated
+    def set_maximized(self, maximize: bool = True, geometry=None):
         # We must set the size before maximizing, so this isn't done within
         # showMaximized -> ... -> set_initial_size_from_layout -> set_size.
         self.set_initial_size_from_layout()
@@ -288,44 +529,35 @@ class TopLevelWidget(Widget):
             #         self.resize(1, 1)
             # self.resize(1, 1)
             # self.resize(1920, 1080)
-            self._qwidget.showMaximized()
-            print("size after showMaximized", self.size())
+            self.qwidget.showMaximized()
+            print("size after showMaximized", self.getSize())
         else:
             # self.restore_margins()
-            self._qwidget.setWindowState(Qt.WindowNoState)
-
-    def set_size(self, size):
-        self._size_specified = True
-        # self.SetClientSize(size)
-        # print("FIXME:\n\nDialog.set_size")
-        if size[0] == 0 or size[1] == 0:
-            print("TopLevelWidget.set_size ignoring size", size)
-            return
-        super().set_size(size)
+            self.qwidget.setWindowState(Qt.WindowNoState)
 
     def set_size_from_layout(self):
         size = self.layout.get_min_size()
         print(f"set_size_from_layout, size = {size}")
-        self.set_size(size)
+        self.setSize(size)
 
+    @deprecated
     def title(self):
-        return self._qwidget.windowTitle()
+        return self.getTitle()
 
-    def set_title(self, title):
-        self._qwidget.setWindowTitle(title)
+    @deprecated
+    def set_title(self, title: str):
+        self.setTitle(title)
 
+    @deprecated
     def unscaled_position(self):
-        x, y = self.position()
-        scale = self._qwidget.devicePixelRatioF()
-        return round(x * scale), round(y * scale)
+        return self.getUnscaledWindowPosition()
 
+    @deprecated
     def unscaled_size(self):
-        w, h = self.size()
-        scale = self._qwidget.devicePixelRatioF()
-        return round(w * scale), round(h * scale)
+        return self.getUnscaledWindowSize()
 
     # def show(self):
-    #     if hasattr(self, "layout") and not self._size_specified:
+    #     if hasattr(self, "layout") and not self._windowSizeHasBeenSet:
     #         self.set_size(self.layout.get_min_size())
     #     #QMainWindow.show(self)
     #     print("")
@@ -341,7 +573,7 @@ class TopLevelWidget(Widget):
     #     # FIXME
     #     # FIXME
 
-    #     if self.layout and not self._size_specified:
+    #     if self.layout and not self._windowSizeHasBeenSet:
     #         self.set_size(self.layout.get_min_size())
     #     self.on_resize()
 

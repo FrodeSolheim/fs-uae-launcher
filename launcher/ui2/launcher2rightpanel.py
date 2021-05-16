@@ -1,3 +1,4 @@
+from fswidgets.widget import Widget
 from fsui import Color, HorizontalLayout, Panel, VerticalLayout
 from launcher.ui2.configpanel import ConfigPanel
 from launcher.ui2.launcher2bottompanel import Launcher2BottomPanel
@@ -10,7 +11,7 @@ from system.classes.configdispatch import ConfigDispatch
 
 
 class Launcher2RightPanel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent)
         # self.set_background_color(fsui.Color(0x999900))
         # This min width is not important
@@ -58,10 +59,10 @@ class Launcher2RightPanel(Panel):
             # Subtracting an additional 40 For Launcher title bar
             min_height = screen_size[1] - 40 - 40
 
-            self.parent().set_min_size((min_width, min_height))
-            self.parent().left.set_min_width(380)
+            self.getParent().set_min_size((min_width, min_height))
+            self.getParent().left.set_min_width(380)
 
-            self.parent().set_min_size((1280, 720 - 40))
+            self.getParent().set_min_size((1280, 720 - 40))
 
             # For now, make the minimum _client size_ 1280x720 which will cause
             # the window with decorations to be 1280x740. This should not be

@@ -1,5 +1,5 @@
+from fswidgets.parentstack import ParentStack
 from launcher.fswidgets2.flexcontainer import VerticalFlexContainer
-from launcher.fswidgets2.parentstack import ParentStack
 from launcher.fswidgets2.text import Text
 from launcher.settings.option_ui import OptionUI
 

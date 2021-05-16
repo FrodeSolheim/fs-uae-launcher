@@ -1,3 +1,5 @@
+from fswidgets.widget import Widget
+from fswidgets.panel import Panel
 import fsui
 from fsbc.util import unused
 from fsgamesys.FSGSDirectories import FSGSDirectories
@@ -6,9 +8,9 @@ from launcher.launcher_settings import LauncherSettings
 from launcher.ui.IconButton import IconButton
 
 
-class ScanPathsGroup(fsui.Group):
-    def __init__(self, parent):
-        fsui.Group.__init__(self, parent)
+class ScanPathsGroup(Panel):
+    def __init__(self, parent: Widget):
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 
         self.layout2 = fsui.VerticalLayout()
@@ -46,9 +48,9 @@ class ScanPathsGroup(fsui.Group):
         self.list_view.on_select_item = self.on_select_item
         LauncherSettings.add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_setting(self, key, value):
         unused(value)

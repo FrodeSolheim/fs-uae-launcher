@@ -80,11 +80,11 @@ class NetplayPanel(fsui.Panel):
         self.netplay = Netplay()
         IRCBroadcaster.add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         print("NetplayPanel.on_destroy")
         IRCBroadcaster.remove_listener(self)
         self.netplay.disconnect()
-        super().on_destroy()
+        super().onDestroy()
 
     def on_show(self):
         # FIXME: currently disabled

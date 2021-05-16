@@ -3,7 +3,7 @@ import weakref
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QAbstractListModel, QBrush, QListView, QSize, Qt
 from fsui.qt.signal import Signal
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 
 class Model(QAbstractListModel):

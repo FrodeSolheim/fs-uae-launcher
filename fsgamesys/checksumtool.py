@@ -4,7 +4,7 @@ import os
 from fsgamesys.amiga.rommanager import ROMManager
 from fsgamesys.archive import Archive
 
-ZERO_SHA1 = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+EMPTY_SHA1 = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
 
 
 class ChecksumTool:
@@ -17,7 +17,7 @@ class ChecksumTool:
         # self.layout.add_spacer(6)
         # #self.center_on_parent()
 
-    def checksum(self, path):
+    def checksum(self, path: str):
         print("[CHECKSUM]", repr(path))
         archive = Archive(path)
         if os.path.exists(path):
@@ -27,7 +27,7 @@ class ChecksumTool:
                 # system (could be large). To reliably get the size we could
                 # use ioctl, but we simply return the checksum for a 0-byte
                 # file in either case.
-                return ZERO_SHA1
+                return EMPTY_SHA1
         s = hashlib.sha1()
         f = archive.open(path)
         while True:
@@ -37,7 +37,7 @@ class ChecksumTool:
             s.update(data)
         return s.hexdigest()
 
-    def checksum_rom(self, path):
+    def checksum_rom(self, path: str) -> str:
         print("[CHECKSUM] ROM:", repr(path))
         archive = Archive(path)
-        return ROMManager.decrypt_archive_rom(archive, path)["sha1"]
+        return ROMManager.decrypt_archive_rom(archive, path).sha1

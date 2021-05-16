@@ -73,7 +73,7 @@ class VariantChoice(ItemChoice):
             },
         )
 
-    # def on_destroy(self):
+    # def onDestroy(self):
     #     LauncherSettings.remove_listener(self)
     #     # Signal.remove_listener("quit", self)
 

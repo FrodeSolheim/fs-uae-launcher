@@ -1,10 +1,12 @@
 import os
 from typing import List, Tuple
 
-from fsgamesys.amiga.types import ConfigType, FilesType
+from fsgamesys.amiga.types import ConfigType
+from fsgamesys.files.installablefile import InstallableFile
+from fsgamesys.files.installablefiles import InstallableFiles
 
 
-def prepare_amiga_roms(config: ConfigType, files: FilesType):
+def prepare_amiga_roms(config: ConfigType, files: InstallableFiles):
     amiga_model = config.get("amiga_model", "A500")
     # To avoid circular import
     from fsgamesys.amiga.amiga import Amiga
@@ -27,7 +29,7 @@ def prepare_amiga_roms(config: ConfigType, files: FilesType):
         # rom_path = f"ROMs/{rom_name}"
         # rom_path = f"{rom_name}"
         rom_path = rom_name
-        files[rom_path] = {"sha1": sha1}
+        files[rom_path] = InstallableFile(sha1=sha1)
         config[config_key] = os.path.join(config["run_dir"], rom_path)
 
 

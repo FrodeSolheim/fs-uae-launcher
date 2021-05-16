@@ -2,6 +2,7 @@ import functools
 import os
 import sys
 import unicodedata
+from typing import List, Optional, Union
 
 import fsboot
 from fscore.system import System
@@ -9,21 +10,17 @@ from fscore.system import System
 
 class Paths(object):
     @staticmethod
-    def str(path):
+    def encode(path: str) -> bytes:
         return path.encode(sys.getfilesystemencoding())
 
     @staticmethod
-    def encode(path):
-        return path.encode(sys.getfilesystemencoding())
-
-    @staticmethod
-    def unicode(path):
+    def unicode(path: Union[bytes, str]) -> str:
         if isinstance(path, str):
             return path
         return path.decode(sys.getfilesystemencoding())
 
     @classmethod
-    def join(cls, a, b):
+    def join(cls, a: str, b: str):
         # if not a:
         #     return b
         # if a[-1] == "/" or a[-1] == "\\":
@@ -32,7 +29,7 @@ class Paths(object):
         return os.path.join(a, b).replace("\\", "/")
 
     @classmethod
-    def expand_path(cls, path, default_dir=None):
+    def expand_path(cls, path: str, default_dir: Optional[str] = None):
         if path and path[0] == "$":
             cmp_path = path.upper().replace("\\", "/")
             if cmp_path.startswith("$BASE/"):
@@ -55,7 +52,12 @@ class Paths(object):
         return path
 
     @classmethod
-    def contract_path(cls, path, default_dir=None, force_real_case=True):
+    def contract_path(
+        cls,
+        path: str,
+        default_dir: Optional[str] = None,
+        force_real_case: bool = True,
+    ):
         if path.rfind(":") > 1:
             # Checking against > index 1 to allow for Windows absolute paths
             # with drive letter and colon. If colon is later, we assume this
@@ -80,7 +82,7 @@ class Paths(object):
         return path
 
     @classmethod
-    def get_base_dir(cls, slash=False):
+    def get_base_dir(cls, slash: bool = False):
         path = fsboot.base_dir()
         path = cls.get_real_case(path)
         if slash:
@@ -89,7 +91,7 @@ class Paths(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_home_dir(cls, slash=False):
+    def get_home_dir(cls, slash: bool = False) -> str:
         path = fsboot.home_dir()
         path = cls.get_real_case(path)
         if slash:
@@ -97,7 +99,7 @@ class Paths(object):
         return path
 
     @classmethod
-    def get_real_case(cls, path):
+    def get_real_case(cls, path: str) -> str:
         """Check the case for the (case insensitive) path. Used to make the
         database portable across sensitive/insensitive file systems."""
 
@@ -110,7 +112,7 @@ class Paths(object):
             if os.path.exists(path):
                 return path
 
-        parts = []
+        parts: List[str] = []
         drive, p = os.path.splitdrive(path)
         removed_separator = ""
         if path.startswith("/"):
@@ -136,7 +138,7 @@ class Paths(object):
         result = [drive]
         result.extend(parts)
 
-        combined = drive
+        combined: str = drive
         combined = combined.upper()
         k = 1
         for part in parts:

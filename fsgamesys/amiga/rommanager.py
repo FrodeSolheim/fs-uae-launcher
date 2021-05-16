@@ -1,12 +1,27 @@
 import hashlib
 import os
+from dataclasses import dataclass
+from typing import IO, List, Optional
 
 from fsgamesys.archive import Archive
 
 
+@dataclass
+class PatchableRom:
+    sha1: str
+    data: bytes
+
+    def __getitem__(self, key: str):
+        if key == "sha1":
+            return self.sha1
+        elif key == "data":
+            return self.data
+        raise KeyError(key)
+
+
 class ROMManager(object):
     @classmethod
-    def add_rom_to_database(cls, path, database, log_function=None):
+    def add_rom_to_database(cls, path: str, database, log_function=None):
         if log_function is None:
             log_function = print
         try:
@@ -33,9 +48,11 @@ class ROMManager(object):
         database.add_file(path=path, sha1=rom["sha1"], mtime=mtime, size=size)
 
     @classmethod
-    def decrypt_archive_rom(cls, archive, path, file=None):
+    def decrypt_archive_rom(
+        cls, archive: Archive, path: str, file: Optional[IO[bytes]] = None
+    ) -> PatchableRom:
         print("decrypt_archive_rom", path)
-        result = {}
+        # result = {}
         f = archive.open(path)
         data = f.read(len("AMIROMTYPE1"))
         out_data = b""
@@ -47,11 +64,12 @@ class ROMManager(object):
             data = f.read()
             sha1.update(data)
             out_data += data
-            result["data"] = out_data
-            result["sha1"] = sha1.hexdigest()
-            cls.patch_rom(result)
+            result = PatchableRom(data=out_data, sha1=sha1.hexdigest())
+            # result["data"] = out_data
+            # result["sha1"] = sha1.hexdigest()
+            cls.patchRom(result)
             if file is not None:
-                file.write(result["data"])
+                file.write(result.data)
             return result
 
         key_path = archive.join(archive.dirname(path), "rom.key")
@@ -70,7 +88,7 @@ class ROMManager(object):
             data = f.read(len(key_data))
             if not data:
                 break
-            dec = []
+            dec: List[int] = []
             for i in range(len(data)):
                 dec.append(data[i] ^ key_data[i])
             dec_data = bytes(dec)
@@ -79,11 +97,12 @@ class ROMManager(object):
             out_data += dec_data
             if sha1 is not None:
                 sha1.update(dec_data)
-        result["data"] = out_data
-        result["sha1"] = sha1.hexdigest()
-        cls.patch_rom(result)
+        result = PatchableRom(data=out_data, sha1=sha1.hexdigest())
+        # result["data"] = out_data
+        # result["sha1"] = sha1.hexdigest()
+        cls.patchRom(result)
         if file is not None:
-            file.write(result["data"])
+            file.write(result.data)
         return result
 
     rom_transformations = [
@@ -102,11 +121,11 @@ class ROMManager(object):
     ]
 
     @classmethod
-    def patch_rom(cls, rom):
-        src_data = rom["data"]
+    def patchRom(cls, rom: PatchableRom):
+        src_data = rom.data
         dst_data = b""
 
-        if rom["sha1"] == "c39bd9094d4e5f4e28c1411f3086950406062e87":
+        if rom.sha1 == "c39bd9094d4e5f4e28c1411f3086950406062e87":
             dst_data += src_data[:413]
             dst_data += b"\x08"
             dst_data += src_data[414:176029]
@@ -114,15 +133,15 @@ class ROMManager(object):
             dst_data += src_data[176030:262121]
             dst_data += b"\x26"
             dst_data += src_data[262122:]
-            rom["sha1"] = "891e9a547772fe0c6c19b610baf8bc4ea7fcb785"
+            rom.sha1 = "891e9a547772fe0c6c19b610baf8bc4ea7fcb785"
 
-        elif rom["sha1"] == "90933936cce43ca9bc6bf375662c076b27e3c458":
+        elif rom.sha1 == "90933936cce43ca9bc6bf375662c076b27e3c458":
             # from Kickstart v1.3 rev 34.5 (1987)(Commodore)
             # (A500-A1000-A2000-CDTV)[o].rom
             dst_data += src_data[:262144]
-            rom["sha1"] = "891e9a547772fe0c6c19b610baf8bc4ea7fcb785"
+            rom.sha1 = "891e9a547772fe0c6c19b610baf8bc4ea7fcb785"
 
-        elif rom["sha1"] == "c3c481160866e60d085e436a24db3617ff60b5f9":
+        elif rom.sha1 == "c3c481160866e60d085e436a24db3617ff60b5f9":
             # from Kickstart v3.1 r40.68 (1993)(Commodore)(A4000)[h Cloanto]
             # to Kickstart v3.1 r40.68 (1993)(Commodore)(A4000)
             dst_data += src_data[:220]
@@ -138,11 +157,11 @@ class ROMManager(object):
             dst_data += src_data[524265:524266]
             dst_data += b"\x14"
             dst_data += src_data[524267:]
-            rom["sha1"] = "5fe04842d04a489720f0f4bb0e46948199406f49"
+            rom.sha1 = "5fe04842d04a489720f0f4bb0e46948199406f49"
 
         if dst_data:
-            rom["data"] = dst_data
-            print("Patched ROM to", rom["sha1"])
+            rom.data = dst_data
+            print("Patched ROM to", rom.sha1)
         sha1 = hashlib.sha1()
-        sha1.update(rom["data"])
-        assert sha1.hexdigest() == rom["sha1"]
+        sha1.update(rom.data)
+        assert sha1.hexdigest() == rom.sha1

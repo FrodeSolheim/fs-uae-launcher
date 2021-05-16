@@ -1,11 +1,18 @@
-from typing import Dict, Union
+from typing import Any, Dict, Optional, Union
 
 
 class Style:
     def __init__(
         self,
-        initial: Dict[str, Union[str, int]] = None,
-        addStyle: Dict[str, Union[str, int]] = None,
+        initial: Optional[Dict[str, Union[str, int]]] = None,
+        addStyle: Optional[Dict[str, Union[str, int]]] = None,
+        *,
+        backgroundColor: Optional[str] = None,
+        marginBottom: Optional[int] = None,
+        marginLeft: Optional[int] = None,
+        marginRight: Optional[int] = None,
+        marginTop: Optional[int] = None,
+        padding: Optional[int] = None,
     ):
         super().__init__()
         self._explicit = initial.copy() if initial else {}
@@ -13,6 +20,27 @@ class Style:
         #     self._explicit = {}  # type: Dict[str, Union[str, int]]
         if addStyle is not None:
             self._explicit.update(addStyle)
+
+        def setValue(name: str, value: Any):
+            if value is not None:
+                self._explicit[name] = value
+
+        setValue(
+            "backgroundColor",
+            backgroundColor,
+        )
+        setValue("marginBottom", marginBottom)
+        setValue("marginLeft", marginLeft)
+        setValue("marginRight", marginRight)
+        setValue("marginTop", marginTop)
+        setValue("padding", padding)
+
+        # if backgroundColor is not None:
+        #     self._explicit["backgroundColor"] = backgroundColor
+        # if marginBottom is not None:
+        #     self._explicit["marginBottom"] = marginBottom
+        # if marginLeft is not None:
+        #     self._explicit["marginLeft"] = marginLeft
 
         self._implicit = {}  # type: Dict[str, Union[str, int]]
         # self.padding_top = 0
@@ -23,11 +51,17 @@ class Style:
 
     def update(self, *args, **kwargs):
         # super().update(*args, **kwargs)
-        self._explicit.update(*args, **kwargs)
+        if len(args) == 1 and isinstance(args[0], Style):
+            self._explicit.update(args[0]._explicit)
+        else:
+            self._explicit.update(*args, **kwargs)
         self._update()
 
-    def get(self, key, default=None):
+    def get(self, key: str, default=None):
         return self._implicit.get(key, default)
+
+    def getBackgroundColor(self) -> str:
+        return self.get("backgroundColor")
 
     def _update(self):
         style = self._explicit.copy()
@@ -89,17 +123,17 @@ class Style:
         #     self["marginLeft"] = margin
 
     @property
-    def padding_top(self):
+    def padding_top(self) -> int:
         return self.get("paddingTop")
 
     @property
-    def padding_right(self):
+    def padding_right(self) -> int:
         return self.get("paddingRight")
 
     @property
-    def padding_bottom(self):
+    def padding_bottom(self) -> int:
         return self.get("paddingBottom")
 
     @property
-    def padding_left(self):
+    def padding_left(self) -> int:
         return self.get("paddingLeft")

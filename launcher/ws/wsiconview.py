@@ -229,12 +229,12 @@ class WSIconView(ScrollArea):
             shell_dirname(path).replace(":", "/"),
         )
         normal_image = Image(
-            ApplicationData.path_or_stream(
+            ApplicationData.pathOrStream(
                 os.path.join(icon_dir, label + ".png")
             )
         )
         selected_image = Image(
-            ApplicationData.path_or_stream(
+            ApplicationData.pathOrStream(
                 os.path.join(icon_dir, label + "_Selected.png")
             )
         )

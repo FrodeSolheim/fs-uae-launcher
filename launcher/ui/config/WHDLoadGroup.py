@@ -30,9 +30,9 @@ class WHDLoadGroup(fsui.Panel):
         self.text_field.on_changed = self.on_text_changed
         get_config(self).add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         get_config(self).remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_config(self, key, value):
         if key == "x_whdload_args":

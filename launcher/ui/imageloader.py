@@ -20,7 +20,7 @@ class ImageLoader(object):
         self.requests_lock = threading.Lock()
         self.requests_condition = threading.Condition(self.requests_lock)
         threading.Thread(
-            target=self.image_loader_thread, name="ImageLoaderThread"
+            target=self.imageLoaderThread, name="ImageLoaderThread"
         ).start()
         LauncherSignal.add_listener("quit", self)
 
@@ -34,9 +34,9 @@ class ImageLoader(object):
         print("[IMAGES] ImageLoader.on_quit_signal")
         self.stop_flag = True
 
-    def image_loader_thread(self):
+    def imageLoaderThread(self):
         try:
-            self._image_loader_thread()
+            self._imageLoaderThread()
         except Exception:
             traceback.print_exc()
 
@@ -53,7 +53,7 @@ class ImageLoader(object):
             self.requests_condition.notify()
         return request
 
-    def _image_loader_thread(self):
+    def _imageLoaderThread(self):
         while True:
             request = None
             with self.requests_lock:

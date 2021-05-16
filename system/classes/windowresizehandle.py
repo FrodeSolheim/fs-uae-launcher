@@ -1,13 +1,18 @@
+from typing import Optional
+
 from fsui import Color, Panel, get_mouse_position, get_theme
 from fsui.context import get_window
+from fswidgets.parentstack import ParentStack
+from fswidgets.widget import Widget
 
 
 class WindowResizeHandle(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Optional[Widget] = None):
+        parent = parent or ParentStack.top()
         super().__init__(parent)
         # parent.resized.connect(self.__parent_resized)
-        get_window(self).resized.connect(self.__parent_resized)
-        self.set_size((16, 16))
+        self.getWindow().resized.connect(self.__parent_resized)
+        self.setSize((16, 16))
         # self.set_background_color(Color(0x999999))
         # self.set_background_color(Color(0xFF0000))
         # self.set_background_color(Color(0xAEAEAE))

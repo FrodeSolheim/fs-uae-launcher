@@ -1,3 +1,4 @@
+from fswidgets.widget import Widget
 import hashlib
 
 import fsui
@@ -7,7 +8,7 @@ from ..i18n import gettext
 
 
 class ChecksumDialog(fsui.Window):
-    def __init__(self, parent, path):
+    def __init__(self, parent: Widget, path: str):
         unused(path)
         fsui.Window.__init__(self, parent, gettext("Checksumming"))
         self.layout = fsui.VerticalLayout()
@@ -18,7 +19,7 @@ class ChecksumDialog(fsui.Window):
         # self.center_on_parent()
 
     @staticmethod
-    def checksum(path):
+    def checksum(path: str):
         s = hashlib.sha1()
         with open(path, "rb") as f:
             data = f.read()

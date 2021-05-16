@@ -26,9 +26,9 @@ class VolumeButtonBase:
         else:
             app.settings["volume"] = "100"
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_setting(self, key, value, initial=False):
         if key == "volume":
@@ -108,9 +108,9 @@ class VolumeButton(VolumeButtonBase, ButtonWrapper):
 #         self.on_setting("volume", app.settings["volume"])
 #         LauncherSettings.add_listener(self)
 
-#     def on_destroy(self):
+#     def onDestroy(self):
 #         LauncherSettings.remove_listener(self)
-#         super().on_destroy()
+#         super().onDestroy()
 
 #     def on_setting(self, key, value):
 #         if key == "volume":

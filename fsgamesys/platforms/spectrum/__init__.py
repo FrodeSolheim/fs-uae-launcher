@@ -16,8 +16,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 from fsgamesys.knownfiles import KnownFile
 from fsgamesys.platforms import PLATFORM_ID_SPECTRUM
-
 from fsgamesys.platforms.zxspectrum.zxspectrum import ZXSpectrum
+
 SPECTRUM_MODEL_48K = ZXSpectrum.MODEL_48K
 # ZXS_MODEL_48K_IF2 = "spectrum/if2"
 SPECTRUM_MODEL_128 = ZXSpectrum.MODEL_128

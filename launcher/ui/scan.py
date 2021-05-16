@@ -186,9 +186,9 @@ class KickstartStatusGroup(fsui.Group):
         self.update()
         LauncherSignal.add_listener("scan_done", self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSignal.remove_listener("scan_done", self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_scan_done_signal(self):
         self.update()

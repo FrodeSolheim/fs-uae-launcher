@@ -5,7 +5,7 @@ from typing import Callable
 
 class MainLoop:
     @classmethod
-    def schedule(cls, action: Callable):
+    def schedule(cls, action: Callable[[], None]):
         print("MainLoop.schedule", action)
         from fsui import call_after
 

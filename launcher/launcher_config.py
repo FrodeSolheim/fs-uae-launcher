@@ -670,19 +670,19 @@ class LauncherConfig(object):
         cls.set("__changed", "0")
 
     @staticmethod
-    def is_implicit_option(key):
+    def is_implicit_option(key: str) -> bool:
         return key.startswith("__implicit_")
 
     @staticmethod
-    def is_custom_uae_option(key):
+    def is_custom_uae_option(key: str) -> bool:
         return key.startswith("uae_")
 
     @classmethod
-    def is_custom_option(cls, key):
+    def is_custom_option(cls, key: str) -> bool:
         return key not in cls.config_keys
 
     @classmethod
-    def is_config_only_option(cls, key):
+    def is_config_only_option(cls, key: str) -> bool:
         if key in LauncherSettings.default_settings:
             # This key is specifically white-listed as a settings key
             return False

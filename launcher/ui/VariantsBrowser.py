@@ -65,10 +65,10 @@ class VariantsBrowser(fsui.ItemChoice):
         LauncherSettings.add_listener(self)
         self.on_setting("parent_uuid", LauncherSettings.get("parent_uuid"))
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
         # Signal.remove_listener("quit", self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_select_item(self, index):
         if index is None:

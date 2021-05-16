@@ -16,7 +16,7 @@ from fsgamesys.product import Product
 from launcher.apps.launcher2 import wsopen_main
 from launcher.option import Option
 from launcher.version import VERSION
-from system.utilities.updater import Updater
+from system.utilities.updater.updateutil import UpdateUtil
 
 log = logging.getLogger(__name__)
 
@@ -100,7 +100,7 @@ def getLauncherPluginName() -> str:
 
 
 def getLauncherPluginDirectory():
-    return Updater.getPluginDirectory(getLauncherPluginName())
+    return UpdateUtil.getPluginDirectory(getLauncherPluginName())
 
 
 # FIXME: Move to update module
@@ -215,7 +215,9 @@ def maybeRunNewerVersionFromPlugin():
         from launcher.version import VERSION
 
         try:
-            pluginVersion = Updater.getPluginVersionFromDirectory(launcherDir)
+            pluginVersion = UpdateUtil.getPluginVersionFromDirectory(
+                launcherDir
+            )
             if Version(pluginVersion) > Version(VERSION):
                 debug(
                     f"Plugin version ({pluginVersion}) "

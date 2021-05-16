@@ -1,5 +1,6 @@
 from os import path
 from typing import Dict
+
 from .newgamedriver import GameDriver2
 from .zxspectrum import ZXSpectrum
 
@@ -41,7 +42,7 @@ class ZXSpectrumFsFuseDriver(GameDriver2):
         self.configureAudio(fuseOptions)
         if not fsemu:
             self.configureFuseInput(fuseOptions)
-        
+
         self.configureMedia(fsFuseOptions, fuseOptions)
         self.configureVideo(fuseOptions)
 

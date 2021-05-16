@@ -1,25 +1,30 @@
+from fswidgets.overrides import overrides
+from typing import List, Optional
+
 import fsui
-from fsui import get_window
+from fsui import Panel
+from fsui.qt.color import Color
+from fswidgets.widget import Widget
 from launcher.context import get_settings, get_theme
 
 from .titlebarbutton import TitleBarButton
 
 
-class TitleBar(fsui.Panel):
+class TitleBar(Panel):
     def __init__(
         self,
-        parent,
+        parent: Widget,
         *,
-        title="",
-        menu=False,
-        minimizable=True,
-        maximizable=True,
-        foreground_color=None,
-        background_color=None,
-        foreground_inactive_color=None,
-        background_inactive_color=None,
+        title: str = "",
+        menu: bool = False,
+        minimizable: bool = True,
+        maximizable: bool = True,
+        foreground_color: Optional[Color] = None,
+        background_color: Optional[Color] = None,
+        foreground_inactive_color: Optional[Color] = None,
+        background_inactive_color: Optional[Color] = None,
     ):
-        super().__init__(parent)
+        super().__init__(parent, forceRealParent=True)
         self.layout = fsui.HorizontalLayout()
 
         self.override_foreground_color = foreground_color
@@ -31,13 +36,13 @@ class TitleBar(fsui.Panel):
         self.dragging = False
         self.dragging_mouse_origin = (0, 0)
         self.dragging_window_origin = (0, 0)
-        self.buttons = []
+        self.buttons: List[Widget] = []
 
         theme = get_theme(self)
-        self.height = theme.titlebar_height()
-        self.set_min_height(self.height)
+        self._height = theme.titlebar_height()
+        self.set_min_height(self._height)
 
-        button_size = (self.height, self.height)
+        button_size = (self._height, self._height)
 
         if self.override_foreground_color:
             fgcolor = self.override_foreground_color
@@ -124,16 +129,16 @@ class TitleBar(fsui.Panel):
             )
         get_settings(self).add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         get_settings(self).remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
-    def on_setting(self, option, value):
+    def on_setting(self, option: str, value: str):
         if option == "launcher_titlebar_bgcolor":
-            self.update_background_color()
+            self.updateBackgroundColor()
         elif option == "launcher_titlebar_bgcolor_inactive":
             # print("- Titlebar << launcher_titlebar_bgcolor_inactive")
-            self.update_background_color()
+            self.updateBackgroundColor()
         elif option == "launcher_titlebar_fgcolor":
             if self.override_foreground_color:
                 color = self.override_foreground_color
@@ -158,26 +163,39 @@ class TitleBar(fsui.Panel):
             new_height = get_theme(self).titlebar_height()
             self.update_height(new_height)
 
-    def on_window_focus_changed(self):
-        self.update_background_color()
+    @overrides
+    def onWindowFocusChanged(self):
+        self.updateBackgroundColor()
 
-    def update_height(self, new_height):
-        if self.height == new_height:
+    def updateBackgroundColor(self):
+        theme = get_theme(self)
+        if self.isWindowFocused():
+            if self.override_background_color:
+                color = self.override_background_color
+            else:
+                color = theme.titlebar_bgcolor()
+        else:
+            if self.override_background_inactive_color:
+                color = self.override_background_inactive_color
+            else:
+                color = theme.titlebar_bgcolor_inactive()
+        self.setBackgroundColor(color)
+
+    def update_height(self, new_height: int):
+        if self._height == new_height:
             return
-        old_height = self.height
-        self.height = new_height
-        window = get_window(self)
-        window_x, window_y = window.position()
-        window_w, window_h = window.size()
+        old_height = self._height
+        self._height = new_height
+        window = self.getWindow()
+        window_x, window_y = window.getPosition()
+        window_w, window_h = window.getSize()
         window_y = window_y + old_height - new_height
         window_h = window_h - old_height + new_height
-        window.set_position_and_size(
-            (window_x, window_y), (window_w, window_h)
-        )
+        window.setPositionAndSize((window_x, window_y), (window_w, window_h))
         self.set_min_height(new_height)
         for button in self.buttons:
             button.set_size((new_height, new_height))
-        get_window(self).layout.update()
+        window.layout.update()
 
     def on_paint(self):
         theme = get_theme(self)
@@ -203,59 +221,46 @@ class TitleBar(fsui.Panel):
         if self.menubutton:
             # Adding width of button (same as height). Also, adding 6 gives
             # 20 pixels between edge of burger icon and start of text.
-            x = self.height + 6
+            x = self._height + 6
         else:
             x = 20
         y = (wh - th) // 2 + 1
         dc.draw_text(text, x, y)
 
-    def update_background_color(self):
-        theme = get_theme(self)
-        if self.window_focus():
-            if self.override_background_color:
-                color = self.override_background_color
-            else:
-                color = theme.titlebar_bgcolor()
-        else:
-            if self.override_background_inactive_color:
-                color = self.override_background_inactive_color
-            else:
-                color = theme.titlebar_bgcolor_inactive()
-        self.set_background_color(color)
-
     # def __on_window_activated(self):
     #     self._window_active = True
-    #     self.update_background_color()
+    #     self.updateBackgroundColor()
 
     # def __on_window_deactivated(self):
     #     print("Titlebar.__on_deactivated")
     #     self._window_active = False
-    #     self.update_background_color()
+    #     self.updateBackgroundColor()
 
     def __menu_activated(self):
         try:
-            on_menu = self.window.on_menu
+            onMenu = self.window.onMenu
         except AttributeError:
             print(
                 f"WARNING: Window {self.window} has menu enabled, but missing "
-                "on_menu method"
+                "onMenu method"
             )
             return
-        menu = on_menu()
+        menu = onMenu()
         if menu is None:
             return
         print("FIXME: Open menu")
         # menu.open()
-        self.popup_menu(menu, (0, self.height))
+        self.popup_menu(menu, (0, self._height))
 
     def __minimize_activated(self):
-        self.window.minimize()
+        self.getWindow().minimize()
 
     def __maximize_activated(self):
-        self.window.set_maximized(not self.window.maximized())
+        window = self.getWindow()
+        window.setMaximized(not window.isMaximized())
 
     def __close_activated(self):
-        self.window.close()
+        self.getWindow().close()
 
     def on_left_dclick(self):
         if self.maximizebutton is not None:
@@ -271,7 +276,8 @@ class TitleBar(fsui.Panel):
         self.set_move_cursor()
         self.dragging = True
         self.dragging_mouse_origin = fsui.get_mouse_position()
-        self.dragging_window_origin = get_window(self).position()
+        # self.dragging_window_origin = get_window(self).position()
+        self.dragging_window_origin = self.getWindow().getPosition()
 
     def on_mouse_motion(self):
         mx, my = fsui.get_mouse_position()
@@ -279,7 +285,8 @@ class TitleBar(fsui.Panel):
         dy = my - self.dragging_mouse_origin[1]
         wx = self.dragging_window_origin[0] + dx
         wy = self.dragging_window_origin[1] + dy
-        get_window(self).set_position((wx, wy))
+        self.getWindow().setPosition((wx, wy))
+        # self.getWindow().setRealPosition((wx, wy))
 
     def on_left_up(self):
         self.set_normal_cursor()

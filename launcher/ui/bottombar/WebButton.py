@@ -17,10 +17,10 @@ class WebButton(Panel):
         config.add_listener(self)
         self.on_config("variant_uuid", "")
 
-    def on_destroy(self):
+    def onDestroy(self):
         config = get_config(self)
         config.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def get_min_width(self):
         return 32

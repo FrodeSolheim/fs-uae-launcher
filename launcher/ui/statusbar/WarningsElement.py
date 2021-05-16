@@ -108,11 +108,11 @@ class WarningsElement(StatusElement):
             if LauncherConfig.is_config_only_option(key):
                 self.on_setting(key, LauncherSettings.get(key))
 
-    def on_destroy(self):
+    def onDestroy(self):
         config = get_config(self)
         config.remove_listener(self)
         LauncherSettings.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_platform_config(self, value):
         if value != self.platform:

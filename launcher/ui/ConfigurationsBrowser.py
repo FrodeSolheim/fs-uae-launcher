@@ -29,9 +29,9 @@ class ConfigurationsBrowser(fsui.VerticalItemView):
 
         self.platform_icons = {}
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_select_item(self, index):
         if index is None:

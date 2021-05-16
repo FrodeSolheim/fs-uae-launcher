@@ -1,3 +1,2 @@
-
 class ZXSpectrumMameDriver:
     pass

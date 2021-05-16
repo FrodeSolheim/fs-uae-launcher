@@ -2,28 +2,31 @@ import traceback
 from functools import wraps
 from warnings import warn
 
-deprecation_warnings = set()
+from fscore.deprecated import deprecated
+
+# deprecation_warnings = set()
 
 
-def deprecated(function):
-    @wraps(function)
-    def wrapper(*args, **kwargs):
-        warn(f"{function.__name__} is deprecated", DeprecationWarning)
-        # FIXME: Temporarily disabled, due to error when running via frozen
-        # (cx_Freeze) executable - error retrieving stack with error like:
-        #   File "/usr/lib/python3.8/tokenize.py", line 371, in detect_encoding
-        #     encoding = find_cookie(first)
-        #   File "/usr/lib/python3.8/tokenize.py", line 335, in find_cookie
-        #     raise SyntaxError(msg)
-        #   File "<string>", line None
-        # SyntaxError: invalid or missing encoding declaration for 'fs-uae-launcher'
-        # location = str(traceback.extract_stack()[-2])
-        # if not location in deprecation_warnings:
-        #     print(f"{function.__name__} is deprecated", location)
-        #     deprecation_warnings.add(location)
-        return function(*args, **kwargs)
+# def deprecated(function):
+#     @wraps(function)
+#     def wrapper(*args, **kwargs):
+#         warn(f"{function.__name__} is deprecated", DeprecationWarning)
+#         # FIXME: Temporarily disabled, due to error when running via frozen
+#         # (cx_Freeze) executable - error retrieving stack with error like:
+#         #   File "/usr/lib/python3.8/tokenize.py", line 371, in detect_encoding
+#         #     encoding = find_cookie(first)
+#         #   File "/usr/lib/python3.8/tokenize.py", line 335, in find_cookie
+#         #     raise SyntaxError(msg)
+#         #   File "<string>", line None
+#         # SyntaxError: invalid or missing encoding declaration for 'fs-uae-launcher'
+#         # location = str(traceback.extract_stack()[-2])
+#         # if not location in deprecation_warnings:
+#         #     print(f"{function.__name__} is deprecated", location)
+#         #     deprecation_warnings.add(location)
+#         return function(*args, **kwargs)
 
-    return wrapper
+#     return wrapper
+
 
 
 def memoize(func):

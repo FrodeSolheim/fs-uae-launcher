@@ -1,3 +1,4 @@
+from typing import Any
 import weakref
 
 # noinspection PyUnresolvedReferences
@@ -17,7 +18,7 @@ class SignalWrapper:
     def connect(self, obj):
         getattr(self.parent(), self.name + "_signal").connect(obj)
 
-    def emit(self, *args, **kwargs):
+    def emit(self, *args: Any, **kwargs: Any):
         getattr(self.parent(), self.name + "_signal").emit(*args, **kwargs)
 
 

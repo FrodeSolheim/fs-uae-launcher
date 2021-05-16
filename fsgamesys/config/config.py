@@ -1,13 +1,19 @@
+from fscore.types import SimpleCallable
 import sys
 
 # import traceback
 from collections import defaultdict
-from typing import Dict
+from typing import Dict, List, Protocol
 
 from fsbc.settings import Settings
 from fsgamesys.config.configevent import ConfigEvent
 from fsgamesys.contextaware import ContextAware
 from fsgamesys.options.option import Option
+
+
+class ConfigListener(Protocol):
+    def on_config(self, key: str, value: str):
+        ...
 
 
 class Config(ContextAware):
@@ -43,11 +49,11 @@ class Config(ContextAware):
                 observer(event)
 
     # @deprecated
-    def add_listener(self, listener):
+    def add_listener(self, listener: ConfigListener):
         self.attach(listener)
 
     # @deprecated
-    def remove_listener(self, listener):
+    def remove_listener(self, listener: ConfigListener):
         self.detach(listener)
 
     def add_behavior(self, instance, options):
@@ -122,7 +128,7 @@ class Config(ContextAware):
             if not value:
                 del self.values[key]
 
-    def set(self, *values):
+    def set(self, *values: str):
         if len(values) == 1:
             # Config.set_multiple(*values)
             items = list(values[0])

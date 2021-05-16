@@ -8,8 +8,8 @@ COVER_SIZE = (252, 336)
 
 
 class FrontCoverPanel(ScreenshotPanel):
-    def __init__(self, parent, image_loader):
-        super().__init__(parent, -1, image_loader, None, None)
+    def __init__(self, parent, imageLoader):
+        super().__init__(parent, -1, imageLoader, None, None)
         image_size = COVER_SIZE
         self.set_size(image_size)
         self.set_min_size(image_size)

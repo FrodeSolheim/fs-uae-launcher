@@ -1,3 +1,4 @@
+from typing import Any, List
 import threading
 
 from fsbc.signal import Signal as BaseSignal
@@ -6,20 +7,20 @@ main_thread_id = threading.current_thread().ident
 
 
 class LauncherSignal(object):
-    listeners = {}
+    # listeners: Dict[str, List[SimpleCallable]] = {}
 
     @classmethod
-    def add_listener(cls, signal, listener):
+    def add_listener(cls, signal: str, listener):
         # cls.listeners.setdefault(signal, []).append(listener)
         BaseSignal(signal).connect(listener)
 
     @classmethod
-    def remove_listener(cls, signal, listener):
+    def remove_listener(cls, signal: str, listener):
         # cls.listeners[signal].remove(listener)
         BaseSignal(signal).disconnect(listener)
 
     @classmethod
-    def broadcast(cls, signal, *args):
+    def broadcast(cls, signal: str, *args: List[Any]):
         if signal == "config":
             # temporary, while restructuring
             from fsgamesys.context import fsgs

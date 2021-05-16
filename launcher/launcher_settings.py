@@ -119,12 +119,12 @@ class LauncherSettings(object):
     initialize_from_config = {"fullscreen"}
 
     @classmethod
-    def get(cls, key):
+    def get(cls, key: str):
         # return app.settings.get(key, cls.default_settings.get(key, ""))
         return Settings.instance().get(key)
 
     @classmethod
-    def set(cls, key, value):
+    def set(cls, key: str, value: str):
         Settings.instance()[key] = value
 
     @classmethod

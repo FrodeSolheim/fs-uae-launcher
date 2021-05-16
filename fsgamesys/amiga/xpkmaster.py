@@ -1,25 +1,30 @@
-from fsgamesys.amiga.whdload import install_whdload_file
+import os
+from os import path
+from typing import Dict
+
+from fsgamesys.files.installablefile import InstallableFile
+from fsgamesys.files.installablefiles import InstallableFiles
 
 
-def prepare_xpkmaster_files(dest_dir, *, files):
-    for relative_path, sha1 in xpkmaster_file_map.items():
-        files[dest_dir + "/" + relative_path] = {"sha1": sha1}
+class XpkMaster:
+    @staticmethod
+    def addFiles(installDir: str, *, files: Dict[str, InstallableFile]):
+        return prepare_xpkmaster_files(installDir, files=files)
+
+
+def prepare_xpkmaster_files(destDir: str, *, files: InstallableFiles):
+    for relativePath, sha1 in xpkMasterFileMap.items():
+        files[
+            path.join(destDir, relativePath.replace("/", os.sep))
+        ] = InstallableFile(sha1=sha1)
         # file_dest_dir = os.path.join(dest_dir, os.path.dirname(name))
         # self.install_whdload_file(sha1, file_dest_dir, value)
         # install_whdload_file(sha1, destdir, relative_path)
 
 
-# FIXME...
-# def install_xpkmaster_files(destdir):
-#     for relative_path, sha1 in xpkmaster_file_map.items():
-#         # file_dest_dir = os.path.join(dest_dir, os.path.dirname(name))
-#         # self.install_whdload_file(sha1, file_dest_dir, value)
-#         install_whdload_file(sha1, destdir, relative_path)
-
-
 # FIXME: map to { sha1, size } dicts
 
-xpkmaster_file_map = {
+xpkMasterFileMap = {
     "Libs/xpkmaster.library": "5bd19f9503b59c5d19bfe1c6a6e3b6e7c0e9eae2",
     "Libs/compressors/xpkCBR0.library": "a2a76c10cb06315e51990911fa050669cc89830d",
     "Libs/compressors/xpkDLTA.library": "ca64f89919c2869cb6fd75346b9a21245a6d04a8",

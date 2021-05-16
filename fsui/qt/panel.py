@@ -1,26 +1,44 @@
 import traceback
 import weakref
+from typing import Optional
 
 from fsbc.util import unused
-from fsui.common.layout import VerticalLayout
+from fsui.common.layout import Layout, VerticalLayout
+from fsui.qt.color import Color
 from fsui.qt.drawingcontext import DrawingContext
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QPainter, Qt, QWidget
-from fsui.qt.widget import Widget
+from fswidgets.style import Style
+from fswidgets.widget import Widget
 
 
 class Panel(Widget):
-    def __init__(self, parent, paintable=False):
+    def __init__(
+        self,
+        parent: Widget,
+        paintable: bool = False,
+        style: Optional[Style] = None,
+        forceRealParent: bool = False
+    ):
         unused(paintable)
         super().__init__(
-            parent, WidgetWithEventHandlers(QParent(parent), self)
+            parent, WidgetWithEventHandlers(QParent(parent, forceRealParent=forceRealParent), self)
         )
+        # self.style = style or Style()
+        style = style or Style()
+        backgroundColor = style.getBackgroundColor()
+        if backgroundColor is not None:
+            self.set_background_color(Color.fromHex(backgroundColor))
+        # Temporarily, delete self.style until API is done, otherwise,
+        # FlexLayout will try to look up non-existant properties
+        # del self.style
+
         self._widget.move(0, 2000)
 
         self._parent = weakref.ref(parent)
         # QWidget.__init__(self, QParent(parent))
         # self.init_widget(parent)
-        self.layout = VerticalLayout()
+        self.layout: Layout = VerticalLayout()
         # self.layout = None
         self._painter = None
 

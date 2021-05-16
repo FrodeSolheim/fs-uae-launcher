@@ -102,7 +102,7 @@ class GameInfoPanel(BottomPanel):
         if self.cover_on_right:
             self.layout.add_spacer(Constants.COVER_SIZE[0])
 
-        self.image_loader = ImageLoader()
+        self.imageLoader = ImageLoader()
         self.load_info()
         LauncherSettings.add_listener(self)
         config = get_config(self)
@@ -120,12 +120,12 @@ class GameInfoPanel(BottomPanel):
         ]:
             self.on_config(key, config.get(key))
 
-    def on_destroy(self):
+    def onDestroy(self):
         config = get_config(self)
         config.remove_listener(self)
         LauncherSettings.remove_listener(self)
-        self.image_loader.stop()
-        super().on_destroy()
+        self.imageLoader.stop()
+        super().onDestroy()
 
     def load_info(self):
         handler = GamePaths.current()
@@ -151,7 +151,7 @@ class GameInfoPanel(BottomPanel):
                 self.image_path = request.path
                 self.refresh()
 
-            self.requests = self.image_loader.load_image(
+            self.requests = self.imageLoader.load_image(
                 path, size=Constants.COVER_SIZE, on_load=on_load, is_cover=True
             )
             self.image = self.default_image

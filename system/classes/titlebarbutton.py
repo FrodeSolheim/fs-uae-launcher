@@ -1,7 +1,9 @@
-import os
+from typing import Optional
 
 from fscore.applicationdata import ApplicationData
-from fsui import Color, Panel, Signal, get_window
+from fsui import Color, Panel, Signal
+from fswidgets.types import Size
+from fswidgets.widget import Widget
 
 # FIXME: Maybe, for TitleBarButton in particular, we want to disable the
 # feature where you want keep the button pressed while returning to the widget,
@@ -14,13 +16,13 @@ class TitleBarButton(Panel):
 
     def __init__(
         self,
-        parent,
+        parent: Widget,
         *,
-        size,
+        size: Size,
         image=None,
-        icon_name=None,
-        fgcolor=None,
-        fgcolor_inactive=None,
+        icon_name: Optional[str] = None,
+        fgcolor: Optional[Color] = None,
+        fgcolor_inactive: Optional[Color] = None,
     ):
         super().__init__(parent)
         self.set_min_size((size))
@@ -41,15 +43,15 @@ class TitleBarButton(Panel):
 
         self.update_background_color()
 
-    def set_fgcolor(self, color):
+    def set_fgcolor(self, color: Color):
         self._fgcolor = color
         self.refresh_maybe()
 
-    def set_fgcolor_inactive(self, color):
+    def set_fgcolor_inactive(self, color: Color):
         self._fgcolor_inactive = color
         self.refresh_maybe()
 
-    def set_size(self, size):
+    def setSize(self, size: Size):
         self.set_min_size(size)
 
     def refresh_maybe(self):
@@ -76,6 +78,7 @@ class TitleBarButton(Panel):
         self.refresh_maybe()
 
     def on_activate(self):
+        print(self.on_activate)
         self.activated.emit()
 
     def on_mouse_enter(self):
@@ -115,8 +118,8 @@ class TitleBarButton(Panel):
 
     def on_paint(self):
         dc = self.create_dc()
-        w, h = self.size()
-        if get_window(self).window_focus():
+        w, h = self.getSize()
+        if self.getWindow().window_focus():
             color = self._fgcolor
             cacheslot = 0
         else:

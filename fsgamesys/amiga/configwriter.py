@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.options.option import Option
 
@@ -57,12 +59,12 @@ CONFIG_KEY_BLACKLIST = [
 
 
 class ConfigWriter(object):
-    def __init__(self, config):
+    def __init__(self, config: Dict[str, str]):
         self.config = config
 
     def create_fsuae_config(self):
         print("create_fsuae_config")
-        c = []
+        c: List[str] = []
 
         num_drives = 0
         for i in range(Amiga.MAX_FLOPPY_DRIVES):

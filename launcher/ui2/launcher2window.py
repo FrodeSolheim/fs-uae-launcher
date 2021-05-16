@@ -1,8 +1,13 @@
+from logging import getLogger
+from typing import Optional
+
 from fsgamesys.context import default_context
-from fsui import Button, Color, Label, Panel
-from fsui.common.layout import HorizontalLayout
+from fswidgets.decorators import constructor
+from fswidgets.overrides import overrides
+from fswidgets.widget import Widget
+from launcher.components.UpdatesAvailablePanel import UpdatesAvailablePanel
+from launcher.context import useSettings
 from launcher.helpers.implicitconfighandler import ImplicitConfigHandler
-from launcher.i18n import gettext
 from launcher.settings import get_launcher_window_title
 from launcher.ui2.launcher2panel import Launcher2Panel
 from launcher.ui2.mainmenu import MainMenu
@@ -10,88 +15,116 @@ from launcher.ui.imageloader import ImageLoader
 from launcher.version import VERSION
 from system.classes.window import Window
 from system.classes.windowresizehandle import WindowResizeHandle
-from system.exceptionhandler import exceptionhandler
+from system.exceptionhandler import withExceptionHandler
 from system.special.logout import AsyncTaskRunner
-from system.utilities.updater import CheckForUpdatesTask, Updater, findUpdates
+from system.utilities.updater.checkforupdatestask import CheckForUpdatesTask
 
-
-class UpdatesAvailablePanel(Panel):
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.set_background_color(Color.from_hex("#cccc88"))
-        label = Label(self, gettext("Updates are available"))
-        showButton = Button(self, "Show")
-        dismissButton = Button(self, "Dismiss")
-        self.layout = HorizontalLayout()
-        self.layout.set_padding(20)
-        self.layout.add(label)
-        self.layout.add(showButton, margin_left=20)
-        self.layout.add(dismissButton, margin_left=10)
-        self.updatePositionAndSize()
-        parent.resized.connect(self.onResizeParent)
-
-        showButton.activated.connect(self.onShowButton)
-        dismissButton.activated.connect(self.onDismissButton)
-
-    def onShowButton(self):
-        Updater.open(window=self.getWindow())
-
-    def onDismissButton(self):
-        self.hide()
-
-    def onResizeParent(self):
-        self.updatePositionAndSize()
-
-    def updatePositionAndSize(self):
-        size = self.layout.get_min_size()
-        parentSize = self.parent().get_size()
-        self.set_position_and_size(
-            (parentSize[0] - size[0], parentSize[1] - size[1]), size
-        )
-
-
-from fscore.settings import Settings
+log = getLogger(__name__)
 
 
 class Launcher2Window(Window):
-    def __init__(self, parent):
-        title = get_launcher_window_title()
-        title = f"{title}  {VERSION}"
-        super().__init__(parent, title=title, menu=True)
+    """Main window class."""
+
+    @constructor
+    def __init__(self, parent: Optional[Widget]):
+        super().__init__(
+            parent,
+            title=f"{get_launcher_window_title()}  {VERSION}",
+            menu=True,
+        )
+
+        settings = useSettings()
 
         # FIXME: Create new context instead - later
         self.gscontext = default_context()
+        # FIXME: Access via context function useImageLoader?
+        self.imageLoader = ImageLoader()
+        self.implicitConfigHandler = ImplicitConfigHandler(self)
 
-        self.image_loader = ImageLoader()
+        self.layout.add(Launcher2Panel(), expand=True, fill=True)
+        WindowResizeHandle()
 
-        self.panel = Launcher2Panel(self)
-        self.layout.add(self.panel, fill=True, expand=True)
+        initialSize = (1280, 760)
+        log.debug(f"Setting initial window size to {initialSize}")
+        self.setSize(initialSize)
 
-        WindowResizeHandle(self)
-        self.implicit_config_handler = ImplicitConfigHandler(self)
+        windowState = settings.getLauncherWindowState()
+        if windowState:
+            # self.setWindowState(windowState)
+            minWidth = self.get_min_width()
+            if windowState.width < minWidth:
+                windowState.width = minWidth
+            minHeight = self.get_min_height(windowState.width)
+            if windowState.height < minHeight:
+                windowState.height = minHeight
+            # if windowState.width and windowState.height:
+            # FIXME: Ideally also check position and size against available
+            # screen estate
+            # self.setPositionAndSize(
+            #     (windowState.x, windowState.y),
+            #     (windowState.width, windowState.height),
+            # )
 
-        print("[LAUNCHER] Setting initial window size to 1280x760")
-        self.set_size((1280, 760))
+            # FIXME: Maybe client size should be default / same as size
+            # self.setClientPosition((windowState.x, windowState.y))
+            # self.setClientSize((windowState.width, windowState.height))
+            self.setPositionAndSize(
+                (windowState.x, windowState.y),
+                (windowState.width, windowState.height),
+            )
+            # self.setPosition((windowState.x, windowState.y))
+            # self.setSize((windowState.width, windowState.height))
 
-        if not Settings.get("check_for_updates") == "0":
+            if windowState.maximized:
+                self.maximize()
+
+        if settings.checkForUpdates:
             self.checkForUpdates()
 
-    def on_destroy(self):
-        self.image_loader.stop()
-        super().on_destroy()
+    @overrides
+    def onClose(self):
+        super().onClose()
 
-    @exceptionhandler
-    def on_menu(self):
+        # FIXME: Maybe client size should be default / same as size
+        print("--------------")
+        print(
+            "Position", self.getPosition(), "window", self.getWindowPosition()
+        )
+        print("Size", self.getSize(), "window", self.getWindowSize())
+        print(self.isMaximized())
+        print(self.getWindowState())
+        print("--------------")
+
+        # FIXME: Ideally, we want to save the window position and size we had
+        # *before* maximizing the window, so that we can restore that state in
+        # addition to maximize it.
+        # FIXME: We also want to differentiate between client size and size incl
+        # window decorations
+
+        # getSize vs getWindowSize
+        # getPosition vs getWindowPosition
+        # getClientSize
+        # getClientPosition
+
+        settings = useSettings()
+        settings.setLauncherWindowState(self.getWindowState())
+
+    @overrides
+    def onDestroy(self):
+        super().onDestroy()
+        self.imageLoader.stop()
+
+    @withExceptionHandler
+    def onMenu(self):
         return MainMenu(self)
 
     def checkForUpdates(self):
-        task = CheckForUpdatesTask()
-
         def onResult(result):
-            if len(findUpdates(result)) > 0:
+            if len(CheckForUpdatesTask.findUpdates(result)) > 0:
                 print("Updates are available!")
                 UpdatesAvailablePanel(self).show()
 
+        task = CheckForUpdatesTask()
         self.addDestroyListener(AsyncTaskRunner(onResult).run(task).cancel)
 
     # FIXME: Move to widget

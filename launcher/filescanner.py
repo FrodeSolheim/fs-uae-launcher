@@ -1,6 +1,7 @@
 import hashlib
 import os
 import traceback
+from typing import List, Set
 
 from fsbc.paths import Paths
 from fsgamesys.amiga.rommanager import ROMManager
@@ -13,8 +14,8 @@ from .i18n import gettext
 class FileScanner(object):
     def __init__(
         self,
-        paths,
-        purge_other_dirs,
+        paths: List[str],
+        purge_other_dirs: bool,
         on_status=None,
         on_rom_found=None,
         stop_check=None,
@@ -31,7 +32,7 @@ class FileScanner(object):
         self.files_added = 0
         self.bytes_added = 0
 
-        self.extensions = set()
+        self.extensions: Set[str] = set()
 
         # This will add .zip, .rp9 and .lha, .7z (if extensions are present)
         self.extensions.update(archive_extensions)

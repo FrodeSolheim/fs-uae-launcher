@@ -134,9 +134,9 @@ class ConfigListView(VerticalItemView):
             )
         )
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     @exceptionhandler
     def on_select_item(self, index):

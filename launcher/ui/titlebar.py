@@ -25,7 +25,7 @@ class TitleBar(Panel):
         self.window_pos = (-1, -1)
         self.mouse_pos = (-1, -1)
 
-    def on_menu_button(self):
+    def onMenu_button(self):
         pass
 
     def on_minimize_button(self):

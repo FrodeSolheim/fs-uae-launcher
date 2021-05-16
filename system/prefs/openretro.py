@@ -7,6 +7,7 @@ import fsui
 from fscore.observable import Disposable, Observable, mapOperator
 from fsgamesys.platforms.platform import Platform
 from fsui import HorizontalLayout, MultiLineLabel, Window
+from fswidgets.parentstack import AsParent, ParentStack
 from launcher.fswidgets2.button import Button
 from launcher.fswidgets2.flexcontainer import (
     FlexContainer,
@@ -15,7 +16,6 @@ from launcher.fswidgets2.flexcontainer import (
 )
 from launcher.fswidgets2.flexlayout import FlexLayout
 from launcher.fswidgets2.label import Label
-from launcher.fswidgets2.parentstack import AsParent, ParentStack
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option

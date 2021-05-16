@@ -54,10 +54,10 @@ class WebLinkElement(StatusElement):
                 menu.add_item(description, create_open_url_function(value))
         self.popup_menu(menu)
 
-    def on_destroy(self):
+    def onDestroy(self):
         config = get_config(self)
         config.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_config(self, key, value):
         if key in url_keys:

@@ -28,9 +28,9 @@ class MonitorButtonBase:
         else:
             app.settings["monitor"] = "left"
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_setting(self, key, value, initial=False):
         if key == "fullscreen":

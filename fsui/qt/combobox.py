@@ -1,12 +1,13 @@
+from typing import List, cast
 from fsui.context import get_theme
 from fsui.decorators import deprecated
 from fsui.qt import QComboBox, QFontMetrics
 from fsui.qt.qparent import QParent
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 
 class ComboBox(Widget):
-    def __init__(self, parent, items=[], read_only=False):
+    def __init__(self, parent: Widget, items: List[str] =[], read_only: bool=False):
         super().__init__(parent, QComboBox(QParent(parent)))
         # QComboBox.__init__(self, parent.get_container())
         # self = QComboBox(parent.get_container())
@@ -17,7 +18,7 @@ class ComboBox(Widget):
             "FIXME: ComboBox not respecting read_only"
             "(because of missing lineEdit then"
         )
-        self._qwidget.setEditable(True)
+        self.qwidget.setEditable(True)
 
         # FIXME: Why?? Disabling until checked, remember to comment
         # self._qwidget.lineEdit().installEventFilter(self.get_window())
@@ -26,14 +27,31 @@ class ComboBox(Widget):
 
         if len(items) > 0:
             self.set_index(0)
-        self._qwidget.currentIndexChanged.connect(self.__current_index_changed)
+        self.qwidget.currentIndexChanged.connect(self.__current_index_changed)
 
         # self.dumpObjectTree()
         # print("(dumped)")
         self.update_style()
 
     def clear(self):
-        self._qwidget.clear()
+        self.qwidget.clear()
+
+    @property
+    def qwidget(self) -> QComboBox:
+        return cast(QComboBox, self.getQWidget())
+
+    def setIndex(self, index: int):
+        self.qwidget.setCurrentIndex(index)
+
+    def setItems(self, items: List[str]):
+        self.qwidget.clear()
+        for i, item in enumerate(items):
+            self.qwidget.insertItem(i, item)
+
+    def setText(self, text: str):
+        self.qwidget.lineEdit().setText(text)
+
+    # -------------------------------------------------------------------------
 
     def __current_index_changed(self):
         self.on_changed()
@@ -47,25 +65,26 @@ class ComboBox(Widget):
     def get_text(self):
         self.text()
 
-    def index(self):
-        return self._qwidget.currentIndex()
+    def index(self) -> int:
+        return self.qwidget.currentIndex()
 
     def on_changed(self):
         pass
 
-    def set_index(self, index):
-        self._qwidget.setCurrentIndex(index)
+    @deprecated
+    def set_index(self, index: int):
+        self.setIndex(index)
 
-    def set_items(self, items):
-        self._qwidget.clear()
-        for i, item in enumerate(items):
-            self._qwidget.insertItem(i, item)
+    @deprecated
+    def set_items(self, items: List[str]):
+        self.setItems(items)
 
-    def set_item_text(self, item, text):
-        self._qwidget.setItemText(item, text)
+    def set_item_text(self, item: int, text: str):
+        self.qwidget.setItemText(item, text)
 
-    def set_text(self, text):
-        self._qwidget.lineEdit().setText(text)
+    @deprecated
+    def set_text(self, text: str):
+        self.setText(text)
 
     def text(self):
         return self._qwidget.lineEdit().text()

@@ -16,8 +16,6 @@ class Group(QObject):
             self._window = parent._window
         self.position = (0, 0)
         self.__visible = True
-        # FIXME
-        # parent.destroyed.connect(self.on_destroy)
 
     # @property
     def parent(self):
@@ -30,7 +28,7 @@ class Group(QObject):
     def is_visible(self):
         return self.visible()
 
-    def on_destroy(self):
+    def onDestroy(self):
         pass
 
     def get_window(self):

@@ -6,7 +6,7 @@ import traceback
 import warnings
 from collections import defaultdict
 from subprocess import Popen
-from typing import Union
+from typing import DefaultDict, Union
 
 import fsboot
 from fsbc.application import Application
@@ -54,7 +54,7 @@ class GameDriver:
         self.logger = GameDriverLogger()
         self.emulator = Emulator("no-emulator")
 
-        self.options = defaultdict(str)
+        self.options: DefaultDict[str, str] = defaultdict(str)
         self.init_options()
 
         self.ports = []

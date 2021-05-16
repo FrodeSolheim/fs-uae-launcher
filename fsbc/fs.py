@@ -122,7 +122,7 @@ def unicode_safe(obj, encoding="ASCII"):
         return "String returned from unicode_safe (problem logged)"
 
 
-def normalize_path(path):
+def normalize_path(path: str):
     path = os.path.normcase(os.path.normpath(path))
     return unicode_path(path)
 

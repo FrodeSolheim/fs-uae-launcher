@@ -21,43 +21,38 @@ class ApplicationData:
         if fsboot.is_frozen():
             return cls.Mode.FROZEN
         elif os.path.exists(
-            os.path.join(Application.executable_dir(), "pyproject.toml")
+            os.path.join(Application.executableDir(), "pyproject.toml")
         ):
             return cls.Mode.DEVELOPMENT
         return cls.Mode.INSTALLED
 
     @classmethod
-    def data_dir(cls) -> str:
-        data_dir_parts = [Application.executable_dir()]
+    def dataDir(cls) -> str:
+        dataDirParts = [Application.executableDir()]
         mode = cls.mode()
         if mode == cls.Mode.DEVELOPMENT:
-            data_dir_parts.extend(["data"])
+            dataDirParts.extend(["data"])
         elif mode == cls.Mode.INSTALLED:
-            data_dir_parts.extend(
-                ["..", "share", Application.share_dir_name()]
-            )
+            dataDirParts.extend(["..", "share", Application.shareDirName()])
         elif mode == cls.Mode.FROZEN:
             if System.macos:
-                data_dir_parts.extend(["..", "Resources", "Data"])
+                dataDirParts.extend(["..", "Resources", "Data"])
         elif mode == cls.Mode.PLUGIN_DATA:
             if System.macos:
-                data_dir_parts.extend(["..", ".."])
-            data_dir_parts.extend(["..", "..", "Data"])
+                dataDirParts.extend(["..", ".."])
+            dataDirParts.extend(["..", "..", "Data"])
         else:
             raise Exception(f"Unknown Datafile.mode ({mode})")
-        data_dir = os.path.normpath(os.path.join(*data_dir_parts))
-        return data_dir
+        return os.path.normpath(os.path.join(*dataDirParts))
 
     @classmethod
-    def path(cls, relative_path: str) -> str:
-        path = os.path.join(cls.data_dir(), relative_path)
-        print("[DATA]", path)
-        return path
+    def path(cls, relativePath: str) -> str:
+        return os.path.join(cls.dataDir(), relativePath)
 
     @classmethod
-    def stream(cls, relative_path: str) -> IO[bytes]:
-        return open(cls.path(relative_path), "rb")
+    def stream(cls, relativePath: str) -> IO[bytes]:
+        return open(cls.path(relativePath), "rb")
 
     @classmethod
-    def path_or_stream(cls, relative_path: str) -> Union[str, IO[bytes]]:
-        return cls.path(relative_path)
+    def pathOrStream(cls, relativePath: str) -> Union[str, IO[bytes]]:
+        return cls.path(relativePath)

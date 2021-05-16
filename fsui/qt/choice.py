@@ -1,8 +1,9 @@
+from fscore.deprecated import deprecated
 from fsui.context import get_theme
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QComboBox, QFontMetrics, Qt
 from fsui.qt.signal import Signal, SignalWrapper
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 
 class Choice(Widget):
@@ -26,6 +27,15 @@ class Choice(Widget):
         )
         self.changed = SignalWrapper(self, "changed")
         self.update_style()
+
+    def getIndex(self) -> int:
+        return self.index()
+
+    def setIndex(self, index: int):
+        self.set_index(index)
+
+    # -------------------------------------------------------------------------
+
 
     # FIXME: This needs to be fixed
     def keyPressEvent(self, event):

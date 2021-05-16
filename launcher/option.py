@@ -1,12 +1,14 @@
 # Automatically generated - do not edit by hand
 
+from typing import Any, Dict
 from fsgamesys.options.option import Option as BaseOption
 
 
 # noinspection PyClassHasNoInit
 class Option(BaseOption):
     @staticmethod
-    def get(name):
+    # FIXME: Remove Any
+    def get(name: str) -> Dict[str, Any]:
         return options[name]
 
 

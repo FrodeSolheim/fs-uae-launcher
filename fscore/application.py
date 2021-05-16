@@ -5,9 +5,9 @@ from fscore.memoize import memoize
 class Application:
     @staticmethod
     @memoize
-    def executable_dir():
+    def executableDir() -> str:
         return fsboot.executable_dir()
 
     @staticmethod
-    def share_dir_name():
+    def shareDirName() -> str:
         raise NotImplementedError()

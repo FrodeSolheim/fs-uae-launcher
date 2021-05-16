@@ -116,13 +116,13 @@ class FloppySelector(fsui.Panel):
             self.__platform = value
             self.update_enable()
 
-    def on_destroy(self):
+    def onDestroy(self):
         # fsgs.signal.disconnect(
         #     "fsgs:config:floppy_drive_{0}".format(self.drive),
         #     self.on_config_floppy_drive)
         # fsgs.signal.disconnect("config", self.on_config)
         get_config(self).detach(self.__on_config)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_eject(self):
         config = get_config(self)

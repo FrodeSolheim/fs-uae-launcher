@@ -1,21 +1,22 @@
+from typing import Literal
+from fswidgets.widget import Widget
 import fsui
+from fswidgets.panel import Panel
 
-from ..common.group import Group
 
-
-class IconHeader(Group):
+class IconHeader(Panel):
     ICON_LEFT = 0
     ICON_RIGHT = 1
 
     def __init__(
         self,
-        parent,
+        parent: Widget,
         icon: fsui.Icon,
-        title,
-        subtitle="",
-        icon_position=ICON_LEFT,
+        title: str,
+        subtitle: str = "",
+        icon_position: Literal[0, 1] = ICON_LEFT,
     ):
-        Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 
         image = icon.image(48)
@@ -35,14 +36,19 @@ class IconHeader(Group):
             self.layout.add(self.image_view)
 
 
-class NewIconHeader(Group):
+class NewIconHeader(Panel):
     ICON_LEFT = 0
     ICON_RIGHT = 1
 
     def __init__(
-        self, parent, icon, title, subtitle="", icon_position=ICON_RIGHT
+        self,
+        parent: Widget,
+        icon,
+        title: str,
+        subtitle: str="",
+        icon_position: Literal[0, 1] = ICON_RIGHT,
     ):
-        Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 
         image = icon.image(48)

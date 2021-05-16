@@ -88,10 +88,10 @@ class KickstartGroup(fsui.Panel):
         config = get_config(self)
         config.add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         config = get_config(self)
         config.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_kickstart_type_changed(self):
         config = get_config(self)

@@ -254,7 +254,7 @@ class Task:
     def main(self):
         pass
 
-    def setProgress(self, progress):
+    def setProgress(self, progress: str):
         if self.isCancelled():
             return
         self.onProgress(progress)

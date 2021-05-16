@@ -3,7 +3,8 @@ import weakref
 from fscore.developermode import DeveloperMode
 from fsgamesys.product import Product
 from fsui import PopupMenu
-from launcher.i18n import gettext
+from fswidgets.widget import Widget
+from launcher.context import useTranslation
 from system.exceptionhandler import exceptionhandler
 from system.prefs.controller import Controller
 from system.utilities.updater import Updater
@@ -12,12 +13,12 @@ from system.wsopen import wsopen
 # menu = fsui.PopupMenu()
 
 #             menu.add_item(
-#                 gettext("Update Game Database"), self.on_update_game_database
+#                 t("Update Game Database"), self.on_update_game_database
 #             )
 
 #             app_name = "FS-UAE Launcher"
 #         menu.add_about_item(
-#             gettext("About {name}").format(name=app_name), self.on_about
+#             t("About {name}").format(name=app_name), self.on_about
 #         )
 
 # # FIXME: WORKAROUND FOR SOMETHING?
@@ -38,34 +39,36 @@ from system.wsopen import wsopen
 
 
 class MainMenu(PopupMenu):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         # # FIXME: parent not needed?
         super().__init__()
 
         self._parent_ref = weakref.ref(parent)
 
+        t = useTranslation()
+
         # self.add_item(
-        #         gettext("Update Game Database"), self.on_update_game_database
+        #         t("Update Game Database"), self.on_update_game_database
         #     )
         # app_name = "{} Launcher".format(Product.base_name)
 
         if DeveloperMode.enabled:
-            self.add_item(gettext("New window"), self.__on_new_window)
+            self.add_item(t("New window"), self.__on_new_window)
             self.add_separator()
 
         if Product.is_fs_uae():
             self.add_item(
-                gettext("Execute command..."),
+                t("Execute command..."),
                 self.__on_execute_command,
             )
             self.add_separator()
 
         self.add_item(
-            gettext("Scan files..."),
+            t("Scan files..."),
             self.__on_file_scanner,
         )
         self.add_item(
-            gettext("Sync game database..."),
+            t("Sync game database..."),
             self.__on_database_updater,
         )
 
@@ -73,15 +76,15 @@ class MainMenu(PopupMenu):
 
         if DeveloperMode.enabled:
             self.add_item(
-                gettext("Trigger exception..."),
+                t("Trigger exception..."),
                 self.__on_cause_exception,
             )
             self.add_item(
-                gettext("Trigger exception (chained)..."),
+                t("Trigger exception (chained)..."),
                 self.__on_cause_chained_exception,
             )
             self.add_item(
-                gettext("Trigger exception (double handlers)..."),
+                t("Trigger exception (double handlers)..."),
                 self.__on_cause_exception_doubled_handled,
             )
             self.add_separator()
@@ -89,26 +92,26 @@ class MainMenu(PopupMenu):
         # Utilities
 
         # if Product.is_fs_uae():
-        #     self.add_item(gettext("Tools"), self.__on_tools)
-        #     # self.add_item(gettext("Utilities"), self.__on_utilities)
+        #     self.add_item(t("Tools"), self.__on_tools)
+        #     # self.add_item(t("Utilities"), self.__on_utilities)
 
         self.add_separator()
-        self.add_item(gettext("Preferences"), self.__on_preferences)
-        self.add_item(gettext("Game controllers"), self.onGameControllers)
+        self.add_item(t("Preferences"), self.__on_preferences)
+        self.add_item(t("Controllers"), self.onGameControllers)
         self.add_separator()
-        self.add_item(gettext("Utilities"), self.__on_utilities)
-        self.add_item(gettext("Check for updates..."), self.onCheckForUpdates)
+        self.add_item(t("Utilities"), self.__on_utilities)
+        self.add_item(t("Check for updates..."), self.onCheckForUpdates)
 
-        # self.add_item(gettext("Check for updates..."), self.onCheckForUpdates)
+        # self.add_item(t("Check for updates..."), self.onCheckForUpdates)
 
-        # self.add_item(gettext("Advanced"), self.__on_advanced_preferences)
-        # self.add_item(gettext("Appearance"), self.__on_appearance_preferences)
-        # self.add_item(gettext("WHDLoad"), self.__on_whdload_preferences)
+        # self.add_item(t("Advanced"), self.__on_advanced_preferences)
+        # self.add_item(t("Appearance"), self.__on_appearance_preferences)
+        # self.add_item(t("WHDLoad"), self.__on_whdload_preferences)
 
         # self.add_separator()
         # self.add_about_item(
-        #     # gettext("About {name}").format(name=app_name), self.__on_about
-        #     gettext("About..."),
+        #     # t("About {name}").format(name=app_name), self.__on_about
+        #     t("About..."),
         #     self.__on_about,
         # )
 

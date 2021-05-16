@@ -2,6 +2,7 @@ import os
 import sqlite3
 import time
 from binascii import unhexlify
+from typing import List, Optional
 
 from fsgamesys.BaseDatabase import BaseDatabase
 from fsgamesys.FSGSDirectories import FSGSDirectories
@@ -32,7 +33,7 @@ class FileDatabase(BaseDatabase):
     static_files = {}
 
     @classmethod
-    def add_static_file(cls, path, size, sha1):
+    def add_static_file(cls, path: str, size: int, sha1: str):
         file = File()
         file["sha1"] = sha1
         file["path"] = path
@@ -51,7 +52,7 @@ class FileDatabase(BaseDatabase):
         return RESET_VERSION
 
     @classmethod
-    def instance(cls, new=False):
+    def instance(cls, new: bool = False):
         if new or not hasattr(cls.thread_local, "file_database"):
             cls.thread_local.file_database = cls(cls.SENTINEL)
         return cls.thread_local.file_database
@@ -80,7 +81,7 @@ class FileDatabase(BaseDatabase):
         )
         return set([row[0] for row in cursor.fetchall()])
 
-    def encode_path(self, path):
+    def encode_path(self, path: str):
         # This only works if both path and FSGSDirectories.base_dir (etc) have
         # been normalized with get_real_case.
         path = path.replace("\\", "/")
@@ -92,7 +93,7 @@ class FileDatabase(BaseDatabase):
             path = "$/" + path
         return path
 
-    def decode_path(self, path):
+    def decode_path(self, path: str):
         if not path or path[0] != "$":
             return path
         base_dir = FSGSDirectories.get_base_dir() + "/"
@@ -113,9 +114,11 @@ class FileDatabase(BaseDatabase):
             result[self.decode_path(row[1])] = row[0]
         return result
 
-    def delete_file(self, id=None, path=None):
+    def delete_file(
+        self, id: Optional[int] = None, path: Optional[str] = None
+    ):
         cursor = self.internal_cursor()
-        delete_ids = []
+        delete_ids: List[int] = []
         if id is not None:
             delete_ids.append(id)
         if path is not None:
@@ -129,7 +132,7 @@ class FileDatabase(BaseDatabase):
             )
         self.last_file_delete = int(time.time())
 
-    def check_sha1(self, sha1):
+    def check_sha1(self, sha1: str):
         if sha1 in self.static_files:
             # FIXME: Is the count necessary? ref query below, or do we
             # only need a True/False result? If so, change query to
@@ -142,7 +145,7 @@ class FileDatabase(BaseDatabase):
         )
         return cursor.fetchone()[0]
 
-    def find_file(self, name="", sha1="", path=""):
+    def find_file(self, name: str = "", sha1: str = "", path: str = ""):
         cursor = self.internal_cursor()
         if sha1:
             # First we try to find the file from the temporary static
@@ -195,7 +198,7 @@ class FileDatabase(BaseDatabase):
             result["size"] = None
         return result
 
-    def find_files(self, ext=None):
+    def find_files(self, ext: Optional[str] = None):
         cursor = self.internal_cursor()
         query = "SELECT path FROM file WHERE 1 = 1"
         args = []
@@ -212,7 +215,14 @@ class FileDatabase(BaseDatabase):
             results.append(data)
         return results
 
-    def add_file(self, path="", sha1=None, mtime=0, size=0, parent=None):
+    def add_file(
+        self,
+        path: str = "",
+        sha1: Optional[str] = None,
+        mtime: int = 0,
+        size: int = 0,
+        parent: Optional[int] = None,
+    ):
         self.init()
         path = self.encode_path(path)
         cursor = self.internal_cursor()

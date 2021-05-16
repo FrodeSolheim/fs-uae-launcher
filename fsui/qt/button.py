@@ -1,13 +1,13 @@
 from fsui.context import get_theme
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QFontMetrics, QPushButton, QSignal
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 
 class Button(Widget):
     activated = QSignal()
 
-    def __init__(self, parent, label="", *, icon=None):
+    def __init__(self, parent, label="", *, icon=None, onClick=None):
         if icon:
             qwidget = QPushButton(icon.qicon(), label, QParent(parent))
         else:
@@ -23,6 +23,9 @@ class Button(Widget):
             border = 4
             min_height = fontheight + padding.top + padding.bottom + border
             self.set_min_height(min_height)
+
+        if onClick is not None:
+            self.activated.connect(onClick)
 
     def __on_clicked(self):
         self.on_activate()

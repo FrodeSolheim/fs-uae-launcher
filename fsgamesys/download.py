@@ -103,7 +103,9 @@ class Downloader(object):
         os.rename(temp_path, path)
 
     @classmethod
-    def install_file_by_sha1(cls, sha1, name, path) -> Tuple[str, int]:
+    def install_file_by_sha1(
+        cls, sha1: str, name: str, path: str
+    ) -> Tuple[str, int]:
         print("[DOWNLOADER] install_file_by_sha1", sha1)
         # FIXME: Also find files from file database / plugins
 

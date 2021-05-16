@@ -252,9 +252,9 @@ class ModelChoice(fsui.Choice):
         self.changed.connect(self.__changed)
         self.set_min_width(100)
 
-    def on_destroy(self):
+    def onDestroy(self):
         fsgs.signal.disconnect("config", self.on_config)
-        super().on_destroy()
+        super().onDestroy()
 
     def __changed(self):
         fsgs.config.set(self._model_key, self._choice_values[self.index()])

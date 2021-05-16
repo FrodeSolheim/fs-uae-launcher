@@ -1,6 +1,8 @@
 import os
 import sqlite3
+from sqlite3.dbapi2 import Cursor
 import threading
+from typing import Any
 
 from fsbc.settings import Settings
 
@@ -36,7 +38,7 @@ class BaseDatabase(object):
     def get_reset_version(cls):
         return 0
 
-    def __init__(self, sentinel):
+    def __init__(self, sentinel: str):
         assert sentinel == self.SENTINEL
         self._internal_cursor = None
         self.connection = None
@@ -81,6 +83,7 @@ class BaseDatabase(object):
     def cursor(self):
         if not self.connection:
             self.init()
+        assert(self.connection)
         if use_debug_cursor():
             return DebuggingCursor(self.connection.cursor())
         return self.connection.cursor()
@@ -95,16 +98,19 @@ class BaseDatabase(object):
         print("Database.rollback")
         if not self.connection:
             self.init()
+        assert(self.connection)
         self.connection.rollback()
 
     def commit(self):
         print("BaseDatabase.commit")
         if not self.connection:
             self.init()
+        assert(self.connection)
         self.connection.commit()
 
     def updated_database_if_needed(self):
         cursor = self.create_cursor()
+        assert(self.connection)
         reset_version = self.get_reset_version()
         try:
             cursor.execute("SELECT version FROM metadata")
@@ -132,7 +138,7 @@ class BaseDatabase(object):
                 max(version, reset_version - 1), self.get_version()
             )
 
-    def update_database(self, old, new):
+    def update_database(self, old: int, new: int):
         for i in range(old + 1, new + 1):
             print("upgrading database to version", i)
             getattr(self, "update_database_to_version_{0}".format(i))()
@@ -142,16 +148,16 @@ class BaseDatabase(object):
 
 
 class DebuggingCursor(object):
-    def __init__(self, cursor):
+    def __init__(self, cursor: Cursor):
         self._cursor = cursor
 
-    def __getattr__(self, item):
+    def __getattr__(self, item: str):
         return getattr(self._cursor, item)
 
     def __iter__(self):
         return self._cursor.__iter__()
 
-    def execute(self, query, *args, **kwargs):
+    def execute(self, query: str, *args: Any, **kwargs: Any):
         print(query, args)
         if log_query_plans():
             self._cursor.execute(

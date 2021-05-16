@@ -2,7 +2,7 @@ from urllib.parse import unquote_plus
 
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QLabel, Qt
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 
 class PlainLabel(Widget):

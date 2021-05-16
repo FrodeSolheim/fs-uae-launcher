@@ -1,12 +1,13 @@
 import os
+from typing import BinaryIO, Optional
 
 from fsgamesys import Option
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.amiga.configwriter import ConfigWriter
-from fsgamesys.amiga.installfiles import install_files
 from fsgamesys.amiga.launchhandler import LaunchHandler
 from fsgamesys.amiga.prepareamiga import prepare_amiga
 from fsgamesys.drivers.gamedriver import Emulator, GameDriver
+from fsgamesys.files.fileinstaller import FileInstaller
 from launcher.version import VERSION
 
 AMIGA_JOYSTICK = {
@@ -128,8 +129,10 @@ class FSUAEAmigaDriver(GameDriver):
         # make sure FS-UAE does not load other config files (Host.fs-uae)
         self.options["end_config"] = "1"
         # Make FS-UAE check that version matches (except for development)
-        if VERSION != "9.8.7dummy":
-            self.options[Option.EXPECT_VERSION] = VERSION
+        # Edit: The Launcher and FS-UAE will not have identical version
+        # numbers going forward.
+        # if VERSION != "9.8.7dummy":
+        #     self.options[Option.EXPECT_VERSION] = VERSION
 
         if self.options["__netplay_game"]:
             print("\nfixing config for netplay game")
@@ -231,7 +234,7 @@ class FSUAEAmigaDriver(GameDriver):
         files = prepare_amiga(self.options)
 
         # FIXME: Move function
-        def file_sha1_to_stream(sha1):
+        def getStreamFromFileSha1(sha1: str) -> Optional[BinaryIO]:
             stream = self.fsgs.file.open("sha1://{0}".format(sha1))
             if stream is not None:
                 return stream
@@ -261,7 +264,7 @@ class FSUAEAmigaDriver(GameDriver):
                 # pass
             return None
 
-        install_files(files, run_dir, file_sha1_to_stream)
+        FileInstaller(files).install(run_dir, getStreamFromFileSha1)
 
         config = ConfigWriter(self.config).create_fsuae_config()
         config_file = self.temp_file("Config.fs-uae").path

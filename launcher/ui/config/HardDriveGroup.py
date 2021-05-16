@@ -58,9 +58,9 @@ class HardDriveGroup(fsui.Panel):
     def set_config_handlers(self):
         get_config(self).add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         get_config(self).remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_config(self, key, value):
         if key != self.config_key:

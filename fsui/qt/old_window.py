@@ -350,7 +350,7 @@ class Window(QObject):
         self.set_title(title)
 
         self.layout = None
-        self._size_specified = False
+        self._windowSizeHasBeenSet = False
         self.close_listeners = []
         # _windows.add(self)
         self.destroyed.connect(self.__destroyed)
@@ -435,7 +435,7 @@ class Window(QObject):
     def center_on_initial_show(self):
         if self._centered_on_initial_show:
             return
-        if self.layout and not self._size_specified:
+        if self.layout and not self._windowSizeHasBeenSet:
             self.set_size(self.layout.get_min_size())
         self.on_resize()
         self.center_on_parent()
@@ -485,7 +485,7 @@ class Window(QObject):
         return self._real_window.height()
 
     def set_size(self, size):
-        self._size_specified = True
+        self._windowSizeHasBeenSet = True
         # self.SetClientSize(size)
         # print("FIXME:\n\nDialog.set_size")
         # self.resize(size[0], size[1])
@@ -499,7 +499,7 @@ class Window(QObject):
         self._real_widget.resize(size[0], size[1])
 
     def set_initial_size_from_layout(self):
-        if self.layout and not self._size_specified:
+        if self.layout and not self._windowSizeHasBeenSet:
             self.set_size_from_layout()
 
     def set_size_from_layout(self):

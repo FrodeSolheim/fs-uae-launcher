@@ -1,11 +1,11 @@
-import os
+from typing import List
 
 
-def prepare_startup_sequence(command, *, setpatch=None) -> bytes:
+def prepare_startup_sequence(command: str, *, setpatch: bool = False) -> bytes:
     # FIXME: semi-colon is used in WHDLoad CONFIG options...
     command = "\n".join([x.strip() for x in command.split(";")])
     # startup_sequence = os.path.join(s_dir, "Startup-Sequence")
-    data = []
+    data: List[bytes] = []
     if True:
         # if not os.path.exists(startup_sequence):
         # with open(startup_sequence, "wb") as f:

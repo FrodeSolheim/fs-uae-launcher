@@ -1,5 +1,6 @@
 import traceback
-from typing import Dict, List
+from dataclasses import dataclass
+from typing import List, Optional, Tuple
 
 """
 Based on information from the following sources:
@@ -7,30 +8,9 @@ Based on information from the following sources:
 - http://www.evillabs.net/index.php/Amiga_Icon_Formats
 """
 
-WB_DISKMAGIC = 0xE310
-
-WBDISK = 1
-WBDRAWER = 2
-WBTOOL = 3
-WBPROJECT = 4
-WBGARBAGE = 5
-WBDEVICE = 6
-WBKICK = 7
-WBAPPICON = 8
-
-GFLG_GADGHIMAGE = 1 << 1
-# GFLG_GADGHNONE = 0x0003
-# GFLG_GADGHIGHBITS = 0x0003
-GFLG_GADGIMAGE = 1 << 2
-
-ERROR_EXCEPTION = 1
-ERROR_DISKOBJECT = 2
-ERROR_MAGIC = 3
-ERROR_VERSION = 4
-
 
 class IconParser:
-    def __init__(self, data):
+    def __init__(self, data: bytes):
         self.error = 0
         self._data = data
         self.do_magic = 0
@@ -49,18 +29,18 @@ class IconParser:
         self.defaulttool = ""
         self.tooltypes: List[str] = []
 
-        self.images = [{}, {}]
-        self.newicon_data = []
-        self.iff_chunks = []
-        self.png_images = []
+        self.images: List[Optional[ImageInfo]] = [None, None]
+        self.newicon_data: List[str] = []
+        self.iff_chunks: List[Tuple[str, bytes]] = []
+        self.png_images: List[bytes] = []
 
-    def uint8(self, offset):
+    def uint8(self, offset: int) -> int:
         return self._data[offset]
 
-    def uint16(self, offset):
+    def uint16(self, offset: int) -> int:
         return (self._data[offset] << 8) | (self._data[offset + 1])
 
-    def uint32(self, offset):
+    def uint32(self, offset: int) -> int:
         value = (
             (self._data[offset] << 24)
             | (self._data[offset + 1] << 16)
@@ -69,10 +49,10 @@ class IconParser:
         )
         return value
 
-    def read_bytes(self, offset, count):
+    def read_bytes(self, offset: int, count: int):
         return self._data[offset : offset + count]
 
-    def read_and_skip_string(self, offset):
+    def read_and_skip_string(self, offset: int):
         length = self.uint32(offset)
         # print("string length is 0x{:x}".format(length))
         if length == 0:
@@ -107,7 +87,7 @@ class IconParser:
             print("WARNING: {} bytes left".format(len(self._data) - offset))
             # sys.exit(1)
 
-    def _parse_png(self, offset):
+    def _parse_png(self, offset: int) -> int:
         offset += 2
         offset += 1
         offset += 1
@@ -141,7 +121,7 @@ class IconParser:
                     offset += 8
         return offset
 
-    def _parse(self):
+    def _parse(self) -> int:
         offset = 0
         if len(self._data) < 4:
             print("WARNING: Not an icon file? No room for header magic")
@@ -251,7 +231,7 @@ class IconParser:
             count = (size >> 2) - 1
             print("size is", size, "count is", count)
             offset += 4
-            for i in range(count):
+            for _ in range(count):
                 string, offset = self.read_and_skip_string(offset)
                 if string == "*** DON'T EDIT THE FOLLOWING LINES!! ***":
                     # "In a NewIcons file, one of the strings in the table (usually
@@ -336,7 +316,7 @@ class IconParser:
 
         return offset
 
-    def skip_image(self, offset, image_index):
+    def skip_image(self, offset: int, image_index: int) -> int:
         width = self.uint16(offset + 4)
         height = self.uint16(offset + 6)
         bitdepth = self.uint16(offset + 8)
@@ -353,14 +333,57 @@ class IconParser:
             offset += count
         else:
             imagedata = b""
-        self.images[image_index] = {
-            "width": width,
-            "height": height,
-            "bitdepth": bitdepth,
-            "data": imagedata,
-        }
+        self.images[image_index] = ImageInfo(
+            width=width, height=height, depth=bitdepth, data=imagedata
+        )
+        #     "width": width,
+        #     "height": height,
+        #     "bitdepth": bitdepth,
+        #     "data": imagedata,
+        # }
         return offset
 
+
+@dataclass
+class ImageInfo:
+    width: int
+    height: int
+    depth: int
+    data: bytes
+
+    def __getitem__(self, key: str):
+        """Deprecated, for compatibility with older code."""
+        if key == "width":
+            return self.width
+        elif key == "height":
+            return self.height
+        elif key == "bitdepth":
+            return self.depth
+        elif key == "data":
+            return self.data
+        raise KeyError(key)
+
+
+WB_DISKMAGIC = 0xE310
+
+WBDISK = 1
+WBDRAWER = 2
+WBTOOL = 3
+WBPROJECT = 4
+WBGARBAGE = 5
+WBDEVICE = 6
+WBKICK = 7
+WBAPPICON = 8
+
+GFLG_GADGHIMAGE = 1 << 1
+# GFLG_GADGHNONE = 0x0003
+# GFLG_GADGHIGHBITS = 0x0003
+GFLG_GADGIMAGE = 1 << 2
+
+ERROR_EXCEPTION = 1
+ERROR_DISKOBJECT = 2
+ERROR_MAGIC = 3
+ERROR_VERSION = 4
 
 do_type_mapping = {
     WBDISK: "WBDISK",

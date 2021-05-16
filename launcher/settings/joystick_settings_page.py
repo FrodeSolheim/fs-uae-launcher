@@ -125,9 +125,9 @@ class PreferredJoystickSelector(fsui.Group):
         self.device_choice.on_changed = self.on_device_changed
         LauncherSettings.add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_device_changed(self):
         value = self.device_choice.get_text()

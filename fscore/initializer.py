@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Any, Callable, Dict, List, TypeVar, cast
+from typing import Any, Callable, TypeVar, cast
 
 F = TypeVar("F", bound=Callable[..., Any])
 

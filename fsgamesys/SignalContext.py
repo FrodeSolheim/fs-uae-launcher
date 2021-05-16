@@ -1,6 +1,8 @@
+from typing import Any
 import weakref
 
 from fsbc.signal import Signal
+from fscore.deprecated import deprecated
 
 from .contextaware import ContextAware
 
@@ -51,8 +53,8 @@ class SignalContext(ContextAware):
     def emit(self, signal, args):
         Signal(self.signal_name(signal)).notify(*args)
 
-    # FIXME: Deprecated
-    def notify(self, signal, args):
+    @deprecated
+    def notify(self, signal: str, args: Any):
         return self.emit(signal, args)
 
     def process(self):

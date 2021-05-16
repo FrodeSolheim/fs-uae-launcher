@@ -1,3 +1,2 @@
-
 class ZXSpectrumMachine:
     pass

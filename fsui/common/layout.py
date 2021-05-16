@@ -1,3 +1,6 @@
+from typing import Any, Optional, Tuple, Union, cast
+from fswidgets.types import Point, Size
+
 from .spacer import Spacer
 
 DEBUG = 0
@@ -18,14 +21,14 @@ class LayoutChild(object):
 
 
 class Layout(object):
-    def __init__(self, padding):
+    def __init__(self, padding: int):
         # self.min_size = (0, 0)
         self.position = (0, 0)
         self.size = (0, 0)
-        self.padding_left = padding
-        self.padding_right = padding
-        self.padding_top = padding
-        self.padding_bottom = padding
+        self.padding_left: int = padding
+        self.padding_right: int = padding
+        self.padding_top: int = padding
+        self.padding_bottom: int = padding
         self._skip = 0
         # self.origin = (0, 0)
         self.children = []
@@ -35,7 +38,13 @@ class Layout(object):
     def visible(self):
         return True
 
-    def get_padding(self):
+    def get_min_width(self) -> int:
+        raise NotImplementedError()
+
+    def get_min_height(self, width: int) -> int:
+        raise NotImplementedError()
+
+    def get_padding(self) -> Tuple[int, int, int, int]:
         return (
             self.padding_left,
             self.padding_top,
@@ -43,9 +52,12 @@ class Layout(object):
             self.padding_bottom,
         )
 
-    def set_padding(self, *amount, css=False):
+    def set_padding(
+        self, *amount: Union[int, Tuple[int, int, int, int]], css: bool = False
+    ):
         print("set_padding", amount)
         try:
+            amount = cast(Tuple[int, int, int, int], amount)
             if css:
                 self.padding_top = amount[0]
                 self.padding_right = amount[1]
@@ -57,6 +69,7 @@ class Layout(object):
                 self.padding_right = amount[2]
                 self.padding_bottom = amount[3]
         except IndexError:
+            assert isinstance(amount[0], int)
             self.padding_left = amount[0]
             self.padding_right = amount[0]
             self.padding_top = amount[0]
@@ -64,7 +77,7 @@ class Layout(object):
 
     padding = property(get_padding, set_padding)
 
-    def get_min_size(self):
+    def get_min_size(self) -> Size:
         min_width = self.get_min_width()
         min_height = self.get_min_height(min_width)
         return min_width, min_height
@@ -100,21 +113,21 @@ class Layout(object):
     # FIXME: Rename margin -> margins (+ alias), margin_top -> top, etc
     def add(
         self,
-        element,
-        spacing=0,
-        expand=False,
-        fill=False,
-        valign=0.5,
-        margin=0,
-        margin_left=None,
-        margin_right=None,
-        margin_top=None,
-        margin_bottom=None,
-        index=None,
-        left=None,
-        right=None,
-        top=None,
-        bottom=None,
+        element: Any,  # To avoid import cycle with Widget
+        spacing: int = 0,
+        expand: bool = False,
+        fill: bool = False,
+        valign: float = 0.5,
+        margin: int = 0,
+        margin_left: Optional[int] = None,
+        margin_right: Optional[int] = None,
+        margin_top: Optional[int] = None,
+        margin_bottom: Optional[int] = None,
+        index: Optional[int] = None,
+        left: Optional[int] = None,
+        right: Optional[int] = None,
+        top: Optional[int] = None,
+        bottom: Optional[int] = None,
     ):
         """
 
@@ -175,19 +188,19 @@ class Layout(object):
     def get_position(self):
         return self.position
 
-    def set_position(self, position):
+    def set_position(self, position: Point):
         self.position = position
         # self.origin = position
         # FIXME: avoid calling update after both set_position and set_size
         self.update()
 
-    def set_size(self, size):
+    def set_size(self, size: Size):
         if DEBUG:
             print("Layout.set_size", size)
         self.size = size
         self.update()
 
-    def set_position_and_size(self, position, size):
+    def set_position_and_size(self, position: Point, size: Size):
         self.position = position
         self.size = size
         self.update()
@@ -328,10 +341,15 @@ class HorizontalLayout(LinearLayout):
     def __init__(self, padding=0):
         LinearLayout.__init__(self, False, padding=padding)
 
-    def add_spacer(self, size=0, size2=None, expand=False):
+    def add_spacer(
+        self,
+        size: Union[int, Tuple[int, int]] = 0,
+        size2: Optional[int] = None,
+        expand: bool = False,
+    ):
         super().add_spacer(size, size2, expand, horizontal=True)
 
-    def get_min_width(self):
+    def get_min_width(self) -> int:
         min_width = 0
         last_margin = 0
         for child in self.children:
@@ -344,7 +362,7 @@ class HorizontalLayout(LinearLayout):
             return self.min_width
         return min_width
 
-    def get_min_height(self, width):
+    def get_min_height(self, width) -> int:
         min_height = 0
         for child in self.children:
             h = child.element.get_min_height(width)
@@ -363,7 +381,7 @@ class VerticalLayout(LinearLayout):
     def __init__(self, padding=0):
         LinearLayout.__init__(self, True, padding=padding)
 
-    def get_min_width(self):
+    def get_min_width(self) -> int:
         min_width = 0
         for child in self.children:
             if hasattr(child.element, "explicitly_hidden"):
@@ -378,7 +396,7 @@ class VerticalLayout(LinearLayout):
             return self.min_width
         return min_width
 
-    def get_min_height(self, width):
+    def get_min_height(self, width) -> int:
         min_height = 0
         last_margin = 0
         for child in self.children:

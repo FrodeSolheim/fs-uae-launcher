@@ -1,6 +1,14 @@
-def screen_rects():
-    # FIXME: Move qt code to fsui
-    screens = []
+from typing import Dict, List, Tuple
+# FIXME: Move qt code to fswidgets
+from fswidgets.qt.core import QRect
+
+# FIXME: Use a Rect dataclass instead?
+ScreenRect = Dict[str, int]
+
+
+def screen_rects() -> List[ScreenRect]:
+    # FIXME: Move qt code to fswidgets
+    screens: List[Tuple[int, ScreenRect]] = []
     try:
         from fsui.qt import init_qt
 
@@ -8,9 +16,9 @@ def screen_rects():
     except AttributeError:
         pass
     else:
-        for screen in qapplication.screens():
-            geometry = screen.geometry()
-            screen = {
+        for qscreen in qapplication.screens():  # type: ignore
+            geometry = screen.geometry()  # type: QRect
+            screen: ScreenRect = {
                 "x": geometry.x(),
                 "y": geometry.y(),
                 "w": geometry.width(),

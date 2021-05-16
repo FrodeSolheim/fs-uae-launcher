@@ -93,11 +93,11 @@ class LegacyDialog(QDialog):
     def on_close(self):
         pass
 
-    def on_destroy(self):
+    def onDestroy(self):
         pass
 
     def __destroy_event(self, event):
-        self.on_destroy()
+        self.onDestroy()
 
     def __close_event(self, event):
         print("__close_event")

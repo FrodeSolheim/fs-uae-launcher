@@ -31,7 +31,7 @@ class DisplayedException(Exception):
     pass
 
 
-def exceptionhandler(function):
+def withExceptionHandler(function):
     # FIXME: Is it possible to get a reference to the widget owning the
     # function (method) when the error occurs?
     @wraps(function)
@@ -58,6 +58,9 @@ def exceptionhandler(function):
             # print("-" * 79)
 
     return wrapper
+
+
+exceptionhandler = withExceptionHandler
 
 
 def software_failure(function):

@@ -228,13 +228,13 @@ class OptionCheckBox(fsui.CheckBox):
 
     def on_explicit_option(self, value):
         if value:
-            if not self.checked():
+            if not self.isChecked():
                 with self.changed.inhibit:
-                    self.check(True)
+                    self.check()
         else:
-            if self.checked():
+            if self.isChecked():
                 with self.changed.inhibit:
-                    self.check(False)
+                    self.uncheck()
 
     def on_implicit_option(self, value):
         self.implicit_value = value

@@ -1,7 +1,11 @@
+from typing import Optional
+
 import fsui
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.context import fsgs
 from fsgamesys.product import Product
+from fswidgets.panel import Panel
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.launcher_signal import LauncherSignal
 from launcher.scanner import Scanner
@@ -16,13 +20,17 @@ TIMER_INTERVAL = 100
 
 class FileScannerWindow(Window):
     @classmethod
-    def refresh_game_database(cls, window):
+    def refresh_game_database(cls, window: Widget):
         return cls(
             window, minimal=True, interactive=False, scan_for_files=False
         )
 
     def __init__(
-        self, parent=None, minimal=False, interactive=True, scan_for_files=True
+        self,
+        parent: Optional[Widget] = None,
+        minimal: bool = False,
+        interactive: bool = True,
+        scan_for_files: bool = True,
     ):
         title = gettext("File scanner")
         super().__init__(parent, title=title, maximizable=False)
@@ -83,7 +91,7 @@ class FileScannerWindow(Window):
 
         self.destroyed.connect(Scanner.stop)
 
-    def set_scan_title(self, text):
+    def set_scan_title(self, text: str):
         if not text:
             return
         if text == self.old_title:
@@ -91,7 +99,7 @@ class FileScannerWindow(Window):
         self.old_title = text
         self.scan_progress_group.title_label.set_text(text)
 
-    def set_scan_status(self, text):
+    def set_scan_status(self, text: str):
         if not text:
             return
         if text == self.old_status:
@@ -153,7 +161,7 @@ class FileScannerWindow(Window):
 
 
 class KickstartStatusGroup(fsui.Group):
-    def __init__(self, parent, title, model):
+    def __init__(self, parent: Widget, title: str, model):
         self.model = model
         fsui.Group.__init__(self, parent)
         self.layout = fsui.HorizontalLayout()
@@ -170,9 +178,9 @@ class KickstartStatusGroup(fsui.Group):
         self.update()
         LauncherSignal.add_listener("scan_done", self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSignal.remove_listener("scan_done", self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_scan_done_signal(self):
         self.update()
@@ -186,9 +194,9 @@ class KickstartStatusGroup(fsui.Group):
         self.icon.set_image(self.na_image)
 
 
-class ScanKickstartGroup(fsui.Group):
-    def __init__(self, parent):
-        fsui.Group.__init__(self, parent)
+class ScanKickstartGroup(Panel):
+    def __init__(self, parent: Widget):
+        super().__init__(parent)
 
         self.layout = fsui.VerticalLayout()
         label = fsui.HeadingLabel(
@@ -256,9 +264,9 @@ class ScanKickstartGroup(fsui.Group):
         layout.add(group, fill=True)
 
 
-class ScanProgressGroup(fsui.Group):
-    def __init__(self, parent):
-        fsui.Group.__init__(self, parent)
+class ScanProgressGroup(Panel):
+    def __init__(self, parent: Widget):
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 
         self.layout2 = fsui.VerticalLayout()

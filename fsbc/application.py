@@ -3,6 +3,7 @@ import os
 import sys
 import threading
 import time
+from typing import Any
 
 import fsboot
 from fsbc.paths import Paths
@@ -19,21 +20,28 @@ class Application(object):
     _instance = None
 
     @classmethod
-    def instance(cls):
+    def instance(cls) -> "Application":
         """
         :rtype : Application
         """
         return cls._instance
 
     @classmethod
-    def get_instance(cls):
+    def getInstance(cls) -> "Application":
         """
         :deprecated
         """
         return cls._instance
 
     @classmethod
-    def get(cls):
+    def get_instance(cls) -> "Application":
+        """
+        :deprecated
+        """
+        return cls._instance
+
+    @classmethod
+    def get(cls) -> "Application":
         """
         :deprecated
         """
@@ -195,10 +203,10 @@ def call_after(func, *args, **kwargs):
 
 
 class ApplicationInstanceProxy(object):
-    def __getattr__(self, name):
+    def __getattr__(self, name: str):
         return getattr(Application.instance(), name)
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Any):
         raise Exception("not currently allowed to set attributes on app")
         # return setattr(Application.instance(), name, value)
 

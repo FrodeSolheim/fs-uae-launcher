@@ -52,7 +52,7 @@ class Color(QColor, BaseColor):
             raise TypeError("Color object is not initialized")
 
     @staticmethod
-    def from_hex(string):
+    def fromHex(string: str) -> "Color":
         if not string.startswith("#"):
             return Color(0, 0, 0, 0)
         string = string[1:]
@@ -76,6 +76,10 @@ class Color(QColor, BaseColor):
             a = c & 0x000000FF
             return Color(r, g, b, a)
         return Color(0, 0, 0, 0)
+
+    @classmethod
+    def from_hex(cls, string: str) -> "Color":
+        return cls.fromHex(string)
 
     @staticmethod
     def mix_colors(basecolor, overlaycolor, opacity=0.5):

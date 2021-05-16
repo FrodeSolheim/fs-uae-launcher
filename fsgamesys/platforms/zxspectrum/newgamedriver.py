@@ -20,14 +20,13 @@ class ISaveService:
 
 
 class Config:
-
     def __init__(self):
         self.config = {}  # type: Dict[str, str]
 
     @property
     def zxSpectrumModel(self) -> str:
         return self.config.get("zxspectrum_model", "")
-    
+
     @zxSpectrumModel.setter
     def zxSpectrumModel(self, value):
         self.config["zxspectrum_model"] = value
@@ -49,7 +48,7 @@ class GameDriver2:
 
         self.args = []  # type: List[str]
         self.env = {}  # type: Dict[str, str]
-        
+
         self._modelName = ""
 
     def logHeading(self, heading):

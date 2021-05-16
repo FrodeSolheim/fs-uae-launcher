@@ -217,7 +217,7 @@ class DeviceManager:
         return cls.get_preferred_joysticks()
 
     @classmethod
-    def get_calculated_port_mode(cls, config, port):
+    def get_calculated_port_mode(cls, config, port: int) -> str:
         value = config.get("joystick_port_{0}_mode".format(port))
         if not value:
             if port == 0:

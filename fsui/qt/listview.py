@@ -7,7 +7,7 @@ from fsui.qt.qt import (
     QStandardItemModel,
 )
 from fsui.qt.signal import Signal
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 
 class ListView(Widget):

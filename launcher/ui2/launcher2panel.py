@@ -1,10 +1,16 @@
-from fsui import HorizontalLayout, Panel
+from typing import Optional
+
+from fsui import HorizontalLayout
+from fswidgets.panel import Panel
+from fswidgets.parentstack import ParentStack
+from fswidgets.widget import Widget
 from launcher.ui2.launcher2leftpanel import Launcher2LeftPanel
 from launcher.ui2.launcher2rightpanel import Launcher2RightPanel
 
 
 class Launcher2Panel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Optional[Widget] = None):
+        parent = parent or ParentStack.top()
         super().__init__(parent)
         horilayout = HorizontalLayout()
         self.layout.add(horilayout, fill=True, expand=True)

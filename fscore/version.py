@@ -1,5 +1,5 @@
 import re
-from typing import Any, List, Union
+from typing import Any, List, Tuple, Union
 
 
 class Version:
@@ -37,14 +37,16 @@ class Version:
         #     }
         # )
 
-    def cmp_value(self):
+    def cmp_value(self) -> Tuple[int, str, int]:
         mod_cmp = self.mod or "~~e"
         if not mod_cmp.startswith("~"):
             mod_cmp = "~~" + mod_cmp
         return self.val, mod_cmp, self.release
 
-    def __eq__(self, other) -> bool:
-        return self.cmp_value() == other.cmp_value()
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, Version):
+            return self.cmp_value() == other.cmp_value()
+        return self == Version(str(other))
 
     def __lt__(self, other: "Version") -> bool:
         return self.cmp_value() < other.cmp_value()
@@ -123,27 +125,27 @@ class Version:
         # -1
         # >>> Version.compare("2.6.0beta2", "2.6.0beta1.1")
         # 1
-        if isinstance(a, Version):
-            pass
-        elif isinstance(a, str):
-            a = Version(a)
-        else:
-            raise TypeError("Not a valid version string or object")
-        if isinstance(b, Version):
-            pass
-        elif isinstance(b, str):
-            b = Version(b)
-        else:
-            raise TypeError("Not a valid version string or object")
+        if not isinstance(a, Version):
+            a = Version(str(a))
+        # elif isinstance(a, str):
+        #     a = Version(a)
+        # else:
+        #     raise TypeError("Not a valid version string or object")
+        if not isinstance(b, Version):
+            b = Version(str(b))
+        # elif isinstance(b, str):
+        #     b = Version(b)
+        # else:
+        #     raise TypeError("Not a valid version string or object")
         # cmp is gone in Python 3
         return (a > b) - (a < b)
 
 
 def splitVersionString(versionString: str) -> List[str]:
     pattern = re.compile(
-        "^([0-9]{1,4})(?:\.([0-9]{1,4}))?"
-        "(?:\.([0-9]{1,4}))?(?:\.([0-9]{1,4}))?"
-        "([-~]?[a-z0-9\.]*)?(?:[-_]([0-9]+))?$"
+        "^([0-9]{1,4})(?:\\.([0-9]{1,4}))?"
+        "(?:\\.([0-9]{1,4}))?(?:\\.([0-9]{1,4}))?"
+        "([-~]?[a-z0-9\\.]*)?(?:[-_]([0-9]+))?$"
     )
     m = pattern.match(versionString)
     if m is None:

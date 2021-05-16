@@ -1,3 +1,5 @@
+from fswidgets.widget import Widget
+from typing import List
 from fsui import Choice, Color, HorizontalLayout, Label, Panel
 from fsui.context import get_window
 from launcher.panels.additionalconfigpanel import CustomConfigButton
@@ -45,7 +47,7 @@ class Launcher2SidePanel(Panel):
 
         self.book = Book(self)
         self.layout.add(self.book, expand=True, fill=True)
-        self.pages = []
+        self.pages: List[Widget] = []
         self.pages.append(GameFrontCoverPanel(self.book))
         for page in self.pages:
             self.book.add_page(page)
@@ -56,8 +58,8 @@ class GameFrontCoverPanel(Panel):
     def __init__(self, parent):
         super().__init__(parent)
         # self.set_background_color(Color(0xFF0000))
-        image_loader = get_window(self).image_loader
-        self.front_panel = FrontCoverPanel(self, image_loader)
+        imageLoader = get_window(self).imageLoader
+        self.front_panel = FrontCoverPanel(self, imageLoader)
         self.layout.add(
             self.front_panel,
             margin_top=20,

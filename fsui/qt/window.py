@@ -1,10 +1,16 @@
+from dataclasses import dataclass
+from fswidgets.widget import Widget
+from fsui.qt.color import Color
 import weakref
+from typing import Any, Optional, Tuple
 
 from fscore.deprecated import deprecated
 from fscore.system import System
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QMainWindow, Qt, init_qt
 from fsui.qt.toplevelwidget import TopLevelWidget
+from fswidgets.types import Point, Size, WindowState
+from fswidgets.qt.widgets import QWidget
 
 
 class WindowWrapper(QMainWindow):
@@ -89,19 +95,19 @@ class Window(TopLevelWidget):
 
     def __init__(
         self,
-        parent=None,
-        title="",
-        border=True,
-        minimizable=True,
-        maximizable=True,
-        separator=True,
-        menu=False,
-        header=True,
-        below=False,
-        closable=True,
-        color=None,
-        escape=False,
-        **_,
+        parent: Optional[Widget] = None,
+        title: str = "",
+        border: bool = True,
+        minimizable: bool = True,
+        maximizable: bool = True,
+        separator: bool = True,
+        menu: bool = False,
+        header: bool = True,
+        below: bool = False,
+        closable: bool = True,
+        color: Optional[Color] = None,
+        escape: bool = False,
+        **_: Any,
     ):
         # FIXME: More like this? Or init once at startup?
         init_qt()
@@ -128,10 +134,7 @@ class Window(TopLevelWidget):
 
         self.layout = None
 
-        self._size_specified = False
-        # Whether the widget has had its size set yet. Used by code to switch
-        # to fullscreen.
-        self.__size_has_been_set = False
+        self._windowSizeHasBeenSet = False
 
         self.close_listeners = []
         # self.destroyed.connect(self.__destroyed)
@@ -151,6 +154,37 @@ class Window(TopLevelWidget):
             self.accepted.connect(self.__accepted)
         if hasattr(self, "rejected"):
             self.rejected.connect(self.__rejected)
+
+        # self.windowBorders = WindowMargins(1, 1, 1, 1)
+        # self.set_background_color(Color(0xff, 0x00, 00))
+
+        # self.windowMargins.left = 40
+        # self.windowMargins.right = 20
+        # self.windowMargins.top = 10
+        # self.windowMargins.bottom = 5
+
+    # -------------------------------------------------------------------------
+
+    # def setSize(self, size: Size):
+    #     self.__handleSizeChange(size)
+    #     super().setSize(size)
+
+    # def setPositionAndSize(self, position: Point, size: Size):
+    #     self.__handleSizeChange(size)
+    #     super().setPositionAndSize(position, size)
+
+    # def on_resize(self):
+    #     x = self.windowBorders.left + self.windowMargins.left
+    #     y = self.windowBorders.top + self.windowMargins.top
+    #     width, height = self.getSize()
+    #     # Margins are already account for in getSize
+    #     # width -= self.windowMargins.left + self.windowMargins.right
+    #     # height -= self.windowMargins.top + self.windowMargins.bottom
+    #     print(x, y, width, height)
+    #     self.qcontainer.setGeometry(x, y, width, height)
+    #     super().on_resize()
+
+    # -------------------------------------------------------------------------
 
     def alert(self, msecs=0):
         init_qt().alert(self._real_window, msecs)
@@ -177,10 +211,6 @@ class Window(TopLevelWidget):
     @deprecated
     def is_fullscreen(self):
         return self.fullscreen()
-
-    @deprecated
-    def maximize(self, maximize=True):
-        return self.set_maximized(maximize)
 
     # def real_window(self):
     #     return self._real_window
@@ -242,8 +272,8 @@ class Window(TopLevelWidget):
                 print("set_fullscreen geometry", geometry)
                 self._qwidget.setGeometry(*geometry)
             else:
-                if not self.__size_has_been_set:
-                    self.__size_has_been_set = True
+                if not self._windowSizeHasBeenSet:
+                    self._windowSizeHasBeenSet = True
                     print("resizing to 1, 1")
                     self.set_size((1, 1))
             self._qwidget.showFullScreen()
@@ -251,10 +281,6 @@ class Window(TopLevelWidget):
         else:
             self.restore_margins()
             self.setWindowState(Qt.WindowNoState)
-
-    def set_size(self, size):
-        self.__size_has_been_set = True
-        super().set_size(size)
 
     def show(self, maximized=False, center=False, offset=False):
         if center:

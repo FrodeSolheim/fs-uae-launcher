@@ -79,9 +79,9 @@ class StatusBar(Panel):
         # added their listeners, this is important for re-layout...
         LauncherConfig.add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherConfig.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_config(self, key, value):
         unused(value)

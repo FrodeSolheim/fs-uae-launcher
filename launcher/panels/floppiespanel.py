@@ -16,6 +16,6 @@ class FloppiesPanel(ConfigPanel):
         self.media_list_group = MediaListGroup(self, False)
         self.layout.add(self.media_list_group, expand=True, fill=True)
 
-    def on_destroy(self):
+    def onDestroy(self):
         print("InputSelector / FloppiesPanel.on_destroy")
-        super().on_destroy()
+        super().onDestroy()

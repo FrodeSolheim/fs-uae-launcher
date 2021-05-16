@@ -1,4 +1,8 @@
+from fscore.deprecated import deprecated
+from typing import Optional
+
 from fsui.qt.qt import QFont
+from fswidgets.qt.gui import QFontMetrics
 
 # FIXME: Add more
 weight_map = {
@@ -28,9 +32,11 @@ class Font:
         # return (name, weight, size)
         return {"name": name, "weight": weight, "size": size}
 
-    def __init__(self, name=None, size=None, font=None, weight=None):
+    def __init__(
+        self, name=None, size=None, font: Optional[QFont] = None, weight=None
+    ):
         if font is not None:
-            self.font = font
+            self.font: QFont = font
         else:
             assert name
             self.font = QFont(name)
@@ -46,13 +52,22 @@ class Font:
             "weight": self.font.weight(),
         }
 
-    def qfont(self):
+    def measureText(self, text: str):
+        metrics = QFontMetrics(self.qfont)
+        return metrics.width(text), metrics.height()
+
+    @property
+    def qfont(self) -> QFont:
         return self.font
 
-    def set_bold(self, bold=True):
-        self.font.setBold(bold)
+    def setBold(self, bold: bool=True) -> "Font":
+        self.qfont.setBold(bold)
         # Allow chaining operations
         return self
+
+    @deprecated
+    def set_bold(self, bold: bool=True):
+        return self.setBold(bold)
 
     # def size(self):
     #     return self.font.pixelSize()

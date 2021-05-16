@@ -1,3 +1,4 @@
+from fswidgets.widget import Widget
 import fsui
 from launcher.context import get_config
 from launcher.i18n import gettext
@@ -10,7 +11,7 @@ from launcher.ui.savebutton import SaveButton
 # FIXME: Superclass was Group, but changed to Panel due to not being able
 # to disconnect from listening to config changes when closing window.
 class ConfigGroup(fsui.Panel):
-    def __init__(self, parent, new_button=True):
+    def __init__(self, parent: Widget, new_button: bool = True):
         super().__init__(parent)
         self.layout = fsui.VerticalLayout()
         hori_layout = fsui.HorizontalLayout()

@@ -112,7 +112,7 @@ def initialize_locale(language=None):
     print("[I18N] Translations object:", translations)
 
 
-def gettext(msg):
+def gettext(msg: str) -> str:
     if not _initialized:
         initialize_locale()
     return translations.gettext(msg)

@@ -15,9 +15,9 @@ class ConfigCheckBox(fsui.CheckBox):
     def set_config_handlers(self):
         get_config(self).add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         get_config(self).remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_changed(self):
         if self.checked():
@@ -25,9 +25,6 @@ class ConfigCheckBox(fsui.CheckBox):
         else:
             get_config(self).set(self.config_key, "")
 
-    def on_config(self, key, value):
+    def on_config(self, key: str, value: str):
         if key == self.config_key:
-            if value == "1":
-                self.check(True)
-            else:
-                self.check(False)
+            self.setChecked(value == "1")

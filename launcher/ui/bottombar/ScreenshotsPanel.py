@@ -16,7 +16,7 @@ class ScreenshotsPanel(BottomPanel):
         BottomPanel.__init__(self, parent)
         Skin.set_background_color(self)
         self.layout = fsui.HorizontalLayout()
-        self.image_loader = ImageLoader()
+        self.imageLoader = ImageLoader()
 
         def get_min_width():
             return 0
@@ -45,10 +45,10 @@ class ScreenshotsPanel(BottomPanel):
         self.load_images()
         LauncherSettings.add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
-        self.image_loader.stop()
-        super().on_destroy()
+        self.imageLoader.stop()
+        super().onDestroy()
 
     def set_min_screenshots(self, count):
         # w = SCREEN_SIZE[0] * count + BORDER * 2 + (BORDER + 1) * (count - 1)
@@ -78,7 +78,7 @@ class ScreenshotsPanel(BottomPanel):
                     self.images[request.args["index"]] = self.default_image
                 self.refresh()
 
-            self.requests[i] = self.image_loader.load_image(
+            self.requests[i] = self.imageLoader.load_image(
                 path, size=Constants.SCREEN_SIZE, on_load=on_load, index=i
             )
             self.images[i] = self.default_image

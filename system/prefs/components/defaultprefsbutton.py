@@ -1,6 +1,6 @@
 from fsui import Button
+from fswidgets.parentstack import ParentStack
 from launcher.context import get_settings
-from launcher.fswidgets2.parentstack import ParentStack
 from launcher.i18n import gettext
 
 
@@ -24,7 +24,7 @@ class DefaultPrefsButton(Button):
         # Add automatically discovered settings
         optionsOnPanel = None
         while parent and optionsOnPanel is None:
-            parent = parent.getParent()
+            parent = parent.getParentOrNone()
             optionsOnPanel = getattr(parent, "optionsOnPanel", None)
         options = options or []
         if optionsOnPanel is not None:
@@ -35,10 +35,10 @@ class DefaultPrefsButton(Button):
         self.options = {option: settings.get(option) for option in options}
         self.update_enabled_state()
 
-    def on_destroy(self):
+    def onDestroy(self):
         # self.remove_listener()
         get_settings(self).remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     # def __destroyed(self):
     #     get_settings(self).remove_listener(self)

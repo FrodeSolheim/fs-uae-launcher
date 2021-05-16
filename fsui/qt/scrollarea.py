@@ -3,7 +3,7 @@ import weakref
 from fsui.qt.callafter import call_after
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QFrame, QScrollArea, Qt
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 
 # noinspection PyProtectedMember

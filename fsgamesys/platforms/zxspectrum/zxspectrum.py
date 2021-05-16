@@ -1,4 +1,5 @@
 from fsgamesys.options.option import Option
+
 from .newgamedriver import GameDriver2
 
 

@@ -126,11 +126,11 @@ class ImageLoader(object):
     def start(self):
         self._stop_flag = False
         threading.Thread(
-            target=self.image_loader_thread, name="GameCenterImageLoaderThread"
+            target=self.imageLoaderThread, name="GameCenterImageLoaderThread"
         ).start()
         pass
 
-    def image_loader_thread(self):
+    def imageLoaderThread(self):
         logger.debug("[IMAGES] Image loader started")
         tm = TextureManager().get()
         while not self._stop_flag:

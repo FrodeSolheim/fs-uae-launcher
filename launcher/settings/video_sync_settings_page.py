@@ -38,7 +38,7 @@ class VideoSyncSettingsPage(SettingsPage):
         #     "occurring, but will also use more CPU. Input latency "
         #     "may become slightly higher."), 640)
         # self.layout.add(label, fill=True, margin_top=0)
-        # self.vblank_checkbox = fsui.HeadingCheckBox(self, gettext(
+        # self.vblank_checkbox = HeadingCheckBox(self, gettext(
         #     "Synchronize buffer swaps with display (prevents tearing)"))
         # self.layout.add(self.vblank_checkbox, margin_top=20)
 
@@ -60,7 +60,7 @@ class VideoSyncSettingsPage(SettingsPage):
         #     "enable the following option, and also make sure your display "
         #     "is running at 50Hz (for PAL) or 60Hz (for NTSC)."), 640)
         # self.layout.add(self.smooth_label, fill=True, margin_top=20)
-        # self.full_sync_checkbox = fsui.HeadingCheckBox(self, gettext(
+        # self.full_sync_checkbox = HeadingCheckBox(self, gettext(
         #     "Also synchronize emulation with display when possible "
         #     "(smooth scrolling)"))
         # self.layout.add(self.full_sync_checkbox, margin_top=20)
@@ -101,15 +101,15 @@ class VideoSyncSettingsPage(SettingsPage):
         # self.vblank_checkbox.changed.connect(self.on_vblank_changed)
         # self.full_sync_checkbox.changed.connect(self.on_full_sync_changed)
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_setting(self, key, _):
         if key == "video_sync":
             # value = value.lower()
-            # self.vblank_checkbox.check(value in ["auto", "full", "vblank"])
-            # self.full_sync_checkbox.check(value in ["auto", "full"])
+            # self.vblank_checkbox.setChecked(value in ["auto", "full", "vblank"])
+            # self.full_sync_checkbox.setChecked(value in ["auto", "full"])
             self.update_widgets()
 
     # def on_vblank_changed(self):

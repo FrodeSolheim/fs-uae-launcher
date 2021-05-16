@@ -1,17 +1,15 @@
 import os
 import subprocess
 import tempfile
-import traceback
+from typing import Dict, List, Optional
 
-from fsbc.application import Application, app
-from fscore.system import System
+from fsbc.application import Application
 from fsgamesys.plugins.pluginexecutablefinder import PluginExecutableFinder
-from fsgamesys.plugins.pluginmanager import Plugin
 
 
 class FSUAE(object):
     @classmethod
-    def start_with_config(cls, config, cwd=None):
+    def start_with_config(cls, config: str, cwd: Optional[str] = None):
         print("FSUAE.start_with_config:")
         tf = tempfile.NamedTemporaryFile(suffix=".fs-uae", delete=False)
         config_file = tf.name
@@ -24,9 +22,16 @@ class FSUAE(object):
         return cls.start_with_args(args, cwd=cwd), config_file
 
     @classmethod
-    def start_with_args(cls, args, cwd=None, **kwargs):
+    def start_with_args(
+        cls,
+        args: List[str],
+        cwd: Optional[str] = None,
+        stdout: Optional[int] = None,
+    ):
         print("FSUAE.start_with_args:", args)
         exe = PluginExecutableFinder().find_executable("fs-uae")
+        if not exe:
+            raise RuntimeError("Could not find fs-uae executable")
         print("current dir (cwd): ", os.getcwd())
         if cwd is not None:
             print("cwd override:", cwd)
@@ -56,13 +61,13 @@ class FSUAE(object):
         #     )
         # else:
 
-        p = subprocess.Popen(args, cwd=cwd, env=env, **kwargs)
+        p = subprocess.Popen(args, cwd=cwd, env=env, stdout=stdout)
         return p
 
     @classmethod
-    def add_environment_from_settings(cls, env):
+    def add_environment_from_settings(cls, env: Dict[str, str]):
         try:
-            values = app.settings.values
+            values = Application.getInstance().settings.values
         except AttributeError:
             values = {}
         for key, value in values.items():

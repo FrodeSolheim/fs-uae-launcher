@@ -24,10 +24,10 @@ class ProtectionElement(StatusElement):
         config.add_listener(self)
         self.on_config("protection", config.get("protection"))
 
-    def on_destroy(self):
+    def onDestroy(self):
         config = get_config(self)
         config.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_config(self, key, value):
         if key == "protection":

@@ -99,8 +99,8 @@ class WorkspaceWindow(Window):
         self.show()
         self.set_maximized(True)
 
-    def on_menu(self):
-        print("on_menu")
+    def onMenu(self):
+        print("onMenu")
         return WorkspaceMenu(self)
 
     def on_resize(self):

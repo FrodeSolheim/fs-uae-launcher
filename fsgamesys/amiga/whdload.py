@@ -1,30 +1,28 @@
 import logging
 import os
-from os import path
-import shutil
 import traceback
+from os import path
 from typing import BinaryIO, DefaultDict, Dict, List, Optional
 
 from fsbc.settings import Settings
-from fsgamesys.amiga.amigaconfig import AmigaConfig
 from fsgamesys.amiga.config import Config
 from fsgamesys.amiga.iconparser import IconParser
-from fsgamesys.amiga.rommanager import ROMManager
 from fsgamesys.amiga.startupsequence import prepare_startup_sequence
-from fsgamesys.amiga.types import ConfigType, FilesType
+from fsgamesys.amiga.types import ConfigType
 from fsgamesys.archive import Archive
 from fsgamesys.download import Downloader
-from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.files.installablefile import InstallableFile
+from fsgamesys.files.installablefiles import InstallableFiles
 from fsgamesys.options.constants import WHDLOAD_PRELOAD
 from fsgamesys.options.option import Option
 from fsgamesys.paths import fsgs_data_dir
 
 
-def fsgs_whdload_data_dir():
+def fsgs_whdload_data_dir() -> str:
     return os.path.join(fsgs_data_dir(), "WHDLoad")
 
 
-def find_whdload_slave(files, hd_dir, slave_name):
+def find_whdload_slave(files: InstallableFiles, hd_dir: str, slave_name: str):
     slave_name = slave_name.lower()
     hdDirWithSep = hd_dir + os.sep
     print(f"Find WHDLoad slave (lower-case name: {slave_name})")
@@ -52,7 +50,7 @@ def find_whdload_slave(files, hd_dir, slave_name):
 
 
 def prepare_whdload_system_volume(
-    hd_dir, s_dir, *, config: ConfigType, files: FilesType
+    hd_dir: str, s_dir: str, *, config: ConfigType, files: InstallableFiles
 ):
     whdload_args = Config(config).whdload_args()
     # if not whdload_args:
@@ -100,13 +98,13 @@ def prepare_whdload_system_volume(
 
 
 def prepare_whdload_system_volume_2(
-    hd_dir,
-    s_dir=None,
+    hd_dir: str,
+    s_dir: Optional[str] = None,
     *,
-    whdloadargs,
-    slavedir,
+    whdloadargs: str,
+    slavedir: str,
     config: ConfigType,
-    files: FilesType,
+    files: InstallableFiles,
 ):
     if not s_dir:
         s_dir = os.path.join(hd_dir, "S")
@@ -132,38 +130,51 @@ def prepare_whdload_system_volume_2(
 
     roms_dir = hd_dir
 
-    files[path.join(roms_dir, "Devs", "Kickstarts", "kick33180.A500")] = {
-        "sha1": "11f9e62cf299f72184835b7b2a70a16333fc0d88",
-        "size": 0,
-    }
-    files[path.join(roms_dir, "Devs", "Kickstarts", "kick34005.A500")] = {
-        "sha1": "891e9a547772fe0c6c19b610baf8bc4ea7fcb785",
-        "size": 0,
-    }
-    files[path.join(roms_dir, "Devs", "Kickstarts", "kick40068.A1200")] = {
-        "sha1": "e21545723fe8374e91342617604f1b3d703094f1",
-        "size": 0,
-    }
-    files[path.join(roms_dir, "Devs", "Kickstarts" , "kick40068.A4000")] = {
-        "sha1": "5fe04842d04a489720f0f4bb0e46948199406f49",
-        "size": 0,
-    }
+    files[
+        path.join(roms_dir, "Devs", "Kickstarts", "kick33180.A500")
+    ] = InstallableFile(
+        sha1="11f9e62cf299f72184835b7b2a70a16333fc0d88", size=0  # FIXME
+    )
+    files[
+        path.join(roms_dir, "Devs", "Kickstarts", "kick34005.A500")
+    ] = InstallableFile(
+        sha1="891e9a547772fe0c6c19b610baf8bc4ea7fcb785",
+        size=0,  # FIXME
+    )
+    files[
+        path.join(roms_dir, "Devs", "Kickstarts", "kick40068.A1200")
+    ] = InstallableFile(
+        sha1="e21545723fe8374e91342617604f1b3d703094f1",
+        size=0,  # FIXME
+    )
+    files[
+        path.join(roms_dir, "Devs", "Kickstarts", "kick40068.A4000")
+    ] = InstallableFile(
+        sha1="5fe04842d04a489720f0f4bb0e46948199406f49",
+        size=0,  # FIXME
+    )
 
     data = prepare_prefs_file(config)
     if data is not None:
-        files[path.join(s_dir, "WHDLoad.prefs")] = {"data": data}
+        files[path.join(s_dir, "WHDLoad.prefs")] = InstallableFile.fromData(
+            data
+        )
 
     # FIXME
     whdload_version = Config(config).whdload_version()
     if not whdload_version:
         whdload_version = default_whdload_version
 
-    for key, value in binaries[whdload_version].items():
+    for sha1, value in binaries[whdload_version].items():
         # install_whdload_file(key, hd_dir, value)
-        files[path.join(hd_dir, value.replace("/", os.sep))] = {"sha1": key}
-    for key, value in support_files.items():
+        files[path.join(hd_dir, value.replace("/", os.sep))] = InstallableFile(
+            sha1=sha1
+        )
+    for sha1, value in support_files.items():
         # install_whdload_file(key, hd_dir, value)
-        files[path.join(hd_dir, value.replace("/", os.sep))] = {"sha1": key}
+        files[path.join(hd_dir, value.replace("/", os.sep))] = InstallableFile(
+            sha1=sha1
+        )
 
     if config["__netplay_game"]:
         print(
@@ -226,7 +237,9 @@ def prepare_whdload_system_volume_2(
         whdload_sequence.format(slavedir, whdloadargs), setpatch=setpatch
     )
     if data is not None:
-        files[path.join(s_dir, "Startup-Sequence")] = {"data": data}
+        files[path.join(s_dir, "Startup-Sequence")] = InstallableFile.fromData(
+            data
+        )
 
 
 # def populate_whdload_system_volume(destdir, s_dir, *, config):
@@ -384,14 +397,14 @@ def prepare_whdload_system_volume_2(
 #     )
 
 
-def install_whdload_file(sha1, dest_dir, rel_path):
+def install_whdload_file(sha1: str, dest_dir: str, rel_path: str):
     abs_path = os.path.join(dest_dir, rel_path)
     name = os.path.basename(rel_path)
     # self.on_progress(gettext("Downloading {0}...".format(name)))
     Downloader.install_file_by_sha1(sha1, name, abs_path)
 
 
-from fsgamesys.FSGameSystemContext import FileContext
+# from fsgamesys.FSGameSystemContext import FileContext
 
 # def copy_whdload_kickstart(base_dir, name, checksums):
 #     dest = os.path.join(base_dir, "Devs", "Kickstarts")
@@ -535,7 +548,7 @@ def read_whdload_args_from_info_stream(stream: BinaryIO) -> List[str]:
 
 
 def strip_whdload_slave_prefix(whdload_args: List[str]) -> List[str]:
-    result = []
+    result: List[str] = []
     for i, arg in enumerate(whdload_args):
         arg = arg.split(";")[0]
         if i == 0 and arg.lower().startswith("slave="):
@@ -562,8 +575,8 @@ def calculate_whdload_args(archive_path: str) -> str:
     could be different since the .info file contains a slave=... tool type.
     """
     archive = Archive(archive_path)
-    slave_args = {}
-    lower_to_name = {}
+    slave_args: Dict[str, List[str]] = {}
+    lower_to_name: Dict[str, str] = {}
     for path in archive.list_files():
         path_lower = path.lower()
         if path_lower.rsplit("#/", 1)[1] == "s/startup-sequence":
@@ -627,9 +640,9 @@ def generate_config_for_archive(
     path: str, model_config: bool = True
 ) -> Dict[str, str]:
     logging.debug("[WHDLOAD] Generate config for archive %s", path)
-    config = {}
+    config: Dict[str, str] = {}
     whdload_args = ""
-    dummy, ext = os.path.splitext(path)
+    _, ext = os.path.splitext(path)
     if ext.lower() in Archive.extensions:
         try:
             whdload_args = calculate_whdload_args(path)
@@ -644,30 +657,31 @@ def generate_config_for_archive(
     return config
 
 
-def char(v):
-    return chr(v)
+def write_number(f: BinaryIO, n: int):
+    f.write(
+        bytes(
+            [
+                (n & 0xFF000000) >> 3,
+                (n & 0x00FF0000) >> 2,
+                (n & 0x0000FF00) >> 1,
+                (n & 0x000000FF) >> 0,
+            ]
+        )
+    )
 
 
-def write_number(f, n):
-    f.write(char((n & 0xFF000000) >> 3))
-    f.write(char((n & 0x00FF0000) >> 2))
-    f.write(char((n & 0x0000FF00) >> 1))
-    f.write(char((n & 0x000000FF) >> 0))
-
-
-def write_string(f, s):
+def write_string(f: BinaryIO, s: str):
     write_number(f, len(s) + 1)
-    f.write(s)
-    f.write("\0")
+    f.write(s.encode("ISO-8859-1"))
+    f.write(b"\0")
 
 
-def create_whdload_slave_icon(path, whdload_args):
+def create_whdload_slave_icon(path: str, whdload_args: str):
     default_tool = "DH0:/C/WHDLoad"
     # FIXME: handle "" around slave name?
     # args = whdload_args.split(" ")
     tool_types = whdload_args.split(" ")
     tool_types[0] = "SLAVE=" + tool_types[0]
-
     with open(path, "wb") as f:
         f.write(base_icon)
         write_string(f, default_tool)

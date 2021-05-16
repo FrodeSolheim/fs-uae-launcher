@@ -27,7 +27,7 @@ def WindowBase(BaseClass):
             self.setWindowTitle(title)
 
             self.layout = None
-            self._size_specified = False
+            self._windowSizeHasBeenSet = False
             self.already_closed = False
             self.close_listeners = []
             _windows.add(self)
@@ -49,7 +49,7 @@ def WindowBase(BaseClass):
         def center_on_initial_show(self):
             if self._centered_on_initial_show:
                 return
-            if self.layout and not self._size_specified:
+            if self.layout and not self._windowSizeHasBeenSet:
                 self.set_size(self.layout.get_min_size())
             self.on_resize()
             self.center_on_parent()
@@ -91,7 +91,7 @@ def WindowBase(BaseClass):
             return self.width(), self.height()
 
         def set_size(self, size):
-            self._size_specified = True
+            self._windowSizeHasBeenSet = True
             # self.SetClientSize(size)
             # print("FIXME:\n\nDialog.set_size")
             self.resize(size[0], size[1])
@@ -145,7 +145,7 @@ def WindowBase(BaseClass):
             self.setPalette(p)
 
         # def show(self):
-        #     if hasattr(self, "layout") and not self._size_specified:
+        #     if hasattr(self, "layout") and not self._windowSizeHasBeenSet:
         #         self.set_size(self.layout.get_min_size())
         #     #QMainWindow.show(self)
         #     print("")
@@ -157,7 +157,7 @@ def WindowBase(BaseClass):
         #     super().show()
 
         def showEvent(self, _):
-            if self.layout and not self._size_specified:
+            if self.layout and not self._windowSizeHasBeenSet:
                 self.set_size(self.layout.get_min_size())
             self.on_resize()
 

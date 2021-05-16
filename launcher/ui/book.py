@@ -1,3 +1,4 @@
+from fswidgets.widget import Widget
 from fsui import Panel, VerticalLayout
 
 
@@ -14,7 +15,7 @@ class Book(Panel):
         self.page_titles.append(title)
         self.pages.append(function)
 
-    def set_page(self, page):
+    def set_page(self, page: Widget):
         print("Book.set_page", page)
         try:
             index = page + 0

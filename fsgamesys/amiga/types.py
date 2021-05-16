@@ -1,4 +1,3 @@
-from typing import Dict, Optional
+from typing import Dict
 
 ConfigType = Dict[str, str]
-FilesType = Dict[str, object]

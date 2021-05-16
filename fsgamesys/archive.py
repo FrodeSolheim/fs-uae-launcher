@@ -2,10 +2,12 @@ import gzip
 import io
 import lzma
 import os
-import traceback
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from io import BytesIO
-from typing import List, Tuple
+from typing import List, Optional, Tuple, cast
 
+from fsgamesys.files.types import ByteStream
 from fspy.zipfile import ZipFile
 
 # This list is also used by the filescanner to add to recognized file
@@ -37,19 +39,48 @@ archive_extensions.extend(archive_extensions_xz)
 # FIXME: getinfo needs to work for everything (return dummy data if necessary)
 
 
-class ArchiveFileInfo:
-    def __init__(self, filename="", file_size=0, comment=b""):
-        self.filename = filename
-        self.file_size = file_size
-        self.comment = comment
+@dataclass
+class MemberInfo:
+    filename: str
+    file_size: Optional[int] = None
+    comment: Optional[bytes] = None
 
 
-class ZipHandler(object):
-    def __init__(self, path):
+class Handler(ABC):
+    # TODO:
+    @abstractmethod
+    def exists(self, name: str) -> bool:
+        pass
+
+    def getinfo(self, name: str):
+        # An inefficient default implementation...
+        for info in self.infolist():
+            if info.filename == name:
+                return info
+        raise KeyError(name)
+
+    @abstractmethod
+    def infolist(self) -> List[MemberInfo]:
+        pass
+
+    @abstractmethod
+    def list_files(self, subPath: str) -> List[str]:
+        pass
+
+    @abstractmethod
+    def open(self, name: str) -> ByteStream:
+        pass
+
+    def read(self, name: str):
+        return self.open(name).read()
+
+
+class ZipHandler(Handler):
+    def __init__(self, path: str):
         self.path = path
         self.zip = ZipFile(self.path, "r")
 
-    def exists(self, name):
+    def exists(self, name: str):
         try:
             self.zip.getinfo(name)
         except KeyError:
@@ -57,84 +88,82 @@ class ZipHandler(object):
         else:
             return True
 
-    def getinfo(self, name):
+    def getinfo(self, name: str):
         # Needs tests!!
         return self.zip.getinfo(name)
 
-    def infolist(self):
-        return self.zip.infolist()
+    def infolist(self) -> List[MemberInfo]:
+        return [
+            MemberInfo(
+                filename=x.filename, file_size=x.file_size, comment=x.comment
+            )
+            for x in self.zip.infolist()
+        ]
 
-    def list_files(self, sub_path) -> List[str]:
-        if sub_path:
+    def list_files(self, subPath: str) -> List[str]:
+        if subPath:
             return []
         return self.zip.namelist()
 
-    def open(self, name):
+    def open(self, name: str) -> ByteStream:
         return self.zip.open(name)
 
 
-class GzipHandler(object):
+class SimpleHandler(Handler):
+    def __init__(self, name: str):
+        self.name = name
+
+    def exists(self, name: str):
+        return name == self.name
+
+    def infolist(self) -> List[MemberInfo]:
+        return [MemberInfo(filename=self.name)]
+
+    def list_files(self, subPath: str) -> List[str]:
+        return [self.name]
+
+
+class GzipHandler(SimpleHandler):
     def __init__(self, path: str):
         self.path = path
         name, ext = os.path.splitext(os.path.basename(path))
         ext = ext.lower()
         if ext == ".gz":
-            self.name = name
+            # self.name = name
+            pass
         elif ext == ".adz":
-            self.name = name + ".adf"
+            name = name + ".adf"
         elif ext == ".roz":
-            self.name = name + ".rom"
+            name = name + ".rom"
         else:
             raise Exception(
                 "Unexpected extension {} in GzipHandler".format(ext)
             )
+        super().__init__(name)
 
-    def exists(self, name):
-        return name == self.name
-
-    # FIXME: infolist
-
-    def list_files(self, sub_path) -> List[str]:
-        return [self.name]
-
-    def open(self, name):
+    def open(self, name: str) -> ByteStream:
         if name != self.name:
-            raise Exception("File not found")
-        return gzip.open(self.path, "rb")
-
-    def read(self, name):
-        if name != self.name:
-            raise Exception("File not found")
-        return gzip.open(self.path, "rb").read()
+            raise LookupError("File not found")
+        # read(n: int = -1) vs read(size: Optional[int])
+        return cast(ByteStream, gzip.open(self.path, "rb"))
 
 
-class XzHandler(object):
+class XzHandler(SimpleHandler):
     def __init__(self, path: str):
         self.path = path
         name, ext = os.path.splitext(os.path.basename(path))
         ext = ext.lower()
         if ext == ".xz":
-            self.name = name
+            pass
         else:
             raise Exception("Unexpected extension {} in XzHandler".format(ext))
+        super().__init__(name)
 
-    def exists(self, name):
-        return name == self.name
-
-    # FIXME: infolist
-
-    def list_files(self, sub_path) -> List[str]:
-        return [self.name]
-
-    def open(self, name):
+    def open(self, name: str) -> ByteStream:
         if name != self.name:
             raise Exception("File not found")
-        return lzma.open(self.path, "rb")
-
-    def read(self, name):
-        if name != self.name:
-            raise Exception("File not found")
-        return lzma.open(self.path, "rb").read()
+        # read(n: int = -1) vs read(size: Optional[int])
+        return cast(ByteStream, lzma.open(self.path, "rb"))
 
 
 # class SevenZipHandler(object):
@@ -165,12 +194,12 @@ class XzHandler(object):
 #         return self.zip.read(name)
 
 
-class LhaHandler(object):
-    def __init__(self, path):
+class LhaHandler(Handler):
+    def __init__(self, path: str):
         self.path = path
         self._lhafile = LhaFile(self.path, "r")
 
-    def decode_name(self, name):
+    def decode_name(self, name: str):
         # FIXME: a little hack here, LhaFile uses os.sep
         # as path separator, normalizing to /
         name = name.replace(os.sep, "/")
@@ -180,7 +209,7 @@ class LhaHandler(object):
         name = name.replace("/", os.sep)
         return name
 
-    def encode_name(self, name):
+    def encode_name(self, name: str) -> str:
         name = name.replace("\\", "/")
         name = name.replace("%5c", "\\")
         name = name.replace("%25", "%")
@@ -189,7 +218,7 @@ class LhaHandler(object):
         name = name.replace("/", os.sep)
         return name
 
-    def exists(self, name):
+    def exists(self, name: str):
         # FIXME: Maybe look up in NameToInfo instead for quicker lookups
         name = self.encode_name(name)
         items = self._lhafile.infolist()
@@ -206,25 +235,25 @@ class LhaHandler(object):
             # consistency with the ZipFile module... maybe. Alternatively,
             # decode zipfile comments as ISO-8859-1 instead...
             comment = comment.encode("ISO-8859-1")
-        return ArchiveFileInfo(
+        return MemberInfo(
             filename=info.filename,
             file_size=info.file_size,
             comment=comment,
         )
 
-    def getinfo(self, name):
+    def getinfo(self, name: str):
         # FIXME: Should instead add getinfo to LhaFile...
         info = self._lhafile.NameToInfo[self.encode_name(name)]
         return self._formatinfo(info)
 
-    def infolist(self):
-        result = []
+    def infolist(self) -> List[MemberInfo]:
+        result: List[MemberInfo] = []
         for info in self._lhafile.infolist():
             result.append(self._formatinfo(info))
         return result
 
-    def list_files(self, sub_path) -> List[str]:
-        if sub_path:
+    def list_files(self, subPath: str) -> List[str]:
+        if subPath:
             return []
         result = []
         for name in self._lhafile.namelist():
@@ -233,27 +262,35 @@ class LhaHandler(object):
             result.append(self.decode_name(name))
         return result
 
-    def open(self, name):
+    def open(self, name) -> ByteStream:
         # LhaFile does not have open method
         data = self._lhafile.read(self.encode_name(name))
         return io.BytesIO(data)
 
 
-class NullHandler(object):
-    def __init__(self, path):
+class NullHandler(Handler):
+    def __init__(self, path: str):
         self.path = path
 
-    def list_files(self, _) -> List[str]:
+    def exists(self, name: str):
+        return False
+
+    def infolist(self) -> List[MemberInfo]:
         return []
 
-    def open(self, path):
-        return filter_open(path)
+    def list_files(self, subPath: str) -> List[str]:
+        return []
+
+    def open(self, name: str) -> ByteStream:
+        return filter_open(name)
 
 
-def filter_open(path, stream=None):
+def filter_open(path: str, stream: Optional[ByteStream] = None) -> ByteStream:
     if stream is None:
         stream = open(path.rsplit("#?", 1)[0], "rb")
     if "#?" in path:
+        # FIXME: Is there a nicer way to do this than doing these ugly
+        # casts?
         if path.endswith("#?Filter=Skip(16)"):
             return SkipFilter(stream, 16)
         elif path.endswith("#?Filter=Skip(128)"):
@@ -269,14 +306,22 @@ def filter_open(path, stream=None):
     return stream
 
 
+from typing import Protocol
+
+
+class SupportsClose(Protocol):
+    def close(self) -> None:
+        ...
+
+
 class SkipFilter:
-    def __init__(self, stream, count):
+    def __init__(self, stream: ByteStream, count: int):
         print("[ARCHIVE] Skip({}) filter for".format(count), stream)
         self.stream = stream
         self.count = count
         self.strip_left = count
 
-    def read(self, n=-1):
+    def read(self, n: int = -1) -> bytes:
         if self.strip_left:
             data = self.stream.read(self.strip_left)
             if len(data) == 0:
@@ -290,11 +335,11 @@ class SkipFilter:
 
 
 class ByteSwapWordsFilter:
-    def __init__(self, stream):
+    def __init__(self, stream: ByteStream):
         print("[ARCHIVE] ByteSwapWords filter for", stream)
         self.stream = stream
 
-    def read(self, n=-1):
+    def read(self, n: int = -1):
         data = self.stream.read(n)
         # FIXME: Support odd length reads
         assert len(data) % 2 == 0
@@ -314,15 +359,15 @@ class Archive(object):
 
     def __init__(self, path: str):
         self.path, self.sub_path = self.split_path(path)
-        self._handler = None
+        self._handler: Optional[Handler] = None
 
-    def join(self, base, *args):
+    def join(self, base: str, *args: str) -> str:
         return os.path.join(base, *args)
 
-    def dirname(self, path):
+    def dirname(self, path: str) -> str:
         return os.path.dirname(path)
 
-    def split_path(self, path) -> Tuple[str, str]:
+    def split_path(self, path: str) -> Tuple[str, str]:
         print("[ARCHIVE] Split path", path)
         if "#/" in path:
             parts = path.rsplit("#/", 1)
@@ -334,7 +379,7 @@ class Archive(object):
 
         parts = path.replace("\\", "/").split("/")
         for i, part in enumerate(parts):
-            n, ext = os.path.splitext(part)
+            _, ext = os.path.splitext(part)
             ext = ext.lower()
             if ext in archive_extensions:
                 # FIXME: should also check that it isn't a dir
@@ -343,11 +388,11 @@ class Archive(object):
                 return path, sub_path
         return path, ""
 
-    def get_handler(self):
+    def get_handler(self) -> Handler:
         if self._handler is not None:
             return self._handler
         print("[ARCHIVE] get_handler", self.path)
-        name, ext = os.path.splitext(self.path)
+        _, ext = os.path.splitext(self.path)
         ext = ext.lower()
         # if ext == ".7z" and SevenZipFile is not None:
         #     self._handler = SevenZipHandler(self.path)
@@ -372,14 +417,14 @@ class Archive(object):
         return self._handler
 
     def list_files(self) -> List[str]:
-        result = []
+        result: List[str] = []
         print("[ARCHIVE]", self.get_handler())
         for item in self.get_handler().list_files(self.sub_path):
             # result.append(os.path.join(self.path, item))
             result.append(self.path + "#/" + item)
         return result
 
-    def exists(self, path):
+    def exists(self, path: str):
         path, sub_path = self.split_path(path)
         # print(path, self.path)
         assert path == self.path
@@ -391,7 +436,7 @@ class Archive(object):
             sub_path = sub_path.rsplit("#?", 1)[0]
         return self.get_handler().exists(sub_path)
 
-    def getinfo(self, path):
+    def getinfo(self, path: str):
         path, sub_path = self.split_path(path)
         # print(path, self.path)
         assert path == self.path
@@ -406,7 +451,7 @@ class Archive(object):
     def infolist(self):
         return self.get_handler().infolist()
 
-    def open(self, path):
+    def open(self, path: str) -> ByteStream:
         print("[Archive] Open", repr(path))
         archive_path = path
         path, sub_path = self.split_path(path)
@@ -421,7 +466,7 @@ class Archive(object):
         stream.archive_path = archive_path
         return stream
 
-    def copy(self, path, dest):
+    def copy(self, path: str, dest: str):
         ifo = self.open(path)
         with open(dest, "wb") as ofo:
             while True:

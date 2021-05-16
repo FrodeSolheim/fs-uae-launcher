@@ -1,11 +1,16 @@
+from typing import Optional
+
 import fsui
+from fswidgets.parentstack import ParentStack
+from fswidgets.widget import Widget
 from launcher.fswidgets2.flexlayout import FlexLayout
-from launcher.fswidgets2.parentstack import ParentStack
 from launcher.fswidgets2.style import Style
 
 
 class FlexContainer(fsui.Panel):
-    def __init__(self, parent=None, *, style=None):
+    def __init__(
+        self, parent: Optional[Widget] = None, *, style: Optional[Style] = None
+    ):
         self.style = Style({"flexDirection": "row"})
         if style is not None:
             self.style.update(style)

@@ -56,9 +56,9 @@ class ColorSettingIndicator(Panel):
         self.on_setting(self.option, get_settings(self).get(self.option))
         get_settings(self).add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         get_settings(self).remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_setting(self, option, value):
         if option == self.option:
@@ -157,9 +157,9 @@ class ColorTextField(TextField):
         self.set_min_width(100)
         get_settings(self).add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         get_settings(self).remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_setting(self, option, value):
         if option == self.option:

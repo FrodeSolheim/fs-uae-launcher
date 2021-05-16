@@ -259,12 +259,12 @@ class LauncherWindow(WindowWithTabs):
             self.check_for_update_once()
         self.implicit_config_handler = ImplicitConfigHandler(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         # FIXME: Is this being run?
         print("LauncherWindow.on_destroy")
         LauncherSignal.remove_listener("scan_done", self)
         LauncherSignal.remove_listener("setting", self)
-        super().on_destroy()
+        super().onDestroy()
 
     checked_for_update = False
 

@@ -1,14 +1,24 @@
-from fsui.qt.qt import QWidget
+from typing import Any, Optional
+from fswidgets.qt.widgets import QWidget
 
 
-# noinspection PyPep8Naming
-def QParent(parent, window=False):
+# FIXME: Using Any right now to avoid import cycles
+
+def QParent(parent: Any, window: "Optional[Any]" = False, forceRealParent: bool=False) -> Optional[QWidget]:
     # print(f"\n\n\nQParent parent={parent}")
     if parent is None:
         # print("none")
         return None
     # FIXME: Better way
     from fsui.common.group import Group
+
+    if not forceRealParent:
+        # if hasattr(parent, "qcontainer") and parent.qcontainer is not None:
+        #     return parent.qcontainer
+
+        if hasattr(parent, "container") and parent.container is not None:
+            return parent.container.qwidget
+
 
     while isinstance(parent, Group):
         parent = parent.parent()
@@ -29,3 +39,6 @@ def QParent(parent, window=False):
     # if hasattr(parent, "_qwidget"):
     #     return parent._qwidget
     raise Exception("Could not find QParent")
+
+
+# from fswidgets.widget import Widget

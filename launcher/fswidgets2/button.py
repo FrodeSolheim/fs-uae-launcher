@@ -1,6 +1,6 @@
 import fsui
 from fscore.observable import Disposer, isObservable
-from launcher.fswidgets2.parentstack import ParentStack
+from fswidgets.parentstack import ParentStack
 from launcher.fswidgets2.style import Style
 
 
@@ -40,9 +40,6 @@ class Button(fsui.Button):
     def onEnableNext(self, value):
         print("onEnableNext", value)
         self.set_enabled(bool(value))
-
-    def isEnabled(self) -> bool:
-        return self.is_enabled()
 
     def get_min_height(self, width):
         # FIXME: Default height if nothing else is specified. Implement via

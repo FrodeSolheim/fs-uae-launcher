@@ -6,7 +6,7 @@ import sys
 from io import BytesIO
 
 # noinspection PyUnresolvedReferences
-from typing import Dict, List, Optional
+from typing import BinaryIO, Dict, List, Optional, Union
 
 B_SIZE = 512
 B_COUNT = 880 * 2
@@ -73,7 +73,7 @@ class Block(object):
 
 class FileInfo(object):
     def __init__(self):
-        self.block_list = []
+        self.block_list: List[int] = []
         self.header_block = -1
         self.name = ""
         self.path = ""
@@ -88,18 +88,20 @@ class ADFFile(object):
     INTL_ONLY_FLAG = 2
     DIRC_AND_INTL_FLAG = 4
 
-    def __init__(self, stream_or_data_or_file):
-        if hasattr(stream_or_data_or_file, "read"):
-            data = stream_or_data_or_file.read()
-        elif len(stream_or_data_or_file) == B_SIZE * B_COUNT:
-            data = stream_or_data_or_file
-        else:
+    def __init__(self, stream_or_data_or_file: Union[bytes, BinaryIO, str]):
+        data: bytes = b""
+        if isinstance(stream_or_data_or_file, str):
             with open(stream_or_data_or_file, "rb") as f:
                 data = f.read()
+        elif isinstance(stream_or_data_or_file, bytes):
+            assert len(stream_or_data_or_file) == B_SIZE * B_COUNT
+            data = stream_or_data_or_file
+        else:
+            data = stream_or_data_or_file.read()
         assert isinstance(data, bytes)
         # print(len(data))
         assert len(data) == B_SIZE * B_COUNT
-        self.blocks = []  # type: List[Block]
+        self.blocks: List[Block] = []
         for i in range(0, B_SIZE * B_COUNT, B_SIZE):
             self.blocks.append(Block(data[i : i + B_SIZE]))
         assert len(self.blocks) == B_COUNT
@@ -107,10 +109,10 @@ class ADFFile(object):
         self.dos = False
         self.ofs = False
         self.ffs = False
-        self.warnings = []  # type: List[str]
-        self.file_map = {}  # type: Dict[str, FileInfo]
+        self.warnings: List[str] = []
+        self.file_map: Dict[str, FileInfo] = {}
         self.root_block_number = 880
-        self.bitmap_pages = []
+        self.bitmap_pages: List[int] = []
         self._parse()
 
     def root_block(self) -> Block:
@@ -123,7 +125,7 @@ class ADFFile(object):
         else:
             return
         flags = b.ubyte(3)
-        self.ffs = flags & self.FFS_FLAG
+        self.ffs = flags & self.FFS_FLAG == self.FFS_FLAG
         self.ofs = not self.ffs
 
         self.root_block_number = b.ulong(8)
@@ -412,9 +414,7 @@ class ADFFile(object):
 
         for i, bn in enumerate(file_blocks_2):
             self.block_usage[bn].append(
-                "data block #{0} for file {1}".format(
-                    i + 1, file_info.path
-                )
+                "data block #{0} for file {1}".format(i + 1, file_info.path)
             )
 
     def _parse_directory(self, path: str, block_number: int) -> None:

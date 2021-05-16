@@ -1,5 +1,5 @@
 from .FSGSDirectories import FSGSDirectories
 
 
-def fsgs_data_dir():
+def fsgs_data_dir() -> str:
     return FSGSDirectories.get_data_dir()

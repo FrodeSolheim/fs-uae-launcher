@@ -1,3 +1,6 @@
+from typing import Any, Dict, List
+
+from fsgamesys.amiga.amigaconstants import AmigaConstants
 from fsgamesys.amiga.roms import (
     A500_KICKSTARTS,
     A500P_KICKSTARTS,
@@ -13,12 +16,10 @@ from fsgamesys.amiga.roms import (
     CDTV_KICKSTARTS,
 )
 
-NULL_CHECKSUM = "0000000000000000000000000000000000000000"
-
 
 class Amiga(object):
     # FIXME: Setting fake checksum for now
-    INTERNAL_ROM_SHA1 = NULL_CHECKSUM
+    INTERNAL_ROM_SHA1 = AmigaConstants.NULL_CHECKSUM
 
     MAX_FLOPPY_DRIVES = 4
     MAX_FLOPPY_IMAGES = 20
@@ -26,7 +27,9 @@ class Amiga(object):
     MAX_CDROM_IMAGES = 20
     MAX_HARD_DRIVES = 4
 
-    models = [
+    # Bailing out with Any here, not very nice; should rewrite this thing or
+    # get rid of the Amiga class altogether
+    models: List[Dict[str, Any]] = [
         {
             "id": "A1000",
             "title": "A1000",
@@ -220,15 +223,15 @@ class Amiga(object):
     models_config = [model["id"] for model in models]
 
     @classmethod
-    def is_cd_based(cls, config):
+    def is_cd_based(cls, config: Dict[str, str]):
         return cls.get_current_config(config)["cd_based"]
 
     @classmethod
-    def get_current_config(cls, config):
-        return cls.get_model_config(config.get("amiga_model"))
+    def get_current_config(cls, config: Dict[str, str]):
+        return cls.get_model_config(config.get("amiga_model", ""))
 
     @classmethod
-    def get_model_config(cls, model):
+    def get_model_config(cls, model: str) -> Dict[str, Any]:
         model = model.upper()
         if not model:
             model = "A500"

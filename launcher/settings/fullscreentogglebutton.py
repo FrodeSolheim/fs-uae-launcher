@@ -24,9 +24,9 @@ class FullscreenToggleButtonBase:
         else:
             app.settings["fullscreen"] = "1"
 
-    def on_destroy(self):
+    def onDestroy(self):
         LauncherSettings.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_setting(self, key, value, initial=False):
         print("on_setting", key, value, initial)

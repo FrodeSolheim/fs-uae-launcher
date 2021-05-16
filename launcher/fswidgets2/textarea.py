@@ -1,6 +1,6 @@
 import fsui
 from fsui import Widget
-from launcher.fswidgets2.parentstack import ParentStack
+from fswidgets.parentstack import ParentStack
 from launcher.fswidgets2.style import Style
 
 
@@ -19,7 +19,7 @@ class TextArea(fsui.TextArea):
 
         parent.layout.add(self)
 
-    def appendLine(self, text):
+    def appendLine(self, text: str):
         self.append_text(text.rstrip("\n"))
         # else:
         #     self.appendText(f"{text}\n")

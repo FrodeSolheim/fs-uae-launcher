@@ -1,3 +1,4 @@
+from fswidgets.parentstack import ParentStack
 from launcher.fswidgets2.button import Button
 from launcher.fswidgets2.flexcontainer import (
     FlexContainer,
@@ -5,7 +6,6 @@ from launcher.fswidgets2.flexcontainer import (
     VerticalFlexContainer,
 )
 from launcher.fswidgets2.flexlayout import FlexLayout
-from launcher.fswidgets2.parentstack import ParentStack
 from launcher.fswidgets2.window import Window
 from launcher.i18n import gettext
 from system.classes.windowresizehandle import WindowResizeHandle

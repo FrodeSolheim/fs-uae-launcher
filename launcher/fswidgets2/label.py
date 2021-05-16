@@ -1,6 +1,6 @@
 import fsui
 from fscore.observable import Disposer, isObservable
-from launcher.fswidgets2.parentstack import ParentStack
+from fswidgets.parentstack import ParentStack
 from launcher.fswidgets2.style import Style
 
 # from weakref import WeakMethod

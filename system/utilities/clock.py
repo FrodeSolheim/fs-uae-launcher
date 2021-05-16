@@ -4,7 +4,7 @@ import math
 from fsui import Font, Label
 from fsui.qt import QBrush, QColor, QPainter, QPen, QRect, Qt, QWidget
 from fsui.qt.qparent import QParent
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 from system.classes.window import Window
 from system.classes.windowresizehandle import WindowResizeHandle
 

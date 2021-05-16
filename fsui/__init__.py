@@ -6,7 +6,7 @@ from fsui.qt import *
 from fsui.qt.adapter import Adapter
 from fsui.qt.Application import Application
 from fsui.qt.button import Button
-from fsui.qt.checkbox import CheckBox, HeadingCheckBox
+from fswidgets.checkbox import CheckBox
 from fsui.qt.choice import Choice, ItemChoice
 from fsui.qt.color import Color
 from fsui.qt.combobox import ComboBox
@@ -41,8 +41,8 @@ from fsui.qt.textarea import TextArea
 from fsui.qt.textfield import PasswordField, TextField
 from fsui.qt.timer import IntervalTimer
 from fsui.qt.verticalitemview import VerticalItemView
-from fsui.qt.widget import Widget
 from fsui.qt.window import Window
+from fswidgets.widget import Widget
 
 default_window_parent = []
 default_window_center = []

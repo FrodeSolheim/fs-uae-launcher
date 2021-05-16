@@ -5,7 +5,7 @@ import subprocess
 import traceback
 from configparser import ConfigParser, NoSectionError
 from operator import attrgetter
-from typing import Dict
+from typing import Dict, Optional
 
 import fsboot
 from fscore.system import System
@@ -482,7 +482,7 @@ class PluginManager:
             return None
         return plugin.library_path(name)
 
-    def find_file_by_sha1(self, sha1):
+    def find_file_by_sha1(self, sha1: str) -> Optional[str]:
         try:
             plugin = self.provides()["sha1:" + sha1]
         except KeyError:

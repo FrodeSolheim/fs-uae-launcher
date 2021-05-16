@@ -1,5 +1,5 @@
-from fsgamesys.platforms.zxspectrum.zxspectrum import ZXSpectrum
 from fsgamesys.options.option import Option
+from fsgamesys.platforms.zxspectrum.zxspectrum import ZXSpectrum
 
 
 class SpectrumHelper:

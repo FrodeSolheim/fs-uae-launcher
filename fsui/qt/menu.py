@@ -1,5 +1,8 @@
 import weakref
+from typing import Any, Optional, Type
 
+from fscore.types import SimpleCallable
+from fscore.deprecated import deprecated
 from fsui.qt.qt import QCursor, QMenu, QPoint
 
 
@@ -19,8 +22,8 @@ class AutoCloseMenu(QMenu):
 
 
 class Menu:
-    def __init__(self, implementation=QMenu):
-        self.qmenu = implementation()
+    def __init__(self, implementation: Type[QMenu] = QMenu):
+        self.qmenu: QMenu = implementation()
         # self._menu = wx.Menu()
         # self._ids = []
         # #self._functions = []
@@ -32,7 +35,12 @@ class Menu:
     def close(self):
         self.qmenu.close()
 
-    def add_item(self, text, function=None, item_id=-1):
+    def add_item(
+        self,
+        text: str,
+        function: Optional[SimpleCallable] = None,
+        item_id: int = -1,
+    ):
         text = text.replace("&", "&&")
 
         action = self.qmenu.addAction(text)
@@ -40,9 +48,10 @@ class Menu:
             # Will this case references problems?
             # (Closure holding a reference to the function)
             def triggered_wrapper(checked):
-                function()
+                if function is not None:
+                    function()
 
-            action.triggered.connect(triggered_wrapper)
+            action.triggered.connect(triggered_wrapper)  # type: ignore
 
         # if item_id == -1:
         #     item_id = wx.NewId()
@@ -57,18 +66,24 @@ class Menu:
         #     wx.CallAfter(function)
         # self._menu.Bind(wx.EVT_MENU, function_wrapper, id=item_id)
 
-    def add_about_item(self, text, function):
+    def add_about_item(self, text: str, function: SimpleCallable):
         self.add_item(text, function)
 
-    def add_preferences_item(self, text, function):
+    def add_preferences_item(self, text: str, function: SimpleCallable):
         self.add_item(text, function)
 
     def add_separator(self):
         self.qmenu.addSeparator()
 
-    def set_parent(self, parent):
+    # FIXME: Using Any here to avoid circular import dependency on Widget
+    # FIXME: Maybe remove Widget.popup_menu and invert the coupling
+    def setParent(self, parent: Any):
         self._parent = weakref.ref(parent)
         self.qmenu._parent = weakref.ref(parent)
+
+    @deprecated
+    def set_parent(self, parent: Any):
+        self.setParent(parent)
 
 
 class PopupMenu(Menu):

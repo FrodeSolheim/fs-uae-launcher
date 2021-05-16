@@ -23,9 +23,9 @@ class ApplicationRunner:
         QFontDatabase.addApplicationFontFromData(stream.read())
 
         font = Font("Roboto", 14)
-        font.qfont().setPointSizeF(10.5)
-        font.qfont().setHintingPreference(QFont.PreferNoHinting)
-        self._app.qapplication.setFont(font.qfont())
+        font.qfont.setPointSizeF(10.5)
+        font.qfont.setHintingPreference(QFont.PreferNoHinting)
+        self._app.qapplication.setFont(font.qfont)
 
     def run(self, application):
         # FIXME: Find a nicer way to make PyQT cooperate with Ctrl+C?

@@ -12,7 +12,7 @@ from fsbc.paths import Paths
 from fsbc.task import TaskFailure, current_task
 from fsbc.util import is_sha1
 from fscore.resources import Resources
-from fsgamesys.amiga.adffileextractor import ADFFileExtractor
+from fsgamesys.amiga.adffile import ADFFile
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.amiga.amigaconstants import AmigaConstants
 from fsgamesys.amiga.configwriter import ConfigWriter
@@ -647,7 +647,7 @@ class LaunchHandler(object):
             dst_file = os.path.join(dir_path, amiga_rel_path)
             print(repr(dst_file))
             if name.endswith("/"):
-                os.makedirs(Paths.str(dst_file))
+                os.makedirs(dst_file)
                 continue
             if not os.path.exists(os.path.dirname(dst_file)):
                 os.makedirs(os.path.dirname(dst_file))
@@ -888,10 +888,9 @@ class LaunchHandler(object):
 
     # COPIED TO installfiles
     @staticmethod
-    def extract_setpatch_39_6(wb_data, dest):
-        extractor = ADFFileExtractor(wb_data)
+    def extract_setpatch_39_6(wb_data: bytes, dest):
         try:
-            setpatch_data = extractor.extract_file("C/SetPatch")
+            setpatch_data = ADFFile(wb_data).open("C/SetPatch").read()
         except KeyError:
             return False
         s = hashlib.sha1()

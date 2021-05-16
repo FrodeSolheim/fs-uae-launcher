@@ -108,10 +108,10 @@ class MediaListGroup(fsui.Panel):
         config = get_config(self)
         config.add_listener(self)
 
-    def on_destroy(self):
+    def onDestroy(self):
         config = get_config(self)
         config.remove_listener(self)
-        super().on_destroy()
+        super().onDestroy()
 
     def on_config(self, key, _):
         if key.startswith(self.file_key_prefix):
@@ -240,5 +240,5 @@ class SaveDiskCheckBox(fsui.CheckBox):
         config = get_config(self)
         config.set(Option.SAVE_DISK, "" if self.checked() else "0")
 
-    def on_save_disk_config(self, value):
-        self.check(value != "0")
+    def on_save_disk_config(self, value: str):
+        self.setChecked(value != "0")

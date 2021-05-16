@@ -17,5 +17,5 @@ class VideoSyncCheckBox(fsui.CheckBox):
     def on_changed(self):
         LauncherSettings.set("video_sync", "1" if self.checked() else "")
 
-    def on_video_sync_setting(self, value):
-        self.check(value == "1")
+    def on_video_sync_setting(self, value: str):
+        self.setChecked(value == "1")

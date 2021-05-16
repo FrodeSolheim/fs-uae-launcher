@@ -17,7 +17,7 @@ class Python:
 from fsui.context import get_theme
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QFontMetrics, QPushButton, QSignal
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 
 class ConsoleWidget(Widget):

@@ -3,7 +3,7 @@ from fsui.decorators import deprecated
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QFontMetrics, QLineEdit
 from fsui.qt.signal import Signal, SignalWrapper
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 
 class TextField(Widget):

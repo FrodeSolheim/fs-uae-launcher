@@ -3,7 +3,7 @@ from PyQt5.QtWebKitWidgets import QWebView
 
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QUrl
-from fsui.qt.widget import Widget
+from fswidgets.widget import Widget
 
 # from PyQt5.QtWebEngineWidgets import QWebEngineView
 
