@@ -9,7 +9,7 @@ class LauncherSettings2:
 
     @property
     def checkForUpdates(self) -> bool:
-        return self.get("check_for_updates") == "0"
+        return self.get("check_for_updates") != "0"
 
     def get(self, key: str) -> str:
         return LauncherSettings.get(key)
