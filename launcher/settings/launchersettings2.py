@@ -17,6 +17,20 @@ class LauncherSettings2:
     def set(self, key: str, value: str):
         LauncherSettings.set(key, value)
 
+    def getLauncherBottomSplit(self):
+        try:
+            split = int(self.get("launcher_window_bottom_split"))
+        except ValueError:
+            return None
+        return split
+
+    def getLauncherMainSplit(self):
+        try:
+            split = int(self.get("launcher_window_main_split"))
+        except ValueError:
+            return None
+        return split
+
     def getLauncherWindowState(self) -> Optional[WindowState]:
         try:
             x = int(self.get("launcher_window_x"))
@@ -32,6 +46,12 @@ class LauncherSettings2:
             )
         else:
             return None
+
+    def setLauncherBottomSplit(self, split: int):
+        self.set("launcher_window_bottom_split", str(split))
+
+    def setLauncherMainSplit(self, split: int):
+        self.set("launcher_window_main_split", str(split))
 
     def setLauncherWindowState(self, windowState: WindowState):
         self.set("launcher_window_x", str(windowState.x))

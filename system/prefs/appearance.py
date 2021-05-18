@@ -171,7 +171,7 @@ class ColorTextField(TextField):
         get_settings(self).set(self.option, value)
 
 
-class ColorSettingGroup(Group):
+class ColorSettingGroup(Panel):
     def __init__(self, parent, option):
         super().__init__(parent)
         self.option = option

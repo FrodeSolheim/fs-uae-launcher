@@ -160,10 +160,10 @@ class FileScannerWindow(Window):
         Scanner.stop_flag = True
 
 
-class KickstartStatusGroup(fsui.Group):
+class KickstartStatusGroup(fsui.Panel):
     def __init__(self, parent: Widget, title: str, model):
         self.model = model
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 
         self.ok_image = fsui.Image("launcher:/data/ok_emblem.png")

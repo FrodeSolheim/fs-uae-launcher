@@ -157,8 +157,16 @@ class Launcher2BottomPanel(Panel):
         # self.layout.add_spacer(5)
 
         self.screenshotspanel = ScreenshotsPanel(self)
-        self.layout.add(self.screenshotspanel, fill=True)
+        self.layout.add(self.screenshotspanel, expand=True, fill=True)
 
         self.layout.add_spacer(10)
 
-        self.set_min_height(200)
+        # self.set_min_height(200)
+
+        # Make sure that the height cannot collapse below the height of the
+        # Launch button bar + associated padding.
+        self.set_min_height(self.launchpanel.get_min_height(0) + 10 + 10)
+
+    def getPreferredInitialHeight(self) -> int:
+        # FIXME: Remove magic numbers
+        return self.get_min_height(0) + 10 + 150 + 10

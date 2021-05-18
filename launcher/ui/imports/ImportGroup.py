@@ -4,11 +4,11 @@ from ...i18n import gettext
 from .ImportDialog import ImportDialog
 
 
-class ImportGroup(fsui.Group):
+class ImportGroup(fsui.Panel):
     AMIGA_FOREVER = 1
 
     def __init__(self, parent, import_type=0):
-        fsui.Group.__init__(self, parent)
+        super().__init__(self, parent)
         self.type = import_type
         self.path = ""
 

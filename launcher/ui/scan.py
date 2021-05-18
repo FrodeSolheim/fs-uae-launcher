@@ -168,10 +168,10 @@ class ScanDialog(fsui.Window):
         # self.close_button.set_enabled()
 
 
-class KickstartStatusGroup(fsui.Group):
+class KickstartStatusGroup(fsui.Panel):
     def __init__(self, parent, title, model):
         self.model = model
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 
         self.ok_image = fsui.Image("launcher:/data/ok_emblem.png")
@@ -202,9 +202,9 @@ class KickstartStatusGroup(fsui.Group):
         self.icon.set_image(self.na_image)
 
 
-class ScanKickstartGroup(fsui.Group):
+class ScanKickstartGroup(fsui.Panel):
     def __init__(self, parent):
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
 
         self.layout = fsui.VerticalLayout()
         label = fsui.HeadingLabel(
@@ -272,9 +272,9 @@ class ScanKickstartGroup(fsui.Group):
         layout.add(group, fill=True)
 
 
-class ScanProgressGroup(fsui.Group):
+class ScanProgressGroup(fsui.Panel):
     def __init__(self, parent):
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
         # self.layout.padding_left = 10
         # self.layout.padding_top = 10

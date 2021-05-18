@@ -42,7 +42,7 @@ class OptionUI(object):
         thin=False,
         warnings=None,
     ):
-        group = fsui.Group(parent)
+        group = fsui.Panel(parent)
         group.layout = fsui.HorizontalLayout()
         if thin:
             thin_layout = fsui.VerticalLayout()
@@ -180,10 +180,11 @@ class OptionUI(object):
             else:
                 group.layout.add_spacer(0, expand=True)
                 group.layout.add(choice)
-            group.widget = choice
+            # group.widget = choice
 
         if help_button:
-            group.help_button = OptionHelpButton(parent, name)
+            # group.help_button = OptionHelpButton(parent, name)
+            group.help_button = OptionHelpButton(group, name)
             # option_url = "https://fs-uae.net/docs/options/" + name.replace(
             #     "_", "-"
             # )

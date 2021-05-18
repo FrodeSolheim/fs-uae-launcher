@@ -12,7 +12,7 @@ from launcher.ui2.startbutton import StartButton
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
 
-class LaunchGroup(fsui.Group):
+class LaunchGroup(fsui.Panel):
     def __init__(self, parent, gsc):
         super().__init__(parent)
         self.layout = fsui.VerticalLayout()

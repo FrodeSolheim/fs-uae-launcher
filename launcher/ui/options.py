@@ -73,7 +73,6 @@ def create_option_group(
     platforms=None,
     use_label=True,
 ):
-    # group = fsui.Group(parent)
     group = OptionPanel(parent, platforms)
     group.layout = fsui.HorizontalLayout()
 

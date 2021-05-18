@@ -48,7 +48,16 @@ class Launcher2LeftPanel(Panel):
         # panel.set_background_color(Color(0xB8B8B8))
         # self.layout.add(panel, fill=True)
 
+    def get_min_width(self):
+        minWidth = super().get_min_width()
+        print("Launcher2LeftPanel.get_min_width (size) =", minWidth)
+        return minWidth
+
     def __on_running_config(self, event):
         isrunning = bool(event.value)
         if self.enabled() == isrunning:
             self.set_enabled(not isrunning)
+
+    def on_resize(self):
+        super().on_resize()
+        print("Launcher2LeftPanel.on_resize, size is now", self.getSize())

@@ -1,3 +1,4 @@
+from fswidgets.splitter import Splitter
 from typing import Optional
 
 from fsui import HorizontalLayout
@@ -8,22 +9,30 @@ from launcher.ui2.launcher2leftpanel import Launcher2LeftPanel
 from launcher.ui2.launcher2rightpanel import Launcher2RightPanel
 
 
-class Launcher2Panel(Panel):
+# class Launcher2Panel(Panel):
+class Launcher2Panel(Splitter):
     def __init__(self, parent: Optional[Widget] = None):
-        parent = parent or ParentStack.top()
-        super().__init__(parent)
-        horilayout = HorizontalLayout()
-        self.layout.add(horilayout, fill=True, expand=True)
+        super().__init__(parent=parent)
+        # horilayout = HorizontalLayout()
+        # self.layout.add(horilayout, fill=True, expand=True)
 
         self.left = Launcher2LeftPanel(self)
+        # self.left.set_min_width(380)
+        self.left.set_min_width(240)
 
-        self.left.set_min_width(420)
         # - 40 for titlebar, - 40 for windows taskbar
         self.set_min_size((1100, 768 - 40 - 40))
 
-        horilayout.add(self.left, fill=True)
+        # horilayout.add(self.left, fill=True)
         self.right = Launcher2RightPanel(self)
-        horilayout.add(self.right, fill=True, expand=True)
+        # horilayout.add(self.right, fill=True, expand=True)
+
+
+        # self.setStretchFactor(0, 0)
+        # self.setStretchFactor(1, 1)
+        # self.setWidgetSize(0, 380)
+        self.setSplitterPosition(self.getDefaultSplitterPosition())
+
 
         # design_test = True
         # if design_test:
@@ -47,3 +56,9 @@ class Launcher2Panel(Panel):
 
         #     self.set_min_size((min_width, min_height))
         #     self.left.set_min_width(360)
+
+    def getDefaultSplitterPosition(self):
+        return 380
+
+    def restoreDefaultSplitterPosition(self):
+        self.setSplitterPosition(self.getDefaultSplitterPosition())

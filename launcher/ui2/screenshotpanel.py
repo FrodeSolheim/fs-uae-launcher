@@ -75,9 +75,10 @@ class ScreenshotPanel(Panel):
         #     x = x + Constants.SCREEN_SIZE[0] + 22
         x = 0
         y = 0
+        width, height = self.getSize()
 
         if self.image is not None:
-            dc.draw_image(self.image, x, y)
+            dc.drawScaledImage(self.image, x, y, width, height)
         # dc.draw_image(self.overlay_image, x - 10, y - 10)
 
     def __on_sha1_config(self, event):
@@ -85,15 +86,19 @@ class ScreenshotPanel(Panel):
             self._sha1 = event.value
             self.update_image()
 
-    def update_image(self):
+    def update_image(self, force: bool = False):
         path = self.get_image_path()
-        if path != self._path:
+        if path != self._path or force:
             self._path = path
 
             # It is important to set is_cover correctly. Different downloaded
             # sizes are used for covers and screenshots.
             is_cover = self.index < 0
 
+            # FIXME: We specify size here, so the loader can use high-quality
+            # resizing and give us a prescaled image. However, if we request
+            # as size > thumbnail size, maybe we should just get the original
+            # size and let fswidgets scale it up when drawing.
             self._request = self.imageLoader.load_image(
                 path,
                 size=self.image_size,
@@ -102,3 +107,8 @@ class ScreenshotPanel(Panel):
             )
             self.image = self.default_image
             self.refresh()
+
+    def on_resize(self):
+        super().on_resize()
+        self.image_size = self.getSize()
+        self.update_image(force=True)

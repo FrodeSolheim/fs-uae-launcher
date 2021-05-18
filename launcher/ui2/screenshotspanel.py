@@ -11,7 +11,7 @@ class ScreenshotsPanel(Panel):
     @constructor
     def __init__(self, parent: Widget):
         super().__init__(parent)
-        self.set_min_height(10 + 150 + 10)
+        # self.set_min_height(10 + 150 + 10)
         # self.imageLoader = ImageLoader()
         # default_image = Image("launcher:/data/screenshot.png")
         # default_image.resize(SCREEN_SIZE)
@@ -28,6 +28,18 @@ class ScreenshotsPanel(Panel):
             )
             panel.setPosition((x, y))
             self.screenshotpanels.append(panel)
+            x += panel.getWidth() + 20
+
+    def on_resize(self):
+        super().on_resize()
+        height = self.getHeight() - 20
+        width = (height * 4) // 3
+        # print((width, height))
+        x = 20
+        y = 10
+        for panel in self.screenshotpanels:
+            # panel.setSize(())
+            panel.setPositionAndSize((x, y), (width, height))
             x += panel.getWidth() + 20
 
     # def onDestroy(self):

@@ -41,10 +41,11 @@ class Launcher2Window(Window):
         self.imageLoader = ImageLoader()
         self.implicitConfigHandler = ImplicitConfigHandler(self)
 
-        self.layout.add(Launcher2Panel(), expand=True, fill=True)
+        # self.layout.add(Launcher2Panel(), expand=True, fill=True)
+        self.panel = Launcher2Panel()
         WindowResizeHandle()
 
-        initialSize = (1280, 760)
+        initialSize = self.getDefaultSize()
         log.debug(f"Setting initial window size to {initialSize}")
         self.setSize(initialSize)
 
@@ -78,8 +79,18 @@ class Launcher2Window(Window):
             if windowState.maximized:
                 self.maximize()
 
+        split = settings.getLauncherBottomSplit()
+        if split is not None:
+            self.panel.right.setSplitterPosition(-split)
+        split = settings.getLauncherMainSplit()
+        if split is not None:
+            self.panel.setSplitterPosition(split)
+
         if settings.checkForUpdates:
             self.checkForUpdates()
+
+    def getDefaultSize(self):
+        return (1280, 720)
 
     @overrides
     def onClose(self):
@@ -108,6 +119,8 @@ class Launcher2Window(Window):
 
         settings = useSettings()
         settings.setLauncherWindowState(self.getWindowState())
+        settings.setLauncherMainSplit(self.panel.getSplitterPosition())
+        settings.setLauncherBottomSplit(-self.panel.right.getSplitterPosition())
 
     @overrides
     def onDestroy(self):
@@ -117,6 +130,15 @@ class Launcher2Window(Window):
     @withExceptionHandler
     def onMenu(self):
         return MainMenu(self)
+
+    # FIXME: Maybe rename to restorePreferredSize and put in TopLevelWidget
+    # + getPreferredSize (new funcion) in Widget (for overriding) and/or maybe
+    # a corresponding setPreferredSize
+    def restoreDefaultSize(self):
+        self.setMaximized(False)
+        self.setSize(self.getDefaultSize())
+        self.panel.restoreDefaultSplitterPosition()
+        self.panel.right.restoreDefaultSplitterPosition()
 
     def checkForUpdates(self):
         def onResult(result):

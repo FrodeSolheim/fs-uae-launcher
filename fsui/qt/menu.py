@@ -22,8 +22,15 @@ class AutoCloseMenu(QMenu):
 
 
 class Menu:
-    def __init__(self, implementation: Type[QMenu] = QMenu):
-        self.qmenu: QMenu = implementation()
+    def __init__(
+        self,
+        implementation: Type[QMenu] = QMenu,
+        qmenu: Optional[QMenu] = None,
+    ):
+        if qmenu is not None:
+            self.qmenu = qmenu
+        else:
+            self.qmenu: QMenu = implementation()
         # self._menu = wx.Menu()
         # self._ids = []
         # #self._functions = []
@@ -34,6 +41,11 @@ class Menu:
 
     def close(self):
         self.qmenu.close()
+
+    def addSubMenu(self, text: str):
+        # self.qmenu.addMenu(text, menu.qmenu)
+        qmenu = self.qmenu.addMenu(text)
+        return Menu(qmenu=qmenu)
 
     def add_item(
         self,
@@ -84,6 +96,9 @@ class Menu:
     @deprecated
     def set_parent(self, parent: Any):
         self.setParent(parent)
+
+    def setTitle(self, title: str):
+        self.qmenu.setTitle(title)
 
 
 class PopupMenu(Menu):

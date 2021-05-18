@@ -290,14 +290,20 @@ class TopLevelWidget(Widget):
         scale = self.qwidget.devicePixelRatioF()
         return round(w * scale), round(h * scale)
 
+    def restoreDefaultSize(self):
+        """Can be implemented by subclasses."""
+        pass
+
     # -------------------------------------------------------------------------
 
     def on_resize(self):
-        maximized = self.isMaximized()
-        if maximized:
-            self.windowBorders = self.windowMaximizedBorders
-        else:
-            self.windowBorders = self.windowNormalBorders
+
+        # maximized = self.isMaximized()
+        # if maximized:
+        #     self.windowBorders = self.windowMaximizedBorders
+        # else:
+        #     self.windowBorders = self.windowNormalBorders
+
         # self.contentMargins.top = self.windowBorders.top + self.windowMargins.top
         # self.contentMargins.right = self.windowBorders.right + self.windowMargins.right
         # self.contentMargins.bottom = self.windowBorders.bottom + self.windowMargins.bottom
@@ -511,6 +517,13 @@ class TopLevelWidget(Widget):
 
     @deprecated
     def set_maximized(self, maximize: bool = True, geometry=None):
+
+        if maximize:
+            self.windowBorders = self.windowMaximizedBorders
+        else:
+            self.windowBorders = self.windowNormalBorders
+
+
         # We must set the size before maximizing, so this isn't done within
         # showMaximized -> ... -> set_initial_size_from_layout -> set_size.
         self.set_initial_size_from_layout()

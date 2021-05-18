@@ -1,9 +1,10 @@
 import fsui
 from fsbc.util import unused
+from fswidgets.panel import Panel
 from launcher.ui.skin import Skin
 
 
-class SettingsHeader(fsui.Group):
+class SettingsHeader(Panel):
     ICON_LEFT = 0
     ICON_RIGHT = 1
 
@@ -11,7 +12,7 @@ class SettingsHeader(fsui.Group):
         self, parent, icon, title, subtitle="", icon_position=ICON_RIGHT
     ):
         unused(subtitle)
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 
         image = icon.image(48)

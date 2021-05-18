@@ -1,8 +1,9 @@
+from fsui.qt.toplevelwidget import TopLevelWidget
 import weakref
 
 from fscore.developermode import DeveloperMode
 from fsgamesys.product import Product
-from fsui import PopupMenu
+from fsui import Menu, PopupMenu
 from fswidgets.widget import Widget
 from launcher.context import useTranslation
 from system.exceptionhandler import exceptionhandler
@@ -38,6 +39,17 @@ from system.wsopen import wsopen
 #     return self._menu
 
 
+# class WindowMenu(Menu):
+#     def __init__(self):
+#         super().__init__()
+#         t = useTranslation()
+#         self.setTitle(t("Window"))
+#         self.add_item(
+#             "Restore default window size",
+#             None,
+#         )
+
+
 class MainMenu(PopupMenu):
     def __init__(self, parent: Widget):
         # # FIXME: parent not needed?
@@ -51,6 +63,12 @@ class MainMenu(PopupMenu):
         #         t("Update Game Database"), self.on_update_game_database
         #     )
         # app_name = "{} Launcher".format(Product.base_name)
+
+        # self.addSubMenu(t("Window"), WindowMenu())
+        windowMenu = self.addSubMenu(t("Window"))
+        windowMenu.add_item("Restore default window size", self.onDefaultWindowSize)
+
+        self.add_separator()
 
         if DeveloperMode.enabled:
             self.add_item(t("New window"), self.__on_new_window)
@@ -115,11 +133,15 @@ class MainMenu(PopupMenu):
         #     self.__on_about,
         # )
 
-    def getWindow(self):
-        return self._parent_ref()
+    def getWindow(self) -> TopLevelWidget:
+        return self._parent_ref().getWindow()
 
     def onCheckForUpdates(self):
         Updater.open(window=self.getWindow())
+
+    def onDefaultWindowSize(self):
+        window = self.getWindow()
+        window.restoreDefaultSize()
 
     def onGameControllers(self):
         Controller.open(window=self.getWindow())

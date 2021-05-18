@@ -52,9 +52,9 @@ joystick_mode_values = ["nothing", "mouse", "joystick"]
 joystick_values = ["none", "mouse", "keyboard"]
 
 
-class PreferredJoysticksGroup(fsui.Group):
+class PreferredJoysticksGroup(fsui.Panel):
     def __init__(self, parent):
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
         # self.layout.padding_left = 10
         # self.layout.padding_right = 10
@@ -91,7 +91,7 @@ class PreferredJoysticksGroup(fsui.Group):
         self.layout2.add(selector, fill=True)
 
 
-class PreferredJoystickSelector(fsui.Group):
+class PreferredJoystickSelector(fsui.Panel):
     def __init__(self, parent, index):
         self.index = index
         if index:
@@ -99,7 +99,7 @@ class PreferredJoystickSelector(fsui.Group):
         else:
             self.key = Option.PRIMARY_JOYSTICK
 
-        fsui.Group.__init__(self, parent)
+        super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 
         devices = ["", get_keyboard_title()]

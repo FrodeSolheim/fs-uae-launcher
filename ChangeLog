@@ -1,5 +1,7 @@
 Version 4.0.x:
 
+* Remember splitter position + menu entry to restore default size.
+* Splitters to choose config list and screenshots panel size.
 * Remember window position, size and maximization state.
 * Code refactoring, adding type hints to code (work in progress).
 * User interface got a facelift (work in progress).

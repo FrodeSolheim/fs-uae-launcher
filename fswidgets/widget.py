@@ -45,7 +45,7 @@ class Widget(QObject):
         # self.__qwidget = ref(widget)  # ??
         self.__qwidget: Optional[QWidget] = None
         if qwidget is not None:
-            self.set_qwidget(qwidget)
+            self.setQWidget(qwidget)
 
         from fsui.qt.window import Window
 
@@ -57,6 +57,12 @@ class Widget(QObject):
             self._window = parent._window
         else:
             self._parent: Any = None
+
+        if qwidget is not None and parent is not None:
+            # FIXME: Remove?
+            self.getParent().onQWidgetChildAdded(qwidget)
+        if parent is not None:
+            self.getParent().onChildAdded(self)
 
         self.__window_focused = False
         # self._widget = None
@@ -243,9 +249,15 @@ class Widget(QObject):
     def isVisible(self):
         return self.qwidget.isVisible()
 
+    def onChildAdded(self, widget: "Widget") -> None:
+        pass
+
     def onDestroy(self) -> None:
         pass
         # print("Widget.onDestroy", self)
+
+    def onQWidgetChildAdded(self, qwidget: QWidget):
+        pass
 
     @property
     def qwidget(self) -> QWidget:
@@ -296,6 +308,11 @@ class Widget(QObject):
         self.qwidget.setGeometry(position[0], position[1], size[0], size[1])
         # return self
 
+    def setQWidget(self, qwidget: QWidget):
+        self.__qwidget = qwidget
+        self.qwidget.installEventFilter(self)
+        self.qwidget.destroyed.connect(self.__on_destroyed)  # type: ignore
+
     def setResizeCursor(self):
         # FIXME: self.setCursor(Cursor.RESIZE)?
         self.qwidget.setCursor(Qt.SizeFDiagCursor)
@@ -337,11 +354,6 @@ class Widget(QObject):
     def start_timer(self, interval: int):
         self.__timer_id = self.qwidget.startTimer(interval)
 
-    def set_qwidget(self, widget: QWidget):
-        self.__qwidget = widget
-        self.qwidget.installEventFilter(self)
-        self.qwidget.destroyed.connect(self.__on_destroyed)  # type: ignore
-
     # FIXME: When is this used?
     def refresh(self):
         return self.qwidget.update()
@@ -353,6 +365,9 @@ class Widget(QObject):
     def set_min_height(self, height: int):
         # noinspection PyAttributeOutsideInit
         self.min_height = height
+        # This is important for splitters (based on QSplitter) to work
+        # properly.
+        self.qwidget.setMinimumHeight(height)
 
     def set_min_size(self, size: Size):
         # noinspection PyAttributeOutsideInit
@@ -360,9 +375,17 @@ class Widget(QObject):
         # noinspection PyAttributeOutsideInit
         self.min_height = size[1]
 
+        # This is important for splitters (based on QSplitter) to work
+        # properly.
+        self.qwidget.setMinimumWidth(size[0])
+        self.qwidget.setMinimumHeight(size[1])
+
     def set_min_width(self, width: int):
         # noinspection PyAttributeOutsideInit
         self.min_width = width
+        # This is important for splitters (based on QSplitter) to work
+        # properly.
+        self.qwidget.setMinimumWidth(width)
 
     # -------------------------------------------------------------------------
 
@@ -689,7 +712,7 @@ class Widget(QObject):
 
     @deprecated
     def set_widget(self, widget: QWidget):
-        self.set_qwidget(widget)
+        self.setQWidget(widget)
 
     @deprecated
     def show_or_hide(self, show: bool = True):
