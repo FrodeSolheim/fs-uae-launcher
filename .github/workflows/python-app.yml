@@ -6,11 +6,13 @@ on:
       - master
       - dev
       - stable
+      - testmacosfont
   pull_request:
     branches:
       - master
       - dev
       - stable
+      - testmacosfont
 
 jobs:
 
