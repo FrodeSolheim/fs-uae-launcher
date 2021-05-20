@@ -20,11 +20,11 @@ pillow = "*"
 requests = "*"
 sentry-sdk = "*"
 pywin32-ctypes = "*"
-pyinstaller = "*"
+pyinstaller = "==4.2"
 pefile = "*"
 macholib = "*"
 rx = "*"
 autologging = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "3"
