@@ -178,6 +178,20 @@ jobs:
     - name: Archive
       run: fsbuild/archive
 
+    - name: Build DMG
+      run: fsbuild/dmg-build
+
+    - name: Sign DMG
+      run: fsbuild/dmg-sign
+
+    - name: Notarize DMG
+      run: fsbuild/dmg-notarize
+      env:
+        NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
+        NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}
+        NOTARIZATION_USERNAME: ${{ secrets.MACOS_NOTARIZATION_USERNAME }}
+
+
     - uses: actions/upload-artifact@v2
       with:
         name: macos_x86-64

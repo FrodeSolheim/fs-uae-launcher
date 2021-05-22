@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+. ./PACKAGE.FS
+. fsbuild/system.sh
+
+ARCHIVE=${PACKAGE_NAME_PRETTY}_${PACKAGE_VERSION}_${SYSTEM_OS}_${SYSTEM_ARCH}.dmg
+
+dmgbuild \
+-s fsbuild/dmg-settings.py \
+FS-UAE-Launcher \
+fsbuild/_dist/$ARCHIVE
+
+echo -------------------------------------------------------------------------\
+-------
+echo "[FSBUILD] Created fsbuild/_dist/$ARCHIVE"
