@@ -131,7 +131,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip pipenv
+        python3 -m pip install --upgrade pip pipenv dmgbuild
 
     - name: Run pipenv install
       run: |
