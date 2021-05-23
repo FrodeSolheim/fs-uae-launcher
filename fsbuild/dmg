@@ -45,9 +45,7 @@ itc_provider = os.environ.get("NOTARIZATION_PROVIDER", "")
 
 def macos_dmg_path():
     path = f"fsbuild/_dist/{package_name_pretty}_{package_version}_macOS_{arch}.dmg"
-    if os.path.exists(path):
-        return path
-    raise Exception("Could not find the dmg file to sign")
+    return path
 
 
 def macos_bundle_path():
@@ -73,6 +71,8 @@ def shell(cmd: str):
 def build_dmg():
     dmgPath = macos_dmg_path()
     print(f"Building {path.basename(dmgPath)}")
+    if not path.exists(path.dirname(dmgPath)):
+        os.makedirs(path.dirname(dmgPath))
     appPath = macos_bundle_path()
     settingsPath = "fsbuild/_build/dmgbuild-settings.py"
     with open(settingsPath, "w", encoding="UTF-8") as f:
@@ -96,6 +96,7 @@ def build_dmg():
 def sign_dmg():
     dmgPath = macos_dmg_path()
     print(f"Signing {path.basename(dmgPath)}")
+    assert path.exists(dmgPath)
 
     # Signing sometimes fails due to Apple errors (timeouts, etc). So we try
     # multiple times before giving up.
@@ -125,6 +126,7 @@ def sign_dmg():
 
 def notarize_dmg():
     dmgPath = macos_dmg_path()
+    assert path.exists(dmgPath)
     print(f"Notarizing {path.basename(dmgPath)}")
     # bundle = os.path.basename(bundle_path)
     # bundle_parent_dir = os.path.dirname(bundle_path)
