@@ -131,7 +131,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip pipenv
+        python3 -m pip install --upgrade pip pipenv dmgbuild
 
     - name: Run pipenv install
       run: |
@@ -177,6 +177,13 @@ jobs:
 
     - name: Archive
       run: fsbuild/archive
+
+    - name: Build, sign and notarize DMG
+      run: fsbuild/dmg
+      env:
+        NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
+        NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}
+        NOTARIZATION_USERNAME: ${{ secrets.MACOS_NOTARIZATION_USERNAME }}
 
     - uses: actions/upload-artifact@v2
       with:
