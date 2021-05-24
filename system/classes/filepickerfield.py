@@ -1,6 +1,6 @@
-from fswidgets.panel import Panel
 # FIXME: Can use virtual panel / group
 from fsui import Group, HorizontalLayout, Signal, TextField, get_window
+from fswidgets.panel import Panel
 from launcher.i18n import gettext
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker

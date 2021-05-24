@@ -1,4 +1,5 @@
 import sys
+from typing import List
 
 from .device import Device
 from .enumeratehelper import EnumerateHelper
@@ -14,9 +15,9 @@ class DeviceManager(object):
             cls.__instance = cls(helper)
         return cls.__instance
 
-    def __init__(self, helper):
+    def __init__(self, helper: EnumerateHelper):
         self.helper = helper
-        self.devices = []
+        self.devices: List[Device] = []
         if "--add-dummy-joystick" in sys.argv:
             self.add_joystick_device(
                 {
@@ -29,10 +30,13 @@ class DeviceManager(object):
                 }
             )
 
-    def get_devices(self):
+    def get_devices(self, refresh: bool = False) -> List[Device]:
         print("DeviceManager.get_devices")
         if self.helper is not None:
-            self.helper.init()
+            if refresh:
+                self.helper.update()
+            else:
+                self.helper.init()
             return self.helper.devices
         print("DeviceManager.get_devices ->", self.devices)
         return self.devices

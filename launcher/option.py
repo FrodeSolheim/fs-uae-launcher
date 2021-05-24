@@ -1,6 +1,7 @@
 # Automatically generated - do not edit by hand
 
 from typing import Any, Dict
+
 from fsgamesys.options.option import Option as BaseOption
 
 

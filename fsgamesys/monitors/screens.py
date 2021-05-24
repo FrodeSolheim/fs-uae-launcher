@@ -1,4 +1,5 @@
 from typing import Dict, List, Tuple
+
 # FIXME: Move qt code to fswidgets
 from fswidgets.qt.core import QRect
 

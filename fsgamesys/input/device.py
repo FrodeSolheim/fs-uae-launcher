@@ -22,7 +22,7 @@ class Device(object):
         self.buttons = 0
         # self.event_id = ""
 
-    def __lt__(self, other):
+    def __lt__(self, other: "Device"):
         if self.index < other.index:
             return True
         return self.name < other.name

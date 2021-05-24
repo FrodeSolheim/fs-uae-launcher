@@ -1,12 +1,12 @@
-from fscore.system import System
-from system.classes.windowborder import WindowBorder
-from fsui.qt.panel import Panel
 from typing import Optional
 
 import fsui
+from fscore.system import System
+from fsui.qt.panel import Panel
 from fswidgets.types import Size
 from fswidgets.widget import Widget
 from launcher.context import get_launcher_theme
+from system.classes.windowborder import WindowBorder
 
 from .titlebar import TitleBar
 
@@ -103,7 +103,12 @@ class Window(fsui.Window):
 
     def on_resize(self):
         super().on_resize()
-        print("Window.resize, maximized =", self.isMaximized(), "windowBorders", self.windowBorders)
+        print(
+            "Window.resize, maximized =",
+            self.isMaximized(),
+            "windowBorders",
+            self.windowBorders,
+        )
         if self.windowBorderWidget:
             w, h = self.getRealSize()
             self.windowBorderWidget.setPositionAndSize((0, 0), (w, h))

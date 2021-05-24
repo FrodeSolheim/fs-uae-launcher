@@ -1,5 +1,5 @@
-from typing import Any
 import weakref
+from typing import Any
 
 from fsbc.signal import Signal
 from fscore.deprecated import deprecated

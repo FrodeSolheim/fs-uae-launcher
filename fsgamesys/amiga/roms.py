@@ -1,4 +1,4 @@
-import os
+from os import path
 from typing import List, Tuple
 
 from fsgamesys.amiga.types import ConfigType
@@ -6,31 +6,40 @@ from fsgamesys.files.installablefile import InstallableFile
 from fsgamesys.files.installablefiles import InstallableFiles
 
 
-def prepare_amiga_roms(config: ConfigType, files: InstallableFiles):
-    amiga_model = config.get("amiga_model", "A500")
+def prepareAmigaRoms(config: ConfigType, files: InstallableFiles):
+    amigaModel = config.get("amiga_model", "A500")
     # To avoid circular import
     from fsgamesys.amiga.amiga import Amiga
 
-    model_config = Amiga.get_model_config(amiga_model)
+    modelConfig = Amiga.get_model_config(amigaModel)
 
     roms: List[Tuple[str, List[str]]] = [
-        ("kickstart_file", model_config["kickstarts"])
+        ("kickstart_file", modelConfig["kickstarts"])
     ]
-    if config["kickstart_ext_file"] or model_config["ext_roms"]:
+    if config["kickstart_ext_file"] or modelConfig["ext_roms"]:
         # not all Amigas have extended ROMs
-        roms.append(("kickstart_ext_file", model_config["ext_roms"]))
-    if amiga_model.lower() == "cd32/fmv":
+        roms.append(("kickstart_ext_file", modelConfig["ext_roms"]))
+    if amigaModel.lower() == "cd32/fmv":
         roms.append(("fvm_rom", [CD32_FMV_ROM]))
 
-    for config_key, rom_sha1_list in roms:
-        assert len(rom_sha1_list) == 1
-        sha1 = rom_sha1_list[0]
-        rom_name = sha1[:8].upper() + ".rom"
-        # rom_path = f"ROMs/{rom_name}"
-        # rom_path = f"{rom_name}"
-        rom_path = rom_name
-        files[rom_path] = InstallableFile(sha1=sha1)
-        config[config_key] = os.path.join(config["run_dir"], rom_path)
+    for configKey, romSha1List in roms:
+        romPath = config.get(configKey)
+        if romPath == "internal":
+            pass
+        elif romPath:
+            # Assume that the path exists, for now, and leave the config
+            # intact
+            pass
+        else:
+            # No specific ROM file was specified, use default ROM.
+            assert len(romSha1List) == 1
+            romSha1 = romSha1List[0]
+            romName = romSha1[:8].upper() + ".rom"
+            # rom_path = f"ROMs/{rom_name}"
+            # rom_path = f"{rom_name}"
+            romPath = romName
+            files[romPath] = InstallableFile(sha1=romSha1)
+            config[configKey] = path.join(config["run_dir"], romPath)
 
 
 A1000_KICKSTARTS = [

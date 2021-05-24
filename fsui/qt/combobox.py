@@ -1,4 +1,5 @@
 from typing import List, cast
+
 from fsui.context import get_theme
 from fsui.decorators import deprecated
 from fsui.qt import QComboBox, QFontMetrics
@@ -7,7 +8,9 @@ from fswidgets.widget import Widget
 
 
 class ComboBox(Widget):
-    def __init__(self, parent: Widget, items: List[str] =[], read_only: bool=False):
+    def __init__(
+        self, parent: Widget, items: List[str] = [], read_only: bool = False
+    ):
         super().__init__(parent, QComboBox(QParent(parent)))
         # QComboBox.__init__(self, parent.get_container())
         # self = QComboBox(parent.get_container())

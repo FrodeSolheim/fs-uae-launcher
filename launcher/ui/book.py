@@ -1,5 +1,5 @@
-from fswidgets.widget import Widget
 from fsui import Panel, VerticalLayout
+from fswidgets.widget import Widget
 
 
 class Book(Panel):

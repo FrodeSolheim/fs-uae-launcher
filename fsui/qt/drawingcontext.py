@@ -1,6 +1,15 @@
 from fsui.qt.color import Color
 from fsui.qt.font import Font
-from fsui.qt.qt import QBrush, QColor, QLinearGradient, QPen, QPoint, QSize, QRect, Qt
+from fsui.qt.qt import (
+    QBrush,
+    QColor,
+    QLinearGradient,
+    QPen,
+    QPoint,
+    QRect,
+    QSize,
+    Qt,
+)
 
 
 class DrawingContext(object):
@@ -78,7 +87,6 @@ class DrawingContext(object):
     def drawScaledImage(self, image, x, y, width, height):
         # self.dc.DrawBitmap(image.bitmap, x, y, True)
         self.qpainter.drawImage(QRect(x, y, width, height), image.qimage)
-
 
     def draw_vertical_gradient(self, x, y, w, h, c1, c2):
         gradient = QLinearGradient(0, 0, 0, h)

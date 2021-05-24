@@ -1,6 +1,7 @@
 import re
 import subprocess
 import traceback
+from typing import Dict, List, Optional, Tuple
 
 from fsgamesys import Option
 from fsgamesys.amiga.fsuaedevicehelper import FSUAEDeviceHelper
@@ -11,10 +12,10 @@ from .device import Device
 
 class EnumerateHelper(object):
     def __init__(self):
-        self.devices = []
-        self.joystick_devices = []
-        self.keyboard_devices = []
-        self.joystick_like_devices = []
+        self.devices: List[Device] = []
+        self.joystick_devices: List[Device] = []
+        self.keyboard_devices: List[Device] = []
+        self.joystick_like_devices: List[Device] = []
         self.initialized = False
 
     def update(self):
@@ -27,6 +28,7 @@ class EnumerateHelper(object):
         self.keyboard_devices = []
         self.joystick_like_devices = []
         self.init_fsuae()
+        self.initialized = True
 
     def init(self):
         if self.initialized:
@@ -40,6 +42,7 @@ class EnumerateHelper(object):
             p = FSUAEDeviceHelper.start_with_args(
                 ["--list"], stdout=subprocess.PIPE
             )
+            assert p.stdout is not None
             joysticks = p.stdout.read()
             p.wait()
         except Exception:
@@ -57,8 +60,8 @@ class EnumerateHelper(object):
         # joysticks.append("J: controller xbox 360 for windows")
         # joysticks.append("Buttons: 10 Hats: 1 Axes: 5 Balls: 0")
 
-        device_name_count = {}
-        last_joystick = None
+        device_name_count: Dict[Tuple[str, str], int] = {}
+        last_joystick: Device = Device()
 
         for line in joysticks:
             if line.startswith("#"):

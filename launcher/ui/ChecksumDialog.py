@@ -1,8 +1,8 @@
-from fswidgets.widget import Widget
 import hashlib
 
 import fsui
 from fsbc.util import unused
+from fswidgets.widget import Widget
 
 from ..i18n import gettext
 

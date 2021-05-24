@@ -36,7 +36,6 @@ class Choice(Widget):
 
     # -------------------------------------------------------------------------
 
-
     # FIXME: This needs to be fixed
     def keyPressEvent(self, event):
         if not self.cursor_keys:

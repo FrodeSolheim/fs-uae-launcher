@@ -101,26 +101,29 @@ class CheckForUpdatesTask(Task):
                 return False
             return True
 
-        def getCurrentArchitecture():
+        def getCurrentArchitecture() -> str:
             return System.getCpuArchitecture()
 
-        def getCurrentBranch():
+        def getCurrentBranch() -> str:
             # FIXME
             return "Master"
 
-        def getCurrentOperatingSystem():
+        def getCurrentOperatingSystem() -> str:
             return System.getOperatingSystem()
 
-        def getInstalledVersion(packageName) -> Optional[str]:
+        def getInstalledVersion(packageName: str) -> Optional[str]:
             if packageName == Product.getLauncherPluginName():
-                if fsboot.development():
-                    # We don't want the fake version number to confuse the
-                    # updater in development mode.
-                    pass
-                else:
-                    from launcher.version import VERSION
+                # if fsboot.development():
+                #     # We don't want the fake version number to confuse the
+                #     # updater in development mode.
+                #     pass
+                # else:
+                #     from launcher.version import VERSION
 
-                    return VERSION
+                #     return VERSION
+                from launcher.version import VERSION
+
+                return VERSION
             return UpdateUtil.getPluginVersion(packageName)
 
         def checkSystemRequirement(version, value):
@@ -157,8 +160,20 @@ class CheckForUpdatesTask(Task):
             packageUpdates = availableUpdates["packages"][packageName]
             installedVersion = getInstalledVersion(packageName)
             if installedVersion is None:
-                log.debug("Package %s is not installed, ignored", packageName)
-                continue
+                wantPackages = ["FS-UAE", "CAPSImg"]
+                if Product.is_fs_uae():
+                    wantPackages.extend(["QEMU-UAE"])
+                wantPackage = packageName in wantPackages
+                if wantPackage:
+                    log.debug(
+                        "Package %s is not installed, but want it", packageName
+                    )
+                    installedVersion = "0"
+                else:
+                    log.debug(
+                        "Package %s is not installed, ignored", packageName
+                    )
+                    continue
             availableUpdate = findAvailableUpdate(packageUpdates)
             if availableUpdate is None:
                 log.debug("No relevant update for package %s", packageName)
@@ -188,7 +203,9 @@ class CheckForUpdatesTask(Task):
                     availableVersion,
                 )
                 downgrade = True
-                includeUpdate = True
+                # includeUpdate = True
+                # No downgrades for now...
+                includeUpdate = False
 
             # FIXME: If more than one os/arch was installed for a package,
             # Also calculate information about installing those as well?

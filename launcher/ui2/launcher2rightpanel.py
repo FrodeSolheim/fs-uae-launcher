@@ -1,7 +1,8 @@
 from typing import Optional
+
+from fsui import Color, HorizontalLayout, Panel, VerticalLayout
 from fswidgets.splitter import Splitter
 from fswidgets.widget import Widget
-from fsui import Color, HorizontalLayout, Panel, VerticalLayout
 from launcher.ui2.configpanel import ConfigPanel
 from launcher.ui2.launcher2bottompanel import Launcher2BottomPanel
 from launcher.ui2.launcher2colors import Launcher2Colors

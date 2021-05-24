@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+
 import logging
 import os
 import shutil
 import socket
 import subprocess
 import sys
+import traceback
+from configparser import ConfigParser
+from typing import List, Optional
 
 import fsboot
 import fsgamesys
@@ -12,6 +16,7 @@ import launcher.version
 from fsbc.init import initialize_application
 from fscore.settings import Settings
 from fscore.system import System
+from fscore.version import Version
 from fsgamesys.product import Product
 from launcher.apps.launcher2 import wsopen_main
 from launcher.option import Option
@@ -24,7 +29,7 @@ log = logging.getLogger(__name__)
 outputDebugString = None
 
 
-def debug(message):
+def debug(message: str) -> None:
     global outputDebugString
     if sys.platform == "win32":
         if outputDebugString is None:
@@ -35,28 +40,24 @@ def debug(message):
     print(message)
 
 
-def check_python_version():
+def check_python_version() -> None:
     if sys.version_info[0] < 3 or sys.version_info[1] < 6:
         debug("You need at least Python 3.6 to run FS-UAE Launcher")
         sys.exit(1)
 
 
-def setup_fsgs_pythonpath():
+def setup_fsgs_pythonpath() -> None:
     fsgs_pythonpath = os.environ.get("FSGS_PYTHONPATH")
     if fsgs_pythonpath:
         sys.path.insert(0, fsgs_pythonpath)
 
 
-def fix_mingw_path():
+def fix_mingw_path() -> None:
     if os.getcwd().startswith("C:\\msys64\\home\\"):
         os.environ["PATH"] = "C:\\msys64\\mingw64\\bin;" + os.environ["PATH"]
 
 
-def print_version():
-    print(launcher.version.VERSION)
-
-
-def setup_frozen_qpa_platform_plugin_path():
+def setup_frozen_qpa_platform_plugin_path() -> None:
     if not fsboot.is_frozen():
         return
     # os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.path.join(
@@ -64,7 +65,7 @@ def setup_frozen_qpa_platform_plugin_path():
     # )
 
 
-def setup_frozen_requests_ca_cert():
+def setup_frozen_requests_ca_cert() -> None:
     if not fsboot.is_frozen():
         return
     data_dirs = [fsboot.executable_dir()]
@@ -99,17 +100,17 @@ def getLauncherPluginName() -> str:
     return Product.getLauncherPluginName()
 
 
-def getLauncherPluginDirectory():
+def getLauncherPluginDirectory() -> str:
     return UpdateUtil.getPluginDirectory(getLauncherPluginName())
 
 
 # FIXME: Move to update module
-def getPluginOldDirectory(pluginDir):
+def getPluginOldDirectory(pluginDir: str) -> str:
     return f"{pluginDir}.old"
 
 
 # FIXME: Move to update module
-def cleanPluginOldDirectory(pluginDir) -> bool:
+def cleanPluginOldDirectory(pluginDir: str) -> bool:
     pluginOldDir = getPluginOldDirectory(pluginDir)
     if not os.path.exists(pluginOldDir):
         return True
@@ -129,7 +130,7 @@ def cleanLauncherOldDirectory() -> bool:
 
 
 # FIXME: Move to update module
-def moveOldPluginDirectory(pluginDir) -> bool:
+def moveOldPluginDirectory(pluginDir: str) -> bool:
     debug(f"Move away old plugin directory {pluginDir}")
     pluginOldDir = getPluginOldDirectory(pluginDir)
     if not os.path.exists(pluginOldDir):
@@ -162,7 +163,7 @@ def moveOldPluginDirectory(pluginDir) -> bool:
     return True
 
 
-def findLauncherExecutable(pluginDir):
+def findLauncherExecutable(pluginDir: str):
     binDir = os.path.join(
         pluginDir, System.getOperatingSystem(), System.getCpuArchitecture()
     )
@@ -184,12 +185,11 @@ def findLauncherExecutable(pluginDir):
         return None
 
 
-import traceback
-from configparser import ConfigParser
+class Options:
+    redirect: Optional[bool] = None
 
 
 def maybeRunNewerVersionFromPlugin():
-    pluginName = getLauncherPluginName()
     launcherDir = getLauncherPluginDirectory()
 
     # launcherNextDir = f"{launcherDir}.next"
@@ -210,6 +210,9 @@ def maybeRunNewerVersionFromPlugin():
     #         os.rename(launcherNextDir, launcherDir)
 
     if os.path.exists(launcherDir):
+        if Options.redirect is False:
+            debug("Will continue using current executable")
+            return False
         # FIXME: Move to fscore.version?
         from fscore.version import Version
         from launcher.version import VERSION
@@ -228,35 +231,56 @@ def maybeRunNewerVersionFromPlugin():
                     f"Plugin version ({pluginVersion}) "
                     f"<= running version ({VERSION})"
                 )
-                debug("Will continue using current executable")
-                return False
+                if Options.redirect is True:
+                    debug("Older version, but redirect == 1")
+                else:
+                    return False
         except Exception:
             traceback.print_exc()
             debug("Problem comparing Launcher version")
-            debug("Will continue using current executable")
-            return False
+            if Options.redirect is True:
+                debug("Cannot redirect, but redirect == 1")
+                sys.exit(1)
+            else:
+                return False
 
         if fsboot.development():
-            debug("Development mode, will not run plugin executable")
-            debug("Will continue using current executable")
-            return False
+            print(Options.redirect)
+            if Options.redirect is True:
+                debug("Development mode, but redirect == 1")
+            else:
+                debug("Development mode, will not run plugin executable")
+                return False
 
         launcherExecutable = findLauncherExecutable(launcherDir)
         if launcherExecutable is None:
             return False
 
-        # Open file objects and descriptors are not flushed when running exec
+        # Make sure pending output is flushed before we effectively put things
+        # on pause
         sys.stdout.flush()
         sys.stderr.flush()
 
         args = sys.argv.copy()
         args[0] = launcherExecutable
-        debug(f"Running execv with args {repr(args)}")
-        os.execv(args[0], args)
+        # FIXME: Could make sure we send full path here, but the option value
+        # isn't really that important.
+        # FIXME: fsboot.executable?
+        args.append("--redirected-from=" + sys.executable)
+        # Make sure the new process does not try to redirect
+        args.append("--no-redirect")
+        debug(f"Running new process with args {repr(args)}")
+        completedProcess = subprocess.run(args)
+        returnCode = completedProcess.returncode
+        debug(f"Child process (redirected) return value: {returnCode}")
+        sys.exit(returnCode)
 
 
 def configureLauncherApp(
-    base_name, databases, default_platform_id, default_titlebar_color
+    base_name: str,
+    databases: List[str],
+    default_platform_id: str,
+    default_titlebar_color: Optional[str],
 ):
     print(
         "configureLauncherApp",
@@ -296,11 +320,108 @@ def configureLauncherApp(
     # return "SYS:Launcher"
 
 
+def handleArgument(key: str, value: str):
+    global _redirect
+    if key == "fake-version":
+        # This will raise an exception (on purpose) if the version number
+        # cannot be parsed.
+        Version(value)
+        launcher.version.VERSION = value
+    elif key == "redirect":
+        if value == "1":
+            Options.redirect = True
+        elif value == "0":
+            Options.redirect = False
+        elif value == "":
+            Options.redirect = None
+        else:
+            raise Exception("Unknown value for redirect")
+
+
+def handleArguments() -> None:
+    # for i, arg in enumerate(sys.argv[1:]):
+    for arg in sys.argv[1:]:
+        print("ARG", arg)
+        if arg.startswith("--"):
+            arg = arg[2:]
+            if arg.startswith("-no-"):
+                arg = arg[4:]
+                assert not "=" in arg
+                value = "0"
+            try:
+                key, value = arg.split("=", 1)
+            except ValueError:
+                key = arg
+                value = "1"
+            print(key, value)
+            handleArgument(key, value)
+
+
+def printOption(option: str, description: str = ""):
+    print(" ", option, end="")
+    padding = 40 - 2 - len(option) - 1
+    if padding > 0:
+        print(" " * padding, end="")
+    print(description)
+
+
+def printHelp() -> None:
+    print("FIXME Launcher vFIXME")
+    print("")
+
+    print("Command arguments:")
+    printOption("--help")
+    printOption("--version")
+    print("")
+
+    print("Maybe implement (FIXME):")
+    printOption("--disable-updates", "Or --no-updates?")
+    print("")
+
+    print("For debugging/testing (not guaranteed to be stable):")
+    printOption(
+        "--fake-version[=<version>]", "Useful for testing update system"
+    )
+    printOption("--redirect")
+    print("")
+
+    print("FIXME: ADD MORE INFO HERE")
+
+
+def print_version() -> None:
+    print(launcher.version.VERSION)
+
+
 def main(*, app: str, brand: str):
+    try:
+        handleArguments()
+    except Exception as e:
+        # FIXME: Use pyqt or tkinter to show GUI error message?
+        # from tkinter import messagebox
+        # messagebox.showerror("Title", "Message")
+        # FIXME: fscore.fatal module?
+        raise e
+
     if "--version" in sys.argv:
         print_version()
         sys.exit(0)
 
+    if "--help" in sys.argv:
+        printHelp()
+        sys.exit(0)
+
+    # If successful, this call (using execv) will not return
+    # FIXME: Problem using exec with PyQT on macOS (dual loaded QT libraries)
+    # FIXME: Exec does not work smoothly on Windows (new process does not
+    # replace current one, so synchronously waiting on the original does
+    # not work when it is replaced.
+    if maybeRunNewerVersionFromPlugin():
+        # Should not reach this point...
+        sys.exit(1)
+    else:
+        debug("Will continue using current executable")
+
+    # sys.exit()
     check_python_version()
     setup_fsgs_pythonpath()
     fix_mingw_path()
@@ -328,13 +449,6 @@ def main(*, app: str, brand: str):
             return wsopen_main(sys.argv[1])
         return wsopen_main("SYS:Launcher")
 
-    # If successful, this call (using execv) will not return
-    # FIXME: Problem using exec with PyQT on macOS (dual loaded QT libraries)
-    # FIXME: Exec does not work smoothly on Windows (new process does not
-    # replace current one, so synchronously waiting on the original does
-    # not work when it is replaced.
-    # maybeRunNewerVersionFromPlugin()
-
     # if app == "openretro-launcher":
     #     pass
 
@@ -358,3 +472,7 @@ def main(*, app: str, brand: str):
         launcher.apps.main("openretro-launcher")
     else:
         raise Exception(f"Unknown app {app}")
+
+
+if __name__ == "__main__":
+    main(app="Launcher", brand="FS-UAE")

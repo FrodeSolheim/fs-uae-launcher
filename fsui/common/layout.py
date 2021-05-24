@@ -1,4 +1,5 @@
 from typing import Any, Optional, Tuple, Union, cast
+
 from fswidgets.types import Point, Size
 
 from .spacer import Spacer

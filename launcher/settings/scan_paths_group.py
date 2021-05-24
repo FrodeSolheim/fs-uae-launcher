@@ -1,8 +1,8 @@
-from fswidgets.widget import Widget
-from fswidgets.panel import Panel
 import fsui
 from fsbc.util import unused
 from fsgamesys.FSGSDirectories import FSGSDirectories
+from fswidgets.panel import Panel
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.ui.IconButton import IconButton

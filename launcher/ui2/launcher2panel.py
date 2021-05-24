@@ -1,9 +1,9 @@
-from fswidgets.splitter import Splitter
 from typing import Optional
 
 from fsui import HorizontalLayout
 from fswidgets.panel import Panel
 from fswidgets.parentstack import ParentStack
+from fswidgets.splitter import Splitter
 from fswidgets.widget import Widget
 from launcher.ui2.launcher2leftpanel import Launcher2LeftPanel
 from launcher.ui2.launcher2rightpanel import Launcher2RightPanel
@@ -27,12 +27,10 @@ class Launcher2Panel(Splitter):
         self.right = Launcher2RightPanel(self)
         # horilayout.add(self.right, fill=True, expand=True)
 
-
         # self.setStretchFactor(0, 0)
         # self.setStretchFactor(1, 1)
         # self.setWidgetSize(0, 380)
         self.setSplitterPosition(self.getDefaultSplitterPosition())
-
 
         # design_test = True
         # if design_test:

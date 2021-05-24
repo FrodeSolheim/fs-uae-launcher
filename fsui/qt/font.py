@@ -1,6 +1,6 @@
-from fscore.deprecated import deprecated
 from typing import Optional
 
+from fscore.deprecated import deprecated
 from fsui.qt.qt import QFont
 from fswidgets.qt.gui import QFontMetrics
 
@@ -60,13 +60,13 @@ class Font:
     def qfont(self) -> QFont:
         return self.font
 
-    def setBold(self, bold: bool=True) -> "Font":
+    def setBold(self, bold: bool = True) -> "Font":
         self.qfont.setBold(bold)
         # Allow chaining operations
         return self
 
     @deprecated
-    def set_bold(self, bold: bool=True):
+    def set_bold(self, bold: bool = True):
         return self.setBold(bold)
 
     # def size(self):

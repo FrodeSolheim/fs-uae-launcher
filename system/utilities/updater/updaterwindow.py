@@ -121,6 +121,13 @@ class UpdaterWindow(Window):
 
             self.appendLogLine("Got result, doing calculations...")
             updates = CheckForUpdatesTask.findUpdates(result)
+
+            self.appendLogLine("")
+            if len(updates) > 0:
+                self.appendLogLine("Available updates:")
+            else:
+                self.appendLogLine("No updates!")
+
             for update in updates:
                 systems = set()
                 for archive in update["archives"]:
@@ -134,18 +141,17 @@ class UpdaterWindow(Window):
                     # operatingSystems.update(
                     #     archive.get("operatingSystems", [])
                     # )
+                installedVersion = update["installedVersion"]
                 self.appendLogLine(
                     "{}: {} => {} ({})".format(
                         update["packageName"],
-                        update["installedVersion"],
+                        installedVersion
+                        if installedVersion != "0"
+                        else "(not installed)",
                         update["availableVersion"],
                         ", ".join(sorted(systems)),
                     )
                 )
-            if len(updates) > 0:
-                self.appendLogLine("Updates are available!")
-            else:
-                self.appendLogLine("No updates!")
             self.updateAllButton.setEnabled(len(updates) > 0)
             self.updates = updates
 
@@ -178,17 +184,21 @@ class UpdaterWindow(Window):
         if self.updates is None:
             log.warning("updateAll: self.updates was None")
             return
+        self.appendLogLine("")
         self.setRunning(True)
 
         # @traced
         def onResult(result):
             self.checkForUpdatesButton.enable()
+            self.appendLogLine("")
             if result["restartRequired"]:
                 self.appendLogLine(
-                    "Update complete, but a restart is required"
+                    "Update complete, but a restart of the Launcher is required"
                 )
+                self.appendLogLine("PLEASE RESTART NOW")
             else:
                 self.appendLogLine("Update complete")
+            self.appendLogLine("")
 
         # @traced
         def onError(error):

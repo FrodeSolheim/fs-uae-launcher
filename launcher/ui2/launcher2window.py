@@ -81,6 +81,7 @@ class Launcher2Window(Window):
 
         split = settings.getLauncherBottomSplit()
         if split is not None:
+            print("SPLIT", split)
             self.panel.right.setSplitterPosition(-split)
         split = settings.getLauncherMainSplit()
         if split is not None:
@@ -120,7 +121,9 @@ class Launcher2Window(Window):
         settings = useSettings()
         settings.setLauncherWindowState(self.getWindowState())
         settings.setLauncherMainSplit(self.panel.getSplitterPosition())
-        settings.setLauncherBottomSplit(-self.panel.right.getSplitterPosition())
+        settings.setLauncherBottomSplit(
+            -self.panel.right.getSplitterPosition()
+        )
 
     @overrides
     def onDestroy(self):

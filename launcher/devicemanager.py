@@ -2,8 +2,10 @@ import re
 import subprocess
 import sys
 import traceback
+from typing import Dict, List
 
 from fsgamesys.amiga.fsuaedevicehelper import FSUAEDeviceHelper
+from launcher.context import useInputService
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
@@ -11,7 +13,7 @@ from launcher.option import Option
 
 
 class Device:
-    def __init__(self, id, name, type):
+    def __init__(self, id: str, name: str, type: str):
         self.id = id
         self.name = name
         self.type = type
@@ -19,7 +21,7 @@ class Device:
         self.cmp_id = Device.create_cmp_id(id)
 
     @staticmethod
-    def create_cmp_id(id_):
+    def create_cmp_id(id_: str) -> str:
         return id_.lower().replace(" ", "")
 
     def __repr__(self):
@@ -88,11 +90,13 @@ class DeviceManager:
     @classmethod
     def refresh(cls):
         cls.initialized = False
-        cls.init()
+
+        # FIXME: Not using DeviceManager anymore, really...
+        # cls.init()
 
         # FIXME: REPLACE WITH EnumerateHelper!!!
 
-        LauncherSignal.broadcast("device_list_updated")
+        # LauncherSignal.broadcast("device_list_updated")
 
     @classmethod
     def init_fsuae(cls):
@@ -101,6 +105,7 @@ class DeviceManager:
             p = FSUAEDeviceHelper.start_with_args(
                 ["--list"], stdout=subprocess.PIPE
             )
+            assert p.stdout
             joysticks = p.stdout.read()
             p.wait()
         except Exception:
@@ -189,17 +194,17 @@ class DeviceManager:
         return ""
 
     @classmethod
-    def is_joystick(cls, device):
+    def is_joystick(cls, device: str) -> bool:
         return cls.get_device_type(device) == "joystick"
 
     @classmethod
-    def get_joystick_ids(cls):
+    def get_joystick_ids(cls) -> List[str]:
         cls.init()
         return cls.device_ids[:]
 
     @classmethod
-    def get_preferred_joysticks(cls):
-        prefs = []
+    def get_preferred_joysticks(cls) -> List[str]:
+        prefs: List[str] = []
         if LauncherSettings.get("primary_joystick"):
             prefs.append(
                 Device.create_cmp_id(LauncherSettings.get("primary_joystick"))
@@ -213,17 +218,19 @@ class DeviceManager:
         return prefs
 
     @classmethod
-    def get_preferred_gamepads(cls):
+    def get_preferred_gamepads(cls) -> List[str]:
         return cls.get_preferred_joysticks()
 
     @classmethod
-    def get_calculated_port_mode(cls, config, port: int) -> str:
+    def get_calculated_port_mode(
+        cls, config: Dict[str, str], port: int
+    ) -> str:
         value = config.get("joystick_port_{0}_mode".format(port))
         if not value:
             if port == 0:
                 return "mouse"
             elif port == 1:
-                if config.get("amiga_model").startswith("CD32"):
+                if config.get("amiga_model", "").startswith("CD32"):
                     return "cd32 gamepad"
                 else:
                     return "joystick"
@@ -231,15 +238,17 @@ class DeviceManager:
         return value
 
     @classmethod
-    def get_devices_for_ports(cls, config):
-        cls.init()
-        ports = [cls.devices[0] for _ in range(5)]
-        for device in cls.devices:
+    def get_devices_for_ports(cls, config: Dict[str, str]):
+        # cls.init()
+        inputService = useInputService()
+        devices = inputService.getInputDevices()
+        ports = [devices[0] for _ in range(5)]
+        for device in devices:
             device.port = None
         for p in range(4):
             key = "joystick_port_{0}".format(p)
             value = config.get(key)
-            for device in cls.devices:
+            for device in devices:
                 if device.id == value:
                     device.port = p
                     break
@@ -249,14 +258,14 @@ class DeviceManager:
         #     print(device.port, device.id)
         # print("-")
 
-        def auto_fill(port, type):
+        def auto_fill(port: int, type: str):
             mode = config.get("joystick_port_{0}_mode".format(port))
             if not mode:
                 mode = cls.get_calculated_port_mode(config, port)
             val = config.get("joystick_port_{0}".format(port))
             if val:
                 # specific device chosen
-                for dev in cls.devices:
+                for dev in devices:
                     if dev.id == val:
                         ports[port] = dev
                         break
@@ -266,7 +275,7 @@ class DeviceManager:
                 if mode != "mouse":
                     return
                 # print("b")
-                for dev in cls.devices:
+                for dev in devices:
                     # print("c")
                     if dev.type == "mouse" and dev.port is None:
                         # print("d")
@@ -282,18 +291,21 @@ class DeviceManager:
                     return
                 # try to find an available preferred device first
                 for pref in prefs:
-                    for dev in cls.devices:
-                        if dev.cmp_id == pref and dev.port is None:
+                    for dev in devices:
+                        if (
+                            Device.create_cmp_id(dev.id) == pref
+                            and dev.port is None
+                        ):
                             ports[port] = dev
                             dev.port = port
                             return
                 # find first suitable device
-                for dev in cls.devices:
+                for dev in devices:
                     if dev.type == "joystick" and dev.port is None:
                         ports[port] = dev
                         dev.port = port
                         return
-                for dev in cls.devices:
+                for dev in devices:
                     if dev.type == "keyboard" and dev.port is None:
                         ports[port] = dev
                         dev.port = port
@@ -306,25 +318,27 @@ class DeviceManager:
         return ports
 
     @classmethod
-    def get_device_for_port(cls, config, port):
+    def get_device_for_port(cls, config: Dict[str, str], port: int):
         return cls.get_devices_for_ports(config)[port]
 
     @classmethod
-    def get_non_amiga_devices_for_ports(cls, config):
+    def get_non_amiga_devices_for_ports(cls, config: Dict[str, str]):
         platform = config.get("platform")
-        cls.init()
+        # cls.init()
+        inputService = useInputService()
+        devices = inputService.getInputDevices()
         # Launcher has 5 input devices in total (4 + 1 virtual)
         # ports = [cls.devices[0] for _ in range(5)]
         # + 1 dummy device for index 0
-        ports = [cls.devices[0] for _ in range(6)]
+        ports = [devices[0] for _ in range(6)]
 
-        for device in cls.devices:
+        for device in devices:
             device.port = None
         for port_ in range(1, 4 + 1):
             key = "{}_port_{}".format(platform, port_)
             value = config.get(key)
             print(key, value)
-            for device in cls.devices:
+            for device in devices:
                 if device.id == value:
                     device.port = port_
                     break
@@ -337,7 +351,7 @@ class DeviceManager:
         #     print(device.port, device.id)
         # print("-")
 
-        def auto_fill(port, type):
+        def auto_fill(port: int, type: str):
             mode = config.get("{}_port_{}_type".format(platform, port))
             if not mode:
                 # FIXME: DEFAULT
@@ -359,7 +373,7 @@ class DeviceManager:
             val = config.get("{}_port_{}".format(platform, port))
             if val:
                 # specific device chosen
-                for dev in cls.devices:
+                for dev in devices:
                     if dev.id == val:
                         ports[port] = dev
                         break
@@ -370,7 +384,7 @@ class DeviceManager:
                 if mode != "mouse":
                     return
                 # print("b")
-                for dev in cls.devices:
+                for dev in devices:
                     # print("c")
                     if dev.type == "mouse" and dev.port is None:
                         # print("d")
@@ -393,18 +407,21 @@ class DeviceManager:
 
                 # try to find an available preferred device first
                 for pref in prefs:
-                    for dev in cls.devices:
-                        if dev.cmp_id == pref and dev.port is None:
+                    for dev in devices:
+                        if (
+                            Device.create_cmp_id(dev.id) == pref
+                            and dev.port is None
+                        ):
                             ports[port] = dev
                             dev.port = port
                             return
                 # find first suitable device
-                for dev in cls.devices:
+                for dev in devices:
                     if dev.type == "joystick" and dev.port is None:
                         ports[port] = dev
                         dev.port = port
                         return
-                for dev in cls.devices:
+                for dev in devices:
                     if dev.type == "keyboard" and dev.port is None:
                         ports[port] = dev
                         dev.port = port
@@ -425,13 +442,13 @@ class DeviceManager:
         return ports
 
     @classmethod
-    def get_non_amiga_device_for_port(cls, config, port):
+    def get_non_amiga_device_for_port(cls, config: Dict[str, str], port: int):
         ports = cls.get_non_amiga_devices_for_ports(config)
         print(ports, port)
         return ports[port]
 
     @classmethod
-    def is_mouse_device(cls, type_):
+    def is_mouse_device(cls, type_: str):
         # FIXME: Should be put in platform-specific code, here for now.
         return type_ in [
             "mouse",  # Amiga, ...

@@ -531,7 +531,7 @@ class Task2(Observable):
         super().__init__(subscribe)
 
     def subscribe(self, *args, **kwargs):
-        print("Task.subscribe")
+        print("Task.subscribe", self)
         super().subscribe(*args, **kwargs)
 
     def run(self):
@@ -570,7 +570,7 @@ class ThreadTaskRunner:
         ).subscribe(on_next=onNext, on_error=onError, on_completed=onComplete)
 
 
-ThreadTaskRunner().runTask(NewLogoutTask(), onNext="")
+# ThreadTaskRunner().runTask(NewLogoutTask(), onNext="")
 
 
 def logoutTask(authToken) -> Observable:

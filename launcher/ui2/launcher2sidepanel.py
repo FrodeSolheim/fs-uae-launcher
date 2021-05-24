@@ -1,7 +1,8 @@
-from fswidgets.widget import Widget
 from typing import List
+
 from fsui import Choice, Color, HorizontalLayout, Label, Panel
 from fsui.context import get_window
+from fswidgets.widget import Widget
 from launcher.panels.additionalconfigpanel import CustomConfigButton
 from launcher.ui2.frontcoverpanel import FrontCoverPanel
 from launcher.ui2.launcher2colors import Launcher2Colors

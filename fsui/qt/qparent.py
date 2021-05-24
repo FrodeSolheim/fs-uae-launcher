@@ -1,10 +1,13 @@
 from typing import Any, Optional
-from fswidgets.qt.widgets import QWidget
 
+from fswidgets.qt.widgets import QWidget
 
 # FIXME: Using Any right now to avoid import cycles
 
-def QParent(parent: Any, window: "Optional[Any]" = False, forceRealParent: bool=False) -> Optional[QWidget]:
+
+def QParent(
+    parent: Any, window: "Optional[Any]" = False, forceRealParent: bool = False
+) -> Optional[QWidget]:
     # print(f"\n\n\nQParent parent={parent}")
     if parent is None:
         # print("none")
@@ -18,7 +21,6 @@ def QParent(parent: Any, window: "Optional[Any]" = False, forceRealParent: bool=
 
         if hasattr(parent, "container") and parent.container is not None:
             return parent.container.qwidget
-
 
     while isinstance(parent, Group):
         parent = parent.parent()

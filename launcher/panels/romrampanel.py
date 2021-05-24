@@ -3,8 +3,10 @@ import os
 import fsui
 from fsgamesys.checksumtool import ChecksumTool
 from fsgamesys.FSGSDirectories import FSGSDirectories
+from fswidgets.widget import Widget
 from launcher.context import get_config
 from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
 from launcher.option import Option
 from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
 from launcher.ui.config.configpanel import ConfigPanel
@@ -14,7 +16,7 @@ from launcher.ui.options import ConfigWidgetFactory
 
 
 class RomRamPanel(ConfigPanel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         ConfigPanel.__init__(self, parent)
         heading_label = fsui.HeadingLabel(self, gettext("CPU, ROM & RAM"))
         self.layout.add(heading_label, margin=10)
@@ -106,7 +108,7 @@ class KickstartGroup(fsui.Panel):
             config.set("kickstart_file", "internal")
         else:
             config.set("kickstart_file", config.get("x_kickstart_file"))
-        config.update_kickstart()
+        LauncherConfig.update_kickstart(config)
 
     def on_ext_rom_type_changed(self):
         config = get_config(self)
@@ -120,7 +122,7 @@ class KickstartGroup(fsui.Panel):
                 "kickstart_ext_file",
                 config.get("x_kickstart_ext_file"),
             )
-        config.update_kickstart()
+        LauncherConfig.update_kickstart(config)
 
     def on_browse_button(self, extended=False):
         config = get_config(self)

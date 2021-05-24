@@ -3,7 +3,7 @@ import sys
 from typing import Union
 
 
-def unicode_path(path: Union[bytes,str]):
+def unicode_path(path: Union[bytes, str]):
     if isinstance(path, str):
         return path
     return path.decode(sys.getfilesystemencoding())

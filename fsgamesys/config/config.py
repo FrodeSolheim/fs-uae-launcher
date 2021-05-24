@@ -1,11 +1,11 @@
-from fscore.types import SimpleCallable
 import sys
 
 # import traceback
 from collections import defaultdict
-from typing import Dict, List, Protocol
+from typing import Dict, Iterable, List, Protocol, Set, Tuple
 
 from fsbc.settings import Settings
+from fscore.types import SimpleCallable
 from fsgamesys.config.configevent import ConfigEvent
 from fsgamesys.contextaware import ContextAware
 from fsgamesys.options.option import Option
@@ -37,7 +37,7 @@ class Config(ContextAware):
     def detach(self, observer):
         self.observers.remove(observer)
 
-    def notify(self, event):
+    def notify(self, event: ConfigEvent):
         for observer in self.observers:
             # An instance with an update function, or a plain function, can
             # both be observers. Also supports Old-style on_config method.
@@ -85,15 +85,15 @@ class Config(ContextAware):
         #     del self.values[key]
 
     @staticmethod
-    def config_from_argv():
-        config = []
+    def config_from_argv() -> List[Tuple[str, str]]:
+        configTuples: List[Tuple[str, str]] = []
         for arg in sys.argv:
             if arg.startswith("--config:"):
                 arg = arg[9:]
                 key, value = arg.split("=", 1)
                 key = key.replace("-", "_")
-                config.append((key, value))
-        return config
+                configTuples.append((key, value))
+        return configTuples
 
     def add_from_argv(self):
         """Adds config parameters from argv to currently loaded configuration.
@@ -104,7 +104,7 @@ class Config(ContextAware):
             self.set(key, value)
         return len(config_items) > 0
 
-    def load(self, values):
+    def load(self, values: Dict[str, str]):
         self.clear()
         for key, value in list(values.items()):
             self.set(key, value)
@@ -112,8 +112,8 @@ class Config(ContextAware):
     def load_from_file(self):
         pass
 
-    def clear_and_set(self, values):
-        new_config = {}
+    def clear_and_set(self, values: List[Tuple[str, str]]):
+        new_config: Dict[str, str] = {}
         for key, value in values:
             new_config[key] = value
         # First, check which options we need to clear.
@@ -121,7 +121,7 @@ class Config(ContextAware):
             if key not in new_config:
                 new_config[key] = ""
         # Now, set new config while simultaneously clearing old values.
-        self.set(new_config.items())
+        self.set_multiple(new_config.items())
         # Remove keys for empty values to avoid ever-growing set of keys. Not
         # really needed, but nice.
         for key, value in new_config.items():
@@ -129,27 +129,41 @@ class Config(ContextAware):
                 del self.values[key]
 
     def set(self, *values: str):
+        # self.set(values)
         if len(values) == 1:
             # Config.set_multiple(*values)
             items = list(values[0])
+            self.set_multiple(items)
         elif len(values) == 2:
             items = [(values[0], values[1])]
+            self.set_multiple(items)
         else:
             raise Exception("Invalid number of parameters to set_config")
 
-        item_keys = [x[0] for x in items]
-        changed_keys = set()
+    def set_multiple(self, values: Iterable[Tuple[str, str]]):
+        items = list(values)
+        # self.set(values)
+        # if len(values) == 1:
+        #     # Config.set_multiple(*values)
+        #     items = list(values[0])
+        # elif len(values) == 2:
+        #     items = [(values[0], values[1])]
+        # else:
+        #     raise Exception("Invalid number of parameters to set_config")
 
-        def add_changed_key(added_key):
+        item_keys = [x[0] for x in items]
+        changed_keys: Set[Tuple[int, str]] = set()
+
+        def add_changed_key(added_key: str):
             # try:
             #     added_priority = cls.key_order.index(added_key)
             # except ValueError:
             #     added_priority = 1000
-            added_priority = 0
+            added_priority: int = 0
             # FIXME: re-introduce support for key priority if necessary
             changed_keys.add((added_priority, added_key))
 
-        def change(changed_key, changed_value):
+        def change(changed_key: str, changed_value: str):
             # print("change", changed_key, changed_value)
             # if key == "joystick_port_1_mode":
             #     pass
@@ -158,7 +172,7 @@ class Config(ContextAware):
                 #     print("config set {0} to {1} (no change)".format(
                 #         changed_key, changed_value))
                 return
-            if self.log_config:
+            if self.log_config or True:
                 print(
                     "[CONFIG] set {0} to {1}".format(
                         changed_key, changed_value
@@ -190,7 +204,7 @@ class Config(ContextAware):
                 if not key.startswith("__implicit_"):
                     change("__changed", "1")
                     break
-            for priority, key in sorted(changed_keys):
+            for _, key in sorted(changed_keys):
                 # for listener in cls.config_listeners:
                 #     listener.on_config(key, cls.get(key))
 
@@ -208,5 +222,5 @@ class Config(ContextAware):
             #
             # Settings.set("config_changed", "1")
 
-    def set_multiple(self, values):
-        self.set(values)
+    # def set_multiple(self, values: Iterable[Tuple[str, str]]):
+    #     self.set(values)

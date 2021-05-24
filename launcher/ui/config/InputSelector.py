@@ -1,4 +1,3 @@
-from launcher.gui.components.inputportdeviceselector import InputPortDeviceSelector
 from typing import Dict, Optional
 
 import fsui
@@ -7,6 +6,9 @@ from fsgamesys.platforms.platform import Platform
 from fswidgets.widget import Widget
 from launcher.context import get_config, useInputService
 from launcher.devicemanager import DeviceManager
+from launcher.gui.components.inputportdeviceselector import (
+    InputPortDeviceSelector,
+)
 from launcher.i18n import gettext
 from launcher.launcher_signal import LauncherSignal
 from launcher.option import Option

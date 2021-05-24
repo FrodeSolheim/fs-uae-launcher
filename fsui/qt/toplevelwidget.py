@@ -523,7 +523,6 @@ class TopLevelWidget(Widget):
         else:
             self.windowBorders = self.windowNormalBorders
 
-
         # We must set the size before maximizing, so this isn't done within
         # showMaximized -> ... -> set_initial_size_from_layout -> set_size.
         self.set_initial_size_from_layout()

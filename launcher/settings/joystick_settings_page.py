@@ -1,5 +1,6 @@
 import fsui
 from fsgamesys.options.option import Option
+from launcher.context import useInputService
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
@@ -27,9 +28,18 @@ class JoystickSettingsPage(SettingsPage):
         self.list_view.set_min_height(140)
         self.list_view.item_activated.connect(self.on_joystick_activated)
         image = fsui.Image("workspace:/data/16x16/gamepad.png")
-        for device_name in DeviceManager.get_joystick_names():
-            if DeviceManager.is_joystick(device_name):
-                self.list_view.add_item(device_name, icon=image)
+
+        # for device_name in DeviceManager.get_joystick_names():
+        #     if DeviceManager.is_joystick(device_name):
+        #         self.list_view.add_item(device_name, icon=image)
+
+        inputService = useInputService()
+        for device in inputService.getInputDevices():
+            if device.type == "joystick":
+                # devices.append(device.id)
+                self.list_view.add_item(device.id, icon=image)
+                # or devices.append(device.name) ?
+
         self.layout.add(self.list_view, fill=True, expand=True)
 
         self.layout.add_spacer(20)
@@ -41,11 +51,18 @@ class JoystickSettingsPage(SettingsPage):
         self.options_on_page.add(Option.SECONDARY_JOYSTICK)
 
     def on_joystick_activated(self, index):
-        device_name = self.list_view.get_item(index)
-        print(self.get_window())
+        # print(self.get_window())
+        deviceId = self.list_view.get_item(index)
         # shell_open("Workspace:Tools/JoystickConfig", [device_name],
         #            parent=self.get_window())
-        JoystickConfigWindow(self.window, device_name).show()
+        # JoystickConfigWindow(self.window, device_name).show()
+        inputService = useInputService()
+        device = inputService.getDevice(deviceId)
+        if device is not None:
+            JoystickConfigWindow(self.window, device).show()
+        else:
+            # FIXME: Device disappeared...
+            assert device
 
 
 joystick_mode_values = ["nothing", "mouse", "joystick"]
@@ -105,9 +122,16 @@ class PreferredJoystickSelector(fsui.Panel):
         devices = ["", get_keyboard_title()]
         # for i, name in enumerate(DeviceManager.get_joystick_names()):
         #     devices.append(name)
-        for device_name in DeviceManager.get_joystick_names():
-            if DeviceManager.is_joystick(device_name):
-                devices.append(device_name)
+
+        # for device_name in DeviceManager.get_joystick_names():
+        #     if DeviceManager.is_joystick(device_name):
+        #         devices.append(device_name)
+
+        inputService = useInputService()
+        for device in inputService.getInputDevices():
+            if device.type == "joystick":
+                devices.append(device.id)
+                # or devices.append(device.name) ?
 
         self.device_choice = fsui.ComboBox(self, devices)
 

@@ -1,4 +1,6 @@
 import fsui
+from launcher.context import useInputService
+from launcher.launcher_signal import LauncherSignal
 
 from ...devicemanager import DeviceManager
 from ...i18n import gettext
@@ -39,8 +41,8 @@ class InputGroup(fsui.Panel):
 
         if refresh_button:
             self.refresh_button = IconButton(self, "refresh_button.png")
-            self.refresh_button.set_tooltip(
-                gettext("Refresh List of Connected Joystick Devices")
+            self.refresh_button.setToolTip(
+                gettext("Refresh the list of connected joystick devices")
             )
             self.refresh_button.activated.connect(self.on_refresh_button)
             hori_layout.add(self.refresh_button, margin_right=10)
@@ -64,4 +66,7 @@ class InputGroup(fsui.Panel):
 
     # noinspection PyMethodMayBeStatic
     def on_refresh_button(self):
-        DeviceManager.refresh()
+        useInputService().refreshDeviceList()
+        # DeviceManager.refresh()
+        # FIXME: This should not be here...
+        LauncherSignal.broadcast("device_list_updated")

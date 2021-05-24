@@ -1,7 +1,7 @@
-from fswidgets.overrides import overrides
 from fsui import Color
-from fswidgets.widget import Widget
+from fswidgets.overrides import overrides
 from fswidgets.panel import Panel
+from fswidgets.widget import Widget
 
 
 class WindowBorder(Panel):
@@ -13,7 +13,7 @@ class WindowBorder(Panel):
         # self.set_background_color(Color(0x55729c))
         # self.set_background_color(Color(0x516c94))
         # self.set_background_color(Color(0x4c668c))
-        self.borderColor = Color(0x516c94)
+        self.borderColor = Color(0x516C94)
         self.borderInactiveColor = Color(0x707070)
         self.updateBackgroundColor()
 

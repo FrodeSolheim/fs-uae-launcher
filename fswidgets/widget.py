@@ -1,17 +1,17 @@
 from dataclasses import dataclass
-from fscore.types import SimpleCallable
 from typing import Any, Literal, Optional, Union, cast
 from weakref import ReferenceType, ref
 
 from fscore.deprecated import deprecated
+from fscore.types import SimpleCallable
 from fsui.common.layout import Layout
 from fsui.qt.color import Color
 from fsui.qt.font import Font
 from fsui.qt.menu import PopupMenu
 from fsui.qt.mouse import get_mouse_position
 from fsui.qt.signal import Signal
-from fswidgets.overrides import overrides
 from fswidgets.exceptions import NoParentError
+from fswidgets.overrides import overrides
 from fswidgets.qt.core import QEvent, QObject, QPoint, Qt, QTimerEvent
 from fswidgets.qt.gui import QPalette
 from fswidgets.qt.widgets import QWidget
@@ -563,7 +563,7 @@ class Widget(QObject):
         self.destroyed.emit()
         self.onDestroy()
 
-    def on_resize(self):        
+    def on_resize(self):
         if hasattr(self, "layout") and isinstance(self.layout, Layout):
 
             width, height = self.getSize()
@@ -571,8 +571,12 @@ class Widget(QObject):
             # This is mostly used by windows with client-size decorations
             x = self.contentMargins.left
             y = self.contentMargins.top
-            width = width - self.contentMargins.left - self.contentMargins.right
-            height = height - self.contentMargins.top - self.contentMargins.bottom
+            width = (
+                width - self.contentMargins.left - self.contentMargins.right
+            )
+            height = (
+                height - self.contentMargins.top - self.contentMargins.bottom
+            )
 
             if hasattr(self, "style"):
                 style = cast(Style, getattr(self, "style"))

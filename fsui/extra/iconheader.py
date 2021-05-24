@@ -1,7 +1,8 @@
 from typing import Literal
-from fswidgets.widget import Widget
+
 import fsui
 from fswidgets.panel import Panel
+from fswidgets.widget import Widget
 
 
 class IconHeader(Panel):
@@ -45,7 +46,7 @@ class NewIconHeader(Panel):
         parent: Widget,
         icon,
         title: str,
-        subtitle: str="",
+        subtitle: str = "",
         icon_position: Literal[0, 1] = ICON_RIGHT,
     ):
         super().__init__(parent)

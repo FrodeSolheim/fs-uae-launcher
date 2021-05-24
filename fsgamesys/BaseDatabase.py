@@ -1,7 +1,7 @@
 import os
 import sqlite3
-from sqlite3.dbapi2 import Cursor
 import threading
+from sqlite3.dbapi2 import Cursor
 from typing import Any
 
 from fsbc.settings import Settings
@@ -83,7 +83,7 @@ class BaseDatabase(object):
     def cursor(self):
         if not self.connection:
             self.init()
-        assert(self.connection)
+        assert self.connection
         if use_debug_cursor():
             return DebuggingCursor(self.connection.cursor())
         return self.connection.cursor()
@@ -98,19 +98,19 @@ class BaseDatabase(object):
         print("Database.rollback")
         if not self.connection:
             self.init()
-        assert(self.connection)
+        assert self.connection
         self.connection.rollback()
 
     def commit(self):
         print("BaseDatabase.commit")
         if not self.connection:
             self.init()
-        assert(self.connection)
+        assert self.connection
         self.connection.commit()
 
     def updated_database_if_needed(self):
         cursor = self.create_cursor()
-        assert(self.connection)
+        assert self.connection
         reset_version = self.get_reset_version()
         try:
             cursor.execute("SELECT version FROM metadata")

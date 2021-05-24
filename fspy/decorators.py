@@ -28,7 +28,6 @@ from fscore.deprecated import deprecated
 #     return wrapper
 
 
-
 def memoize(func):
     memoize_data = {}
 

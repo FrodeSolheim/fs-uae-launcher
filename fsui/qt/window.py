@@ -1,16 +1,16 @@
-from dataclasses import dataclass
-from fswidgets.widget import Widget
-from fsui.qt.color import Color
 import weakref
+from dataclasses import dataclass
 from typing import Any, Optional, Tuple
 
 from fscore.deprecated import deprecated
 from fscore.system import System
+from fsui.qt.color import Color
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QMainWindow, Qt, init_qt
 from fsui.qt.toplevelwidget import TopLevelWidget
-from fswidgets.types import Point, Size, WindowState
 from fswidgets.qt.widgets import QWidget
+from fswidgets.types import Point, Size, WindowState
+from fswidgets.widget import Widget
 
 
 class WindowWrapper(QMainWindow):
@@ -282,7 +282,12 @@ class Window(TopLevelWidget):
             self.restore_margins()
             self.setWindowState(Qt.WindowNoState)
 
-    def show(self, maximized=False, center=False, offset=False):
+    def show(
+        self,
+        maximized: bool = False,
+        center: bool = False,
+        offset: bool = False,
+    ):
         if center:
             print("CENTER")
             self.center_on_parent()

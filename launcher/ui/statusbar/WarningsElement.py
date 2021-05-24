@@ -121,7 +121,7 @@ class WarningsElement(StatusElement):
 
     def on_amiga_model_config(self, value):
         config = get_config(self)
-        config.update_kickstart()
+        LauncherConfig.update_kickstart(config)
         if value != self.amiga_model:
             self.amiga_model = value
             self.amiga_model_calculated = value.split("/")[0]

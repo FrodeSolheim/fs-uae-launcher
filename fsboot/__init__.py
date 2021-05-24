@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 from functools import lru_cache
-from typing import List
+from typing import Dict, List
 
 # The original argument list at boot time, before any modifications
 _argv = []  # type: List[str]
@@ -16,7 +16,7 @@ _argv = []  # type: List[str]
 _cwd = os.getcwd()
 
 # Key-value store
-_values = {}
+_values: Dict[str, str] = {}
 
 # Found Plugin/Python code override directory
 _plugin_code_override = False
@@ -53,14 +53,14 @@ def init():
     if is_frozen():
         enableFrozenTokenizeWorkaround()
     setup_python_path()
-    print("sys.path =", sys.path)
+    # print("sys.path =", sys.path)
 
 
-def set(key, value):
+def set(key: str, value: str):
     _values[key] = value
 
 
-def get(key, default=""):
+def get(key: str, default: str = "") -> str:
     return _values.get(key, default)
 
 
@@ -497,6 +497,6 @@ def setup_python_path_frozen():
 
 
 def setup_python_path():
-    print("setup_python_path")
+    # print("setup_python_path")
     if is_frozen():
         setup_python_path_frozen()

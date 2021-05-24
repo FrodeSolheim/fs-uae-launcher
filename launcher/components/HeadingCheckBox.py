@@ -1,5 +1,5 @@
-from fswidgets.widget import Widget
 from fswidgets.checkbox import CheckBox
+from fswidgets.widget import Widget
 
 
 class HeadingCheckBox(CheckBox):

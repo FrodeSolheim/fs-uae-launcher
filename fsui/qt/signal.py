@@ -1,5 +1,5 @@
-from typing import Any
 import weakref
+from typing import Any
 
 # noinspection PyUnresolvedReferences
 from fsui.qt.qt import QSignal

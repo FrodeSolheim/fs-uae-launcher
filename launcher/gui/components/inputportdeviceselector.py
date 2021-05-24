@@ -21,7 +21,7 @@ class InputPortDeviceSelector(fsui.ComboBox):
 
         self._config_key = ""
         # FIXME: Remove self.deviceKey
-        self.deviceKey = "" # self.getDeviceKey(self.port)
+        self.deviceKey = ""  # self.getDeviceKey(self.port)
 
         # AmigaEnableBehavior(self.device_choice)
         self.device_values = []
@@ -58,6 +58,7 @@ class InputPortDeviceSelector(fsui.ComboBox):
     # -------------------------------------------------------------------------
 
     def rebuildDeviceList(self):
+        print("\n\n\n\nrebuildDeviceList")
         # self.device_values = ["", "none"]
         self.device_values = [""]
         # devices = ["", gettext("No Host Device")]
@@ -66,6 +67,7 @@ class InputPortDeviceSelector(fsui.ComboBox):
         #     devices.append(fixDeviceName(name))
         #     self.device_values.append(DeviceManager.device_ids[i])
         for device in self.inputService.getInputDevices():
+            print("-", device.id, device.name)
             # devices.append(fixDeviceName(device.name))
             devices.append(device.name)
             self.device_values.append(device.id)
@@ -81,7 +83,9 @@ class InputPortDeviceSelector(fsui.ComboBox):
                 if self.port == portNumber:
                     continue
                 key = self.getDeviceKey(portNumber)
-                print("on_changed", key, "?=", value, get_config(self).get(key))
+                print(
+                    "on_changed", key, "?=", value, get_config(self).get(key)
+                )
                 # key = "{}_port_{}".format(self._platform, port)
                 if get_config(self).get(key) == value:
                     get_config(self).set(key, "")

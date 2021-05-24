@@ -1,8 +1,8 @@
 import weakref
 from typing import Any, Optional, Type
 
-from fscore.types import SimpleCallable
 from fscore.deprecated import deprecated
+from fscore.types import SimpleCallable
 from fsui.qt.qt import QCursor, QMenu, QPoint
 
 

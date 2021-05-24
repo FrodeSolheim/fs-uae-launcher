@@ -1,9 +1,9 @@
-from fswidgets.overrides import overrides
 from typing import List, Optional
 
 import fsui
 from fsui import Panel
 from fsui.qt.color import Color
+from fswidgets.overrides import overrides
 from fswidgets.widget import Widget
 from launcher.context import get_settings, get_theme
 

@@ -1,5 +1,5 @@
-from fswidgets.widget import Widget
 import fsui
+from fswidgets.widget import Widget
 from launcher.context import get_config
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings

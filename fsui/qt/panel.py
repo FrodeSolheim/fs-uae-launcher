@@ -18,11 +18,14 @@ class Panel(Widget):
         parent: Widget,
         paintable: bool = False,
         style: Optional[Style] = None,
-        forceRealParent: bool = False
+        forceRealParent: bool = False,
     ):
         unused(paintable)
         super().__init__(
-            parent, WidgetWithEventHandlers(QParent(parent, forceRealParent=forceRealParent), self)
+            parent,
+            WidgetWithEventHandlers(
+                QParent(parent, forceRealParent=forceRealParent), self
+            ),
         )
         # self.style = style or Style()
         style = style or Style()

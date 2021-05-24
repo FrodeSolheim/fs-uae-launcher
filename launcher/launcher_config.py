@@ -2,12 +2,14 @@ import hashlib
 import os
 import traceback
 from configparser import ConfigParser, NoSectionError
+from typing import Dict, List, Tuple
 
 from fsbc.paths import Paths
 from fsbc.signal import Signal
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.amiga.valueconfigloader import ValueConfigLoader
 from fsgamesys.checksumtool import ChecksumTool
+from fsgamesys.config.config import Config
 from fsgamesys.context import fsgs
 from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.platforms.platform import PlatformHandler
@@ -306,25 +308,39 @@ class LauncherConfig(object):
 
     @classmethod
     @deprecated
-    def set(cls, key, value):
+    def set(cls, key: str, value: str):
         fsgs.config.set(key, value)
 
     @classmethod
     @deprecated
-    def set_multiple(cls, items):
-        fsgs.config.set(items)
+    def set_multiple(cls, items: List[Tuple[str, str]]):
+        fsgs.config.set_multiple(items)
 
     @classmethod
     @deprecated
-    def update_from_config_dict(cls, config_dict):
-        changes = []
+    def update_from_config_dict(cls, config_dict: Dict[str, str]):
+        # changes = []
+        # for key, value in config_dict.items():
+        #     if key in fsgs.config.values:
+        #         if fsgs.config.values[key] != value:
+        #             changes.append((key, value))
+        #     else:
+        #         changes.append((key, value))
+        # cls.set_multiple(changes)
+        LauncherConfig.update_config_from_config_dict(fsgs.config, config_dict)
+
+    @staticmethod
+    def update_config_from_config_dict(
+        config: Config, config_dict: Dict[str, str]
+    ):
+        changes: List[Tuple[str, str]] = []
         for key, value in config_dict.items():
             if key in fsgs.config.values:
                 if fsgs.config.values[key] != value:
                     changes.append((key, value))
             else:
                 changes.append((key, value))
-        cls.set_multiple(changes)
+        config.set_multiple(changes)
 
     @classmethod
     @deprecated
@@ -347,7 +363,7 @@ class LauncherConfig(object):
         return s.hexdigest()
 
     @staticmethod
-    def update_kickstart_in_config_dict(config_dict):
+    def update_kickstart_in_config_dict(config_dict: Dict[str, str]):
         print("update_kickstart_in_config")
         model = config_dict.setdefault(
             "amiga_model", default_config["amiga_model"]
@@ -400,9 +416,11 @@ class LauncherConfig(object):
                     # FIXME: set sha1 and name x_options also
 
     @classmethod
-    @deprecated
-    def update_kickstart(cls):
-        cls.set_kickstart_from_model()
+    def update_kickstart(cls, config: Config):
+        config_dict = config.values.copy()
+        # cls.set_kickstart_from_model()
+        cls.update_kickstart_in_config_dict(config_dict)
+        cls.update_config_from_config_dict(config, config_dict)
 
     @classmethod
     @deprecated
@@ -410,7 +428,7 @@ class LauncherConfig(object):
         print("set_kickstart_from_model")
         config_dict = fsgs.config.values.copy()
         cls.update_kickstart_in_config_dict(config_dict)
-        cls.update_from_config_dict(config_dict)
+        LauncherConfig.update_config_from_config_dict(fsgs.config, config_dict)
 
     @classmethod
     @deprecated

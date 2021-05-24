@@ -1,5 +1,5 @@
-from typing import Any, List
 import threading
+from typing import Any, List
 
 from fsbc.signal import Signal as BaseSignal
 

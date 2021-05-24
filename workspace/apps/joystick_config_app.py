@@ -5,13 +5,15 @@ import traceback
 import weakref
 from configparser import ConfigParser
 from io import TextIOWrapper
+from typing import Optional
 
 import fsui
 from fsbc.application import Application
 from fscore.system import System
 from fsgamesys.amiga.fsuaedevicehelper import FSUAEDeviceHelper
 from fsgamesys.FSGSDirectories import FSGSDirectories
-from fsgamesys.input.inputdevice import InputDevice
+from fsgamesys.input2.dataclasses import InputDevice
+from fswidgets.widget import Widget
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.ui.skin import Skin
@@ -20,9 +22,9 @@ from workspace.ui.theme import WorkspaceTheme
 
 
 class JoystickConfigWindow(fsui.Window):
-    def __init__(self, parent, device_name):
+    def __init__(self, parent: Optional[Widget], device: InputDevice):
         title = gettext("Configure {device_name}").format(
-            device_name=device_name
+            device_name=device.name
         )
         super().__init__(
             parent,
@@ -31,6 +33,9 @@ class JoystickConfigWindow(fsui.Window):
             maximizable=False,
             separator=False,
         )
+
+        self.device = device
+
         self.theme = WorkspaceTheme.instance()
         self.layout = fsui.VerticalLayout()
 
@@ -115,7 +120,7 @@ class JoystickConfigWindow(fsui.Window):
             self.close_button = CloseButton(panel)
             panel.layout.add(self.close_button, margin_left=10)
 
-        self.device_name = device_name
+        # self.device_name = device_name
         existing_config = self.read_existing_config()
 
         self.button_panels = []
@@ -320,11 +325,16 @@ class JoystickConfigWindow(fsui.Window):
         fsui.call_later(100, self.on_timer_callback)
 
     def get_joystick_id(self):
-        device_name = self.device_name.rsplit("#", 1)[0]
-        buttons = DeviceManager.joystick_buttons(self.device_name)
-        axes = DeviceManager.joystick_axes(self.device_name)
-        hats = DeviceManager.joystick_hats(self.device_name)
-        balls = DeviceManager.joystick_balls(self.device_name)
+        # device_name = self.device_name.rsplit("#", 1)[0]
+        device_name = self.device.id.rsplit("#", 1)[0]
+        # buttons = DeviceManager.joystick_buttons(self.device_name)
+        # axes = DeviceManager.joystick_axes(self.device_name)
+        # hats = DeviceManager.joystick_hats(self.device_name)
+        # balls = DeviceManager.joystick_balls(self.device_name)
+        buttons = self.device.buttonCount
+        axes = self.device.axisCount
+        hats = self.device.hatCount
+        balls = 0  # FIXME
         name_lower = device_name.lower()
         name = ""
         for c in name_lower:
@@ -339,10 +349,12 @@ class JoystickConfigWindow(fsui.Window):
         )
 
     def get_joystick_guid(self):
-        return DeviceManager.joystick_guid(self.device_name)
+        # return DeviceManager.joystick_guid(self.device_name)
+        return self.device.sdl2Uuid
 
     def get_joystick_sdl_name(self):
-        return DeviceManager.joystick_sdl_name(self.device_name)
+        # return DeviceManager.joystick_sdl_name(self.device_name)
+        return self.device.sdl2Name
 
     def get_load_path(self):
         path = self.get_save_path(
@@ -406,11 +418,18 @@ class JoystickConfigWindow(fsui.Window):
         device_name = self.device_name.rsplit("#", 1)[0]
         # device_make = self.make_field.get_text().strip()
         device_model = self.model_field.get_text().strip()
-        guid = DeviceManager.joystick_guid(self.device_name)
-        axes = DeviceManager.joystick_axes(self.device_name)
-        balls = DeviceManager.joystick_balls(self.device_name)
-        buttons = DeviceManager.joystick_buttons(self.device_name)
-        hats = DeviceManager.joystick_hats(self.device_name)
+
+        # guid = DeviceManager.joystick_guid(self.device_name)
+        # axes = DeviceManager.joystick_axes(self.device_name)
+        # balls = DeviceManager.joystick_balls(self.device_name)
+        # buttons = DeviceManager.joystick_buttons(self.device_name)
+        # hats = DeviceManager.joystick_hats(self.device_name)
+        guid = self.device.sdl2Uuid
+        axes = self.device.axisCount
+        balls = self.device.ballCount
+        buttons = self.device.buttonCount
+        hats = self.device.hatCount
+
         mapping = {}
         for i, button in enumerate(BUTTONS):
             panel = self.button_panels[i]
@@ -518,15 +537,22 @@ class JoystickConfigWindow(fsui.Window):
         return mapping_str, mapping_str_2
 
     def save_config(self):
-        device_name = self.device_name.rsplit("#", 1)[0]
+        device_name = self.device.id.rsplit("#", 1)[0]
         device_type = self.device_type_ids[self.type_field.index()]
         # device_make = self.make_field.get_text().strip()
         device_model = self.model_field.get_text().strip()
-        guid = DeviceManager.joystick_guid(self.device_name)
-        buttons = DeviceManager.joystick_buttons(self.device_name)
-        axes = DeviceManager.joystick_axes(self.device_name)
-        hats = DeviceManager.joystick_hats(self.device_name)
-        balls = DeviceManager.joystick_balls(self.device_name)
+        # guid = DeviceManager.joystick_guid(self.device_name)
+        # buttons = DeviceManager.joystick_buttons(self.device_name)
+        # axes = DeviceManager.joystick_axes(self.device_name)
+        # hats = DeviceManager.joystick_hats(self.device_name)
+        # balls = DeviceManager.joystick_balls(self.device_name)
+
+        guid = self.device.sdl2Uuid
+        axes = self.device.axisCount
+        balls = self.device.ballCount
+        buttons = self.device.buttonCount
+        hats = self.device.hatCount
+
         config = [
             "[fs-uae-controller]",
             "name = {}".format(device_name),

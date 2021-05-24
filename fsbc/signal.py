@@ -1,8 +1,9 @@
-from fscore.types import SimpleCallable
 import threading
 import traceback
 from typing import Any, Dict, List, Optional, Tuple
 from weakref import ref
+
+from fscore.types import SimpleCallable
 
 main_thread_id = threading.current_thread().ident
 _signal_id = 0
@@ -67,7 +68,7 @@ class Signal:
 
     quit = None  # type: Signal
 
-    def __init__(self, signal: Optional[str]=None):
+    def __init__(self, signal: Optional[str] = None):
         if not signal:
             signal = new_signal_id()
         self.signal = signal

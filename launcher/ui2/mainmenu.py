@@ -1,9 +1,9 @@
-from fsui.qt.toplevelwidget import TopLevelWidget
 import weakref
 
 from fscore.developermode import DeveloperMode
 from fsgamesys.product import Product
 from fsui import Menu, PopupMenu
+from fsui.qt.toplevelwidget import TopLevelWidget
 from fswidgets.widget import Widget
 from launcher.context import useTranslation
 from system.exceptionhandler import exceptionhandler
@@ -66,7 +66,9 @@ class MainMenu(PopupMenu):
 
         # self.addSubMenu(t("Window"), WindowMenu())
         windowMenu = self.addSubMenu(t("Window"))
-        windowMenu.add_item("Restore default window size", self.onDefaultWindowSize)
+        windowMenu.add_item(
+            "Restore default window size", self.onDefaultWindowSize
+        )
 
         self.add_separator()
 

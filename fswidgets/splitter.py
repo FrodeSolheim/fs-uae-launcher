@@ -113,7 +113,7 @@ class Splitter(Widget):
     def qwidget(self) -> QSplitter:
         return cast(QSplitter, self.getQWidget())
 
-    def setSplitterPosition(self, position: int):
+    def setSplitterPosition(self, position: int, zeroableIndex: int = 0):
         if position > 0:
             self.qwidget.setStretchFactor(0, 0)
             self.qwidget.setStretchFactor(1, 1)
@@ -124,6 +124,11 @@ class Splitter(Widget):
             self.qwidget.setStretchFactor(1, 0)
             self.qwidget.setSizes([0, -position])
             self.__fixedIndex = 0
+        else:
+            self.qwidget.setStretchFactor(zeroableIndex, 0)
+            self.qwidget.setStretchFactor(not zeroableIndex, 1)
+            self.qwidget.setSizes([0, 0])
+            self.__fixedIndex = zeroableIndex
 
     def setStretchFactor(self, index: int, stretchFactor: int):
         self.qwidget.setStretchFactor(index, stretchFactor)

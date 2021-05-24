@@ -84,7 +84,7 @@ def find_app(app):
     return app_main
 
 
-def main(app_name=""):
+def main(app_name: str = "") -> None:
     # FIXME: This entire module is a mess and should be rewritten
 
     # Check deprecated/legacy app options.

@@ -1,4 +1,7 @@
-Version 4.0.x:
+* Allow overriding kickstart ROM file again.
+* Ask to "upgrade" (install) FS-UAE / QEMU-UAE / CAPSImg if not installed.
+* Start/redirect to newer Launcher, if it exists, from plugin dir.
+* Remember splitter position also when collapsed.
 
 * Remember splitter position + menu entry to restore default size.
 * Splitters to choose config list and screenshots panel size.

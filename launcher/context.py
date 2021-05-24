@@ -1,7 +1,6 @@
 # import weakref
 from typing import Optional, cast
 
-from fsgamesys.input2.inputservice import InputService
 from fsgamesys.FSGameSystemContext import FSGameSystemContext
 from fsui.context import get_window
 from fswidgets.parentstack import ParentStack
@@ -17,6 +16,8 @@ def useImageLoader(widget: Optional[Widget] = None):
 
 
 def useInputService():
+    from fsgamesys.input2.inputservice import InputService
+
     return InputService.getInstance()
 
 
