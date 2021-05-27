@@ -135,7 +135,7 @@ jobs:
 
     - name: Install Node dependencies
       run: |
-        node install -g appdmg
+        npm install -g appdmg
 
     - name: Run pipenv install
       run: |
