@@ -214,9 +214,12 @@ def main():
     if sys.platform != "darwin":
         print("Not creating DMG (non-macOS platform)")
         sys.exit(0)
-    build_dmg()
-    sign_dmg()
-    notarize_dmg()
+    if len(sys.argv) == 1 or "--build" in sys.argv:
+        build_dmg()
+    if len(sys.argv) == 1 or "--sign" in sys.argv:
+        sign_dmg()
+    if len(sys.argv) == 1 or "--notarize" in sys.argv:
+        notarize_dmg()
 
 
 if __name__ == "__main__":
