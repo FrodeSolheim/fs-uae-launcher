@@ -127,11 +127,15 @@ jobs:
 
     - name: Add Python to PATH
       run: |
-        echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH  
+        echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
 
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
         python3 -m pip install --upgrade pip pipenv dmgbuild
+
+    - name: Install Node dependencies
+      run: |
+        node install -g appdmg
 
     - name: Run pipenv install
       run: |
