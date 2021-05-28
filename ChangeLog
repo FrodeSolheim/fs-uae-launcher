@@ -1,3 +1,4 @@
+* Make sure initial window position is not stored as 0, 0.
 * Allow overriding kickstart ROM file again.
 * Ask to "upgrade" (install) FS-UAE / QEMU-UAE / CAPSImg if not installed.
 * Start/redirect to newer Launcher, if it exists, from plugin dir.

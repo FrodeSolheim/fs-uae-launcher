@@ -127,11 +127,15 @@ jobs:
 
     - name: Add Python to PATH
       run: |
-        echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH  
+        echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
 
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
         python3 -m pip install --upgrade pip pipenv dmgbuild
+
+    - name: Install Node dependencies
+      run: |
+        npm install -g appdmg
 
     - name: Run pipenv install
       run: |
@@ -178,8 +182,23 @@ jobs:
     - name: Archive
       run: fsbuild/archive
 
-    - name: Build, sign and notarize DMG
-      run: fsbuild/dmg
+    - name: Build DMG
+      run: fsbuild/dmg --build
+
+    - name: Unlock keychain again
+      run: |
+        echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
+        security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
+      env:
+        KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
+        SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+
+    - name: Sign DMG
+      run: fsbuild/dmg --sign
+
+    - name: Notarize DMG
+      run: fsbuild/dmg --notarize
       env:
         NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
         NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}

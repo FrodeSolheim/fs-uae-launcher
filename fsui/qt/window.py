@@ -77,6 +77,10 @@ class WindowWrapper(QMainWindow):
     def resizeEvent(self, event):
         self._fswidget.on_resize()
 
+    def moveEvent(self, event):
+        print("onShow (move)", self.x(), self.y())
+        self._fswidget.onMove()
+
     def showEvent(self, _):
         # if self.owner().center_on_show:
         #     if not self._centered_on_initial_show:
@@ -84,8 +88,10 @@ class WindowWrapper(QMainWindow):
         #             self.owner().center_on_parent()
         #         self._centered_on_initial_show = True
         #
-        self._fswidget.set_initial_size_from_layout()
-        self._fswidget.on_resize()
+        # self._fswidget.set_initial_size_from_layout()
+        # self._fswidget.on_resize()
+        print("showEvent, onShow", self.x(), self.y())
+        self._fswidget.onShow()
 
 
 # noinspection PyPep8Naming
@@ -120,7 +126,7 @@ class Window(TopLevelWidget):
             maximizable=maximizable,
             title=title,
         )
-        super().__init__(parent, qwidget, escape=escape)
+        super().__init__(parent, qwidget, escape=escape, maximizable=maximizable)
 
         # if parent is None and len(default_window_parent) > 0:
         #     parent = default_window_parent[-1]

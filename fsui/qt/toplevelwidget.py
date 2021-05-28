@@ -3,6 +3,7 @@ from logging import getLogger
 from typing import Optional, Set, cast
 from weakref import ref
 
+from fscore.system import System
 from fspy.decorators import deprecated
 from fsui.qt.qt import QDesktopWidget, QSignal
 from fswidgets.qt.core import QEvent, QObject, Qt
@@ -40,6 +41,7 @@ class TopLevelWidget(Widget):
         parent: Optional[Widget],
         qwidget: QWidget,
         escape: bool = False,
+        maximizable: bool = False,
     ):
         super().__init__(parent, qwidget)
 
@@ -55,6 +57,8 @@ class TopLevelWidget(Widget):
         # def init_window(self, parent, title):
         # self.init_mixin_base()
         # self.setWindowTitle(title)
+
+        self.__maximizable = maximizable
 
         self.layout = None
 
@@ -89,6 +93,8 @@ class TopLevelWidget(Widget):
         # we do not want to set size from layout.
         self._windowSizeHasBeenSet = False
 
+        # self._qwidget.installEventFilter(self)
+
         _windows.add(self)
 
     # -------------------------------------------------------------------------
@@ -120,6 +126,9 @@ class TopLevelWidget(Widget):
     def isActive(self) -> bool:
         return self.qwidget.isActiveWindow()
 
+    def isMaximizable(self) -> bool:
+        return self.__maximizable
+
     def isMaximized(self) -> bool:
         return self.qwidget.windowState() == Qt.WindowMaximized
 
@@ -132,6 +141,15 @@ class TopLevelWidget(Widget):
 
     def onClose(self):
         pass
+
+    def onMove(self):
+        print("onMove", self.getPosition())
+        self._nonMaximizedPosition = self.getPosition()
+
+    def onShow(self):
+        print("onShow, position = ", self.getPosition())
+        self.set_initial_size_from_layout()
+        self.on_resize()
 
     def raiseAndActivate(self):
         self.qwidget.raise_()
@@ -387,6 +405,21 @@ class TopLevelWidget(Widget):
     # def __destroyed(self):
     #     print(f"TopLevelWidget.__destroyed self={self}")
 
+    def __handleShortcut(self, key: int, super: bool) -> bool:
+        print("Handleshortcut", key, super)
+        if key == Qt.Key_Escape:
+            if hasattr(self, "end_modal"):
+                self.end_modal(False)
+            if hasattr(self, "endModal"):
+                self.endModal(False)
+            self.close()
+            return True
+        # if System.windows:
+        if super and key == Qt.Key_Up:
+            if self.isMaximizable():
+                self.setMaximized(True)
+        return False
+
     def eventFilter(self, a0: QObject, a1: QEvent):
         obj = a0
         event = a1
@@ -405,11 +438,16 @@ class TopLevelWidget(Widget):
                 self.on_close()
         elif eventType == QEvent.KeyPress:
             keyEvent = cast(QKeyEvent, event)
-            if keyEvent.key() == Qt.Key_Escape:
-                if hasattr(self, "end_modal"):
-                    self.end_modal(False)
-                self.close()
+            mod = int(keyEvent.modifiers())
+            if self.__handleShortcut(
+                keyEvent.key(), (mod & Qt.MetaModifier != 0)
+            ):
                 return True
+            # if keyEvent.key() == Qt.Key_Escape:
+            #     if hasattr(self, "end_modal"):
+            #         self.end_modal(False)
+            #     self.close()
+            #     return True
         return super().eventFilter(obj, event)
 
     # def closeEvent(self, event):

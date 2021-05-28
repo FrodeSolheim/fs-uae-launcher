@@ -33,3 +33,7 @@ fi
 # platforms.
 rm -Rf $BINDIR/PyQt5/Qt/translations
 rm -Rf $BINDIR/PyQt5/Qt/qml
+
+# In case the Qt dir is Qt5...
+rm -Rf $BINDIR/PyQt5/Qt5/translations
+rm -Rf $BINDIR/PyQt5/Qt5/qml
