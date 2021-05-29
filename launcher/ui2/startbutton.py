@@ -1,3 +1,5 @@
+from fscore.system import System
+from fswidgets.widget import Widget
 from fsgamesys.options.constants2 import (
     PARENT_H__,
     PARENT_W__,
@@ -35,13 +37,17 @@ class StartButton(Button):
         self.set_enabled(not isrunning)
 
     @staticmethod
-    def start(widget, dialog=False, *, gscontext):
+    def start(widget: Widget, dialog=False, *, gscontext):
         window = get_window(widget)
-        pos = window.unscaled_position()
-        size = window.unscaled_size()
+        if System.macos:
+            position = window.getPosition()
+            size = window.getSize()
+        else:
+            position = window.getUnscaledPosition()
+            size = window.getUnscaledSize()
         config = get_config(widget)
-        config.set(PARENT_X__, str(pos[0]))
-        config.set(PARENT_Y__, str(pos[1]))
+        config.set(PARENT_X__, str(position[0]))
+        config.set(PARENT_Y__, str(position[1]))
         config.set(PARENT_W__, str(size[0]))
         config.set(PARENT_H__, str(size[1]))
 

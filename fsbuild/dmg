@@ -3,6 +3,7 @@
 
 import json
 import os
+import platform
 import subprocess
 import sys
 import time
@@ -26,7 +27,12 @@ package_version = package["PACKAGE_VERSION"]
 bundle_id = package["PACKAGE_MACOS_BUNDLE_ID"]
 app = package_name_pretty + ".app"
 # framework = package_name_pretty + ".framework"
-arch = "x86-64"  # FIXME
+
+machine = platform.machine()
+if machine == "arm64":
+    arch = "ARM64"
+else:
+    arch = "x86-64"  # FIXME
 
 apple_id_user = os.environ.get("NOTARIZATION_USERNAME", "")
 itc_provider = os.environ.get("NOTARIZATION_PROVIDER", "")

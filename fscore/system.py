@@ -61,6 +61,9 @@ class System:
     def getCpuArchitecture(cls):
         if is_x86_family():
             return "x86-64" if is_64_bit() else "x86"
+        machine = platform.machine()
+        if machine == "arm64":
+            return "ARM64"
         return "Unknown"
 
     @classmethod
