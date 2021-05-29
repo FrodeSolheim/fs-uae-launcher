@@ -187,11 +187,14 @@ def os_name() -> str:
 
 
 def arch_name() -> str:
-    if platform.machine().lower() in X86_ANY_MACHINES:
+    machine = platform.machine().lower()
+    if machine in X86_ANY_MACHINES:
         if platform.architecture()[0] == "64bit":
             return "x86-64"
         else:
             return "x86"
+    elif machine == "arm64":
+        return "ARM64"
     # FIXME: arm7/8 and ARM64
     return "Unknown"
 
