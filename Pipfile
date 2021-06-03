@@ -15,7 +15,7 @@ mypy = "*"
 [packages]
 lhafile = "*"
 PyOpenGL = "*"
-PyQt5 = "==5.15.3"
+PyQt5 = "==5.8.2"
 pillow = "*"
 requests = "*"
 sentry-sdk = "*"
@@ -28,4 +28,4 @@ pyobjc-framework-Cocoa = {version = "", sys_platform = "== 'darwin'"}
 pyobjc-framework-Quartz = {version = "", sys_platform = "== 'darwin'"}
 
 [requires]
-python_version = "3.9"
+python_version = "3.7"
