@@ -10,7 +10,7 @@ on:
 
 jobs:
 
-  macOS10.9_x86-64:
+  macOS10-9_x86-64:
     runs-on: macos-10.15
 
     steps:
