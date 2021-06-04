@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6c6fd39329311da157ba75dda82edcc84d31551fbdd81c54578a957a080b498b"
+            "sha256": "d3870dfeb2f811b4fc97937bd85168f17f375aef395c62bbf380583ec7fe89f4"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -204,6 +204,45 @@
             ],
             "version": "==2021.1"
         },
+        "pyobjc-core": {
+            "hashes": [
+                "sha256:860183540d1be792c26426018139ac8ba75e85f675c59ba080ccdc52d8e74c7a",
+                "sha256:94b4d9de9d228db52dd35012096d63bdf8c1ace58ea3be1d5f6f39313cd502f2",
+                "sha256:971cbd7189ae1aa03ef0d16124aa5bcd053779e0e6b6011a41c3dbd5b4ea7e88",
+                "sha256:9d93b20394008373d6d2856d49aaff26f4b97ff42d924a14516c8a82313ec8c0",
+                "sha256:9e9ec482d80ea030cdb1613d05a247f31eedabe6666d884d42dd890cc5fb0e05",
+                "sha256:ffe61d3c2a404354daf2d895e34e38c5044453353581b3c396bf5365de26250c"
+            ],
+            "index": "pypi",
+            "markers": "sys_platform == 'darwin'",
+            "version": "==7.2"
+        },
+        "pyobjc-framework-cocoa": {
+            "hashes": [
+                "sha256:506c2cd09f421eac92b9008a0142174c3d1d70ecd4b0e3fa2b924767995fd14e",
+                "sha256:7e4c6d7baa0c2ab5ea5efb8836ad0b3b3976cffcfc6195c1f195e826c6eb5744",
+                "sha256:828d183947fc7746953fd0c9b1092cc423745ba0b49719e7b7d1e1614aaa20ec",
+                "sha256:8e5dd5daa0096755937ec24c345a4b07c3fa131a457f99e0fdeeb01979178ec7",
+                "sha256:c8b23f03dc3f4436d36c0fd006a8a084835c4f6015187df7c3aa5de8ecd5c653",
+                "sha256:c9a9d1d49cc5a810773c88d6de821e60c8cc41d01113cf1b9e7662938f5f7d66"
+            ],
+            "index": "pypi",
+            "markers": "sys_platform == 'darwin'",
+            "version": "==7.2"
+        },
+        "pyobjc-framework-quartz": {
+            "hashes": [
+                "sha256:4549d17ca41f0bf62792d5bc4b4293ba9a6cc560014b3e18ba22c65e4a5030d2",
+                "sha256:ad8103cc38923f2708904db11a0992ea960125ce6adf7b4c7a77d8fdafd412c4",
+                "sha256:c1f6471177a39535cd0358ae29b8f3d31fe778a21deb74105c448c4e726619d7",
+                "sha256:da16e4f1e13cb7b02e30fa538cbb3a356e4a694bbc2bb26d2bd100ca12a54ff6",
+                "sha256:dc61fe61d26f797e4335f3ffc891bcef64624c728c2603e3307b3910580b2cb8",
+                "sha256:ea554e5697bc6747a4ce793c0b0036da16622b44ff75196d6124603008922afa"
+            ],
+            "index": "pypi",
+            "markers": "sys_platform == 'darwin'",
+            "version": "==7.2"
+        },
         "pyopengl": {
             "hashes": [
                 "sha256:11ad32c7bde7ea0ffb7a94dd552c639ca72376982a8dd6fe0c092d2002a4ca6e",
@@ -222,6 +261,24 @@
             ],
             "index": "pypi",
             "version": "==5.8.2"
+        },
+        "pyqt5-sip": {
+            "hashes": [
+                "sha256:125f77c087572c9272219cda030a63c2f996b8507592b2a54d7ef9b75f9f054d",
+                "sha256:14c37b06e3fb7c2234cb208fa461ec4e62b4ba6d8b32ca3753c0b2cfd61b00e3",
+                "sha256:1cb2cf52979f9085fc0eab7e0b2438eb4430d4aea8edec89762527e17317175b",
+                "sha256:4babef08bccbf223ec34464e1ed0a23caeaeea390ca9a3529227d9a57f0d6ee4",
+                "sha256:53cb9c1208511cda0b9ed11cffee992a5a2f5d96eb88722569b2ce65ecf6b960",
+                "sha256:549449d9461d6c665cbe8af4a3808805c5e6e037cd2ce4fd93308d44a049bfac",
+                "sha256:5f5b3089b200ff33de3f636b398e7199b57a6b5c1bb724bdb884580a072a14b5",
+                "sha256:a4d9bf6e1fa2dd6e73f1873f1a47cee11a6ba0cf9ba8cf7002b28c76823600d0",
+                "sha256:a4ee6026216f1fbe25c8847f9e0fbce907df5b908f84816e21af16ec7666e6fe",
+                "sha256:a91a308a5e0cc99de1e97afd8f09f46dd7ca20cfaa5890ef254113eebaa1adff",
+                "sha256:b0342540da479d2713edc68fb21f307473f68da896ad5c04215dae97630e0069",
+                "sha256:f997e21b4e26a3397cb7b255b8d1db5b9772c8e0c94b6d870a5a0ab5c27eacaa"
+            ],
+            "index": "pypi",
+            "version": "==4.19.13"
         },
         "pywin32-ctypes": {
             "hashes": [
