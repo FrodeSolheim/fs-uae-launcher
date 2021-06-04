@@ -50,6 +50,10 @@ jobs:
       run: |
         cp fsbuild/macOS10.9/* .
 
+    - name: Install Node dependencies
+      run: |
+        npm install -g appdmg
+
     - name: Run pipenv install
       run: |
         pipenv install --deploy
