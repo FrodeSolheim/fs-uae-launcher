@@ -1,0 +1,98 @@
+name: Windows
+on:
+  push:
+    branches:
+      - master
+      - dev
+      - stable
+  pull_request:
+    branches:
+      - master
+      - dev
+      - stable
+jobs:
+  x86-64:
+    runs-on: windows-2016
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          install: >-
+            make
+            dos2unix
+            tar
+            zip
+          path-type: inherit
+          update: true
+
+      - name: Download Python
+        run: |
+          wget https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe
+          echo "7628244cb53408b50639d2c1287c659f4e29d3dfdb9084b11aed5870c0c6a48a *python-3.8.10-amd64.exe" > SHA256SUMS
+          sha256sum -c SHA256SUMS
+
+      - name: Install Python
+        shell: cmd
+        run: |
+          START /WAIT python-3.8.10-amd64.exe /install /quiet PrependPath=1
+
+      - name: Add Python to PATH
+        run: |
+          export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python38
+          cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
+          echo $PYTHONDIR/Scripts >> $GITHUB_PATH
+          echo $PYTHONDIR >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip pipenv
+
+      - name: Run pipenv install
+        run: |
+          pipenv install --python 3.8 --deploy
+
+      - name: Create python3 alias in virtualenv
+        run: |
+          pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
+
+      - name: Update version
+        run: |
+          fsbuild/version --update --auto
+
+      - name: Bootstrap
+        run: fsbuild/bootstrap
+
+      - name: Build
+        run: |
+          pipenv run bash -c 'fsbuild/build'
+
+      - name: Bundle
+        run: |
+          fsbuild/bundle
+
+      - name: Archive
+        run: fsbuild/archive
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Windows_x86-64
+          path: fsbuild/_dist/*
+
+      - name: Upload build to Dropbox folder
+        if: >-
+          github.ref == 'refs/heads/master' ||
+          github.ref == 'refs/heads/dev' ||
+          github.ref == 'refs/heads/stable'
+        run: |
+          python3 -m pip install dropbox
+          fsbuild/upload
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}

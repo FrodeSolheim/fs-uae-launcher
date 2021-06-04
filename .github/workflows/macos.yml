@@ -1,4 +1,4 @@
-name: macOS10.9
+name: macOS
 on:
   push:
     branches:
@@ -13,8 +13,6 @@ on:
 jobs:
   x86-64:
     runs-on: macos-10.15
-    env:
-      SYSTEM_OS_DIST: macOS10.9
     steps:
 
       - name: Install brew packages
@@ -25,27 +23,30 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check Python version
+        run: |
+          which python3
+          python3 --version
+          which python3.9
+          python3.9 --version
+
       - name: Download Python
         run: |
-          wget https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg
-          echo "bf54a14eef23467991e8c7a88c7307762e484c024a94ec1ee292ac1db3d41fc9 *python-3.7.9-macosx10.9.pkg" > SHA256SUMS
+          wget https://www.python.org/ftp/python/3.9.5/python-3.9.5-macosx10.9.pkg
+          echo "f65931e47676f8e835f70d4fc3cac0cb2ee9cd7393af4b90cc7f207d23437b75 *python-3.9.5-macosx10.9.pkg" > SHA256SUMS
           shasum -c SHA256SUMS
 
       - name: Install Python
         run: |
-          sudo installer -pkg python-3.7.9-macosx10.9.pkg -target /
+          sudo installer -pkg python-3.9.5-macosx10.9.pkg -target /
 
       - name: Add Python to PATH
         run: |
-          echo /Library/Frameworks/Python.framework/Versions/3.7/bin >> $GITHUB_PATH
+          echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python3 -m pip install --upgrade pip pipenv dmgbuild
-
-      - name: Modifications for macOS 10.9
-        run: |
-          cp fsbuild/macOS10.9/* .
 
       - name: Install Node dependencies
         run: |
