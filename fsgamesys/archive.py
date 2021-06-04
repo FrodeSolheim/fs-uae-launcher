@@ -306,7 +306,7 @@ def filter_open(path: str, stream: Optional[ByteStream] = None) -> ByteStream:
     return stream
 
 
-from typing import Protocol
+from typing_extensions import Protocol
 
 
 class SupportsClose(Protocol):

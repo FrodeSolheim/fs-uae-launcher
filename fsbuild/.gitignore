@@ -3,4 +3,6 @@
 
 /_build/
 /_dist/
+*.pyc
+__pycache__/
 /_sources/
