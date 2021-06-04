@@ -14,6 +14,7 @@ OS=$SYSTEM_OS
 ARCH=$SYSTEM_ARCH
 fi
 
+rm -Rf fsbuild/_dist
 mkdir -p fsbuild/_dist
 
 cd fsbuild/_build
