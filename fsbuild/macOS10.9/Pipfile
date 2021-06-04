@@ -1,0 +1,30 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+black = "==20.8b1"
+nose = "*"
+pylint = "*"
+pytest = "*"
+pytest-mypy = "*"
+rope = "*"
+mypy = "*"
+
+[packages]
+lhafile = "*"
+PyOpenGL = "*"
+PyQt5 = "==5.8.2"
+pillow = "*"
+requests = "*"
+sentry-sdk = "*"
+pywin32-ctypes = "*"
+pyinstaller = "*"
+pefile = "*"
+macholib = "*"
+rx = "*"
+autologging = "*"
+
+[requires]
+python_version = "3.7"
