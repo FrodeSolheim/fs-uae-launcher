@@ -5,27 +5,28 @@ verify_ssl = true
 
 [dev-packages]
 black = "==20.8b1"
+mypy = "*"
 nose = "*"
 pylint = "*"
 pytest = "*"
 pytest-mypy = "*"
 rope = "*"
-mypy = "*"
 
 [packages]
 lhafile = "*"
-PyOpenGL = "*"
-PyQt5 = "==5.15.3"
+macholib = "*"
+pefile = "*"
 pillow = "*"
+pyinstaller = "*"
+pyobjc-core = {version = "", sys_platform = "== 'darwin'"}
+pyobjc-framework-cocoa = {version = "", sys_platform = "== 'darwin'"}
+pyobjc-framework-quartz = {version = "", sys_platform = "== 'darwin'"}
+pyopengl = "*"
+pyqt5 = "==5.15.3"
+pywin32-ctypes = "*"
 requests = "*"
 sentry-sdk = "*"
-pywin32-ctypes = "*"
-pyinstaller = "*"
-pefile = "*"
-macholib = "*"
-pyobjc-core = {version = "", sys_platform = "== 'darwin'"}
-pyobjc-framework-Cocoa = {version = "", sys_platform = "== 'darwin'"}
-pyobjc-framework-Quartz = {version = "", sys_platform = "== 'darwin'"}
+typing-extensions = "*"
 
 [requires]
 python_version = "3.9"

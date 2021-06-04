@@ -24,7 +24,7 @@ class PackageInformation:
     @property
     def displayName(self) -> str:
         """E.g. FS-UAE Launcher."""
-        return self.values["PACKAGE_DISPLAY_NAME"]
+        return self.values.get("PACKAGE_DISPLAY_NAME", self.prettyName)
 
     @property
     def name(self) -> str:
@@ -110,10 +110,11 @@ def getArchitecture() -> str:
 
 
 def getBundleName() -> str:
-    if True:
-        return getAppName()
-    else:
+    packageInformation = getPackageInformation()
+    if packageInformation.type == "fs-library-plugin":
         return getFrameworkName()
+    else:
+        return getAppName()
 
 
 def getBundlePath(prefix: str = "fsbuild/_build/") -> str:
