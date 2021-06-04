@@ -1,4 +1,4 @@
-name: Python application
+name: macOS10.9
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
 
 jobs:
 
-  macOS10-9_x86-64:
+  x86-64:
     runs-on: macos-10.15
     env:
       SYSTEM_OS_DIST: macOS10.9
@@ -49,6 +49,10 @@ jobs:
     - name: Modifications for macOS 10.9
       run: |
         cp fsbuild/macOS10.9/* .
+
+    - name: Install Node dependencies
+      run: |
+        npm install -g appdmg
 
     - name: Run pipenv install
       run: |

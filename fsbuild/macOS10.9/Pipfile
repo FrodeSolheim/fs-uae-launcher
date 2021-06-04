@@ -23,6 +23,10 @@ pywin32-ctypes = "*"
 pyinstaller = "*"
 pefile = "*"
 macholib = "*"
+pyqt5-sip = "==4.19.13"
+pyobjc-core = {version = "", sys_platform = "== 'darwin'"}
+pyobjc-framework-Cocoa = {version = "", sys_platform = "== 'darwin'"}
+pyobjc-framework-Quartz = {version = "", sys_platform = "== 'darwin'"}
 rx = "*"
 autologging = "*"
 
