@@ -1,4 +1,4 @@
-name: App for macOS 10.9
+name: macOS10.9
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
 
 jobs:
 
-  macOS10-9_x86-64:
+  x86-64:
     runs-on: macos-10.15
     env:
       SYSTEM_OS_DIST: macOS10.9
