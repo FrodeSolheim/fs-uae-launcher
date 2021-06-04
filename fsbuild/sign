@@ -20,6 +20,7 @@ def main():
             "runtime",
             "--sign",
             "Developer ID Application",
+            "--digest-algorithm=sha1,sha256",
         ]
         if os.path.exists("fsbuild/Entitlements.plist"):
             args.extend(["--entitlements", "fsbuild/Entitlements.plist"])

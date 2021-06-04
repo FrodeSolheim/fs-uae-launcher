@@ -89,6 +89,7 @@ def signDmg():
         "--force",
         "--sign",
         "Developer ID Application",
+        "--digest-algorithm=sha1,sha256",
     ]
     args.append(getDmgPath())
     runCodeSign(args)
