@@ -17,7 +17,7 @@ jobs:
   macOS10-9_x86-64:
     runs-on: macos-10.15
     env:
-      SYSTEM_OS_DIST=macOS10.9
+      SYSTEM_OS_DIST: macOS10.9
     steps:
 
     - name: Install brew packages
