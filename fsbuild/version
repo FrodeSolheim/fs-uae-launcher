@@ -4,5 +4,6 @@ set -e
 
 python3 fsbuild/version.py "$@"
 
-VERSION=`cat VERSION.FS`
-echo "VERSION = \"$VERSION\"" > launcher/version.py
+. ./PACKAGE.FS
+
+echo "VERSION = \"$PACKAGE_VERSION\"" > launcher/version.py
