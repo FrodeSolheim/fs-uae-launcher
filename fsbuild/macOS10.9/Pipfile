@@ -23,7 +23,8 @@ pyobjc-core = {version = "", sys_platform = "== 'darwin'"}
 pyobjc-framework-cocoa = {version = "", sys_platform = "== 'darwin'"}
 pyobjc-framework-quartz = {version = "", sys_platform = "== 'darwin'"}
 pyopengl = "*"
-pyqt5 = "==5.15.2"
+pyqt5 = "==5.8.2"
+pyqt5-sip = "==4.19.13"
 pywin32-ctypes = "*"
 requests = "*"
 rx = "*"
@@ -31,4 +32,4 @@ sentry-sdk = "*"
 typing-extensions = "*"
 
 [requires]
-python_version = "3"
+python_version = "3.7"

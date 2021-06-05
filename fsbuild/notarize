@@ -5,7 +5,15 @@ import os
 import sys
 
 sys.path.insert(0, ".")
-from fsbuild import checkNotarizationResult, getBundlePath, getPackageInformation, isMacOS, notarizeApp, run, shell
+from fsbuild import (
+    checkNotarizationResult,
+    getBundlePath,
+    getPackageInformation,
+    isMacOS,
+    notarizeApp,
+    run,
+    shell,
+)
 
 
 def notarizeForMacOS():
@@ -15,12 +23,16 @@ def notarizeForMacOS():
     bundleParentDir = os.path.dirname(bundlePath)
     shell("rm -f fsbuild/_build/notarize.zip")
     zip = "../../../notarize.zip"
-    shell(f'cd {bundleParentDir} && ditto -c -k --keepParent "{bundleName}" "{zip}"')
+    shell(
+        f'cd {bundleParentDir} && ditto -c -k --keepParent "{bundleName}" "{zip}"'
+    )
     requestUuid = notarizeApp("fsbuild/_build/notarize.zip", bundleId)
     checkNotarizationResult(requestUuid)
 
     if bundlePath.endswith(".framework"):
-        print("Does not seem to be possible to staple tickets to frameworks? (error 73)")
+        print(
+            "Does not seem to be possible to staple tickets to frameworks? (error 73)"
+        )
         print("Exiting...")
         sys.exit(0)
 

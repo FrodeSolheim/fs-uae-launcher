@@ -17,12 +17,14 @@ class PackageInformation:
 
     @property
     def bundleId(self) -> str:
-        return self.values.get("PACKAGE_BUNDLE_ID", self.values.get("PACKAGE_MACOS_BUNDLE_ID", ""))
+        return self.values.get(
+            "PACKAGE_BUNDLE_ID", self.values.get("PACKAGE_MACOS_BUNDLE_ID", "")
+        )
 
     @property
     def displayName(self) -> str:
         """E.g. FS-UAE Launcher."""
-        return self.values["PACKAGE_DISPLAY_NAME"]
+        return self.values.get("PACKAGE_DISPLAY_NAME", self.prettyName)
 
     @property
     def name(self) -> str:
@@ -49,20 +51,22 @@ _packageInformation: Optional[PackageInformation] = None
 def checkNotarizationResult(requestUuid: str):
     for _ in range(60):
         time.sleep(10.0)
-        result = run([
-            "xcrun",
-            "altool",
-            "--notarization-info",
-            requestUuid,
-            "-u",
-            getNotarizationUserName(),
-            "-p",
-            "@env:NOTARIZATION_PASSWORD",
-            "-itc_provider",
-            getNotarizationItcProvider(),
-            "--output-format",
-            "xml",
-        ])
+        result = run(
+            [
+                "xcrun",
+                "altool",
+                "--notarization-info",
+                requestUuid,
+                "-u",
+                getNotarizationUserName(),
+                "-p",
+                "@env:NOTARIZATION_PASSWORD",
+                "-itc_provider",
+                getNotarizationItcProvider(),
+                "--output-format",
+                "xml",
+            ]
+        )
         if "<string>success</string>" in result:
             break
         elif "<string>in progress</string>" in result:
@@ -106,10 +110,11 @@ def getArchitecture() -> str:
 
 
 def getBundleName() -> str:
-    if True:
-        return getAppName()
-    else:
+    packageInformation = getPackageInformation()
+    if packageInformation.type == "fs-library-plugin":
         return getFrameworkName()
+    else:
+        return getAppName()
 
 
 def getBundlePath(prefix: str = "fsbuild/_build/") -> str:
@@ -125,7 +130,8 @@ def getDmgPath() -> str:
     prettyName = packageInformation.prettyName
     version = packageInformation.version
     arch = getArchitecture()
-    path = f"fsbuild/_dist/{prettyName}_{version}_macOS_{arch}.dmg"
+    osDist = getOperatingSystemDist()
+    path = f"fsbuild/_dist/{prettyName}_{version}_{osDist}_{arch}.dmg"
     return path
 
 
@@ -139,6 +145,19 @@ def getNotarizationItcProvider() -> str:
 
 def getNotarizationUserName() -> str:
     return os.environ.get("NOTARIZATION_USERNAME", "")
+
+
+def getOperatingSystemDist() -> str:
+    envValue = os.environ.get("SYSTEM_OS_DIST", "")
+    if envValue:
+        return envValue
+    elif sys.platform == "linux":
+        return "Linux"
+    elif sys.platform == "darwin":
+        return "macOS"
+    elif sys.platform == "win32":
+        return "Windows"
+    return "Unknown"
 
 
 def isMacOS() -> bool:
@@ -216,4 +235,5 @@ def quoteArgs(args: List[str]) -> str:
 def shell(cmd: str) -> str:
     print(cmd)
     return subprocess.run(
-        cmd, shell=True, check=True, stdout=subprocess.PIPE).stdout.decode("UTF-8")
+        cmd, shell=True, check=True, stdout=subprocess.PIPE
+    ).stdout.decode("UTF-8")

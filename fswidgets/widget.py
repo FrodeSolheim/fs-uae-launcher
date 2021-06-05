@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from typing import Any, Literal, Optional, Union, cast
+from typing import Any, Optional, Union, cast
+from typing_extensions import Literal
 from weakref import ReferenceType, ref
 
 from fscore.deprecated import deprecated

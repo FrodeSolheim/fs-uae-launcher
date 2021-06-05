@@ -1,6 +1,7 @@
 import traceback
 import weakref
-from typing import List, Literal, Optional, cast
+from typing import List, Optional, cast
+from typing_extensions import Literal
 
 import fsui
 from fsbc.util import unused
