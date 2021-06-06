@@ -21,7 +21,7 @@ cat > $PLUGIN_BINDIR/"$PACKAGE_DISPLAY_NAME.app"/Contents/Info.plist <<EOF
         <key>CFBundleDisplayName</key>
         <string>$PACKAGE_DISPLAY_NAME</string>
         <key>CFBundleExecutable</key>
-        <string>MacOS/$PACKAGE_NAME</string>
+        <string>$PACKAGE_NAME</string>
         <key>CFBundleIconFile</key>
         <string>$PACKAGE_NAME.icns</string>
         <key>CFBundleIdentifier</key>
