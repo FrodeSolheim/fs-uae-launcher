@@ -2,13 +2,13 @@ name: Linux
 on:
   push:
     branches:
-      - beta
       - master
+      - beta
       - stable
   pull_request:
     branches:
-      - beta
       - master
+      - beta
       - stable
 jobs:
   x86-64:
@@ -82,7 +82,7 @@ jobs:
       - name: Upload build to Dropbox folder
         if: >-
           github.ref == 'refs/heads/master' ||
-          github.ref == 'refs/heads/dev' ||
+          github.ref == 'refs/heads/beta' ||
           github.ref == 'refs/heads/stable'
         run: |
           python3 -m pip install dropbox
