@@ -1,1 +1,3 @@
-VERSION = "9.8.7dummy"
+VERSION = "0.0.0"
+PACKAGER = ""
+COMMIT = ""

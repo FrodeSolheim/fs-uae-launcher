@@ -2,13 +2,13 @@ name: macOS10.9
 on:
   push:
     branches:
+      - beta
       - master
-      - dev
       - stable
   pull_request:
     branches:
+      - beta
       - master
-      - dev
       - stable
 jobs:
   x86-64:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Update version
         run: |
-          fsbuild/version --update --auto
+          fsbuild/version --update
 
       - name: Bootstrap
         run: fsbuild/bootstrap
