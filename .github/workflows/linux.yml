@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
 
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Log environment
         run: env
 
@@ -23,10 +27,6 @@ jobs:
           sudo apt install
           dos2unix
           gettext
-
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
@@ -39,7 +39,7 @@ jobs:
 
       - name: Run pipenv install
         run: |
-          pipenv install --deploy
+          pipenv install --deploy --verbose
 
       - name: Download pyinstaller source
         run: |
