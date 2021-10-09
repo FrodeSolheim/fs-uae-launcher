@@ -11,7 +11,7 @@ on:
       - beta
       - stable
 jobs:
-  x86-64:
+  Windows_x86-64:
     runs-on: windows-2016
     defaults:
       run:

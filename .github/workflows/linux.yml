@@ -11,7 +11,7 @@ on:
       - beta
       - stable
 jobs:
-  x86-64:
+  Linux_x86-64:
     runs-on: ubuntu-18.04
     steps:
 
@@ -52,13 +52,13 @@ jobs:
           libxcb-xkb1
           libxkbcommon-x11-0
 
+      - name: Debug list libraries
+        run: ls /usr/lib/x86_64-linux-gnu
+
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-
-      - name: Debug list libraries
-        run: ls /usr/lib/x86_64-linux-gnu/libxk*
 
       - name: Install dependencies
         run: |
