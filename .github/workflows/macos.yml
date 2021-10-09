@@ -121,7 +121,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: macos_x86-64
+          name: macOS_x86-64
           path: fsbuild/_dist/*
 
       - name: Upload build to Dropbox folder
