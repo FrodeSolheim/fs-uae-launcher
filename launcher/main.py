@@ -410,6 +410,19 @@ def main(*, app: str, brand: str):
         printHelp()
         sys.exit(0)
 
+    if app == "Launcher":
+        if brand == "OpenRetro":
+            configureLauncherApp(
+                "OpenRetro",
+                fsgamesys.OPENRETRO_DEFAULT_DATABASES,
+                "amiga",
+                # "#945ebe",
+                # "#444444",
+                None,
+            )
+            appName = "openretro-launcher"
+            fsgamesys.openretro = True
+
     # If successful, this call (using execv) will not return
     # FIXME: Problem using exec with PyQT on macOS (dual loaded QT libraries)
     # FIXME: Exec does not work smoothly on Windows (new process does not
@@ -431,14 +444,6 @@ def main(*, app: str, brand: str):
     if app == "Launcher":
         Product.base_name = brand
         if brand == "OpenRetro":
-            configureLauncherApp(
-                "OpenRetro",
-                fsgamesys.OPENRETRO_DEFAULT_DATABASES,
-                "amiga",
-                # "#945ebe",
-                # "#444444",
-                None,
-            )
             appName = "openretro-launcher"
         else:
             appName = "fs-uae-launcher"
