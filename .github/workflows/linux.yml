@@ -11,19 +11,49 @@ on:
       - beta
       - stable
 jobs:
-  x86-64:
+  Linux_x86-64:
     runs-on: ubuntu-18.04
     steps:
 
-      - name: Install deb packages
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Log environment
+        run: env
+
+      - name: Install additional tools
         run: >-
           sudo apt install
           dos2unix
           gettext
 
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      # When pyinstaller collects libraries, it seems to ignore libraries that
+      # are not found on the host. Example: Qt depends on
+      # libxkbcommon-x11.so.0 which is not bundled unless explicitly installed
+      # first So we install some dependencies here.
+
+      - name: Install library dependencies
+        run: >-
+          sudo apt install
+          libxcb-glx0
+          libxcb-icccm4
+          libxcb-image0
+          libxcb-keysyms1
+          libxcb-randr0
+          libxcb-render0
+          libxcb-render-util0
+          libxcb-shape0
+          libxcb-shm0
+          libxcb-sync1
+          libxcb-util1
+          libxcb-xfixes0
+          libxcb-xinerama0
+          libxcb-xkb1
+          libxkbcommon-x11-0
+
+      - name: Debug list libraries
+        run: ls /usr/lib/x86_64-linux-gnu
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
@@ -36,7 +66,7 @@ jobs:
 
       - name: Run pipenv install
         run: |
-          pipenv install --deploy
+          pipenv install --deploy --verbose
 
       - name: Download pyinstaller source
         run: |
