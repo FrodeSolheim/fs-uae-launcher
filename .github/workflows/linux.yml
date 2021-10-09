@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
 
+      - name: Log environment
+        run: env
+
       - name: Install deb packages
         run: >-
           sudo apt install
