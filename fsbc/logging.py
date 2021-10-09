@@ -8,7 +8,7 @@ import time
 import fsboot
 
 # using this lock to serialize logging from different threads
-lock = threading.Lock()
+lock = threading.RLock()
 
 
 class MultiplexedOutput:
