@@ -231,6 +231,8 @@ def calculate_version(
     # with open("fsbuild/VERSION") as f:
     with open("BASEVERSION.FS") as f:
         version_str = f.read().strip()
+    if version_str.startswith("BASEVERSION_FS="):
+        version_str = version_str[len("BASEVERSION_FS="):].strip()
     # with open("PACKAGE.FS") as f:
     #     for line in f:
     #         if line.startswith("PACKAGE_VERSION="):
