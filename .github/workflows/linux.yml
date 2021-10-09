@@ -33,6 +33,9 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Debug list libraries
+        run: ls /usr/lib/x86_64-linux-gnu/libxk*
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip pipenv
