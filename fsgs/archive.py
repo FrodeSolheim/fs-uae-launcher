@@ -155,37 +155,34 @@ class LhaHandler(object):
     def __init__(self, path):
         self.path = path
         self._lhafile = LhaFile(self.path, "r")
+        self._nameMapping = {}
+        for name in self._lhafile.NameToInfo:
+            self._nameMapping[self.decode_name(name)] = name
 
     def decode_name(self, name):
-        # FIXME: a little hack here, LhaFile uses os.sep
-        # as path separator, normalizing to /
-        name = name.replace(os.sep, "/")
-
-        name = name.replace("%", "%25")
-        name = name.replace("\\", "%5c")
-        name = name.replace("/", os.sep)
+        # Normalize both backslash and slash to forward slashes only
+        name = name.replace("\\", "/")
         return name
 
     def encode_name(self, name):
+        # Convert old backslashes (older Launcher/Windows) to slashes.
         name = name.replace("\\", "/")
-        name = name.replace("%5c", "\\")
+        # Unescape old escapes.
+        name = name.replace("%5c", "/")
         name = name.replace("%25", "%")
-        # FIXME: Legacy workaround for existing entries with incorrect escape.
-        name = name.replace("%5f", "\\")
-
-        # FIXME: a little hack here, LhaFile uses os.sep
-        # as path separator
-        name = name.replace("/", os.sep)
-        return name
+        # Legacy workaround for existing entries with incorrect escape.
+        name = name.replace("%5f", "/")
+        return self._nameMapping[name]
 
     def exists(self, name):
-        # FIXME: Maybe look up in NameToInfo instead for quicker lookups
-        name = self.encode_name(name)
-        items = self._lhafile.infolist()
-        for item in items:
-            if item.filename == name:
-                return True
-        return False
+        # Looking up in NameToInfo isn't really necessary, since encode_name
+        # by itself currently throws a KeyError if the name is not known.
+        # However, to avoid bugs in the future if encode_name implementation
+        # changes, we both normalize the name and look it up.
+        try:
+            return self.encode_name(name) in self._lhafile.NameToInfo
+        except KeyError:
+            return False
 
     def getinfo(self, name):
         # FIXME: Should instead add getinfo to LhaFile...
