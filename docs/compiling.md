@@ -125,7 +125,8 @@ verify that pip3 is found in the correct place:
 
 Then run:
 
-    pip3 install lhafile pillow pyobjc pyqt5 requests
+    pip3 install lhafile pillow pyobjc pyqt5 requests typing_extensions \
+    rx
 
 And finally, from the fs-uae-launcher source directory:
 
