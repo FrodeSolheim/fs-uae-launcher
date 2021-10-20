@@ -11,6 +11,8 @@ pylint = "*"
 pytest = "*"
 pytest-mypy = "*"
 rope = "*"
+pyqt5-stubs = "*"
+types-pillow = "*"
 
 [packages]
 autologging = "*"
