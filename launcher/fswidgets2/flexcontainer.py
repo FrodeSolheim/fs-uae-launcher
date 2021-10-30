@@ -4,12 +4,15 @@ import fsui
 from fswidgets.parentstack import ParentStack
 from fswidgets.widget import Widget
 from launcher.fswidgets2.flexlayout import FlexLayout
-from launcher.fswidgets2.style import Style
+from launcher.fswidgets2.style import Style, StyleParam
 
 
 class FlexContainer(fsui.Panel):
     def __init__(
-        self, parent: Optional[Widget] = None, *, style: Optional[Style] = None
+        self,
+        parent: Optional[Widget] = None,
+        *,
+        style: Optional[StyleParam] = None
     ):
         self.style = Style({"flexDirection": "row"})
         if style is not None:
@@ -32,7 +35,23 @@ class FlexContainer(fsui.Panel):
         if backgroundColor:
             self.set_background_color(fsui.Color.from_hex(backgroundColor))
         # if isinstance(parent, fsui.Window):
-        parent.layout.add(self, fill=True, expand=True)
+
+        position = self.style.get("position")
+        if position == "absolute":
+            # Don't add to layout...
+            pass
+            # FIXME: Check x, y
+            # left = 0
+            # top = 0
+            left = self.style.get("left", 0)
+            top = self.style.get("top", 0)
+            self.setPosition((left, top))
+            # self.setSize(self.getMinSize())
+
+            # FIXME: Size will not be updated properly when not added to layout...
+            # Need another children list?
+        else:
+            parent.layout.add(self, fill=True, expand=True)
         # else:
         #     parent.layout.add(self)
 
@@ -44,7 +63,12 @@ class FlexContainer(fsui.Panel):
 
 
 class VerticalFlexContainer(FlexContainer):
-    def __init__(self, parent=None, *, style=None):
+    def __init__(
+        self,
+        parent: Optional[Widget] = None,
+        *,
+        style: Optional[StyleParam] = None
+    ) -> None:
         default_style = {"flexDirection": "column"}
         if style is not None:
             default_style.update(style)

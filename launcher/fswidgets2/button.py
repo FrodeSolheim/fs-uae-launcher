@@ -1,11 +1,29 @@
+from typing import Callable, Optional
+
 import fsui
 from fscore.observable import Disposer, isObservable
 from fswidgets.parentstack import ParentStack
-from launcher.fswidgets2.style import Style
+from launcher.fswidgets2.style import Style, StyleParam
+
+
+class ClickEvent:
+    pass
+
+
+# FIXME: Move to a types module? or events
+
+ClickEventHandler = Callable[[Optional[ClickEvent]], None]
 
 
 class Button(fsui.Button):
-    def __init__(self, label="", *, style=None, onClick=None, enabled=True):
+    def __init__(
+        self,
+        label: str = "",
+        *,
+        style: Optional[StyleParam] = None,
+        onClick: Optional[ClickEventHandler] = None,
+        enabled: bool = True
+    ) -> None:
         parent = ParentStack.top()
         print("parent of button is", parent)
         super().__init__(parent, label)
@@ -31,11 +49,6 @@ class Button(fsui.Button):
             )
         else:
             self.set_enabled(enabled)
-
-    # FIXME: Move to widget
-    def addEventListener(self, eventName, listener):
-        if eventName == "destroy":
-            self.destroyed.connect(listener)
 
     def onEnableNext(self, value):
         print("onEnableNext", value)

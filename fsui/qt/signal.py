@@ -15,7 +15,7 @@ class SignalWrapper:
         self.name = name
         self.inhibit = SignalInhibitor()
 
-    def connect(self, obj):
+    def connect(self, obj: Any):
         getattr(self.parent(), self.name + "_signal").connect(obj)
 
     def emit(self, *args: Any, **kwargs: Any):

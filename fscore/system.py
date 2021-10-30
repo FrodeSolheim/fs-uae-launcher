@@ -2,23 +2,23 @@ import platform
 import sys
 
 
-def is_linux():
+def is_linux() -> bool:
     return sys.platform.startswith("linux")
 
 
-def is_macos():
+def is_macos() -> bool:
     return sys.platform == "darwin"
 
 
-def is_windows():
+def is_windows() -> bool:
     return sys.platform == "win32"
 
 
-def is_64_bit():
+def is_64_bit() -> bool:
     return platform.architecture()[0] == "64bit"
 
 
-def is_x86_family():
+def is_x86_family() -> bool:
     return platform.machine().lower() in [
         "x86_64",
         "x86-64",
@@ -30,7 +30,7 @@ def is_x86_family():
     ]
 
 
-def is_x86_64():
+def is_x86_64() -> bool:
     return is_64_bit() and is_x86_family()
 
 
@@ -54,11 +54,11 @@ class System:
         _operatingSystem = "Unknown"
 
     @classmethod
-    def getOperatingSystem(cls):
+    def getOperatingSystem(cls) -> str:
         return cls._operatingSystem
 
     @classmethod
-    def getCpuArchitecture(cls):
+    def getCpuArchitecture(cls) -> str:
         if is_x86_family():
             return "x86-64" if is_64_bit() else "x86"
         machine = platform.machine()
@@ -67,13 +67,13 @@ class System:
         return "Unknown"
 
     @classmethod
-    def isWindows(cls):
+    def isWindows(cls) -> bool:
         return cls.windows
 
     @classmethod
-    def isLinux(cls):
+    def isLinux(cls) -> bool:
         return cls.linux
 
     @classmethod
-    def isMacOS(cls):
+    def isMacOS(cls) -> bool:
         return cls.macos

@@ -1,5 +1,4 @@
 from fscore.system import System
-from fswidgets.widget import Widget
 from fsgamesys.options.constants2 import (
     PARENT_H__,
     PARENT_W__,
@@ -8,6 +7,7 @@ from fsgamesys.options.constants2 import (
 )
 from fsui import Button, Icon
 from fsui.context import get_window
+from fswidgets.widget import Widget
 from launcher.context import get_config, get_gscontext
 from launcher.i18n import gettext
 from system.classes.configdispatch import ConfigDispatch

@@ -1,16 +1,14 @@
 from typing import Dict, Optional
 
 import fsui
-from fscore.system import System
 from fsgamesys.platforms.platform import Platform
 from fswidgets.widget import Widget
-from launcher.context import get_config, useInputService
+from launcher.context import get_config
 from launcher.devicemanager import DeviceManager
 from launcher.gui.components.inputportdeviceselector import (
     InputPortDeviceSelector,
 )
 from launcher.i18n import gettext
-from launcher.launcher_signal import LauncherSignal
 from launcher.option import Option
 from launcher.ui.behaviors.platformbehavior import (
     AMIGA_PLATFORMS,
@@ -27,7 +25,7 @@ MIN_TYPE_CHOICE_WIDTH = 200
 class InputSelector(fsui.Panel):
     def __init__(
         self, parent: Widget, port: int, autofire_button: bool = True
-    ):
+    ) -> None:
         self.port = port
         self.deviceKey = "joystick_port_{0}".format(port)
         self.mode_option_key = "joystick_port_{0}_mode".format(port)

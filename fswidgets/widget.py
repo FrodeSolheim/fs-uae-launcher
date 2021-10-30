@@ -1,9 +1,11 @@
 from dataclasses import dataclass
-from typing import Any, Optional, Union, cast
-from typing_extensions import Literal
+from typing import Any, Optional, TypeVar, Union, cast
 from weakref import ReferenceType, ref
 
+from typing_extensions import Literal
+
 from fscore.deprecated import deprecated
+from fscore.events import Event, EventHelper, EventListener
 from fscore.types import SimpleCallable
 from fsui.common.layout import Layout
 from fsui.qt.color import Color
@@ -18,6 +20,8 @@ from fswidgets.qt.gui import QPalette
 from fswidgets.qt.widgets import QWidget
 from fswidgets.style import Style
 from fswidgets.types import Point, Size
+
+T = TypeVar("T", bound=Event)
 
 
 @dataclass
@@ -79,6 +83,16 @@ class Widget(QObject):
 
         self.layout: Optional[Layout] = None
         self.contentMargins = ContentMargins(0, 0, 0, 0)
+
+    def addEventListener(
+        self, type: Literal["destroy", "resized"], listener: SimpleCallable
+    ):
+        if type == "destroy":
+            self.addDestroyListener(listener)
+        elif type == "resized":
+            self.addResizeListener(listener)
+        else:
+            raise TypeError(type)
 
     def addDestroyListener(self, listener: SimpleCallable):
         self.destroyed.connect(listener)
@@ -247,8 +261,13 @@ class Widget(QObject):
 
         return isMouseWithinWidget(self)
 
-    def isVisible(self):
+    def isVisible(self) -> bool:
         return self.qwidget.isVisible()
+
+    def listen(
+        self, event: EventHelper[T], listener: EventListener[T]
+    ) -> None:
+        self.addDestroyListener(event.addListener(listener))
 
     def onChildAdded(self, widget: "Widget") -> None:
         pass
@@ -356,7 +375,7 @@ class Widget(QObject):
         self.__timer_id = self.qwidget.startTimer(interval)
 
     # FIXME: When is this used?
-    def refresh(self):
+    def refresh(self) -> None:
         return self.qwidget.update()
 
     @deprecated

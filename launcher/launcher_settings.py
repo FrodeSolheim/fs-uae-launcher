@@ -1,3 +1,5 @@
+from typing import Any
+
 from fsbc.settings import Settings
 from fsbc.user import get_user_name
 from launcher.option import Option
@@ -136,12 +138,12 @@ class LauncherSettings(object):
         return Settings.instance().values.items()
 
     @classmethod
-    def add_listener(cls, listener):
+    def add_listener(cls, listener: Any):
         # cls.settings_listeners.append(listener)
         LauncherSignal.add_listener("setting", listener)
 
     @classmethod
-    def remove_listener(cls, listener):
+    def remove_listener(cls, listener: Any):
         # cls.settings_listeners.remove(listener)
         LauncherSignal.remove_listener("setting", listener)
 

@@ -1,5 +1,5 @@
 # import weakref
-from typing import Optional, cast
+from typing import TYPE_CHECKING, Optional, cast
 
 from fsgamesys.FSGameSystemContext import FSGameSystemContext
 from fsui.context import get_window
@@ -15,10 +15,14 @@ def useImageLoader(widget: Optional[Widget] = None):
     return useLauncherWindow(widget).imageLoader
 
 
-def useInputService():
-    from fsgamesys.input2.inputservice import InputService
-
-    return InputService.getInstance()
+# if TYPE_CHECKING:
+#     # Workaround for circular import
+#     from fsgamesys.input2.inputservice import InputService
+#
+# def useInputService() -> "InputService":
+#     from fsgamesys.input2.inputservice import InputService
+#
+#     return InputService.getInstance()
 
 
 def useLauncherWindow(widget: Optional[Widget] = None):

@@ -1,5 +1,17 @@
 # Compiling FS-UAE Launcher
 
+NOTE: This documentation is somewhat out of date. Changes that should
+be incorporated into this document include:
+
+- The recommended way to set up a development environment is now via pipenv
+  (pipenv install followed by pipenv shell).
+- To build packages, scripts in fsbuild/ are used. See the YAML files
+  in .github/workflows for examples.
+- Official builds for x86-64 are built via GitHub actions, so the YAML files
+  in .github/workflows should always be up to date.
+- PyOpenGL is now an external dependency (for FS-UAE Arcade).
+- Pyinstaller is now used to bundle together the app (instead of cx_Freeze).
+
 ## Running without installing
 
 You can run fs-uae launcher from the source directory as long as the
@@ -18,12 +30,8 @@ platforms.
 The following packages are needed:
 
     sudo apt install python3 python3-pillow python3-pyqt5 \
-        python3-pyqt5.qtopengl python3-requests
-
-At this point, PyOpenGL is bundled, but in the future you might also need
-to manually install:
-
-    sudo apt install python3-opengl
+        python3-pyqt5.qtopengl python3-requests python3-opengl \
+        python3-rx python3-typing-extensions
 
 To add support for .lha archives, you also need to have the lhafile
 python package installed. You can get `python3-lhafile` from Frode's PPA,
@@ -125,8 +133,7 @@ verify that pip3 is found in the correct place:
 
 Then run:
 
-    pip3 install lhafile pillow pyobjc pyqt5 requests typing_extensions \
-    rx
+    pip3 install lhafile pillow pyobjc pyqt5 requests rx typing_extensions
 
 And finally, from the fs-uae-launcher source directory:
 

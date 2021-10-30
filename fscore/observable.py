@@ -1,3 +1,7 @@
+# type: ignore
+
+# FIXME: Get rid of this mess
+
 # from rx import Observable as BaseObservable
 from typing import Any
 

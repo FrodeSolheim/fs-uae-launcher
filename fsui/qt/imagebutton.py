@@ -1,4 +1,5 @@
 from fsui.context import get_theme
+from fsui.qt.image import Image
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QFontMetrics, QPushButton, QSignal, QSize
 from fswidgets.widget import Widget
@@ -7,7 +8,7 @@ from fswidgets.widget import Widget
 class ImageButton(Widget):
     activated = QSignal()
 
-    def __init__(self, parent, image):
+    def __init__(self, parent: Widget, image: Image) -> None:
         super().__init__(parent, QPushButton(QParent(parent)))
         # if image is not None:
         icon = image.qicon
@@ -27,7 +28,7 @@ class ImageButton(Widget):
             self.set_min_height(min_height)
             print("BUTTONTHEME", theme, min_height)
 
-    def set_image(self, image):
+    def set_image(self, image: Image):
         self._qwidget.setIcon(image.qicon)
 
     def __clicked(self):

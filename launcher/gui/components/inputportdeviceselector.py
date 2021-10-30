@@ -1,16 +1,20 @@
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 import fsui
+
+# from fsgamesys.input2.dataclasses import InputDevice
+from fsgamesys.input.inputdevice import InputDevice
+from fsgamesys.input.inputservice import useInputService
 from fsgamesys.platforms.platform import Platform
 from fswidgets.widget import Widget
-from launcher.context import get_config, useInputService
+from launcher.context import get_config
 from launcher.devicemanager import DeviceManager
 from launcher.launcher_signal import LauncherSignal
 from launcher.option import Option
 
 
 class InputPortDeviceSelector(fsui.ComboBox):
-    def __init__(self, parent: Widget, port_gui_index: int):
+    def __init__(self, parent: Widget, port_gui_index: int) -> None:
         super().__init__(parent, [""], read_only=True)
         self.port_gui_index = port_gui_index
         # self.port = self.port_gui_index + 1
@@ -24,7 +28,7 @@ class InputPortDeviceSelector(fsui.ComboBox):
         self.deviceKey = ""  # self.getDeviceKey(self.port)
 
         # AmigaEnableBehavior(self.device_choice)
-        self.device_values = []
+        self.device_values: List[str] = []
 
         self.inputService = useInputService()
         self.rebuildDeviceList()
@@ -40,11 +44,18 @@ class InputPortDeviceSelector(fsui.ComboBox):
         # FIXME: Soon not needed
         LauncherSignal.add_listener("device_list_updated", self)
 
-        self.inputService.addDevicesChangedListener(self.onDevicesChanged)
+        # self.inputService.addDevicesChangedListener(self.onDevicesChanged)
+        self.listen(
+            self.inputService.deviceConnectedEvent, self.onDeviceConnectedEvent
+        )
+        self.listen(
+            self.inputService.deviceDisconnectedEvent,
+            self.onDeviceDisconnectedEvent,
+        )
 
-    def onDestroy(self):
+    def onDestroy(self) -> None:
         super().onDestroy()
-        self.inputService.removeDevicesChangedListener(self.onDevicesChanged)
+        # self.inputService.removeDevicesChangedListener(self.onDevicesChanged)
 
         config = get_config(self)
         config.remove_listener(self)
@@ -52,12 +63,18 @@ class InputPortDeviceSelector(fsui.ComboBox):
         # FIXME: Soon not needed
         LauncherSignal.remove_listener("device_list_updated", self)
 
-    def onDevicesChanged(self):
-        pass
+    def onDeviceConnectedEvent(self) -> None:
+        self.rebuildDeviceList()
+
+    def onDeviceDisconnectedEvent(self) -> None:
+        self.rebuildDeviceList()
+
+    # def onDevicesChanged(self) -> None:
+    #     pass
 
     # -------------------------------------------------------------------------
 
-    def rebuildDeviceList(self):
+    def rebuildDeviceList(self) -> None:
         print("\n\n\n\nrebuildDeviceList")
         # self.device_values = ["", "none"]
         self.device_values = [""]
@@ -66,14 +83,22 @@ class InputPortDeviceSelector(fsui.ComboBox):
         # for i, name in enumerate(DeviceManager.get_joystick_names()):
         #     devices.append(fixDeviceName(name))
         #     self.device_values.append(DeviceManager.device_ids[i])
-        for device in self.inputService.getInputDevices():
+
+        # for device in self.inputService.getInputDevices():
+        #     print("-", device.id, device.name)
+        #     # devices.append(fixDeviceName(device.name))
+        #     devices.append(device.name)
+        #     self.device_values.append(device.id)
+
+        for device in self.inputService.getDevices():
             print("-", device.id, device.name)
             # devices.append(fixDeviceName(device.name))
             devices.append(device.name)
             self.device_values.append(device.id)
+
         self.setItems(devices)
 
-    def on_changed(self):
+    def on_changed(self) -> None:
         index = self.index()
         value = self.device_values[index]
         if value != "none":
@@ -94,12 +119,12 @@ class InputPortDeviceSelector(fsui.ComboBox):
         print("set", self.deviceKey, "to", value)
         get_config(self).set(self.deviceKey, value)
 
-    def update_enabled(self):
+    def update_enabled(self) -> None:
         # self.setVisible(self._platform not in AMIGA_PLATFORMS)
         # # self.set_enabled(self._choice_labels != ["N/A"])
         pass
 
-    def on_config(self, key: str, value: str):
+    def on_config(self, key: str, value: str) -> None:
         if key == "platform":
             self._platform = value
             # This must be called after self._platform ha been set
@@ -155,31 +180,31 @@ class InputPortDeviceSelector(fsui.ComboBox):
             if key.startswith("{}_port_".format(self._platform)):
                 self.updateDefaultDevice()
 
-    def on_device_list_updated_signal(self):
+    def on_device_list_updated_signal(self) -> None:
         # print(self.index())
         wasDefault = self.index() == 0
         self.rebuildDeviceList()
         self.updateDefaultDevice(wasDefault=wasDefault)
 
-    def on_settings_updated_signal(self):
+    def on_settings_updated_signal(self) -> None:
         self.updateDefaultDevice()
 
     def isAmiga(self) -> bool:
         return self._platform.lower() in ["", "amiga", "cdtv", "cd32"]
 
-    def getDeviceKey(self, portNumber: int):
+    def getDeviceKey(self, portNumber: int) -> str:
         if self.isAmiga():
             return "joystick_port_{0}".format(portNumber)
         else:
             return "{}_port_{}".format(self._platform, portNumber)
 
-    def getModeKey(self, portNumber: int):
+    def getModeKey(self, portNumber: int) -> str:
         if self.isAmiga():
             return "joystick_port_{0}_mode".format(portNumber)
         else:
             return "{}_port_{}_type".format(self._platform, portNumber)
 
-    def getDeviceForPort(self, config: Dict[str, str]):
+    def getDeviceForPort(self, config: Dict[str, str]) -> InputDevice:
         if self.isAmiga():
             device = DeviceManager.get_device_for_port(config, self.port)
         else:
@@ -188,7 +213,7 @@ class InputPortDeviceSelector(fsui.ComboBox):
             )
         return device
 
-    def convertIndexToPortNumber(self, index: int):
+    def convertIndexToPortNumber(self, index: int) -> int:
         if self.isAmiga():
             if index == 0:
                 return 1
@@ -203,7 +228,7 @@ class InputPortDeviceSelector(fsui.ComboBox):
                 return 1
         return index + 1
 
-    def updateDefaultDevice(self, wasDefault: Optional[bool] = None):
+    def updateDefaultDevice(self, wasDefault: Optional[bool] = None) -> None:
         isAmiga = self.isAmiga()
         config = {"platform": self._platform}
         for i in range(4):

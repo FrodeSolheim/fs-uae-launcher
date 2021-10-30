@@ -65,8 +65,8 @@ class ComboBox(Widget):
         return 50
 
     @deprecated
-    def get_text(self):
-        self.text()
+    def get_text(self) -> str:
+        return self.text()
 
     def index(self) -> int:
         return self.qwidget.currentIndex()
@@ -86,10 +86,10 @@ class ComboBox(Widget):
         self.qwidget.setItemText(item, text)
 
     @deprecated
-    def set_text(self, text: str):
+    def set_text(self, text: str) -> None:
         self.setText(text)
 
-    def text(self):
+    def text(self) -> str:
         return self._qwidget.lineEdit().text()
 
     def update_style(self):

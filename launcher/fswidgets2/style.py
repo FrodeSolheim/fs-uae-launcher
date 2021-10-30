@@ -137,3 +137,7 @@ class Style:
     @property
     def padding_left(self) -> int:
         return self.get("paddingLeft")
+
+
+# FIXME: Any
+StyleParam = Union[Style, Dict[Any, Any]]

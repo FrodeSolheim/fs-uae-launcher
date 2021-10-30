@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 from functools import lru_cache
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 # The original argument list at boot time, before any modifications
 _argv = []  # type: List[str]
@@ -89,7 +89,7 @@ if "--logging" in sys.argv:
 
 
 @lru_cache()
-def executable_dir():
+def executable_dir() -> str:
     """Returns the directory containing the executable (or main script)."""
     logger.debug("executable_dir")
     logger.debug("sys.executable = %s", sys.executable)
@@ -115,7 +115,7 @@ def executable_dir():
 
 
 @lru_cache()
-def app_dir():
+def app_dir() -> str:
     """Returns the (absolute) directory containing the application.
 
     This is the same as the executable_dir, except for macOS where the
@@ -129,7 +129,7 @@ def app_dir():
 
 
 @lru_cache()
-def plugin_dir():
+def plugin_dir() -> str:
     """Returns the (absolute) directory containing the plugin (or None)."""
     plugin_dir = os.path.join(app_dir(), "..", "..")
     if os.path.exists(os.path.join(plugin_dir, "Plugin.ini")):
@@ -181,13 +181,13 @@ if sys.platform == "win32":
 
 
 @lru_cache()
-def user_name():
+def user_name() -> str:
     name = getpass.getuser()
     return name
 
 
 @lru_cache()
-def xdg_user_dir(name):
+def xdg_user_dir(name: str) -> str:
     try:
         process = subprocess.Popen(
             ["xdg-user-dir", name], stdout=subprocess.PIPE
@@ -201,7 +201,7 @@ def xdg_user_dir(name):
 
 
 @lru_cache()
-def home_dir():
+def home_dir() -> str:
     if sys.platform == "win32":
         path = csidl_dir(CSIDL_PROFILE)
     else:
@@ -212,7 +212,7 @@ def home_dir():
 
 
 @lru_cache()
-def documents_dir(create=False):
+def documents_dir(create=False) -> str:
     if sys.platform == "win32":
         path = csidl_dir(CSIDL_PERSONAL)
     elif sys.platform == "darwin":
@@ -228,12 +228,12 @@ def documents_dir(create=False):
     return path
 
 
-def is_portable():
+def is_portable() -> bool:
     return portable_dir() is not None
 
 
 @lru_cache()
-def portable_dir():
+def portable_dir() -> str:
     path = executable_dir()
     last = ""
     while not last == path:
@@ -249,7 +249,7 @@ def portable_dir():
 
 
 @lru_cache()
-def common_data_dir(create=False):
+def common_data_dir(create: bool = False) -> str:
     if sys.platform == "win32":
         path = csidl_dir(CSIDL_APPDATA)
     elif sys.platform == "darwin":
@@ -264,12 +264,12 @@ def common_data_dir(create=False):
 
 
 @lru_cache()
-def app_data_dir(app):
+def app_data_dir(app: str) -> str:
     return os.path.join(common_data_dir(), app)
 
 
 @lru_cache()
-def app_config_dir(app):
+def app_config_dir(app: str):
     # if not app:
     #     app = get_app_id()
     if sys.platform == "win32":
@@ -287,7 +287,7 @@ def app_config_dir(app):
 
 
 @lru_cache()
-def custom_path(name):
+def custom_path(name: str) -> Optional[str]:
     if get("openretro") == "1":
         app_names = ["openretro"]
     else:
@@ -310,12 +310,12 @@ def custom_path(name):
     return path
 
 
-def getBaseDirectory():
+def getBaseDirectory() -> str:
     return base_dir()
 
 
 @lru_cache()
-def base_dir():
+def base_dir() -> str:
     print("find base directory")
     logger.debug("Find base directory")
     for arg in sys.argv[1:]:
@@ -375,7 +375,7 @@ def base_dir():
 
 
 @lru_cache()
-def development():
+def development() -> bool:
     # FIXME: Document option
     if "--development-mode=0" in sys.argv:
         return False
@@ -392,7 +392,7 @@ def is_macos() -> bool:
     return sys.platform == "darwin"
 
 
-def setup_frozen_python_libs():
+def setup_frozen_python_libs() -> None:
     return
 
     # libs_dir = os.path.abspath(
@@ -435,6 +435,8 @@ def plugin_code_override() -> bool:
 
 
 from importlib.abc import MetaPathFinder
+
+_python_dir: str
 
 
 class OverrideImporter(MetaPathFinder):
@@ -481,7 +483,7 @@ class OverrideImporter(MetaPathFinder):
         return None
 
 
-def setup_python_path_frozen():
+def setup_python_path_frozen() -> None:
     """Allow overriding code from Plugin/Python directory."""
     print("setup_python_path_frozen")
     global _python_dir
@@ -496,7 +498,7 @@ def setup_python_path_frozen():
         print("sys.meta_path", sys.meta_path)
 
 
-def setup_python_path():
+def setup_python_path() -> None:
     # print("setup_python_path")
     if is_frozen():
         setup_python_path_frozen()

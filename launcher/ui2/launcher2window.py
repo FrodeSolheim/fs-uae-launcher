@@ -87,8 +87,11 @@ class Launcher2Window(Window):
         if split is not None:
             self.panel.setSplitterPosition(split)
 
-        if settings.checkForUpdates:
-            self.checkForUpdates()
+        if VERSION != "0.0.0":
+            if settings.checkForUpdates:
+                self.checkForUpdates()
+        else:
+            log.debug(f"Skipping update check (version is {VERSION})")
 
     def getDefaultSize(self):
         return (1280, 720)

@@ -19,6 +19,8 @@ class WindowCache:
     def open(
         cls,
         window_class: Type[T],
+        params: Optional[Dict[str, Any]] = None,  # FIXME: Any...
+        *,
         cache_key: Optional[str] = None,
         center_on_window: Optional[Window] = None,
         centerOnWindow: Optional[Window] = None,
@@ -32,7 +34,10 @@ class WindowCache:
         else:
             window.raise_and_activate()
             return window
-        window = window_class()
+        if params is not None:
+            window = window_class(**params)
+        else:
+            window = window_class()
         cls.cache[cache_key_str] = window
 
         # @traced

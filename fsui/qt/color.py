@@ -1,3 +1,5 @@
+from typing import Tuple, Union
+
 from fsui.qt import QColor
 
 
@@ -24,7 +26,12 @@ class BaseColor(object):
 
 
 class Color(QColor, BaseColor):
-    def __init__(self, *args):
+    def __init__(
+        self,
+        *args: Union[
+            QColor, int, Tuple[int, int, int], Tuple[int, int, int, int]
+        ],
+    ):
         QColor.__init__(self)
 
         if len(args) == 1:

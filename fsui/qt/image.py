@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fscore.resources import Resources
 from fsui.qt.qt import QColor, QIcon, QImage, QPixmap, QSize, Qt
 
@@ -13,7 +15,7 @@ class Image:
 
         return Image(qimage=qimage)
 
-    def __init__(self, name="", qimage=None):
+    def __init__(self, name: str = "", qimage: Optional[QImage] = None):
         if qimage:
             self.qimage = qimage
         else:

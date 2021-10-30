@@ -64,7 +64,7 @@ class Version:
         return self.string
 
     @staticmethod
-    def compare(a: Union["Version", str], b: Union["Version", str]):
+    def compare(a: Union["Version", str], b: Union["Version", str]) -> int:
         """
         >>> Version.compare("1.0.0", "1.0.1")
         -1

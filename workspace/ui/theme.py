@@ -9,7 +9,7 @@ class WorkspaceTheme(Theme):
     __instance = None
 
     @classmethod
-    def instance(cls):
+    def instance(cls) -> "WorkspaceTheme":
         if not cls.__instance:
             cls.__instance = cls()
         return cls.__instance

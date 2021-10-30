@@ -6,7 +6,7 @@ import traceback
 from configparser import ConfigParser, NoSectionError
 
 # noinspection PyUnresolvedReferences
-from typing import Dict, Tuple
+from typing import Dict, Optional, Tuple
 
 import fsboot
 from fsbc.signal import Signal
@@ -18,10 +18,10 @@ from launcher.version import VERSION
 
 
 class Settings(object):
-    _instance = None
+    _instance: Optional["Settings"] = None
 
     @classmethod
-    def instance(cls):
+    def instance(cls) -> "Settings":
         if cls._instance is None:
             cls._instance = Settings()
         return cls._instance

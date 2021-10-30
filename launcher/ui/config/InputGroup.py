@@ -1,11 +1,9 @@
-import fsui
-from launcher.context import useInputService
-from launcher.launcher_signal import LauncherSignal
+from typing import List
 
-from ...devicemanager import DeviceManager
-from ...i18n import gettext
-from ..IconButton import IconButton
-from .InputSelector import InputSelector
+import fsui
+from fswidgets.widget import Widget
+from launcher.i18n import gettext
+from launcher.ui.config.InputSelector import InputSelector
 
 
 # FIXME: Superclass was Group, but changed to Panel due to not being able
@@ -13,12 +11,11 @@ from .InputSelector import InputSelector
 class InputGroup(fsui.Panel):
     def __init__(
         self,
-        parent,
-        autofire_button=True,
-        refresh_button=False,
-        parallel_ports=False,
-        custom_ports=False,
-    ):
+        parent: Widget,
+        autofire_button: bool = True,
+        parallel_ports: bool = False,
+        custom_ports: bool = False,
+    ) -> None:
         super().__init__(parent)
         self.layout = fsui.VerticalLayout()
 
@@ -39,17 +36,9 @@ class InputGroup(fsui.Panel):
         hori_layout.add(heading_label, margin=10)
         hori_layout.add_spacer(0, expand=True)
 
-        if refresh_button:
-            self.refresh_button = IconButton(self, "refresh_button.png")
-            self.refresh_button.setToolTip(
-                gettext("Refresh the list of connected joystick devices")
-            )
-            self.refresh_button.activated.connect(self.on_refresh_button)
-            hori_layout.add(self.refresh_button, margin_right=10)
-
         self.layout.add_spacer(0)
 
-        self.selectors = []
+        self.selectors: List[InputSelector] = []
         offset = 0
         count = 2
         if parallel_ports:
@@ -63,10 +52,3 @@ class InputGroup(fsui.Panel):
             # self.layout.add_spacer(10)
             selector = InputSelector(self, i, autofire_button=autofire_button)
             self.layout.add(selector, fill=True, margin=10)
-
-    # noinspection PyMethodMayBeStatic
-    def on_refresh_button(self):
-        useInputService().refreshDeviceList()
-        # DeviceManager.refresh()
-        # FIXME: This should not be here...
-        LauncherSignal.broadcast("device_list_updated")

@@ -1,3 +1,4 @@
+import traceback
 from typing import Dict
 
 from fsui import Window
@@ -205,10 +206,15 @@ def wsopen_shell(path, args=None, window=None, parent=None, **kwargs):
 #     #     wsopen(command)
 
 
-def wsopen(name, args=None, *, window=None, parent=None):
+def wsopen(name: str, args=None, *, window=None, parent=None):
     # FIXME: Case insensitive
     print(f"WSOpen name={name} window={window} parent={parent}")
     kwargs = {"parent": parent, "window": window}
+
+    if "?" in name:
+        name, argumentString = name.split("?", 1)
+    else:
+        argumentString = ""
 
     name_lower = name.lower()
     if name_lower.startswith("c:"):
@@ -309,12 +315,28 @@ def wsopen(name, args=None, *, window=None, parent=None):
 
             module = importlib.import_module(module_name)
         except ImportError:
-            pass
+            traceback.print_exc()
         else:
+            arguments: Dict[str, str] = {}
+            for arg in argumentString.split("&"):
+                parts = arg.split("=", 1)
+                if len(parts) == 2:
+                    key, value = parts
+                else:
+                    key = parts[0]
+                    value = ""
+                key = key.strip()
+                value = value.strip()
+                if key:
+                    arguments[key.upper()] = value
             print(module)
             WorkspaceObject = getattr(module, "WorkspaceObject", None)
             if WorkspaceObject is not None:
-                WorkspaceObject.open(window=window)
+                WorkspaceObject.open(
+                    window=window,
+                    argumentString=argumentString,
+                    arguments=arguments,
+                )
                 return
             wsopen_function = getattr(module, "wsopen", None)
             if callable(wsopen_function):

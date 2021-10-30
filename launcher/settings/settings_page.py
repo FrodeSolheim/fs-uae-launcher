@@ -1,4 +1,8 @@
+from typing import Set
+
 import fsui
+from fsui.qt.icon import Icon
+from fswidgets.widget import Widget
 from launcher.fswidgets2.style import Style
 from launcher.launcher_settings import LauncherSettings
 from launcher.settings.option_ui import OptionUI
@@ -6,7 +10,7 @@ from launcher.settings.settings_header import SettingsHeader
 
 
 class SettingsPage(fsui.Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent)
         self.layout = fsui.VerticalLayout()
         self.layout.padding_top = 20
@@ -14,13 +18,13 @@ class SettingsPage(fsui.Panel):
         self.layout.padding_left = 20
         self.layout.padding_right = 20
         self.icon_header = None
-        self.options_on_page = set()
+        self.options_on_page: Set[str] = set()
         self.style = Style({"flexGrow": 1})
 
     def create_option_label(self, parent, label):
         return OptionUI.create_option_label(parent, label)
 
-    def add_header(self, icon, title, subtitle=""):
+    def add_header(self, icon: Icon, title: str, subtitle: str = ""):
         self.icon_header = SettingsHeader(self, icon, title, subtitle)
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
@@ -44,10 +48,10 @@ class SettingsPage(fsui.Panel):
 
     def add_option(
         self,
-        name,
-        description="",
-        margin_top=10,
-        margin_bottom=10,
+        name: str,
+        description: str = "",
+        margin_top: int = 10,
+        margin_bottom: int = 10,
         warnings=None,
     ):
         group = OptionUI.create_group(

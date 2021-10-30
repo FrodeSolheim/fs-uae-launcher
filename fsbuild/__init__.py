@@ -6,8 +6,8 @@ import platform
 import subprocess
 import sys
 import time
-from os import path
 import xml.etree.ElementTree as ET
+from os import path
 from typing import Dict, List, Optional
 
 

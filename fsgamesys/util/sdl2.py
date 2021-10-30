@@ -315,7 +315,10 @@ SDL_NUM_SCANCODES = 512
 
 # SDL_Keycode = Sint32
 SDLK_SCANCODE_MASK = 1 << 30
-SDL_SCANCODE_TO_KEYCODE = lambda x: (x | SDLK_SCANCODE_MASK)
+# SDL_SCANCODE_TO_KEYCODE = lambda x: (x | SDLK_SCANCODE_MASK)
+def SDL_SCANCODE_TO_KEYCODE(scanCode: int) -> int:
+    return scanCode | SDLK_SCANCODE_MASK
+
 
 SDL_Keymod = c_int
 

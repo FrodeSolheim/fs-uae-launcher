@@ -14,6 +14,7 @@ import fsboot
 import fsgamesys
 import launcher.version
 from fsbc.init import initialize_application
+from fscore.mainloop import useMainLoop
 from fscore.settings import Settings
 from fscore.system import System
 from fscore.version import Version
@@ -344,8 +345,8 @@ def handleArguments() -> None:
         print("ARG", arg)
         if arg.startswith("--"):
             arg = arg[2:]
-            if arg.startswith("-no-"):
-                arg = arg[4:]
+            if arg.startswith("--no-"):
+                arg = arg[5:]
                 assert not "=" in arg
                 value = "0"
             try:
@@ -393,6 +394,13 @@ def print_version() -> None:
 
 
 def main(*, app: str, brand: str):
+    try:
+        main2(app=app, brand=brand)
+    finally:
+        useMainLoop().done()
+
+
+def main2(*, app: str, brand: str):
     try:
         handleArguments()
     except Exception as e:

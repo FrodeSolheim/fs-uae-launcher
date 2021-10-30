@@ -401,10 +401,10 @@ def vfs_prefs_entries():
             "name": "Appearance",
         },
         "appearance.info": {"name": "Appearance.info"},
-        "controller": {
-            "name": "Controller",
+        "controllers": {
+            "name": "Controllers",
         },
-        "controller.info": {"name": "Controller.info"},
+        "controllers.info": {"name": "Controllers.info"},
         "filedatabase": {
             "name": "FileDatabase",
         },

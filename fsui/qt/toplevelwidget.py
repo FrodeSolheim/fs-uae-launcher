@@ -109,7 +109,7 @@ class TopLevelWidget(Widget):
             pass
         else:
             # self.windowBorders = self.windowNormalBorders
-            print("self._nonMaximizedPosition =", position)
+            # print("self._nonMaximizedPosition =", position)
             self._nonMaximizedPosition = position
 
     def __handleSizeChange(self, size: Size):
@@ -143,7 +143,7 @@ class TopLevelWidget(Widget):
         pass
 
     def onMove(self):
-        print("onMove", self.getPosition())
+        # print("onMove", self.getPosition())
         self._nonMaximizedPosition = self.getPosition()
 
     def onShow(self):

@@ -1,3 +1,5 @@
+from typing import Dict, Tuple, Union
+
 from fsgamesys.input.sdlkeycodes import sdl_key_codes
 from fsgamesys.util import sdl2
 
@@ -18,7 +20,7 @@ from fsgamesys.util import sdl2
 
 
 class Key(object):
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
 
     @property
@@ -56,7 +58,7 @@ class Key(object):
 
 class Keyboard(object):
     @staticmethod
-    def key(name):
+    def key(name: str) -> Key:
         # try:
         #     code = name.key.keysym.sym
         # except AttributeError:
@@ -91,7 +93,15 @@ class Keyboard(object):
 #         return Key(name)
 
 
-key_table = {
+key_table: Dict[
+    str,
+    Union[
+        Tuple[int, str],
+        Tuple[int, str, int],
+        Tuple[int, str, int, int],
+        Tuple[int, str, int, int, int],
+    ],
+] = {
     "SDLK_NO_KEY": (0, "DIK_NO_KEY", 0, 0),
     "SDLK_0": (48, "DIK_0", 11, sdl2.SDL_SCANCODE_0),
     "SDLK_1": (49, "DIK_1", 2, sdl2.SDL_SCANCODE_1),

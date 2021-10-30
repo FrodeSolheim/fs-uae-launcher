@@ -1,3 +1,9 @@
+Version 4.0:
+
+* Joystick devices har hotpluggable in the Launcher (without refresh button).
+* Controller configuration is rewritten to work with hotpluggable devices.
+* Controller configuration now creates SDL2 comptabible mappings.
+* SDL_GameControllerDB is now bundled for more out-of-the-box support.
 * Support for ARM64 plugins.
 * macOS: Fix centering issue when starting FS-UAE on hi-dpi displays.
 * macOS: Build script support for macOS M1/ARM64 builds.

@@ -1,3 +1,7 @@
+from typing import Optional, Union
+
+from fsui.qt.icon import Icon
+from fsui.qt.image import Image
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import (
     QFont,
@@ -14,7 +18,7 @@ class ListView(Widget):
     item_selected = Signal(int)
     item_activated = Signal(int)
 
-    def __init__(self, parent, border=True):
+    def __init__(self, parent: Widget, border: bool = True):
         # self = QListView(parent.get_container())
         super().__init__(parent, QListView(QParent(parent)))
         # Widget.__init__(self, parent)
@@ -41,7 +45,12 @@ class ListView(Widget):
         # self.activated.connect(self.__double_clicked)
         self._row_height = 26
 
-    def add_item(self, label, icon=None, bold=False):
+    def add_item(
+        self,
+        label: str,
+        icon: Optional[Union[Icon, Image]] = None,
+        bold: bool = False,
+    ):
         item = QStandardItem(label)
         if icon:
             try:
@@ -55,10 +64,10 @@ class ListView(Widget):
             item.setFont(font)
         self._model.appendRow(item)
 
-    def clear(self):
+    def clear(self) -> None:
         self._model.clear()
 
-    def get_item(self, index):
+    def get_item(self, index: int) -> str:
         return self._model.item(index).text()
 
     def get_item_count(self):

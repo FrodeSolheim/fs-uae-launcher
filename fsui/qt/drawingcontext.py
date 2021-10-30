@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from fsui.qt.color import Color
 from fsui.qt.font import Font
 from fsui.qt.qt import (
@@ -26,20 +28,20 @@ class DrawingContext(object):
         else:
             self.qpainter.eraseRect(rect)
 
-    def get_font(self):
+    def get_font(self) -> Font:
         return Font(self.qpainter.font())
 
-    def set_font(self, font):
+    def set_font(self, font: Font):
         self.qpainter.setFont(font.font)
 
-    def draw_text(self, text, x, y):
+    def draw_text(self, text: str, x: int, y: int):
         # self.qpainter.drawText(QPoint(x, y), text)
         self.qpainter.setPen(QPen(self.text_color))
         self.qpainter.drawText(
             x, y, 10000, 1000, Qt.AlignLeft | Qt.AlignTop, text
         )
 
-    def measure_text(self, text):
+    def measure_text(self, text: str) -> Tuple[int, int]:
         # return self.dc.GetTextExtent(text)
         # return (10, 10)
         rect = self.qpainter.boundingRect(
@@ -57,7 +59,7 @@ class DrawingContext(object):
         # return Color(self.qpainter.pen().color())
         return self.text_color
 
-    def set_text_color(self, color):
+    def set_text_color(self, color: Color):
         # self.dc.SetTextForeground(color)
         # self.qpainter.setPen(QPen(color))
         self.text_color = Color(color)

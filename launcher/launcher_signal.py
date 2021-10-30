@@ -10,12 +10,12 @@ class LauncherSignal(object):
     # listeners: Dict[str, List[SimpleCallable]] = {}
 
     @classmethod
-    def add_listener(cls, signal: str, listener):
+    def add_listener(cls, signal: str, listener: Any):
         # cls.listeners.setdefault(signal, []).append(listener)
         BaseSignal(signal).connect(listener)
 
     @classmethod
-    def remove_listener(cls, signal: str, listener):
+    def remove_listener(cls, signal: str, listener: Any):
         # cls.listeners[signal].remove(listener)
         BaseSignal(signal).disconnect(listener)
 

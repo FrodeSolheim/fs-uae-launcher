@@ -78,7 +78,7 @@ class WindowWrapper(QMainWindow):
         self._fswidget.on_resize()
 
     def moveEvent(self, event):
-        print("onShow (move)", self.x(), self.y())
+        # print("onShow (move)", self.x(), self.y())
         self._fswidget.onMove()
 
     def showEvent(self, _):
@@ -126,7 +126,9 @@ class Window(TopLevelWidget):
             maximizable=maximizable,
             title=title,
         )
-        super().__init__(parent, qwidget, escape=escape, maximizable=maximizable)
+        super().__init__(
+            parent, qwidget, escape=escape, maximizable=maximizable
+        )
 
         # if parent is None and len(default_window_parent) > 0:
         #     parent = default_window_parent[-1]

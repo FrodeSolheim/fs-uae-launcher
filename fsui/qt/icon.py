@@ -10,7 +10,7 @@ class Icon:
     icons can be looked up just by name.
     """
 
-    def __init__(self, name, path=""):
+    def __init__(self, name: str, path: str = ""):
         self.name = name
         self.path = path
 

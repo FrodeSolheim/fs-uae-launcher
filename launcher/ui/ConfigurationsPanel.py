@@ -65,13 +65,6 @@ class ConfigurationsPanel(fsui.Panel):
                 margin_bottom=0,
             )
 
-        # self.refresh_button = IconButton(self, "refresh_button.png")
-        # self.refresh_button.set_tooltip(
-        #     gettext("Refresh Game Configurations from Online Database"))
-        # self.refresh_button.activated.connect(self.on_refresh_button)
-        # hor_layout.add(
-        #     self.refresh_button, margin=10, margin_top=0, margin_bottom=0)
-
         self.configurations_browser = ConfigurationsBrowser(self)
 
         vert_layout.add(

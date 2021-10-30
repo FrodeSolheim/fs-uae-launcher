@@ -1,3 +1,4 @@
+import logging
 import re
 import subprocess
 import sys
@@ -5,11 +6,17 @@ import traceback
 from typing import Dict, List
 
 from fsgamesys.amiga.fsuaedevicehelper import FSUAEDeviceHelper
-from launcher.context import useInputService
+from fsgamesys.input.inputdevice import InputDevice, InputDeviceType
+
+# from fsgamesys.input2.dataclasses import InputDevice
+# from launcher.context import useInputService
+from fsgamesys.input.inputservice import useInputService
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
 from launcher.option import Option
+
+log = logging.getLogger(__name__)
 
 
 class Device:
@@ -238,10 +245,12 @@ class DeviceManager:
         return value
 
     @classmethod
-    def get_devices_for_ports(cls, config: Dict[str, str]):
+    def get_devices_for_ports(
+        cls, config: Dict[str, str]
+    ) -> List[InputDevice]:
         # cls.init()
         inputService = useInputService()
-        devices = inputService.getInputDevices()
+        devices = inputService.getDevices()
         ports = [devices[0] for _ in range(5)]
         for device in devices:
             device.port = None
@@ -277,7 +286,7 @@ class DeviceManager:
                 # print("b")
                 for dev in devices:
                     # print("c")
-                    if dev.type == "mouse" and dev.port is None:
+                    if dev.type == InputDeviceType.MOUSE and dev.port is None:
                         # print("d")
                         ports[port] = dev
                         dev.port = port
@@ -301,12 +310,18 @@ class DeviceManager:
                             return
                 # find first suitable device
                 for dev in devices:
-                    if dev.type == "joystick" and dev.port is None:
+                    if (
+                        dev.type == InputDeviceType.JOYSTICK
+                        and dev.port is None
+                    ):
                         ports[port] = dev
                         dev.port = port
                         return
                 for dev in devices:
-                    if dev.type == "keyboard" and dev.port is None:
+                    if (
+                        dev.type == InputDeviceType.KEYBOARD
+                        and dev.port is None
+                    ):
                         ports[port] = dev
                         dev.port = port
                         return
@@ -318,15 +333,22 @@ class DeviceManager:
         return ports
 
     @classmethod
-    def get_device_for_port(cls, config: Dict[str, str], port: int):
+    def get_device_for_port(
+        cls, config: Dict[str, str], port: int
+    ) -> InputDevice:
         return cls.get_devices_for_ports(config)[port]
 
     @classmethod
-    def get_non_amiga_devices_for_ports(cls, config: Dict[str, str]):
+    def get_non_amiga_devices_for_ports(
+        cls, config: Dict[str, str]
+    ) -> List[InputDevice]:
         platform = config.get("platform")
         # cls.init()
         inputService = useInputService()
-        devices = inputService.getInputDevices()
+        devices = inputService.getDevices()
+        log.debug(
+            "[INPUT] get_non_amiga_devices_for_ports devices=%r", devices
+        )
         # Launcher has 5 input devices in total (4 + 1 virtual)
         # ports = [cls.devices[0] for _ in range(5)]
         # + 1 dummy device for index 0
@@ -343,8 +365,7 @@ class DeviceManager:
                     device.port = port_
                     break
 
-        print("before auto-fill")
-        print(ports)
+        log.debug("[INPUT] before auto-fill: %r", ports)
 
         # print("-")
         # for device in cls.devices:
@@ -386,7 +407,7 @@ class DeviceManager:
                 # print("b")
                 for dev in devices:
                     # print("c")
-                    if dev.type == "mouse" and dev.port is None:
+                    if dev.type == InputDeviceType.MOUSE and dev.port is None:
                         # print("d")
                         ports[port] = dev
                         dev.port = port
@@ -417,12 +438,18 @@ class DeviceManager:
                             return
                 # find first suitable device
                 for dev in devices:
-                    if dev.type == "joystick" and dev.port is None:
+                    if (
+                        dev.type == InputDeviceType.JOYSTICK
+                        and dev.port is None
+                    ):
                         ports[port] = dev
                         dev.port = port
                         return
                 for dev in devices:
-                    if dev.type == "keyboard" and dev.port is None:
+                    if (
+                        dev.type == InputDeviceType.KEYBOARD
+                        and dev.port is None
+                    ):
                         ports[port] = dev
                         dev.port = port
                         return
@@ -438,11 +465,13 @@ class DeviceManager:
             port_order = [1, 2, 3, 4]
         for p in port_order:
             auto_fill(p, "joystick")
-            print("auto-fill", p, "=", ports[p])
+            log.debug("[INPUT] auto-fill %r = %r", p, ports[p])
         return ports
 
     @classmethod
-    def get_non_amiga_device_for_port(cls, config: Dict[str, str], port: int):
+    def get_non_amiga_device_for_port(
+        cls, config: Dict[str, str], port: int
+    ) -> InputDevice:
         ports = cls.get_non_amiga_devices_for_ports(config)
         print(ports, port)
         return ports[port]

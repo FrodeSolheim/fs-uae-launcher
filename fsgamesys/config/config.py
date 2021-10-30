@@ -3,6 +3,7 @@ import sys
 # import traceback
 from collections import defaultdict
 from typing import Dict, Iterable, List, Set, Tuple
+
 from typing_extensions import Protocol
 
 from fsbc.settings import Settings

@@ -4,8 +4,8 @@ import traceback
 from arcade.resources import logger
 from fsgamesys.input.devicemanager import DeviceManager
 from fsgamesys.input.eventlistener import EventListener
-from fsgamesys.input.inputdevice import InputDevice
 from fsgamesys.input.keyboard import Keyboard
+from fsgamesys.input.legacyinputdevice import LegacyInputDevice
 from fspy.decorators import memoize
 
 REPEAT_THRESHOLD = 0.300
@@ -16,7 +16,7 @@ def get_controller_config(name, sdl_name, axes=0, hats=0, buttons=0, balls=0):
     try:
         # device id must end with #something (really a device number,
         # but can be anything
-        device = InputDevice(
+        device = LegacyInputDevice(
             "menu",
             name + " #MENU",
             [],

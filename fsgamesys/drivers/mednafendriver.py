@@ -6,12 +6,14 @@ import struct
 from base64 import b64decode
 from binascii import hexlify
 from functools import lru_cache
+from typing import Set
 
 from fsbc.paths import Paths
 from fscore.system import System
 from fsgamesys.archive import Archive
 from fsgamesys.drivers.gamedriver import Emulator, GameDriver
 from fsgamesys.input.enumeratehelper import EnumerateHelper
+from fsgamesys.input.inputdevice import InputDevice
 from fsgamesys.input.mapper import InputMapper
 from fsgamesys.options.option import Option
 from fsgamesys.saves import SaveHandler
@@ -453,7 +455,7 @@ class MednafenInputMapper(InputMapper):
         InputMapper.__init__(self, port, mapping)
         helper = EnumerateHelper()
         helper.init()
-        seen_ids = set()
+        seen_ids: Set[int] = set()
         self.id_map = {}
         for device in helper.devices:
             uid = self.calculate_unique_id(device)
@@ -478,7 +480,7 @@ class MednafenInputMapper(InputMapper):
         joystick_id = self.unique_id(self.device, self.device.id)
         # Hats after buttons, order: up, right, down, left
         return "joystick 0x{:032x} button_{}".format(
-            joystick_id, self.device.buttons + hat * 4 + offset
+            joystick_id, self.device.numButtons + hat * 4 + offset
         )
 
     def button(self, button):
@@ -490,7 +492,7 @@ class MednafenInputMapper(InputMapper):
         # print(key)
         return "keyboard 0x0 {}".format(key.sdl2_scan_code)
 
-    @lru_cache()
+    # @lru_cache()
     def unique_id(self, device, _):
         try:
             return self.id_map[device.id]
@@ -498,8 +500,10 @@ class MednafenInputMapper(InputMapper):
             print("id_map:", self.id_map)
             raise
 
-    @lru_cache()
-    def calculate_unique_id(self, device, version=2):
+    # @lru_cache()
+    def calculate_unique_id(
+        self, device: InputDevice, version: int = 2
+    ) -> int:
         """Implements the joystick ID algorithm in mednafen.
         Was src/drivers/joystick.cpp:GetJoystickUniqueID
         Now src/drivers/Joystick.cpp:Calc09xID.
@@ -508,12 +512,16 @@ class MednafenInputMapper(InputMapper):
         if version == 2:
             print(device)
             m = hashlib.md5()
-            print("--------------{}----------------".format(device.sdl_name))
-            m.update((device.sdl_name).encode("UTF-8"))
+            print("--------------{}----------------".format(device.sdlName))
+            m.update(device.sdlName.encode("UTF-8"))
             # print(m.hexdigest()[:16], device.axes, device.buttons, device.hats, device.balls)
 
             buffer = struct.pack(
-                ">HHHH", device.axes, device.buttons, device.hats, device.balls
+                ">HHHH",
+                device.numAxes,
+                device.numButtons,
+                device.numHats,
+                device.numBalls,
             )
             return int(
                 "{}{}".format(
@@ -526,10 +534,19 @@ class MednafenInputMapper(InputMapper):
             #     m.hexdigest()[:16], device.axes, device.buttons, device.hats, device.balls)
         else:
             m = hashlib.md5()
-            print(device.axes, device.balls, device.hats, device.buttons)
+            print(
+                device.numAxes,
+                device.numBalls,
+                device.numHats,
+                device.numButtons,
+            )
             # noinspection SpellCheckingInspection
             buffer = struct.pack(
-                "iiii", device.axes, device.balls, device.hats, device.buttons
+                "iiii",
+                device.numAxes,
+                device.numBalls,
+                device.numHats,
+                device.numButtons,
             )
             m.update(buffer)
             digest = m.digest()

@@ -10,7 +10,7 @@ class InputPanel(ConfigPanel):
         # Skin.set_background_color(self)
 
         # self.layout = fsui.VerticalLayout()
-        self.input_group = InputGroup(self, refresh_button=True)
+        self.input_group = InputGroup(self)
         self.layout.add(self.input_group, fill=True)
         self.layout.add_spacer(Skin.EXTRA_GROUP_MARGIN)
         self.input_group = InputGroup(self, parallel_ports=True)

@@ -1,3 +1,5 @@
+from typing import Type
+
 import fsbc.settings
 from fscore.deprecated import deprecated
 
@@ -27,10 +29,10 @@ class Settings:
     #     pass
 
     @staticmethod
-    def set_default(key: str, value: str):
+    def set_default(key: str, value: str) -> None:
         fsbc.settings.Settings.instance().defaults[key] = value
 
     @deprecated
     @staticmethod
-    def instance():
+    def instance() -> Type["Settings"]:
         return Settings

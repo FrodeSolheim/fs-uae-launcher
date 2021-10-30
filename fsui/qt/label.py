@@ -6,17 +6,19 @@ from fswidgets.widget import Widget
 
 
 class PlainLabel(Widget):
-    def __init__(self, parent, label):
+    def __init__(self, parent: Widget, label: str):
         super().__init__(parent, QLabel(label, QParent(parent)))
 
-    def set_text(self, label):
+    def set_text(self, label: str):
         self._qwidget.setText(label)
 
 
 class Label(PlainLabel):
     TEXT_ALIGNMENT_CENTER = 1
 
-    def __init__(self, parent, label="", selectable=True):
+    def __init__(
+        self, parent: Widget, label: str = "", selectable: bool = True
+    ):
         super().__init__(parent, label)
 
         self._qwidget.setTextFormat(Qt.RichText)

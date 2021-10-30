@@ -1,7 +1,10 @@
+from typing import Optional
+
 import fsui
 from fscore.observable import Disposer, isObservable
 from fswidgets.parentstack import ParentStack
-from launcher.fswidgets2.style import Style
+from fswidgets.widget import Widget
+from launcher.fswidgets2.style import Style, StyleParam
 
 # from weakref import WeakMethod
 
@@ -17,7 +20,13 @@ from launcher.fswidgets2.style import Style
 
 
 class Label(fsui.Label):
-    def __init__(self, label="", *, parent=None, style=None):
+    def __init__(
+        self,
+        label: str = "",
+        *,
+        parent: Optional[Widget] = None,
+        style: Optional[StyleParam] = None
+    ):
         parent = parent or ParentStack.top()
         super().__init__(parent)
         if isObservable(label):

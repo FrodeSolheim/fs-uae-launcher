@@ -1,11 +1,9 @@
 import queue
 import traceback
+from typing import Any, Callable
 
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import *
-
-# noinspection PyUnresolvedReferences
-from fsui.qt.callafter import call_after
 
 # pylint: disable=no-name-in-module
 # noinspection PyUnresolvedReferences
@@ -54,7 +52,13 @@ def get_screen_size():
     return size
 
 
-def call_later(duration, function, *args, **kwargs):
+def callLater(duration: float, function: Callable[[], None]):
+    call_later(round(duration * 1000), function)
+
+
+def call_later(
+    duration: int, function: Callable[..., None], *args: Any, **kwargs: Any
+):
     # print("FIXME: call_later", duration, function)
     # raise NotImplementedError()
     # QApplication.instance().
@@ -86,3 +90,6 @@ def error_function(title):
         show_error(message, title)
 
     return error_function_2
+
+
+from fsui.qt.callafter import call_after

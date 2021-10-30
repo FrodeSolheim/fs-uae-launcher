@@ -13,12 +13,12 @@ class TextField(Widget):
     # FIXME: Insert * after parent
     def __init__(
         self,
-        parent,
-        text="",
-        read_only=False,
-        placeholder="",
-        clearbutton=False,
-        passwordMode=False,
+        parent: Widget,
+        text: str = "",
+        read_only: bool = False,
+        placeholder: str = "",
+        clearbutton: bool = False,
+        passwordMode: bool = False,
     ):
         super().__init__(parent, QLineEdit(text, QParent(parent)))
         # Widget.__init__(self, parent)
@@ -107,7 +107,7 @@ class TextField(Widget):
     def set_cursor_position(self, position):
         self._qwidget.setCursorPosition(position)
 
-    def set_text(self, text):
+    def set_text(self, text: str):
         self._qwidget.setText(text)
 
     def text(self):

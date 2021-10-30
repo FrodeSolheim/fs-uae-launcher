@@ -20,7 +20,5 @@ class MainPanel(ConfigPanel):
         self.layout.add(self.removable_media_group, fill=True)
         self.layout.add_spacer(10)
 
-        self.input_group = InputGroup(
-            self, refresh_button=True, autofire_button=False
-        )
+        self.input_group = InputGroup(self, autofire_button=False)
         self.layout.add(self.input_group, fill=True)

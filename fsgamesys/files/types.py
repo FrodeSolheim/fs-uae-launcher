@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from typing import Dict, Optional
+
 from typing_extensions import Protocol
 
 from fsgamesys.files.installablefile import InstallableFile

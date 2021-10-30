@@ -52,7 +52,8 @@ class Menu:
         text: str,
         function: Optional[SimpleCallable] = None,
         item_id: int = -1,
-    ):
+        enabled: bool = True,
+    ) -> None:
         text = text.replace("&", "&&")
 
         action = self.qmenu.addAction(text)
@@ -64,6 +65,9 @@ class Menu:
                     function()
 
             action.triggered.connect(triggered_wrapper)  # type: ignore
+
+        if not enabled:
+            action.setDisabled(True)
 
         # if item_id == -1:
         #     item_id = wx.NewId()
@@ -84,7 +88,7 @@ class Menu:
     def add_preferences_item(self, text: str, function: SimpleCallable):
         self.add_item(text, function)
 
-    def add_separator(self):
+    def add_separator(self) -> None:
         self.qmenu.addSeparator()
 
     # FIXME: Using Any here to avoid circular import dependency on Widget
@@ -102,5 +106,5 @@ class Menu:
 
 
 class PopupMenu(Menu):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(implementation=AutoCloseMenu)

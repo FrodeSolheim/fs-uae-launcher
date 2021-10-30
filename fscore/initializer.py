@@ -16,7 +16,7 @@ def initializer(function: F) -> F:
 
     @wraps(function)
     # def wrapper(*args, **kwargs):
-    def wrapper():
+    def wrapper() -> None:
         if once_data["has_run"]:
             return
         # Set has_run to true before calling function. If the function throws

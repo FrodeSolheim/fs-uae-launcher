@@ -183,7 +183,13 @@ class Layout(object):
                 del self.children[i]
                 return
 
-    def add_spacer(self, size=0, size2=None, expand=False, horizontal=False):
+    def add_spacer(
+        self,
+        size: int = 0,
+        size2: Optional[int] = None,
+        expand: bool = False,
+        horizontal: bool = False,
+    ):
         self.add(Spacer(size, size2, horizontal), expand=expand)
 
     def get_position(self):
@@ -206,7 +212,7 @@ class Layout(object):
         self.size = size
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         pass
 
 
@@ -215,7 +221,7 @@ class LinearLayout(Layout):
         Layout.__init__(self, padding)
         self.vertical = vertical
 
-    def update(self):
+    def update(self) -> None:
         available = self.size[self.vertical]
         if self.vertical:
             available = available - self.padding_top - self.padding_bottom
@@ -339,7 +345,7 @@ class LinearLayout(Layout):
 
 
 class HorizontalLayout(LinearLayout):
-    def __init__(self, padding=0):
+    def __init__(self, padding: int = 0) -> None:
         LinearLayout.__init__(self, False, padding=padding)
 
     def add_spacer(
@@ -379,7 +385,7 @@ class HorizontalLayout(LinearLayout):
 
 
 class VerticalLayout(LinearLayout):
-    def __init__(self, padding=0):
+    def __init__(self, padding: int = 0) -> None:
         LinearLayout.__init__(self, True, padding=padding)
 
     def get_min_width(self) -> int:

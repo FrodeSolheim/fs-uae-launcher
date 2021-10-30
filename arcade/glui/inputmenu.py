@@ -10,7 +10,7 @@ from arcade.glui.texture import Texture
 from arcade.glui.topmenu import GameCenterItem
 from fsgamesys.drivers.gamedriver import GameDriver
 from fsgamesys.input.devicemanager import DeviceManager
-from fsgamesys.input.inputdevice import InputDevice
+from fsgamesys.input.legacyinputdevice import LegacyInputDevice
 
 from .launchmenu import LaunchMenu
 
@@ -208,7 +208,7 @@ class InputMenu(Menu):
             # print("configuring device", device, "for",
             # self.controller.ports[port].mapping_name)
             device.configure(self.controller.ports[port].mapping_name)
-        except InputDevice.MissingPlatformSupportException:
+        except LegacyInputDevice.MissingPlatformSupportException:
             device_data["ok"] = False
         except Exception as e:
             print(repr(e))

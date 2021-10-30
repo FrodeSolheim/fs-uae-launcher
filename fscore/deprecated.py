@@ -29,7 +29,8 @@ DeprecatedFunction = Callable[
 ]
 
 
-def deprecated(function: Any) -> DeprecatedFunction:
+# def deprecated(function: Any) -> DeprecatedFunction:
+def deprecated(function: Any) -> Any:
     """The return signature is invalid on purpose, to mark errors when used."""
 
     # FIXME: Check option

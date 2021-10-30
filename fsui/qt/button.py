@@ -1,4 +1,7 @@
+from typing import Callable, Optional
+
 from fsui.context import get_theme
+from fsui.qt.icon import Icon
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QFontMetrics, QPushButton, QSignal
 from fswidgets.widget import Widget
@@ -7,7 +10,14 @@ from fswidgets.widget import Widget
 class Button(Widget):
     activated = QSignal()
 
-    def __init__(self, parent, label="", *, icon=None, onClick=None):
+    def __init__(
+        self,
+        parent: Widget,
+        label: str = "",
+        *,
+        icon: Optional[Icon] = None,
+        onClick: Callable[[], None] = None
+    ):
         if icon:
             qwidget = QPushButton(icon.qicon(), label, QParent(parent))
         else:

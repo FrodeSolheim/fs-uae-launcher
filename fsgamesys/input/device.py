@@ -64,10 +64,10 @@ class Device(object):
         )
         return config_name
 
-    def configure(self, system, multiple=True):
+    def configure(self, system: str, multiple: bool = True):
         # name = self.name.rsplit("#", 1)[0]
         name = self.name
-        from fsgamesys.input.inputdevice import InputDevice
+        from fsgamesys.input.legacyinputdevice import LegacyInputDevice
 
         try:
             # device id must end with #something (really a device number,
@@ -76,7 +76,7 @@ class Device(object):
                 name_with_hash = name
             else:
                 name_with_hash = name + " #DUMMY"
-            device = InputDevice(
+            device = LegacyInputDevice(
                 system,
                 name_with_hash,
                 [],

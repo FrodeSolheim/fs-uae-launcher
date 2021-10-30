@@ -72,7 +72,7 @@ class Panel(Widget):
     def on_paint(self):
         pass
 
-    def create_dc(self):
+    def create_dc(self) -> DrawingContext:
         return DrawingContext(self._painter)
 
     def on_mouse_enter(self):

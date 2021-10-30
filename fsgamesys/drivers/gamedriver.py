@@ -6,7 +6,7 @@ import traceback
 import warnings
 from collections import defaultdict
 from subprocess import Popen
-from typing import DefaultDict, Union
+from typing import DefaultDict, List, Optional, Union
 
 import fsboot
 from fsbc.application import Application
@@ -15,6 +15,7 @@ from fscore.resources import Resources
 from fscore.system import System
 from fsgamesys.amiga.fsuae import FSUAE
 from fsgamesys.FSGSDirectories import FSGSDirectories
+from fsgamesys.input.inputdevice import InputDevice
 from fsgamesys.monitors.refreshratetool import RefreshRateTool
 from fsgamesys.options.constants2 import (
     PARENT_H__,
@@ -29,18 +30,18 @@ from launcher.option import Option
 
 
 class GameDriverLogger:
-    def debug(self, message):
+    def debug(self, message: str):
         print("[DEBUG]", message)
 
-    def info(self, message):
+    def info(self, message: str):
         print("[INFO]", message)
 
-    def warning(self, message):
+    def warning(self, message: str):
         # FIXME: Store warning and show in some kind of launch log
         # (i.e. "warnings and error generated during game execution")
         print("[WARNING]", message)
 
-    def error(self, message):
+    def error(self, message: str):
         print("[ERROR]", message)
 
 
@@ -1053,16 +1054,16 @@ class GameDriver:
 
 
 class Port(object):
-    def __init__(self, name):
-        self.number = 0
-        self.name = name
-        self.types = []
-        self.index = 0
-        self.device = None
+    def __init__(self, name: str) -> None:
+        self.number: int = 0
+        self.name: str = name
+        self.types = []  # FIXME: Some kind of TypedDict
+        self.index: int = 0
+        self.device: Optional[InputDevice] = None
         # Name of config option for device type
-        self.type_option = ""
+        self.type_option: str = ""
         # Name of config option for device
-        self.device_option = ""
+        self.device_option: str = ""
 
         # FIXME: remove
         self.device_id = None
@@ -1070,17 +1071,17 @@ class Port(object):
         self.mapping_name_override = None
 
     @property
-    def type(self):
+    def type(self) -> str:
         return self.types[self.index]["type"]
 
     @property
-    def mapping_name(self):
+    def mapping_name(self) -> str:
         if self.mapping_name_override:
             return self.mapping_name_override
         return self.types[self.index]["mapping_name"]
 
     @property
-    def description(self):
+    def description(self) -> str:
         return self.types[self.index]["description"]
 
 

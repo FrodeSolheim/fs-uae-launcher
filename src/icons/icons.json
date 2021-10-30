@@ -157,14 +157,14 @@
         ],
         "type": "glow"
     },
-    "data/Icons/System/Prefs/Controller.png": {
+    "data/Icons/System/Prefs/Controllers.png": {
         "sources": [
             "humanity/64/applications-simulation.svg",
             "humanity/64/prefs-overlay.png"
         ],
         "type": "normal"
     },
-    "data/Icons/System/Prefs/Controller_Selected.png": {
+    "data/Icons/System/Prefs/Controllers_Selected.png": {
         "sources": [
             "humanity/64/applications-simulation.svg",
             "humanity/64/prefs-overlay.png"
