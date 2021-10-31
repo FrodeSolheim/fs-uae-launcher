@@ -1,10 +1,10 @@
 from typing import Any, Dict
 
-from launcher.controllerconfig.ControllerConfigWindow import (
-    ControllerConfigWindow,
-)
 from system.classes.shellobject import shellObject
 from system.classes.windowcache import WindowCache
+from system.tools.controllerconfig.controllerconfigwindow import (
+    ControllerConfigWindow,
+)
 
 
 @shellObject

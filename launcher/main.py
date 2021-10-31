@@ -269,7 +269,8 @@ def maybeRunNewerVersionFromPlugin():
         # FIXME: fsboot.executable?
         args.append("--redirected-from=" + sys.executable)
         # Make sure the new process does not try to redirect
-        args.append("--no-redirect")
+        # args.append("--no-redirect")
+        args.append("--redirect=0")
         debug(f"Running new process with args {repr(args)}")
         completedProcess = subprocess.run(args)
         returnCode = completedProcess.returncode
@@ -340,21 +341,20 @@ def handleArgument(key: str, value: str):
 
 
 def handleArguments() -> None:
-    # for i, arg in enumerate(sys.argv[1:]):
     for arg in sys.argv[1:]:
         print("ARG", arg)
         if arg.startswith("--"):
-            arg = arg[2:]
             if arg.startswith("--no-"):
-                arg = arg[5:]
-                assert not "=" in arg
+                key = arg[5:]
+                assert not "=" in key
                 value = "0"
-            try:
-                key, value = arg.split("=", 1)
-            except ValueError:
-                key = arg
-                value = "1"
-            print(key, value)
+            else:
+                try:
+                    key, value = arg[2:].split("=", 1)
+                except ValueError:
+                    key = arg[2:]
+                    value = "1"
+            print("ARG", arg, "->", key, value)
             handleArgument(key, value)
 
 

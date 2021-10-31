@@ -2,11 +2,11 @@ import logging
 from typing import Optional
 
 from fsui import PopupMenu
-from launcher.controllerconfig.ControllerConfigPanel import (
-    ControllerConfigPanel,
-)
 from launcher.i18n import gettext
 from system.classes.window import Window
+from system.tools.controllerconfig.controllerconfigpanel import (
+    ControllerConfigPanel,
+)
 
 log = logging.getLogger(__name__)
 
