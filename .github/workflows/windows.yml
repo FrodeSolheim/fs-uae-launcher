@@ -54,9 +54,9 @@ jobs:
         run: |
           python3 -m pip install pip==21.3.1 pipenv==2021.5.29
 
-      - name: Run pipenv install
+      - name: Run pipenv sync --dev
         run: |
-          pipenv install --python 3.8 --deploy
+          pipenv sync --dev
 
       - name: Create python3 alias in virtualenv
         run: |

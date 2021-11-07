@@ -51,9 +51,9 @@ jobs:
         run: |
           npm install -g appdmg
 
-      - name: Run pipenv install
+      - name: Run pipenv sync --dev
         run: |
-          pipenv install --deploy
+          pipenv sync --dev
 
       - name: Update version
         run: |
