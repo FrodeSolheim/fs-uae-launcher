@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+. ./PACKAGE.FS
+
+mkdir -p fsbuild/_dist
+make dist
+mv fs-uae-launcher-$PACKAGE_VERSION.tar.xz fsbuild/_dist

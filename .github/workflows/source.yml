@@ -1,0 +1,58 @@
+name: Linux
+on:
+  push:
+    branches:
+      - master
+      - beta
+      - stable
+  pull_request:
+    branches:
+      - master
+      - beta
+      - stable
+jobs:
+  Linux_x86-64:
+    runs-on: ubuntu-18.04
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Log environment
+        run: env
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Update version
+        run: |
+          fsbuild/version --update
+
+      - name: Bootstrap
+        run: fsdeps/use fsbuild/bootstrap
+
+      - name: Configure
+        run: fsdeps/use fsbuild/configure
+
+      - name: Source
+        run: fsdeps/use fsbuild/source
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Linux_x86-64
+          path: fsbuild/_dist/*
+
+      - name: Upload build to Dropbox folder
+        if: >-
+          github.ref == 'refs/heads/master' ||
+          github.ref == 'refs/heads/beta' ||
+          github.ref == 'refs/heads/stable'
+        run: |
+          python3 -m pip install dropbox
+          fsbuild/upload
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
