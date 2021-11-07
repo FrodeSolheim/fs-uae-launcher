@@ -408,7 +408,7 @@ write(
     """\
 dist: distdir
     find $(dist_dir) -exec touch \{\} \;
-    cd "$(build_dir)" && tar zcfv $(dist_name).tar.gz $(dist_name)
+    cd "$(build_dir)" && tar Jcfv $(dist_name).tar.xz $(dist_name)
 
 """
 )

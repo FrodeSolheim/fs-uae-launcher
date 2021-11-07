@@ -25,7 +25,7 @@ Name: %{name}
 Version: %{version}
 Release: %{release}
 URL: http://fs-uae.net/
-Source0: %{name}-%{unmangled_version}.tar.gz
+Source0: %{name}-%{unmangled_version}.tar.xz
 License: GPL-2.0+
 Group: Applications/Emulators
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
