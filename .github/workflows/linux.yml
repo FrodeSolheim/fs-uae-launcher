@@ -60,13 +60,13 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install dependencies
+      - name: Install pip and pipenv
         run: |
-          python -m pip install --upgrade pip pipenv
+          python -m pip install pip==21.3.1 pipenv==2021.5.29
 
-      - name: Run pipenv install
+      - name: Run pipenv sync --dev
         run: |
-          pipenv install --deploy --verbose
+          pipenv sync --dev
 
       - name: Download pyinstaller source
         run: |
