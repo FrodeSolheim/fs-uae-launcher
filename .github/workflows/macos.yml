@@ -50,7 +50,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          python3 -m pip install --upgrade pip pipenv dmgbuild
+          python3 -m pip install pip==21.3.1 pipenv==2021.5.29 dmgbuild
 
       - name: Install Node dependencies
         run: |
