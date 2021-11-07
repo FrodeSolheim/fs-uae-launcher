@@ -56,7 +56,7 @@ jobs:
 
       - name: Run pipenv sync --dev
         run: |
-          pipenv sync --dev
+          pipenv sync --dev --python 3.8
 
       - name: Create python3 alias in virtualenv
         run: |
