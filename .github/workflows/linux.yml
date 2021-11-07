@@ -83,7 +83,7 @@ jobs:
       - name: Replace pyinstaller with custom version
         run: |
           pipenv uninstall pyinstaller
-          pipenv install `pwd`/pyinstaller-4.2
+          pipenv install --skip-lock `pwd`/pyinstaller-4.2
 
       - name: Update version
         run: |

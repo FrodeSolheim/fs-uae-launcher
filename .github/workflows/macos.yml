@@ -44,6 +44,10 @@ jobs:
         run: |
           echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
 
+      - name: Print PATH and env
+        run: |
+          env
+
       - name: Install Python dependencies
         run: |
           python3 -m pip install --upgrade pip pipenv dmgbuild
