@@ -39,15 +39,15 @@ jobs:
         run: |
           echo /Library/Frameworks/Python.framework/Versions/3.7/bin >> $GITHUB_PATH
 
-      - name: Install dependencies
+      - name: Install pip and pipenv
         run: |
-          python3 -m pip install pip==21.3.1 pipenv==2021.5.29 dmgbuild
+          python3 -m pip install pip==21.3.1 pipenv==2021.5.29
 
       - name: Modifications for macOS 10.9
         run: |
           cp fsbuild/macOS10.9/* .
 
-      - name: Install Node dependencies
+      - name: Install appdmg
         run: |
           npm install -g appdmg
 

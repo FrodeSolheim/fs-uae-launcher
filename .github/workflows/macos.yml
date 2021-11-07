@@ -44,11 +44,11 @@ jobs:
         run: |
           echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
 
-      - name: Install Python dependencies
+      - name: Install pip and pipenv
         run: |
-          python3 -m pip install pip==21.3.1 pipenv==2021.5.29 dmgbuild
+          python3 -m pip install pip==21.3.1 pipenv==2021.5.29
 
-      - name: Install Node dependencies
+      - name: Install appdmg
         run: |
           npm install -g appdmg
 
