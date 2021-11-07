@@ -261,7 +261,7 @@ class WarningsElement(StatusElement):
             dc.draw_image(icon, x, 6)
             x += 16 + 6
             tw, th = dc.measure_text(warning)
-            dc.draw_text(warning, x, (h - th) / 2)
+            dc.draw_text(warning, x, round((h - th) / 2))
             x += tw + 6 + 16
             stop = x
             self.coordinates.append((start, stop, handler))
