@@ -57,7 +57,7 @@ jobs:
 
       - name: Update version
         run: |
-          fsbuild/version --update
+          fsbuild/version
 
       - name: Bootstrap
         run: fsbuild/bootstrap
