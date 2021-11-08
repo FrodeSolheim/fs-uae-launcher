@@ -4,7 +4,7 @@ set -e
 
 . ./PACKAGE.FS
 
-fsbuild/debsrc
+fsbuild/deb-src
 rm -Rf fsbuild/_dist/obs
 mkdir -p fsbuild/_dist/obs
 

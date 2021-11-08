@@ -4,7 +4,7 @@ set -e
 
 . ./PACKAGE.FS
 
-fsbuild/dist
+fsbuild/dist-xz
 cp $PACKAGE_NAME-$PACKAGE_VERSION.tar.xz \
 	${PACKAGE_NAME}_${PACKAGE_VERSION}.orig.tar.xz
 

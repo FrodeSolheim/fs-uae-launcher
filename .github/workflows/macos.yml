@@ -13,8 +13,12 @@ on:
 jobs:
   macOS_x86-64:
     runs-on: macos-10.15
-    steps:
 
+    env:
+      SIGNING_ENABLED: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+
+    steps:
       - name: Install brew packages
         run: |
           brew install dos2unix
@@ -72,6 +76,7 @@ jobs:
           fsbuild/bundle
 
       - name: Prepare signing certificate
+        if: env.SIGNING_ENABLED != null
         run: |
           echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
           security create-keychain -p $KEYCHAIN_PASSWORD build.keychain
@@ -85,9 +90,11 @@ jobs:
           SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
 
       - name: Sign
+        if: env.SIGNING_ENABLED != null
         run: fsbuild/sign
 
       - name: Notarize
+        if: env.SIGNING_ENABLED != null
         run: fsbuild/notarize
         env:
           NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
@@ -98,9 +105,11 @@ jobs:
         run: fsbuild/archive
 
       - name: Build DMG
-        run: fsbuild/dmg --build
+        if: hashFiles('fsbuild/build-dmg') != '' && env.SIGNING_ENABLED != null
+        run: fsbuild/build-dmg
 
       - name: Unlock keychain again
+        if: env.SIGNING_ENABLED != null
         run: |
           echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
           security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
@@ -110,10 +119,12 @@ jobs:
           SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
 
       - name: Sign DMG
-        run: fsbuild/dmg --sign
+        if: hashFiles('fsbuild/sign-dmg') != '' && env.SIGNING_ENABLED != null
+        run: fsbuild/sign-dmg
 
       - name: Notarize DMG
-        run: fsbuild/dmg --notarize
+        if: hashFiles('fsbuild/notarize-dmg') != '' && env.SIGNING_ENABLED != null
+        run: fsbuild/notarize-dmg
         env:
           NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
           NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}
