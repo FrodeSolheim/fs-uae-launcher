@@ -13,11 +13,14 @@ on:
 jobs:
   Windows_x86-64:
     runs-on: windows-2016
+
+    env:
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+
     defaults:
       run:
         shell: msys2 {0}
     steps:
-
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -67,7 +70,14 @@ jobs:
           fsbuild/version
 
       - name: Bootstrap
-        run: fsbuild/bootstrap
+        if: hashFiles('fsbuild/bootstrap') != ''
+        run: |
+          fsbuild/bootstrap
+
+      - name: Configure
+        if: hashFiles('fsbuild/configure') != ''
+        run: |
+          fsbuild/configure
 
       - name: Build
         run: |
@@ -78,7 +88,8 @@ jobs:
           fsbuild/bundle
 
       - name: Archive
-        run: fsbuild/archive
+        run: |
+          fsbuild/archive
 
       - uses: actions/upload-artifact@v2
         with:
@@ -87,12 +98,15 @@ jobs:
 
       - name: Upload build to Dropbox folder
         if: >-
-          github.ref == 'refs/heads/master' ||
-          github.ref == 'refs/heads/beta' ||
-          github.ref == 'refs/heads/stable'
-        run: |
-          python3 -m pip install dropbox
-          fsbuild/upload
+          env.UPLOAD_ENABLED != null && (
+            github.ref == 'refs/heads/master' ||
+            github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/beta' ||
+            github.ref == 'refs/heads/stable'
+          )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+        run: |
+          python3 -m pip install dropbox==11.23.0
+          fsbuild/upload
