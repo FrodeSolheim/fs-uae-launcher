@@ -5,4 +5,4 @@ set -e
 
 mkdir -p fsbuild/_dist
 make dist-xz
-mv fs-uae-launcher-$PACKAGE_VERSION.tar.xz fsbuild/_dist
+mv $PACKAGE_NAME-$PACKAGE_VERSION.tar.xz fsbuild/_dist
