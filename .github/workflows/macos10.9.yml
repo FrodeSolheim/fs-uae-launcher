@@ -13,10 +13,13 @@ on:
 jobs:
   macOS10-9_x86-64:
     runs-on: macos-10.15
-    env:
-      SYSTEM_OS_DIST: macOS10.9
-    steps:
 
+    env:
+      SIGNING_ENABLED: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
+      SYSTEM_OS_DIST: macOS10.9
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+
+    steps:
       - name: Install brew packages
         run: |
           brew install dos2unix
@@ -57,10 +60,17 @@ jobs:
 
       - name: Update version
         run: |
-          fsbuild/version --update
+          fsbuild/version
 
       - name: Bootstrap
-        run: fsbuild/bootstrap
+        if: hashFiles('fsbuild/bootstrap') != ''
+        run: |
+          fsbuild/bootstrap
+
+      - name: Configure
+        if: hashFiles('fsbuild/configure') != ''
+        run: |
+          fsbuild/configure
 
       - name: Build
         run: |
@@ -71,6 +81,11 @@ jobs:
           fsbuild/bundle
 
       - name: Prepare signing certificate
+        if: env.SIGNING_ENABLED != null
+        env:
+          KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
+          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
         run: |
           echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
           security create-keychain -p $KEYCHAIN_PASSWORD build.keychain
@@ -78,45 +93,53 @@ jobs:
           security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
           security import certificate.p12 -k build.keychain -P $SIGNING_CERTIFICATE_PASSWORD -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD build.keychain
-        env:
-          KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
-          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
 
       - name: Sign
-        run: fsbuild/sign
+        if: env.SIGNING_ENABLED != null
+        run: |
+          fsbuild/sign
 
       - name: Notarize
-        run: fsbuild/notarize
+        if: env.SIGNING_ENABLED != null
         env:
           NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
           NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}
           NOTARIZATION_USERNAME: ${{ secrets.MACOS_NOTARIZATION_USERNAME }}
+        run: |
+          fsbuild/notarize
 
       - name: Archive
-        run: fsbuild/archive
+        run: |
+          fsbuild/archive
 
       - name: Build DMG
-        run: fsbuild/dmg --build
+        if: hashFiles('fsbuild/build-dmg') != '' && env.SIGNING_ENABLED != null
+        run: |
+          fsbuild/build-dmg
 
       - name: Unlock keychain again
+        if: env.SIGNING_ENABLED != null
+        env:
+          KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
+          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
         run: |
           echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
           security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
-        env:
-          KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
-          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
 
       - name: Sign DMG
-        run: fsbuild/dmg --sign
+        if: hashFiles('fsbuild/sign-dmg') != '' && env.SIGNING_ENABLED != null
+        run: |
+          fsbuild/sign-dmg
 
       - name: Notarize DMG
-        run: fsbuild/dmg --notarize
+        if: hashFiles('fsbuild/notarize-dmg') != '' && env.SIGNING_ENABLED != null
         env:
           NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
           NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}
           NOTARIZATION_USERNAME: ${{ secrets.MACOS_NOTARIZATION_USERNAME }}
+        run: |
+          fsbuild/notarize-dmg
 
       - uses: actions/upload-artifact@v2
         with:
@@ -125,12 +148,15 @@ jobs:
 
       - name: Upload build to Dropbox folder
         if: >-
-          github.ref == 'refs/heads/master' ||
-          github.ref == 'refs/heads/beta' ||
-          github.ref == 'refs/heads/stable'
-        run: |
-          python3 -m pip install dropbox
-          fsbuild/upload
+          env.UPLOAD_ENABLED != null && (
+            github.ref == 'refs/heads/master' ||
+            github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/beta' ||
+            github.ref == 'refs/heads/stable'
+          )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+        run: |
+          python3 -m pip install dropbox==11.23.0
+          fsbuild/upload

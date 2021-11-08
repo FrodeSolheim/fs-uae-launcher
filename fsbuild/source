@@ -1,9 +1,8 @@
 #!/bin/sh
-
 set -e
 
 . ./PACKAGE.FS
 
 mkdir -p fsbuild/_dist
-make dist
+make dist-xz
 mv fs-uae-launcher-$PACKAGE_VERSION.tar.xz fsbuild/_dist

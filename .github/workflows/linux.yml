@@ -13,14 +13,18 @@ on:
 jobs:
   Linux_x86-64:
     runs-on: ubuntu-18.04
-    steps:
 
+    env:
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+
+    steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
       - name: Log environment
-        run: env
+        run: |
+          env
 
       - name: Install additional tools
         run: >-
@@ -53,7 +57,8 @@ jobs:
           libxkbcommon-x11-0
 
       - name: Debug list libraries
-        run: ls /usr/lib/x86_64-linux-gnu
+        run: |
+          ls /usr/lib/x86_64-linux-gnu
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
@@ -87,10 +92,17 @@ jobs:
 
       - name: Update version
         run: |
-          fsbuild/version --update
+          fsbuild/version
 
       - name: Bootstrap
-        run: fsbuild/bootstrap
+        if: hashFiles('fsbuild/bootstrap') != ''
+        run: |
+          fsbuild/bootstrap
+
+      - name: Configure
+        if: hashFiles('fsbuild/configure') != ''
+        run: |
+          fsbuild/configure
 
       - name: Build
         run: |
@@ -98,7 +110,7 @@ jobs:
 
       - name: Bundle
         run: |
-          pipenv run fsbuild/bundle
+          fsbuild/bundle
 
       - name: Archive
         run: |
@@ -111,12 +123,15 @@ jobs:
 
       - name: Upload build to Dropbox folder
         if: >-
-          github.ref == 'refs/heads/master' ||
-          github.ref == 'refs/heads/beta' ||
-          github.ref == 'refs/heads/stable'
-        run: |
-          python3 -m pip install dropbox
-          fsbuild/upload
+          env.UPLOAD_ENABLED != null && (
+            github.ref == 'refs/heads/master' ||
+            github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/beta' ||
+            github.ref == 'refs/heads/stable'
+          )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+        run: |
+          python3 -m pip install dropbox==11.23.0
+          fsbuild/upload
