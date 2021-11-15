@@ -45,6 +45,8 @@ mkdir "$PLUGIN_BINDIR/$PACKAGE_DISPLAY_NAME.app/Contents/Resources/Locale"
 cp -pPR share/locale/* "$PLUGIN_BINDIR/$PACKAGE_DISPLAY_NAME.app/Contents/Resources/Locale/"
 else
 cp -a fsbuild/_build/pyinstaller/$PACKAGE_NAME/* $PLUGIN_BINDIR/
+mkdir "$PLUGIN_DIR/Locale"
+cp -a share/locale/* "$PLUGIN_DIR/Locale/"
 fi
 
 echo "Copying data files..."
