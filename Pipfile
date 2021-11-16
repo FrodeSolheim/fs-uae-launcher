@@ -5,15 +5,17 @@ verify_ssl = true
 
 [dev-packages]
 black = "==21.10b0"
-mypy = "*"
+mypy = "==0.910"
 nose = "*"
 pyinstaller = "*"
-pylint = "*"
+pylint = "==2.11.1"
+pyqt5-stubs = "*"
 pytest = "*"
 pytest-mypy = "*"
 rope = "*"
-pyqt5-stubs = "*"
 types-pillow = "*"
+types-requests = "*"
+types-setuptools = "*"
 
 [packages]
 autologging = "*"
