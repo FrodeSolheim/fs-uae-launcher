@@ -1,4 +1,4 @@
-from .FSGSDirectories import FSGSDirectories
+from fsgamesys.FSGSDirectories import FSGSDirectories
 
 
 def fsgs_data_dir() -> str:

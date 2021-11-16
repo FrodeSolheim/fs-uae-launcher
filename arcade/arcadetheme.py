@@ -1,6 +1,7 @@
 import fsbc.settings as settings
 from arcade.resources import resources
 from fsgamesys.options.option import Option
+from fsui.qt import QImage
 
 
 class ArcadeTheme:
@@ -17,7 +18,7 @@ class ArcadeTheme:
         if not self.theme:
             self.theme = "blue"
 
-    def qimage(self, name):
+    def qimage(self, name: str) -> QImage:
         if self.theme != "blue":
             theme_path = "themes/{}/{}".format(self.theme, name)
             try:

@@ -2,9 +2,10 @@ from typing import Any, List, Optional, cast
 
 from fscore.deprecated import deprecated
 from fsui.qt.color import Color
+from fsui.qt.gui import QColor, QFont, QTextCursor
 from fsui.qt.qparent import QParent
-from fsui.qt.qt import QColor, QFont, QFrame, QTextCursor, QTextEdit
 from fsui.qt.signal import Signal
+from fsui.qt.widgets import QFrame, QTextEdit, QWidget
 from fswidgets.widget import Widget
 
 
@@ -22,7 +23,7 @@ class TextArea(Widget):
         text_color: Optional[Color] = None,
         background_color: Optional[Color] = None,
         padding: Optional[int] = None,
-    ):
+    ) -> None:
         super().__init__(parent, QTextEdit("", QParent(parent)))
         if not border:
             self.qwidget.setFrameStyle(QFrame.NoFrame)
@@ -52,14 +53,14 @@ class TextArea(Widget):
             # print(stylesheet_str)
             self.qwidget.setStyleSheet(stylesheet_str)
 
-        self.qwidget.textChanged.connect(self.onInput)  # type: ignore
-        self.qwidget.textChanged.connect(self.__text_changed)  # type: ignore
+        self.qwidget.textChanged.connect(self.onInput)
+        self.qwidget.textChanged.connect(self.__text_changed)
 
-    def appendText(self, text: str):
+    def appendText(self, text: str) -> None:
         self.qwidget.append(text)
         self.qwidget.moveCursor(QTextCursor.End)
 
-    def appendTextWithColor(self, text: str, color):
+    def appendTextWithColor(self, text: str, color: Optional[Color]) -> None:
         # text = text.replace("\n", "\r\n")
         # print("Appending text:", repr(text))
         # self.moveCursor(QTextCursor.End)
@@ -67,48 +68,51 @@ class TextArea(Widget):
         if color is not None:
             self.qwidget.setTextColor(QColor(*color))
         # self.appendPlainText(text.strip())
-        self.qwidget.append(text)
-        self.qwidget.moveCursor(QTextCursor.End)
+        self.appendText(text)
 
     def getText(self) -> str:
-        return self.qwidget.toPlainText()
+        return self.qTextEdit.toPlainText()
 
-    def onInput(self):
+    def onInput(self) -> None:
         pass
 
     @property
-    def qwidget(self):
+    def qwidget(self) -> QWidget:
+        return self.getQWidget()
+
+    @property
+    def qTextEdit(self) -> QTextEdit:
         return cast(QTextEdit, self.getQWidget())
 
-    def scrollToStart(self):
+    def scrollToStart(self) -> None:
         """
         # FIXME: The name is a bit misleading because it also moves the
         # text cursor to the start...
         """
         self.qwidget.moveCursor(QTextCursor.Start)
 
-    def setText(self, text: str):
+    def setText(self, text: str) -> None:
         self.qwidget.setPlainText(text.replace("\n", "\r\n"))
 
     # -------------------------------------------------------------------------
 
-    def __text_changed(self):
+    def __text_changed(self) -> None:
         self.changed.emit()
 
     # -------------------------------------------------------------------------
 
     @deprecated
-    def get_text(self):
+    def get_text(self) -> str:
         return self.getText()
 
     @deprecated
-    def set_text(self, text: str):
+    def set_text(self, text: str) -> None:
         return self.setText(text)
 
     @deprecated
-    def append_text(self, text: str, color=None):
+    def append_text(self, text: str, color: Optional[Color] = None) -> None:
         self.appendTextWithColor(text, color)
 
     @deprecated
-    def scroll_to_start(self):
+    def scroll_to_start(self) -> None:
         self.scrollToStart()

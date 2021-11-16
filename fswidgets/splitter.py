@@ -1,17 +1,9 @@
-import traceback
-import weakref
+from enum import Enum
 from typing import List, Optional, cast
 
-from typing_extensions import Literal
-
-import fsui
-from fsbc.util import unused
 from fsui import Widget
-from fsui.common.layout import HorizontalLayout, Layout, VerticalLayout
-from fsui.qt.color import Color
-from fsui.qt.drawingcontext import DrawingContext
 from fsui.qt.qparent import QParent
-from fsui.qt.qt import QPainter, Qt, QWidget
+from fsui.qt.qt import Qt, QWidget
 from fswidgets.overrides import overrides
 from fswidgets.parentstack import ParentStack
 from fswidgets.qt.core import Qt
@@ -21,16 +13,21 @@ from fswidgets.widget import Widget
 from launcher.fswidgets2.style import Style
 
 
-class Splitter(Widget):
+class SplitterPosition(Enum):
     HORIZONTAL = "HORIZONTAL"
     VERTICAL = "VERTICAL"
 
+
+class Splitter(Widget):
+    HORIZONTAL = SplitterPosition.HORIZONTAL
+    VERTICAL = SplitterPosition.VERTICAL
+
     def __init__(
         self,
-        orientation: Literal["HORIZONTAL", "VERTICAL"] = HORIZONTAL,
+        orientation: SplitterPosition = SplitterPosition.HORIZONTAL,
         *,
         parent: Optional[Widget] = None
-    ):
+    ) -> None:
         # __children Must be initialized early, because get_min_size can be
         # called via the super constructor.
         self.__children: List[Widget] = []
@@ -80,7 +77,7 @@ class Splitter(Widget):
                 minWidth = max(minWidth, child.get_min_width())
         return minWidth
 
-    def getSplitterPosition(self):
+    def getSplitterPosition(self) -> int:
         sizes = self.qwidget.sizes()
         if self.__fixedIndex == 0:
             return sizes[0]
@@ -88,7 +85,7 @@ class Splitter(Widget):
             return -sizes[1]
 
     @overrides
-    def onChildAdded(self, widget: Widget):
+    def onChildAdded(self, widget: Widget) -> None:
         super().onChildAdded(widget)
         print("Splitter.onChildAdded", widget)
         self.__children.append(widget)
@@ -101,7 +98,7 @@ class Splitter(Widget):
         #     self.qwidget.setSizes(sizes)
 
     @overrides
-    def onQWidgetChildAdded(self, qwidget: QWidget):
+    def onQWidgetChildAdded(self, qwidget: QWidget) -> None:
         print("Splitter.onQWidgetChildAdded", qwidget)
 
     def on_resize(self):
@@ -115,7 +112,9 @@ class Splitter(Widget):
     def qwidget(self) -> QSplitter:
         return cast(QSplitter, self.getQWidget())
 
-    def setSplitterPosition(self, position: int, zeroableIndex: int = 0):
+    def setSplitterPosition(
+        self, position: int, zeroableIndex: int = 0
+    ) -> None:
         if position > 0:
             self.qwidget.setStretchFactor(0, 0)
             self.qwidget.setStretchFactor(1, 1)
@@ -132,5 +131,5 @@ class Splitter(Widget):
             self.qwidget.setSizes([0, 0])
             self.__fixedIndex = zeroableIndex
 
-    def setStretchFactor(self, index: int, stretchFactor: int):
+    def setStretchFactor(self, index: int, stretchFactor: int) -> None:
         self.qwidget.setStretchFactor(index, stretchFactor)

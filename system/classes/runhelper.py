@@ -1,4 +1,5 @@
 from threading import Thread
+from typing import Dict
 
 from fsgamesys.context import FSGameSystemContext
 from fsgamesys.input.enumeratehelper import EnumerateHelper
@@ -7,7 +8,7 @@ from fsgamesys.platforms.platform import PlatformHandler
 
 class RunHelper:
     @staticmethod
-    def run_config_in_background(config):
+    def run_config_in_background(config: Dict[str, str]):
         print(config)
 
         gscontext = FSGameSystemContext()

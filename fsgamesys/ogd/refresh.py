@@ -10,7 +10,7 @@ from fsgamesys.ogd.meta import MetaSynchronizer
 
 
 class DatabaseRefreshTask(Task):
-    def __init__(self):
+    def __init__(self) -> None:
         Task.__init__(self, "DatabaseRefreshTask")
 
     # def stop_check(self):

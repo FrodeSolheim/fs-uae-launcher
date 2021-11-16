@@ -1,29 +1,18 @@
-from typing import Any, Dict
-
-from system.classes.shellobject import shellObject
-from system.classes.windowcache import WindowCache
+from system.classes.shellobject import ShellObject, ShellOpenArgs, shellObject
+from system.classes.windowcache import ShellWindowCache
 from system.tools.controllerconfig.controllerconfigwindow import (
     ControllerConfigWindow,
 )
 
 
 @shellObject
-class ControllerConfig:
+class ControllerConfig(ShellObject):
     @staticmethod
-    # FIXME: Get rid of this Any / kwargs
-    def open(
-        arguments: Dict[str, str], argumentString: str, **kwargs: Any
-    ) -> None:
-        print("")
-        print("")
-        print("")
-        print("")
-        print(repr(kwargs))
-        print(argumentString)
-        print(arguments)
-        deviceGuid = arguments["GUID"]
-        # FIXME: Cache key must include argument as well!
-        kwargs["deviceGuid"] = deviceGuid
-        WindowCache.open(
-            ControllerConfigWindow, {"deviceGuid": deviceGuid}, **kwargs
+    def shellOpen(args: ShellOpenArgs) -> None:
+        deviceGuid = args.arguments["GUID"]
+        ShellWindowCache.open(
+            args,
+            ControllerConfigWindow,
+            {"deviceGuid": deviceGuid},
+            cacheKey=(ControllerConfigWindow, deviceGuid),
         )

@@ -1,6 +1,9 @@
 import os
 import re
 import threading
+from typing import List, Tuple
+
+from typing_extensions import Literal, TypedDict
 
 from fsbc.application import app
 from fsbc.settings import Settings
@@ -13,6 +16,12 @@ RESET_VERSION = 39
 QUOTED_TERMS_RE = re.compile('["].*?["]')
 
 
+class LastStamps(TypedDict):
+    last_file_insert: int
+    last_file_delete: int
+    database_locker: int
+
+
 class Database(BaseDatabase):
     VERSION = VERSION
     RESET_VERSION = RESET_VERSION
@@ -23,7 +32,9 @@ class Database(BaseDatabase):
     def get_path(cls):
         return os.path.join(FSGSDirectories.databases_dir(), "Launcher.sqlite")
 
-    def __init__(self, sentinel):
+    def __init__(
+        self, sentinel: Literal["fae7671d-e232-4b71-b179-b3cd45995f92"]
+    ):
         BaseDatabase.__init__(self, sentinel)
 
     def get_version(self):
@@ -33,13 +44,13 @@ class Database(BaseDatabase):
         return RESET_VERSION
 
     @classmethod
-    def instance(cls, new=False):
+    def instance(cls, new: bool = False) -> "Database":
         if new or not hasattr(cls.thread_local, "database"):
             cls.thread_local.database = cls(cls.SENTINEL)
         return cls.thread_local.database
 
     @classmethod
-    def get_instance(cls):
+    def get_instance(cls) -> "Database":
         if not hasattr(cls.thread_local, "database"):
             cls.thread_local.database = cls(cls.SENTINEL)
         return cls.thread_local.database
@@ -47,7 +58,7 @@ class Database(BaseDatabase):
     def __del__(self):
         print("Database.__del__")
 
-    def get_configuration_path(self, id):
+    def get_configuration_path(self, id: int) -> str:
         self.init()
         query = "SELECT path FROM configuration WHERE id = ?"
         cursor = self.internal_cursor()
@@ -55,7 +66,7 @@ class Database(BaseDatabase):
         path = self.decode_path(cursor.fetchone()[0])
         return path
 
-    def encode_path(self, path):
+    def encode_path(self, path: str) -> str:
         # this only works if both path and FSGSDirectories.base_dir
         # (etc) have been normalized with get_real_case.
         path = path.replace("\\", "/")
@@ -67,7 +78,7 @@ class Database(BaseDatabase):
             path = "$/" + path
         return path
 
-    def decode_path(self, path):
+    def decode_path(self, path: str) -> str:
         if not path or path[0] != "$":
             return path
         base_dir = FSGSDirectories.get_base_dir() + "/"
@@ -110,7 +121,7 @@ class Database(BaseDatabase):
             raise LookupError("game variant not found")
         return row[0]
 
-    def find_game_variants_new(self, game_uuid="", have=3):
+    def find_game_variants_new(self, game_uuid: str = "", have: int = 3):
         include_unpublished = False
         if Settings.instance()["database_show_unpublished"] == "1":
             include_unpublished = True
@@ -131,7 +142,7 @@ class Database(BaseDatabase):
             result.append(dict(row))
         return result
 
-    def get_last_game_variant(self, game_uuid):
+    def get_last_game_variant(self, game_uuid: str):
         query = "SELECT variant_uuid FROM last_variant WHERE game_uuid = ?"
         cursor = self.internal_cursor()
         cursor.execute(query, (game_uuid,))
@@ -140,7 +151,7 @@ class Database(BaseDatabase):
             return row[0]
         return ""
 
-    def set_last_game_variant(self, game_uuid, variant_uuid):
+    def set_last_game_variant(self, game_uuid: str, variant_uuid: str) -> None:
         cursor = self.internal_cursor()
         cursor.execute(
             "DELETE FROM last_variant WHERE game_uuid = ?", (game_uuid,)
@@ -151,7 +162,7 @@ class Database(BaseDatabase):
             (game_uuid, variant_uuid),
         )
 
-    def search_games(self, search):
+    def search_games(self, search: str):
         self.init()
         query = "SELECT id, name FROM game"
         args = []
@@ -168,7 +179,7 @@ class Database(BaseDatabase):
         cursor.execute(query, args)
         return cursor.fetchall()
 
-    def find_game(self, uuid="", result=None):
+    def find_game(self, uuid: str = "", result=None):
         self.init()
         cursor = self.internal_cursor()
         if uuid:
@@ -186,7 +197,9 @@ class Database(BaseDatabase):
                 result["path"] = None
             return None
 
-    def add_configuration(self, path="", name="", sort_key=""):
+    def add_configuration(
+        self, path: str = "", name: str = "", sort_key: str = ""
+    ):
         cursor = self.internal_cursor()
         path = self.encode_path(path)
         if not sort_key:
@@ -210,12 +223,12 @@ class Database(BaseDatabase):
         )
         return game_id
 
-    def delete_game(self, id):
+    def delete_game(self, id: int) -> None:
         cursor = self.internal_cursor()
         cursor.execute("DELETE FROM search_term WHERE game = ?", (id,))
         cursor.execute("DELETE FROM game WHERE id = ?", (id,))
 
-    def update_game_search_terms(self, game_id, search_terms):
+    def update_game_search_terms(self, game_id: int, search_terms: List[str]):
         cursor = self.internal_cursor()
         search_terms = sorted(search_terms)
         cursor.execute(
@@ -241,7 +254,7 @@ class Database(BaseDatabase):
     #     self._cursor.execute("DELETE FROM game WHERE scan != ?",
     #             (scan,))
 
-    def get_variant_for_list_and_game(self, list_uuid, game_uuid):
+    def get_variant_for_list_and_game(self, list_uuid: str, game_uuid: str):
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT variant_uuid FROM game_list_game WHERE "
@@ -254,7 +267,11 @@ class Database(BaseDatabase):
         return row[0]
 
     def find_games_new(
-        self, search="", have=3, list_uuid="", database_only=False
+        self,
+        search: str = "",
+        have: int = 3,
+        list_uuid: str = "",
+        database_only: bool = False,
     ):
         print("Database.find_games_new search = {0}".format(repr(search)))
         non_database_only = False
@@ -432,7 +449,7 @@ class Database(BaseDatabase):
     #     cursor.execute(query, args)
     #     return cursor.fetchall()
 
-    def get_ratings_for_game(self, game_uuid):
+    def get_ratings_for_game(self, game_uuid: str) -> Tuple[int, int]:
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT like_rating, work_rating FROM rating WHERE "
@@ -445,7 +462,7 @@ class Database(BaseDatabase):
         else:
             return 0, 0
 
-    def get_last_file_event_stamps(self):
+    def get_last_file_event_stamps(self) -> LastStamps:
         cursor = self.internal_cursor()
         cursor.execute(
             "SELECT last_file_insert, last_file_delete, "
@@ -459,7 +476,7 @@ class Database(BaseDatabase):
         }
         return result
 
-    def update_last_file_event_stamps(self, stamps):
+    def update_last_file_event_stamps(self, stamps: LastStamps):
         cursor = self.internal_cursor()
         last_stamps = self.get_last_file_event_stamps()
         if stamps["last_file_insert"] != last_stamps["last_file_insert"]:

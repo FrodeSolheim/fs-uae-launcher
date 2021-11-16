@@ -1,12 +1,13 @@
 import fsui
 from fscore.system import System
 from fsgamesys.options.option import Option
+from fswidgets.widget import Widget
 from launcher.res import gettext
 from launcher.settings.settings_page import SettingsPage
 
 
 class FSUAESettingsPage(SettingsPage):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         icon = fsui.Icon("fs-uae", "pkg:launcher")
         self.add_header(icon, "FS-UAE")

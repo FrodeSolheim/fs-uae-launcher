@@ -14,7 +14,8 @@ class TextField(fsui.TextField):
             default_style.update(style)
         self.style = default_style
 
-        parent.layout.add(self)
+        if parent.layout is not None:
+            parent.layout.add(self)
 
     def get_min_width(self):
         return 100

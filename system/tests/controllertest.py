@@ -1,13 +1,11 @@
-from typing import Any
-
 from launcher.controllertest.ControllerTestWindow import ControllerTestWindow
-from system.classes.shellobject import shellObject
-from system.classes.windowcache import WindowCache
+from system.classes.shellobject import ShellObject, ShellOpenArgs, shellObject
+from system.classes.windowcache import ShellWindowCache
 
 
 @shellObject
-class ControllerTest:
+class ControllerTest(ShellObject):
     # FIXME: Get rid of kwargs
     @staticmethod
-    def open(**kwargs: Any) -> None:
-        WindowCache.open(ControllerTestWindow)
+    def shellOpen(args: ShellOpenArgs) -> None:
+        ShellWindowCache.open(args, ControllerTestWindow)

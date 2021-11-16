@@ -1,7 +1,7 @@
-from .newgamedriver import NewGameDriver
+from fsgamesys.platforms.zxspectrum.newgamedriver import GameDriver2
 
 
-class ZXSpectrumFuseDriver(NewGameDriver):
+class ZXSpectrumFuseDriver(GameDriver2):
     emulatorName = "fuse"
 
     def configure(self):

@@ -1,10 +1,11 @@
 import hashlib
 import os
 import shutil
-from typing import Tuple
+from typing import Optional, Tuple, overload
 from uuid import NAMESPACE_URL, uuid4, uuid5
 
 import requests
+from typing_extensions import Literal
 
 from fsbc.application import app
 from fsgamesys.FSGSDirectories import FSGSDirectories
@@ -17,18 +18,20 @@ class OfflineModeException(Exception):
     pass
 
 
-def offline_mode():
+def offline_mode() -> bool:
     return app.settings[Option.OFFLINE_MODE] == "1"
 
 
-def raise_exception_in_offline_mode():
+def raise_exception_in_offline_mode() -> None:
     if offline_mode():
         raise OfflineModeException("Offline mode is enabled")
 
 
 class Downloader(object):
     @classmethod
-    def check_terms_accepted(cls, download_file, download_terms):
+    def check_terms_accepted(
+        cls, download_file: str, download_terms: str
+    ) -> bool:
         print(
             "[DOWNLOADER] check_terms_accepted", download_file, download_terms
         )
@@ -38,7 +41,9 @@ class Downloader(object):
         return os.path.exists(path)
 
     @classmethod
-    def set_terms_accepted(cls, download_file, download_terms):
+    def set_terms_accepted(
+        cls, download_file: str, download_terms: str
+    ) -> None:
         print(
             "[DOWNLOADER] set_terms_accepted",
             repr(download_file),
@@ -51,7 +56,7 @@ class Downloader(object):
             pass
 
     @classmethod
-    def cache_data(cls, data):
+    def cache_data(cls, data: bytes) -> None:
         sha1 = hashlib.sha1(data).hexdigest()
         cache_path = cls.get_cache_path(sha1)
         if os.path.exists(cache_path):
@@ -67,8 +72,33 @@ class Downloader(object):
                 return
             raise e
 
+    @overload
     @classmethod
-    def cache_file_from_url(cls, url, download=True, auth=None):
+    def cache_file_from_url(
+        cls,
+        url: str,
+        download: Literal[False],
+        auth: Optional[Tuple[str, str]] = None,
+    ) -> Optional[str]:
+        ...
+
+    @overload
+    @classmethod
+    def cache_file_from_url(
+        cls,
+        url: str,
+        download: Optional[Literal[True]] = True,
+        auth: Optional[Tuple[str, str]] = None,
+    ) -> str:
+        ...
+
+    @classmethod
+    def cache_file_from_url(
+        cls,
+        url: str,
+        download: Optional[bool] = True,
+        auth: Optional[Tuple[str, str]] = None,
+    ) -> Optional[str]:
         print("[DOWNLOADER] cache_file_from_url", url)
         cache_path = cls.get_url_cache_path(url)
         if os.path.exists(cache_path):
@@ -92,7 +122,7 @@ class Downloader(object):
         return cache_path
 
     @classmethod
-    def install_file_from_url(cls, url, path):
+    def install_file_from_url(cls, url: str, path: str) -> None:
         print("[DOWNLOADER] install_file_from_url", url)
         print(repr(path))
         if not os.path.exists(os.path.dirname(path)):
@@ -176,11 +206,11 @@ class Downloader(object):
         return h.hexdigest(), written_size
 
     @classmethod
-    def sha1_to_url(cls, sha1, name):
+    def sha1_to_url(cls, sha1: str, name: str) -> str:
         return fs_uae_url_from_sha1_and_name(sha1, name)
 
     @classmethod
-    def get_cache_path(cls, sha1_or_uuid):
+    def get_cache_path(cls, sha1_or_uuid: str) -> str:
         path = os.path.join(
             FSGSDirectories.get_cache_dir(), "Downloads", sha1_or_uuid[:3]
         )
@@ -189,5 +219,5 @@ class Downloader(object):
         return os.path.join(path, sha1_or_uuid)
 
     @classmethod
-    def get_url_cache_path(cls, url):
+    def get_url_cache_path(cls, url: str) -> str:
         return cls.get_cache_path(str(uuid5(NAMESPACE_URL, url)))

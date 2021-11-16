@@ -1,3 +1,6 @@
+from typing import Optional
+
+from fsui.qt.toplevelwidget import TopLevelWidget
 from fswidgets.parentstack import ParentStack
 from launcher.fswidgets2.button import Button
 from launcher.fswidgets2.flexcontainer import (
@@ -12,7 +15,7 @@ from system.classes.windowresizehandle import WindowResizeHandle
 
 
 class FlexboxTestWindow(Window):
-    def __init__(self, parent=None):
+    def __init__(self, parent: Optional[TopLevelWidget] = None):
         ParentStack.push(self)
 
         super().__init__(

@@ -1,3 +1,6 @@
+from typing import List, Optional
+
+from fsgamesys.config.configevent import ConfigEvent
 from fsgamesys.config.configloader import ConfigLoader
 from fsgamesys.context import fsgs
 from fsgamesys.Database import Database
@@ -7,12 +10,8 @@ from fsgamesys.options.constants2 import (
     VARIANT_UUID__,
 )
 from fsui import Color, Image, ItemChoice
+from fswidgets.widget import Widget
 from launcher.context import get_config
-
-# from launcher.launcher_config import LauncherConfig
-# from launcher.launcher_settings import LauncherSettings
-# from launcher.launcher_signal import LauncherSignal
-from launcher.ui.ConfigGroup import ConfigGroup
 from launcher.ui.newconfigbutton import NewConfigButton
 from system.classes.configdispatch import ConfigDispatch
 
@@ -34,7 +33,7 @@ class VariantChoice(ItemChoice):
         # return get_screen_size()[0] > 1024
         return False
 
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         ItemChoice.__init__(self, parent)
 
         self.parent_uuid = ""
@@ -77,7 +76,7 @@ class VariantChoice(ItemChoice):
     #     LauncherSettings.remove_listener(self)
     #     # Signal.remove_listener("quit", self)
 
-    def __on_parent_uuid_config(self, event):
+    def __on_parent_uuid_config(self, event: ConfigEvent) -> None:
         print("-" * 79)
         print("PARENT_UUID IS NOW", event.value)
         print("-" * 79)
@@ -90,13 +89,13 @@ class VariantChoice(ItemChoice):
             self.set_items([])
             self.set_enabled(False)
 
-    def on_select_item(self, index):
+    def on_select_item(self, index: Optional[int]) -> None:
         if index is None:
             return
         self.load_variant(self.items[index])
         # self.last_variants.cache[self.parent_uuid] = variant_uuid
 
-    def on_variant_rating_config(self, event):
+    def on_variant_rating_config(self, event: ConfigEvent) -> None:
         variant_uuid = get_config(self).get(VARIANT_UUID__)
         for item in self.items:
             if item["uuid"] == variant_uuid:
@@ -104,30 +103,31 @@ class VariantChoice(ItemChoice):
                 self.update()
                 break
 
-    def set_items(self, items):
+    def set_items(self, items) -> None:
         self.items = items
         self.update()
         # self.set_enabled(len(items) > 0)
 
-    def get_item_count(self):
+    def get_item_count(self) -> int:
         return len(self.items)
 
-    def get_item_text(self, index):
+    def get_item_text(self, index: int) -> str:
         name = self.items[index]["name"]
         name = name.replace(", ", " \u00b7 ")
         return name
 
-    def get_item_text_color(self, index):
+    def get_item_text_color(self, index: int) -> Optional[Color]:
         have = self.items[index]["have"]
         if not have:
             return self.missing_color
+        return None
 
     NOT_AVAILABLE = 0
     MANUAL_AVAILABLE = 1
     AUTO_AVAILABLE = 2
     AVAILABLE = 3
 
-    def get_item_icon(self, index):
+    def get_item_icon(self, index: int) -> Image:
         have = self.items[index]["have"]
         if have == self.NOT_AVAILABLE:
             # return self.missing_icon
@@ -158,7 +158,7 @@ class VariantChoice(ItemChoice):
         #     return self.cd_icon
         # return self.icon
 
-    def get_item_extra_icons(self, index):
+    def get_item_extra_icons(self, index: int) -> List[Optional[Image]]:
         personal_rating = self.items[index]["personal_rating"]
         if personal_rating == 5:
             return [self.fav_icon]
@@ -172,7 +172,7 @@ class VariantChoice(ItemChoice):
             return [self.down_icon]
         return [None]
 
-    def update_list(self, game_uuid):
+    def update_list(self, game_uuid: str) -> None:
         print("VariantsBrowser.update_list, game_uuid=", game_uuid)
         database = Database.get_instance()
         items = database.find_game_variants_new(game_uuid, have=0)
@@ -288,7 +288,7 @@ class VariantChoice(ItemChoice):
         #     else:
         #         self.select_item(0)
 
-    def load_variant(self, item):
+    def load_variant(self, item) -> None:
         self._load_variant(item)
         # try:
         #     self._load_variant(item)
@@ -299,7 +299,7 @@ class VariantChoice(ItemChoice):
         #     self.select_item(None)
 
     # @exceptionhandler
-    def _load_variant(self, item):
+    def _load_variant(self, item) -> None:
         print("_load_variant", item)
         variant_uuid = item["uuid"]
         database_name = item["database"]
@@ -310,8 +310,12 @@ class VariantChoice(ItemChoice):
         )
 
     def _load_variant_2(
-        self, variant_uuid, database_name, personal_rating, have
-    ):
+        self,
+        variant_uuid: str,
+        database_name: str,
+        personal_rating: int,
+        have: int,
+    ) -> None:
         if get_config(self).get(VARIANT_UUID__) == variant_uuid:
             print("Variant {} is already loaded".format(variant_uuid))
         game_database = fsgs.game_database(database_name)
@@ -371,5 +375,5 @@ class VariantChoice(ItemChoice):
             # LauncherConfig.set("x_missing_files", "1")
             get_config(self).set("x_missing_files", "1")
 
-    def get_min_width(self):
+    def get_min_width(self) -> int:
         return 0

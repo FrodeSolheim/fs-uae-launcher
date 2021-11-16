@@ -5,7 +5,7 @@ X-Python3-Version: >= 3.2
 Maintainer: Frode Solheim <frode@fs-uae.net>
 Build-Depends: debhelper (>= 9), dh-python, python3-all (>= 3.2), python3-setuptools
 Standards-Version: 3.9.4
-Homepage: http://fs-uae.net/
+Homepage: https://fs-uae.net/
 
 Package: fs-uae-launcher
 Architecture: all

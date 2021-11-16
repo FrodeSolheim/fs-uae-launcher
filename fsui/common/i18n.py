@@ -1,4 +1,9 @@
 try:
     from launcher.i18n import gettext
 except ImportError:
-    gettext = lambda x: x
+
+    def gettext(message: str) -> str:
+        return message
+
+
+__all__ = ["gettext"]

@@ -257,7 +257,7 @@ class LhaHandler(Handler):
             return []
         result = []
         for name in self._lhafile.namelist():
-            # if name.endswith(str("/")):
+            # if name.endswith("/"):
             #     continue
             result.append(self.decode_name(name))
         return result

@@ -1,6 +1,12 @@
+from typing import Callable, List, Optional, Tuple
+
 import fsui
 from fsbc.application import app
+from fsui.common.layout import Layout
 from fsui.context import get_theme
+from fsui.qt.headinglabel import HeadingLabel
+from fsui.qt.label import Label
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
@@ -10,15 +16,20 @@ from system.classes.optionhelpbutton import OptionHelpButton
 
 class OptionUI(object):
     @staticmethod
-    def create_option_label(parent, label):
-        label = fsui.HeadingLabel(parent, label)
+    def create_option_label(parent: Widget, label: str) -> Label:
+        labelWidget = HeadingLabel(parent, label)
         theme = get_theme(parent)
-        label.set_min_height(theme.widget_height())
+        labelWidget.set_min_height(theme.widget_height())
         # label.set_background_color(fsui.Color(0xFF0000))
-        return label
+        return labelWidget
 
     @staticmethod
-    def add_divider(parent, layout, top_margin=12, bottom_margin=12):
+    def add_divider(
+        parent: Widget,
+        layout: Layout,
+        top_margin: int = 12,
+        bottom_margin: int = 12,
+    ) -> None:
         # return
         import fsui
 
@@ -35,18 +46,23 @@ class OptionUI(object):
     @classmethod
     def create_group(
         cls,
-        parent,
-        name,
-        description=None,
-        help_button=True,
-        thin=False,
-        warnings=None,
+        parent: Widget,
+        name: str,
+        description: Optional[str] = None,
+        help_button: bool = True,
+        thin: bool = False,
+        warnings: Optional[
+            Tuple[Callable[[List[str]], Optional[str]], List[str]]
+        ] = None,
     ):
         group = fsui.Panel(parent)
         group.layout = fsui.HorizontalLayout()
+        thin_layout: Optional[Layout]
         if thin:
             thin_layout = fsui.VerticalLayout()
             thin_layout.add(group.layout, fill=True)
+        else:
+            thin_layout = None
         option = Option.get(name)
         if not description:
             description = gettext(option["description"])
@@ -61,14 +77,14 @@ class OptionUI(object):
                     OptionWarning(group, warning), margin_right=10
                 )
 
-        if thin:
+        if thin_layout is not None:
             group.layout = fsui.HorizontalLayout()
             if description:
                 thin_layout.add(group.layout, fill=True, margin_top=6)
             else:
                 thin_layout.add(group.layout, fill=True, margin_top=0)
 
-        choice_values = []
+        choice_values: List[Tuple[str, str]] = []
 
         if description:
             default_tmpl = "{0} (*)"
@@ -103,7 +119,7 @@ class OptionUI(object):
 
         elif option["type"].lower() == "string":
 
-            def on_changed():
+            def on_changed() -> None:
                 val = text_field.get_text()
                 LauncherSettings.set(name, val.strip())
 
@@ -163,7 +179,7 @@ class OptionUI(object):
 
         if choice_values:
 
-            def on_changed():
+            def on_changed() -> None:
                 index = choice.index()
                 LauncherSettings.set(name, choice_values[index][0])
 
@@ -191,6 +207,6 @@ class OptionUI(object):
             # group.help_button = HelpButton(parent, option_url)
             group.layout.add(group.help_button, fill=True, margin_left=10)
 
-        if thin:
+        if thin_layout is not None:
             group.layout = thin_layout
         return group

@@ -27,9 +27,7 @@ class PagedDialog(fsui.Window):
         self.list_view.set_min_width(240)
         self.list_view.item_selected.connect(self.on_select_item)
 
-        self.list_view.set_row_height(
-            self.window().theme.sidebar_list_row_height
-        )
+        self.list_view.set_row_height(self.theme.sidebar_list_row_height)
         self.list_view._qwidget.setStyleSheet(
             """
         QListView {{
@@ -46,9 +44,9 @@ class PagedDialog(fsui.Window):
             color: {row_fg};
         }}
         """.format(
-                row_fg=self.window().theme.sidebar_list_row_text.to_hex(),
-                row_bg=self.window().theme.sidebar_list_row_background.to_hex(),
-                base=self.window().theme.sidebar_list_background.to_hex(),
+                row_fg=self.theme.sidebar_list_row_text.to_hex(),
+                row_bg=self.theme.sidebar_list_row_background.to_hex(),
+                base=self.theme.sidebar_list_background.to_hex(),
             )
         )
         layout_2.add(self.list_view, fill=True, expand=True)
@@ -86,7 +84,7 @@ class PagedDialog(fsui.Window):
 
         self.button_layout = fsui.HorizontalLayout()
         v_layout.add(self.button_layout, fill=True, margin=20, margin_top=0)
-        if self.window().theme.has_close_buttons:
+        if self.theme.has_close_buttons:
             self.button_layout.add_spacer(expand=True)
             self.close_button = CloseButton(self)
             self.button_layout.add(
@@ -104,7 +102,7 @@ class PagedDialog(fsui.Window):
     # def on_close_button(self):
     #     self.end_modal(0)
 
-    def on_select_item(self, index):
+    def on_select_item(self, index: int) -> None:
         self.set_page(index)
 
     @property

@@ -1,9 +1,11 @@
-from typing import Optional
+from typing import List, Optional
 
 import fsui
 from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.context import fsgs
 from fsgamesys.product import Product
+from fsui import Button
+from fsui.common.layout import Layout
 from fswidgets.panel import Panel
 from fswidgets.widget import Widget
 from launcher.i18n import gettext
@@ -20,7 +22,7 @@ TIMER_INTERVAL = 100
 
 class FileScannerWindow(Window):
     @classmethod
-    def refresh_game_database(cls, window: Widget):
+    def refresh_game_database(cls, window: Widget) -> "FileScannerWindow":
         return cls(
             window, minimal=True, interactive=False, scan_for_files=False
         )
@@ -31,7 +33,7 @@ class FileScannerWindow(Window):
         minimal: bool = False,
         interactive: bool = True,
         scan_for_files: bool = True,
-    ):
+    ) -> None:
         title = gettext("File scanner")
         super().__init__(parent, title=title, maximizable=False)
 
@@ -67,6 +69,7 @@ class FileScannerWindow(Window):
         self.scan_progress_group = ScanProgressGroup(self)
         layout.add(self.scan_progress_group, fill=True)
 
+        self.scan_button: Optional[Button]
         if interactive:
             self.scan_button = buttons.add_button(
                 fsui.Button(buttons, gettext("Scan"))
@@ -91,7 +94,7 @@ class FileScannerWindow(Window):
 
         self.destroyed.connect(Scanner.stop)
 
-    def set_scan_title(self, text: str):
+    def set_scan_title(self, text: str) -> None:
         if not text:
             return
         if text == self.old_title:
@@ -99,7 +102,7 @@ class FileScannerWindow(Window):
         self.old_title = text
         self.scan_progress_group.title_label.set_text(text)
 
-    def set_scan_status(self, text: str):
+    def set_scan_status(self, text: str) -> None:
         if not text:
             return
         if text == self.old_status:
@@ -107,7 +110,7 @@ class FileScannerWindow(Window):
         self.old_status = text
         self.scan_progress_group.status_label.set_text(text)
 
-    def on_timer(self):
+    def on_timer(self) -> None:
         if not Scanner.running:
             if self.has_started_scan:
                 if Scanner.error:
@@ -135,10 +138,10 @@ class FileScannerWindow(Window):
         self.set_scan_title(status[0])
         self.set_scan_status(status[1])
 
-    def on_scan_button(self):
+    def on_scan_button(self) -> None:
         self.start_scan()
 
-    def start_scan(self):
+    def start_scan(self) -> None:
         if self.scan_button is not None:
             self.scan_button.set_enabled(False)
         self.has_started_scan = True
@@ -156,12 +159,12 @@ class FileScannerWindow(Window):
         )
 
     # noinspection PyMethodMayBeStatic
-    def on_stop_button(self):
+    def on_stop_button(self) -> None:
         Scanner.stop_flag = True
 
 
 class KickstartStatusGroup(fsui.Panel):
-    def __init__(self, parent: Widget, title: str, model):
+    def __init__(self, parent: Widget, title: str, model: str) -> None:
         self.model = model
         super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
@@ -178,14 +181,14 @@ class KickstartStatusGroup(fsui.Panel):
         self.update()
         LauncherSignal.add_listener("scan_done", self)
 
-    def onDestroy(self):
+    def onDestroy(self) -> None:
         LauncherSignal.remove_listener("scan_done", self)
         super().onDestroy()
 
-    def on_scan_done_signal(self):
+    def on_scan_done_signal(self) -> None:
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         amiga = Amiga.get_model_config(self.model)
         for sha1 in amiga["kickstarts"]:
             if fsgs.file.find_by_sha1(sha1):
@@ -195,14 +198,14 @@ class KickstartStatusGroup(fsui.Panel):
 
 
 class ScanKickstartGroup(Panel):
-    def __init__(self, parent: Widget):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
 
         self.layout = fsui.VerticalLayout()
-        label = fsui.HeadingLabel(
+        headingLabel = fsui.HeadingLabel(
             self, gettext("Available Kickstart Versions")
         )
-        self.layout.add(label, margin_bottom=10)
+        self.layout.add(headingLabel, margin_bottom=10)
 
         icon_layout = fsui.HorizontalLayout()
         self.layout.add(icon_layout, fill=True)
@@ -229,7 +232,7 @@ class ScanKickstartGroup(Panel):
         hori_layout = fsui.HorizontalLayout()
         vert_layout.add(hori_layout, fill=True)
 
-        self.kickstart_groups = []
+        self.kickstart_groups: List[fsui.Panel] = []
 
         column_layout = fsui.VerticalLayout()
         hori_layout.add(column_layout, expand=True, fill=True, margin=10)
@@ -258,14 +261,16 @@ class ScanKickstartGroup(Panel):
         column_layout.add_spacer(10)
         self.add_kickstart_group(column_layout, "Commodore CDTV", "CDTV")
 
-    def add_kickstart_group(self, layout, title, model):
+    def add_kickstart_group(
+        self, layout: Layout, title: str, model: str
+    ) -> None:
         group = KickstartStatusGroup(self, title, model)
         self.kickstart_groups.append(group)
         layout.add(group, fill=True)
 
 
 class ScanProgressGroup(Panel):
-    def __init__(self, parent: Widget):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 

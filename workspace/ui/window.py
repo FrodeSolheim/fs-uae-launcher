@@ -1,6 +1,7 @@
 import pkg_resources
 
 import fsui
+from fsui.qt.color import HSLColor
 from fsui.qt.old_window import RealWindow
 
 from .application import Application
@@ -94,7 +95,7 @@ class WindowHeader(fsui.Panel):
         if background is None:
             background = (0xFF, 0xFF, 0xFF)
         background_color = fsui.Color(background)
-        if background_color.to_hsl().l >= 0.6:
+        if HSLColor.fromColor(background_color).l >= 0.6:
             self.foreground_color = (0x00, 0x00, 0x00)
         else:
             self.foreground_color = (0xFF, 0xFF, 0xFF)
@@ -329,7 +330,7 @@ class WindowButton(fsui.Panel):
         self.hover = False
         self.pressed = False
 
-        if parent.background_color.to_hsl().l >= 0.6:
+        if HSLColor.fromColor(parent.background).l >= 0.6:
             # FIXME: static resources / share between instances
             self.image = fsui.Image(
                 "pkg://workspace.ui/data/window-{}.png".format(name)

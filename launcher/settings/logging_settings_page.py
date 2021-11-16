@@ -1,12 +1,13 @@
 import fsui
 from fsgamesys.options.option import Option
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.settings.settings_page import SettingsPage
 from system.prefs.components.notworking import PrefsNotWorkingWarningPanel
 
 
 class LoggingSettingsPage(SettingsPage):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
 
         PrefsNotWorkingWarningPanel(parent=self)

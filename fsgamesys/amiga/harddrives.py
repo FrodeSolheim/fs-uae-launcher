@@ -13,7 +13,7 @@ from fsgamesys.amiga.launchhandler import (
 )
 from fsgamesys.amiga.types import ConfigType
 from fsgamesys.amiga.whdload import prepare_whdload_system_volume
-from fsgamesys.amiga.xpkmaster import prepare_xpkmaster_files
+from fsgamesys.amiga.xpkmaster import XpkMaster
 from fsgamesys.files.installablefile import InstallableFile
 from fsgamesys.files.installablefiles import InstallableFiles
 from fsgamesys.network import is_http_url
@@ -207,7 +207,7 @@ def prepare_dh0_files(config: ConfigType, files: InstallableFiles):
 
     # FIXME: Test!
     if "xpkmaster.library" in Config(config).hd_requirements():
-        prepare_xpkmaster_files(dest_dir, files=files)
+        XpkMaster.addFiles(dest_dir, files=files)
 
     system_configuration_file = os.path.join(devs_dir, "system-configuration")
     # if not os.path.exists(system_configuration_file):

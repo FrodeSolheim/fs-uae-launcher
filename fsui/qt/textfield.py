@@ -1,8 +1,11 @@
+from typing import cast
+
+from fscore.deprecated import deprecated
 from fsui.context import get_theme
-from fsui.decorators import deprecated
+from fsui.qt.gui import QFontMetrics
 from fsui.qt.qparent import QParent
-from fsui.qt.qt import QFontMetrics, QLineEdit
 from fsui.qt.signal import Signal, SignalWrapper
+from fsui.qt.widgets import QLineEdit
 from fswidgets.widget import Widget
 
 
@@ -19,32 +22,32 @@ class TextField(Widget):
         placeholder: str = "",
         clearbutton: bool = False,
         passwordMode: bool = False,
-    ):
+    ) -> None:
         super().__init__(parent, QLineEdit(text, QParent(parent)))
         # Widget.__init__(self, parent)
         # self.init_widget(parent)
-        self._qwidget.setReadOnly(read_only)
+        self.qLineEdit.setReadOnly(read_only)
 
         self._has_text = text != ""
         self.update_color()
 
         # noinspection PyUnresolvedReferences
-        self._qwidget.textChanged.connect(self.__on_text_changed)
+        self.qLineEdit.textChanged.connect(self.__on_text_changed)
         # noinspection PyUnresolvedReferences
-        self._qwidget.returnPressed.connect(self.__on_return_pressed)
+        self.qLineEdit.returnPressed.connect(self.__on_return_pressed)
 
         self.changed = SignalWrapper(self, "changed")
         self.activated = SignalWrapper(self, "activated")
 
         if passwordMode:
-            self._qwidget.setEchoMode(QLineEdit.Password)
+            self.qLineEdit.setEchoMode(QLineEdit.Password)
         if placeholder:
-            self._qwidget.setPlaceholderText(placeholder)
+            self.qLineEdit.setPlaceholderText(placeholder)
         if clearbutton:
-            self._qwidget.setClearButtonEnabled(True)
+            self.qLineEdit.setClearButtonEnabled(True)
         self.update_style()
 
-    def update_style(self):
+    def update_style(self) -> None:
         # There seems to be an issue with specifying padding-top and
         # padding-bottom for a QSpinBox.
         theme = get_theme(self)
@@ -52,7 +55,7 @@ class TextField(Widget):
         if not padding:
             # Indicates that we do not want custom styling
             return
-        fontmetrics = QFontMetrics(self._qwidget.font())
+        fontmetrics = QFontMetrics(self.qLineEdit.font())
         fontheight = fontmetrics.height()
         print(fontheight)
         border = 4
@@ -60,7 +63,7 @@ class TextField(Widget):
         self.set_min_height(min_height)
         print("MINHEIGHT (TEXTFIELD)", min_height)
         has_text = self.text() != ""
-        self._qwidget.setStyleSheet(
+        self.qLineEdit.setStyleSheet(
             f"""
             QLineEdit {{
                 color: {"#000000" if has_text else "#666666"};
@@ -70,7 +73,7 @@ class TextField(Widget):
             """
         )
 
-    def update_color(self):
+    def update_color(self) -> None:
         has_text = self.text() != ""
         if has_text != self._has_text:
             self._has_text = has_text
@@ -83,38 +86,42 @@ class TextField(Widget):
         # )
 
     @deprecated
-    def value(self):
+    def value(self) -> str:
         return self.text()
 
     @deprecated
-    def get_text(self):
+    def get_text(self) -> str:
         return self.text()
 
-    def on_changed(self):
+    def on_changed(self) -> None:
         pass
 
-    def __on_return_pressed(self):
+    def __on_return_pressed(self) -> None:
         self.activated.emit()
 
-    def __on_text_changed(self, _):
+    def __on_text_changed(self, _: str) -> None:
         self.update_color()
         self.changed.emit()
         self.on_changed()
 
-    def select_all(self):
-        self._qwidget.selectAll()
+    @property
+    def qLineEdit(self) -> QLineEdit:
+        return cast(QLineEdit, self.getQWidget())
 
-    def set_cursor_position(self, position):
-        self._qwidget.setCursorPosition(position)
+    def select_all(self) -> None:
+        self.qLineEdit.selectAll()
 
-    def set_text(self, text: str):
-        self._qwidget.setText(text)
+    def set_cursor_position(self, position: int) -> None:
+        self.qLineEdit.setCursorPosition(position)
 
-    def text(self):
-        return self._qwidget.text()
+    def set_text(self, text: str) -> None:
+        self.qLineEdit.setText(text)
+
+    def text(self) -> str:
+        return self.qLineEdit.text()
 
 
 class PasswordField(TextField):
-    def __init__(self, parent, text=""):
+    def __init__(self, parent: Widget, text: str = ""):
         super().__init__(parent, text)
-        self._qwidget.setEchoMode(QLineEdit.Password)
+        self.qLineEdit.setEchoMode(QLineEdit.Password)

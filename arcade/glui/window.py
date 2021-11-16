@@ -1145,7 +1145,7 @@ def init_display():
     #                 "/System/Library/Frameworks/Carbon.framework")
     #             objc.loadBundleFunctions(
     #                 bundle, globals(),
-    #                 ((str("SetSystemUIMode"), str("III"), str("")),))
+    #                 (("SetSystemUIMode", "III", ""),))
     #             #noinspection PyUnresolvedReferences
     #             SetSystemUIMode(kUIModeAllHidden, kUIOptionAutoShowMenuBar)
     #

@@ -1,4 +1,5 @@
 from fsui import Button, HorizontalLayout, Label, TextField, VerticalLayout
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from system.classes.window import Window
 
@@ -6,7 +7,7 @@ from system.classes.window import Window
 
 
 class ExecuteDialog(Window):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(
             parent,
             title=gettext("Execute a file"),

@@ -1,25 +1,25 @@
-from typing import Any, Dict, Optional
+from typing import Optional
 
+from fsui.qt.toplevelwidget import TopLevelWidget
 from fswidgets.widget import Widget
-from launcher.fswidgets2.window import Window
 from launcher.i18n import t
 from launcher.settings.joystick_settings_page import JoystickSettingsPage
-from system.classes.shellobject import shellObject
-from system.classes.windowcache import WindowCache
+from system.classes.shellobject import ShellObject, ShellOpenArgs, shellObject
+from system.classes.windowcache import ShellWindowCache
 from system.classes.windowresizehandle import WindowResizeHandle
 from system.prefs.components.baseprefswindow import BasePrefsWindow
 
 
 @shellObject
-class Controller:
+class Controllers(ShellObject):
     @staticmethod
-    def open(window: Optional[Window] = None, **kwargs: Dict[str, Any]):
-        return WindowCache.open(ControllerPrefsWindow, centerOnWindow=window)
+    def shellOpen(args: ShellOpenArgs) -> None:
+        ShellWindowCache.open(args, ControllerPrefsWindow)
 
 
 class ControllerPrefsWindow(BasePrefsWindow):
     def __init__(self, parent: Optional[Widget] = None):
-        # super().__init__(parent, title=t("Controller preferences"))
+        # title=t("Controller preferences")
         super().__init__(parent, title=t("Controllers"))
         self.panel = JoystickSettingsPage(self)
         self.layout.add(self.panel, fill=True, expand=True)

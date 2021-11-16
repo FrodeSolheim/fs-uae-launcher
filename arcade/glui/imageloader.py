@@ -2,6 +2,7 @@ import os
 import threading
 import time
 from functools import lru_cache
+from typing import Optional
 from uuid import uuid4
 from zipfile import ZipFile
 
@@ -17,7 +18,7 @@ error_set = set()
 
 
 @lru_cache()
-def get_cache_zip_for_sha1(sha1):
+def get_cache_zip_for_sha1(sha1: str) -> Optional[ZipFile]:
     zip_path = os.path.join(FSGSDirectories.images_dir(), sha1[:2] + ".zip")
     try:
         return ZipFile(zip_path, "r")
@@ -25,7 +26,7 @@ def get_cache_zip_for_sha1(sha1):
         return None
 
 
-def get_file_for_sha1_cached(sha1, size_arg, cache_ext):
+def get_file_for_sha1_cached(sha1: str, size_arg: str, cache_ext: str) -> str:
     cache_zip = get_cache_zip_for_sha1(sha1)
     if cache_zip is not None:
         try:
@@ -60,7 +61,7 @@ def get_file_for_sha1_cached(sha1, size_arg, cache_ext):
     return cache_file
 
 
-def get_file_for_sha1(sha1):
+def get_file_for_sha1(sha1: str) -> str:
     sha1, size_arg = sha1.split("?")
     if size_arg == "s=1x":
         cache_ext = "_1x.png"
@@ -74,7 +75,7 @@ def get_file_for_sha1(sha1):
     return get_file_for_sha1_cached(sha1, size_arg, cache_ext)
 
 
-def load_image(relative_path):
+def load_image(relative_path: str):
     path = ""
     try:
         if relative_path.startswith("sha1:"):

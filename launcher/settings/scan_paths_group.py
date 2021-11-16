@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 import fsui
 from fsbc.util import unused
 from fsgamesys.FSGSDirectories import FSGSDirectories
@@ -9,7 +11,7 @@ from launcher.ui.IconButton import IconButton
 
 
 class ScanPathsGroup(Panel):
-    def __init__(self, parent: Widget):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         self.layout = fsui.HorizontalLayout()
 
@@ -48,26 +50,26 @@ class ScanPathsGroup(Panel):
         self.list_view.on_select_item = self.on_select_item
         LauncherSettings.add_listener(self)
 
-    def onDestroy(self):
+    def onDestroy(self) -> None:
         LauncherSettings.remove_listener(self)
         super().onDestroy()
 
-    def on_setting(self, key, value):
+    def on_setting(self, key: str, value: str) -> None:
         unused(value)
         if key == "search_path":
             self.repopulate_list()
 
-    def on_select_item(self, index):
+    def on_select_item(self, index: Optional[int]) -> None:
         unused(index)
         self.remove_button.set_enabled()
 
-    def repopulate_list(self):
+    def repopulate_list(self) -> None:
         self.list_view.clear()
         for item in self.get_search_path():
             self.list_view.add_item(item, self.default_icon)
 
     @classmethod
-    def get_search_path(cls):
+    def get_search_path(cls) -> List[str]:
         paths = FSGSDirectories.get_default_search_path()
         search_path = LauncherSettings.get("search_path")
         for p in search_path.split(";"):
@@ -92,7 +94,7 @@ class ScanPathsGroup(Panel):
             paths.append(FSGSDirectories.get_kickstarts_dir())
         return paths
 
-    def on_add_button(self):
+    def on_add_button(self) -> None:
         search_path = LauncherSettings.get("search_path")
         search_path = [x.strip() for x in search_path.split(";") if x.strip()]
         path = fsui.pick_directory(parent=self.get_window())
@@ -112,7 +114,7 @@ class ScanPathsGroup(Panel):
                     search_path.append(path)
             LauncherSettings.set("search_path", ";".join(search_path))
 
-    def on_remove_button(self):
+    def on_remove_button(self) -> None:
         path = self.list_view.get_item(self.list_view.index())
         search_path = LauncherSettings.get("search_path")
         search_path = [x.strip() for x in search_path.split(";") if x.strip()]

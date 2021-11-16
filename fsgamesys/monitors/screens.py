@@ -13,11 +13,11 @@ def screen_rects() -> List[ScreenRect]:
     try:
         from fsui.qt import init_qt
 
-        qapplication = init_qt()
+        qApplication = init_qt()
     except AttributeError:
         pass
     else:
-        for qscreen in qapplication.screens():  # type: ignore
+        for screen in qApplication.screens():
             geometry = screen.geometry()  # type: QRect
             screen: ScreenRect = {
                 "x": geometry.x(),

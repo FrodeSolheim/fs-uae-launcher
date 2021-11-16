@@ -3,6 +3,7 @@ import weakref
 
 import fsui
 from fsbc.util import unused
+from fswidgets.widget import Widget
 from launcher.context import get_config
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
@@ -11,7 +12,7 @@ from launcher.ui.config.model import ImplicitConfig, normalize
 
 
 class ImplicitConfigHandler:
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         self.parent = weakref.ref(parent)
         LauncherConfig.add_listener(self)
         LauncherSettings.add_listener(self)

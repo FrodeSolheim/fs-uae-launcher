@@ -1,1 +1,1 @@
-from fsgs.platforms.spectrum import *
+from fsgamesys.platforms.spectrum import *

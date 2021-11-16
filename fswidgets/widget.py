@@ -1,18 +1,20 @@
 from dataclasses import dataclass
-from typing import Any, Optional, TypeVar, Union, cast
+from typing import Any, Callable, Optional, TypeVar, Union, cast
 from weakref import ReferenceType, ref
 
 from typing_extensions import Literal
 
 from fscore.deprecated import deprecated
 from fscore.events import Event, EventHelper, EventListener
+from fscore.tasks import AsyncSingleTaskRunner, Task
 from fscore.types import SimpleCallable
-from fsui.common.layout import Layout
 from fsui.qt.color import Color
 from fsui.qt.font import Font
 from fsui.qt.menu import PopupMenu
 from fsui.qt.mouse import get_mouse_position
 from fsui.qt.signal import Signal
+
+# from fsui.qt.toplevelwidget import TopLevelWidget
 from fswidgets.exceptions import NoParentError
 from fswidgets.overrides import overrides
 from fswidgets.qt.core import QEvent, QObject, QPoint, Qt, QTimerEvent
@@ -21,7 +23,8 @@ from fswidgets.qt.widgets import QWidget
 from fswidgets.style import Style
 from fswidgets.types import Point, Size
 
-T = TypeVar("T", bound=Event)
+T = TypeVar("T")
+TEvent = TypeVar("TEvent", bound=Event)
 
 
 @dataclass
@@ -44,7 +47,7 @@ class Widget(QObject):
 
     resized: Any = Signal()
 
-    def __init__(self, parent: "Optional[Widget]", qwidget: QWidget):
+    def __init__(self, parent: "Optional[Widget]", qwidget: QWidget) -> None:
         super().__init__()
         # self._widget = widget
         # self.__qwidget = ref(widget)  # ??
@@ -52,9 +55,10 @@ class Widget(QObject):
         if qwidget is not None:
             self.setQWidget(qwidget)
 
-        from fsui.qt.window import Window
+        # from fsui.qt.window import Window
+        from fsui.qt.toplevelwidget import TopLevelWidget
 
-        self._window: Optional[ReferenceType[Window]] = None
+        self._window: Optional[ReferenceType[TopLevelWidget]] = None
 
         if parent is not None:
             self._parent: Any = ref(parent)
@@ -77,16 +81,24 @@ class Widget(QObject):
         # by the event filter
         self.__timer_id = None
 
+        # Used by fsui.content.get_parent
+        self.internalCachedParent: Optional[Widget]
+        # Used by fsui.content.get_window
+        self.internalCachedWindow: TopLevelWidget
+
         # For debugging purposes, can be used to see from where this widget was
         # created.
         # self._init_stack = traceback.format_stack()
+
+        # Imported here to "fix" import cycle
+        from fsui.common.layout import Layout
 
         self.layout: Optional[Layout] = None
         self.contentMargins = ContentMargins(0, 0, 0, 0)
 
     def addEventListener(
         self, type: Literal["destroy", "resized"], listener: SimpleCallable
-    ):
+    ) -> None:
         if type == "destroy":
             self.addDestroyListener(listener)
         elif type == "resized":
@@ -94,11 +106,11 @@ class Widget(QObject):
         else:
             raise TypeError(type)
 
-    def addDestroyListener(self, listener: SimpleCallable):
+    def addDestroyListener(self, listener: SimpleCallable) -> None:
         self.destroyed.connect(listener)
         # return self
 
-    def addResizeListener(self, listener: SimpleCallable):
+    def addResizeListener(self, listener: SimpleCallable) -> None:
         self.resized.connect(listener)
         # return self
 
@@ -109,7 +121,7 @@ class Widget(QObject):
         self.setEnabled(True)
 
     @overrides
-    def eventFilter(self, a0: QObject, a1: QEvent):
+    def eventFilter(self, a0: QObject, a1: QEvent) -> bool:
         obj = a0
         event = a1
         event_type = event.type()
@@ -147,11 +159,11 @@ class Widget(QObject):
                 # return True
         return False
 
-    def focus(self):
+    def focus(self) -> None:
         self.qwidget.setFocus()
 
     def getFont(self) -> Font:
-        return Font(self.qwidget.font())
+        return Font(qFont=self.qWidget.font())
 
     def getHeight(self) -> int:
         return self.qwidget.height()
@@ -210,7 +222,9 @@ class Widget(QObject):
     def getWidth(self) -> int:
         return self.qwidget.width()
 
-    def getWindow(self):
+    # FIXME: Returning Any on purpose here - now - to avoid circular
+    # dependencies. This should be handled better.
+    def getWindow(self) -> Any:
         if self._window is None:
             # return None
             raise RuntimeError("No window")
@@ -232,7 +246,7 @@ class Widget(QObject):
     def hasParent(self) -> bool:
         return self._parent is not None
 
-    def hide(self):
+    def hide(self) -> None:
         self.setVisible(False)
 
     def isEnabled(self) -> bool:
@@ -244,7 +258,7 @@ class Widget(QObject):
     # FIXME: Move to a Cursor / Mouse class instead?
     # E.g. Cursor.hoversOverWidget(widget)
     # or Cursor.isWithinWidgetBoundary(widget)
-    def isUnderMouse(self):
+    def isUnderMouse(self) -> bool:
         # underMouse does not seem to work "correctly" when the mouse button is
         # kept pressed. The docs say "This value is not updated properly during
         # drag and drop operations."
@@ -265,9 +279,22 @@ class Widget(QObject):
         return self.qwidget.isVisible()
 
     def listen(
-        self, event: EventHelper[T], listener: EventListener[T]
+        self, event: EventHelper[TEvent], listener: EventListener[TEvent]
     ) -> None:
         self.addDestroyListener(event.addListener(listener))
+
+    def runTask(
+        self,
+        task: Task[T],
+        onResult: Callable[[T], None],
+        onError: Optional[Callable[[Exception], None]] = None,
+        onProgress: Optional[Callable[[str], None]] = None,
+    ):
+        self.addDestroyListener(
+            AsyncSingleTaskRunner(task, onResult, onError, onProgress)
+            .start()
+            .cancel
+        )
 
     def onChildAdded(self, widget: "Widget") -> None:
         pass
@@ -276,22 +303,22 @@ class Widget(QObject):
         pass
         # print("Widget.onDestroy", self)
 
-    def onQWidgetChildAdded(self, qwidget: QWidget):
+    def onQWidgetChildAdded(self, qwidget: QWidget) -> None:
         pass
 
     @property
-    def qwidget(self) -> QWidget:
+    def qWidget(self) -> QWidget:
         if self.__qwidget is None:
             raise RuntimeError("Widget does not have qwidget")
         return self.__qwidget
 
-    def removeDestroyListener(self, listener: SimpleCallable):
+    def removeDestroyListener(self, listener: SimpleCallable) -> None:
         self.resized.disconnect(listener)  # type: ignore
 
-    def removeResizeListener(self, listener: SimpleCallable):
+    def removeResizeListener(self, listener: SimpleCallable) -> None:
         self.resized.disconnect(listener)  # type: ignore
 
-    def setBackgroundColor(self, color: Color):
+    def setBackgroundColor(self, color: Color) -> None:
         # FIXME: Check if background_color is already set
         w = self.qwidget
         if color is not None:
@@ -303,48 +330,48 @@ class Widget(QObject):
             print("FIXME: Clear background color")
             w.setAutoFillBackground(False)
 
-    def setEnabled(self, enabled: bool):
+    def setEnabled(self, enabled: bool) -> None:
         self.qwidget.setEnabled(enabled)
         # return self
 
-    def setFont(self, font: Font):
+    def setFont(self, font: Font) -> None:
         self.qwidget.setFont(font.qfont)
 
-    def setMoveCursor(self):
+    def setMoveCursor(self) -> None:
         # FIXME: self.setCursor(Cursor.MOVE)?
         self.qwidget.setCursor(Qt.SizeAllCursor)
 
-    def setNormalCursor(self):
+    def setNormalCursor(self) -> None:
         # FIXME: self.setCursor(Cursor.DEFAULT)?
         self.qwidget.setCursor(Qt.ArrowCursor)
 
-    def setPointingHandCursor(self):
+    def setPointingHandCursor(self) -> None:
         self.qwidget.setCursor(Qt.PointingHandCursor)
 
-    def setPosition(self, position: Point):
+    def setPosition(self, position: Point) -> None:
         self.qwidget.move(position[0], position[1])
 
-    def setPositionAndSize(self, position: Point, size: Size):
+    def setPositionAndSize(self, position: Point, size: Size) -> None:
         self.qwidget.setGeometry(position[0], position[1], size[0], size[1])
         # return self
 
-    def setQWidget(self, qwidget: QWidget):
+    def setQWidget(self, qwidget: QWidget) -> None:
         self.__qwidget = qwidget
         self.qwidget.installEventFilter(self)
         self.qwidget.destroyed.connect(self.__on_destroyed)  # type: ignore
 
-    def setResizeCursor(self):
+    def setResizeCursor(self) -> None:
         # FIXME: self.setCursor(Cursor.RESIZE)?
         self.qwidget.setCursor(Qt.SizeFDiagCursor)
 
-    def setSize(self, size: Size):
+    def setSize(self, size: Size) -> None:
         self.qwidget.resize(size[0], size[1])
         # return self
 
-    def setToolTip(self, text: str):
+    def setToolTip(self, text: str) -> None:
         self.qwidget.setToolTip(text)
 
-    def setVisible(self, visible: bool = True):
+    def setVisible(self, visible: bool = True) -> None:
         # was_shown = self._shown
         if visible:
             self.qwidget.show()
@@ -357,21 +384,21 @@ class Widget(QObject):
     # def setWidth(self, width: int):
     #     self.qwidget.resi
 
-    def show(self):
+    def show(self) -> None:
         self.setVisible(True)
 
     # -------------------------------------------------------------------------
 
     # FIXME: Deprecated?
-    def widget(self):
+    def widget(self) -> QWidget:
         return self._widget
 
     @deprecated
-    def window_focus(self):
+    def window_focus(self) -> bool:
         # return self.__window_focused
         return self.isWindowFocused()
 
-    def start_timer(self, interval: int):
+    def start_timer(self, interval: int) -> None:
         self.__timer_id = self.qwidget.startTimer(interval)
 
     # FIXME: When is this used?
@@ -379,17 +406,17 @@ class Widget(QObject):
         return self.qwidget.update()
 
     @deprecated
-    def set_background_color(self, color: Color):
+    def set_background_color(self, color: Color) -> None:
         self.setBackgroundColor(color)
 
-    def set_min_height(self, height: int):
+    def set_min_height(self, height: int) -> None:
         # noinspection PyAttributeOutsideInit
         self.min_height = height
         # This is important for splitters (based on QSplitter) to work
         # properly.
         self.qwidget.setMinimumHeight(height)
 
-    def set_min_size(self, size: Size):
+    def set_min_size(self, size: Size) -> None:
         # noinspection PyAttributeOutsideInit
         self.min_width = size[0]
         # noinspection PyAttributeOutsideInit
@@ -400,7 +427,7 @@ class Widget(QObject):
         self.qwidget.setMinimumWidth(size[0])
         self.qwidget.setMinimumHeight(size[1])
 
-    def set_min_width(self, width: int):
+    def set_min_width(self, width: int) -> None:
         # noinspection PyAttributeOutsideInit
         self.min_width = width
         # This is important for splitters (based on QSplitter) to work
@@ -412,7 +439,7 @@ class Widget(QObject):
     # FIXME: Move this to PopupMenu instead?
     def popup_menu(
         self, menu: PopupMenu, pos: Point = (0, 0), blocking: bool = True
-    ):
+    ) -> None:
         # popup does not block, and if menu goes out of the scope of the
         # caller, it will disappear (unless we keep a reference here
         # FIXME: using exec now
@@ -434,28 +461,28 @@ class Widget(QObject):
 
     # -------------------------------------------------------------------------
 
-    def get_background_color(self):
+    def get_background_color(self) -> Color:
         # noinspection PyUnresolvedReferences
         # FIXME: Use cached value from set_background_color?
         return Color(self.qwidget.palette().color(QPalette.Window))
 
-    def get_container(self):
+    def get_container(self) -> QWidget:
         return self.widget()
 
-    def ideal_height(self, width: int):
+    def ideal_height(self, width: int) -> int:
         return self.ideal_size_for_dimension(1, width=width)
 
-    def ideal_width(self):
+    def ideal_width(self) -> int:
         return self.ideal_size_for_dimension(0)
 
-    def ideal_size(self):
+    def ideal_size(self) -> Size:
         width = self.ideal_width()
         height = self.ideal_height(width)
         return (width, height)
 
     def ideal_size_for_dimension(
         self, d: Union[Literal[0], Literal[1]], width: Optional[int] = None
-    ):
+    ) -> Size:
         widget = getattr(self, "_widget", self)
         size = 0
 
@@ -485,6 +512,9 @@ class Widget(QObject):
             if min_size is not None:
                 size = max(size, min_size)
             return clamp_size(size, min_size, max_size)
+
+        # Imported here to "fix" import cycle
+        from fsui.common.layout import Layout
 
         if hasattr(self, "layout") and isinstance(self.layout, Layout):
             if d == 0:
@@ -578,12 +608,15 @@ class Widget(QObject):
         # return min(result, widget.maximumWidth())
         # # return max(width, widget.minimumWidth())
 
-    def __on_destroyed(self):
+    def __on_destroyed(self) -> None:
         # print(f"Widget.__on_destroyed self={self}")
         self.destroyed.emit()
         self.onDestroy()
 
-    def on_resize(self):
+    def on_resize(self) -> None:
+        # Imported here to "fix" import cycle
+        from fsui.common.layout import Layout
+
         if hasattr(self, "layout") and isinstance(self.layout, Layout):
 
             width, height = self.getSize()
@@ -634,47 +667,47 @@ class Widget(QObject):
         return self.getFont().measureText(text)
 
     @deprecated
-    def set_hand_cursor(self):
+    def set_hand_cursor(self) -> None:
         self.setPointingHandCursor()
 
     @deprecated
-    def set_move_cursor(self):
+    def set_move_cursor(self) -> None:
         self.setMoveCursor()
 
     @deprecated
-    def set_resize_cursor(self):
+    def set_resize_cursor(self) -> None:
         self.setResizeCursor()
 
     @deprecated
-    def set_normal_cursor(self):
+    def set_normal_cursor(self) -> None:
         self.setNormalCursor()
 
     @deprecated
-    def set_enabled(self, enabled: bool = True):
+    def set_enabled(self, enabled: bool = True) -> None:
         self.setEnabled(enabled)
 
     @deprecated
-    def set_font(self, font: Font):
+    def set_font(self, font: Font) -> None:
         self.setFont(font)
 
     @deprecated
-    def enabled(self):
+    def enabled(self) -> bool:
         return self.isEnabled()
 
     @deprecated
-    def explicitly_hidden(self):
+    def explicitly_hidden(self) -> bool:
         return self.isExplicitlyHidden()
 
     @deprecated
-    def font(self):
+    def font(self) -> Font:
         return self.getFont()
 
     @deprecated
-    def get_font(self):
+    def get_font(self) -> Font:
         return self.getFont()
 
     @deprecated
-    def get_parent(self):
+    def get_parent(self) -> "Widget":
         return self.getParent()
 
     @deprecated
@@ -690,19 +723,19 @@ class Widget(QObject):
         return self.getWindow()
 
     @deprecated
-    def height(self):
+    def height(self) -> int:
         return self.getHeight()
 
     @deprecated
-    def is_enabled(self):
+    def is_enabled(self) -> bool:
         return self.isEnabled()
 
     @deprecated
-    def is_visible(self):
+    def is_visible(self) -> bool:
         return self.isVisible()
 
     @deprecated
-    def is_under_mouse(self):
+    def is_under_mouse(self) -> bool:
         return self.isUnderMouse()
 
     @deprecated
@@ -710,53 +743,53 @@ class Widget(QObject):
         return self.getParentOrNone()
 
     @deprecated
-    def position(self):
+    def position(self) -> Point:
         return self.getPosition()
 
     @deprecated
     def set_position(
         self, position: Union[Point, int], y: Optional[int] = None
-    ):
+    ) -> None:
         if y is None:
             self.qwidget.move(position[0], position[1])  # type: ignore
         else:
             self.qwidget.move(position, y)  # type: ignore
 
     @deprecated
-    def set_position_and_size(self, position: Point, size: Size):
+    def set_position_and_size(self, position: Point, size: Size) -> None:
         self.setPositionAndSize(position, size)
 
     @deprecated
-    def set_size(self, size: Size):
+    def set_size(self, size: Size) -> None:
         self.setSize(size)
 
     @deprecated
-    def set_visible(self, show: bool = True):
+    def set_visible(self, show: bool = True) -> None:
+        self.setVisible(show)
+
+    # @deprecated
+    # def set_widget(self, widget: QWidget) -> None:
+    #     self.setQWidget(widget)
+
+    @deprecated
+    def show_or_hide(self, show: bool = True) -> None:
         self.setVisible(show)
 
     @deprecated
-    def set_widget(self, widget: QWidget):
-        self.setQWidget(widget)
-
-    @deprecated
-    def show_or_hide(self, show: bool = True):
-        self.setVisible(show)
-
-    @deprecated
-    def size(self):
+    def size(self) -> Size:
         return self.getSize()
 
     @deprecated
-    def visible(self):
+    def visible(self) -> bool:
         return self.isVisible()
 
     # FIXME: Deprecated
     @property
-    def _widget(self):
+    def _widget(self) -> QWidget:
         return self.qwidget
 
     @deprecated
-    def width(self):
+    def width(self) -> int:
         return self.getWidth()
 
     @property  # type: ignore
@@ -766,6 +799,10 @@ class Widget(QObject):
 
     @property  # type: ignore
     @deprecated
-    def _qwidget(self):
+    def _qwidget(self) -> Optional[QWidget]:
         # return self.__qwidget()
         return self.__qwidget
+
+    @property
+    def qwidget(self) -> QWidget:
+        return self.qWidget

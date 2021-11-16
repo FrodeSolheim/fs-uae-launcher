@@ -1,4 +1,6 @@
+from fsgamesys.config.configevent import ConfigEvent
 from fsui import Color, HorizontalLayout, Panel, TextField
+from fswidgets.widget import Widget
 from launcher.context import get_settings
 from launcher.i18n import gettext
 from launcher.ui2.configlistview import ConfigListView
@@ -7,7 +9,7 @@ from system.classes.configdispatch import ConfigDispatch
 
 
 class SearchField(TextField):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         # FIXME: Should go via gscontext and not settings
         # or maybe via settings but with a window id/prefix
         text = get_settings(self).get("config_search")
@@ -15,14 +17,14 @@ class SearchField(TextField):
             parent, text=text, clearbutton=True, placeholder=gettext("Search")
         )
 
-    def on_changed(self):
+    def on_changed(self) -> None:
         text = self.text()
         # FIXME: Should go via gscontext and not settings
         get_settings(self).set("config_search", text)
 
 
 class SearchPanel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         horilayout = HorizontalLayout()
         self.layout.add(horilayout, fill=True, expand=True, margin=10)
@@ -33,7 +35,7 @@ class SearchPanel(Panel):
 
 
 class Launcher2LeftPanel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         # self.set_background_color(Color(0x999999))
         self.search_panel = SearchPanel(self)
@@ -48,16 +50,16 @@ class Launcher2LeftPanel(Panel):
         # panel.set_background_color(Color(0xB8B8B8))
         # self.layout.add(panel, fill=True)
 
-    def get_min_width(self):
+    def get_min_width(self) -> int:
         minWidth = super().get_min_width()
         print("Launcher2LeftPanel.get_min_width (size) =", minWidth)
         return minWidth
 
-    def __on_running_config(self, event):
+    def __on_running_config(self, event: ConfigEvent) -> None:
         isrunning = bool(event.value)
         if self.enabled() == isrunning:
             self.set_enabled(not isrunning)
 
-    def on_resize(self):
+    def on_resize(self) -> None:
         super().on_resize()
         print("Launcher2LeftPanel.on_resize, size is now", self.getSize())

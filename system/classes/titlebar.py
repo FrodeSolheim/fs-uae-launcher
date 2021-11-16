@@ -11,6 +11,11 @@ from .titlebarbutton import TitleBarButton
 
 
 class TitleBar(Panel):
+    menubutton = Optional[TitleBarButton]
+    minimizebutton = Optional[TitleBarButton]
+    maximizebutton = Optional[TitleBarButton]
+    closebutton = Optional[TitleBarButton]
+
     def __init__(
         self,
         parent: Widget,
@@ -195,7 +200,8 @@ class TitleBar(Panel):
         self.set_min_height(new_height)
         for button in self.buttons:
             button.set_size((new_height, new_height))
-        window.layout.update()
+        if window.layout is not None:
+            window.layout.update()
 
     def on_paint(self):
         theme = get_theme(self)

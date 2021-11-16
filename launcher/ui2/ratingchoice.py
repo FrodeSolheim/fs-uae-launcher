@@ -1,16 +1,18 @@
+from fsgamesys.config.configevent import ConfigEvent
 from fsgamesys.Database import Database
 from fsgamesys.ogd.client import OGDClient
 from fsgamesys.options.constants2 import VARIANT_RATING__, VARIANT_UUID__
 from fsui import Choice, Image
+from fswidgets.widget import Widget
 from launcher.context import get_config
 from launcher.i18n import gettext
+from system.classes.configdispatch import ConfigDispatch
 
 # from launcher.launcher_config import LauncherConfig
 # from launcher.launcher_settings import LauncherSettings
 # from system.exceptionhandler import exceptionhandler
 # from launcher.ui.behaviors.configbehavior import ConfigBehavior
 # from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
-from system.classes.configdispatch import ConfigDispatch
 
 
 class RatingChoice(Choice):
@@ -21,7 +23,7 @@ class RatingChoice(Choice):
     the selected item, to avoid accidental ratings.
     """
 
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         self.active_icon = 1
         super().__init__(parent, [], cursor_keys=False)
         with self.changed.inhibit:
@@ -59,14 +61,14 @@ class RatingChoice(Choice):
             },
         )
 
-    def on_changed(self):
+    def on_changed(self) -> None:
         variant_uuid = get_config(self).get(VARIANT_UUID__)
         if not variant_uuid:
             return
         rating = self.index_to_rating(self.index())
         self.set_rating_for_variant(variant_uuid, rating)
 
-    def on_variant_rating_config(self, event):
+    def on_variant_rating_config(self, event: ConfigEvent) -> None:
         with self.changed.inhibit:
             try:
                 rating = int(event.value)
@@ -74,18 +76,18 @@ class RatingChoice(Choice):
                 rating = 0
             self.set_index(self.rating_to_index(rating))
 
-    def on_variant_uuid_config(self, event):
+    def on_variant_uuid_config(self, event: ConfigEvent) -> None:
         self.set_enabled(bool(event.value))
 
     @staticmethod
-    def index_to_rating(index):
+    def index_to_rating(index: int) -> int:
         return [0, 5, 4, 1][index]
 
     @staticmethod
-    def rating_to_index(rating):
+    def rating_to_index(rating: int) -> int:
         return [0, 3, 3, 2, 2, 1][rating]
 
-    def set_rating_for_variant(self, variant_uuid, rating):
+    def set_rating_for_variant(self, variant_uuid: str, rating: int) -> None:
         # FIXME: Do asynchronously, add to queue
         client = OGDClient()
         result = client.rate_variant(variant_uuid, like=rating)

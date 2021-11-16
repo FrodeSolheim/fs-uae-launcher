@@ -1,6 +1,7 @@
 # FIXME: Can use virtual panel / group
-from fsui import Group, HorizontalLayout, Signal, TextField, get_window
+from fsui import HorizontalLayout, Signal, TextField, get_window
 from fswidgets.panel import Panel
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
@@ -9,7 +10,7 @@ from launcher.ui.LauncherFilePicker import LauncherFilePicker
 class FilePickerField(Panel):
     changed = Signal()
 
-    def __init__(self, parent, *, path, placeholder=""):
+    def __init__(self, parent: Widget, *, path: str, placeholder: str = ""):
         super().__init__(parent)
         self.layout = HorizontalLayout()
 

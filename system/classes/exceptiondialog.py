@@ -7,6 +7,7 @@ from fsui import (
     VerticalLayout,
     get_window,
 )
+from fswidgets.widget import Widget
 from launcher.context import get_launcher_theme
 
 from .titlebar import TitleBar
@@ -18,7 +19,9 @@ TODO: Support for opening centered on coordinates given to constructor.
 
 
 class ExceptionDialog(Dialog):
-    def __init__(self, parent, *, exception, backtrace, recoverable=False):
+    def __init__(
+        self, parent: Widget, *, exception, backtrace, recoverable=False
+    ):
         self.theme = get_launcher_theme(self)
         window_parent = None
         if recoverable:

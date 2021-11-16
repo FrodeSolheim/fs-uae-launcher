@@ -3,11 +3,9 @@
 import logging
 import os
 import shutil
-import socket
 import subprocess
 import sys
 import traceback
-from configparser import ConfigParser
 from typing import List, Optional
 
 import fsboot

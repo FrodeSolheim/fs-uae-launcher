@@ -63,5 +63,10 @@ def calculate(name):
         json.dump({"x": char_x, "y": char_y, "w": char_w, "h": char_h}, f)
 
 
-calculate("title_font")
-calculate("menu_font")
+def main():
+    calculate("title_font")
+    calculate("menu_font")
+
+
+if __name__ == "__main__":
+    main()

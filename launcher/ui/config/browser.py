@@ -92,23 +92,23 @@ class ConfigBrowser(fsui.VerticalItemView):
     # def get_item_search_text(self, index):
     #     # return self.items[index][3]
     #     # FIXME: lower-case search string?
-    #     return self.items[index][str("sort_key")]
+    #     return self.items[index]["sort_key"]
     #
     # def get_item_text_color(self, index):
-    #     have = self.items[index][str("have")]
+    #     have = self.items[index]["have"]
     #     if not have:
     #         return self.missing_color
 
     def get_item_icon(self, index):
         # item = self.items[index]
-        # platform_id = (item[str("platform")] or "").lower()
-        # if item[str("have")] == 1:
+        # platform_id = (item["platform"] or "").lower()
+        # if item["have"] == 1:
         #     return self.manual_download_icon
-        # elif item[str("have")] == 0:
+        # elif item["have"] == 0:
         #     return self.blank_icon
-        # elif item[str("have")] == 2:
+        # elif item["have"] == 2:
         #     return self.auto_download_icon
-        # elif item[str("have")] == 4:
+        # elif item["have"] == 4:
         #     if platform_id not in self.platform_icons:
         #         try:
         #             icon = fsui.Image("launcher:/data/16x16/{0}.png".format(

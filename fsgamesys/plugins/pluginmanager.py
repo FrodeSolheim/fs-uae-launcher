@@ -241,7 +241,7 @@ class PluginExecutable(Executable):
 
 class PluginManager:
     @classmethod
-    def instance(cls):
+    def instance(cls) -> "PluginManager":
         if not hasattr(cls, "_instance") or cls._instance is None:
             cls._instance = cls()
         return cls._instance

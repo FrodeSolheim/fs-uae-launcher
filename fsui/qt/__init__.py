@@ -1,6 +1,6 @@
 import queue
 import traceback
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import *
@@ -40,56 +40,19 @@ from fsui.qt.qt import (
     Qt,
     QWidget,
 )
+
+# from fsui.qt.toplevelwidget import TopLevelWidget
 from fsui.res import gettext
+from fswidgets.types import Size
 
-
-def get_screen_size():
-    init_qt()
-    desktop = QDesktopWidget()
-    geometry = desktop.geometry()
-    size = geometry.width(), geometry.height()
-    print("using screen size", size)
-    return size
-
-
-def callLater(duration: float, function: Callable[[], None]):
-    call_later(round(duration * 1000), function)
-
-
-def call_later(
-    duration: int, function: Callable[..., None], *args: Any, **kwargs: Any
-):
-    # print("FIXME: call_later", duration, function)
-    # raise NotImplementedError()
-    # QApplication.instance().
-    def timer_callback():
-        function(*args, **kwargs)
-
-    QTimer.singleShot(duration, timer_callback)
-
-
-def show_error(message, title=None, parent=None):
-    if not title:
-        title = gettext("An Error Occurred")
-    # QErrorMessage().showMessage(message)
-    # message_box = QMessageBox()
-    # message_box.setIcon(QMessageBox.Critical)
-    # message_box.setText(message)
-    # message_box.exec_()
-    QMessageBox.critical(QParent(parent), title, message)
-
-
-def show_warning(message, title=None, parent=None):
-    if not title:
-        title = gettext("Warning")
-    QMessageBox.warning(QParent(parent), title, message)
-
-
-def error_function(title):
-    def error_function_2(message):
-        show_error(message, title)
-
-    return error_function_2
+from fsui.qt.util import (
+    get_screen_size,
+    callLater,
+    call_later,
+    show_error,
+    show_warning,
+    error_function,
+)
 
 
 from fsui.qt.callafter import call_after

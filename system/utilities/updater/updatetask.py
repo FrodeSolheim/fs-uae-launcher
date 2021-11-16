@@ -5,39 +5,41 @@ import os
 import shutil
 import tarfile
 import tempfile
-from typing import List
+from typing import List, Tuple
 
 import requests
+from typing_extensions import TypedDict
 
 import fsboot
 from fscore.system import System
+from fscore.tasks import Task
 from fsgamesys.product import Product
-from system.special.logout import Task
+from system.utilities.updater.checkforupdatestask import Update
 
 log = logging.getLogger(__name__)
 
 
+class UpdateResult(TypedDict):
+    restartRequired: bool
+
+
 # @traced
-class UpdateTask(Task):
-    def __init__(self, updates):
+class UpdateTask(Task[UpdateResult]):
+    def __init__(self, updates: List[Update]) -> None:
         super().__init__()
         self.updates = updates
 
-    def sortUpdatesBy(self, update):
-        """Sort updates so Launcher updates are done at the end. The Launcher
-        update is slightly more complicated and requires a restart."""
-        isLauncher = update["packageName"].endswith("-Launcher")
-        return (isLauncher, update["packageName"])
-
-    def main(self):
+    def main(self) -> UpdateResult:
         self.setProgress("Starting update")
         restartRequired = False
         for update in sorted(self.updates, key=self.sortUpdatesBy):
-            if self.isCancelled():
-                return
+            # if self.isCancelled():
+            #     return
+            self.maybeCancel()
             self.downloadAndExtractUpdate(update)
-            if self.isCancelled():
-                return
+            # if self.isCancelled():
+            #     return
+            self.maybeCancel()
             if self.installUpdate(update["packageName"]):
                 # FIXME: Update was installed
                 pass
@@ -45,6 +47,13 @@ class UpdateTask(Task):
                 # Update was not installed, restart required
                 restartRequired = True
         return {"restartRequired": restartRequired}
+        # self.setResult({"restartRequired": restartRequired})
+
+    def sortUpdatesBy(self, update: Update) -> Tuple[bool, str]:
+        """Sort updates so Launcher updates are done at the end. The Launcher
+        update is slightly more complicated and requires a restart."""
+        isLauncher = update["packageName"].endswith("-Launcher")
+        return (isLauncher, update["packageName"])
 
     def getInstallDirectory(self, packageName: str) -> str:
         # FIXME: This should be centralized somewhere
@@ -64,7 +73,7 @@ class UpdateTask(Task):
             self.getInstallDirectory(packageName), f"{packageName}.partial"
         )
 
-    def downloadAndExtractUpdate(self, update):
+    def downloadAndExtractUpdate(self, update: Update) -> None:
         """Downloads and extracts package into `PackageName.next` directory"""
         packageName = update["packageName"]
         nextDir = self.getPackageNextDirectory(packageName)
@@ -93,7 +102,7 @@ class UpdateTask(Task):
 
     def downloadAndExtractArchive(
         self, installDir: str, packageName: str, url: str, sha256: str
-    ):
+    ) -> None:
         fileName = url.rsplit("/", 1)[-1].split("?", 1)[0]
         self.setProgress(f"Downloading {fileName}...")
         tempFile = tempfile.NamedTemporaryFile(suffix=fileName, delete=False)
@@ -113,7 +122,7 @@ class UpdateTask(Task):
         finally:
             os.remove(tempFile.name)
 
-    def verifyArchive(self, path: str, sha256: str):
+    def verifyArchive(self, path: str, sha256: str) -> bool:
         hashObject = hashlib.sha256()
         with open(path, "rb") as f:
             while True:
@@ -129,7 +138,7 @@ class UpdateTask(Task):
         packageName: str,
         archiveName: str,
         archivePath: str,
-    ):
+    ) -> bool:
         if self.isCancelled():
             return False
         log.info(f"Extracting {archivePath} to {installDir}")
@@ -143,7 +152,7 @@ class UpdateTask(Task):
                 tarFile.extract(tarInfo, installDir)
         return True
 
-    def validateRelativeName(self, packageName: str, name: str):
+    def validateRelativeName(self, packageName: str, name: str) -> None:
         if name != packageName and not name.startswith(f"{packageName}/"):
             raise Exception(
                 f"Archive member {name} does not start with {packageName}/"
@@ -154,11 +163,12 @@ class UpdateTask(Task):
     def isLauncherUpdate(self, packageName: str) -> bool:
         return packageName == Product.getLauncherPluginName()
 
-    def installUpdate(self, packageName: str):
+    def installUpdate(self, packageName: str) -> bool:
         """Installs package from `PackageName.next` to `PackageName`"""
         if self.isLauncherUpdate(packageName):
             if System.isWindows() or True:
-                return self.installUpdateWindows(packageName)
+                self.installUpdateWindows(packageName)
+                return False
 
         # if self.isLauncherUpdate(packageName):
         #     log.info("Launcher update is not installed now (restart)")
@@ -200,9 +210,9 @@ class UpdateTask(Task):
                 log.exception(f"Failed to completely clean up {oldDir}")
         log.info(f"Renaming directory {nextDir} -> {packageDir}")
         os.rename(nextDir, packageDir)
-        return False
+        return True
 
-    def installUpdateWindows(self, packageName: str):
+    def installUpdateWindows(self, packageName: str) -> None:
         self.setProgress(f"Installing update for {packageName}....")
         try:
             self.installUpdateWindows2(packageName)
@@ -220,7 +230,7 @@ class UpdateTask(Task):
             )
             raise e
 
-    def installUpdateWindows2(self, packageName: str):
+    def installUpdateWindows2(self, packageName: str) -> None:
         srcDir = self.getPackageNextDirectory(packageName)
         dstDir = self.getPackageDirectory(packageName)
         dstFileList = self.createFileList(dstDir)
@@ -243,10 +253,10 @@ class UpdateTask(Task):
                 # path = os.path.normpath(os.path.join(dirPath, fileName))
                 # fileList.add(f"path/")
                 # fileList.append(path)
-                if os.path.exists(dstPath):
+                if os.path.exists(dstPath) or os.path.islink(dstPath):
                     self.removeOrRename(dstPath)
-                print(f"Copying -> {dstPath}")
-                shutil.copy(srcPath, dstPath)
+                print("Copy", srcPath, "->", dstPath)
+                shutil.copy(srcPath, dstPath, follow_symlinks=False)
                 try:
                     dstFileList.remove(os.path.normcase(dstPath))
                 except ValueError:
@@ -274,7 +284,7 @@ class UpdateTask(Task):
         print(f"Deleting directory {srcDir} recursively...")
         shutil.rmtree(srcDir)
 
-    def removeOrRename(self, path: str):
+    def removeOrRename(self, path: str) -> None:
         try:
             print(f"Trying to remove file {path}")
             os.remove(path)
@@ -289,7 +299,7 @@ class UpdateTask(Task):
                 newPath = f"{path}.{k}.__del__"
             os.rename(path, newPath)
 
-    def createFileList(self, dir: str):
+    def createFileList(self, dir: str) -> List[str]:
         # fileList = set()
         # We use a list here to keep the order. When we delete remaining
         # entries, we want to delete in reverse order so parent directories

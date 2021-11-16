@@ -1,5 +1,6 @@
 import fsui
 from fsbc.application import app
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
@@ -7,7 +8,7 @@ from launcher.settings.settings_page import SettingsPage
 
 
 class AdvancedSettingsPage(SettingsPage):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent)
         # icon = fsui.Icon("settings", "pkg:workspace")
         # title = gettext("Advanced")

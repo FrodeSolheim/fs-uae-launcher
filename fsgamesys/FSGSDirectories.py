@@ -3,6 +3,7 @@ import logging
 import os
 import warnings
 from configparser import ConfigParser
+from typing import Dict, List, Optional
 
 import fsboot
 from fsbc.paths import Paths
@@ -13,14 +14,18 @@ from fsgamesys.product import Product
 
 
 class FSGSDirectories(object):
+    _initialized = False
+
     @classmethod
-    def initialize(cls):
-        warnings.warn(DeprecationWarning)
+    def initialize(cls) -> None:
+        warnings.warn(
+            "FSGSDirectories.initialize is deprecated", DeprecationWarning
+        )
         logging.debug("[DEPRECATED] FSGSDirectories.initialize")
         cls._initialize()
 
     @classmethod
-    def _initialize(cls):
+    def _initialize(cls) -> None:
         if hasattr(cls, "_initialized") and cls._initialized:
             return
         logging.debug("FSGSDirectories._initialize")
@@ -29,7 +34,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_base_dir(cls):
+    def get_base_dir(cls) -> str:
         path = fsboot.base_dir()
         # Configuration and file database depends on path normalization,
         # especially for cross-platform portable mode.
@@ -38,7 +43,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def portable_config(cls):
+    def portable_config(cls) -> Dict[str, str]:
         portable_ini = os.path.join(cls.get_base_dir(), "Portable.ini")
         if os.path.exists(portable_ini):
             cp = ConfigParser()
@@ -49,7 +54,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def portable_dir(cls, name):
+    def portable_dir(cls, name: str) -> Optional[str]:
         config = cls.portable_config()
         try:
             path = config[name]
@@ -59,7 +64,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_configurations_dir(cls):
+    def get_configurations_dir(cls) -> str:
         path = cls.portable_dir("configurations_dir")
         if not path:
             if Product.is_fs_uae():
@@ -73,7 +78,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_controllers_dir(cls):
+    def get_controllers_dir(cls) -> str:
         path = cls.portable_dir("controllers_dir")
         if not path:
             if Product.is_fs_uae():
@@ -87,7 +92,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_kickstarts_dir(cls):
+    def get_kickstarts_dir(cls) -> str:
         path = cls.portable_dir("kickstarts_dir")
         if not path:
             if Product.is_fs_uae():
@@ -101,7 +106,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def downloads_dir(cls):
+    def downloads_dir(cls) -> str:
         path = cls.portable_dir("downloads_dir")
         if not path:
             path = os.path.join(cls.get_base_dir(), "Downloads")
@@ -111,7 +116,7 @@ class FSGSDirectories(object):
         return path
 
     @classmethod
-    def ensure_downloads_dir(cls):
+    def ensure_downloads_dir(cls) -> str:
         path = cls.downloads_dir()
         if not os.path.exists(path):
             os.makedirs(path)
@@ -119,7 +124,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_floppies_dir(cls):
+    def get_floppies_dir(cls) -> str:
         path = cls.portable_dir("floppies_dir")
         if not path:
             if Product.is_fs_uae():
@@ -133,7 +138,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_hard_drives_dir(cls):
+    def get_hard_drives_dir(cls) -> str:
         path = cls.portable_dir("hard_drives_dir")
         if not path:
             if Product.is_fs_uae():
@@ -147,7 +152,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_cdroms_dir(cls):
+    def get_cdroms_dir(cls) -> str:
         path = cls.portable_dir("cdroms_dir")
         if not path:
             if Product.is_fs_uae():
@@ -161,7 +166,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_logs_dir(cls):
+    def get_logs_dir(cls) -> str:
         path = cls.portable_dir("logs_dir")
         if not path:
             path = os.path.join(cls.get_cache_dir(), "Logs")
@@ -172,7 +177,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_data_dir(cls):
+    def get_data_dir(cls) -> str:
         path = cls.portable_dir("data_dir")
         if not path:
             path = os.path.join(cls.get_base_dir(), "Data")
@@ -183,7 +188,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def databases_dir(cls):
+    def databases_dir(cls) -> str:
         path = os.path.join(cls.get_data_dir(), "Databases")
         if not os.path.exists(path):
             os.makedirs(path)
@@ -191,7 +196,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def images_dir(cls):
+    def images_dir(cls) -> str:
         path = os.path.join(cls.get_data_dir(), "Images")
         if not os.path.exists(path):
             os.makedirs(path)
@@ -199,7 +204,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def media_dir(cls):
+    def media_dir(cls) -> str:
         path = cls.portable_dir("media_dir")
         if not path:
             path = os.path.join(cls.get_base_dir(), "Media")
@@ -210,7 +215,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def images_dir_for_sha1(cls, sha1):
+    def images_dir_for_sha1(cls, sha1: str) -> str:
         path = os.path.join(cls.images_dir(), sha1[:2])
         # if not os.path.exists(path):
         #     os.makedirs(path)
@@ -218,12 +223,12 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_launcher_dir(cls):
+    def get_launcher_dir(cls) -> str:
         return cls.get_data_dir()
 
     @classmethod
     @functools.lru_cache()
-    def get_titles_dir(cls):
+    def get_titles_dir(cls) -> str:
         path = cls.portable_dir("titles_dir")
         if not path:
             if Product.is_fs_uae():
@@ -234,7 +239,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def saves_dir(cls):
+    def saves_dir(cls) -> str:
         path = cls.portable_dir("saves_dir")
         if not path:
             path = os.path.join(cls.get_data_dir(), "Saves")
@@ -245,7 +250,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_save_states_dir(cls):
+    def get_save_states_dir(cls) -> str:
         return cls.saves_dir()
 
         # # path = cls.portable_dir("save_states_dir")
@@ -262,8 +267,8 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def screenshots_output_dir(cls):
-        path = Settings.get("screenshots_output_dir")
+    def screenshots_output_dir(cls) -> str:
+        path: Optional[str] = Settings.get("screenshots_output_dir")
         if not path:
             path = cls.portable_dir("screenshots_output_dir")
         if not path:
@@ -274,7 +279,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_screenshots_dir(cls):
+    def get_screenshots_dir(cls) -> str:
         path = cls.portable_dir("screenshots_dir")
         if not path:
             if Product.is_fs_uae():
@@ -285,14 +290,14 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_images_dir(cls):
+    def get_images_dir(cls) -> str:
         cls._initialize()
         path = cls.get_base_dir()
         return path
 
     @classmethod
     @functools.lru_cache()
-    def get_covers_dir(cls):
+    def get_covers_dir(cls) -> str:
         path = cls.portable_dir("covers_dir")
         if not path:
             if Product.is_fs_uae():
@@ -303,7 +308,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_themes_dir(cls):
+    def get_themes_dir(cls) -> str:
         path = cls.portable_dir("themes_dir")
         if not path:
             if Product.is_fs_uae():
@@ -316,7 +321,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_plugins_dir(cls):
+    def get_plugins_dir(cls) -> str:
         path = cls.portable_dir("plugins_dir")
         if not path:
             if Product.is_fs_uae():
@@ -329,7 +334,7 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_cache_dir(cls):
+    def get_cache_dir(cls) -> str:
         path = cls.portable_dir("cache_dir")
         if not path:
             path = os.path.join(cls.get_base_dir(), "Cache")
@@ -341,43 +346,43 @@ class FSGSDirectories(object):
 
     @classmethod
     @functools.lru_cache()
-    def get_files_dirs(cls):
+    def get_files_dirs(cls) -> List[str]:
         paths = [cls.get_floppies_dir(), cls.get_cdroms_dir()]
         return paths
 
     @classmethod
     @functools.lru_cache()
-    def get_titles_dirs(cls):
+    def get_titles_dirs(cls) -> List[str]:
         paths = [cls.get_titles_dir()]
         return paths
 
     @classmethod
     @functools.lru_cache()
-    def get_screenshots_dirs(cls):
+    def get_screenshots_dirs(cls) -> List[str]:
         paths = [cls.get_screenshots_dir()]
         return paths
 
     @classmethod
     @functools.lru_cache()
-    def get_images_dirs(cls):
+    def get_images_dirs(cls) -> List[str]:
         paths = [cls.get_images_dir()]
         return paths
 
     @classmethod
     @functools.lru_cache()
-    def get_covers_dirs(cls):
+    def get_covers_dirs(cls) -> List[str]:
         paths = [cls.get_covers_dir()]
         return paths
 
     @classmethod
     @functools.lru_cache()
-    def get_themes_dirs(cls):
+    def get_themes_dirs(cls) -> List[str]:
         paths = [cls.get_themes_dir()]
         return paths
 
     @classmethod
-    def get_amiga_forever_directories(cls):
-        paths = []
+    def get_amiga_forever_directories(cls) -> List[str]:
+        paths: List[str] = []
         if fsboot.is_portable():
             # Portable version, don't try to find ROM files outside the
             # portable directory by default.
@@ -401,8 +406,8 @@ class FSGSDirectories(object):
         return paths
 
     @classmethod
-    def get_default_search_path(cls):
-        paths = []
+    def get_default_search_path(cls) -> List[str]:
+        paths: List[str] = []
         path = cls.get_base_dir()
         paths.append(path)
         if Product.includes_amiga():

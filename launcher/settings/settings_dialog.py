@@ -1,7 +1,10 @@
+from typing import Optional, cast
+
 import fsgamesys
 import fsui
 from fsbc import settings
 from fsgamesys.product import Product
+from fsui.qt.toplevelwidget import TopLevelWidget
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.launcher_signal import LauncherSignal
@@ -33,10 +36,10 @@ SPACE = ""
 
 class SettingsDialog(PagedDialog):
     @classmethod
-    def open(cls, parent=None):
+    def open(cls, parent: Optional[TopLevelWidget] = None) -> "SettingsDialog":
         return fsui.open_window_instance(cls, parent)
 
-    def __init__(self, parent, index=0):
+    def __init__(self, parent: TopLevelWidget, index: int = 0) -> None:
         PagedDialog.__init__(
             self,
             parent,

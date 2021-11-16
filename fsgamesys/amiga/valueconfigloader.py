@@ -1,6 +1,9 @@
 # FIXME: send fsgs as parameter to ValueConfigLoader instead
 import json
 import os
+from typing import Dict, List, Mapping, Optional, Set, Tuple
+
+from typing_extensions import TypedDict
 
 from fsbc.paths import Paths
 from fsgamesys.amiga import whdload
@@ -11,26 +14,35 @@ from fsgamesys.network import openretro_url_prefix
 from fsgamesys.options.option import Option
 
 
+class CueSheet(TypedDict):
+    name: str
+
+
+class File(TypedDict):
+    name: str
+    sha1: str
+
+
 class ValueConfigLoader(object):
     DB_VERSION_MAX = 1
 
-    def __init__(self, uuid=""):
-        self.config = {}
-        self.options = {}
-        self.viewport = []
-        self.values = {}
+    def __init__(self, uuid: str = "") -> None:
+        self.config: Dict[str, str] = {}
+        self.options: Dict[str, str] = {}
+        self.viewport: List[str] = []
+        self.values: Mapping[str, str] = {}
         self.uuid = uuid
-        self._file_list = None
-        self._cue_sheets = None
+        self._file_list: Optional[List[File]] = None
+        self._cue_sheets: Optional[List[CueSheet]] = None
         if uuid:
             self.options["database_url"] = "{0}/game/{1}".format(
                 openretro_url_prefix(), uuid
             )
 
-    def get_config(self):
+    def get_config(self) -> Dict[str, str]:
         return self.config.copy()
 
-    def load_values(self, values):
+    def load_values(self, values: Mapping[str, str]) -> Dict[str, str]:
         if values.get("db_version"):
             try:
                 version = int(values.get("db_version"))
@@ -81,7 +93,7 @@ class ValueConfigLoader(object):
 
         # self.load_options())
 
-        sort_list = []
+        sort_list: List[Tuple[str, str]] = []
         for key in values:
             if key == "chip_memory":
                 # chip memory is checked at the end because of support for
@@ -90,8 +102,7 @@ class ValueConfigLoader(object):
             else:
                 sort_list.append((key, key))
         sort_list.sort()
-
-        for dummy, key in sort_list:
+        for _, key in sort_list:
             self.load_option(key, values[key])
 
         if self.viewport:
@@ -140,7 +151,7 @@ class ValueConfigLoader(object):
         self.contract_paths()
         return self.get_config()
 
-    def check_all_files(self):
+    def check_all_files(self) -> bool:
         file_list_json = self.values.get("file_list", "[]")
         file_list = json.loads(file_list_json)
         for file in file_list:
@@ -154,38 +165,39 @@ class ValueConfigLoader(object):
                 return False
         return True
 
-    def contract_paths(self):
-        def fix(key):
-            if self.config.get(key):
+    def contract_paths(self) -> None:
+        def fix(key: str, default_dir: str) -> None:
+            value = self.config.get(key, "")
+            if value:
                 self.config[key] = Paths.contract_path(
-                    self.config.get(key), default_dir, force_real_case=False
+                    value, default_dir, force_real_case=False
                 )
 
         default_dir = fsgs.amiga.get_floppies_dir()
         for i in range(Amiga.MAX_FLOPPY_DRIVES):
-            fix("floppy_drive_{0}".format(i))
+            fix("floppy_drive_{0}".format(i), default_dir)
         for i in range(Amiga.MAX_FLOPPY_IMAGES):
-            fix("floppy_image_{0}".format(i))
+            fix("floppy_image_{0}".format(i), default_dir)
 
         default_dir = fsgs.amiga.get_cdroms_dir()
         for i in range(Amiga.MAX_CDROM_DRIVES):
-            fix("cdrom_drive_{0}".format(i))
+            fix("cdrom_drive_{0}".format(i), default_dir)
         for i in range(Amiga.MAX_CDROM_IMAGES):
-            fix("cdrom_image_{0}".format(i))
+            fix("cdrom_image_{0}".format(i), default_dir)
 
-    def set_name_and_uuid(self):
+    def set_name_and_uuid(self) -> None:
         # self.config["x_config_uuid"] = self.root.get("uuid", "")
-
         self.config["game_uuid"] = self.values.get("game_uuid", "")
         self.config["variant_uuid"] = self.values.get("variant_uuid", "")
 
-        self.config["game_name"] = self.values.get("game_name")
-        self.config["variant_name"] = self.values.get("variant_name")
+        self.config["game_name"] = self.values.get("game_name", "")
+        self.config["variant_name"] = self.values.get("variant_name", "")
 
         game_name = self.values.get("game_name", "")
         platform_name = self.values.get("platform", "")
         variant_name = self.values.get("variant_name", "")
-        parts = []
+
+        parts: List[str] = []
         if platform_name:
             parts.append(platform_name)
         if variant_name:
@@ -196,7 +208,7 @@ class ValueConfigLoader(object):
         else:
             self.config["__config_name"] = self.values.get("config_name", "")
 
-    def load_option(self, key, value):
+    def load_option(self, key: str, value: str) -> None:
         model = self.options.get("amiga_model", "")
         if key in ["variant_viewport", "viewport"]:
             if "=" in value:
@@ -377,7 +389,7 @@ class ValueConfigLoader(object):
         elif key == "file_list":
             self.options["file_list"] = value
 
-    def load_joystick_port_x_mode_option(self, key, value):
+    def load_joystick_port_x_mode_option(self, key: str, value: str):
         value = value.lower()
         if "," not in value:
             self.options[key] = value
@@ -407,9 +419,11 @@ class ValueConfigLoader(object):
             self._cue_sheets = json.loads(cue_sheets_json)
         return self._cue_sheets
 
-    def build_media_list(self, floppies=False, cds=False, hds=False):
-        media_list = []
-        added = set()
+    def build_media_list(
+        self, floppies: bool = False, cds: bool = False, hds: bool = False
+    ) -> List[Tuple[str, str]]:
+        media_list: List[Tuple[str, str]] = []
+        added: Set[str] = set()
         for file_item in self.get_file_list():
             name = file_item["name"]
             url = file_item.get("url", "")
@@ -467,9 +481,9 @@ class ValueConfigLoader(object):
                 # raise Exception("could not find file " + repr(name))
         return media_list
 
-    def load_floppies_from_floppy_list(self):
-        media_list = []
-        for item in self.values.get("floppy_list").split(","):
+    def load_floppies_from_floppy_list(self) -> List[Tuple[str, str]]:
+        media_list: List[Tuple[str, str]] = []
+        for item in self.values.get("floppy_list", "").split(","):
             name, sha1 = item.split(":")
             name = name.strip()
             sha1 = sha1.strip()
@@ -477,7 +491,7 @@ class ValueConfigLoader(object):
             media_list.append((path, sha1))
         return media_list
 
-    def load_floppies(self):
+    def load_floppies(self) -> None:
         floppy_drive_count = 4
         if "floppy_drive_count" in self.options:
             try:
@@ -499,15 +513,15 @@ class ValueConfigLoader(object):
             self.config["floppy_image_{0}".format(i)] = path
             self.config["x_floppy_image_{0}_sha1".format(i)] = sha1
         if floppy_drive_count < 4:
-            self.config["floppy_drive_count"] = floppy_drive_count
+            self.config["floppy_drive_count"] = str(floppy_drive_count)
 
-    def cdrom_sha1_to_uri(self, sha1):
+    def cdrom_sha1_to_uri(self, sha1: str) -> str:
         for file_item in self.get_file_list():
             if file_item["sha1"] == sha1:
                 return "game://{}/{}".format(self.uuid, file_item["name"])
         raise Exception("cdrom_sha1_to_uri: could not find " + sha1)
 
-    def load_cdroms(self):
+    def load_cdroms(self) -> None:
         # media_list = self.build_media_list(cds=True)
         cue_sheets = self.get_cue_sheets()
         if cue_sheets:
@@ -522,7 +536,7 @@ class ValueConfigLoader(object):
                 ccd = True
                 # if file_item["name"].endswith(".iso"):
                 #     iso = True
-        media_list = []
+        media_list: List[Tuple[str, str]] = []
         if ccd:
             ext = ".ccd"
         elif cue:
@@ -542,14 +556,14 @@ class ValueConfigLoader(object):
             self.config["cdrom_image_{0}".format(i)] = path
             self.config["x_cdrom_image_{0}_sha1".format(i)] = sha1
 
-    def load_cdroms_from_cue_sheets(self, cue_sheets):
+    def load_cdroms_from_cue_sheets(self, cue_sheets: List[CueSheet]) -> None:
         for i, item in enumerate(cue_sheets):
             path = "game://{}/{}".format(self.uuid, item["name"])
             if i < 1:
                 self.config["cdrom_drive_{0}".format(i)] = path
             self.config["cdrom_image_{0}".format(i)] = path
 
-    def load_hard_drives(self):
+    def load_hard_drives(self) -> None:
         media_list = self.build_media_list(hds=True)
         print(media_list)
         for i, values in enumerate(media_list):

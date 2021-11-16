@@ -6,6 +6,7 @@ from fsgamesys.amiga.amiga import Amiga
 from fsgamesys.checksumtool import ChecksumTool
 from fsgamesys.context import fsgs
 from fsgamesys.FSGSDirectories import FSGSDirectories
+from fswidgets.widget import Widget
 from launcher.context import get_config
 from launcher.helpers.cdmanager import CDManager
 from launcher.helpers.floppymanager import FloppyManager
@@ -25,7 +26,7 @@ from launcher.ui.LauncherFilePicker import LauncherFilePicker
 # FIXME: Superclass was Group, but changed to Panel due to not being able
 # to disconnect from listening to config changes when closing window.
 class MediaListGroup(fsui.Panel):
-    def __init__(self, parent, cd_mode):
+    def __init__(self, parent: Widget, cd_mode: bool):
         super().__init__(parent)
         self.layout = fsui.VerticalLayout()
 

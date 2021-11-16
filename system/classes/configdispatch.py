@@ -1,9 +1,16 @@
+from typing import Callable, Dict
+
 from fsgamesys.config.configevent import ConfigEvent
+from fswidgets.widget import Widget
 from launcher.context import get_config
 
 
 class ConfigDispatch:
-    def __init__(self, parent, mapping):
+    def __init__(
+        self,
+        parent: Widget,
+        mapping: Dict[str, Callable[[ConfigEvent], None]],
+    ) -> None:
         self.parent = parent
         self.mapping = mapping
         config = get_config(self.parent)
@@ -21,7 +28,7 @@ class ConfigDispatch:
         delattr(self.parent, f"_config_dispatch_{id(self)}")
         self.parent = None
 
-    def update(self, event):
+    def update(self, event: ConfigEvent) -> None:
         try:
             function = self.mapping[event.key]
         except LookupError:

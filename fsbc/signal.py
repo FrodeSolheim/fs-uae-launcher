@@ -1,6 +1,6 @@
 import threading
 import traceback
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 from weakref import ref
 
 from fscore.types import SimpleCallable
@@ -73,7 +73,7 @@ class Signal:
             signal = new_signal_id()
         self.signal = signal
 
-    def connect(self, function: SimpleCallable):
+    def connect(self, function: Callable[..., None]):
         listener = Listener(self.signal, function)
         with self.lock:
             # if hasattr(listener, "__self__") and hasattr(listener,
@@ -88,7 +88,7 @@ class Signal:
 
             # Signal.listeners.setdefault(listener, []).append(self.signal)
 
-    def disconnect(self, function: SimpleCallable):
+    def disconnect(self, function: Callable[..., None]):
         listener = Listener(self.signal, function)
         disconnected = False
         with self.lock:

@@ -1,4 +1,5 @@
-from typing import Optional
+from types import TracebackType
+from typing import Optional, Type
 
 import fsui
 from fswidgets.parentstack import ParentStack
@@ -51,14 +52,20 @@ class FlexContainer(fsui.Panel):
             # FIXME: Size will not be updated properly when not added to layout...
             # Need another children list?
         else:
-            parent.layout.add(self, fill=True, expand=True)
+            if parent.layout is not None:
+                parent.layout.add(self, fill=True, expand=True)
         # else:
         #     parent.layout.add(self)
 
     def __enter__(self):
         ParentStack.stack.append(self)
 
-    def __exit__(self, exception_type, exception_value, exception_traceback):
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> None:
         assert ParentStack.stack.pop() == self
 
 

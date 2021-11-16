@@ -1,3 +1,3 @@
-from PyQt5.QtWidgets import QSplitter, QWidget
+from fsui.qt.widgets import QSplitter, QWidget
 
 __all__ = ["QSplitter", "QWidget"]

@@ -7,7 +7,7 @@ class Application(ApplicationMixin, fsui.Application):
     name = None
 
     @classmethod
-    def init(cls, name):
+    def init(cls, name: str):
         cls.name = name
 
     def __init__(self):

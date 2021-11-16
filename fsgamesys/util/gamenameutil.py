@@ -3,8 +3,13 @@ import os
 import re
 import unicodedata
 import unittest
+from typing import Dict, List, Optional, Set
+
+from typing_extensions import Literal
 
 QUOTED_TERMS_RE = re.compile('["].*?["]')
+
+StyleParam = Literal["TOSEC", "NOINTRO"]
 
 
 class GameNameUtil(object):
@@ -12,7 +17,7 @@ class GameNameUtil(object):
     NOINTRO = "NOINTRO"
 
     @classmethod
-    def get_letter(cls, name):
+    def get_letter(cls, name: str) -> str:
         letter_name = name.upper()
         if letter_name.startswith("THE "):
             letter_name = letter_name[4:]
@@ -30,7 +35,7 @@ class GameNameUtil(object):
         return letter
 
     @classmethod
-    def create_fs_name(cls, name):
+    def create_fs_name(cls, name: str) -> str:
         name = name.replace(":", " - ")
         name = name.replace("*", "-")
         name = name.replace("?", "")
@@ -47,7 +52,7 @@ class GameNameUtil(object):
         return name
 
     @classmethod
-    def create_cmp_name(cls, name):
+    def create_cmp_name(cls, name: str):
         name = str(name)
         decomposed = unicodedata.normalize("NFD", name)
         result = []
@@ -58,11 +63,11 @@ class GameNameUtil(object):
 
     # noinspection SpellCheckingInspection
     @classmethod
-    def create_cmpname(cls, name):
+    def create_cmpname(cls, name: str):
         return cls.create_cmp_name(name)
 
     @classmethod
-    def create_link_name(cls, name):
+    def create_link_name(cls, name: str):
         name = str(name)
         decomposed = unicodedata.normalize("NFD", name)
         result = []
@@ -78,7 +83,7 @@ class GameNameUtil(object):
         return "".join(result)
 
     @classmethod
-    def is_bad_dump(cls, path):
+    def is_bad_dump(cls, path: str) -> bool:
         if "[b]" in path:
             return True
         m = re.search("\\[b[0-9]? [^\\]]*\\]", path, re.IGNORECASE)
@@ -87,7 +92,7 @@ class GameNameUtil(object):
         return False
 
     @classmethod
-    def extract_platform(cls, path):
+    def extract_platform(cls, path: str) -> Optional[str]:
         p = path.upper()
         n = os.path.basename(p)
         for alias, platform in GamePlatform.aliases.items():
@@ -109,7 +114,7 @@ class GameNameUtil(object):
         return None
 
     @classmethod
-    def find_base_name(cls, path):
+    def find_base_name(cls, path: str) -> str:
         name = os.path.basename(path)
         # name = os.path.normcase(name)
         pos_list = [name.find("("), name.find("["), name.rfind("."), len(name)]
@@ -119,7 +124,7 @@ class GameNameUtil(object):
         return name.strip().lower()
 
     @classmethod
-    def find_alt(cls, path):
+    def find_alt(cls, path: str) -> Optional[int]:
         m = re.search("\\[a([0-9]*)\\]", path, re.IGNORECASE)
         if m is not None:
             if not m.group(1):
@@ -128,19 +133,19 @@ class GameNameUtil(object):
         return None
 
     @classmethod
-    def strip_alt(cls, path):
+    def strip_alt(cls, path: str) -> str:
         path = re.sub("\\[a([0-9]*)\\]", "", path)
         return path
 
     @classmethod
-    def find_disk_count(cls, name):
+    def find_disk_count(cls, name: str) -> int:
         for i in range(20):
             if "of {0})".format(i) in name:
                 return i
         return 0
 
     @classmethod
-    def find_number(cls, name):
+    def find_number(cls, name: str) -> Optional[int]:
         # find medium number, if any
 
         # number = None
@@ -198,7 +203,7 @@ class GameNameUtil(object):
         # return number
 
     @classmethod
-    def strip_number(cls, name):
+    def strip_number(cls, name: str) -> str:
         # remove '(disk xxx)' from name
         # and also (disk xxx)(yyy)
         name = re.sub("\\([Dd][Ii][Ss][Kk][^)]*\\)(\\([^\\)]*\\))?", "", name)
@@ -217,7 +222,7 @@ class GameNameUtil(object):
         return name
 
     @classmethod
-    def extract_disk_label(cls, name):
+    def extract_disk_label(cls, name: str) -> str:
         # match '(disk xxx)' from name and also (disk xxx)(yyy)
         print(name)
         base_name = ""
@@ -251,7 +256,7 @@ class GameNameUtil(object):
                         primary = "Disk " + str(i)
                         break
             if not primary:
-                fname, ext = os.path.splitext(use_name)
+                fname, _ = os.path.splitext(use_name)
                 label = fname.split("_")[-1]
                 label = label.replace("Disk", " Disk ")
                 label = label.replace("  ", " ").strip()
@@ -288,18 +293,28 @@ class GameNameUtil(object):
         # return "{0}{1}".format(base_name, primary)
 
     @classmethod
-    def strip_flags(cls, name):
+    def strip_flags(cls, name: str) -> str:
         name = re.sub("\\[[^\\]]*\\]", "", name)
         # name = name.replace('(Boot)', '')
         return name
 
     # FIXME: Mark as deprecated
     @classmethod
-    def extract_names(cls, path, info=None, style=TOSEC):
+    def extract_names(
+        cls,
+        path: str,
+        info: Optional[Dict[str, str]] = None,
+        style: StyleParam = "TOSEC",
+    ):
         return cls.extract_names_from_file_name(path, info=info, style=style)
 
     @classmethod
-    def extract_names_from_file_name(cls, path, info=None, style=TOSEC):
+    def extract_names_from_file_name(
+        cls,
+        path: str,
+        info: Optional[Dict[str, str]] = None,
+        style: StyleParam = "TOSEC",
+    ):
         if info is None:
             info = {}
         # game_name = ""
@@ -323,7 +338,7 @@ class GameNameUtil(object):
         #         if os.path.normcase(item) == os.path.normcase(name):
         #             name = item
         #             break
-        name, ext = os.path.splitext(name)
+        name, _ = os.path.splitext(name)
 
         # def ireplace(s, search, replace):
         #     index = s.lower().find(search.lower())
@@ -398,14 +413,16 @@ class GameNameUtil(object):
         return game_name, config_name
 
     @classmethod
-    def extract_index_terms(cls, name, include_combinations=True, expand=True):
+    def extract_index_terms(
+        cls, name: str, include_combinations: bool = True, expand: bool = True
+    ) -> Set[str]:
         print("extract search terms for:", name)
 
         name = name.replace("\u00df", "ss")  # convert eszett
 
         words = name.lower().split(" ")
 
-        new_words = []
+        new_words: List[str] = []
         for word in words:
             # if word.endswith("n'"):
             #     print("- replacing n' with ng")
@@ -448,7 +465,7 @@ class GameNameUtil(object):
                 new_words.extend(sub_words)
         print("new words:", new_words)
 
-        terms = set()
+        terms: Set[str] = set()
         for word in new_words:
             try:
                 add_words = normalize_words[word]
@@ -468,8 +485,8 @@ class GameNameUtil(object):
         return terms
 
     @classmethod
-    def extract_search_terms(cls, name):
-        quoted_terms = []
+    def extract_search_terms(cls, name: str) -> Set[str]:
+        quoted_terms: List[str] = []
 
         def callback(m):
             quoted_terms.append(m.group(0))

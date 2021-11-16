@@ -1,3 +1,5 @@
+from typing import cast
+
 from fsui.context import get_theme
 from fsui.qt.image import Image
 from fsui.qt.qparent import QParent
@@ -12,15 +14,15 @@ class ImageButton(Widget):
         super().__init__(parent, QPushButton(QParent(parent)))
         # if image is not None:
         icon = image.qicon
-        self._qwidget.setIcon(icon)
-        self._qwidget.setIconSize(QSize(image.size[0], image.size[1]))
-        self._qwidget.clicked.connect(self.__clicked)
+        self.qPushButton.setIcon(icon)
+        self.qPushButton.setIconSize(QSize(image.size[0], image.size[1]))
+        self.qPushButton.clicked.connect(self.__clicked)
 
         theme = get_theme(self)
         padding = theme.button_padding()
         print("THEME", theme, "PADDING", padding)
-        if padding:
-            fontmetrics = QFontMetrics(self._qwidget.font())
+        if padding is not None:
+            fontmetrics = QFontMetrics(self.qPushButton.font())
             fontheight = fontmetrics.height()
             print(fontheight)
             border = 4
@@ -28,11 +30,15 @@ class ImageButton(Widget):
             self.set_min_height(min_height)
             print("BUTTONTHEME", theme, min_height)
 
-    def set_image(self, image: Image):
-        self._qwidget.setIcon(image.qicon)
+    @property
+    def qPushButton(self) -> QPushButton:
+        return cast(QPushButton, self.qWidget)
 
-    def __clicked(self):
+    def set_image(self, image: Image) -> None:
+        self.qPushButton.setIcon(image.qicon)
+
+    def __clicked(self) -> None:
         self.on_activate()
 
-    def on_activate(self):
+    def on_activate(self) -> None:
         self.activated.emit()

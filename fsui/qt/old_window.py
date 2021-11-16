@@ -1,3 +1,5 @@
+# type: ignore
+
 import traceback
 import weakref
 
@@ -428,7 +430,7 @@ class Window(QObject):
         return self._real_widget
 
     # DEPRECATED
-    def get_container(self):
+    def get_container(self) -> QWidget:
         return self.real_widget()
 
     # FIXME: Is this used?
@@ -723,7 +725,7 @@ class FwsWindow(RealWindow):
         return cls._images
 
     @classmethod
-    def set_default(cls):
+    def set_default(cls) -> None:
         global _use_fws
         try:
             import workspace

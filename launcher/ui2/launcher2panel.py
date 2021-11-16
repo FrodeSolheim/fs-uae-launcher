@@ -1,8 +1,5 @@
 from typing import Optional
 
-from fsui import HorizontalLayout
-from fswidgets.panel import Panel
-from fswidgets.parentstack import ParentStack
 from fswidgets.splitter import Splitter
 from fswidgets.widget import Widget
 from launcher.ui2.launcher2leftpanel import Launcher2LeftPanel
@@ -11,7 +8,7 @@ from launcher.ui2.launcher2rightpanel import Launcher2RightPanel
 
 # class Launcher2Panel(Panel):
 class Launcher2Panel(Splitter):
-    def __init__(self, parent: Optional[Widget] = None):
+    def __init__(self, parent: Optional[Widget] = None) -> None:
         super().__init__(parent=parent)
         # horilayout = HorizontalLayout()
         # self.layout.add(horilayout, fill=True, expand=True)
@@ -55,8 +52,8 @@ class Launcher2Panel(Splitter):
         #     self.set_min_size((min_width, min_height))
         #     self.left.set_min_width(360)
 
-    def getDefaultSplitterPosition(self):
+    def getDefaultSplitterPosition(self) -> int:
         return 380
 
-    def restoreDefaultSplitterPosition(self):
+    def restoreDefaultSplitterPosition(self) -> None:
         self.setSplitterPosition(self.getDefaultSplitterPosition())

@@ -14,7 +14,7 @@ from system.prefs.components.baseprefswindow import BasePrefsWindow2
 from system.prefs.components.defaultprefsbutton import DefaultPrefsButton
 from system.prefs.components.prefscontrol import PrefsControl
 from system.prefs.components.prefsdivider import PrefsDivider
-from system.prefs.update import AutomaticVersionCheck
+from system.prefs.updates import AutomaticVersionCheckPrefsControl
 
 
 @shellObject
@@ -51,7 +51,7 @@ class PrivacyPrefsPanel(BasePrefsPanel):
                 style={"margin": 10},
             )
             PrefsDivider()
-            AutomaticVersionCheck()
+            AutomaticVersionCheckPrefsControl()
             PrefsDivider()
             PrefsControl(
                 Option.AUTOMATIC_ERROR_REPORTING,

@@ -1,11 +1,12 @@
 import fsui
 from fsgamesys.plugins.pluginmanager import PluginManager
+from fswidgets.widget import Widget
 from launcher.res import gettext
 from launcher.settings.settings_page import SettingsPage
 
 
 class PluginsSettingsPage(SettingsPage):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent)
         icon = fsui.Icon("plugins", "pkg:workspace")
         self.add_header(icon, gettext("Plugins"))

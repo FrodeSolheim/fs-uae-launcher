@@ -2,21 +2,20 @@ import fsboot
 import fsui
 from fscore.system import System
 from fspy.decorators import memoize
-
-from ..launcher_settings import LauncherSettings
-from ..option import Option
-from .Constants import Constants
+from fsui.theme import Theme
+from fswidgets.widget import Widget
+from launcher.launcher_settings import LauncherSettings
+from launcher.option import Option
+from launcher.ui.Constants import Constants
 
 try:
     import workspace
 except ImportError:
-    workspace = None
+    workspace = None  # type: ignore
 
 # LEVEL = 0xce
 LEVEL = 0xEB
 # LEVEL = 0xe4
-
-from fsui.theme import Theme
 
 
 class LauncherTheme(Theme):
@@ -99,7 +98,7 @@ class Skin(object):
         return None
 
     @classmethod
-    def set_background_color(cls, widget):
+    def set_background_color(cls, widget: Widget):
         color = cls.get_background_color()
         if color is not None:
             widget.set_background_color(cls.get_background_color())

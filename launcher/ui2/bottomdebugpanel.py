@@ -1,5 +1,6 @@
 from fsui import Button, Color, HorizontalLayout, Panel
 from fsui.context import get_window
+from fswidgets.widget import Widget
 from launcher.context import get_wsopen
 from launcher.settings.settings_dialog import SettingsDialog
 from system.exceptionhandler import exceptionhandler
@@ -14,7 +15,9 @@ from system.wsopen import (
 
 
 class BottomDebugPanel(Panel):
-    def __init__(self, parent, *, close=False, quit=False):
+    def __init__(
+        self, parent: Widget, *, close: bool = False, quit: bool = False
+    ) -> None:
         super().__init__(parent)
 
         panel = Panel(self)
@@ -86,28 +89,28 @@ class BottomDebugPanel(Panel):
         horilayout.add(button, margin_left=10)
 
     @exceptionhandler
-    def __on_quit(self):
+    def __on_quit(self) -> None:
         # get_window(self).close()
         print("FIXME: Close all windows")
-        from fsui.qt.toplevelwidget import _windows
+        from fsui.qt.toplevelwidget import internalWindowsSet
 
-        for window in list(_windows):
+        for window in list(internalWindowsSet):
             window.close()
 
     @exceptionhandler
-    def __on_advanced_prefs(self):
+    def __on_advanced_prefs(self) -> None:
         get_wsopen(self)(SYSTEM_PREFS_ADVANCED)
 
     @exceptionhandler
-    def __on_appearance_prefs(self):
+    def __on_appearance_prefs(self) -> None:
         get_wsopen(self)(SYSTEM_PREFS_APPEARANCE)
 
     @exceptionhandler
-    def __on_close(self):
+    def __on_close(self) -> None:
         get_window(self).close()
 
     @exceptionhandler
-    def __on_garbage_collector(self):
+    def __on_garbage_collector(self) -> None:
         print("-" * 79)
         print("Running garbage collector...")
         import gc
@@ -116,34 +119,34 @@ class BottomDebugPanel(Panel):
         print("Garbage collector done\n")
 
     @exceptionhandler
-    def __on_launcher(self):
+    def __on_launcher(self) -> None:
         get_wsopen(self)(SYSTEM_LAUNCHER)
 
     @exceptionhandler
-    def __on_loadwb(self):
+    def __on_loadwb(self) -> None:
         get_wsopen(self)(SYSTEM_C_LOADWB)
 
     @exceptionhandler
-    def __on_prefs(self):
+    def __on_prefs(self) -> None:
         get_wsopen(self)(SYSTEM_PREFS)
 
     @exceptionhandler
-    def __on_settings(self):
-        SettingsDialog.open(self)
+    def __on_settings(self) -> None:
+        SettingsDialog.open(self.getWindow())
 
     @exceptionhandler
-    def __on_unhandled_exception(self):
+    def __on_unhandled_exception(self) -> None:
         1 / 0
 
     # Without @exceptionhandler on purpose, for testing
-    def __on_unhandled_exception_2(self):
+    def __on_unhandled_exception_2(self) -> None:
         import sys
 
         print(sys.excepthook)
         1 / 0
 
     # Without @exceptionhandler on purpose, for testing
-    def __on_unhandled_exception_3(self):
+    def __on_unhandled_exception_3(self) -> None:
         import sys
 
         sys.excepthook = sys.__excepthook__
@@ -151,5 +154,5 @@ class BottomDebugPanel(Panel):
         1 / 0
 
     @exceptionhandler
-    def __on_whdload_prefs(self):
+    def __on_whdload_prefs(self) -> None:
         get_wsopen(self)(SYSTEM_PREFS_WHDLOAD)

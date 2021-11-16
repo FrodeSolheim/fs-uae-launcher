@@ -82,7 +82,8 @@ class Label(fsui.Label):
             self.set_font(font)
 
         fill = True
-        parent.layout.add(self, fill=fill)
+        if parent.layout is not None:
+            parent.layout.add(self, fill=fill)
 
     def setText(self, text):
         self.set_text(text)

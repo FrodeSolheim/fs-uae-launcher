@@ -3,7 +3,7 @@ import sys
 from distutils.spawn import find_executable
 
 try:
-    seven_zip_exe = find_executable(str("7z"))
+    seven_zip_exe = find_executable("7z")
 except Exception:
     seven_zip_exe = None
 

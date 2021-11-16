@@ -1,15 +1,23 @@
 import fsui
 from fsbc.util import unused
+from fsui.extra.iconheader import IconPosition
+from fsui.qt.icon import Icon
 from fswidgets.panel import Panel
+from fswidgets.widget import Widget
 from launcher.ui.skin import Skin
 
 
 class SettingsHeader(Panel):
-    ICON_LEFT = 0
-    ICON_RIGHT = 1
+    ICON_LEFT = IconPosition.LEFT
+    ICON_RIGHT = IconPosition.RIGHT
 
     def __init__(
-        self, parent, icon, title, subtitle="", icon_position=ICON_RIGHT
+        self,
+        parent: Widget,
+        icon: Icon,
+        title: str,
+        subtitle: str = "",
+        icon_position: IconPosition = ICON_RIGHT,
     ):
         unused(subtitle)
         super().__init__(parent)

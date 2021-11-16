@@ -1,4 +1,6 @@
 from fscore.system import System
+from fsgamesys.config.configevent import ConfigEvent
+from fsgamesys.context import FSGameSystemContext
 from fsgamesys.options.constants2 import (
     PARENT_H__,
     PARENT_W__,
@@ -17,7 +19,7 @@ from system.exceptionhandler import exceptionhandler
 class StartButton(Button):
     MIN_WIDTH = 96
 
-    def __init__(self, parent, dialog=True):
+    def __init__(self, parent: Widget, dialog: bool = True) -> None:
         super().__init__(
             parent, gettext("Start"), icon=Icon("flag_green", "pkg:launcher")
         )
@@ -26,18 +28,20 @@ class StartButton(Button):
         self.set_min_width(self.MIN_WIDTH)
 
     @exceptionhandler
-    def on_activate(self):
+    def on_activate(self) -> None:
         StartButton.start(
             self, dialog=self.dialog, gscontext=get_gscontext(self)
         )
 
     @exceptionhandler
-    def __on_running_config(self, event):
+    def __on_running_config(self, event: ConfigEvent) -> None:
         isrunning = bool(event.value)
         self.set_enabled(not isrunning)
 
     @staticmethod
-    def start(widget: Widget, dialog=False, *, gscontext):
+    def start(
+        widget: Widget, dialog: bool = False, *, gscontext: FSGameSystemContext
+    ) -> None:
         window = get_window(widget)
         if System.macos:
             position = window.getPosition()

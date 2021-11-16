@@ -1,21 +1,24 @@
-from fsui.qt.qt import QObject
+import logging
+
+from fsui.qt.core import QObject, QTimerEvent
 from fsui.qt.signal import Signal
+
+log = logging.getLogger(__name__)
 
 
 class IntervalTimer(QObject):
     activated = Signal()
 
-    def __init__(self, interval):
+    def __init__(self, interval: int) -> None:
         super().__init__()
         self.startTimer(interval)
 
-    def __del__(self):
-        print("IntervalTimer.__del__", self)
+    def __del__(self) -> None:
+        log.debug("IntervalTimer.__del__ %r", self)
 
-    # noinspection PyPep8Naming
-    def timerEvent(self, _):
+    def timerEvent(self, a0: QTimerEvent) -> None:
         self.activated.emit()
 
-    def stop(self):
-        print("[TIMER] Stop")
+    def stop(self) -> None:
+        log.debug("[TIMER] Stop")
         self.activated.disconnect()

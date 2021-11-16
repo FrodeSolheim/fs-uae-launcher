@@ -1,4 +1,4 @@
-from typing import Callable, Optional
+from typing import Callable, Optional, cast
 
 from fsui.context import get_theme
 from fsui.qt.icon import Icon
@@ -16,14 +16,14 @@ class Button(Widget):
         label: str = "",
         *,
         icon: Optional[Icon] = None,
-        onClick: Callable[[], None] = None
-    ):
+        onClick: Optional[Callable[[], None]] = None
+    ) -> None:
         if icon:
             qwidget = QPushButton(icon.qicon(), label, QParent(parent))
         else:
             qwidget = QPushButton(label, QParent(parent))
         super().__init__(parent, qwidget)
-        self._qwidget.clicked.connect(self.__on_clicked)
+        self.qPushButton.clicked.connect(self.__on_clicked)
 
         theme = get_theme(self)
         padding = theme.button_padding()
@@ -37,8 +37,12 @@ class Button(Widget):
         if onClick is not None:
             self.activated.connect(onClick)
 
-    def __on_clicked(self):
+    def __on_clicked(self) -> None:
         self.on_activate()
 
-    def on_activate(self):
+    def on_activate(self) -> None:
         self.activated.emit()
+
+    @property
+    def qPushButton(self) -> QPushButton:
+        return cast(QPushButton, self.qWidget)

@@ -1,9 +1,12 @@
 from logging import getLogger
-from typing import Optional
+from typing import Callable, Optional
 
+from fscore.tasks import AsyncSingleTaskRunner
 from fsgamesys.context import default_context
+from fsui.qt.menu import Menu
 from fswidgets.decorators import constructor
 from fswidgets.overrides import overrides
+from fswidgets.types import Size
 from fswidgets.widget import Widget
 from launcher.components.UpdatesAvailablePanel import UpdatesAvailablePanel
 from launcher.context import useSettings
@@ -16,8 +19,10 @@ from launcher.version import VERSION
 from system.classes.window import Window
 from system.classes.windowresizehandle import WindowResizeHandle
 from system.exceptionhandler import withExceptionHandler
-from system.special.logout import AsyncTaskRunner
-from system.utilities.updater.checkforupdatestask import CheckForUpdatesTask
+from system.utilities.updater.checkforupdatestask import (
+    CheckForUpdatesResult,
+    CheckForUpdatesTask,
+)
 
 log = getLogger(__name__)
 
@@ -26,7 +31,7 @@ class Launcher2Window(Window):
     """Main window class."""
 
     @constructor
-    def __init__(self, parent: Optional[Widget]):
+    def __init__(self, parent: Optional[Widget]) -> None:
         super().__init__(
             parent,
             title=f"{get_launcher_window_title()}  {VERSION}",
@@ -93,11 +98,11 @@ class Launcher2Window(Window):
         else:
             log.debug(f"Skipping update check (version is {VERSION})")
 
-    def getDefaultSize(self):
+    def getDefaultSize(self) -> Size:
         return (1280, 720)
 
     @overrides
-    def onClose(self):
+    def onClose(self) -> None:
         super().onClose()
 
         # FIXME: Maybe client size should be default / same as size
@@ -129,32 +134,42 @@ class Launcher2Window(Window):
         )
 
     @overrides
-    def onDestroy(self):
+    def onDestroy(self) -> None:
         super().onDestroy()
         self.imageLoader.stop()
 
     @withExceptionHandler
-    def onMenu(self):
+    def onMenu(self) -> Menu:
         return MainMenu(self)
 
     # FIXME: Maybe rename to restorePreferredSize and put in TopLevelWidget
     # + getPreferredSize (new funcion) in Widget (for overriding) and/or maybe
     # a corresponding setPreferredSize
-    def restoreDefaultSize(self):
+    def restoreDefaultSize(self) -> None:
         self.setMaximized(False)
         self.setSize(self.getDefaultSize())
         self.panel.restoreDefaultSplitterPosition()
         self.panel.right.restoreDefaultSplitterPosition()
 
-    def checkForUpdates(self):
-        def onResult(result):
+    def checkForUpdates(self) -> None:
+        def onResult(result: CheckForUpdatesResult) -> None:
             if len(CheckForUpdatesTask.findUpdates(result)) > 0:
                 print("Updates are available!")
                 UpdatesAvailablePanel(self).show()
 
-        task = CheckForUpdatesTask()
-        self.addDestroyListener(AsyncTaskRunner(onResult).run(task).cancel)
+        self.runTask(CheckForUpdatesTask(), onResult)
+
+    #        self.addDestroyListener(AsyncTaskRunner(onResult).run(task).cancel)
+    # self.addDestroyListener(AsyncSingleTaskRunner(task, onResult).start().cancel)
+
+    # from typing import TypeVar
+    # T = TypeVar("T")
+
+    # def runTask(task: Callable[[], T], onResult: Callable[[T], None]):
+    #     pass
+
+    # runTask(CheckForUpdatesTask, task, onResult)
 
     # FIXME: Move to widget
-    def addDestroyListener(self, listener):
+    def addDestroyListener(self, listener: Callable[[], None]) -> None:
         self.destroyed.connect(listener)

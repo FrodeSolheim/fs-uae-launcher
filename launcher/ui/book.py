@@ -1,22 +1,27 @@
+from typing import Callable, List, Optional, Union
+
 from fsui import Panel, VerticalLayout
 from fswidgets.widget import Widget
 
 
 class Book(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent)
         self.layout = VerticalLayout()
 
-        self.page_titles = []
-        self.pages = []
-        self.current_page = None
+        self.page_titles: List[str] = []
+        self.pages: List[Union[Widget, Callable[[], Widget]]] = []
+        self.current_page: Optional[Widget] = None
 
-    def add_page(self, function, title=""):
+    def add_page(
+        self, function: Union[Widget, Callable[[], Widget]], title: str = ""
+    ):
         self.page_titles.append(title)
         self.pages.append(function)
 
-    def set_page(self, page: Widget):
+    def set_page(self, page: Union[int, Widget]):
         print("Book.set_page", page)
+        index: int
         try:
             index = page + 0
         except TypeError:

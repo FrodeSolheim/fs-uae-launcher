@@ -123,10 +123,6 @@ class OldControllerConfigPanel(fsui.Panel):
         self.save_button.activated.connect(self.on_save_button)
         panel.layout.add(self.save_button, margin_left=20)
 
-        # if self.window().theme.has_close_buttons:
-        #     self.close_button = CloseButton(panel)
-        #     panel.layout.add(self.close_button, margin_left=10)
-
         self.button_panels: List[MappingButton] = []
         for x, y, direction, name, item in BUTTONS:
             l = fsui.Label(

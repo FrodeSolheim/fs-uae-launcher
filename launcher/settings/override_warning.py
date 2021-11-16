@@ -1,18 +1,18 @@
 import fsui
+from fsui.qt.imageview import ImageView
+from fswidgets.widget import Widget
 from launcher.context import get_settings
-from launcher.i18n import gettext
-from launcher.ui.behaviors.configbehavior import ConfigBehavior
 
 
-class WarningBase(fsui.ImageView):
-    def __init__(self, parent):
+class WarningBase(ImageView):
+    def __init__(self, parent: Widget) -> None:
         self.warning_icon = fsui.Image("launcher:/data/16x16/warning_2.png")
         self.no_warning_icon = fsui.Image.create_blank(16, 16)
         super().__init__(parent, self.no_warning_icon)
         self._warning_state = None
         self.set_warning_state(False)
 
-    def set_warning_state(self, warning_state):
+    def set_warning_state(self, warning_state: bool):
         if warning_state != self._warning_state:
             self._warning_state = warning_state
             self.set_image(
@@ -26,7 +26,7 @@ class WarningBase(fsui.ImageView):
 
 
 class OverrideWarning(WarningBase):
-    def __init__(self, parent, name):
+    def __init__(self, parent: Widget, name: str) -> None:
         super().__init__(parent)
 
         # FIXME: Disabled because there is not a single config in the Launcher
@@ -43,12 +43,12 @@ class OverrideWarning(WarningBase):
         # )
         # self.set_tooltip(text)
 
-    def on_config(self, value):
+    def on_config(self, value: str):
         self.set_warning_state(bool(value))
 
 
 class OptionWarning(WarningBase):
-    def __init__(self, parent, warning):
+    def __init__(self, parent: Widget, warning) -> None:
         super().__init__(parent)
         self.warning_function = warning[0]
         self.options = {
@@ -67,7 +67,7 @@ class OptionWarning(WarningBase):
         # print("WARNING", self)
         self.update_warning()
 
-    def update_warning(self):
+    def update_warning(self) -> None:
         # if self._last_options == self.options:
         #     # No need to update
         #     return
@@ -78,7 +78,7 @@ class OptionWarning(WarningBase):
         if warning:
             self.set_tooltip(warning)
 
-    def on_setting(self, option, value):
+    def on_setting(self, option: str, value: str) -> None:
         # print("OptionWarning.on_setting", option, value)
         if option in self.options:
             self.options[option] = value

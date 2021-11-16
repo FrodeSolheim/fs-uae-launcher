@@ -1,6 +1,7 @@
-class ConfigEvent:
-    __slots__ = ("key", "value")
+from dataclasses import dataclass
 
-    def __init__(self, key, value):
-        self.key = key
-        self.value = value
+
+@dataclass
+class ConfigEvent:
+    key: str
+    value: str

@@ -25,7 +25,7 @@ class Option(object):
         return AspectOption()
 
     @classmethod
-    def create_group(cls, title, priority=0.0):
+    def create_group(cls, title: str, priority: float = 0.0):
         option = Option()
         option.priority = priority
         option.title = title

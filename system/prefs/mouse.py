@@ -1,3 +1,6 @@
+from typing import Optional
+
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.settings.mouse_settings_page import MouseSettingsPage
 from system.classes.shellobject import shellObject
@@ -13,7 +16,7 @@ class Mouse:
 
 
 class MousePrefsWindow(BasePrefsWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent: Optional[Widget] = None):
         super().__init__(parent, title=gettext("Mouse preferences"))
         self.panel = MouseSettingsPage(self)
         self.layout.add(self.panel, fill=True, expand=True)

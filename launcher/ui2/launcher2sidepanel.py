@@ -1,21 +1,18 @@
 from typing import List
 
+from fsgamesys.config.configevent import ConfigEvent
 from fsui import Choice, Color, HorizontalLayout, Label, Panel
 from fsui.context import get_window
 from fswidgets.widget import Widget
-from launcher.panels.additionalconfigpanel import CustomConfigButton
 from launcher.ui2.frontcoverpanel import FrontCoverPanel
 from launcher.ui2.launcher2colors import Launcher2Colors
-from launcher.ui2.openretroeditbutton import OpenRetroEditButton
-from launcher.ui2.ratingchoice import RatingChoice
-from launcher.ui2.variantchoice import VariantChoice
 from launcher.ui.book import Book
 from launcher.ui.IconButton import IconButton
 from system.classes.configdispatch import ConfigDispatch
 
 
 class Launcher2SidePanel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         self.set_background_color(Color(Launcher2Colors.SIDE_PANEL_COLOR))
         # self.set_min_width(300)
@@ -56,7 +53,7 @@ class Launcher2SidePanel(Panel):
 
 
 class GameFrontCoverPanel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         # self.set_background_color(Color(0xFF0000))
         imageLoader = get_window(self).imageLoader
@@ -92,17 +89,17 @@ class GameFrontCoverPanel(Panel):
             },
         )
 
-    def __on_publisher_config(self, event):
+    def __on_publisher_config(self, event: ConfigEvent) -> None:
         if event.value != self._publisher:
             self._publisher = event.value
             self._update()
 
-    def __on_year_config(self, event):
+    def __on_year_config(self, event: ConfigEvent) -> None:
         if event.value != self._year:
             self._year = event.value
             self._update()
 
-    def _update(self):
+    def _update(self) -> None:
         self.publisher_label.set_text(self._publisher)
         if self._publisher and not self._year:
             year = "????"

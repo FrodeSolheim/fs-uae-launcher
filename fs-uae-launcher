@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 
-from fsboot import init
+import _vendor
 
-init()
+_vendor.init()
+
+import fsboot
+
+fsboot.init()
 
 from launcher.main import main
 

@@ -1,6 +1,7 @@
 import sys
 import traceback
 from functools import wraps
+from typing import Any, Callable, TypeVar, cast
 
 from fspy.exception import (
     HandledException,
@@ -31,11 +32,14 @@ class DisplayedException(Exception):
     pass
 
 
-def withExceptionHandler(function):
+F = TypeVar("F", bound=Callable[..., Any])
+
+
+def withExceptionHandler(function: F) -> F:
     # FIXME: Is it possible to get a reference to the widget owning the
     # function (method) when the error occurs?
     @wraps(function)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         try:
             return function(*args, **kwargs)
         except DisplayedException:
@@ -57,7 +61,7 @@ def withExceptionHandler(function):
             # raise DisplayedException() from e
             # print("-" * 79)
 
-    return wrapper
+    return cast(F, wrapper)
 
 
 exceptionhandler = withExceptionHandler

@@ -1,3 +1,3 @@
-from PyQt5.QtGui import QFontMetrics, QKeyEvent, QPalette
+from fsui.qt.gui import QFontMetrics, QKeyEvent, QPalette
 
 __all__ = ["QFontMetrics", "QKeyEvent", "QPalette"]

@@ -1,7 +1,3 @@
-# pylint: disable=no-name-in-module
-
-# noinspection PyUnresolvedReferences
-# noinspection PyUnresolvedReferences
 # Needed for rxpy scheduler
 from PyQt5 import QtCore
 from PyQt5.QtCore import (
@@ -17,10 +13,9 @@ from PyQt5.QtCore import (
     QUrl,
 )
 from PyQt5.QtCore import pyqtSignal as QSignal
-
-# noinspection PyUnresolvedReferences
 from PyQt5.QtGui import (
     QBrush,
+    QCloseEvent,
     QColor,
     QCursor,
     QDesktopServices,
@@ -35,18 +30,13 @@ from PyQt5.QtGui import (
     QPalette,
     QPen,
     QPixmap,
+    QResizeEvent,
     QStandardItem,
     QStandardItemModel,
     QTextCursor,
 )
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
 from PyQt5.QtOpenGL import QGLWidget
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
 from PyQt5.QtSvg import QSvgRenderer
-
-# noinspection PyUnresolvedReferences
 from PyQt5.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -69,3 +59,61 @@ from PyQt5.QtWidgets import (
     QTextEdit,
     QWidget,
 )
+
+__all__ = [
+    "QApplication",
+    "QCheckBox",
+    "QCloseEvent",
+    "QResizeEvent",
+    "QColorDialog",
+    "QComboBox",
+    "QDesktopWidget",
+    "QDialog",
+    "QFileDialog",
+    "QFrame",
+    "QLabel",
+    "QLineEdit",
+    "QListView",
+    "QMainWindow",
+    "QMenu",
+    "QMessageBox",
+    "QPushButton",
+    "QScrollArea",
+    "QSpinBox",
+    "QStyleFactory",
+    "QTextEdit",
+    "QWidget",
+    "QSvgRenderer",
+    "QGLWidget",
+    "QSvgRenderer",
+    "QBrush",
+    "QColor",
+    "QCursor",
+    "QDesktopServices",
+    "QFont",
+    "QFontDatabase",
+    "QFontMetrics",
+    "QIcon",
+    "QImage",
+    "QKeyEvent",
+    "QLinearGradient",
+    "QPainter",
+    "QPalette",
+    "QPen",
+    "QPixmap",
+    "QStandardItem",
+    "QStandardItemModel",
+    "QTextCursor",
+    "QSignal",
+    "QAbstractListModel",
+    "QCoreApplication",
+    "QEvent",
+    "QObject",
+    "QPoint",
+    "QRect",
+    "QSize",
+    "Qt",
+    "QTimer",
+    "QUrl",
+    "QtCore",
+]

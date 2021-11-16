@@ -1,23 +1,27 @@
+from typing import List, Optional
+
 import fsui
 from fsgamesys.platforms.platform import Platform
+from fsui.common.layout import Layout
+from fswidgets.widget import Widget
 from launcher.option import Option
 from launcher.settings.option_ui import OptionUI
 
 
 class PlatformSettingsDialog(fsui.Window):
     @classmethod
-    def open(cls, parent, platform):
+    def open(cls, parent: Widget, platform: str):
         # return fsui.open_window_instance(cls, parent)
         dialog = cls(parent, platform)
         dialog.show()
         return dialog
 
-    def __init__(self, parent, platform):
+    def __init__(self, parent: Widget, platform: str):
         title = "Platform Settings: " + platform.upper()
         super().__init__(parent, title)
         # self.layout = fsui.VerticalLayout()
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        # if self.window().theme.has_close_buttons:
+        # if self.theme.has_close_buttons:
         # buttons.create_close_button()
 
         # self.layout.padding = 10
@@ -27,7 +31,13 @@ class PlatformSettingsDialog(fsui.Window):
 
         self.set_size((600, 400))
 
-    def add_option(self, layout, option, platforms=None, text=""):
+    def add_option(
+        self,
+        layout: Layout,
+        option: str,
+        platforms: Optional[List[str]] = None,
+        text: str = "",
+    ) -> None:
         panel = fsui.Panel(self)
         panel.layout = fsui.VerticalLayout()
         panel.layout.add(
@@ -39,8 +49,8 @@ class PlatformSettingsDialog(fsui.Window):
         layout.add(panel, fill=True, margin_bottom=10)
 
     @staticmethod
-    def option_list_for_platform(platform):
-        options = []
+    def option_list_for_platform(platform: str) -> List[str]:
+        options: List[str] = []
         if platform in [Platform.AMIGA, Platform.CD32, Platform.CDTV]:
             options.append(Option.AMIGA_EMULATOR)
         elif platform == Platform.ARCADE:
@@ -103,8 +113,11 @@ class PlatformSettingsDialog(fsui.Window):
         return options
 
 
-mame_options = []
+mame_options: List[str] = []
 
-mednafen_options = [Option.MEDNAFEN_AUDIO_DRIVER, Option.MEDNAFEN_AUDIO_BUFFER]
+mednafen_options: List[str] = [
+    Option.MEDNAFEN_AUDIO_DRIVER,
+    Option.MEDNAFEN_AUDIO_BUFFER,
+]
 
-retroarch_options = [Option.RETROARCH_AUDIO_BUFFER]
+retroarch_options: List[str] = [Option.RETROARCH_AUDIO_BUFFER]

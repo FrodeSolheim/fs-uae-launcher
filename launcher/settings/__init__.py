@@ -6,11 +6,11 @@ from fsgamesys.options.constants import (
 from fsgamesys.product import Product
 
 
-def get_setting(name):
+def get_setting(name) -> str:
     return Settings.instance().get(name)
 
 
-def get_launcher_window_title():
+def get_launcher_window_title() -> str:
     value = get_setting(LAUNCHER_WINDOW_TITLE)
     if not value:
         if Product.is_fs_uae() or Product.is_openretro():
@@ -22,7 +22,7 @@ def get_launcher_window_title():
     return value
 
 
-def get_workspace_window_title():
+def get_workspace_window_title() -> str:
     value = get_setting(WORKSPACE_WINDOW_TITLE)
     if not value:
         value = "{} Workspace".format(Product.base_name)

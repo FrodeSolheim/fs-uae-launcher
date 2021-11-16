@@ -1,38 +1,40 @@
 import weakref
-from dataclasses import dataclass
-from typing import Any, Optional, Tuple
+from typing import Any, Optional, Tuple, cast
+
+from PyQt5.QtGui import QMoveEvent, QResizeEvent, QShowEvent
 
 from fscore.deprecated import deprecated
 from fscore.system import System
 from fsui.qt.color import Color
-from fsui.qt.qparent import QParent
+from fsui.qt.icon import Icon
+from fsui.qt.qparent import QOptionalParent
 from fsui.qt.qt import QMainWindow, Qt, init_qt
 from fsui.qt.toplevelwidget import TopLevelWidget
-from fswidgets.qt.widgets import QWidget
-from fswidgets.types import Point, Size, WindowState
+from fsui.qt.widgets import QWidget
+from fswidgets.types import Point
 from fswidgets.widget import Widget
 
 
 class WindowWrapper(QMainWindow):
     def __init__(
         self,
-        parent,
+        parent: Optional[Widget],
         # child,
         *,
-        below=False,
-        border=True,
-        fswidget,
-        minimizable=True,
-        maximizable=True,
-        title,
-    ):
+        below: bool = False,
+        border: bool = True,
+        fswidget: Widget,
+        minimizable: bool = True,
+        maximizable: bool = True,
+        title: str,
+    ) -> None:
         print(f"\nWindowWrapper.__init__ parent={parent}")
-        super().__init__(QParent(parent, window=True))
+        super().__init__(QOptionalParent(parent, window=True))
         # self.margins = Margins()
         self.setWindowTitle(title)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
-        flags = Qt.Window
+        flags: int = Qt.Window
         if System.macos:
             flags &= ~Qt.WindowFullscreenButtonHint
 
@@ -51,7 +53,7 @@ class WindowWrapper(QMainWindow):
             # flags |= Qt.NoDropShadowWindowHint
             if below:
                 flags |= Qt.WindowStaysOnBottomHint
-        self.setWindowFlags(flags)
+        self.setWindowFlags(cast(Qt.WindowFlags, flags))
         # self.setAttribute(Qt.WA_DeleteOnClose, True)
 
         # self._child = weakref.ref(child)
@@ -71,17 +73,19 @@ class WindowWrapper(QMainWindow):
     #     self._fswidget.on_close()
 
     @property
-    def _fswidget(self):
-        return self._fswidget_ref()
+    def _fswidget(self) -> Widget:
+        widget = self._fswidget_ref()
+        assert widget
+        return widget
 
-    def resizeEvent(self, event):
+    def resizeEvent(self, a0: QResizeEvent) -> None:
         self._fswidget.on_resize()
 
-    def moveEvent(self, event):
+    def moveEvent(self, a0: QMoveEvent) -> None:
         # print("onShow (move)", self.x(), self.y())
         self._fswidget.onMove()
 
-    def showEvent(self, _):
+    def showEvent(self, a0: QShowEvent) -> None:
         # if self.owner().center_on_show:
         #     if not self._centered_on_initial_show:
         #         if self.parent():
@@ -194,75 +198,73 @@ class Window(TopLevelWidget):
 
     # -------------------------------------------------------------------------
 
-    def alert(self, msecs=0):
+    def alert(self, msecs: int = 0) -> None:
         init_qt().alert(self._real_window, msecs)
 
-    def fullscreen(self):
-        return self._qwidget.is_fullscreen()
+    def fullscreen(self) -> bool:
+        return self.qMainWindow.isFullScreen()
 
     @deprecated
-    def get_parent(self):
-        return None
-
-    @deprecated
-    def get_position(self):
+    def get_position(self) -> Point:
         return self.position()
 
     @deprecated
-    def get_title(self):
+    def get_title(self) -> str:
         return self.title()
 
     @deprecated
-    def get_window(self):
+    def get_window(self) -> TopLevelWidget:
         return self.top_level()
 
     @deprecated
-    def is_fullscreen(self):
+    def is_fullscreen(self) -> bool:
         return self.fullscreen()
-
-    # def real_window(self):
-    #     return self._real_window
-
-    # def real_widget(self):
-    #     return self._real_widget
-
-    # # DEPRECATED
-    # def get_container(self):
-    #     return self.real_widget()
 
     # def add_close_listener(self, function):
     #     # self.close_listeners.append(function)
     #     self.closed.connect(function)
 
-    def offset_from_parent(self, offset):
+    def offset_from_parent(self, offset: Tuple[int, int]) -> None:
         self.set_initial_size_from_layout()
-        real_parent = self._qwidget.parent()
+        real_parent = self.qMainWindow.parent()
         # print("offset_from_parent real_parent = ",
         #       real_parent, default_window_center)
         if real_parent:
             pp = real_parent.x(), real_parent.y()
             self.set_position((pp[0] + offset[0], pp[1] + offset[1]))
 
-    # FIXME
-    def real_widget(self):
-        return self._qwidget
+    @property
+    def qMainWindow(self) -> QMainWindow:
+        w = self._qwidget
+        assert w is not None
+        return cast(QMainWindow, w)
+
+    # FIXME: Remove?
+    def real_widget(self) -> QWidget:
+        w = self._qwidget
+        assert w is not None
+        return w
 
     # FIXME: Correct?
-    def real_window(self):
-        return self._qwidget
+    def real_window(self) -> QMainWindow:
+        return cast(QMainWindow, self._qwidget)
 
     @deprecated
-    def resize(self, width, height):
+    def resize(self, width: int, height: int) -> None:
         self.set_size((width, height))
 
-    def set_icon(self, icon):
-        self.real_window().setWindowIcon(icon.qicon())
+    def set_icon(self, icon: Icon) -> None:
+        self.qMainWindow.setWindowIcon(icon.qicon())
 
     @deprecated
-    def set_icon_from_path(self, _):
+    def set_icon_from_path(self, _: str) -> None:
         print("FIXME: Window.set_icon_from_path")
 
-    def set_fullscreen(self, fullscreen=True, geometry=None):
+    def set_fullscreen(
+        self,
+        fullscreen: bool = True,
+        geometry: Optional[Tuple[int, int, int, int]] = None,
+    ) -> None:
         # We must set the size before maximizing, so this isn't done within
         # showMaximized -> ... -> set_initial_size_from_layout -> set_size.
         self.set_initial_size_from_layout()
@@ -278,13 +280,13 @@ class Window(TopLevelWidget):
             # only a small part of the screen to be filled.
             if geometry is not None:
                 print("set_fullscreen geometry", geometry)
-                self._qwidget.setGeometry(*geometry)
+                self.qMainWindow.setGeometry(*geometry)
             else:
                 if not self._windowSizeHasBeenSet:
                     self._windowSizeHasBeenSet = True
                     print("resizing to 1, 1")
                     self.set_size((1, 1))
-            self._qwidget.showFullScreen()
+            self.qMainWindow.showFullScreen()
             print("size after showFullScreen", (self.size()))
         else:
             self.restore_margins()
@@ -295,7 +297,7 @@ class Window(TopLevelWidget):
         maximized: bool = False,
         center: bool = False,
         offset: bool = False,
-    ):
+    ) -> None:
         if center:
             print("CENTER")
             self.center_on_parent()
@@ -305,25 +307,15 @@ class Window(TopLevelWidget):
             # self._centered_on_initial_show = True
             self.center_on_show = False
         if maximized:
-            self._qwidget.showMaximized()
+            self.qMainWindow.showMaximized()
         else:
-            self._qwidget.show()
+            self.qMainWindow.show()
 
     @deprecated
-    def top_level(self):
+    def top_level(self) -> TopLevelWidget:
         return self
 
-    # # FIXME: Isn't this for dialogs only?
-    # def __rejected(self):
-    #     print(str(self) + ".__rejected")
-    #     self.__on_closed()
-
-    # # FIXME: Isn't this for dialogs only?
-    # def __accepted(self):
-    #     print(str(self) + ".__accepted")
-    #     self.__on_closed()
-
     # FIXME: Don't want as property
-    # @property
-    def window(self):
+    @property
+    def window(self) -> TopLevelWidget:
         return self

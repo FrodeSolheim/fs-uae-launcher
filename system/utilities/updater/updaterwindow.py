@@ -1,5 +1,6 @@
 import logging
 import logging.config
+from typing import Callable, List, Optional, Set
 
 import fsui
 from launcher.fswidgets2.button import Button
@@ -13,11 +14,14 @@ from launcher.fswidgets2.spacer import Spacer
 from launcher.fswidgets2.textarea import TextArea
 from launcher.fswidgets2.window import Window
 from launcher.i18n import gettext
-from system.prefs.update import Update
+from system.prefs.updates import Updates
 from system.special.login import WidgetSizeSpinner
-from system.special.logout import AsyncTaskRunner
-from system.utilities.updater.checkforupdatestask import CheckForUpdatesTask
-from system.utilities.updater.updatetask import UpdateTask
+from system.utilities.updater.checkforupdatestask import (
+    CheckForUpdatesResult,
+    CheckForUpdatesTask,
+    Update,
+)
+from system.utilities.updater.updatetask import UpdateResult, UpdateTask
 
 # from autologging import TRACE, traced
 
@@ -26,7 +30,7 @@ log = logging.getLogger(__name__)
 
 # @traced
 class UpdaterWindow(Window):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             title=gettext("Updater"),
             minimizable=False,
@@ -34,7 +38,7 @@ class UpdaterWindow(Window):
             style={"backgroundColor": "#bbbbbb"},
         )
 
-        self.updates = None
+        self.updates: Optional[List[Update]] = None
 
         with FlexContainer(
             parent=self,
@@ -88,35 +92,35 @@ class UpdaterWindow(Window):
         # self.textArea.appendText("Heisann")
         # self.textArea.appendText("Hopsann")
 
-    def onPreferences(self):
-        Update.open(openedFrom=self.getWindow())
+    def onPreferences(self) -> None:
+        Updates.open(openedFrom=self.getWindow())
 
-    def appendLogLine(self, line: str):
+    def appendLogLine(self, line: str) -> None:
         self.textArea.appendLine(line)
 
-    # FIXME: Move to widget
-    def addEventListener(self, eventName, listener):
-        if eventName == "destroy":
-            self.destroyed.connect(listener)
+    # # FIXME: Move to widget
+    # def addEventListener(self, eventName, listener) -> None:
+    #     if eventName == "destroy":
+    #         self.destroyed.connect(listener)
 
     # FIXME: Move to widget
-    def addDestroyListener(self, listener):
-        self.destroyed.connect(listener)
+    # def addDestroyListener(self, listener: Callable[[], None]) -> None:
+    #     self.destroyed.connect(listener)
 
     # FIXME: Move to widget
     # def onDestroy(self, listener):
     #     self.destroyed.connect(listener)
 
-    def setRunning(self, running: bool):
+    def setRunning(self, running: bool) -> None:
         if running:
             self.checkForUpdatesButton.disable()
             self.updateAllButton.disable()
 
-    def checkForUpdates(self):
+    def checkForUpdates(self) -> None:
         self.setRunning(True)
 
         # @traced
-        def onResult(result):
+        def onResult(result: CheckForUpdatesResult) -> None:
             self.checkForUpdatesButton.enable()
 
             self.appendLogLine("Got result, doing calculations...")
@@ -129,7 +133,7 @@ class UpdaterWindow(Window):
                 self.appendLogLine("No updates!")
 
             for update in updates:
-                systems = set()
+                systems: Set[str] = set()
                 for archive in update["archives"]:
                     systems.update(archive["systems"])
                     # for osName in archive.get("operatingSystems", []):
@@ -159,28 +163,30 @@ class UpdaterWindow(Window):
             #     self.updateAll()
 
         # @traced
-        def onError(error):
+        def onError(error: Exception) -> None:
             self.checkForUpdatesButton.enable()
             # self.setRunning(False)
             self.appendLogLine(f"Error: {str(error)}")
             # self.errorLabel.setText(f"Error: {str(error)}")
 
         # @traced
-        def onProgress(progress, *, task):
+        def onProgress(progress: str) -> None:
             # self.errorLabel.setText(progress)
             self.appendLogLine(progress)
             # task.cancel()
 
-        self.addDestroyListener(
-            AsyncTaskRunner(onResult, onError, onProgress)
-            .run(CheckForUpdatesTask())
-            .cancel,
-        )
+        # self.addDestroyListener(
+        #     AsyncTaskRunner(onResult, onError, onProgress)
+        #     .run(CheckForUpdatesTask())
+        #     .cancel,
+        # )
+
+        self.runTask(CheckForUpdatesTask(), onResult, onError, onProgress)
 
         # FIXME: Add support for (also) inheriting from AsyncTaskRunner?
         # self.runTask(LogoutTask(authToken), onResult, onError, onProgress)
 
-    def updateAll(self):
+    def updateAll(self) -> None:
         if self.updates is None:
             log.warning("updateAll: self.updates was None")
             return
@@ -188,7 +194,7 @@ class UpdaterWindow(Window):
         self.setRunning(True)
 
         # @traced
-        def onResult(result):
+        def onResult(result: UpdateResult) -> None:
             self.checkForUpdatesButton.enable()
             self.appendLogLine("")
             if result["restartRequired"]:
@@ -201,20 +207,28 @@ class UpdaterWindow(Window):
             self.appendLogLine("")
 
         # @traced
-        def onError(error):
+        def onError(error: Exception) -> None:
             self.checkForUpdatesButton.enable()
             # self.setRunning(False)
             self.appendLogLine(f"Error: {str(error)}")
             # self.errorLabel.setText(f"Error: {str(error)}")
 
         # @traced
-        def onProgress(progress, *, task):
+        def onProgress(progress: str) -> None:
             # self.errorLabel.setText(progress)
             self.appendLogLine(progress)
             # task.cancel()
 
-        self.addDestroyListener(
-            AsyncTaskRunner(onResult, onError, onProgress)
-            .run(UpdateTask(self.updates))
-            .cancel,
-        )
+        # self.addDestroyListener(
+        #     AsyncTaskRunner(onResult, onError, onProgress)
+        #     .run(UpdateTask(self.updates))
+        #     .cancel,
+        # )
+        # self.addDestroyListener(
+        #     AsyncSingleTaskRunner(
+        #         UpdateTask(self.updates), onResult, onError, onProgress
+        #     )
+        #     .start().cancel,
+        # )
+
+        self.runTask(UpdateTask(self.updates), onResult, onError, onProgress)

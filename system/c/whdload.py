@@ -1,5 +1,6 @@
 import os
 from collections import defaultdict
+from typing import List
 
 from launcher.ws.shell import shell_hostpath, shell_realcase, shell_split
 
@@ -14,7 +15,7 @@ from system.classes.runhelper import RunHelper
 
 class WHDLoad:
     @classmethod
-    def wsopen(self, *, iconpath, tooltypes, **kwargs):
+    def wsopen(cls, *, iconpath: str, tooltypes: List[str], **kwargs):
         print(f"WHDLoad.wsopen, iconpath={iconpath}, tooltypes ={tooltypes}")
 
         iconpath = shell_realcase(iconpath)

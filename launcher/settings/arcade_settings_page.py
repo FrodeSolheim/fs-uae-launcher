@@ -1,11 +1,12 @@
 import fsui
 from fsgamesys.product import Product
+from fswidgets.widget import Widget
 from launcher.option import Option
 from launcher.settings.settings_page import SettingsPage
 
 
 class ArcadeSettingsPage(SettingsPage):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         icon = fsui.Icon("fs-uae-arcade", "pkg:launcher")
         self.add_header(icon, "{} Arcade".format(Product.base_name))

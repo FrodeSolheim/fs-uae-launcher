@@ -50,7 +50,7 @@ class UpdatesAvailablePanel(FlexContainer):
         self.updatePositionAndSize()
 
     def onShowClicked(self):
-        Updater.open(window=self.getWindow())
+        Updater.openFrom(self.getWindow())
 
     def updatePositionAndSize(self):
         parentSize = self.getParent().getSize()

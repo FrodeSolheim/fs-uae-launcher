@@ -1,13 +1,15 @@
 import weakref
 from typing import Any, Optional, Type
 
+from PyQt5.QtGui import QMouseEvent
+
 from fscore.deprecated import deprecated
 from fscore.types import SimpleCallable
 from fsui.qt.qt import QCursor, QMenu, QPoint
 
 
 class AutoCloseMenu(QMenu):
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, a0: QMouseEvent) -> None:
         parent = self._parent()
         # noinspection PyArgumentList
         c = QCursor.pos()
@@ -16,9 +18,9 @@ class AutoCloseMenu(QMenu):
         if p.x() <= c.x() < p.x() + s[0] and p.y() <= c.y() < p.y() + s[1]:
             # We want to close the menu (and not re-open it) if we click
             # on the widget used to open the menu.
-            # parent._ignore_next_left_down_event = True
+            # parent.internalIgnoreNextLeftDownEvent = True
             pass
-        super().mousePressEvent(event)
+        super().mousePressEvent(a0)
 
 
 class Menu:
@@ -26,23 +28,24 @@ class Menu:
         self,
         implementation: Type[QMenu] = QMenu,
         qmenu: Optional[QMenu] = None,
-    ):
+    ) -> None:
+        self.qmenu: QMenu
         if qmenu is not None:
             self.qmenu = qmenu
         else:
-            self.qmenu: QMenu = implementation()
+            self.qmenu = implementation()
         # self._menu = wx.Menu()
         # self._ids = []
         # #self._functions = []
         pass
 
-    def is_open(self):
+    def is_open(self) -> bool:
         return self.qmenu.isVisible()
 
-    def close(self):
+    def close(self) -> None:
         self.qmenu.close()
 
-    def addSubMenu(self, text: str):
+    def addSubMenu(self, text: str) -> "Menu":
         # self.qmenu.addMenu(text, menu.qmenu)
         qmenu = self.qmenu.addMenu(text)
         return Menu(qmenu=qmenu)
@@ -60,11 +63,11 @@ class Menu:
         if function is not None:
             # Will this case references problems?
             # (Closure holding a reference to the function)
-            def triggered_wrapper(checked):
+            def triggered_wrapper(checked: bool) -> None:
                 if function is not None:
                     function()
 
-            action.triggered.connect(triggered_wrapper)  # type: ignore
+            action.triggered.connect(triggered_wrapper)
 
         if not enabled:
             action.setDisabled(True)
@@ -82,10 +85,12 @@ class Menu:
         #     wx.CallAfter(function)
         # self._menu.Bind(wx.EVT_MENU, function_wrapper, id=item_id)
 
-    def add_about_item(self, text: str, function: SimpleCallable):
+    def add_about_item(self, text: str, function: SimpleCallable) -> None:
         self.add_item(text, function)
 
-    def add_preferences_item(self, text: str, function: SimpleCallable):
+    def add_preferences_item(
+        self, text: str, function: SimpleCallable
+    ) -> None:
         self.add_item(text, function)
 
     def add_separator(self) -> None:
@@ -93,15 +98,15 @@ class Menu:
 
     # FIXME: Using Any here to avoid circular import dependency on Widget
     # FIXME: Maybe remove Widget.popup_menu and invert the coupling
-    def setParent(self, parent: Any):
+    def setParent(self, parent: Any) -> None:
         self._parent = weakref.ref(parent)
-        self.qmenu._parent = weakref.ref(parent)
+        self.qmenu._parent = weakref.ref(parent)  # type: ignore
 
     @deprecated
-    def set_parent(self, parent: Any):
+    def set_parent(self, parent: Any) -> None:
         self.setParent(parent)
 
-    def setTitle(self, title: str):
+    def setTitle(self, title: str) -> None:
         self.qmenu.setTitle(title)
 
 

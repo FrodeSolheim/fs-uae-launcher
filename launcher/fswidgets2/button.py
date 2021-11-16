@@ -1,4 +1,4 @@
-from typing import Callable, Optional
+from typing import Callable, Optional, Union
 
 import fsui
 from fscore.observable import Disposer, isObservable
@@ -12,7 +12,8 @@ class ClickEvent:
 
 # FIXME: Move to a types module? or events
 
-ClickEventHandler = Callable[[Optional[ClickEvent]], None]
+# ClickEventHandler = Callable[[Optional[ClickEvent]], None]
+ClickEventHandler = Union[Callable[[], None], Callable[[ClickEvent], None]]
 
 
 class Button(fsui.Button):
@@ -38,7 +39,8 @@ class Button(fsui.Button):
         # self.set_min_height(30)
         self.set_min_width(80)
 
-        parent.layout.add(self, fill=fill)
+        if parent.layout is not None:
+            parent.layout.add(self, fill=fill)
 
         if onClick is not None:
             self.activated.connect(onClick)
@@ -50,11 +52,11 @@ class Button(fsui.Button):
         else:
             self.set_enabled(enabled)
 
-    def onEnableNext(self, value):
+    def onEnableNext(self, value: bool) -> None:
         print("onEnableNext", value)
         self.set_enabled(bool(value))
 
-    def get_min_height(self, width):
+    def get_min_height(self, width: int) -> int:
         # FIXME: Default height if nothing else is specified. Implement via
         # default style?
         return 30

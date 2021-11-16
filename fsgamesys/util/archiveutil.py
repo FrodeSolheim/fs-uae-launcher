@@ -1,24 +1,31 @@
 import hashlib
 import os
 import zipfile
+from typing import Dict, List, Optional, Set
 from urllib.parse import unquote
 from uuid import NAMESPACE_URL, uuid5
+
+from typing_extensions import Literal
+
+TypeParam = Literal["TYPE_WHDLOAD", "TYPE_DOS"]
 
 
 class ArchiveUtil:
     TYPE_WHDLOAD = "TYPE_WHDLOAD"
     TYPE_DOS = "TYPE_DOS"
 
-    def __init__(self, path):
+    def __init__(self, path: str):
         self.path = path
-        self.extensions = set()
-        self.ignore_extensions = set()
+        self.extensions: Set[str] = set()
+        self.ignore_extensions: Set[str] = set()
         self.ignore_comments = False
 
-    def create_variant_uuid(self):
+    def create_variant_uuid(self) -> str:
         return self.create_variant()["uuid"]
 
-    def create_variant(self, type=None, file_callback=None):
+    def create_variant(
+        self, type: Optional[TypeParam] = None, file_callback=None
+    ) -> Optional[Dict[str, str]]:
         archive_name = os.path.basename(self.path)
         archive_name, archive_ext = os.path.splitext(archive_name)
         archive_ext = archive_ext.lower()
@@ -31,15 +38,15 @@ class ArchiveUtil:
             class_ = Lhafile
         else:
             print("skipping", archive_name)
-            return
+            return None
 
         # s = hashlib.sha1()
         # with open(path, "rb") as f:
         #     data = f.read()
         #     s.update(data)
         # archive_sha1 = s.hexdigest()
-        variant = {}
-        names = []
+        variant: Dict[str, str] = {}
+        names: List[str] = []
         icons = []
         lower_to_regular = {}
         archive = class_(self.path)

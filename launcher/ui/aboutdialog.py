@@ -64,7 +64,7 @@ feedback! Especially the encouraging members of the English Amiga Board, and
 all you who have commented on the official FS-UAE web site.
 
 FS-UAE Launcher includes icons from GNOME icon theme from the GNOME Project
-(http://www.gnome.org). The GNOME icon theme is distributed under the terms
+(https://www.gnome.org). The GNOME icon theme is distributed under the terms
 of either GNU LGPL v.3 or Creative Commons BY-SA 3.0 license.
 
 FS-UAE Launcher includes icons from humanity-icon-theme, licensed under the

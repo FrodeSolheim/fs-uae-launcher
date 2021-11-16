@@ -1,3 +1,5 @@
+from typing import Dict
+
 from fsgamesys import openretro
 from fsgamesys.config.configloader import ConfigLoader
 from fsgamesys.Database import Database
@@ -6,6 +8,7 @@ from fsgamesys.platforms.platform import PlatformHandler
 from fsgamesys.product import Product
 from fsgamesys.util.gamenameutil import GameNameUtil
 from fsui import Color, Font, Image, VerticalItemView, get_window
+from fswidgets.widget import Widget
 from launcher.context import get_config, get_gscontext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
@@ -14,7 +17,7 @@ from system.exceptionhandler import exceptionhandler
 
 
 class ConfigListView(VerticalItemView):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         VerticalItemView.__init__(self, parent, border=False)
         self.items = []
         self.game_icon = Image("launcher:/data/16x16/controller.png")
@@ -32,7 +35,7 @@ class ConfigListView(VerticalItemView):
         self.missing_color = Color(0xA8, 0xA8, 0xA8)
         self.unpublished_color = Color(0xCC, 0x00, 0x00)
 
-        self.platform_icons = {}
+        self.platform_icons: Dict[str, Image] = {}
 
         self.set_background_color(Color(0x999999))
         self.set_font(Font("Saira Condensed", 17, weight=500))
@@ -41,7 +44,7 @@ class ConfigListView(VerticalItemView):
         get_window(self).activated.connect(self.__on_activated)
         get_window(self).deactivated.connect(self.__on_deactivated)
 
-        self._qwidget.verticalScrollBar().setStyleSheet(
+        self.qListView.verticalScrollBar().setStyleSheet(
             f"""
             QScrollBar:vertical {{
                 border: 0px;
@@ -93,19 +96,19 @@ class ConfigListView(VerticalItemView):
         )
 
     @exceptionhandler
-    def __on_activated(self):
+    def __on_activated(self) -> None:
         self.update_stylesheet()
 
     @exceptionhandler
-    def __on_deactivated(self):
+    def __on_deactivated(self) -> None:
         self.update_stylesheet()
 
-    def update_stylesheet(self):
+    def update_stylesheet(self) -> None:
         # FIXME: From theme
         row_bg = "#3B5275"
         if not get_window(self).window_focus():
             row_bg = "#505050"
-        self._qwidget.setStyleSheet(
+        self.qListView.setStyleSheet(
             """
         QListView {{
             background-color: {base};
@@ -134,23 +137,23 @@ class ConfigListView(VerticalItemView):
             )
         )
 
-    def onDestroy(self):
+    def onDestroy(self) -> None:
         LauncherSettings.remove_listener(self)
         super().onDestroy()
 
     @exceptionhandler
-    def on_select_item(self, index):
+    def on_select_item(self, index: int) -> None:
         if index is None:
             return
-        # self.load_configuration(self.items[index][str("uuid")])
+        # self.load_configuration(self.items[index]["uuid"])
         self.load_configuration(self.items[index])
 
     @exceptionhandler
-    def on_activate_item(self, index):
+    def on_activate_item(self, index: int) -> None:
         StartButton.start(self, gscontext=get_gscontext(self))
 
     @exceptionhandler
-    def on_setting(self, key, _):
+    def on_setting(self, key: str, _: str) -> None:
         if key in [
             "config_search",
             "game_list_uuid",
@@ -182,17 +185,17 @@ class ConfigListView(VerticalItemView):
             ):
                 self.select_item(None)
 
-    def set_items(self, items):
+    def set_items(self, items) -> None:
         self.items = items
         self.update()
 
-    def get_item_count(self):
+    def get_item_count(self) -> int:
         return len(self.items)
 
-    def get_item_text(self, index):
+    def get_item_text(self, index: int) -> str:
         item = self.items[index]
-        name = item[str("name")]
-        platform_id = item[str("platform")] or ""
+        name = item["name"]
+        platform_id = item["platform"] or ""
         if "[" in name:
             name, extra = name.split("[", 1)
             name = name.strip()
@@ -215,29 +218,29 @@ class ConfigListView(VerticalItemView):
         # else:
         #     return "{0} \u00b7 {1}{2}".format(name, extra, platform)
 
-    def get_item_search_text(self, index):
+    def get_item_search_text(self, index: int) -> str:
         # return self.items[index][3]
         # FIXME: lower-case search string?
-        return self.items[index][str("sort_key")]
+        return self.items[index]["sort_key"]
 
-    def get_item_text_color(self, index):
-        have = self.items[index][str("have")]
+    def get_item_text_color(self, index: int) -> Color:
+        have = self.items[index]["have"]
         if not have:
             return self.missing_color
         published = self.items[index]["published"]
         if not published:
             return self.unpublished_color
 
-    def get_item_icon(self, index):
+    def get_item_icon(self, index: int) -> Image:
         item = self.items[index]
-        platform_id = (item[str("platform")] or "").lower()
-        if item[str("have")] == 1:
+        platform_id = (item["platform"] or "").lower()
+        if item["have"] == 1:
             return self.manual_download_icon
-        elif item[str("have")] == 0:
+        elif item["have"] == 0:
             return self.blank_icon
-        elif item[str("have")] == 2:
+        elif item["have"] == 2:
             return self.auto_download_icon
-        elif item[str("have")] == 4:
+        elif item["have"] == 4:
             if platform_id not in self.platform_icons:
                 try:
                     icon = Image(
@@ -254,7 +257,7 @@ class ConfigListView(VerticalItemView):
     #     return self.items[row][1]
     #     #text = text.replace("\nAmiga \u00b7 ", "\n")
 
-    def update_search(self):
+    def update_search(self) -> None:
         search = LauncherSettings.get("config_search").strip().lower()
         print("search for", search)
         words = []
@@ -286,8 +289,8 @@ class ConfigListView(VerticalItemView):
         self.set_items(items)
 
     # noinspection PyMethodMayBeStatic
-    def load_configuration(self, item):
-        if item[str("uuid")]:
+    def load_configuration(self, item) -> None:
+        if item["uuid"]:
             # This triggers the variant browser to load variants for the game.
             # FIXME: This needs to be moved to config, somehow.
             get_config(self).set(PARENT_UUID, item["uuid"])
@@ -296,9 +299,7 @@ class ConfigListView(VerticalItemView):
             # LauncherSettings.set(PARENT_UUID, item["uuid"])
 
         else:
-            config_path = Database.get_instance().decode_path(
-                item[str("path")]
-            )
+            config_path = Database.get_instance().decode_path(item["path"])
             print("load config from", config_path)
             ConfigLoader(get_config(self)).load_config_file(config_path)
             # LauncherConfig.load_file(config_path)

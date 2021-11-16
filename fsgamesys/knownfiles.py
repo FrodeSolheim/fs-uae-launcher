@@ -1,15 +1,16 @@
 import os
 from collections import namedtuple
+from typing import Optional
 
 from fsgamesys.platforms import PLATFORM_AMIGA
 
 
 class KnownFilePath:
-    def __init__(self, path=None):
+    def __init__(self, path: Optional[str] = None):
         self.__path = path
 
     @property
-    def path(self):
+    def path(self) -> Optional[str]:
         return self.__path
 
     def exists(self):

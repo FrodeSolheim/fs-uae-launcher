@@ -1,4 +1,5 @@
 from fsui import HorizontalLayout, Panel
+from fswidgets.widget import Widget
 from launcher.panels.additionalconfigpanel import CustomConfigButton
 from launcher.ui2.openretroeditbutton import OpenRetroEditButton
 from launcher.ui2.ratingchoice import RatingChoice
@@ -6,7 +7,7 @@ from launcher.ui2.variantchoice import VariantChoice
 
 
 class Launcher2TopPanel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         horilayout = HorizontalLayout()
         self.layout.add(

@@ -1,4 +1,5 @@
 import os
+from typing import List, Optional, Tuple
 
 from fsgamesys.directories import temp_directory
 from fsgamesys.FSGSDirectories import FSGSDirectories
@@ -12,15 +13,15 @@ trace = True
 #     pass
 
 
-def shell_basename(path):
+def shell_basename(path: str) -> str:
     return shell_split(path)[1]
 
 
-def shell_dirname(path):
+def shell_dirname(path: str) -> str:
     return shell_split(path)[0]
 
 
-def shell_hostpath(path):
+def shell_hostpath(path: str) -> str:
     if not path:
         return ""
     parts = shell_splitfull(path)
@@ -36,11 +37,11 @@ def shell_hostpath(path):
     raise Exception("Cannot convert to real path")
 
 
-def shell_icon(path):
+def shell_icon(path: str) -> ShellIcon:
     return ShellIcon(shell_hostpath(path))
 
 
-def shell_icons(path):
+def shell_icons(path: str):
     pass
 
 
@@ -50,7 +51,7 @@ def entries(obj):
     return obj["entries"]
 
 
-def shell_isdir(path):
+def shell_isdir(path: str) -> bool:
     """
     >>> shell_isdir('System:')
     True
@@ -77,7 +78,7 @@ def shell_isdir(path):
     return False
 
 
-def shell_listdir(path):
+def shell_listdir(path: str) -> List[str]:
     if trace:
         print("shell_listdir", path)
     parts = shell_splitfull(path)
@@ -99,7 +100,7 @@ def shell_listdir(path):
     raise LookupError("No such directory")
 
 
-def shell_join(path, *names):
+def shell_join(path: str, *names: str) -> str:
     """
     >>> shell_join('System:', 'Prefs')
     'System:Prefs'
@@ -116,7 +117,7 @@ def shell_join(path, *names):
     return "".join(result)
 
 
-def shell_name(path):
+def shell_name(path: str) -> str:
     # FIXME: Return non-lowercase name
     name = shell_basename(path)
     if name.endswith(":"):
@@ -124,7 +125,7 @@ def shell_name(path):
     return name
 
 
-def shell_normcase(path):
+def shell_normcase(path: str) -> str:
     return path.lower()
 
 
@@ -149,9 +150,9 @@ def shell_normcase(path):
 #     return reversed(result)
 
 
-def shell_realcase(path):
+def shell_realcase(path: str) -> str:
     print("shell_realcase", path)
-    result = []
+    result: List[str] = []
     parts = shell_splitfull(path)
     volume = parts[0].lower()
     if volume == "system:":
@@ -210,7 +211,7 @@ def shell_realcase(path):
     return "".join(result)
 
 
-def shell_split(path):
+def shell_split(path: str) -> Tuple[str, str]:
     """
     >>> shell_split('System:Prefs')
     ('System:', 'Prefs')
@@ -237,7 +238,7 @@ def shell_split(path):
     return head, tail
 
 
-def shell_splitfull(path):
+def shell_splitfull(path: str) -> List[str]:
     """
     >>> shell_splitfull('System:Prefs')
     ['System:', 'Prefs']
@@ -246,7 +247,7 @@ def shell_splitfull(path):
     >>> shell_splitfull('System:Prefs/Env-Archive')
     ['System:', 'Prefs', 'Env-Archive']
     """
-    result = []
+    result: List[str] = []
     dirname, basename = shell_split(path)
     result.append(basename)
     while dirname:
@@ -272,7 +273,7 @@ def shell_volumes():
     ]
 
 
-def shell_window_geometry(path):
+def shell_window_geometry(path: str) -> Tuple[None, Optional[Tuple[int, int]]]:
     parts = shell_splitfull(path)
     obj = vfs
     for part in parts:
@@ -286,7 +287,7 @@ def shell_window_geometry(path):
     return (None, None)
 
 
-def volume_host_path(volume):
+def volume_host_path(volume: str) -> Optional[str]:
     if volume == "data:":
         return FSGSDirectories.get_data_dir()
     elif volume == "amigaforever:":
@@ -425,10 +426,10 @@ def vfs_prefs_entries():
             "name": "Storage",
         },
         "storage.info": {"name": "Storage.info"},
-        "update": {
-            "name": "Update",
+        "updates": {
+            "name": "Updates",
         },
-        "update.info": {"name": "Update.info"},
+        "updates.info": {"name": "Updates.info"},
     }
     if Product.is_fs_uae():
         result.update(

@@ -53,7 +53,7 @@ class MappingButton(fsui.Panel):
             text = "click to configure"
             dc.set_text_color(fsui.Color(0xFF, 0x00, 0x00))
         tw, th = dc.measure_text(text)
-        y = (self.get_size()[1] - th) / 2
+        y = round((self.get_size()[1] - th) / 2)
         if self.direction > 0:
             x = 4
         else:

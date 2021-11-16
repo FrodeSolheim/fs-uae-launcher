@@ -1,4 +1,5 @@
 import os
+from typing import List, Optional
 
 from fsgamesys.filedatabase import FileDatabase
 from fsgamesys.product import Product
@@ -7,7 +8,12 @@ from launcher.i18n import gettext
 
 
 class ConfigurationScanner:
-    def __init__(self, paths=None, on_status=None, stop_check=None):
+    def __init__(
+        self,
+        paths: Optional[List[str]] = None,
+        on_status=None,
+        stop_check=None,
+    ):
         if paths is None:
             paths = []
         self.paths = paths
@@ -15,9 +21,10 @@ class ConfigurationScanner:
         self._stop_check = stop_check
         self.scan_count = 0
 
-    def stop_check(self):
+    def stop_check(self) -> bool:
         if self._stop_check:
             return self._stop_check()
+        return False
 
     def set_status(self, title, status):
         if self.on_status:

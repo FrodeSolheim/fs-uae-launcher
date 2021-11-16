@@ -31,24 +31,24 @@ class Task(object):
         self.stopped = Signal()
         self.finished = Signal()
 
-    def get_task_name(self):
+    def get_task_name(self) -> str:
         return self.__name
 
-    def stop(self):
+    def stop(self) -> None:
         self.stop_flag = True
 
-    def stop_check(self):
+    def stop_check(self) -> None:
         if self.stop_flag:
             print("raising TaskStopped for", self)
             raise TaskStopped()
 
-    def start(self):
+    def start(self) -> None:
         threading.Thread(
             target=self.__run,
             name="TaskThread({0})".format(self.get_task_name()),
         ).start()
 
-    def __run(self):
+    def __run(self) -> None:
         local_tasks.task = self
         try:
             print(self, "starting")
@@ -76,11 +76,11 @@ class Task(object):
         finally:
             del local_tasks.task
 
-    def set_progress(self, text):
+    def set_progress(self, text: str) -> None:
         print(" --", text, "--")
         self.progressed.notify(text)
 
-    def run(self):
+    def run(self) -> None:
         raise NotImplementedError("Task.run is not implemented")
 
     def __repr__(self):

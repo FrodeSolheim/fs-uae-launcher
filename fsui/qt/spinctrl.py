@@ -1,3 +1,5 @@
+from typing import cast
+
 from fsui.context import get_theme
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QFontMetrics, QSpinBox
@@ -8,16 +10,35 @@ from fswidgets.widget import Widget
 class SpinCtrl(Widget):
     changed_signal = Signal()
 
-    def __init__(self, parent, min_value, max_value, initial_value):
+    def __init__(
+        self,
+        parent: Widget,
+        min_value: int,
+        max_value: int,
+        initial_value: int,
+    ) -> None:
         super().__init__(parent, QSpinBox(QParent(parent)))
-        self._widget.setRange(min_value, max_value)
-        self._widget.setValue(initial_value)
-        self._widget.valueChanged.connect(self.__value_changed)
+        self.qSpinBox.setRange(min_value, max_value)
+        self.qSpinBox.setValue(initial_value)
+        self.qSpinBox.valueChanged.connect(self.__value_changed)
         # FIXME: What did this to, again?
         self.changed = SignalWrapper(self, "changed")
         self.update_style()
 
-    def update_style(self):
+    def get_value(self) -> int:
+        return self.qSpinBox.value()
+
+    def on_change(self) -> None:
+        self.changed.emit()
+
+    @property
+    def qSpinBox(self) -> QSpinBox:
+        return cast(QSpinBox, self._qwidget)
+
+    def set_value(self, value: int) -> None:
+        self.qSpinBox.setValue(value)
+
+    def update_style(self) -> None:
         theme = get_theme(self)
         padding = theme.textfield_padding()
         if not padding:
@@ -35,7 +56,7 @@ class SpinCtrl(Widget):
         # FIXME: This widget seems to have some margin error, the border is
         # drawn so that the widget height is two less than it should be. May
         # need to draw own border in order to get this right! (Sigh)
-        self._widget.setStyleSheet(
+        self.qSpinBox.setStyleSheet(
             f"""
             QSpinBox {{
                 /*
@@ -52,15 +73,6 @@ class SpinCtrl(Widget):
             """
         )
 
-    def get_value(self):
-        return self._widget.value()
-
-    def set_value(self, value):
-        self._widget.setValue(value)
-
-    def __value_changed(self, _):
+    def __value_changed(self, _: int) -> None:
         if not self.changed.inhibit:
             self.on_changed()
-
-    def on_change(self):
-        self.changed.emit()

@@ -1,5 +1,6 @@
 import os
 
+from fsgamesys.config.configevent import ConfigEvent
 from fsgamesys.options.constants2 import (
     CONFIG_PATH__,
     GAME_NAME,
@@ -7,6 +8,7 @@ from fsgamesys.options.constants2 import (
     RUNNING__,
 )
 from fsui import Button, Color, Font, HorizontalLayout, Icon, Label, Panel
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.settings.fullscreentogglebutton import FullscreenToggleButton
 from launcher.settings.monitorbutton import MonitorButton
@@ -17,7 +19,7 @@ from system.classes.configdispatch import ConfigDispatch
 
 
 class Launcher2LaunchPanel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         horilayout = HorizontalLayout()
         # Using 6 for top/bottom margins so final height is 28 + 2 * 6 = 40
@@ -61,10 +63,10 @@ class Launcher2LaunchPanel(Panel):
 
         self.title_font = Font.from_description("Saira Condensed Semi-Bold 22")
 
-        self._is_running = False
-        self._config_path = ""
-        self._game_name = ""
-        self._display_name = ""
+        self._is_running: bool = False
+        self._config_path: str = ""
+        self._game_name: str = ""
+        self._display_name: str = ""
         ConfigDispatch(
             self,
             {
@@ -75,19 +77,19 @@ class Launcher2LaunchPanel(Panel):
             },
         )
 
-    def __on_cancel(self):
+    def __on_cancel(self) -> None:
         print("FIXME: CANCEL BUTTON DOES NOTHING")
         pass
 
-    def __on_config_path_config(self, event):
+    def __on_config_path_config(self, event: ConfigEvent) -> None:
         self._config_path = event.value
         self.update_display_name()
 
-    def __on_game_name_config(self, event):
+    def __on_game_name_config(self, event: ConfigEvent) -> None:
         self._game_name = event.value
         self.update_display_name()
 
-    def display_name(self, *, config_path, game_name):
+    def display_name(self, *, config_path: str, game_name: str) -> str:
         if game_name:
             return game_name
         else:
@@ -95,7 +97,7 @@ class Launcher2LaunchPanel(Panel):
             config_name = os.path.splitext(config_filename)[0]
             return config_name
 
-    def on_paint(self):
+    def on_paint(self) -> None:
         x = 20
         height = self.height()
         dc = self.create_dc()
@@ -111,10 +113,10 @@ class Launcher2LaunchPanel(Panel):
         _, th = dc.measure_text(text)
         dc.draw_text(text, x, (height - th) // 2)
 
-    def __on_progress_config(self, event):
+    def __on_progress_config(self, event: ConfigEvent) -> None:
         self.statuslabel.set_text(event.value)
 
-    def __on_running_config(self, event):
+    def __on_running_config(self, event: ConfigEvent) -> None:
         self._is_running = bool(event.value)
         # self.cancelbutton.set_enabled(self._is_running)
         # self.statuslabel.set_visible(self._is_running)
@@ -129,7 +131,7 @@ class Launcher2LaunchPanel(Panel):
         self.layout.update()
         self.update_display_name()
 
-    def update_display_name(self):
+    def update_display_name(self) -> None:
         if self._is_running:
             new_display_name = ""
         else:
@@ -142,7 +144,7 @@ class Launcher2LaunchPanel(Panel):
 
 
 class Launcher2BottomPanel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         # panel = Panel(self)
         # panel.set_min_height(1)

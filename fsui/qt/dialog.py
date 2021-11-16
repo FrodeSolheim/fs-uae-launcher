@@ -1,45 +1,53 @@
 import weakref
+from typing import Optional, cast
 
-from fsui.qt import QDialog, Qt
-from fsui.qt.qparent import QParent
+from fsui.qt.core import Qt
+from fsui.qt.gui import QCloseEvent, QResizeEvent, QShowEvent
+from fsui.qt.qparent import QOptionalParent
 from fsui.qt.toplevelwidget import TopLevelWidget
-
-# def hmm(*args, **kwargs):
-#     print("---------------------------------------------------------")
-#     print("(destroyed)")
-#     print(args, kwargs)
-#     print("---------------------------------------------------------")
+from fsui.qt.widgets import QDialog, QWidget
+from fswidgets.widget import Widget
 
 
 class DialogWrapper(QDialog):
-    def __init__(self, parent, *, border, fswidget, title):
-        super().__init__(QParent(parent, window=True))
+    def __init__(
+        self,
+        parent: Optional[TopLevelWidget],
+        *,
+        border: bool,
+        fswidget: Widget,
+        title: str,
+    ):
+        super().__init__(QOptionalParent(parent, window=True))
         self.setWindowTitle(title)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
-        flags = Qt.Dialog
+        flags: int = Qt.Dialog
         if not border:
             flags |= Qt.FramelessWindowHint
             # flags |= Qt.NoDropShadowWindowHint
-        self.setWindowFlags(flags)
+        # FIXME: How to correctly type?
+        self.setWindowFlags(cast(Qt.WindowFlags, flags))
 
         # Maybe...
         self._fswidget_ref = weakref.ref(fswidget)
 
     # FIXME: Move to BaseWindow / eventFilter?
-    def closeEvent(self, event):
+    def closeEvent(self, a0: QCloseEvent) -> None:
         print(f"DialogWrapper.closeEvent self={self})")
-        super().closeEvent(event)
+        super().closeEvent(a0)
         self._fswidget.on_close()
 
     @property
-    def _fswidget(self):
-        return self._fswidget_ref()
+    def _fswidget(self) -> Widget:
+        w = self._fswidget_ref()
+        assert w is not None
+        return w
 
-    def resizeEvent(self, event):
+    def resizeEvent(self, a0: QResizeEvent) -> None:
         self._fswidget.on_resize()
 
-    def showEvent(self, _):
+    def showEvent(self, a0: QShowEvent) -> None:
         # if self.owner().center_on_show:
         #     if not self._centered_on_initial_show:
         #         if self.parent():
@@ -50,22 +58,28 @@ class DialogWrapper(QDialog):
         self._fswidget.on_resize()
 
 
-def check_refs(r):
-    import gc
+# def check_refs(r):
+#     import gc
 
-    import fsui
+#     import fsui
 
-    gc.collect()
-    obj = r()
-    if obj:
-        for i, referrer in enumerate(gc.get_referrers(obj)):
-            print("")
-            print("REF", i, referrer)
-    fsui.call_later(1000, check_refs, r)
+#     gc.collect()
+#     obj = r()
+#     if obj:
+#         for i, referrer in enumerate(gc.get_referrers(obj)):
+#             print("")
+#             print("REF", i, referrer)
+#     fsui.call_later(1000, check_refs, r)
 
 
 class Dialog(TopLevelWidget):
-    def __init__(self, parent=None, title="", *, border=True):
+    def __init__(
+        self,
+        parent: Optional[TopLevelWidget] = None,
+        title: str = "",
+        *,
+        border: bool = True,
+    ) -> None:
         super().__init__(
             parent,
             DialogWrapper(parent, border=border, fswidget=self, title=title),
@@ -76,35 +90,40 @@ class Dialog(TopLevelWidget):
         # fsui.call_later(1000, check_refs, weakref.ref(self))
 
     # FIXME: Move to TopLevelWidget
-    def active(self):
-        return self._qwidget.isActiveWindow()
+    def active(self) -> bool:
+        return self.qDialog.isActiveWindow()
 
-    def __del__(self):
+    def __del__(self) -> None:
         print("Dialog.__del__", self)
 
-    def end_modal(self, value):
-        self._qwidget.done(value)
+    def end_modal(self, value: int) -> None:
+        self.qDialog.done(value)
         self.close()
 
     # FIXME
-    def real_widget(self):
-        return self._qwidget
+    def real_widget(self) -> QWidget:
+        return self.qWidget
 
     # FIXME: Correct?
-    def real_window(self):
-        return self._qwidget
+    def real_window(self) -> QDialog:
+        return self.qDialog
 
-    def show(self):
+    @property
+    def qDialog(self) -> QDialog:
+        return cast(QDialog, self.qWidget)
+
+    def show(self) -> None:
         self.center_on_initial_show()
         # FIXME: Qt.WindowModal?
-        self._qwidget.setWindowModality(Qt.WindowModal)
-        return self._qwidget.exec_()
+        self.qDialog.setWindowModality(Qt.WindowModal)
+        self.qDialog.exec_()
 
-    def show_modal(self):
+    def show_modal(self) -> int:
         self.center_on_initial_show()
         # self.setWindowModality(Qt.WindowModal)
-        return self._qwidget.exec_()
+        return self.qDialog.exec_()
 
     # FIXME: Move to BaseWindow
-    def window(self):
-        return self._qwidget
+    @property
+    def window(self) -> TopLevelWidget:
+        return self

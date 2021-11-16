@@ -1,68 +1,70 @@
-from typing import Optional
+from typing import IO, Optional, Union
 
 from fscore.resources import Resources
 from fsui.qt.qt import QColor, QIcon, QImage, QPixmap, QSize, Qt
+from fswidgets.types import Size
 
 
 class Image:
     NEAREST = 0
 
     @classmethod
-    def create_blank(cls, width, height):
+    def create_blank(cls, width: int, height: int) -> "Image":
         # qimage = QPixmap(16, 16).toImage()
         qimage = QImage(QSize(16, 16), QImage.Format_ARGB32)
         qimage.fill(QColor(0, 0, 0, 0))
 
         return Image(qimage=qimage)
 
-    def __init__(self, name: str = "", qimage: Optional[QImage] = None):
+    def __init__(
+        self, name: Union[str, IO[bytes]] = "", qimage: Optional[QImage] = None
+    ) -> None:
         if qimage:
             self.qimage = qimage
         else:
             self.qimage = QImage()
-
-            if hasattr(name, "read"):
-                self.qimage.loadFromData(name.read())
-            elif name.startswith("/"):
-                with open(name, "rb") as f:
-                    self.qimage.loadFromData(f.read())
-            elif name.startswith("pkg://"):
-                parts = name.split("/", 3)
-                stream = Resources(parts[2]).stream(parts[3])
-                self.qimage.loadFromData(stream.read())
-            else:
-                index = name.find(":")
-                if index > 1:
-                    package, file_ = name.split(":", 1)
-                    stream = Resources(package, "").stream(file_)
+            if isinstance(name, str):
+                if name.startswith("/"):
+                    with open(name, "rb") as f:
+                        self.qimage.loadFromData(f.read())
+                elif name.startswith("pkg://"):
+                    parts = name.split("/", 3)
+                    stream = Resources(parts[2]).stream(parts[3])
                     self.qimage.loadFromData(stream.read())
                 else:
-                    print("loading image from", name)
-                    self.qimage.load(name)
-            # self._bitmap = None
+                    index = name.find(":")
+                    if index > 1:
+                        package, file_ = name.split(":", 1)
+                        stream = Resources(package, "").stream(file_)
+                        self.qimage.loadFromData(stream.read())
+                    else:
+                        print("loading image from", name)
+                        self.qimage.load(name)
+            else:
+                self.qimage.loadFromData(name.read())
 
     @property
-    def size(self):
+    def size(self) -> Size:
         return self.qimage.width(), self.qimage.height()
 
-    def copy(self):
+    def copy(self) -> "Image":
         return Image(qimage=self.qimage.copy())
 
-    def invert(self):
+    def invert(self) -> None:
         self.qimage.invertPixels()
 
-    def width(self):
+    def width(self) -> int:
         return self.qimage.width()
 
-    def height(self):
+    def height(self) -> int:
         return self.qimage.height()
 
     @property
-    def qpixmap(self):
+    def qpixmap(self) -> QPixmap:
         return QPixmap(self.qimage)
 
     @property
-    def qicon(self):
+    def qicon(self) -> QIcon:
         return QIcon(QPixmap(self.qimage))
 
     # @property
@@ -71,7 +73,7 @@ class Image:
     #         self._bitmap = wx.BitmapFromImage(self.qimage)
     #     return self._bitmap
 
-    def grey_scale(self):
+    def grey_scale(self) -> "Image":
         # return Image(qimage=self.qimage.convertToFormat(
         #     QImage.Format_ARGB32, Qt.AutoOnly))
         copy = self.qimage.convertToFormat(QImage.Format_ARGB32, Qt.AutoColor)
@@ -103,7 +105,7 @@ class Image:
                 copy.setPixel(x, y, p)
         return Image(qimage=copy)
 
-    def resize(self, size, filter_=1):
+    def resize(self, size: Size, filter_: bool = True) -> None:
         if size == self.size:
             return
         if filter_:
@@ -115,5 +117,5 @@ class Image:
         )
         # self._bitmap = None
 
-    def save(self, path):
+    def save(self, path: str) -> None:
         self.qimage.save(path)

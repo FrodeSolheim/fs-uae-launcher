@@ -1,11 +1,20 @@
+from typing import Any, Optional
+
 from fsui import Color
+from fsui.qt.toplevelwidget import TopLevelWidget
 from launcher.fswidgets2.flexlayout import FlexLayout
-from launcher.fswidgets2.style import Style
+from launcher.fswidgets2.style import Style, StyleParam
 from system.classes.window import Window as BaseWindow
 
 
 class Window(BaseWindow):
-    def __init__(self, parent=None, *args, style=None, **kwargs):
+    def __init__(
+        self,
+        parent: Optional[TopLevelWidget] = None,
+        *args: Any,
+        style: Optional[StyleParam] = None,
+        **kwargs: Any
+    ):
         super().__init__(parent=parent, *args, **kwargs)
 
         self.style = Style({"flexDirection": "column"}, style)

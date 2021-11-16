@@ -1,6 +1,7 @@
 import launcher.version
 from arcade.Application import Application
 from arcade.glui.imageloader import ImageLoader
+from arcade.gnome3 import handle_gnome_extensions, running_in_gnome_3
 from arcade.ui.arcade_window import (
     ArcadeWindow,
     check_argument,
@@ -11,23 +12,21 @@ from fsbc.init import initialize_application
 from fscore.settings import Settings
 from fscore.system import System
 
-from .gnome3 import handle_gnome_extensions, running_in_gnome_3
-
 K_UI_MODE_ALL_HIDDEN = 3
 K_UI_OPTION_AUTO_SHOW_MENU_BAR = 1 << 0
 
 
-def os_x_set_system_ui_mode(mode, option):
+def os_x_set_system_ui_mode(mode: int, option: int):
     # noinspection PyUnresolvedReferences
     import objc  # type: ignore
 
     # noinspection PyUnresolvedReferences
     from Foundation import NSBundle  # type: ignore
 
-    bundle = NSBundle.bundleWithPath_(
+    bundle = NSBundle.bundleWithPath_(  # type: ignore
         "/System/Library/Frameworks/Carbon.framework"
     )
-    objc.loadBundleFunctions(
+    objc.loadBundleFunctions(  # type: ignore
         bundle, globals(), (("SetSystemUIMode", b"III", ""),)
     )
     # noinspection PyUnresolvedReferences

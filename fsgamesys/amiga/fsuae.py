@@ -51,7 +51,7 @@ class FSUAE(object):
         # env = None
 
         cls.add_environment_from_settings(env)
-        # env[str("SDL_VIDEO_WINDOW_POS")] = "0,0"
+        # env["SDL_VIDEO_WINDOW_POS"] = "0,0"
         # args += ["--fullscreen-mode", "desktop"]
 
         # No longer needed since Python 3.4?

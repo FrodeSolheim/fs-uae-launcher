@@ -2,6 +2,7 @@ import fsui
 from fsbc import settings
 from fsgamesys import openretro
 from fsgamesys.platforms.platform import Platform
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.option import Option
 from launcher.settings.option_ui import OptionUI
@@ -11,7 +12,7 @@ from launcher.ui.IconButton import IconButton
 
 
 class GamePlatformsSettingsPage(SettingsPage):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         icon = fsui.Icon("database-settings", "pkg:workspace")
         title = gettext("Game Platforms")

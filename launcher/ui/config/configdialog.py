@@ -1,15 +1,16 @@
 import fsui
+from fsui.qt.toplevelwidget import TopLevelWidget
 from launcher.i18n import gettext
 from launcher.ui.config.CustomOptionsPage import CustomOptionsPage
 from launcher.ui.skin import LauncherTheme
 
 
 class ConfigDialog(fsui.DialogWindow):
-    def __init__(self, parent):
+    def __init__(self, parent: TopLevelWidget) -> None:
         title = gettext("Custom Configuration")
         super().__init__(parent, title=title)
         self.theme = LauncherTheme.get()
-        if self.window().theme.has_close_buttons:
+        if self.window.theme.has_close_buttons:
             buttons, layout = fsui.DialogButtons.create_with_layout(self)
             buttons.create_close_button()
         else:
@@ -19,5 +20,5 @@ class ConfigDialog(fsui.DialogWindow):
         layout.add(CustomOptionsPage(self), fill=True, expand=True)
 
     @classmethod
-    def run(cls, parent):
+    def run(cls, parent: TopLevelWidget):
         cls(parent).show()

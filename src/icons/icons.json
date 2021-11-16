@@ -687,14 +687,14 @@
         ],
         "type": "glow"
     },
-    "data/Icons/System/Prefs/Update.png": {
+    "data/Icons/System/Prefs/Updates.png": {
         "sources": [
             "humanity/64/update-notifier.svg",
             "humanity/64/prefs-overlay.png"
         ],
         "type": "normal"
     },
-    "data/Icons/System/Prefs/Update_Selected.png": {
+    "data/Icons/System/Prefs/Updates_Selected.png": {
         "sources": [
             "humanity/64/update-notifier.svg",
             "humanity/64/prefs-overlay.png"

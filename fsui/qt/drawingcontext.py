@@ -1,25 +1,26 @@
-from typing import Tuple
+from typing import Optional, Tuple
 
 from fsui.qt.color import Color
 from fsui.qt.font import Font
+from fsui.qt.image import Image
 from fsui.qt.qt import (
     QBrush,
     QColor,
     QLinearGradient,
+    QPainter,
     QPen,
     QPoint,
     QRect,
-    QSize,
     Qt,
 )
 
 
 class DrawingContext(object):
-    def __init__(self, painter):
-        self.qpainter = painter
+    def __init__(self, painter: QPainter) -> None:
+        self.qpainter: QPainter = painter
         self.text_color = Color(0, 0, 0)
 
-    def clear(self, color=None):
+    def clear(self, color: Optional[Color] = None) -> None:
         # assuming here that the operations are clipped anyway, so just
         # using an larger-than-expected size
         rect = QRect(0, 0, 3000, 2000)
@@ -28,13 +29,16 @@ class DrawingContext(object):
         else:
             self.qpainter.eraseRect(rect)
 
-    def get_font(self) -> Font:
-        return Font(self.qpainter.font())
+    def setAntialiasing(self, antiAliasing: bool) -> None:
+        self.qpainter.setRenderHint(QPainter.Antialiasing, antiAliasing)
 
-    def set_font(self, font: Font):
+    def get_font(self) -> Font:
+        return Font(qFont=self.qpainter.font())
+
+    def set_font(self, font: Font) -> None:
         self.qpainter.setFont(font.font)
 
-    def draw_text(self, text: str, x: int, y: int):
+    def draw_text(self, text: str, x: int, y: int) -> None:
         # self.qpainter.drawText(QPoint(x, y), text)
         self.qpainter.setPen(QPen(self.text_color))
         self.qpainter.drawText(
@@ -53,18 +57,18 @@ class DrawingContext(object):
     #     self.dc.SetPen(wx.Pen(color))
     #     #self.gc.SetPen(self.gc.CreatePen(wx.Pen(color)))
 
-    def get_text_color(self):
+    def get_text_color(self) -> Color:
         # return Color(self.dc.GetTextForeground())
         # pass
         # return Color(self.qpainter.pen().color())
         return self.text_color
 
-    def set_text_color(self, color: Color):
+    def set_text_color(self, color: Color) -> None:
         # self.dc.SetTextForeground(color)
         # self.qpainter.setPen(QPen(color))
         self.text_color = Color(color)
 
-    def draw_line(self, x1, y1, x2, y2, c):
+    def draw_line(self, x1: int, y1: int, x2: int, y2: int, c: Color) -> None:
         if x1 == x2:  # Line is vertical
             if y1 > y2:
                 y1, y2 = y2, y1
@@ -82,15 +86,19 @@ class DrawingContext(object):
             return
         self.draw_rectangle(x1, y1, x2 - x1, y2 - y1, c)
 
-    def draw_image(self, image, x, y):
+    def draw_image(self, image: Image, x: int, y: int) -> None:
         # self.dc.DrawBitmap(image.bitmap, x, y, True)
         self.qpainter.drawImage(QPoint(x, y), image.qimage)
 
-    def drawScaledImage(self, image, x, y, width, height):
+    def drawScaledImage(
+        self, image: Image, x: int, y: int, width: int, height: int
+    ) -> None:
         # self.dc.DrawBitmap(image.bitmap, x, y, True)
         self.qpainter.drawImage(QRect(x, y, width, height), image.qimage)
 
-    def draw_vertical_gradient(self, x, y, w, h, c1, c2):
+    def draw_vertical_gradient(
+        self, x: int, y: int, w: int, h: int, c1: Color, c2: Color
+    ) -> None:
         gradient = QLinearGradient(0, 0, 0, h)
         gradient.setColorAt(0.0, c1)
         gradient.setColorAt(1.0, c2)
@@ -98,14 +106,22 @@ class DrawingContext(object):
         self.qpainter.setBrush(QBrush(gradient))
         self.qpainter.drawRect(x, y, w, h)
 
-    def draw_rectangle(self, x, y, w, h, c):
+    def draw_rectangle(self, x: int, y: int, w: int, h: int, c: Color) -> None:
         self.qpainter.setPen(QPen(QColor(0, 0, 0, 0)))
         self.qpainter.setBrush(QBrush(c))
         self.qpainter.drawRect(x, y, w, h)
 
     def rounded_rectangle(
-        self, x, y, w, h, c, radius, border_color=None, border_width=1.0
-    ):
+        self,
+        x: int,
+        y: int,
+        w: int,
+        h: int,
+        c: Color,
+        radius: int,
+        border_color: Optional[Color] = None,
+        border_width: float = 1.0,
+    ) -> None:
         if border_color is not None:
             self.qpainter.setPen(QPen(border_color, border_width))
         else:

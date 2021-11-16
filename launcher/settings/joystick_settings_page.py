@@ -97,7 +97,10 @@ class JoystickSettingsPage(SettingsPage):
         for joystick in self.inputService.getJoysticks():
             if joystick.uniqueName == deviceId:
                 guid = joystick.sdlGuid
-                wsopen(f"SYS:Tools/ControllerConfig?GUID={guid}")
+                wsopen(
+                    f"SYS:Tools/ControllerConfig?GUID={guid}",
+                    parent=self.getWindow(),
+                )
 
 
 joystick_mode_values = ["nothing", "mouse", "joystick"]
@@ -221,7 +224,8 @@ class PreferredJoystickSelector(fsui.Panel):
         self.on_setting(self.key, LauncherSettings.get(self.key))
 
     def set_settings_handlers(self) -> None:
-        self.device_choice.on_changed = self.on_device_changed
+        # FIXME: on_changed: "Cannot assign to a method" (mypy)
+        self.device_choice.on_changed = self.on_device_changed  # type: ignore
         LauncherSettings.add_listener(self)
 
     def onDestroy(self) -> None:

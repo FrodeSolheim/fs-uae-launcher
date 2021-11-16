@@ -6,14 +6,14 @@ import traceback
 import warnings
 from collections import defaultdict
 from subprocess import Popen
-from typing import DefaultDict, List, Optional, Union
+from typing import DefaultDict, Optional, Union
 
-import fsboot
 from fsbc.application import Application
 from fsbc.task import current_task
 from fscore.resources import Resources
 from fscore.system import System
 from fsgamesys.amiga.fsuae import FSUAE
+from fsgamesys.context import FSGameSystemContext
 from fsgamesys.FSGSDirectories import FSGSDirectories
 from fsgamesys.input.inputdevice import InputDevice
 from fsgamesys.monitors.refreshratetool import RefreshRateTool
@@ -29,19 +29,42 @@ from fsgamesys.util.gamenameutil import GameNameUtil
 from launcher.option import Option
 
 
+class TemporaryNamedItem:
+    def __init__(
+        self, root: "TemporaryNamedItem", name: str, directory: bool = False
+    ):
+        self.root = root
+        self.name = name
+        self._path = None
+        self.directory = directory
+
+    @property
+    def path(self) -> str:
+        if self._path is None:
+            root = self.root.path
+            self._path = os.path.join(root, self.name)
+            if not os.path.exists(self._path):
+                if self.directory:
+                    os.makedirs(self._path)
+                else:
+                    with open(self.path, "wb"):
+                        pass
+        return self._path
+
+
 class GameDriverLogger:
-    def debug(self, message: str):
+    def debug(self, message: str) -> None:
         print("[DEBUG]", message)
 
-    def info(self, message: str):
+    def info(self, message: str) -> None:
         print("[INFO]", message)
 
-    def warning(self, message: str):
+    def warning(self, message: str) -> None:
         # FIXME: Store warning and show in some kind of launch log
         # (i.e. "warnings and error generated during game execution")
         print("[WARNING]", message)
 
-    def error(self, message: str):
+    def error(self, message: str) -> None:
         print("[ERROR]", message)
 
 
@@ -49,7 +72,7 @@ class GameDriverLogger:
 class GameDriver:
     PORTS = []
 
-    def __init__(self, fsgc):
+    def __init__(self, fsgc: FSGameSystemContext):
         self.fsgc = fsgc
         self.files = GameFiles(fsgc)
         self.logger = GameDriverLogger()
@@ -573,12 +596,12 @@ class GameDriver:
                 f.write(data)
         return self.__game_temp_file.path
 
-    def temp_dir(self, name):
+    def temp_dir(self, name: str) -> TemporaryNamedItem:
         return TemporaryNamedItem(
             root=self.temp_root, name=name, directory=True
         )
 
-    def temp_file(self, name):
+    def temp_file(self, name: str) -> TemporaryNamedItem:
         return TemporaryNamedItem(
             root=self.temp_root, name=name, directory=False
         )
@@ -745,9 +768,9 @@ class GameDriver:
         front_sha1 = self.config["front_sha1"]
         if not front_sha1:
             return
-        from launcher.ui.imageloader import ImageLoader, ImageLoadRequest
+        from launcher.ui.imageloader import ImageLoader, ImageLoaderRequest
 
-        request = ImageLoadRequest()
+        request = ImageLoaderRequest()
         request.path = "sha1:" + front_sha1
         # request.args["is_cover"] = True
         # FIXME: We want fit-in in this size...
@@ -807,13 +830,13 @@ class GameDriver:
         # FIXME: REMOVE
         # env["FSGS_WINDOW_X"] = str(x)
         # env["FSGS_WINDOW_Y"] = str(y)
-        # env["FSGS_WINDOW_POS"] = str("{0},{1}".format(x, y))
+        # env["FSGS_WINDOW_POS"] = "{0},{1}".format(x, y)
         # env["FSGS_WINDOW_CENTER"] = "{0},{1}".format(
         #     parent_x + parent_w // 2, parent_y + parent_h // 2
         # )
 
         # FIXME: REMOVE
-        # env["SDL_VIDEO_WINDOW_POS"] = str("{0},{1}".format(x, y))
+        # env["SDL_VIDEO_WINDOW_POS"] = "{0},{1}".format(x, y)
 
         env["FSEMU_WINDOW_CENTER_X"] = str(parent_x + parent_w // 2)
         env["FSEMU_WINDOW_CENTER_Y"] = str(parent_y + parent_h // 2)
@@ -1127,27 +1150,6 @@ class TemporaryItem:
                     prefix=self.prefix, suffix=self.suffix, dir=root
                 )
                 os.close(fd)
-        return self._path
-
-
-class TemporaryNamedItem:
-    def __init__(self, root, name, directory=False):
-        self.root = root
-        self.name = name
-        self._path = None
-        self.directory = directory
-
-    @property
-    def path(self):
-        if self._path is None:
-            root = self.root.path
-            self._path = os.path.join(root, self.name)
-            if not os.path.exists(self._path):
-                if self.directory:
-                    os.makedirs(self._path)
-                else:
-                    with open(self.path, "wb"):
-                        pass
         return self._path
 
 

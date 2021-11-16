@@ -2,6 +2,8 @@ from typing import Optional
 
 from fscore.applicationdata import ApplicationData
 from fsui import Color, Panel, Signal
+from fsui.qt.drawingcontext import DrawingContext
+from fsui.qt.image import Image
 from fswidgets.types import Size
 from fswidgets.widget import Widget
 
@@ -13,13 +15,14 @@ from fswidgets.widget import Widget
 
 class TitleBarButton(Panel):
     activated = Signal()
+    _image: Optional[Image]
 
     def __init__(
         self,
         parent: Widget,
         *,
         size: Size,
-        image=None,
+        image: Optional[Image] = None,
         icon_name: Optional[str] = None,
         fgcolor: Optional[Color] = None,
         fgcolor_inactive: Optional[Color] = None,
@@ -132,17 +135,26 @@ class TitleBarButton(Panel):
         else:
             self._svg.draw_to_dc(dc, 0, 0, w, h, color, cacheslot)
 
-    def set_image(self, image):
+    def set_image(self, image: Image):
         self._image = image
         self.refresh()
 
 
 class Svg:
-    def __init__(self, data, cacheslots=2):
+    def __init__(self, data: bytes, cacheslots: int = 2):
         self._data = data
         self._cache = [[None, None] for _ in range(cacheslots)]
 
-    def draw_to_dc(self, dc, x, y, w, h, color, cacheslot):
+    def draw_to_dc(
+        self,
+        dc: DrawingContext,
+        x: int,
+        y: int,
+        w: int,
+        h: int,
+        color: Color,
+        cacheslot: int,
+    ):
         if (
             self._cache[cacheslot][0] is None
             or color != self._cache[cacheslot][1]

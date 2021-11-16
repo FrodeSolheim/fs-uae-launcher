@@ -5,7 +5,15 @@ from typing import Optional
 from fsbc.util import unused
 from fsui.common.layout import Layout, VerticalLayout
 from fsui.qt.color import Color
+from fsui.qt.core import QEvent
 from fsui.qt.drawingcontext import DrawingContext
+from fsui.qt.gui import (
+    QKeyEvent,
+    QMouseEvent,
+    QPaintEvent,
+    QResizeEvent,
+    QShowEvent,
+)
 from fsui.qt.qparent import QParent
 from fsui.qt.qt import QPainter, Qt, QWidget
 from fswidgets.style import Style
@@ -43,13 +51,13 @@ class Panel(Widget):
         # self.init_widget(parent)
         self.layout: Layout = VerticalLayout()
         # self.layout = None
-        self._painter = None
+        self._painter: Optional[QPainter] = None
 
         # QWidget.__init__(self)
         # self.setParent(parent.get_container())
         # super(Panel, self).__init__(parent.get_container())
         # super().__init__()
-        self._ignore_next_left_down_event = False
+        self.internalIgnoreNextLeftDownEvent = False
         # self._widget.setFocusPolicy(Qt.NoFocus)
 
     # def start_timer(self, interval):
@@ -57,100 +65,108 @@ class Panel(Widget):
     #     # (Would work for all Widget-wrapped widgets instead)
     #     self._widget.startTimer(interval)
 
-    def on_left_down(self):
+    def on_left_down(self) -> None:
         pass
 
-    def on_left_up(self):
+    def on_left_up(self) -> None:
         pass
 
-    def on_left_dclick(self):
+    def on_left_dclick(self) -> None:
         pass
 
-    def on_mouse_motion(self):
+    def on_mouse_motion(self) -> None:
         pass
 
-    def on_paint(self):
+    def on_paint(self) -> None:
         pass
 
     def create_dc(self) -> DrawingContext:
+        if self._painter is None:
+            raise RuntimeError(
+                "Cannot create DrawingContext at this point (no painter)"
+            )
         return DrawingContext(self._painter)
 
-    def on_mouse_enter(self):
+    def on_mouse_enter(self) -> None:
         pass
 
-    def on_mouse_leave(self):
+    def on_mouse_leave(self) -> None:
         pass
 
-    def on_key_press(self, event):
+    def on_key_press(self, event: QKeyEvent) -> None:
         pass
 
-    def add(self, child):
+    # FIXME: add? what is this used for?
+    def add(self, child: Layout) -> None:
         if hasattr(self, "set_layout"):
             self.set_layout(child)
         else:
             self.layout = child
 
+    def internalSetPainter(self, painter: Optional[QPainter]) -> None:
+        self._painter = painter
+
 
 # noinspection PyProtectedMember
 class WidgetWithEventHandlers(QWidget):
-    def __init__(self, parent, owner):
+    def __init__(self, parent: QWidget, owner: Panel) -> None:
         # print(f"WidgetWithEventHandlers got parent {parent}")
         super().__init__(parent)
         self._owner = owner
 
-    def enterEvent(self, _):
+    def enterEvent(self, a0: QEvent) -> None:
         self.owner().on_mouse_enter()
 
-    def keyPressEvent(self, event):
-        self.owner().on_key_press(event)
+    def keyPressEvent(self, a0: QKeyEvent) -> None:
+        self.owner().on_key_press(a0)
 
-    def leaveEvent(self, _):
+    def leaveEvent(self, a0: QEvent) -> None:
         self.owner().on_mouse_leave()
 
-    def mouseDoubleClickEvent(self, event):
-        if event.button() == Qt.LeftButton:
+    def mouseDoubleClickEvent(self, a0: QMouseEvent) -> None:
+        if a0.button() == Qt.LeftButton:
             self.owner().on_left_dclick()
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, a0: QMouseEvent) -> None:
         self.owner().on_mouse_motion()
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            # A temp code is made in case _ignore_next_left_down_event is
+    def mousePressEvent(self, a0: QMouseEvent) -> None:
+        if a0.button() == Qt.LeftButton:
+            # A temp code is made in case internalIgnoreNextLeftDownEvent is
             # altered inside on_left_down.
-            ignore = self.owner()._ignore_next_left_down_event
-            self.owner()._ignore_next_left_down_event = False
+            ignore = self.owner().internalIgnoreNextLeftDownEvent
+            self.owner().internalIgnoreNextLeftDownEvent = False
             if ignore:
-                print("_ignore_next_left_down_event was True", self)
+                print("internalIgnoreNextLeftDownEvent was True", self)
             else:
                 self.owner().on_left_down()
 
-    def mouseReleaseEvent(self, event):
-        if event.button() == Qt.LeftButton:
+    def mouseReleaseEvent(self, a0: QMouseEvent) -> None:
+        if a0.button() == Qt.LeftButton:
             self.owner().on_left_up()
 
-    def owner(self):
+    def owner(self) -> Panel:
         return self._owner
 
-    def paintEvent(self, event):
+    def paintEvent(self, a0: QPaintEvent) -> None:
         # if not self._paintable:
         #     #dc = wx.PaintDC(self)
         #     return
 
-        self.owner()._painter = QPainter(self)
-        self.owner()._painter.setRenderHint(QPainter.Antialiasing)
-        # self._painter.setRenderHint(QPainter.Qt4CompatiblePainting)
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        self.owner().internalSetPainter(painter)
         try:
             self.owner().on_paint()
         except Exception:
             traceback.print_exc()
         finally:
-            self.owner()._painter = None
+            self.owner().internalSetPainter(None)
 
-    def resizeEvent(self, event):
+    def resizeEvent(self, a0: QResizeEvent) -> None:
         self.owner().on_resize()
 
-    def showEvent(self, event):
+    def showEvent(self, a0: QShowEvent) -> None:
         self.owner().on_resize()
 
     # Handled via Widget

@@ -1,11 +1,14 @@
+from typing import List
+
 from fsbc.application import app
 from fsui import Image, ImageButton
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 
 
 class MonitorButtonBase:
-    def __init__(self, parent, icons):
+    def __init__(self, parent: Widget, icons: List[Image]) -> None:
         super().__init__(parent, icons)
         self.icons = icons
         self.monitor = ""
@@ -18,7 +21,7 @@ class MonitorButtonBase:
         self.on_setting("monitor", app.settings["monitor"], initial=True)
         LauncherSettings.add_listener(self)
 
-    def on_activate(self):
+    def on_activate(self) -> None:
         if self.monitor == "left":
             app.settings["monitor"] = ""
         elif self.monitor == "middle-left":
@@ -28,11 +31,11 @@ class MonitorButtonBase:
         else:
             app.settings["monitor"] = "left"
 
-    def onDestroy(self):
+    def onDestroy(self) -> None:
         LauncherSettings.remove_listener(self)
         super().onDestroy()
 
-    def on_setting(self, key, value, initial=False):
+    def on_setting(self, key: str, value: str, initial: bool = False) -> None:
         if key == "fullscreen":
             # self.set_enabled(value == "1")
             pass
@@ -50,7 +53,7 @@ class MonitorButtonBase:
                 self.monitor = "middle-left"
                 self.__set_image(self.icons[1])
 
-    def __set_image(self, image, initial=False):
+    def __set_image(self, image: Image, initial: bool = False):
         self.image = image
         if not initial:
             # pylint: disable=no-member
@@ -58,12 +61,12 @@ class MonitorButtonBase:
 
 
 class ButtonWrapper(ImageButton):
-    def __init__(self, parent, icons):
+    def __init__(self, parent: Widget, icons: List[Image]) -> None:
         super().__init__(parent, icons[0])
 
 
 class MonitorButton(MonitorButtonBase, ButtonWrapper):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(
             parent,
             [

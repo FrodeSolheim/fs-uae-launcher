@@ -1,5 +1,6 @@
 import os
 from configparser import ConfigParser, NoSectionError
+from typing import Mapping
 
 from fsgamesys.amiga.valueconfigloader import ValueConfigLoader
 from fsgamesys.options.constants2 import (
@@ -14,10 +15,10 @@ from fsgamesys.platforms.platform import PlatformHandler
 
 
 class ConfigLoader:
-    def __init__(self, config):
+    def __init__(self, config) -> None:
         self._config = config
 
-    def load_config_file(self, config_path):
+    def load_config_file(self, config_path: str):
         print("-" * 79)
         print("ConfigLoader.load_config_file")
         print(config_path)
@@ -63,14 +64,19 @@ class ConfigLoader:
         # cls.set("__changed", changed)
         # return True
 
-    def load_config_values(self, new_config, *, config_path):
+    def load_config_values(self, new_config, *, config_path: str):
         # self._config.clear()
         # self._config.set(new_config.items())
         new_config[CONFIG_PATH__] = config_path
         self._config.clear_and_set(new_config.items())
 
     def load_database_values(
-        self, values, *, database_name, game_uuid, variant_uuid
+        self,
+        values: Mapping[str, str],
+        *,
+        database_name: str,
+        game_uuid: str,
+        variant_uuid: str
     ):
         print("-" * 79)
         print("ConfigLoader.load_database_values")

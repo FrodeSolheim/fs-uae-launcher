@@ -1,6 +1,7 @@
 import platform
 import time
 from functools import wraps
+from typing import Optional
 from urllib.error import HTTPError
 from urllib.parse import urlencode
 from uuid import uuid4
@@ -64,7 +65,7 @@ class OGDClient(object):
     NotFoundError = NotFoundError
     NonRetryableHTTPError = NonRetryableHTTPError
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._json = None
         self.data = b""
 
@@ -81,7 +82,9 @@ class OGDClient(object):
         return LogoutTask(self, auth_token)
 
     @retry
-    def authorize(self, username, password, device_id, device_name):
+    def authorize(
+        self, username: str, password: str, device_id: str, device_name: str
+    ):
         result = self.post(
             "/api/auth",
             {
@@ -95,7 +98,7 @@ class OGDClient(object):
         return result
 
     @retry
-    def deauth(self, auth_token):
+    def deauth(self, auth_token: str):
         result = self.post(
             "/api/deauth", {"auth_token": auth_token}, auth=False
         )
@@ -129,7 +132,12 @@ class OGDClient(object):
             url += "?" + urlencode(kwargs)
         return url
 
-    def rate_variant(self, variant_uuid, like=None, work=None):
+    def rate_variant(
+        self,
+        variant_uuid: str,
+        like: Optional[int] = None,
+        work: Optional[int] = None,
+    ):
         params = {"game": variant_uuid}
         if like is not None:
             params["like"] = like
@@ -149,7 +157,9 @@ def get_device_name():
 
 
 class LoginTask(Task):
-    def __init__(self, client, username, password):
+    def __init__(
+        self, client: OGDClient, username: str, password: str
+    ) -> None:
         Task.__init__(self, "Login Task")
         self.client = client
         self.username = username
@@ -177,7 +187,7 @@ class LoginTask(Task):
 
 
 class LogoutTask(Task):
-    def __init__(self, client, auth_token):
+    def __init__(self, client, auth_token: str) -> None:
         Task.__init__(self, "Logout Task")
         self.client = client
         self.auth_token = auth_token

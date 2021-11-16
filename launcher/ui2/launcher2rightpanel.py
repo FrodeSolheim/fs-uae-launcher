@@ -1,5 +1,4 @@
-from typing import Optional
-
+from fsgamesys.config.configevent import ConfigEvent
 from fsui import Color, HorizontalLayout, Panel, VerticalLayout
 from fswidgets.splitter import Splitter
 from fswidgets.widget import Widget
@@ -8,13 +7,11 @@ from launcher.ui2.launcher2bottompanel import Launcher2BottomPanel
 from launcher.ui2.launcher2colors import Launcher2Colors
 from launcher.ui2.launcher2sidepanel import Launcher2SidePanel
 from launcher.ui2.launcher2toppanel import Launcher2TopPanel
-
-# from launcher.ui2.launcher2runningpanel import Launcher2RunningPanel
 from system.classes.configdispatch import ConfigDispatch
 
 
 class Launcher2MainPanel(Panel):
-    def __init__(self, parent: Widget):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent=parent)
 
         horilayout = HorizontalLayout()
@@ -68,7 +65,7 @@ class Launcher2MainPanel(Panel):
 
 
 class Launcher2RightPanel(Splitter):
-    def __init__(self, parent: Widget):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(Splitter.VERTICAL, parent=parent)
 
         self.top_panel = Launcher2MainPanel(self)
@@ -85,10 +82,10 @@ class Launcher2RightPanel(Splitter):
 
         ConfigDispatch(self, {"__running": self.__on_running_config})
 
-    def getDefaultSplitterPosition(self):
+    def getDefaultSplitterPosition(self) -> int:
         return -self.bottom_panel.getPreferredInitialHeight()
 
-    def __on_running_config(self, event):
+    def __on_running_config(self, event: ConfigEvent) -> None:
         isrunning = bool(event.value)
         # if self.running_panel.visible() != isrunning:
         #     # self.running_panel.set_visible(isrunning)
@@ -102,5 +99,5 @@ class Launcher2RightPanel(Splitter):
 
         self.top_panel.layout.update()
 
-    def restoreDefaultSplitterPosition(self):
+    def restoreDefaultSplitterPosition(self) -> None:
         self.setSplitterPosition(self.getDefaultSplitterPosition())

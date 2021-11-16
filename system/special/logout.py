@@ -1,5 +1,10 @@
+from inspect import signature
+from typing import Callable, Generic, Optional, TypeVar
+
 import fsui
 from fsbc.application import app
+from fscore.mainloop import MainLoop
+from fscore.tasks import Task
 from fsgamesys.ogd.client import OGDClient
 from launcher.fswidgets2.button import Button
 from launcher.fswidgets2.flexcontainer import (
@@ -211,80 +216,7 @@ class LogoutWindow(Window):
         fsui.show_error(error, parent=self.window)
 
 
-class Task:
-    def __init__(self):
-        self._cancelled = False
-        self._completed = False
-
-        def onResult(result):
-            pass
-
-        def onError(error):
-            pass
-
-        def onProgress(progress):
-            pass
-
-        self.onResult = onResult
-        self.onError = onError
-        self.onProgress = onProgress
-
-    def setOnResult(self, onResult):
-        self.onResult = onResult
-
-    def setOnError(self, onError):
-        self.onError = onError
-
-    def setOnProgress(self, onProgress):
-        self.onProgress = onProgress
-
-    def cancel(self):
-        self._cancelled = True
-
-    def complete(self):
-        if self._completed:
-            return
-        self._completed = True
-
-    def isCancelled(self) -> bool:
-        if self._cancelled:
-            print("Task.isCancelled was True")
-        return self._cancelled
-
-    def main(self):
-        pass
-
-    def setProgress(self, progress: str):
-        if self.isCancelled():
-            return
-        self.onProgress(progress)
-        # if isinstance(self, TaskProgress):
-        #     self.onProgress(progress)
-        # else:
-        #     self.onProgress(TaskProgress(self, progress))
-
-    def setError(self, error):
-        if self.isCancelled():
-            return
-        self.onError(error)
-
-    def setResult(self, result):
-        if self.isCancelled():
-            return
-        self.onResult(result)
-
-    # def run(self):
-    #     self.main()
-
-    def run(self):
-        try:
-            result = self.main()
-        except Exception as e:
-            self.setError(e)
-        # self.complete()
-        else:
-            self.setResult(result)
-
+# -----------
 
 TYPE_RESULT = 0
 TYPE_ERROR = 1
@@ -312,13 +244,13 @@ class TaskProgress:
         self.value = progress
 
 
-from inspect import signature
-
-from fscore.mainloop import MainLoop
-
-
 class AsyncTaskRunner:
-    def __init__(self, onResult, onError=None, onProgress=None):
+    def __init__(
+        self,
+        onResult: Callable[[], TaskResult],
+        onError: Optional[Callable[[], TaskError]] = None,
+        onProgress: Optional[Callable[[], TaskProgress]] = None,
+    ) -> None:
         self.onResult = onResult
         self.onError = onError
         self.onProgress = onProgress
@@ -389,7 +321,7 @@ class AsyncTaskRunner:
         else:
             callback(value, task=self.currentTask)
 
-    def onTaskResult(self, result):
+    def onTaskResult(self, result: TaskResult):
         print("AsyncTaskRunner.onTaskResult", result)
 
         def runInMain():
@@ -398,7 +330,7 @@ class AsyncTaskRunner:
 
         MainLoop.schedule(runInMain)
 
-    def onTaskError(self, error):
+    def onTaskError(self, error: TaskError):
         print("AsyncTaskRunner.onTaskError", error)
 
         def runInMain():
@@ -407,7 +339,7 @@ class AsyncTaskRunner:
 
         MainLoop.schedule(runInMain)
 
-    def onTaskProgress(self, progress):
+    def onTaskProgress(self, progress: TaskProgress):
         print("AsyncTaskRunner.onTaskProgress", progress)
 
         def runInMain():
@@ -418,13 +350,14 @@ class AsyncTaskRunner:
 
     # ----------------
 
-    def onTaskRunnerError(self, error):
+    def onTaskRunnerError(self, error: TaskError):
         print("AsyncTaskRunner.onTaskRunnerError", error)
 
         def runInMain():
             if self.isCancelled():
                 return
-            self.onError(error)
+            if self.onError is not None:
+                self.onError(error)
 
         MainLoop.schedule(runInMain)
 

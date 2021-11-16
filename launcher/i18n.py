@@ -3,6 +3,7 @@ import locale
 import os
 import sys
 import traceback
+from typing import Optional
 
 import fsboot
 from fsbc.settings import Settings
@@ -10,7 +11,7 @@ from fsbc.settings import Settings
 _initialized = False
 
 
-def initialize_locale(language=None):
+def initialize_locale(language: Optional[str] = None):
     global translations, _initialized
     _initialized = True
 
@@ -21,7 +22,7 @@ def initialize_locale(language=None):
     loc = language
     if not loc:
         try:
-            loc, _charset = locale.getdefaultlocale()
+            loc, _ = locale.getdefaultlocale()
             print("[I18N] Locale is", loc)
         except:
             print("[I18N] Exception while checking locale")
@@ -112,16 +113,16 @@ def initialize_locale(language=None):
     print("[I18N] Translations object:", translations)
 
 
-def gettext(msg: str) -> str:
+def gettext(message: str) -> str:
     if not _initialized:
         initialize_locale()
-    return translations.gettext(msg)
+    return translations.gettext(message)
 
 
-def ngettext(n, msg1, msg2):
+def ngettext(message1: str, msg2: str, n: int) -> str:
     if not _initialized:
         initialize_locale()
-    return translations.ngettext(n, msg1, msg2)
+    return translations.ngettext(message1, msg2, n)
 
 
 translations = gettext_module.NullTranslations()

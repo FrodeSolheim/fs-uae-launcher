@@ -1,5 +1,5 @@
 from fsui import PopupMenu
-from fsui.qt.toplevelwidget import _windows
+from fsui.qt.toplevelwidget import internalWindowsSet
 from launcher.i18n import gettext
 from system.exceptionhandler import exceptionhandler
 from system.wsopen import wsopen
@@ -78,7 +78,7 @@ class WorkspaceMenu(PopupMenu):
     def __on_quit(self):
         print("FIXME: Close all windows")
 
-        for window in list(_windows):
+        for window in list(internalWindowsSet):
             window.close()
 
     def __on_tools(self):

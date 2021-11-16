@@ -1,6 +1,7 @@
 import threading
 import time
 import traceback
+from typing import List, Tuple
 
 import fsui
 from fsgamesys.Database import Database
@@ -19,9 +20,9 @@ from launcher.launcher_signal import LauncherSignal
 class Scanner:
     running = False
     stop_flag = False
-    status = ("", "")
+    status: Tuple[str, str] = ("", "")
     error = ""
-    paths = []
+    paths: List[str] = []
     update_game_database = False
     purge_other_dirs = False
     scan_for_files = False
@@ -122,11 +123,11 @@ class Scanner:
     @classmethod
     def start(
         cls,
-        paths,
-        scan_for_files=True,
-        update_game_database=False,
-        purge_other_dirs=False,
-    ):
+        paths: List[str],
+        scan_for_files: bool = True,
+        update_game_database: bool = False,
+        purge_other_dirs: bool = False,
+    ) -> None:
         print("Scanner.start")
         if cls.running:
             print("scan already in progress")

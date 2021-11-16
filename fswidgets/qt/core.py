@@ -1,4 +1,4 @@
-from PyQt5.QtCore import (
+from fsui.qt.core import (
     QEvent,
     QObject,
     QPoint,

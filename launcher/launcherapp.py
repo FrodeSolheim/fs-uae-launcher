@@ -50,7 +50,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         self.fsgs.signal.process()
 
     @classmethod
-    def pre_start(cls):
+    def pre_start(cls) -> None:
         print("FSUAELauncherApplication.pre_start")
         cls.load_settings()
         StartupScan.config_startup_scan()
@@ -62,7 +62,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         cls.load_plugins()
 
     @classmethod
-    def start(cls):
+    def start(cls) -> bool:
         cls.pre_start()
         print("FSUAELauncherApplication.start")
         if cls.run_config_or_game():
@@ -73,7 +73,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         return True
 
     @classmethod
-    def run_config_or_game(cls):
+    def run_config_or_game(cls) -> None:
         gscontext = FSGameSystemContext()
         config_path = None
         archive_path = None
@@ -353,7 +353,9 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         Settings.instance().save(extra=extra)
 
     @classmethod
-    def start_game(cls, dialog=True, *, gscontext):
+    def start_game(
+        cls, dialog: bool = True, *, gscontext: FSGameSystemContext
+    ) -> None:
         from .netplay.netplay import Netplay
 
         if Netplay.current() and Netplay.current().game_channel:
@@ -362,7 +364,9 @@ class LauncherApp(ApplicationMixin, fsui.Application):
             cls.start_local_game(dialog=dialog, gscontext=gscontext)
 
     @classmethod
-    def start_local_game(cls, dialog=True, *, gscontext):
+    def start_local_game(
+        cls, dialog: bool = True, *, gscontext: FSGameSystemContext
+    ) -> None:
         config = gscontext.config
         print("START LOCAL GAME")
         print("x_missing_files", config.get("x_missing_files"))
@@ -406,7 +410,7 @@ class LauncherApp(ApplicationMixin, fsui.Application):
         cls.start_local_game_other(dialog=dialog, gscontext=gscontext)
 
     @classmethod
-    def start_local_game_other(cls, dialog=True, *, gscontext):
+    def start_local_game_other(cls, dialog=True, *, gscontext) -> None:
         config = gscontext.config
         if True:
             platform_id = config.get(Option.PLATFORM).lower()

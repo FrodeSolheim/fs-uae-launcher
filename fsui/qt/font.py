@@ -1,8 +1,11 @@
-from typing import Optional
+from typing import Optional, Union
+
+from typing_extensions import TypedDict
 
 from fscore.deprecated import deprecated
 from fsui.qt.qt import QFont
 from fswidgets.qt.gui import QFontMetrics
+from fswidgets.types import Size
 
 # FIXME: Add more
 weight_map = {
@@ -13,13 +16,19 @@ weight_map = {
 }
 
 
+class FontDescription(TypedDict):
+    name: str
+    weight: Union[str, int]
+    size: int
+
+
 class Font:
     @staticmethod
-    def from_description(description):
+    def from_description(description: str) -> "Font":
         return Font(**Font.parse(description))
 
     @staticmethod
-    def parse(description):
+    def parse(description: str) -> FontDescription:
         parts = description.split(" ")
         size = 16
         weight = "normal"
@@ -33,10 +42,18 @@ class Font:
         return {"name": name, "weight": weight, "size": size}
 
     def __init__(
-        self, name=None, size=None, font: Optional[QFont] = None, weight=None
-    ):
-        if font is not None:
-            self.font: QFont = font
+        self,
+        name: Optional[str] = None,
+        size: Optional[int] = None,
+        font: Optional[QFont] = None,  # legacy option
+        qFont: Optional[QFont] = None,
+        weight: Optional[Union[int, str]] = None,
+    ) -> None:
+        self.font: QFont
+        if qFont is not None:
+            self.font = qFont
+        elif font is not None:
+            self.font = font
         else:
             assert name
             self.font = QFont(name)
@@ -45,14 +62,14 @@ class Font:
         if weight:
             self.set_weight(weight)
 
-    def describe(self):
+    def describe(self) -> FontDescription:
         return {
             "name": self.font.family(),
             "size": self.font.pixelSize(),
             "weight": self.font.weight(),
         }
 
-    def measureText(self, text: str):
+    def measureText(self, text: str) -> Size:
         metrics = QFontMetrics(self.qfont)
         return metrics.width(text), metrics.height()
 
@@ -66,7 +83,7 @@ class Font:
         return self
 
     @deprecated
-    def set_bold(self, bold: bool = True):
+    def set_bold(self, bold: bool = True) -> "Font":
         return self.setBold(bold)
 
     # def size(self):
@@ -75,7 +92,7 @@ class Font:
     # def set_size(self, size):
     #     self.font.setPixelSize(size)
 
-    def set_weight(self, weight):
+    def set_weight(self, weight: Union[int, str]) -> "Font":
         # print("\n\n\nset weight weight", weight)
         # qt_weight = QFont.Normal
         if isinstance(weight, str):
@@ -99,22 +116,22 @@ class Font:
         # Allow chaining operations
         return self
 
-    def adjust_size(self, increment=1):
+    def adjust_size(self, increment: int = 1) -> None:
         size = self.font.pointSize()
         print("pontSize is", size)
         self.font.setPointSize(size + increment)
 
-    def increase_size(self, increment=1):
+    def increase_size(self, increment: int = 1) -> None:
         size = self.font.pointSize()
         print("pontSize is", size)
         self.font.setPointSize(size + increment)
 
-    def set_point_size(self, point_size):
+    def set_point_size(self, point_size: int) -> "Font":
         self.font.setPointSize(point_size)
         # Allow chaining operations
         return self
 
-    def set_size(self, size):
+    def set_size(self, size: int) -> "Font":
         self.font.setPixelSize(size)
         # Allow chaining operations
         return self

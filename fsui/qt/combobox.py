@@ -1,16 +1,17 @@
 from typing import List, cast
 
+from fscore.deprecated import deprecated
 from fsui.context import get_theme
-from fsui.decorators import deprecated
 from fsui.qt import QComboBox, QFontMetrics
 from fsui.qt.qparent import QParent
+from fsui.theme import Padding
 from fswidgets.widget import Widget
 
 
 class ComboBox(Widget):
     def __init__(
         self, parent: Widget, items: List[str] = [], read_only: bool = False
-    ):
+    ) -> None:
         super().__init__(parent, QComboBox(QParent(parent)))
         # QComboBox.__init__(self, parent.get_container())
         # self = QComboBox(parent.get_container())
@@ -21,45 +22,47 @@ class ComboBox(Widget):
             "FIXME: ComboBox not respecting read_only"
             "(because of missing lineEdit then"
         )
-        self.qwidget.setEditable(True)
+        self.qComboBox.setEditable(True)
 
         # FIXME: Why?? Disabling until checked, remember to comment
-        # self._qwidget.lineEdit().installEventFilter(self.get_window())
+        # self.qComboBoc.lineEdit().installEventFilter(self.get_window())
 
-        self.set_items(items)
+        self.setItems(items)
 
         if len(items) > 0:
             self.set_index(0)
-        self.qwidget.currentIndexChanged.connect(self.__current_index_changed)
+        self.qComboBox.currentIndexChanged.connect(
+            self.__current_index_changed
+        )
 
         # self.dumpObjectTree()
         # print("(dumped)")
         self.update_style()
 
-    def clear(self):
-        self.qwidget.clear()
+    def clear(self) -> None:
+        self.qComboBox.clear()
 
     @property
-    def qwidget(self) -> QComboBox:
-        return cast(QComboBox, self.getQWidget())
+    def qComboBox(self) -> QComboBox:
+        return cast(QComboBox, self.qWidget)
 
-    def setIndex(self, index: int):
-        self.qwidget.setCurrentIndex(index)
+    def setIndex(self, index: int) -> None:
+        self.qComboBox.setCurrentIndex(index)
 
-    def setItems(self, items: List[str]):
-        self.qwidget.clear()
+    def setItems(self, items: List[str]) -> None:
+        self.qComboBox.clear()
         for i, item in enumerate(items):
-            self.qwidget.insertItem(i, item)
+            self.qComboBox.insertItem(i, item)
 
-    def setText(self, text: str):
-        self.qwidget.lineEdit().setText(text)
+    def setText(self, text: str) -> None:
+        self.qComboBox.lineEdit().setText(text)
 
     # -------------------------------------------------------------------------
 
-    def __current_index_changed(self):
+    def __current_index_changed(self) -> None:
         self.on_changed()
 
-    def get_min_width(self):
+    def get_min_width(self) -> int:
         # We don't want min width to be decided by the contents of the line
         # edit control.
         return 50
@@ -69,30 +72,30 @@ class ComboBox(Widget):
         return self.text()
 
     def index(self) -> int:
-        return self.qwidget.currentIndex()
+        return self.qComboBox.currentIndex()
 
-    def on_changed(self):
+    def on_changed(self) -> None:
         pass
 
     @deprecated
-    def set_index(self, index: int):
+    def set_index(self, index: int) -> None:
         self.setIndex(index)
 
     @deprecated
-    def set_items(self, items: List[str]):
+    def set_items(self, items: List[str]) -> None:
         self.setItems(items)
 
-    def set_item_text(self, item: int, text: str):
-        self.qwidget.setItemText(item, text)
+    def set_item_text(self, item: int, text: str) -> None:
+        self.qComboBox.setItemText(item, text)
 
     @deprecated
     def set_text(self, text: str) -> None:
         self.setText(text)
 
     def text(self) -> str:
-        return self._qwidget.lineEdit().text()
+        return self.qComboBox.lineEdit().text()
 
-    def update_style(self):
+    def update_style(self) -> None:
         # There seems to be an issue with specifying padding-top and
         # padding-bottom for a QComboBox. The internal pop menu also gets
         # padding added, resulting in ugly white borders at the top/bottom of
@@ -103,7 +106,7 @@ class ComboBox(Widget):
         if not padding:
             # Indicates that we do not want custom styling
             return
-        fontmetrics = QFontMetrics(self._qwidget.font())
+        fontmetrics = QFontMetrics(self.qComboBox.font())
         fontheight = fontmetrics.height()
         # print(fontheight)
         # FIXME: Assumed
@@ -112,9 +115,11 @@ class ComboBox(Widget):
         self.set_min_height(min_height)
 
         padding = theme.textfield_padding()
+        if padding is None:
+            padding = Padding(0, 0, 0, 0)
         # Padding top/bottom does not work before it does not influence the
         # parent (ComboBox) height.
-        self._qwidget.lineEdit().setStyleSheet(
+        self.qComboBox.lineEdit().setStyleSheet(
             f"""
             QLineEdit {{
                 /*
@@ -132,7 +137,7 @@ class ComboBox(Widget):
             }}
         """
         )
-        self._qwidget.setStyleSheet(
+        self.qComboBox.setStyleSheet(
             f"""
             QComboBox {{
                 /*

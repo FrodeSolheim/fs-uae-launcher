@@ -1,6 +1,6 @@
 # WHDLoad support
 
-[WHDLoad](http://whdload.de/) is a sofware solution used to (primarily)
+[WHDLoad](https://whdload.de/) is a sofware solution used to (primarily)
 allow floppy-based games to be installed to an Amiga hard drive and run
 from Workbench. Custom WHDLoad "slaves" are written for each game, which
 patches the game to work on modern HD-based Amigas.
@@ -20,7 +20,7 @@ FS-UAE itself.
 A WHDLoad game archive is an archive (`.zip` or `.lha`) containing a single
 WHDLoad-installed game.
 
-Please note that the archives available from [whdload.de](http://whdload.de/)
+Please note that the archives available from [whdload.de](https://whdload.de/)
 are _installers_, not game archives. In order to create a game archive you
 run to run the WHDLoad installer for a game, and then create a `.zip` or
 `.lha` archive containing the destination directory where you installed the

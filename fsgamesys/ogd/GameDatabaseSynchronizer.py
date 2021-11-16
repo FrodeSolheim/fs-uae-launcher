@@ -295,6 +295,7 @@ class GameDatabaseSynchronizer(object):
             if is_http_url(self.host):
                 url_prefix = self.host
             else:
+                # FIXME: https
                 url_prefix = "http://{}".format(self.host)
         else:
             url_prefix = openretro_url_prefix()

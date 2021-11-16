@@ -3,7 +3,9 @@ import os
 import sys
 import threading
 import time
-from typing import Any
+from typing import Any, overload
+
+from typing_extensions import Literal
 
 import fsboot
 from fsbc.paths import Paths
@@ -60,7 +62,7 @@ class Application(object):
         cls._instance = instance
         # Settings.instance().set_path(instance.get_settings_path())
 
-    def __init__(self, name="", version=""):
+    def __init__(self, name: str = "", version: str = "") -> None:
         # if Application.instance is not None:
         #     raise Exception("An application instance already exists")
         # Application.instance = self
@@ -82,7 +84,7 @@ class Application(object):
     def set_stop_flag(self):
         self.stop_flag = True
 
-    def stop(self):
+    def stop(self) -> None:
         self.set_stop_flag()
 
     def wait(self):
@@ -194,7 +196,7 @@ class Application(object):
         logger.warning("Application.get_settings_path not implemented")
 
     @property
-    def settings(self):
+    def settings(self) -> Settings:
         return Settings.instance()
 
 
@@ -203,6 +205,14 @@ def call_after(func, *args, **kwargs):
 
 
 class ApplicationInstanceProxy(object):
+    @property
+    def settings(self) -> Settings:
+        return Application.instance().settings
+
+    # @overload
+    # def __getattr__(self, name: Literal["settings"]) -> Settings:
+    #     ...
+
     def __getattr__(self, name: str):
         return getattr(Application.instance(), name)
 

@@ -1,2 +1,5 @@
-# noinspection PyUnresolvedReferences
-from fspy.decorators import deprecated
+# FIXME: Remove module
+
+from fscore.deprecated import deprecated
+
+__all__ = ["deprecated"]

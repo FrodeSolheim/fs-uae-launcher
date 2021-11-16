@@ -5,7 +5,7 @@ from fsgamesys.util.gamenameutil import GameNameUtil
 
 class DiskUtil(object):
     @classmethod
-    def find_disks(cls, path, base_names=None, script=None):
+    def find_disks(cls, path: str, base_names=None, script=None):
         disks = [path]
         print("")
         print("FIRST DISK", path)

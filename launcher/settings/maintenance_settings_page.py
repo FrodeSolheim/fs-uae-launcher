@@ -1,4 +1,5 @@
 from fsbc.task import Task
+from fsgamesys.BaseDatabase import BaseDatabase
 from fsgamesys.context import fsgs
 from fsgamesys.Database import Database
 from fsgamesys.filedatabase import FileDatabase
@@ -30,7 +31,7 @@ from launcher.i18n import gettext
 
 
 class DefragmentDatabasesTask(Task):
-    def __init__(self):
+    def __init__(self) -> None:
         Task.__init__(self, gettext("Defragment Databases"))
 
     def run(self):
@@ -42,7 +43,7 @@ class DefragmentDatabasesTask(Task):
         self.stop_check()
         self.defragment(Database.get_instance(), "Database.sqlite")
 
-    def defragment(self, database, name):
+    def defragment(self, database: BaseDatabase, name: str) -> None:
         self.set_progress(gettext("Defragmenting {name}").format(name=name))
         with database:
             cursor = database.cursor()

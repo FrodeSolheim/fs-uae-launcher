@@ -1,5 +1,8 @@
+from typing import List
+
 from fsbc.application import app
 from fsui import Image, ImageButton
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 
@@ -7,7 +10,7 @@ from launcher.launcher_settings import LauncherSettings
 class VolumeButtonBase:
     """Mixin class also used by the workspace/titlebar fullscreen button."""
 
-    def __init__(self, parent, icons):
+    def __init__(self, parent: Widget, icons: List[Image]) -> None:
         print("FullscreenToggle.__init__")
         super().__init__(parent, icons)
         self.icons = icons
@@ -16,7 +19,7 @@ class VolumeButtonBase:
         self.on_setting("volume", app.settings["volume"], initial=True)
         LauncherSettings.add_listener(self)
 
-    def on_activate(self):
+    def on_activate(self) -> None:
         if self.volume == 100:
             app.settings["volume"] = "0"
         elif self.volume == 0:
@@ -26,11 +29,11 @@ class VolumeButtonBase:
         else:
             app.settings["volume"] = "100"
 
-    def onDestroy(self):
+    def onDestroy(self) -> None:
         LauncherSettings.remove_listener(self)
         super().onDestroy()
 
-    def on_setting(self, key, value, initial=False):
+    def on_setting(self, key: str, value: str, initial: bool = False) -> None:
         if key == "volume":
             try:
                 self.volume = int(value)
@@ -48,19 +51,19 @@ class VolumeButtonBase:
                 icon = self.icons[1]
             self.__set_image(icon, initial=initial)
 
-    def __set_image(self, image, initial):
+    def __set_image(self, image: Image, initial: bool):
         if not initial:
             # pylint: disable=no-member
             self.set_image(image)
 
 
 class ButtonWrapper(ImageButton):
-    def __init__(self, parent, icons):
+    def __init__(self, parent: Widget, icons: List[Image]) -> None:
         super().__init__(parent, icons[0])
 
 
 class VolumeButton(VolumeButtonBase, ButtonWrapper):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(
             parent,
             [

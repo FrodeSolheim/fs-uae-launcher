@@ -1,14 +1,16 @@
 import hashlib
 import os
+from typing import Optional
 
 from fsgamesys.amiga.rommanager import ROMManager
 from fsgamesys.archive import Archive
+from fsui import TopLevelWidget
 
 EMPTY_SHA1 = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
 
-
+# FIXME: Move to Launcher?
 class ChecksumTool:
-    def __init__(self, parent=None):
+    def __init__(self, parent: Optional[TopLevelWidget] = None):
         self.parent = parent
         # fsui.Window.__init__(self, parent, "Checksumming")
         # self.layout = fsui.VerticalLayout()
@@ -17,7 +19,7 @@ class ChecksumTool:
         # self.layout.add_spacer(6)
         # #self.center_on_parent()
 
-    def checksum(self, path: str):
+    def checksum(self, path: str) -> str:
         print("[CHECKSUM]", repr(path))
         archive = Archive(path)
         if os.path.exists(path):

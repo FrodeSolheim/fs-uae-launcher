@@ -3,24 +3,26 @@ import logging
 from pkg_resources import resource_stream
 
 from fscore.resources import Resources as BaseResources
+from fsui.qt import QImage
 
 logger = logging.getLogger("arcade")
 
 
-def _(msg):
+def _(msg: str) -> str:
     return str(msg)
 
 
+# FIXME: Incorrect argument order
 def ngettext(n, msg1, msg2):
     return str(msg1) if n == 1 else str(msg2)
 
 
 class Resources(BaseResources):
-    def __init__(self, package):
+    def __init__(self, package: str):
         BaseResources.__init__(self, package, "data")
         self.req = package
 
-    def resource_pil_image(self, resource):
+    def resource_pil_image(self, resource: str):
         # resource_name = encode_path(u'res/' + resource_name)
         # return resource_pil_image(self.req, resource_name)
         stream = self.stream(resource)
@@ -29,22 +31,20 @@ class Resources(BaseResources):
 
         return Image.open(stream)
 
-    def resource_qt_image(self, resource):
-        from fsui.qt import QImage
-
+    def resource_qt_image(self, resource: str) -> QImage:
         stream = self.stream(resource)
         im = QImage()
         im.loadFromData(stream.read())
         return im
 
-    def resource_stream(self, resource):
+    def resource_stream(self, resource: str):
         return self.stream(resource)
 
-    def resource_filename(self, resource):
+    def resource_filename(self, resource: str):
         return self.path(resource)
 
 
-def resource_pil_image(package_or_requirement, resource_name):
+def resource_pil_image(package_or_requirement: str, resource_name: str):
     # print("resource_pil_image", package_or_requirement, resource_name)
     stream = resource_stream(package_or_requirement, resource_name)
     # noinspection PyUnresolvedReferences

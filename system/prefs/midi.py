@@ -3,6 +3,7 @@ from typing import List
 
 from fsgamesys.plugins.pluginexecutablefinder import PluginExecutableFinder
 from fsui import Panel
+from fswidgets.widget import Widget
 from launcher.fswidgets2.flexcontainer import VerticalFlexContainer
 from launcher.fswidgets2.textarea import TextArea
 from launcher.translation import t
@@ -24,7 +25,7 @@ class MidiPrefsWindow(BasePrefsWindow2):
 
 
 class MidiPrefsPanel(Panel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent)
         # FIXME
         self.set_min_size((640, 400))

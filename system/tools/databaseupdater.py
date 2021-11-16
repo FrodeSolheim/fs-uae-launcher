@@ -1,7 +1,10 @@
+from typing import Optional, Tuple, Union
+
 import fsui
 from fsgamesys.ogd.refresh import DatabaseRefreshTask
 from fsui import VerticalLayout
 from fsui.extra.iconheader import IconHeader
+from fsui.qt.toplevelwidget import TopLevelWidget
 
 # from workspace.shell import SimpleApplication
 from launcher.res import gettext
@@ -12,7 +15,7 @@ from workspace.ui.theme import WorkspaceTheme
 
 
 class DatabaseUpdaterWindow(Window):
-    def __init__(self, parent=None):
+    def __init__(self, parent: Optional[TopLevelWidget] = None) -> None:
         print("DatabaseUpdaterWindow parent =", parent)
         title = gettext("Database updater")
         super().__init__(parent, title=title, maximizable=False)
@@ -41,10 +44,6 @@ class DatabaseUpdaterWindow(Window):
         self.stop_button.activated.connect(self.on_abort_activated)
         hori_layout.add(self.stop_button)
 
-        # if self.window().theme.has_close_buttons:
-        #     self.close_button = CloseButton(self)
-        #     hori_layout.add(self.close_button, fill=True, margin_left=10)
-
         self.set_size(self.layout.get_min_size())
         self.center_on_parent()
 
@@ -57,28 +56,28 @@ class DatabaseUpdaterWindow(Window):
 
         self.closed.connect(self.__on_closed)
 
-    def __del__(self):
+    def __del__(self) -> None:
         print("DatabaseUpdaterWindow.__del__")
 
     # def on_close(self):
     #     print("DatabaseUpdaterWindow.on_close")
     #     self.task.stop()
 
-    def __on_closed(self):
+    def __on_closed(self) -> None:
         self.task.stop()
         self.task.progressed.disconnect(self.on_progress)
         self.task.failed.disconnect(self.on_failure)
         self.task.succeeded.disconnect(self.close)
         self.task.stopped.disconnect(self.close)
 
-    def on_abort_activated(self):
+    def on_abort_activated(self) -> None:
         self.task.stop()
         self.stop_button.set_enabled(False)
 
-    def on_failure(self, message):
+    def on_failure(self, message: str) -> None:
         fsui.show_error(message, parent=self.get_window())
 
-    def on_progress(self, message):
+    def on_progress(self, message: Union[str, Tuple[str, ...]]) -> None:
         if not isinstance(message, str):
             message = message[0]
         # print("on_progress", status)

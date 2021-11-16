@@ -30,6 +30,6 @@ class SetupWizardDialog(fsui.Window):
         button_layout.add(self.prev_button, fill=True, margin_left=10)
         self.next_button = NextButton(self)
         button_layout.add(self.next_button, fill=True, margin_left=10)
-        if self.window().theme.has_close_buttons:
+        if self.window.theme.has_close_buttons:
             self.close_button = CloseButton(self)
             button_layout.add(self.close_button, fill=True, margin_left=10)

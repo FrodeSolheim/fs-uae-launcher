@@ -70,7 +70,7 @@ class Settings(object):
     def items(self):
         return self.values.items()
 
-    def __getitem__(self, key: str):
+    def __getitem__(self, key: str) -> str:
         return self.get(key)
 
     def __setitem__(self, key: str, value: str) -> None:

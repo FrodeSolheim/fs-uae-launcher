@@ -1,5 +1,9 @@
+from typing import Optional
+
+from fsgamesys.config.configevent import ConfigEvent
 from fsui import Color, Image, Panel
-from launcher.ui.imageloader import ImageLoader
+from fswidgets.widget import Widget
+from launcher.ui.imageloader import ImageLoader, ImageLoaderRequest
 from system.classes.configdispatch import ConfigDispatch
 from system.exceptionhandler import exceptionhandler
 
@@ -18,8 +22,13 @@ sha1_keys = {
 
 class ScreenshotPanel(Panel):
     def __init__(
-        self, parent, index, imageLoader, default_image, overlay_image
-    ):
+        self,
+        parent: Widget,
+        index: int,
+        imageLoader: ImageLoader,
+        default_image: Optional[Image],
+        overlay_image: Optional[Image],
+    ) -> None:
         super().__init__(parent)
         self.index = index
         self.image_size = SCREEN_SIZE
@@ -35,11 +44,13 @@ class ScreenshotPanel(Panel):
         self.image = self.default_image
         ConfigDispatch(self, {sha1_keys[index]: self.__on_sha1_config})
 
-    def get_image_path(self):
+    def get_image_path(self) -> Optional[str]:
         if self._sha1:
             return f"sha1:{self._sha1}"
+        else:
+            return None
 
-    def __on_image_loaded(self, request):
+    def __on_image_loaded(self, request: ImageLoaderRequest) -> None:
         # print("on_load, request.image =", request.image)
         # if request.path != self.image_paths[request.args["index"]]:
         #     return
@@ -57,7 +68,7 @@ class ScreenshotPanel(Panel):
     # FIXME: Why is @exceptionhandler needed on this callback? It is generally
     # not needed on other event handlers..?
     @exceptionhandler
-    def on_paint(self):
+    def on_paint(self) -> None:
         dc = self.create_dc()
         # self.draw_background(dc)
         # size = self.size()
@@ -81,12 +92,12 @@ class ScreenshotPanel(Panel):
             dc.drawScaledImage(self.image, x, y, width, height)
         # dc.draw_image(self.overlay_image, x - 10, y - 10)
 
-    def __on_sha1_config(self, event):
+    def __on_sha1_config(self, event: ConfigEvent) -> None:
         if event.value != self._sha1:
             self._sha1 = event.value
             self.update_image()
 
-    def update_image(self, force: bool = False):
+    def update_image(self, force: bool = False) -> None:
         path = self.get_image_path()
         if path != self._path or force:
             self._path = path
@@ -108,7 +119,7 @@ class ScreenshotPanel(Panel):
             self.image = self.default_image
             self.refresh()
 
-    def on_resize(self):
+    def on_resize(self) -> None:
         super().on_resize()
         self.image_size = self.getSize()
         self.update_image(force=True)

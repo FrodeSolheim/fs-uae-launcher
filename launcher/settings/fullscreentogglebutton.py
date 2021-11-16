@@ -1,5 +1,8 @@
+from typing import List
+
 from fsbc.application import app
 from fsui import Image, ImageButton
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 
@@ -7,7 +10,7 @@ from launcher.launcher_settings import LauncherSettings
 class FullscreenToggleButtonBase:
     """Mixin class also used by the workspace/titlebar fullscreen button."""
 
-    def __init__(self, parent, icons):
+    def __init__(self, parent: Widget, icons: List[Image]) -> None:
         print("FullscreenToggle.__init__")
         super().__init__(parent, icons)
         self.icons = icons
@@ -28,7 +31,7 @@ class FullscreenToggleButtonBase:
         LauncherSettings.remove_listener(self)
         super().onDestroy()
 
-    def on_setting(self, key, value, initial=False):
+    def on_setting(self, key: str, value: str, initial: bool = False):
         print("on_setting", key, value, initial)
         if key == "fullscreen":
             if value == "1":
@@ -45,12 +48,12 @@ class FullscreenToggleButtonBase:
 
 
 class ButtonWrapper(ImageButton):
-    def __init__(self, parent, icons):
+    def __init__(self, parent: Widget, icons: List[Image]):
         super().__init__(parent, icons[0])
 
 
 class FullscreenToggleButton(FullscreenToggleButtonBase, ButtonWrapper):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(
             parent,
             [

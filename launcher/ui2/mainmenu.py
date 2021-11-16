@@ -2,12 +2,12 @@ import weakref
 
 from fscore.developermode import DeveloperMode
 from fsgamesys.product import Product
-from fsui import Menu, PopupMenu
+from fsui import PopupMenu
 from fsui.qt.toplevelwidget import TopLevelWidget
 from fswidgets.widget import Widget
 from launcher.context import useTranslation
 from system.exceptionhandler import exceptionhandler
-from system.prefs.controller import Controller
+from system.prefs.controllers import Controllers
 from system.utilities.updater import Updater
 from system.wsopen import wsopen
 
@@ -51,7 +51,7 @@ from system.wsopen import wsopen
 
 
 class MainMenu(PopupMenu):
-    def __init__(self, parent: Widget):
+    def __init__(self, parent: Widget) -> None:
         # # FIXME: parent not needed?
         super().__init__()
 
@@ -136,20 +136,22 @@ class MainMenu(PopupMenu):
         # )
 
     def getWindow(self) -> TopLevelWidget:
-        return self._parent_ref().getWindow()
+        parent = self._parent_ref()
+        assert parent is not None
+        return parent.getWindow()  # type: ignore
 
-    def onCheckForUpdates(self):
-        Updater.open(window=self.getWindow())
+    def onCheckForUpdates(self) -> None:
+        Updater.openFrom(self.getWindow())
 
-    def onDefaultWindowSize(self):
+    def onDefaultWindowSize(self) -> None:
         window = self.getWindow()
         window.restoreDefaultSize()
 
-    def onGameControllers(self):
-        Controller.open(window=self.getWindow())
+    def onGameControllers(self) -> None:
+        Controllers.openFrom(self.getWindow())
 
-    def __on_about(self):
-        print("on_about")
+    # def __on_about(self):
+    #     print("on_about")
 
     # def __on_advanced_preferences(self):
     #     wsopen("SYS:Prefs/Advanced")
@@ -158,7 +160,7 @@ class MainMenu(PopupMenu):
     #     wsopen("SYS:Prefs/Appearance")
 
     @exceptionhandler
-    def __on_cause_chained_exception(self):
+    def __on_cause_chained_exception(self) -> None:
         try:
             print(1 / 0)
         except Exception:
@@ -168,39 +170,39 @@ class MainMenu(PopupMenu):
                 print(1 / 0)
 
     @exceptionhandler
-    def __on_cause_exception(self):
+    def __on_cause_exception(self) -> None:
         print(1 / 0)
 
     @exceptionhandler
-    def __on_cause_exception_doubled_handled(self):
+    def __on_cause_exception_doubled_handled(self) -> None:
         # This will call a method which is protected by an exception handler,
         # while also having an exception handler itself.
         self.__on_cause_exception_doubled_handled_2()
 
     @exceptionhandler
-    def __on_cause_exception_doubled_handled_2(self):
+    def __on_cause_exception_doubled_handled_2(self) -> None:
         print(1 / 0)
 
-    def __on_database_updater(self):
+    def __on_database_updater(self) -> None:
         wsopen("SYS:Tools/DatabaseUpdater", window=self.getWindow())
 
-    def __on_execute_command(self):
+    def __on_execute_command(self) -> None:
         wsopen("Special:Execute")
 
-    def __on_file_scanner(self):
+    def __on_file_scanner(self) -> None:
         wsopen("SYS:Tools/FileScanner", window=self.getWindow())
 
-    def __on_new_window(self):
+    def __on_new_window(self) -> None:
         wsopen("SYS:Launcher")
 
-    def __on_preferences(self):
+    def __on_preferences(self) -> None:
         wsopen("SYS:Prefs", window=self.getWindow())
 
-    def __on_tools(self):
-        wsopen("SYS:Tools", window=self.getWindow())
+    # def __on_tools(self):
+    #     wsopen("SYS:Tools", window=self.getWindow())
 
-    def __on_utilities(self):
+    def __on_utilities(self) -> None:
         wsopen("SYS:Utilities", window=self.getWindow())
 
-    def __on_whdload_preferences(self):
-        wsopen("SYS:Prefs/WHDLoad", window=self.getWindow())
+    # def __on_whdload_preferences(self):
+    #     wsopen("SYS:Prefs/WHDLoad", window=self.getWindow())

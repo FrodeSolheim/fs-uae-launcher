@@ -2,6 +2,7 @@ from typing import Optional
 
 import fsui
 from fscore.system import System
+from fsui.common.layout import Layout
 from fsui.qt.panel import Panel
 from fswidgets.types import Size
 from fswidgets.widget import Widget
@@ -12,6 +13,10 @@ from .titlebar import TitleBar
 
 
 class Window(fsui.Window):
+    layout: Layout
+    windowBorderWidget: Optional[WindowBorder]
+    __titlebar: Optional[TitleBar]
+
     def __init__(
         self,
         parent: Optional[Widget],
@@ -112,7 +117,7 @@ class Window(fsui.Window):
         if self.windowBorderWidget:
             w, h = self.getRealSize()
             self.windowBorderWidget.setPositionAndSize((0, 0), (w, h))
-        if self.__titlebar:
+        if self.__titlebar is not None:
             w, h = self.getRealSize()
             # self.__titlebar.setPosition((0, 0))
             # self.__titlebar.setSize((w, self.__titlebar.getSize()[1]))

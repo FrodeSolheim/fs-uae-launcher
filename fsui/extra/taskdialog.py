@@ -1,10 +1,14 @@
+from typing import Optional, Tuple, Union
+
 import fsui
+from fsbc.task import Task
 from fsui.extra.iconheader import IconHeader
+from fsui.qt.toplevelwidget import TopLevelWidget
 from launcher.res import gettext
 
 
 class TaskDialog(fsui.Window):
-    def __init__(self, parent, task):
+    def __init__(self, parent: Optional[TopLevelWidget], task: Task) -> None:
         fsui.Window.__init__(self, parent, task.get_task_name())
         self.set_icon(fsui.Icon("tools", "pkg:workspace"))
 
@@ -36,20 +40,20 @@ class TaskDialog(fsui.Window):
         self.task.stopped.connect(self.close)
         self.task.start()
 
-    def __del__(self):
+    def __del__(self) -> None:
         print("TaskDialog.__del__")
 
-    def on_close(self):
+    def on_close(self) -> None:
         self.task.stop()
 
-    def on_abort_activated(self):
+    def on_abort_activated(self) -> None:
         self.task.stop()
         self.abort_button.set_enabled(False)
 
-    def on_failure(self, message):
+    def on_failure(self, message: str) -> None:
         fsui.show_error(message, parent=self.get_window())
 
-    def on_progress(self, message):
+    def on_progress(self, message: Union[str, Tuple[str, ...]]) -> None:
         if not isinstance(message, str):
             message = message[0]
         # print("on_progress", status)

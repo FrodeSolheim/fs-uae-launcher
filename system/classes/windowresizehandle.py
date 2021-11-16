@@ -18,8 +18,8 @@ class WindowResizeHandle(Panel):
         # self.set_background_color(Color(0xAEAEAE))
 
         self.start_position = None
-        self.start_size = None
-        self.minimum_window_size = None
+        self.start_size = (0, 0)
+        self.minimum_window_size = (0, 0)
         self.set_resize_cursor()
 
         self.color1 = Color(0x666666)
@@ -42,6 +42,8 @@ class WindowResizeHandle(Panel):
 
     def on_mouse_motion(self):
         if self.start_position is not None:
+            if self.start_size is not None:
+                pass
             position = get_mouse_position()
             dx = position[0] - self.start_position[0]
             dy = position[1] - self.start_position[1]
@@ -53,14 +55,8 @@ class WindowResizeHandle(Panel):
         dc = self.create_dc()
         dc.clear()
         w, h = self.size()
-        # print(w, h)
-        # dc.draw_rectangle(0, 0, w, h, Color(0xFFFFFF))
 
-        # FIXME: Move qt code to dc class
-
-        from fsui.qt import QPainter
-
-        dc.qpainter.setRenderHint(QPainter.Antialiasing, 0)
+        dc.setAntialiasing(False)
 
         for i in range(16):
             s = i % 3

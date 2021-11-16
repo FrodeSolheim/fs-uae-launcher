@@ -1,4 +1,5 @@
 import os
+from typing import List
 
 import fsui
 from fsgamesys.FSGSDirectories import FSGSDirectories
@@ -96,8 +97,8 @@ class LauncherFilePicker(object):
     def destroy(self):
         pass
 
-    def get_path(self):
+    def get_path(self) -> str:
         return self.result
 
-    def get_paths(self):
+    def get_paths(self) -> List[str]:
         return self.result

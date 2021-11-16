@@ -1,11 +1,12 @@
 import fsui
 from fsbc.application import app
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
 
 class FullscreenModeButton(fsui.ImageButton):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         self.window_icon = fsui.Image(
             "launcher:/data/16x16/fullscreen_window.png"
         )
@@ -23,11 +24,11 @@ class FullscreenModeButton(fsui.ImageButton):
         self.fullscreen_mode = "desktop"
         SettingsBehavior(self, ["fullscreen", "fullscreen_mode"])
 
-    def on_fullscreen_setting(self, value):
+    def on_fullscreen_setting(self, value: str):
         # self.set_enabled(value == "1")
         pass
 
-    def on_fullscreen_mode_setting(self, value):
+    def on_fullscreen_mode_setting(self, value: str):
         if value == "fullscreen":
             self.fullscreen_mode = "fullscreen"
             self.set_image(self.fullscreen_icon)

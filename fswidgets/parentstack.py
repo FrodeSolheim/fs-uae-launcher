@@ -39,9 +39,8 @@ class Parent:
         exc_type: Optional[Type[BaseException]],
         exc_val: Optional[BaseException],
         exc_tb: Optional[TracebackType],
-    ) -> bool:
+    ) -> None:
         assert ParentStack.stack.pop() == self.parent
-        return False
 
 
 class AsParent:
@@ -56,6 +55,5 @@ class AsParent:
         exc_type: Optional[Type[BaseException]],
         exc_val: Optional[BaseException],
         exc_tb: Optional[TracebackType],
-    ) -> bool:
+    ) -> None:
         assert ParentStack.stack.pop() == self.parent
-        return False

@@ -1,4 +1,4 @@
-from typing import Set
+from typing import Callable, List, Optional, Set, Tuple
 
 import fsui
 from fsui.qt.icon import Icon
@@ -17,18 +17,18 @@ class SettingsPage(fsui.Panel):
         self.layout.padding_bottom = 20
         self.layout.padding_left = 20
         self.layout.padding_right = 20
-        self.icon_header = None
+        self.icon_header: Optional[SettingsHeader] = None
         self.options_on_page: Set[str] = set()
         self.style = Style({"flexGrow": 1})
 
-    def create_option_label(self, parent, label):
+    def create_option_label(self, parent: Widget, label: str):
         return OptionUI.create_option_label(parent, label)
 
     def add_header(self, icon: Icon, title: str, subtitle: str = ""):
         self.icon_header = SettingsHeader(self, icon, title, subtitle)
         self.layout.add(self.icon_header, fill=True, margin_bottom=20)
 
-    def add_divider(self):  # , top_margin=10, bottom_margin=10):
+    def add_divider(self) -> None:  # , top_margin=10, bottom_margin=10):
         OptionUI.add_divider(
             self,
             self.layout,
@@ -52,8 +52,10 @@ class SettingsPage(fsui.Panel):
         description: str = "",
         margin_top: int = 10,
         margin_bottom: int = 10,
-        warnings=None,
-    ):
+        warnings: Optional[
+            Tuple[Callable[[List[str]], Optional[str]], List[str]]
+        ] = None,
+    ) -> Widget:
         group = OptionUI.create_group(
             self, name, description=description, warnings=warnings
         )
@@ -66,10 +68,10 @@ class SettingsPage(fsui.Panel):
         self.options_on_page.add(name)
         return group
 
-    def add_section(self, title):
+    def add_section(self, title: str) -> None:
         label = fsui.HeadingLabel(self, title)
         self.layout.add(label, margin_top=20, margin_bottom=20)
 
-    def reset_to_defaults(self):
+    def reset_to_defaults(self) -> None:
         for option in self.options_on_page:
             LauncherSettings.set(option, "")

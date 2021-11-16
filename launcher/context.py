@@ -1,5 +1,5 @@
 # import weakref
-from typing import TYPE_CHECKING, Optional, cast
+from typing import TYPE_CHECKING, Callable, Optional, cast
 
 from fsgamesys.FSGameSystemContext import FSGameSystemContext
 from fsui.context import get_window
@@ -32,11 +32,11 @@ def useLauncherWindow(widget: Optional[Widget] = None):
     return cast(Launcher2Window, widget.getWindow())
 
 
-def useSettings():
+def useSettings() -> LauncherSettings2:
     return LauncherSettings2()
 
 
-def useTranslation():
+def useTranslation() -> Callable[[str], str]:
     return gettext
 
 
@@ -86,10 +86,10 @@ def gscontext(widget: Widget) -> FSGameSystemContext:
 # FIXME: Replaced with fsui.get_parent?
 def parent(widget: Widget):
     try:
-        return widget._cached_parent
+        return widget.internalCachedParent
     except AttributeError:
-        widget._cached_parent = widget.parent()
-        return widget._cached_parent
+        widget.internalCachedParent = widget.parent()
+        return widget.internalCachedParent
     # return widget.parent()
 
 
@@ -133,7 +133,7 @@ def qwindow(widget: Widget):
 # FIXME: Replaced with fsui.get_window?
 def window(widget: Widget):
     try:
-        return widget._cached_window
+        return widget.internalCachedWindow
     except AttributeError:
-        widget._cached_window = widget.window
-        return widget._cached_window
+        widget.internalCachedWindow = widget.window
+        return widget.internalCachedWindow

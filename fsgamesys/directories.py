@@ -1,5 +1,6 @@
 import os
 import tempfile
+from typing import Dict
 
 from fsgamesys.FSGSDirectories import FSGSDirectories
 
@@ -13,7 +14,7 @@ Data/Saves/Amiga
 """
 
 
-def saves_directory():
+def saves_directory() -> str:
     return FSGSDirectories.saves_dir()
 
 
@@ -22,7 +23,7 @@ _temp_directory_t = None
 _temp_counter = 0
 
 
-def temp_directory():
+def temp_directory() -> str:
     global _temp_directory
     global _temp_directory_t
     if _temp_directory is None:
@@ -34,12 +35,13 @@ def temp_directory():
     return _temp_directory_t
 
 
-def temp_directory_for_config(config):
+# FIXME: Not sure about the Dict type here
+def temp_directory_for_config(config: Dict[str, str]) -> str:
     global _temp_counter
     _temp_counter += 1
-    path = os.path.join(temp_directory, str(_temp_counter))
+    path = os.path.join(temp_directory(), str(_temp_counter))
     print("FSGS new temp directory", path)
     # If the directory already exists, an exception is raised, and we want
-    # that.
+    # that in this case.
     os.mkdir(path)
     return path

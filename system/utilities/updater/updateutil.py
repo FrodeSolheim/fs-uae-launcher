@@ -21,7 +21,7 @@ class UpdateUtil:
         return configParser.get("plugin", "version")
 
     @classmethod
-    def getPluginDirectory(cls, pluginName: str):
+    def getPluginDirectory(cls, pluginName: str) -> str:
         systemDir = cls.getSystemDirectory()
         return os.path.join(systemDir, pluginName)
 

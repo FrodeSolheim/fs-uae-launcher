@@ -321,7 +321,7 @@ class Theme(BaseTheme):
     def widget_height(self):
         return self.WIDGET_HEIGHT
 
-    def window_bgcolor(self):
+    def window_bgcolor(self) -> Color:
         return self._window_bgcolor
 
     def _update_color(self, name, value):

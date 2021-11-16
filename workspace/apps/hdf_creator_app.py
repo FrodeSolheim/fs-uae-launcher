@@ -21,7 +21,7 @@ class HDFCreatorWindow(fsui.DialogWindow):
         super().__init__(parent, title=title)
         self.theme = WorkspaceTheme.instance()
         buttons, layout = fsui.DialogButtons.create_with_layout(self)
-        if self.window().theme.has_close_buttons:
+        if self.theme.has_close_buttons:
             buttons.create_close_button()
 
         self.dialog = None

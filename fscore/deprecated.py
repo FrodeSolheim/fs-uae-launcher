@@ -28,9 +28,12 @@ DeprecatedFunction = Callable[
     None,
 ]
 
+F = TypeVar("F", bound=Callable[..., Any])
+
 
 # def deprecated(function: Any) -> DeprecatedFunction:
-def deprecated(function: Any) -> Any:
+# def deprecated(function: Any) -> Any:
+def deprecated(function: F) -> F:
     """The return signature is invalid on purpose, to mark errors when used."""
 
     # FIXME: Check option
@@ -51,4 +54,6 @@ def deprecated(function: Any) -> Any:
     else:
         # Return function unmodified for best performance, but cast type to
         # let the static type analyzers flag usage.
-        return cast(DeprecatedFunction, function)
+        # return cast(DeprecatedFunction, function)
+        # return cast(F, wrapper)
+        return function

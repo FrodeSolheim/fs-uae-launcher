@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fsui import Image, Panel
 from fswidgets.decorators import constructor
@@ -9,13 +9,13 @@ from launcher.ui2.screenshotpanel import ScreenshotPanel
 
 class ScreenshotsPanel(Panel):
     @constructor
-    def __init__(self, parent: Widget):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         # self.set_min_height(10 + 150 + 10)
         # self.imageLoader = ImageLoader()
         # default_image = Image("launcher:/data/screenshot.png")
         # default_image.resize(SCREEN_SIZE)
-        default_image = None
+        default_image: Optional[Image] = None
         overlay_image = Image("launcher:/data/screenshot_overlay.png")
         imageLoader = useImageLoader(self)
 
@@ -30,7 +30,7 @@ class ScreenshotsPanel(Panel):
             self.screenshotpanels.append(panel)
             x += panel.getWidth() + 20
 
-    def on_resize(self):
+    def on_resize(self) -> None:
         super().on_resize()
         height = self.getHeight() - 20
         width = (height * 4) // 3

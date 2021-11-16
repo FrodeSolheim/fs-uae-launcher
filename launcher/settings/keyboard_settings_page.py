@@ -1,11 +1,12 @@
 import fsui
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.settings.settings_page import SettingsPage
 from system.prefs.components.notworking import PrefsNotWorkingWarningPanel
 
 
 class KeyboardSettingsPage(SettingsPage):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent)
 
         PrefsNotWorkingWarningPanel(parent=self)

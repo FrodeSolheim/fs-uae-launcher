@@ -1,11 +1,14 @@
+from typing import Optional
+
 import fsui
-from fscore.observable import Disposer, isObservable
 from fswidgets.parentstack import ParentStack
-from launcher.fswidgets2.style import Style
+from launcher.fswidgets2.style import Style, StyleParam
 
 
 class Spacer(fsui.Panel):
-    def __init__(self, size=20, *, style=None):
+    def __init__(
+        self, size: int = 20, *, style: Optional[StyleParam] = None
+    ) -> None:
         parent = ParentStack.top()
         super().__init__(parent)
 
@@ -14,4 +17,5 @@ class Spacer(fsui.Panel):
             default_style.update(style)
         self.style = default_style
 
-        parent.layout.add(self)
+        if parent.layout is not None:
+            parent.layout.add(self)

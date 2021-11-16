@@ -37,7 +37,7 @@ def get_desktop_dir(allow_create=True):
     return path
 
 
-def get_documents_dir(create=False):
+def get_documents_dir(create: bool = False) -> str:
     return fsboot.documents_dir(create=create)
 
 

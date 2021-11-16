@@ -1,9 +1,10 @@
 import hashlib
 import os
 from dataclasses import dataclass
-from typing import IO, List, Optional
+from typing import IO, Callable, List, Optional
 
 from fsgamesys.archive import Archive
+from fsgamesys.filedatabase import FileDatabase
 
 
 @dataclass
@@ -21,7 +22,12 @@ class PatchableRom:
 
 class ROMManager(object):
     @classmethod
-    def add_rom_to_database(cls, path: str, database, log_function=None):
+    def add_rom_to_database(
+        cls,
+        path: str,
+        database: FileDatabase,
+        log_function: Optional[Callable[[str], None]] = None,
+    ):
         if log_function is None:
             log_function = print
         try:
@@ -45,7 +51,7 @@ class ROMManager(object):
             )
         )
         database.delete_file(path=path)
-        database.add_file(path=path, sha1=rom["sha1"], mtime=mtime, size=size)
+        database.add_file(path=path, sha1=rom.sha1, mtime=mtime, size=size)
 
     @classmethod
     def decrypt_archive_rom(

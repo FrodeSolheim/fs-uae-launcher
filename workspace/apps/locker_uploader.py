@@ -53,7 +53,7 @@ class LockerUploaderWindow(fsui.DialogWindow):
         self.stop_button.set_enabled(False)
         hori_layout.add(self.stop_button, margin_left=10)
 
-        if self.window().theme.has_close_buttons:
+        if self.theme.has_close_buttons:
             self.close_button = CloseButton(self)
             hori_layout.add(self.close_button, margin_left=10)
         else:

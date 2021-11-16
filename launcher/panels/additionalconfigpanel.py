@@ -1,4 +1,5 @@
 import fsui
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from launcher.option import Option
 from launcher.ui.config.configdialog import ConfigDialog
@@ -7,7 +8,7 @@ from launcher.ui.IconButton import IconButton
 
 
 class AdditionalConfigPanel(ConfigPanel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
 
         hori_layout = fsui.HorizontalLayout()
@@ -42,9 +43,9 @@ class AdditionalConfigPanel(ConfigPanel):
 
 
 class CustomConfigButton(IconButton):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent, "16x16/settings.png")
         self.activated.connect(self.__activated)
 
     def __activated(self):
-        ConfigDialog.run(self.window)
+        ConfigDialog.run(self.getWindow())

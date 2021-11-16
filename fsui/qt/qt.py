@@ -2,13 +2,19 @@ import functools
 import os
 import sys
 
-# pylint: disable=unused-wildcard-import
-if os.environ.get("QT_API", "").lower() == "pyside2":
-    # noinspection PyUnresolvedReferences
-    from fsui.qt.pyside2 import *
-else:
-    # noinspection PyUnresolvedReferences
-    from fsui.qt.pyqt5 import *
+import fsbc.application
+import fsbc.desktop
+import fstd.desktop
+from fsbc.settings import Settings
+from fsgamesys.options.option import Option
+
+# # pylint: disable=unused-wildcard-import
+# if os.environ.get("QT_API", "").lower() == "pyside2":
+#     # noinspection PyUnresolvedReferences
+#     from fsui.qt.pyside2 import *
+# else:
+#     from fsui.qt.pyqt5 import *
+from fsui.qt.pyqt5 import *
 
 # from fsui.qt.pyqt5 import (
 #     QAbstractListModel,
@@ -62,15 +68,8 @@ else:
 #     QWidget,
 # )
 
-import fsbc.application
-import fsbc.desktop
-import fsboot
-import fstd.desktop
-from fsbc.settings import Settings
-from fsgamesys.options.option import Option
 
-
-def open_url_in_browser(url):
+def open_url_in_browser(url: str) -> None:
     print("[QT] open_url_in_browser", url)
     # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
     QDesktopServices.openUrl(QUrl(url))
@@ -81,7 +80,7 @@ class QtBaseApplication(QApplication):
 
 
 @functools.lru_cache()
-def init_qt():
+def init_qt() -> QApplication:
     # if sys.platform == "darwin":
     #     # qt_plugins_dir = os.path.join(
     #     #     BaseApplication.executable_dir(), "..", "Resources",
@@ -112,7 +111,7 @@ def init_qt():
 
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
-    fsbc.desktop.set_open_url_in_browser_function(open_url_in_browser)
+    fstd.desktop.set_open_url_in_browser_function(open_url_in_browser)
     qapplication = QtBaseApplication(sys.argv)
 
     initialize_qt_style(qapplication)
@@ -120,7 +119,7 @@ def init_qt():
 
 
 # noinspection PyUnboundLocalVariable
-def initialize_qt_style(qapplication):
+def initialize_qt_style(qapplication: QApplication) -> None:
     # from fsui.qt import QStyleFactory, QPalette, QColor, Qt, QFont
     fusion_variant = ""
 
@@ -144,7 +143,7 @@ def initialize_qt_style(qapplication):
     elif launcher_theme == "fws":
         use_fusion_theme = True
         fusion_variant = "fws"
-        from fsui.qt.window import FwsWindow
+        from fsui.qt.old_window import FwsWindow  # type: ignore
 
         FwsWindow.set_default()
     else:
@@ -158,12 +157,11 @@ def initialize_qt_style(qapplication):
         use_fusion_theme = True
         fusion_variant = "dark"
 
-    font = qapplication.font()
+    font = QApplication.font()
     print("FONT: Default is {} {}".format(font.family(), font.pointSize()))
 
     if use_fusion_theme:
-        # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
-        qapplication.setStyle(QStyleFactory.create("Fusion"))
+        QApplication.setStyle(QStyleFactory.create("Fusion"))
         if fusion_variant == "adwaita":
             pa = QPalette()
             # background = QColor("#f6f5f4")

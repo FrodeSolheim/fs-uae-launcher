@@ -1,5 +1,6 @@
 import fsui
 from fsgamesys.options.option import Option
+from fswidgets.widget import Widget
 from launcher.context import get_settings
 from launcher.i18n import gettext
 from launcher.settings.settings_page import SettingsPage
@@ -17,7 +18,7 @@ from system.prefs.components.defaultprefsbutton import DefaultPrefsButton
 class WHDLoadSettingsPage(SettingsPage):
     WIDTH = 500
 
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent)
 
         # label = fsui.MultiLineLabel(

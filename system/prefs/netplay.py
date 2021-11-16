@@ -1,4 +1,7 @@
+from typing import Optional
+
 from fsgamesys.options.option import Option
+from fswidgets.widget import Widget
 from launcher.i18n import gettext
 from system.classes.shellobject import shellObject
 from system.classes.windowcache import WindowCache
@@ -14,14 +17,14 @@ class NetPlay:
 
 
 class NetPlayPrefsWindow(BasePrefsWindow):
-    def __init__(self, parent):
+    def __init__(self, parent: Optional[Widget] = None):
         super().__init__(parent, title=gettext("Net play preferences"))
         self.panel = NetPlayPrefsPanel(self)
         self.layout.add(self.panel, fill=True, expand=True)
 
 
 class NetPlayPrefsPanel(BasePrefsPanel):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent)
         # FIXME
         self.set_min_size((540, 100))

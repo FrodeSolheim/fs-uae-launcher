@@ -1,7 +1,10 @@
 import weakref
 
+# from fsgamesys.FSGameSystemContext import FSGameSystemContext
+
 
 class ContextAware(object):
+    # def __init__(self, context: FSGameSystemContext):
     def __init__(self, context):
         self.__context = weakref.ref(context)
 

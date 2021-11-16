@@ -1,17 +1,22 @@
-from typing import Any, Optional
+from typing import Any, Optional, cast
 
 from fswidgets.qt.widgets import QWidget
 
 # FIXME: Using Any right now to avoid import cycles
 
+#  @overload
+# def QParent()
 
-def QParent(
+
+def QOptionalParent(
     parent: Any, window: "Optional[Any]" = False, forceRealParent: bool = False
 ) -> Optional[QWidget]:
+    # -> QWidget:
+
     # print(f"\n\n\nQParent parent={parent}")
     if parent is None:
-        # print("none")
         return None
+
     # FIXME: Better way
     from fsui.common.group import Group
 
@@ -20,6 +25,7 @@ def QParent(
         #     return parent.qcontainer
 
         if hasattr(parent, "container") and parent.container is not None:
+            assert isinstance(parent.container.qwidget, QWidget)
             return parent.container.qwidget
 
     while isinstance(parent, Group):
@@ -28,14 +34,14 @@ def QParent(
     if window:
         if hasattr(parent, "real_window"):
             # print("real_window")
-            return parent.real_window()
+            return cast(QWidget, parent.real_window())
     else:
         if hasattr(parent, "real_widget"):
             # print("real_widget")
-            return parent.real_widget()
+            return cast(QWidget, parent.real_widget())
     if hasattr(parent, "get_container"):
         # print("get_container")
-        return parent.get_container()
+        return cast(QWidget, parent.get_container())
     if isinstance(parent, QWidget):
         return parent
     # if hasattr(parent, "_qwidget"):
@@ -43,4 +49,10 @@ def QParent(
     raise Exception("Could not find QParent")
 
 
-# from fswidgets.widget import Widget
+def QParent(
+    parent: Any, window: "Optional[Any]" = False, forceRealParent: bool = False
+) -> QWidget:
+    qParent = QOptionalParent(parent, window, forceRealParent=forceRealParent)
+    if qParent is None:
+        raise Exception("Could not find QParent")
+    return qParent

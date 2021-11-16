@@ -1,11 +1,13 @@
 from fsbc.util import unused
 from fsui import HorizontalLayout, Panel
 from fsui.context import get_theme
+from fswidgets.widget import Widget
+from launcher.ui2.tabbutton import TabButton
 from launcher.ui.skin import Skin
 
 
 class TabPanel(Panel):
-    def __init__(self, parent, spacing=10):
+    def __init__(self, parent: Widget, spacing: int = 10):
         unused(spacing)
         Panel.__init__(self, parent, paintable=True)
         Skin.set_background_color(self)
@@ -21,7 +23,7 @@ class TabPanel(Panel):
         self.bgcolor = get_theme(self).window_bgcolor()
         self.set_background_color(self.bgcolor)
 
-    def select_tab(self, index):
+    def select_tab(self, index: int) -> None:
         counter = 0
         for child in self.layout.children:
             child = child.element
@@ -31,7 +33,7 @@ class TabPanel(Panel):
                         child.select()
                     counter += 1
 
-    def set_selected_tab(self, tab):
+    def set_selected_tab(self, tab: TabButton) -> None:
         for child in self.layout.children:
             child = child.element
             if hasattr(child, "type"):
@@ -44,8 +46,8 @@ class TabPanel(Panel):
                             child.state = child.STATE_NORMAL
                             child.refresh()
 
-    def add(self, button, expand=False):
+    def add(self, button: TabButton, expand: bool = False) -> None:
         self.layout.add(button, expand=expand)
 
-    def add_spacer(self, spacer=0, expand=False):
+    def add_spacer(self, spacer: int = 0, expand: bool = False) -> None:
         self.layout.add_spacer(spacer, 0, expand=expand)

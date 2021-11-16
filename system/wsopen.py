@@ -1,5 +1,5 @@
 import traceback
-from typing import Dict
+from typing import Dict, Optional, cast
 
 from fsui import Window
 from launcher.ws.shell import (
@@ -11,6 +11,7 @@ from launcher.ws.shell import (
 from launcher.ws.shellwindow import ShellWindow
 from system.c.whdload import WHDLoad
 from system.classes.executedialog import ExecuteDialog
+from system.classes.shellobject import ShellObject, ShellOpenArgs
 from system.exceptionhandler import exceptionhandler
 
 # from system.prefs.advancedprefswindow import AdvancedPrefsWindow
@@ -110,7 +111,7 @@ def simple_window_cache(window_class, window_key, window=None, parent=None):
         win.center_on_window(window)
 
 
-def wsopen_workspace(*, parent=None):
+def wsopen_workspace(*, parent=None, **kwargs):
     from launcher.ws.workspacewindow import WorkspaceWindow
 
     simple_window_cache(WorkspaceWindow, SYSTEM_C_LOADWB)
@@ -330,14 +331,32 @@ def wsopen(name: str, args=None, *, window=None, parent=None):
                 if key:
                     arguments[key.upper()] = value
             print(module)
-            WorkspaceObject = getattr(module, "WorkspaceObject", None)
-            if WorkspaceObject is not None:
-                WorkspaceObject.open(
-                    window=window,
-                    argumentString=argumentString,
-                    arguments=arguments,
-                )
+            # WorkspaceObject = getattr(module, "WorkspaceObject", None)
+            # if WorkspaceObject is not None:
+            #     WorkspaceObject.open(
+            #         window=window,
+            #         argumentString=argumentString,
+            #         arguments=arguments,
+            #     )
+            #     return
+            ShellObj = cast(
+                Optional[ShellObject], getattr(module, "ShellObject", None)
+            )
+            if ShellObj is not None:
+                if hasattr(ShellObj, "shellOpen"):
+                    shellOpenArgs = ShellOpenArgs()
+                    shellOpenArgs.openedFrom = window
+                    shellOpenArgs.arguments = arguments
+                    shellOpenArgs.argumentString = argumentString
+                    ShellObj.shellOpen(shellOpenArgs)
+                else:
+                    ShellObj.open(  # type: ignore
+                        window=window,
+                        argumentString=argumentString,
+                        arguments=arguments,
+                    )
                 return
+
             wsopen_function = getattr(module, "wsopen", None)
             if callable(wsopen_function):
                 wsopen_function(window=window)

@@ -1,112 +1,87 @@
 import logging
 import logging.config
-from typing import Optional
+from typing import Dict, List, Optional, cast
 
 import requests
+from typing_extensions import TypedDict
 
 from fscore.system import System
+from fscore.tasks import Task
 from fscore.version import Version
 from fsgamesys.product import Product
-from system.special.logout import Task
 from system.utilities.updater.updateutil import UpdateUtil
 
 log = logging.getLogger(__name__)
 
-import fsboot
+
+class Checksums(TypedDict):
+    sha256: str
 
 
-class CheckForUpdatesTask(Task):
-    def main(self):
+class PackageVersion(TypedDict):
+    branches: List[str]
+    checksums: Checksums
+    systems: List[str]
+    version: str
+    url: str
+
+
+# class AvailableUpdate(TypedDict):
+#     checksums: Checksums
+#     systems: List[str]
+#     url: str
+
+
+AvailableUpdate = PackageVersion
+
+
+class Update(TypedDict):
+    packageName: str
+    installedVersion: str
+    availableVersion: str
+    isDowngrade: bool
+    archives: List[AvailableUpdate]
+
+
+class Package(TypedDict):
+    versions: List[PackageVersion]
+
+
+class CheckForUpdatesResult(TypedDict):
+    packages: Dict[str, Package]
+
+
+class CheckForUpdatesTask(Task[CheckForUpdatesResult]):
+    def main(self) -> CheckForUpdatesResult:
         self.setProgress("Getting list of updates...")
         if Product.is_fs_uae():
             r = requests.get("https://fs-uae.net/launcher/updates.json")
         else:
             r = requests.get("https://openretro.org/launcher/updates.json")
-        return r.json()
-        return {
-            "packages": {
-                "FS-UAE-Launcher": {
-                    "versions": [
-                        {
-                            "branches": ["Master", "Stable", "Dev"],
-                            "systems": ["Linux_x86-64"],
-                            "version": "4.0.53-dev",
-                            "url": "https://github.com/FrodeSolheim/fs-uae-launcher/releases/download/v4.0.53-dev/FS-UAE-Launcher_4.0.53-dev_Linux_x86-64.tar.xz",
-                            "checksums": {
-                                "sha256": "0d88d9d622370c1dbf86aa0886d71df9c1a92b5ee9990dfe3ec0fd338c652890"
-                            },
-                        },
-                        {
-                            "branches": ["Master", "Stable", "Dev"],
-                            "systems": ["macOS_x86-64"],
-                            "version": "4.0.53-dev",
-                            "url": "https://github.com/FrodeSolheim/fs-uae-launcher/releases/download/v4.0.53-dev/FS-UAE-Launcher_4.0.53-dev_Linux_x86-64.tar.xz",
-                            "checksums": {
-                                "sha256": "b636b370f2964028534a376c06b6c765cc8bb55a3607495c9a6adcb6276a4cd0"
-                            },
-                        },
-                        {
-                            "branches": ["Master", "Stable", "Dev"],
-                            "systems": ["Windows_x86-64"],
-                            "version": "4.0.53-dev",
-                            "url": "https://github.com/FrodeSolheim/fs-uae-launcher/releases/download/v4.0.53-dev/FS-UAE-Launcher_4.0.53-dev_macOS_x86-64.tar.xz",
-                            "checksums": {
-                                "sha256": "9c792fdae2169fd7176d940e866bf19f64e96467934b47c9c04187614548512d"
-                            },
-                        },
-                    ]
-                },
-                "Mednafen": {
-                    "versions": [
-                        {
-                            "branches": ["Master", "Stable", "Dev"],
-                            "systems": ["Linux_x86-64"],
-                            "version": "1.26.1.16-fs",
-                            "url": "https://github.com/FrodeSolheim/mednafen/releases/download/v1.26.1.16-fs/Mednafen_1.26.1.16-fs_Linux_x86-64.tar.xz",
-                            "checksums": {
-                                "sha256": "9fb9758b7a37c6c90bc5752e4ca5c19fb367c3a495b70170cb703870d9b340ba"
-                            },
-                        },
-                        {
-                            "branches": ["Master", "Stable", "Dev"],
-                            "systems": ["macOS_x86-64"],
-                            "version": "1.26.1.16-fs",
-                            "url": "https://github.com/FrodeSolheim/mednafen/releases/download/v1.26.1.16-fs/Mednafen_1.26.1.16-fs_macOS_x86-64.tar.xz",
-                            "checksums": {
-                                "sha256": "c92fb5c9d21904e77759b84629c9d11b50231f396c4da233d76e54bf41b764a3"
-                            },
-                        },
-                        {
-                            "branches": ["Master", "Stable", "Dev"],
-                            "systems": ["Windows_x86-64"],
-                            "version": "1.26.1.16-fs",
-                            "url": "https://github.com/FrodeSolheim/mednafen/releases/download/v1.26.1.16-fs/Mednafen_1.26.1.16-fs_Windows_x86-64.tar.xz",
-                            "checksums": {
-                                "sha256": "f4acf255f3c2a4a6085f5143f6b578ed8395090a3af695bc5ef4ef71e14402ab"
-                            },
-                        },
-                    ]
-                },
-            }
-        }
+        # FIXME: Implement real parsing/validation
+        return cast(CheckForUpdatesResult, r.json())
 
     @staticmethod
-    def findUpdates(availableUpdates):
+    def findUpdates(availableUpdates: CheckForUpdatesResult) -> List[Update]:
         log.debug("Checking packages updates")
 
-        def checkRequirement(version, name, value):
-            validValues = version.get(name, [])
-            print("Check", value, "against", validValues)
-            if len(validValues) > 0 and value not in validValues:
-                return False
-            return True
+        # FIXME: Not currently used
+        # def checkRequirement(
+        #     version: PackageVersion, name: str, value: str
+        # ) -> bool:
+        #     validValues = version.get(name, [])
+        #     print("Check", value, "against", validValues)
+        #     if len(validValues) > 0 and value not in validValues:
+        #         return False
+        #     return True
 
         def getCurrentArchitecture() -> str:
             return System.getCpuArchitecture()
 
-        def getCurrentBranch() -> str:
-            # FIXME
-            return "Master"
+        # FIXME: Not currently used - check branch!
+        # def getCurrentBranch() -> str:
+        #     # FIXME
+        #     return "Master"
 
         def getCurrentOperatingSystem() -> str:
             return System.getOperatingSystem()
@@ -126,16 +101,20 @@ class CheckForUpdatesTask(Task):
                 return VERSION
             return UpdateUtil.getPluginVersion(packageName)
 
-        def checkSystemRequirement(version, value):
+        def checkSystemRequirement(
+            version: PackageVersion, value: str
+        ) -> bool:
             validValues = version.get("systems", [])
             print("Check", value, "against", validValues)
             if len(validValues) > 0 and value not in validValues:
                 return False
             return True
 
-        def findAvailableUpdate(packageUpdates):
-            operatingSystem = System.getOperatingSystem()
-            cpuArchitecture = System.getCpuArchitecture()
+        def findAvailableUpdate(
+            packageUpdates: Package,
+        ) -> Optional[PackageVersion]:
+            operatingSystem = getCurrentOperatingSystem()
+            cpuArchitecture = getCurrentArchitecture()
             currentSystem = f"{operatingSystem}_{cpuArchitecture}"
             for version in packageUpdates["versions"]:
                 if not checkSystemRequirement(version, currentSystem):
@@ -153,8 +132,9 @@ class CheckForUpdatesTask(Task):
                 # ):
                 #     continue
                 return version
+            return None
 
-        updates = []
+        updates: List[Update] = []
 
         for packageName in sorted(availableUpdates["packages"]):
             packageUpdates = availableUpdates["packages"][packageName]
@@ -182,10 +162,12 @@ class CheckForUpdatesTask(Task):
             print(repr(availableVersion))
             print(repr(installedVersion))
             includeUpdate = False
+            downgrade: bool
             if availableVersion == installedVersion:
                 log.debug("No relevant update for package %s", packageName)
-            # if Version(availableVersion) == Version(installedVersion):
-            #     pass
+                # if Version(availableVersion) == Version(installedVersion):
+                #     pass
+                continue
             elif Version(availableVersion) > Version(installedVersion):
                 log.info(
                     "Package %s: Version %s => %s",
@@ -215,7 +197,7 @@ class CheckForUpdatesTask(Task):
                         "packageName": packageName,
                         "installedVersion": installedVersion,
                         "availableVersion": availableVersion,
-                        "isDowngrade": False,
+                        "isDowngrade": downgrade,
                         "archives": [availableUpdate],
                     }
                 )

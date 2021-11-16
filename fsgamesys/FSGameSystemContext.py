@@ -30,7 +30,7 @@ class FileContext(BaseContext):
         BaseContext.__init__(self, main_context)
 
     @classmethod
-    def find_by_sha1(cls, sha1):
+    def find_by_sha1(cls, sha1: str) -> str:
         # FIXME: check_sha1 should check with PluginManager directly?
         database = FileDatabase.instance()
         result = database.find_file(sha1=sha1)["path"]

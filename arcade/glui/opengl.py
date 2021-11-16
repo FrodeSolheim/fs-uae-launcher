@@ -86,7 +86,7 @@ class GL:
             # we must set the LC_NUMERIC locale to C, because PyOpenGL has
             # a problem if comma is used as a decimal separator (problem
             # parsing the OpenGL version)
-            locale.setlocale(locale.LC_NUMERIC, str("C"))
+            locale.setlocale(locale.LC_NUMERIC, "C")
         from .pyopengl import filter_global, pyopengl_globals
 
         for name in list(pyopengl_globals()):

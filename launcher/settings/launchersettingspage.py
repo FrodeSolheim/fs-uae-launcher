@@ -1,9 +1,8 @@
 import fsboot
 import fsui
 from fsgamesys.product import Product
-
-# from fsgamesys import openretro
 from fsui.extra.taskdialog import TaskDialog
+from fswidgets.widget import Widget
 from launcher.option import Option
 from launcher.res import gettext
 from launcher.settings.maintenance_settings_page import DefragmentDatabasesTask
@@ -11,7 +10,7 @@ from launcher.settings.settings_page import SettingsPage
 
 
 class LauncherSettingsPage(SettingsPage):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget) -> None:
         super().__init__(parent)
         icon = fsui.Icon("fs-uae-launcher", "pkg:launcher")
         self.add_header(icon, "{} Launcher".format(Product.base_name))

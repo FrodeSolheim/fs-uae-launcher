@@ -31,7 +31,7 @@ from fsui import Color, Panel
 
 
 class WidgetSizeSpinner(Panel):
-    def __init__(self, visible=True):
+    def __init__(self, visible: bool = True) -> None:
         parent = ParentStack.top()
         super().__init__(parent)
         parent.layout.add(self)

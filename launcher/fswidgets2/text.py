@@ -10,7 +10,8 @@ class Text(fsui.MultiLineLabel):
         super().__init__(parent, text)
         self.style = Style({}, style)
 
-        parent.layout.add(self)
+        if parent.layout is not None:
+            parent.layout.add(self)
 
     # Completely override the original get_min_height from MultiLineLabel
     # (for now) since this method is better but *might* be backwards

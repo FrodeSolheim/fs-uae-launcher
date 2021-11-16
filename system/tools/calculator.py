@@ -1,10 +1,11 @@
 from fsui import Button, HorizontalLayout, Label, TextField
+from fswidgets.widget import Widget
 from system.classes.window import Window
 from system.classes.windowresizehandle import WindowResizeHandle
 
 
 class CalculatorWindow(Window):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent, title="Calculator", maximizable=False)
 
         self.text_field = CalculatorTextField(self)
@@ -98,7 +99,13 @@ class CalculatorWindow(Window):
 
 
 class CalculatorButton(Button):
-    def __init__(self, parent, text, letters=False, symbol=False):
+    def __init__(
+        self,
+        parent: Widget,
+        text: str,
+        letters: bool = False,
+        symbol: bool = False,
+    ):
         super().__init__(parent, text)
         self.set_min_width(48)
         self.set_min_height(32)
@@ -115,7 +122,7 @@ class CalculatorButton(Button):
 
 
 class CalculatorTextField(TextField):
-    def __init__(self, parent):
+    def __init__(self, parent: Widget):
         super().__init__(parent, text="Not implemented yet!", read_only=True)
         # FIXME: Right-align text
         # FIXME: Fixed-width font

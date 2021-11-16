@@ -1,11 +1,10 @@
 try:
     # FIXME: this is a hack, there should not be a dependency here
-    from launcher.i18n import gettext as _gettext
+    from launcher.i18n import gettext
 except ImportError:
 
-    def _gettext(message):
+    def gettext(message: str) -> str:
         return message
 
 
-def gettext(message):
-    return _gettext(message)
+__all__ = ["gettext"]

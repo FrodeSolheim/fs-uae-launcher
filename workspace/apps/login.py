@@ -116,7 +116,7 @@ class LoginWindow(fsui.Window):
         self.login_button.activated.connect(self.on_login_activated)
         hori_layout.add(self.login_button)
 
-        if self.window().theme.has_close_buttons:
+        if self.theme.has_close_buttons:
             self.close_button = CloseButton(self)
             hori_layout.add(self.close_button, fill=True, margin_left=10)
 

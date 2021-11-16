@@ -1,30 +1,34 @@
+from typing import Optional
+
+from fsui.qt.toplevelwidget import TopLevelWidget
 from fsui.theme import Theme
+from fswidgets.widget import Widget
 
 default_theme = Theme()
 
 
-def get_parent(widget):
+def get_parent(widget: Widget) -> Optional[Widget]:
     try:
-        return widget._cached_parent
+        return widget.internalCachedParent
     except AttributeError:
-        widget._cached_parent = widget.parent()
-        return widget._cached_parent
+        widget.internalCachedParent = widget.parent()
+        return widget.internalCachedParent
 
 
-def get_window(widget):
+def get_window(widget: Widget) -> TopLevelWidget:
     # print("get_window", widget)
     # import traceback
     # traceback.print_stack()
     # print("get_window", widget, widget.__dict__)
     try:
-        return widget._cached_window
+        return widget.internalCachedWindow
     except AttributeError:
         # print("THEME - GET WINDOW", widget)
         # print(f" - {widget}")
         w = widget
-        while w.parent():
+        while w.hasParent():
             # print("- THEME - PARENT", widget)
-            w = w.parent()
+            w = w.getParent()
             # print(f" - {w}")
 
             # If we get to a real QMainWindow parent, we want instead to get
@@ -54,14 +58,18 @@ def get_window(widget):
         # print("- THEME - WINDOW =", widget)
         # print("- THEME - THEME =", widget.theme)
         # print("cache ->", w)
-        widget._cached_window = w
-        return widget._cached_window
+        assert isinstance(w, TopLevelWidget)
+        widget.internalCachedWindow = w
+        return widget.internalCachedWindow
 
 
-def get_theme(widget):
+def get_theme(widget: Widget) -> Theme:
     window = get_window(widget)
-    # print("get_theme window is", window)
-    try:
-        return window.theme
-    except AttributeError:
+    assert isinstance(window, TopLevelWidget)
+    # assert window is not None
+    if hasattr(window, "theme"):
+        theme = window.theme
+        assert isinstance(theme, Theme)
+        return theme
+    else:
         return default_theme
