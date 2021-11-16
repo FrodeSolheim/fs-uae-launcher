@@ -1,9 +1,6 @@
 import functools
-import os
 import sys
 
-import fsbc.application
-import fsbc.desktop
 import fstd.desktop
 from fsbc.settings import Settings
 from fsgamesys.options.option import Option

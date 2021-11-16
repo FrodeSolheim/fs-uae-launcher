@@ -235,6 +235,12 @@ class GameControllerMapping:
         self.binds: Dict[GameControllerItem, GameControllerBind] = {}
         self.extra = ""
 
+        # self.deviceName: Optional[str] = None
+        # self.numAxes: Optional[int] = None
+        # self.numBalls: Optional[int] = None
+        # self.numButtons: Optional[int] = None
+        # self.numHats: Optional[int] = None
+
     def copy(self) -> "GameControllerMapping":
         new = GameControllerMapping()
         new.guid = self.guid
@@ -317,7 +323,7 @@ class GameControllerMapping:
     def toString(self) -> str:
         parts: List[str] = []
         parts.append(self.guid)
-        parts.append(self.name)
+        parts.append(self.name.replace(",", "%2C"))
 
         # for itemName, item in configItemMapping.items():
         for configName in sorted(configItemMapping):

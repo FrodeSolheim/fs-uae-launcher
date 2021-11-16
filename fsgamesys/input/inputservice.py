@@ -28,6 +28,7 @@ from fsgamesys.input.inputdevice import (
     InputDeviceType,
     InputDeviceWithState,
 )
+from fsgamesys.input.legacyconfig import LegacyConfig
 
 log = logging.getLogger(__name__)
 
@@ -317,6 +318,7 @@ class InputService:
         # self, mapping: GameControllerMapping, device: Optional[InputDevice] = None
         self,
         mapping: GameControllerMapping,
+        device: Optional[InputDevice] = None
     ) -> None:
         log.debug("saveGameControllerMapping mapping=%r", mapping)
         # log.debug("saveGameControllerMapping mapping=%r device=%r", mapping, device)
@@ -325,6 +327,12 @@ class InputService:
         # else:
         #     extra = ""
         # return useGameControllerDB().saveUserMapping(mapping, extra)
+        try:
+            LegacyConfig(mapping, device).save()
+        except Exception:
+            # Legacy config writing is considered a nice to have, so we ignore
+            # errors here.
+            log.exception("Error writing legacy config")
         return useGameControllerDB().saveUserMapping(mapping)
 
     def deleteGameControllerMapping(self, deviceGuid: str) -> None:

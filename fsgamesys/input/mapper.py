@@ -3,40 +3,17 @@ from typing import Dict, Iterator, List, Optional, Tuple
 
 from fscore.system import System
 from fsgamesys.drivers.gamedriver import Port
-from fsgamesys.input.gamecontroller import GameControllerItem
 from fsgamesys.input.inputdevice import InputDevice, InputDeviceType
 from fsgamesys.input.inputservice import useInputService
 from fsgamesys.input.keyboard import Keyboard
 from fsgamesys.input.legacyinputdevice import (
     LegacyInputDevice as LegacyInputDevice,
 )
+from fsgamesys.input.legacyconfig import LegacyConfig
+
 
 log = getLogger(__name__)
 
-
-itemToLegacyMapping = {
-    GameControllerItem.A: "south_button",
-    GameControllerItem.B: "east_button",
-    GameControllerItem.X: "west_button",
-    GameControllerItem.Y: "north_button",
-    GameControllerItem.BACK: "select_button",
-    GameControllerItem.GUIDE: "menu_button",
-    GameControllerItem.START: "start_button",
-    GameControllerItem.LEFTSTICK: "lstick_button",
-    GameControllerItem.RIGHTSTICK: "rstick_button",
-    GameControllerItem.LEFTSHOULDER: "left_shoulder",
-    GameControllerItem.RIGHTSHOULDER: "right_shoulder",
-    GameControllerItem.DPAD_UP: "dpad_up",
-    GameControllerItem.DPAD_DOWN: "dpad_down",
-    GameControllerItem.DPAD_LEFT: "dpad_left",
-    GameControllerItem.DPAD_RIGHT: "dpad_right",
-    GameControllerItem.LEFTX: "",
-    GameControllerItem.LEFTY: "",
-    GameControllerItem.RIGHTX: "",
-    GameControllerItem.RIGHTY: "",
-    GameControllerItem.TRIGGERLEFT: "left_trigger",
-    GameControllerItem.TRIGGERRIGHT: "right_trigger",
-}
 
 # def itemToLegacy(item: GameControllerItem):
 #     return
@@ -63,18 +40,19 @@ def configureController(
             "Please do this via Preferences -> Controllers and try again."
         )
     # legacyConfig: List[Tuple[str, str]] = []
-    legacyConfig: Dict[str, str] = {}
-    for item, bind in controllerMapping.binds.items():
-        legacyItem = itemToLegacyMapping[item]
+    legacyMapping = LegacyConfig(controllerMapping).getLegacyMapping()
+    # legacyConfig: Dict[str, str] = {}
+    # for item, bind in controllerMapping.binds.items():
+    #     legacyItem = itemToLegacyMapping[item]
 
-        print("FIXME: SUPPORT FOR MAPPING LEFTX, LEFTY, RIGHTX, RIGHTY")
+    #     print("FIXME: SUPPORT FOR MAPPING LEFTX, LEFTY, RIGHTX, RIGHTY")
 
-        legacyConfig[bind.toLegacyConfig()] = legacyItem
+    #     legacyConfig[bind.toLegacyConfig()] = legacyItem
 
     print("")
     print(config)
     # legacyDevice.read_config_2(config, list(legacyConfig.items()), multiple)
-    legacyDevice.read_config_2(config, legacyConfig.items(), multiple)
+    legacyDevice.read_config_2(config, legacyMapping.items(), multiple)
     print("")
     print("")
     print(config)

@@ -11,7 +11,11 @@ from fsgamesys.input.gamecontroller import (
     GameControllerItem,
     GameControllerMapping,
 )
-from fsgamesys.input.inputdevice import InputDeviceState, InputDeviceWithState
+from fsgamesys.input.inputdevice import (
+    InputDevice,
+    InputDeviceState,
+    InputDeviceWithState,
+)
 from fsgamesys.input.inputservice import (
     DeviceConnectedEvent,
     DeviceDisconnectedEvent,
@@ -148,7 +152,7 @@ class ControllerConfigPanel(VerticalFlexContainer):
         # Used to tell the input service more information about the device
         # when saving. It could be disconnected at that point, so we store
         # a reference to it.
-        # self.lastDevice: Optional[InputDevice] = None
+        self.lastDevice: Optional[InputDevice] = None
 
         # FIXME: Timer(1.0, onTimer=self.onTimer)
         # FIXME: How to keep alive? Global timers list?
@@ -262,8 +266,11 @@ class ControllerConfigPanel(VerticalFlexContainer):
             self.mapping.platform = "Linux"
         else:
             self.mapping.platform = "Unknown"
-        self.oldPanel.mapping_field.setText(self.mapping.toString())
-        # self.oldPanel.model_field.set_text(self.mapping.name)
+        text = self.mapping.toString() + ","
+        if self.mapping.extra:
+            text = f"{text}\n#^{self.mapping.guid},{self.mapping.extra}"
+        # self.oldPanel.mapping_field.setText(self.mapping.toString())
+        self.oldPanel.mapping_field.setText(text)
 
     def onTimer(self) -> None:
         # FIXME: Only run timer when mapping
@@ -319,7 +326,7 @@ class ControllerConfigPanel(VerticalFlexContainer):
 
             bind = self.findActiveBind(self.mapItem, initialState, deviceState)
             if bind is not None:
-                # self.lastDevice = device
+                self.lastDevice = device
                 break
         else:
             return
@@ -350,7 +357,13 @@ class ControllerConfigPanel(VerticalFlexContainer):
         # if bind is None:
         #     return
 
-        self.mapping.extra = f"{device.sdlName},axes:{device.numAxes},balls:{device.numBalls},buttons:{device.numButtons},hats:{device.numHats}"
+        extraName = device.sdlName.replace(",", "%2C")
+        self.mapping.extra = f"{extraName},axes:{device.numAxes},balls:{device.numBalls},buttons:{device.numButtons},hats:{device.numHats},"
+        # self.mapping.deviceName = device.sdlname
+        # self.mapping.numAxes = device.numAxes
+        # self.mapping.numBalls = device.numBalls
+        # self.mapping.numButtons = device.numButtons
+        # self.mapping.numHats = device.numHats
 
         for existingItem, existingBind in list(self.mapping.binds.items()):
             if self.isConflictingBind(existingBind, bind):
@@ -419,8 +432,10 @@ class ControllerConfigPanel(VerticalFlexContainer):
         self.stopMapping()
         self.updateMapping()
         self.mapping.source = "User"
-        # self.inputService.saveGameControllerMapping(self.mapping, self.lastDevice)
-        self.inputService.saveGameControllerMapping(self.mapping)
+        self.inputService.saveGameControllerMapping(
+            self.mapping, self.lastDevice
+        )
+        # self.inputService.saveGameControllerMapping(self.mapping)
         self.setDirty(False)
 
     def onShowSDLMapping(self) -> None:

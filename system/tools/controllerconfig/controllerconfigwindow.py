@@ -40,7 +40,8 @@ class ControllerConfigWindow(Window):
         )
         if mapping is not None:
             print("mapping.source =", mapping.source)
-            userModified = mapping.source == "User"  # FIXME: Magic value
+            # userModified = mapping.source == "User"  # FIXME: Magic value
+            userModified = mapping.source == "99-User.txt"  # FIXME: Magic value
         else:
             userModified = False
         showingSDLMapping = self.panel.oldPanel.mapping_field.isVisible()
