@@ -285,6 +285,9 @@ def custom_path(name):
     path_lower = path.lower()
     if path_lower.startswith("$home/") or path_lower.startswith("$home\\"):
         path = os.path.join(home_dir(), path[6:])
+    elif path_lower.startswith("~/") or path_lower.startswith("~\\"):
+        path = os.path.join(home_dir(), path[2:])
+    print(f"custom_path {name!r} -> {path!r}")
     return path
 
 

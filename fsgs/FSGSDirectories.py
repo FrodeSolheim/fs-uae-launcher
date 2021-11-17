@@ -33,6 +33,8 @@ class FSGSDirectories(object):
     @functools.lru_cache()
     def get_base_dir(cls):
         path = fsboot.base_dir()
+        if not os.path.exists(path):
+            os.makedirs(path)
         # Configuration and file database depends on path normalization,
         # especially for cross-platform portable mode.
         path = Paths.get_real_case(path)
