@@ -1,5 +1,6 @@
 Version 3.1.x:
 
+* Prefer $HOME/FS-UAE if it exists, otherwise use $DOCUMENTS/FS-UAE.
 * Added lots of game controller configs.
 * Support ~/ when  overriding base_dir in config file + create dir if needed.
 * Fix layout issues caused by floats not being acceptedby pyqt5 any more.

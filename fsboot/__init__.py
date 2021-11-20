@@ -333,14 +333,18 @@ def base_dir():
     elif get("openretro") == "1":
         path = os.path.join(home_dir(), "OpenRetro")
     else:
+        # path = os.path.join(documents_dir(), "FS-UAE")
         # Check new ~/FS-UAE directory first
         path = os.path.join(home_dir(), "FS-UAE")
-        if not os.path.exists(path):
+        if os.path.exists(path):
+            print("- using base dir $HOME/FS-UAE")
+        else:
+            print("- using base dir $DOCUMENTS/FS-UAE")
             # FS-UAE uses Documents/FS-UAE for legacy reasons
             path = os.path.join(documents_dir(), "FS-UAE")
-            if not os.path.exists(path):
-                # ~/Documents/FS-UAE did not exist, so go with ~/FS-UAE
-                path = os.path.join(home_dir(), "FS-UAE")
+            # if not os.path.exists(path):
+            #     # ~/Documents/FS-UAE did not exist, so go with ~/FS-UAE
+            #     path = os.path.join(home_dir(), "FS-UAE")
 
     if not os.path.exists(path):
         os.makedirs(path)
