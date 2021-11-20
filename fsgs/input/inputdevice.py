@@ -134,8 +134,16 @@ class InputDevice(object):
 
     @classmethod
     def get_builtin_config_for_device_guid(cls, guid):
+        if windows:
+            host_platform = "windows"
+        elif macosx:
+            host_platform = "macos"
+        elif linux:
+            host_platform = "linux"
+        else:
+            host_platform = "other"
         return Resources("fsgs").stream(
-            "res/input/" + guid + ".fs-uae-controller"
+            "res/input/" + host_platform + "/" + guid + ".fs-uae-controller"
         )
 
     # @classmethod
