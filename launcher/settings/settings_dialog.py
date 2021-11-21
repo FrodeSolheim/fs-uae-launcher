@@ -65,11 +65,11 @@ class SettingsDialog(PagedDialog):
             PluginsSettingsPage,
             fsui.Icon("settings", "pkg:workspace"),
         )
-        self.add_page(
-            gettext("Directories"),
-            DirectoriesSettingsPage,
-            fsui.Icon("folder", "pkg:launcher"),
-        )
+        # self.add_page(
+        #     gettext("Directories"),
+        #     DirectoriesSettingsPage,
+        #     fsui.Icon("folder", "pkg:launcher"),
+        # )
         self.add_page(
             gettext("Advanced"),
             AdvancedSettingsPage,
