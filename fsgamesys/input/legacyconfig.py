@@ -61,10 +61,9 @@ class LegacyConfig:
             name, buttons, axes, hats, balls, platform
         )
 
-    def save(self) -> None:
+    def _getConfigLines(self) -> List[str]:
         platform = self.platform
         device_name = self.device_name.rsplit("#", 1)[0]
-        guid = self.mapping.guid
         config = [
             "[fs-uae-controller]",
             "name = {}".format(device_name),
@@ -103,20 +102,29 @@ class LegacyConfig:
         for key, value in self.getLegacyMapping().items():
             button_config.append("{0} = {1}".format(key, value))
         config.extend(sorted(button_config))
+        return config
+
+    def _writeConfigToFile(self, fileName: str, config: List[str]):
+        with open(fileName, "w", encoding="UTF-8") as f:
+            for line in config:
+                f.write(line)
+                f.write("\n")
+
+    def save(self) -> None:
+        guid = self.mapping.guid
+        config = self._getConfigLines()
         try:
             joystick_id = self.get_joystick_id()
         except Exception:
             log.exception("Could not get joystick ID")
         else:
-            self.writeConfigToFile(joystick_id + ".conf", config)
+            self._writeConfigToFile(self.get_save_path(joystick_id + ".conf"), config)
         if len(guid) == 32:
-            self.writeConfigToFile(guid + ".fs-uae-controller", config)
+            self._writeConfigToFile(self.get_save_path(guid + ".fs-uae-controller"), config)
 
-    def writeConfigToFile(self, fileName: str, config: List[str]):
-        with open(self.get_save_path(fileName), "w", encoding="UTF-8") as f:
-            for line in config:
-                f.write(line)
-                f.write("\n")
+    def saveToFile(self, fileName: str):
+        config = self._getConfigLines()
+        self._writeConfigToFile(fileName, config)
 
     def getLegacyMapping(self) -> Dict[str, str]:
         legacyMapping: Dict[str, str] = {}

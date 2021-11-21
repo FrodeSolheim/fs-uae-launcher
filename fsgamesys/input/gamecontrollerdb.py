@@ -28,6 +28,14 @@ class GameControllerDB:
         )
         return path
 
+    def addMappingFromString(
+        self, mappingString: str, *, source: str = "", extra: str = ""
+    ) -> None:
+        # FIXME: Regexp check?
+        assert mappingString[32] == ","
+        guid = mappingString[:32]
+        self.database[guid] = (mappingString, source, extra)
+
     def findConfigFiles(self) -> List[str]:
         files: Dict[str, List[str]] = {}
         for filePath in [
@@ -186,7 +194,7 @@ class GameControllerDB:
                             extra,
                             guid,
                         )
-        
+
         return mappings
 
     def saveUserMappings(self, mappings: Dict[str, Tuple[str, str]]) -> None:

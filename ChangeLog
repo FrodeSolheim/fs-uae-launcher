@@ -1,5 +1,7 @@
 Version 4.0:
 
+* Fix disappearing configs when base_dir is specified with a trailing slash.
+* Support ~/ when  overriding base_dir in config file + create dir if needed.
 * Joystick devices har hotpluggable in the Launcher (without refresh button).
 * Controller configuration is rewritten to work with hotpluggable devices.
 * Controller configuration now creates SDL2 comptabible mappings.

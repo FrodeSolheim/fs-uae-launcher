@@ -316,7 +316,7 @@ class GameControllerMapping:
             elif direction == "8":
                 bind.hatMask = HatState.LEFT
             else:
-                log.warning("Unrecognized hat direction/mask in %r", bindStr)
+                log.warning("Unrecognized hat direction/mask (%r)", bindStr)
             return bind
         return None
 
