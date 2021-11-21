@@ -102,13 +102,6 @@ def frozen_requests_ca_cert():
         if os.path.exists(data_dir):
             data_dirs.append(data_dir)
 
-    for data_dir in data_dirs:
-        path = os.path.join(data_dir, "cacert.pem")
-        if os.path.exists(path):
-            print("[HTTP] Using {}".format(path))
-            os.environ["REQUESTS_CA_BUNDLE"] = path
-            break
-
 
 def main():
     if getattr(sys, "frozen", False):
