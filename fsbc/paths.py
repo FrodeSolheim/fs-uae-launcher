@@ -104,8 +104,9 @@ class Paths(object):
         # get_real_case will fail on Linux if you have "conflicting" paths
         # (differing only by case), unless we check that the specified path
         # is already correct. The reason for not simply returning the path
-        # as-is on Linux, is that this function can find files in directories
-        # (portable version) when the directory is specified with wrong case.
+        # as-is on Linux, is to allow this function can find files in
+        # directories (portable version) when the directory is specified with
+        # incorrect case.
         if not windows and not macosx:
             if os.path.exists(path):
                 return path

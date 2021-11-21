@@ -6,8 +6,7 @@ import subprocess
 import sys
 import time
 from functools import lru_cache
-from typing import List
-
+from typing import Any, Dict, List, Optional
 
 # The original argument list at boot time, before any modifications
 _argv = []  # type: List[str]
@@ -16,7 +15,7 @@ _argv = []  # type: List[str]
 _cwd = os.getcwd()
 
 # Key-value store
-_values = {}
+_values: Dict[str, str] = {}
 
 # Found Plugin/Python code override directory
 _plugin_code_override = False
@@ -25,7 +24,7 @@ logger = logging.getLogger("BOOT")
 perf_counter_epoch = time.perf_counter()
 
 
-def init():
+def init() -> None:
     global _argv, _cwd
     _cwd = os.getcwd()
     _argv = sys.argv.copy()
@@ -34,15 +33,15 @@ def init():
     print("sys.path =", sys.path)
 
 
-def set(key, value):
+def set(key: str, value: str) -> None:
     _values[key] = value
 
 
-def get(key, default=""):
+def get(key: str, default: str = "") -> str:
     return _values.get(key, default)
 
 
-def setup_logging():
+def setup_logging() -> None:
     root = logging.getLogger()
     root.setLevel(logging.DEBUG)
 
@@ -67,7 +66,7 @@ if "--logging" in sys.argv:
 
 
 @lru_cache()
-def executable_dir():
+def executable_dir() -> str:
     """Returns the directory containing the executable (or main script)."""
     logger.debug("executable_dir")
     logger.debug("sys.executable = %s", sys.executable)
@@ -76,7 +75,7 @@ def executable_dir():
         # We do not want the directory of the (installed) python
         # interpreter, but rather the main application script.
         logger.debug("sys.argv[0] = %s", repr(sys.argv[0]))
-        path = os.path.dirname( os.path.abspath(sys.argv[0]))
+        path = os.path.dirname(os.path.abspath(sys.argv[0]))
         logger.debug("%s", repr(path))
     else:
         path = os.path.dirname(sys.executable)
@@ -93,7 +92,7 @@ def executable_dir():
 
 
 @lru_cache()
-def app_dir():
+def app_dir() -> str:
     """Returns the (absolute) directory containing the application.
 
     This is the same as the executable_dir, except for macOS where the
@@ -107,7 +106,7 @@ def app_dir():
 
 
 @lru_cache()
-def plugin_dir():
+def plugin_dir() -> Optional[str]:
     """Returns the (absolute) directory containing the plugin (or None)."""
     plugin_dir = os.path.join(app_dir(), "..", "..")
     if os.path.exists(os.path.join(plugin_dir, "Plugin.ini")):
@@ -123,7 +122,7 @@ if sys.platform == "win32":
     CSIDL_MYPICTURES = 39
     CSIDL_PROFILE = 40
     CSIDL_COMMON_DOCUMENTS = 46
-    from ctypes import windll  # type: ignore
+    from ctypes import windll
     from ctypes import wintypes
 
     _SHGetFolderPath = windll.shell32.SHGetFolderPathW
@@ -159,27 +158,29 @@ if sys.platform == "win32":
 
 
 @lru_cache()
-def user_name():
+def user_name() -> str:
     name = getpass.getuser()
     return name
 
 
 @lru_cache()
-def xdg_user_dir(name):
+def xdg_user_dir(name: str) -> Optional[str]:
     try:
         process = subprocess.Popen(
             ["xdg-user-dir", name], stdout=subprocess.PIPE
         )
-        path = process.stdout.read().strip()
-        path = path.decode("UTF-8")
+        assert process.stdout is not None
+        pathBytes = process.stdout.read().strip()
+        path = pathBytes.decode("UTF-8")
         logger.debug("XDG user dir %s => %s", name, repr(path))
     except Exception:
-        path = None
-    return path
+        return None
+    else:
+        return path
 
 
 @lru_cache()
-def home_dir():
+def home_dir() -> str:
     if sys.platform == "win32":
         path = csidl_dir(CSIDL_PROFILE)
     else:
@@ -190,7 +191,7 @@ def home_dir():
 
 
 @lru_cache()
-def documents_dir(create=False):
+def documents_dir(create: bool = False) -> str:
     if sys.platform == "win32":
         path = csidl_dir(CSIDL_PERSONAL)
     elif sys.platform == "darwin":
@@ -206,12 +207,12 @@ def documents_dir(create=False):
     return path
 
 
-def is_portable():
+def is_portable() -> bool:
     return portable_dir() is not None
 
 
 @lru_cache()
-def portable_dir():
+def portable_dir() -> Optional[str]:
     path = executable_dir()
     last = ""
     while not last == path:
@@ -227,7 +228,7 @@ def portable_dir():
 
 
 @lru_cache()
-def common_data_dir(create=False):
+def common_data_dir(create: bool = False) -> str:
     if sys.platform == "win32":
         path = csidl_dir(CSIDL_APPDATA)
     elif sys.platform == "darwin":
@@ -242,12 +243,12 @@ def common_data_dir(create=False):
 
 
 @lru_cache()
-def app_data_dir(app):
+def app_data_dir(app: str) -> str:
     return os.path.join(common_data_dir(), app)
 
 
 @lru_cache()
-def app_config_dir(app):
+def app_config_dir(app: str) -> str:
     # if not app:
     #     app = get_app_id()
     if sys.platform == "win32":
@@ -265,7 +266,7 @@ def app_config_dir(app):
 
 
 @lru_cache()
-def custom_path(name):
+def custom_path(name: str) -> Optional[str]:
     if get("openretro") == "1":
         app_names = ["openretro"]
     else:
@@ -288,17 +289,18 @@ def custom_path(name):
     elif path_lower.startswith("~/") or path_lower.startswith("~\\"):
         path = os.path.join(home_dir(), path[2:])
     print(f"custom_path {name!r} -> {path!r}")
+    logger.debug("custom_path %r -> %r", name, path)
     return path
 
 
-@lru_cache()
-def base_dir():
-    logger.debug("Find base directory")
+def _getBaseDirectoryBeforeNormalization() -> str:
+    path: Optional[str]
+    logger.debug("Find base_dir")
     for arg in sys.argv[1:]:
         if arg.startswith("--base-dir="):
             path = arg[11:]
             path = os.path.abspath(path)
-            logger.debug("Base directory via argv: %s", repr(path))
+            logger.debug("Using base_dir via argv: %r", path)
             sys.argv.remove(arg)
             return path
 
@@ -310,21 +312,19 @@ def base_dir():
         logger.debug("Checking OPENRETRO_BASE_DIR")
         path = os.environ.get("OPENRETRO_BASE_DIR", "")
         if path:
-            logger.debug(
-                "Base directory via OPENRETRO_BASE_DIR: %s", repr(path)
-            )
+            logger.debug("Using base_dir via OPENRETRO_BASE_DIR: %r", path)
             return path
 
     else:
         logger.debug("Checking FS_UAE_BASE_DIR")
         path = os.environ.get("FS_UAE_BASE_DIR", "")
         if path:
-            logger.debug("Base directory via FS_UAE_BASE_DIR: %s", repr(path))
+            logger.debug("Using base_dir via FS_UAE_BASE_DIR: %r", path)
             return path
 
     path = custom_path("base-dir")
     if path:
-        logger.debug("Base directory via custom path config: %s", repr(path))
+        logger.debug("Using base_dir via custom path config: %r", path)
         return path
 
     if get("base_dir_name"):
@@ -333,43 +333,58 @@ def base_dir():
     elif get("openretro") == "1":
         path = os.path.join(home_dir(), "OpenRetro")
     else:
-        # path = os.path.join(documents_dir(), "FS-UAE")
         # Check new ~/FS-UAE directory first
         path = os.path.join(home_dir(), "FS-UAE")
         if os.path.exists(path):
-            print("- using base dir $HOME/FS-UAE")
+            print("- using base_dir $HOME/FS-UAE")
         else:
-            print("- using base dir $DOCUMENTS/FS-UAE")
+            print("- using base_dir $DOCUMENTS/FS-UAE")
             # FS-UAE uses Documents/FS-UAE for legacy reasons
             path = os.path.join(documents_dir(), "FS-UAE")
-            # if not os.path.exists(path):
-            #     # ~/Documents/FS-UAE did not exist, so go with ~/FS-UAE
-            #     path = os.path.join(home_dir(), "FS-UAE")
 
-    if not os.path.exists(path):
-        os.makedirs(path)
-    # FIXME: normalize / case-normalize base dir?
-    # path = Paths.get_real_case(path)
-    logger.debug("Using default base dir %s", repr(path))
+    assert path is not None
+    logger.debug("Using default base_dir %r", path)
     return path
 
 
 @lru_cache()
-def development():
-    result = os.path.exists(os.path.join(executable_dir(), "setup.py"))
+def base_dir() -> str:
+    path = _getBaseDirectoryBeforeNormalization()
+    print("Using base_dir =", repr(path))
+    # It is important to remove any trailing slash, etc. since the exact
+    # base_dir is used for removing base_dir prefix from other paths.
+    # Case normalization is important too, but that's done by FSGSDirectories.
+    path = os.path.normpath(path)
+    print("After normpath: base_dir =", repr(path))
+    logger.debug("After normpath, base_dir = %r", path)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return path
+
+
+def getBaseDirectory() -> str:
+    return base_dir()
+
+
+@lru_cache()
+def development() -> bool:
+    # FIXME: Document option
+    if "--development-mode=0" in sys.argv:
+        return False
+    result = os.path.exists(os.path.join(executable_dir(), "pyproject.toml"))
     logger.info("Development mode: %s", result)
     return result
 
 
 def is_frozen() -> bool:
-    return getattr(sys, "frozen", False)
+    return bool(getattr(sys, "frozen", False))
 
 
 def is_macos() -> bool:
     return sys.platform == "darwin"
 
 
-def setup_frozen_python_libs():
+def setup_frozen_python_libs() -> None:
     return
 
     # libs_dir = os.path.abspath(
@@ -411,69 +426,72 @@ def plugin_code_override() -> bool:
     return _plugin_code_override
 
 
-from importlib.abc import MetaPathFinder
+# from importlib.abc import MetaPathFinder
+
+# _python_dir: str
 
 
-class OverrideImporter(MetaPathFinder):
+# class OverrideImporter(MetaPathFinder):
 
-    # def find_spec(self, fullname, path, target=None):
-    #     from importlib.util import spec_from_loader
-    #     loader = self.find_module(fullname, path)
-    #     if loader is None:
-    #         return None
-    #     spec = spec_from_loader(fullname, loader)
-    #     print(spec)
-    #     return spec
+#     # def find_spec(self, fullname, path, target=None):
+#     #     from importlib.util import spec_from_loader
+#     #     loader = self.find_module(fullname, path)
+#     #     if loader is None:
+#     #         return None
+#     #     spec = spec_from_loader(fullname, loader)
+#     #     print(spec)
+#     #     return spec
 
-    def find_module(self, fullname, path):
-        from importlib.machinery import SourceFileLoader
+#     # FIXME: Any
+#     def find_module(self, fullname: str, path: str) -> Any:
+#         from importlib.machinery import SourceFileLoader
 
-        print("CustomImporter.find_module", fullname, path)
-        # if path is None:
-        #     raise Exception("")
-        if path is None:
-            package_path = os.path.join(_python_dir, fullname, "__init__.py")
-            print(package_path)
-            if os.path.exists(package_path):
-                print("->", package_path)
-                return SourceFileLoader(fullname, package_path)
-            # module_path = os.path.join(_python_dir, f"{fullname}.py")
-            # if os.path.exists(module_path):
-            #     return SourceFileLoader(fullname, module_path)
-        else:
-            if len(path) == 0:
-                return None
-            name = fullname.rsplit(".", 1)[-1]
-            package_path = os.path.join(path[0], name, "__init__.py")
-            print(package_path)
-            if os.path.exists(package_path):
-                print("->", package_path)
-                return SourceFileLoader(fullname, package_path)
-            module_path = os.path.join(path[0], f"{name}.py")
-            print(module_path)
-            if os.path.exists(module_path):
-                print("->", module_path)
-                return SourceFileLoader(fullname, module_path)
-        print("->", None)
-        return None
+#         print("CustomImporter.find_module", fullname, path)
+#         # if path is None:
+#         #     raise Exception("")
+#         if path is None:
+#             package_path = os.path.join(_python_dir, fullname, "__init__.py")
+#             print(package_path)
+#             if os.path.exists(package_path):
+#                 print("->", package_path)
+#                 return SourceFileLoader(fullname, package_path)
+#             # module_path = os.path.join(_python_dir, f"{fullname}.py")
+#             # if os.path.exists(module_path):
+#             #     return SourceFileLoader(fullname, module_path)
+#         else:
+#             if len(path) == 0:
+#                 return None
+#             name = fullname.rsplit(".", 1)[-1]
+#             package_path = os.path.join(path[0], name, "__init__.py")
+#             print(package_path)
+#             if os.path.exists(package_path):
+#                 print("->", package_path)
+#                 return SourceFileLoader(fullname, package_path)
+#             module_path = os.path.join(path[0], f"{name}.py")
+#             print(module_path)
+#             if os.path.exists(module_path):
+#                 print("->", module_path)
+#                 return SourceFileLoader(fullname, module_path)
+#         print("->", None)
+#         return None
 
 
-def setup_python_path_frozen():
+def setup_python_path_frozen() -> None:
     """Allow overriding code from Plugin/Python directory."""
     print("setup_python_path_frozen")
-    global _python_dir
-    base_dir = plugin_dir() or app_dir()
-    python_dir = os.path.join(base_dir, "Python")
-    print("Check", python_dir)
-    if os.path.exists(python_dir):
-        # sys.path.insert(0, python_dir)
-        # _plugin_code_override = True
-        _python_dir = python_dir
-        sys.meta_path.insert(0, OverrideImporter())
-        print("sys.meta_path", sys.meta_path)
+    # global _python_dir
+    # base_dir = plugin_dir() or app_dir()
+    # python_dir = os.path.join(base_dir, "Python")
+    # # print("Check", python_dir)
+    # # if os.path.exists(python_dir):
+    # #     # sys.path.insert(0, python_dir)
+    # #     # _plugin_code_override = True
+    # #     _python_dir = python_dir
+    # #     sys.meta_path.insert(0, OverrideImporter())
+    # #     print("sys.meta_path", sys.meta_path)
 
 
-def setup_python_path():
-    print("setup_python_path")
+def setup_python_path() -> None:
+    # print("setup_python_path")
     if is_frozen():
         setup_python_path_frozen()
