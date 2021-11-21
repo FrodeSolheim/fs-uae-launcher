@@ -1,5 +1,6 @@
 Version 3.1.x:
 
+* Launcher settings plugins page did not respect new FS-UAE/System directory.
 * Remove empty "Directories" settings page.
 * Fix disappearing configs when base_dir is specified with a trailing slash.
 * Prefer $HOME/FS-UAE if it exists, otherwise use $DOCUMENTS/FS-UAE.

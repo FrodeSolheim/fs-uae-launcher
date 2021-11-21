@@ -315,14 +315,13 @@ class FSGSDirectories(object):
         return path
 
     @classmethod
-    @lru_cache()
     def get_plugins_dir(cls):
-        path = cls.portable_dir("plugins_dir")
-        if not path:
-            if openretro:
-                path = os.path.join(cls.get_data_dir(), "Plugins")
-            else:
-                path = os.path.join(cls.get_base_dir(), "Plugins")
+        return cls.get_system_dir()
+
+    @classmethod
+    @lru_cache()
+    def get_system_dir(cls):
+        path = os.path.join(cls.get_base_dir(), "System")
         if not os.path.exists(path):
             os.makedirs(path)
         return path
