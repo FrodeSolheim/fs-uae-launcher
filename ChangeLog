@@ -1,5 +1,6 @@
 Version 4.0:
 
+* Removed cacert.pem (should be handled by certifi package now).
 * Fix disappearing configs when base_dir is specified with a trailing slash.
 * Support ~/ when  overriding base_dir in config file + create dir if needed.
 * Joystick devices har hotpluggable in the Launcher (without refresh button).

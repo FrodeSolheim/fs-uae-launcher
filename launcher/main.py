@@ -85,12 +85,6 @@ def setup_frozen_requests_ca_cert() -> None:
         debug(str(os.path.exists(data_dir)))
         if os.path.exists(data_dir):
             data_dirs.append(data_dir)
-    for data_dir in data_dirs:
-        path = os.path.join(data_dir, "cacert.pem")
-        if os.path.exists(path):
-            debug("[HTTP] Using {}".format(path))
-            os.environ["REQUESTS_CA_BUNDLE"] = path
-            break
 
 
 # FIXME: Move to update module?
