@@ -314,6 +314,7 @@ for name, dir_name in sorted(project.package_map.items()):
 
 
 copy_files = [
+    "ChangeLog",
     "README",
     "COPYING",
     "INSTALL",
