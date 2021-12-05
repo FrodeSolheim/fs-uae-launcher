@@ -5,6 +5,10 @@ make
 
 BUILDDIR=fsbuild/_build
 
+# Remove files from PyQt5 that we don't want to bundle (before pyinstaller
+# pulls in their dependencies).
+python3 fsbuild/fix-pyqt5.py
+
 rm -Rf $BUILDDIR/pyinstaller
 if [ "$SYSTEM_OS" = "Windows" ]; then
 pyinstaller \
@@ -30,6 +34,13 @@ pyinstaller \
 	--log-level DEBUG \
 	$PACKAGE_NAME
 BINDIR=fsbuild/_build/pyinstaller/$PACKAGE_NAME
+# Fontconfig in particular can crash the application because it conflicts
+# with system font cache or config files. For now, assume these library are
+# always present and use the system ones.
+echo "rm $BINDIR/libfreetype.so.6"
+rm $BINDIR/libfreetype.so.6
+echo "rm $BINDIR/libfontconfig.so.1"
+rm $BINDIR/libfontconfig.so.1
 fi
 
 # These do not work with macOS notarization, but might as well remove for all
