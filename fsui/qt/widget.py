@@ -1,3 +1,4 @@
+from typing import Tuple
 import warnings
 
 from fsui.common.layout import Layout
@@ -267,5 +268,5 @@ class Widget(QObject):
         return self.position()
 
     # DEPRECATED
-    def get_size(self):
+    def get_size(self) -> Tuple[int, int]:
         return self.size()

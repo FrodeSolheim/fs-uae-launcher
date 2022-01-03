@@ -1,5 +1,6 @@
 Version 3.1.x:
 
+* Fixes for PyQt5 errors observed on Fedora 35.
 * Removed cacert.pem (should be handled by certifi package now).
 * Launcher settings plugins page did not respect new FS-UAE/System directory.
 * Remove empty "Directories" settings page.
