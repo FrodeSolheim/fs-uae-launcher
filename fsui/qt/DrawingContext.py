@@ -1,3 +1,4 @@
+from typing import Tuple
 from fsui.qt import Qt, QPoint, QRect, QPen, QBrush, QLinearGradient, QColor
 from fsui.qt import QFont
 from .Color import Color
@@ -56,14 +57,14 @@ class DrawingContext(object):
     def set_font(self, font):
         self.qpainter.setFont(font.font)
 
-    def draw_text(self, text, x, y):
+    def draw_text(self, text: str, x: int, y: int) -> None:
         # self.qpainter.drawText(QPoint(x, y), text)
         self.qpainter.setPen(QPen(self.text_color))
         self.qpainter.drawText(
             x, y, 10000, 1000, Qt.AlignLeft | Qt.AlignTop, text
         )
 
-    def measure_text(self, text):
+    def measure_text(self, text: str) -> Tuple[int, int]:
         # return self.dc.GetTextExtent(text)
         # return (10, 10)
         rect = self.qpainter.boundingRect(
