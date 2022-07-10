@@ -90,7 +90,15 @@ class LaunchHandler(object):
     def prepare(self):
         print("LaunchHandler.prepare")
         if not self.temp_dir:
-            self.temp_dir = tempfile.mkdtemp(prefix="fs-uae-")
+            run_dir = os.environ.get("FS_GAMESYS_RUN_DIR", "")
+            if run_dir:
+                if not os.path.isdir(run_dir):
+                    os.makedirs(run_dir)
+                if len(os.listdir(run_dir)) != 0:
+                    raise Exception("FS_GAMESYS_RUN_DIR is not empty")
+                self.temp_dir = run_dir
+            else:
+                self.temp_dir = tempfile.mkdtemp(prefix="fs-uae-")
         print("temp dir", self.temp_dir)
         self.config["floppies_dir"] = self.temp_dir
         print("state dir", self.get_state_dir())
