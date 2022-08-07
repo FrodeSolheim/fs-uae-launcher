@@ -12,7 +12,7 @@ on:
       - stable
 jobs:
   macOS_x86-64:
-    runs-on: macos-10.15
+    runs-on: macos-11
 
     env:
       SIGNING_ENABLED: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
