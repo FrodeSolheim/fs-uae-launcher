@@ -261,6 +261,7 @@ def fix_macos_binary(path: str, frameworks_dir: str):
         raise Exception("could not find " + repr(path))
     args = ["otool", "-L", path]
     p = subprocess.Popen(args, stdout=subprocess.PIPE)
+    assert p.stdout is not None
     # noinspection PyUnresolvedReferences
     data = p.stdout.read().decode("UTF-8")
     p.wait()
@@ -339,7 +340,7 @@ def fix_macos_binary_2(path: str, frameworks_dir: str):
         raise Exception("could not find " + repr(path))
     args = ["otool", "-L", path]
     p = subprocess.Popen(args, stdout=subprocess.PIPE)
-    # noinspection PyUnresolvedReferences
+    assert p.stdout is not None
     data = p.stdout.read().decode("UTF-8")
     p.wait()
     for line in data.split("\n"):
@@ -454,7 +455,7 @@ def fix_windows_binary(path: str, app_dir: str):
     args = [dumpbin, "/DEPENDENTS", path]
     print(args)
     p = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE)
-    # noinspection PyUnresolvedReferences
+    assert p.stdout is not None
     data = p.stdout.read().decode("UTF-8")
     p.wait()
     for line in data.split("\n"):

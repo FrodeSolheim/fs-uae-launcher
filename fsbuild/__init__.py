@@ -625,6 +625,28 @@ def build_dmg_main():
         raise Exception("Unknown dmg builder")
 
 
+def sign_main():
+    if get_package_information().type == "fs-data-plugin":
+        print("Not signing data plugin")
+    elif is_macos():
+        args = [
+            "codesign",
+            "--force",
+            "--deep",
+            "--options",
+            "runtime",
+            "--sign",
+            "Developer ID Application",
+            "--digest-algorithm=sha1,sha256",
+        ]
+        if os.path.exists("fsbuild/Entitlements.plist"):
+            args.extend(["--entitlements", "fsbuild/Entitlements.plist"])
+        args.append(get_bundle_path())
+        run_codesign(args)
+    else:
+        print("Skipping sign step (no signatures for this platform)")
+
+
 def sign_dmg_main():
     if not is_macos():
         print("Not signing DMG on non-macOS platform")
@@ -638,6 +660,38 @@ def sign_dmg_main():
     ]
     args.append(get_dmg_path())
     run_codesign(args)
+
+
+def notarize_for_macos():
+    bundle_id = get_package_information().bundle_id
+    bundle_path = get_bundle_path()
+    bundle_name = os.path.basename(bundle_path)
+    bundle_parent_dir = os.path.dirname(bundle_path)
+    shell("rm -f fsbuild/_build/notarize.zip")
+    zip = "../../../notarize.zip"
+    shell(
+        f'cd {bundle_parent_dir} && ditto -c -k --keepParent "{bundle_name}" "{zip}"'
+    )
+    request_uuid = notarize_app("fsbuild/_build/notarize.zip", bundle_id)
+    check_notarization_result(request_uuid)
+
+    if bundle_path.endswith(".framework"):
+        print(
+            "Does not seem to be possible to staple tickets to frameworks? (error 73)"
+        )
+        print("Exiting...")
+        sys.exit(0)
+
+    run(["xcrun", "stapler", "staple", bundle_path])
+
+
+def notarize_main():
+    if get_package_information().type == "fs-data-plugin":
+        print("Not notarizing data plugin")
+    elif is_macos():
+        notarize_for_macos()
+    else:
+        print("Skipping sign step (no signatures for this platform)")
 
 
 def notarize_dmg_main():
@@ -706,6 +760,8 @@ if __name__ == "__main__":
         download_main()
     elif sys.argv[1] == "notarize-dmg":
         notarize_dmg_main()
+    elif sys.argv[1] == "sign":
+        sign_dmg_main()
     elif sys.argv[1] == "sign-dmg":
         sign_dmg_main()
     elif sys.argv[1] == "version":

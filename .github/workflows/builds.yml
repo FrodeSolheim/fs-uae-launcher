@@ -74,7 +74,7 @@ jobs:
           pipenv install `pwd`/pyinstaller-4.2
 
       - name: Update version
-        run: fsbuild/version --update
+        run: fsbuild/version
 
       - name: Bootstrap
         if: hashFiles('fsbuild/bootstrap') != ''
@@ -158,7 +158,7 @@ jobs:
         run: pipenv sync --dev
 
       - name: Update version
-        run: fsbuild/version --update
+        run: fsbuild/version
 
       - name: Bootstrap
         if: hashFiles('fsbuild/bootstrap') != ''
@@ -191,14 +191,16 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD build.keychain
 
       - name: Sign
+        if: env.SIGNING_ENABLED != null
         run: fsbuild/sign
 
       - name: Notarize
-        run: fsbuild/notarize
+        if: env.SIGNING_ENABLED != null
         env:
           NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
           NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}
           NOTARIZATION_USERNAME: ${{ secrets.MACOS_NOTARIZATION_USERNAME }}
+        run: fsbuild/notarize
 
       - name: Archive
         run: fsbuild/archive
@@ -209,15 +211,15 @@ jobs:
 
       - name: Unlock keychain again
         if: env.SIGNING_ENABLED != null
-        run: |
-          echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
-          security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
         env:
           KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
           SIGNING_CERTIFICATE_P12_DATA:
             ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
           SIGNING_CERTIFICATE_PASSWORD:
             ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
+          security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
 
       - name: Sign DMG
         if: hashFiles('fsbuild/sign-dmg') != '' && env.SIGNING_ENABLED != null
@@ -251,7 +253,7 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
         run: |
-          python3 -m pip install dropbox==11.23.0
+          python3 -m pip install dropbox==11.33.0
           fsbuild/upload
 
   Windows_x86-64:
