@@ -758,10 +758,12 @@ if __name__ == "__main__":
         build_dmg_main()
     elif sys.argv[1] == "download":
         download_main()
+    elif sys.argv[1] == "notarize":
+        notarize_main()
     elif sys.argv[1] == "notarize-dmg":
         notarize_dmg_main()
     elif sys.argv[1] == "sign":
-        sign_dmg_main()
+        sign_main()
     elif sys.argv[1] == "sign-dmg":
         sign_dmg_main()
     elif sys.argv[1] == "version":
