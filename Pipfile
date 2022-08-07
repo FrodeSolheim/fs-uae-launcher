@@ -4,11 +4,14 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-black = "==21.10b0"
-mypy = "==0.910"
+black = "*"
+flake8 = "*"
+mypy = "*"
 nose = "*"
+pep8-naming = "*"
+pycodestyle = "*"
 pyinstaller = "*"
-pylint = "==2.11.1"
+pylint = "*"
 pyqt5-stubs = "*"
 pytest = "*"
 pytest-mypy = "*"
@@ -18,6 +21,7 @@ types-requests = "*"
 types-setuptools = "*"
 
 [packages]
+amitools = "*"
 autologging = "*"
 lhafile = "*"
 macholib = "*"
