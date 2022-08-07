@@ -694,9 +694,13 @@ class LaunchHandler(object):
         return "".join(result)
 
     def unpack_hard_drive(self, i, src):
-        src, archive = self.expand_default_path(
-            src, self.fsgs.amiga.get_hard_drives_dir()
-        )
+        if not src.startswith("$") and os.path.exists(src):
+            # In case a relative path points to an existing file.
+            pass
+        else:
+            src, _archive = self.expand_default_path(
+                src, self.fsgs.amiga.get_hard_drives_dir()
+            )
 
         dir_name = "DH{0}".format(i)
         dir_path = os.path.join(self.temp_dir, dir_name)
