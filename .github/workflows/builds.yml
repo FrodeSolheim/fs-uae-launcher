@@ -51,7 +51,7 @@ jobs:
           python-version: 3.9
 
       - name: Install pip and pipenv
-        run: python -m pip install pip==21.3.1 pipenv==2021.5.29
+        run: python -m pip install pip==22.2.2 pipenv==2022.8.5
 
       - name: Run pipenv sync --dev
         run: pipenv sync --dev
@@ -106,7 +106,7 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
         run: |
-          python3 -m pip install dropbox==11.23.0
+          python3 -m pip install dropbox==11.33.0
           fsbuild/upload
 
   macOS_x86-64:
@@ -130,12 +130,12 @@ jobs:
 
       - name: Download Python
         run: |
-          wget https://www.python.org/ftp/python/3.9.8/python-3.9.8-macosx10.9.pkg
-          echo "58d27898b50cd07fcd0992f12044764dbd84e934dd7cea0e5ffb6540e284214e *python-3.9.8-macosx10.9.pkg" > SHA256SUMS
+          wget https://www.python.org/ftp/python/3.9.13/python-3.9.13-macosx10.9.pkg
+          echo "167c4e2d9f172a617ba6f3b08783cf376dec429386378066eb2f865c98030dd7 *python-3.9.13-macosx10.9.pkg" > SHA256SUMS
           shasum -c SHA256SUMS
 
       - name: Install Python
-        run: sudo installer -pkg python-3.9.8-macosx10.9.pkg -target /
+        run: sudo installer -pkg python-3.9.13-macosx10.9.pkg -target /
 
       - name: Add Python to PATH
         run:
@@ -143,7 +143,7 @@ jobs:
           $GITHUB_PATH
 
       - name: Install pip and pipenv
-        run: python3 -m pip install pip==21.3.1 pipenv==2021.5.29
+        run: python3 -m pip install pip==22.2.2 pipenv==2022.8.5
 
       - name: Install appdmg
         run: npm install -g appdmg
@@ -273,7 +273,7 @@ jobs:
           echo $PYTHONDIR >> $GITHUB_PATH
 
       - name: Install pip and pipenv
-        run: python3 -m pip install pip==21.3.1 pipenv==2021.5.29
+        run: python3 -m pip install pip==22.2.2 pipenv==2022.8.5
 
       - name: Run pipenv sync --dev
         run: pipenv sync --dev --python 3.8
@@ -316,5 +316,5 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
         run: |
-          python3 -m pip install dropbox==11.23.0
+          python3 -m pip install dropbox==11.33.0
           fsbuild/upload
