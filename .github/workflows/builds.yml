@@ -3,16 +3,22 @@ on:
   push:
     branches:
       - beta
+      - dev
+      - main
       - master
       - stable
   pull_request:
     branches:
       - beta
+      - dev
+      - main
       - master
       - stable
 jobs:
   Linux_x86-64:
     runs-on: ubuntu-18.04
+    env:
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -89,17 +95,24 @@ jobs:
 
       - name: Upload build to Dropbox folder
         if: >-
-          github.ref == 'refs/heads/master' || github.ref == 'refs/heads/beta'
-          || github.ref == 'refs/heads/stable'
-        run: |
-          python3 -m pip install dropbox
-          fsbuild/upload
+          env.UPLOAD_ENABLED != null && (
+            github.ref == 'refs/heads/beta' ||
+            github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/main' ||
+            github.ref == 'refs/heads/master' ||
+            github.ref == 'refs/heads/stable'
+          )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+        run: |
+          python3 -m pip install dropbox==11.23.0
+          fsbuild/upload
 
   macOS_x86-64:
     runs-on: macos-10.15
+    env:
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -125,7 +138,9 @@ jobs:
         run: sudo installer -pkg python-3.9.8-macosx10.9.pkg -target /
 
       - name: Add Python to PATH
-        run: echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
+        run:
+          echo /Library/Frameworks/Python.framework/Versions/3.9/bin >>
+          $GITHUB_PATH
 
       - name: Install pip and pipenv
         run: python3 -m pip install pip==21.3.1 pipenv==2021.5.29
@@ -207,17 +222,24 @@ jobs:
 
       - name: Upload build to Dropbox folder
         if: >-
-          github.ref == 'refs/heads/master' || github.ref == 'refs/heads/beta'
-          || github.ref == 'refs/heads/stable'
-        run: |
-          python3 -m pip install dropbox
-          fsbuild/upload
+          env.UPLOAD_ENABLED != null && (
+            github.ref == 'refs/heads/beta' ||
+            github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/main' ||
+            github.ref == 'refs/heads/master' ||
+            github.ref == 'refs/heads/stable'
+          )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+        run: |
+          python3 -m pip install dropbox==11.23.0
+          fsbuild/upload
 
   Windows_x86-64:
-    runs-on: windows-2016
+    runs-on: windows-2019
+    env:
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
     defaults:
       run:
         shell: msys2 {0}
@@ -257,7 +279,9 @@ jobs:
         run: pipenv sync --dev --python 3.8
 
       - name: Create python3 alias in virtualenv
-        run: pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
+        run:
+          pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe
+          $VIRTUAL_ENV/Scripts/python3.exe'
 
       - name: Update version
         run: fsbuild/version --update
@@ -281,11 +305,16 @@ jobs:
 
       - name: Upload build to Dropbox folder
         if: >-
-          github.ref == 'refs/heads/beta' || github.ref == 'refs/heads/master'
-          || github.ref == 'refs/heads/stable'
-        run: |
-          python3 -m pip install dropbox
-          fsbuild/upload
+          env.UPLOAD_ENABLED != null && (
+            github.ref == 'refs/heads/beta' ||
+            github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/main' ||
+            github.ref == 'refs/heads/master' ||
+            github.ref == 'refs/heads/stable'
+          )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+        run: |
+          python3 -m pip install dropbox==11.23.0
+          fsbuild/upload

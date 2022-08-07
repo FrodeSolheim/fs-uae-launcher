@@ -1,0 +1,68 @@
+name: Source
+on:
+  push:
+    branches:
+      - beta
+      - dev
+      - main
+      - master
+      - stable
+  pull_request:
+    branches:
+      - beta
+      - dev
+      - main
+      - master
+      - stable
+jobs:
+  Source:
+    runs-on: ubuntu-18.04
+    env:
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Log environment
+        run: env
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Update version
+        run: fsbuild/version --update
+
+      - name: Bootstrap
+        if: hashFiles('fsbuild/bootstrap') != ''
+        run: fsbuild/bootstrap
+
+      - name: Configure
+        if: hashFiles('fsbuild/configure') != ''
+        run: fsbuild/configure
+
+      - name: Source
+        run: fsbuild/source
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Source
+          path: fsbuild/_dist/*
+
+      - name: Upload build to Dropbox folder
+        if: >-
+          env.UPLOAD_ENABLED != null && (
+            github.ref == 'refs/heads/beta' ||
+            github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/main' ||
+            github.ref == 'refs/heads/master' ||
+            github.ref == 'refs/heads/stable'
+          )
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+        run: |
+          python3 -m pip install dropbox==11.23.0
+          fsbuild/upload
