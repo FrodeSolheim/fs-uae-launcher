@@ -10,10 +10,16 @@ import re
 import subprocess
 import sys
 import time
+import requests
 import xml.etree.ElementTree
 from os import path
 from typing import Any, Dict, List, Optional
 import hashlib
+
+try:
+    import dropbox  # type: ignore
+except ImportError:
+    dropbox = None
 
 
 class PackageInformation:
@@ -750,6 +756,69 @@ def download_main():
         sys.exit(2)
 
 
+def execute_discord_webhook(name: str, link: str) -> None:
+    webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
+    if not webhook_url:
+        return
+    content = (
+        f"`{name}` was built and uploaded to a Dropbox "
+        f"[shared folder]({link})"
+    )
+    requests.post(webhook_url, {"content": content, "username": "Builder"})
+
+
+def get_upload_branch_name() -> Optional[str]:
+    ref = os.getenv("GITHUB_REF", "")
+    try:
+        branch = ref.split("refs/heads/", 1)[1]
+    except IndexError:
+        return None
+    if "/" in branch:
+        return None
+    return branch[0].upper() + branch[1:]
+
+
+def upload(dbx: Any, package: str, version: str, path: str) -> None:
+    print("Upload", path)
+    name = os.path.basename(path)
+    assert package.lower() in name.lower()
+    assert version in name
+    branch = get_upload_branch_name()
+    if not branch:
+        print("No upload branch name, skipping upload")
+        return
+    dst = f"/Builds/CI/{package}/{branch}/{version}/{name}"
+    with open(path, "rb") as f:
+        dbx.files_upload(f.read(), dst)
+    print("Uploaded ->", dst)
+    if os.getenv("DISCORD_WEBHOOK_URL"):
+        result: Any = dbx.sharing_list_shared_links(f"/Builds/CI/{package}")
+        for link in result.links:
+            if link.path_lower == f"/Builds/CI/{package}".lower():
+                url = link.url
+                print("Found Dropbox shared link:", url)
+                break
+        else:
+            # Fallback URL, use first result returned
+            url = result.links[0].url
+            print("Found Dropbox shared (fallback) link:", url)
+        execute_discord_webhook(name, url)
+
+
+def upload_main():
+    dist_dir = "fsbuild/_dist"
+    upload_items = os.listdir(dist_dir)
+    dbx: Any = dropbox.Dropbox(os.getenv("DROPBOX_ACCESS_TOKEN"))  # type: ignore
+    package = get_package_information()
+    for item in upload_items:
+        upload(
+            dbx,
+            package.pretty_name,
+            package.version,
+            os.path.join(dist_dir, item),
+        )
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Missing command")
@@ -766,6 +835,8 @@ if __name__ == "__main__":
         sign_main()
     elif sys.argv[1] == "sign-dmg":
         sign_dmg_main()
+    elif sys.argv[1] == "upload":
+        upload_main()
     elif sys.argv[1] == "version":
         version_main()
     else:
