@@ -16,13 +16,13 @@ You should have received a copy of the GNU Lesser General Public License
 along with this library; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 """
-import random
-import socket
 import sys
-import threading
 import time
-import traceback
 from collections import deque
+import socket
+import traceback
+import threading
+import random
 from hashlib import sha1
 
 
@@ -62,6 +62,8 @@ host = "0.0.0.0"
 game = None
 game_password = 0
 launch_timeout = 0
+netplay_ntsc = 0
+netplay_debug = 0
 server_protocol_version = byte(SERVER_PROTOCOL_VERSION)
 
 
@@ -205,7 +207,8 @@ class Client:
     def __send_queued_messages(self):
         data = b"".join(self.messages)
         self.messages[:] = []
-        # print("sending", repr(data))
+        if netplay_debug == 1:
+            print("sending", repr(data))
         self.__send_data(data)
 
     def initialize_client(self):
@@ -274,7 +277,8 @@ class Client:
         try:
             try:
                 if not self.initialize_client():
-                    # print("initialize failed for", self)
+                    if netplay_debug == 1:
+                        print("initialize failed for", self)
                     return
                 self.receive_loop()
             except Exception:
@@ -485,7 +489,10 @@ class Game:
 
     def __game_loop_iteration(self):
         # FIXME: higher precision sleep?
-        target_time = self.time + 0.02
+        if netplay_ntsc == 1:
+            target_time = self.time + 1/59.97
+        else:
+            target_time = self.time + 1/50
         t2 = time.time()
         diff = target_time - t2
         sleep = diff - 0.001
@@ -736,7 +743,7 @@ def run_server():
 
 
 def main():
-    global port, num_clients, game_password, launch_timeout
+    global port, num_clients, game_password, launch_timeout,netplay_debug,netplay_ntsc
     for arg in sys.argv:
         if arg.startswith("--"):
             parts = arg[2:].split("=", 1)
@@ -751,6 +758,13 @@ def main():
                     # game_password = crc32(value) & 0xffffffff
                     game_password = create_game_password(value)
                     # print("game password (numeric) is", game_password)
+#ADDED:
+                elif key == "netplay-debug":
+                    netplay_debug = int(value)
+                elif key == "netplay-ntsc":
+                    print("Server launching in NTSC mode")
+                    netplay_ntsc = int(value)
+#End of adding
                 elif key == "launch-timeout":
                     launch_timeout = int(value)
     run_server()
