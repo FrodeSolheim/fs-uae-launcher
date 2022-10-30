@@ -29,8 +29,8 @@ platforms.
 
 The following packages are needed:
 
-    sudo apt install python3 python3-pillow python3-pyqt5 \
-        python3-pyqt5.qtopengl python3-requests python3-opengl \
+    sudo apt install python3 python3-pillow python3-pyqt6 \
+        python3-pyqt6.qtopengl python3-requests python3-opengl \
         python3-rx python3-typing-extensions
 
 To add support for .lha archives, you also need to have the lhafile
@@ -69,7 +69,7 @@ FIXME: Write about dependencies for running the launcher from the source
 directory:
 
     pacman -S mingw-w64-x86_64-python3 mingw-w64-x86_64-python3-lhafile \
-    mingw-w64-x86_64-python3-pillow mingw-w64-x86_64-python3-pyqt5 \
+    mingw-w64-x86_64-python3-pillow mingw-w64-x86_64-python3-pyqt6 \
     mingw-w64-x86_64-python3-requests mingw-w64-x86_64-python3-setuptools
 
 And finally, from the fs-uae-launcher source directory:
@@ -110,7 +110,7 @@ thatyou do not get errors here). Then follow with:
 
     cd %LOCALAPPDATA%\Programs\Python\Python36
     python -m pip install --upgrade pip
-    python -m pip install lhafile requests pillow PyQt5==5.12.2
+    python -m pip install lhafile requests pillow pyqt6==6.4.0
 
 In the MSYS2 MinGW 64-bit shell:
 
@@ -133,7 +133,7 @@ verify that pip3 is found in the correct place:
 
 Then run:
 
-    pip3 install lhafile pillow pyobjc pyqt5 requests rx typing_extensions
+    pip3 install lhafile pillow pyobjc pyqt6 requests rx typing_extensions
 
 And finally, from the fs-uae-launcher source directory:
 

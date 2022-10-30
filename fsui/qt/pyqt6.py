@@ -1,6 +1,6 @@
 # Needed for rxpy scheduler
-from PyQt5 import QtCore
-from PyQt5.QtCore import (
+from PyQt6 import QtCore
+from PyQt6.QtCore import (
     QAbstractListModel,
     QCoreApplication,
     QEvent,
@@ -12,8 +12,8 @@ from PyQt5.QtCore import (
     QTimer,
     QUrl,
 )
-from PyQt5.QtCore import pyqtSignal as QSignal
-from PyQt5.QtGui import (
+from PyQt6.QtCore import pyqtSignal as QSignal
+from PyQt6.QtGui import (
     QBrush,
     QCloseEvent,
     QColor,
@@ -35,14 +35,13 @@ from PyQt5.QtGui import (
     QStandardItemModel,
     QTextCursor,
 )
-from PyQt5.QtOpenGL import QGLWidget
-from PyQt5.QtSvg import QSvgRenderer
-from PyQt5.QtWidgets import (
+from PyQt6.QtOpenGLWidgets import QOpenGLWidget
+from PyQt6.QtSvg import QSvgRenderer
+from PyQt6.QtWidgets import (
     QApplication,
     QCheckBox,
     QColorDialog,
     QComboBox,
-    QDesktopWidget,
     QDialog,
     QFileDialog,
     QFrame,
@@ -59,6 +58,8 @@ from PyQt5.QtWidgets import (
     QTextEdit,
     QWidget,
 )
+from PyQt6 import QtGui
+
 
 __all__ = [
     "QApplication",
@@ -67,7 +68,6 @@ __all__ = [
     "QResizeEvent",
     "QColorDialog",
     "QComboBox",
-    "QDesktopWidget",
     "QDialog",
     "QFileDialog",
     "QFrame",
@@ -84,7 +84,7 @@ __all__ = [
     "QTextEdit",
     "QWidget",
     "QSvgRenderer",
-    "QGLWidget",
+    #"QGLWidget",
     "QSvgRenderer",
     "QBrush",
     "QColor",

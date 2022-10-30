@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import (
-    QDesktopWidget,
+from PyQt6.QtWidgets import (
     QDialog,
     QFrame,
     QLineEdit,
@@ -10,7 +9,6 @@ from PyQt5.QtWidgets import (
 )
 
 __all__ = [
-    "QDesktopWidget",
     "QDialog",
     "QFrame",
     "QLineEdit",

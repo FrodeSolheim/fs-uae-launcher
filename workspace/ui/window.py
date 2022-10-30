@@ -44,9 +44,9 @@ class WindowBorder(RealWindow):
         # self.setWindowFlags(Qt.FramelessWindowHint)
         from fsui.qt import Qt
 
-        self.setAttribute(Qt.WA_NoSystemBackground)
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setAttribute(Qt.WA_TransparentForMouseEvents)
+        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
 
     def paintEvent(self, event):
         # noinspection PyNoneFunctionAssignment

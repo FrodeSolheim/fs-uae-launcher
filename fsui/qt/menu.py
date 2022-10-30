@@ -1,7 +1,7 @@
 import weakref
 from typing import Any, Optional, Type
 
-from PyQt5.QtGui import QMouseEvent
+from PyQt6.QtGui import QMouseEvent
 
 from fscore.deprecated import deprecated
 from fscore.types import SimpleCallable

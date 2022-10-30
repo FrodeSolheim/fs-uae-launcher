@@ -124,14 +124,14 @@ class WidgetWithEventHandlers(QWidget):
         self.owner().on_mouse_leave()
 
     def mouseDoubleClickEvent(self, a0: QMouseEvent) -> None:
-        if a0.button() == Qt.LeftButton:
+        if a0.button() == Qt.MouseButton.LeftButton:
             self.owner().on_left_dclick()
 
     def mouseMoveEvent(self, a0: QMouseEvent) -> None:
         self.owner().on_mouse_motion()
 
     def mousePressEvent(self, a0: QMouseEvent) -> None:
-        if a0.button() == Qt.LeftButton:
+        if a0.button() == Qt.MouseButton.LeftButton:
             # A temp code is made in case internalIgnoreNextLeftDownEvent is
             # altered inside on_left_down.
             ignore = self.owner().internalIgnoreNextLeftDownEvent
@@ -142,7 +142,7 @@ class WidgetWithEventHandlers(QWidget):
                 self.owner().on_left_down()
 
     def mouseReleaseEvent(self, a0: QMouseEvent) -> None:
-        if a0.button() == Qt.LeftButton:
+        if a0.button() == Qt.MouseButton.LeftButton:
             self.owner().on_left_up()
 
     def owner(self) -> Panel:
@@ -154,7 +154,7 @@ class WidgetWithEventHandlers(QWidget):
         #     return
 
         painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         self.owner().internalSetPainter(painter)
         try:
             self.owner().on_paint()

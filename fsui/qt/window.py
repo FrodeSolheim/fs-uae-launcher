@@ -1,7 +1,7 @@
 import weakref
 from typing import Any, Optional, Tuple, cast
 
-from PyQt5.QtGui import QMoveEvent, QResizeEvent, QShowEvent
+from PyQt6.QtGui import QMoveEvent, QResizeEvent, QShowEvent
 
 from fscore.deprecated import deprecated
 from fscore.system import System
@@ -32,28 +32,28 @@ class WindowWrapper(QMainWindow):
         super().__init__(QOptionalParent(parent, window=True))
         # self.margins = Margins()
         self.setWindowTitle(title)
-        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
 
-        flags: int = Qt.Window
+        flags: int = Qt.WindowType.Window
         if System.macos:
-            flags &= ~Qt.WindowFullscreenButtonHint
+            flags &= ~Qt.WindowType.WindowFullscreenButtonHint
 
         if border:
-            flags |= Qt.CustomizeWindowHint
-            flags |= Qt.WindowCloseButtonHint
-            flags |= Qt.WindowTitleHint
+            flags |= Qt.WindowType.CustomizeWindowHint
+            flags |= Qt.WindowType.WindowCloseButtonHint
+            flags |= Qt.WindowType.WindowTitleHint
             if minimizable:
-                flags |= Qt.WindowMinimizeButtonHint
+                flags |= Qt.WindowType.WindowMinimizeButtonHint
             if maximizable:
-                flags |= Qt.WindowMaximizeButtonHint
+                flags |= Qt.WindowType.WindowMaximizeButtonHint
             # else:
-            #     flags &= ~Qt.WindowMaximizeButtonHint
+            #     flags &= ~Qt.WindowType.WindowMaximizeButtonHint
         else:
-            flags |= Qt.FramelessWindowHint
+            flags |= Qt.WindowType.FramelessWindowHint
             # flags |= Qt.NoDropShadowWindowHint
             if below:
-                flags |= Qt.WindowStaysOnBottomHint
-        self.setWindowFlags(cast(Qt.WindowFlags, flags))
+                flags |= Qt.WindowType.WindowStaysOnBottomHint
+        self.setWindowFlags(flags)
         # self.setAttribute(Qt.WA_DeleteOnClose, True)
 
         # self._child = weakref.ref(child)
@@ -290,7 +290,7 @@ class Window(TopLevelWidget):
             print("size after showFullScreen", (self.size()))
         else:
             self.restore_margins()
-            self.setWindowState(Qt.WindowNoState)
+            self.setWindowState(Qt.WindowState.WindowNoState)
 
     def show(
         self,

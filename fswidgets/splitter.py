@@ -1,4 +1,5 @@
 from enum import Enum
+from tkinter import HORIZONTAL
 from typing import List, Optional, cast
 
 from fsui import Widget
@@ -35,9 +36,9 @@ class Splitter(Widget):
         super().__init__(
             parent,
             qwidget=QSplitter(
-                Qt.Horizontal
+                Qt.Orientation.Horizontal
                 if orientation == self.HORIZONTAL
-                else Qt.Vertical,
+                else Qt.Orientation.Vertical,
                 QParent(parent),
             ),
         )

@@ -10,7 +10,7 @@ from fsui.qt.qparent import QParent
 
 # from fsui import default_window_center, default_window_parent
 from fsui.qt.qt import (
-    QDesktopWidget,
+    #QDesktopWidget,
     QEvent,
     QMainWindow,
     QObject,
@@ -591,7 +591,8 @@ class Window(QObject):
 
     def center_on_screen(self):
         frame_rect = self._real_window.frameGeometry()
-        frame_rect.moveCenter(QDesktopWidget().availableGeometry().center())
+        #frame_rect.moveCenter(QDesktopWidget().availableGeometry().center())
+        frame_rect.moveCenter(QtGui.QGuiApplication.primaryScreen().availableGeometry().center())
         self._real_window.move(frame_rect.topLeft())
 
     def set_background_color(self, color):

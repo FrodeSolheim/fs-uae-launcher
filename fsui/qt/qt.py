@@ -10,8 +10,8 @@ from fsgamesys.options.option import Option
 #     # noinspection PyUnresolvedReferences
 #     from fsui.qt.pyside2 import *
 # else:
-#     from fsui.qt.pyqt5 import *
-from fsui.qt.pyqt5 import *
+#     from fsui.qt.pyqt6 import *
+from fsui.qt.pyqt6 import *
 
 # from fsui.qt.pyqt5 import (
 #     QAbstractListModel,
@@ -106,7 +106,8 @@ def init_qt() -> QApplication:
     # Should not be necessary with Qt 5.2.x:
     # fix_qt_for_maverick()
 
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    # FIXME commented out cause couldn't make work with Qt6
+    #QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
     fstd.desktop.set_open_url_in_browser_function(open_url_in_browser)
     qapplication = QtBaseApplication(sys.argv)
@@ -163,12 +164,12 @@ def initialize_qt_style(qapplication: QApplication) -> None:
             pa = QPalette()
             # background = QColor("#f6f5f4")
             background = QColor("#eae7e5")
-            pa.setColor(QPalette.Window, background)
-            pa.setColor(QPalette.AlternateBase, background)
-            pa.setColor(QPalette.Button, background)
+            pa.setColor(QPalette.ColorRole.Window, background)
+            pa.setColor(QPalette.ColorRole.AlternateBase, background)
+            pa.setColor(QPalette.ColorRole.Button, background)
             # pa.setColor(QPalette.Base, QColor(255, 255, 255))
             pa.setColor(
-                QPalette.Disabled, QPalette.Base, QColor(241, 241, 241)
+                QPalette.ColorGroup.Disabled, QPalette.ColorRole.Base, QColor(241, 241, 241)
             )
 
             # pa.setColor(QPalette.Window, QColor("#aeaeae"))
@@ -178,25 +179,25 @@ def initialize_qt_style(qapplication: QApplication) -> None:
             qapplication.setPalette(pa)
         elif fusion_variant == "fws" or fusion_variant == "windows10":
             pa = QPalette()
-            pa.setColor(QPalette.Window, QColor(242, 242, 242))
-            pa.setColor(QPalette.AlternateBase, QColor(242, 242, 242))
-            pa.setColor(QPalette.Button, QColor(242, 242, 242))
+            pa.setColor(QPalette.ColorRole.Window, QColor(242, 242, 242))
+            pa.setColor(QPalette.ColorRole.AlternateBase, QColor(242, 242, 242))
+            pa.setColor(QPalette.ColorRole.Button, QColor(242, 242, 242))
             qapplication.setPalette(pa)
         elif fusion_variant == "dark":
             pa = QPalette()
-            pa.setColor(QPalette.Window, QColor(0x50, 0x50, 0x50))
-            pa.setColor(QPalette.WindowText, Qt.white)
-            pa.setColor(QPalette.Base, QColor(25, 25, 25))
-            pa.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-            pa.setColor(QPalette.ToolTipBase, Qt.white)
-            pa.setColor(QPalette.ToolTipText, Qt.white)
-            pa.setColor(QPalette.Text, Qt.white)
-            pa.setColor(QPalette.Button, QColor(0x58, 0x58, 0x58))
-            pa.setColor(QPalette.ButtonText, Qt.white)
-            pa.setColor(QPalette.BrightText, Qt.red)
-            pa.setColor(QPalette.Link, QColor(42, 130, 218))
-            pa.setColor(QPalette.Highlight, QColor(42, 130, 218))
-            pa.setColor(QPalette.HighlightedText, Qt.black)
+            pa.setColor(QPalette.ColorRole.Window, QColor(0x50, 0x50, 0x50))
+            pa.setColor(QPalette.ColorRole.WindowText, Qt.GlobalColor.white)
+            pa.setColor(QPalette.ColorRole.Base, QColor(25, 25, 25))
+            pa.setColor(QPalette.ColorRole.AlternateBase, QColor(53, 53, 53))
+            pa.setColor(QPalette.ColorRole.ToolTipBase, Qt.GlobalColor.white)
+            pa.setColor(QPalette.ColorRole.ToolTipText, Qt.GlobalColor.white)
+            pa.setColor(QPalette.ColorRole.Text, Qt.GlobalColor.white)
+            pa.setColor(QPalette.ColorRole.Button, QColor(0x58, 0x58, 0x58))
+            pa.setColor(QPalette.ColorRole.ButtonText, Qt.GlobalColor.white)
+            pa.setColor(QPalette.ColorRole.BrightText, Qt.GlobalColor.red)
+            pa.setColor(QPalette.ColorRole.Link, QColor(42, 130, 218))
+            pa.setColor(QPalette.ColorRole.Highlight, QColor(42, 130, 218))
+            pa.setColor(QPalette.ColorRole.HighlightedText, Qt.GlobalColor.black)
             qapplication.setPalette(pa)
             qapplication.setStyleSheet(
                 "QToolTip { color: #ffffff; background-color: #2a82da; "

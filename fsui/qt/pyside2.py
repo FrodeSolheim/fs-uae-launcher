@@ -40,7 +40,7 @@ from PySide2.QtGui import (
 )
 
 # noinspection PyUnresolvedReferences, PyPackageRequirements
-from PySide2.QtOpenGL import QGLWidget
+from PySide2.QtOpenGL import QWidget
 
 # noinspection PyUnresolvedReferences, PyPackageRequirements
 from PySide2.QtSvg import QSvgRenderer
@@ -51,7 +51,7 @@ from PySide2.QtWidgets import (
     QCheckBox,
     QColorDialog,
     QComboBox,
-    QDesktopWidget,
+    #QDesktopWidget,
     QDialog,
     QFileDialog,
     QFrame,

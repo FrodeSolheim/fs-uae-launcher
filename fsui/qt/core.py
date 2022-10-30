@@ -1,4 +1,4 @@
-from PyQt5.QtCore import (
+from PyQt6.QtCore import (
     QEvent,
     QModelIndex,
     QObject,
@@ -7,6 +7,10 @@ from PyQt5.QtCore import (
     Qt,
     QTimer,
     QTimerEvent,
+)
+
+from PyQt6 import (
+    QtGui,
 )
 
 __all__ = [

@@ -107,8 +107,8 @@ class ColorSettingButton(IconButton):
         self.dialog = QColorDialog(parent=get_window(self)._qwidget)
 
         # dialog.setOption(QColorDialog.ShowAlphaChannel)
-        self.dialog.setOption(QColorDialog.NoButtons)
-        self.dialog.setOption(QColorDialog.DontUseNativeDialog)
+        self.dialog.setOption(QColorDialog.ColorDialogOption.NoButtons)
+        self.dialog.setOption(QColorDialog.ColorDialogOption.DontUseNativeDialog)
         # Setting initial color only seems to work after setting options.
         # Calling this method earlier (or setting initial color in constructor)
         # seems to be ignored causing black color to be pre-selected.
@@ -129,7 +129,7 @@ class ColorSettingButton(IconButton):
             from fsui.qt import QEvent
 
             # print("eventFilter", obj, event, event.type(), QEvent.Close)
-            if event.type() == QEvent.Close:
+            if event.type() == QEvent.Type.Close:
                 print("----")
                 print("Dialog Window closed")
                 print("----")

@@ -1,7 +1,7 @@
 import os
 import sys
 
-from PyQt5.QtQuick import QQuickView
+from PyQt6.QtQuick import QQuickView
 
 # to make sure cxFreeze includes it
 from fsbc.application import app

@@ -28,7 +28,6 @@ from fsgamesys.plugins.pluginmanager import Executable, PluginManager
 from fsgamesys.util.gamenameutil import GameNameUtil
 from launcher.option import Option
 
-
 class TemporaryNamedItem:
     def __init__(
         self, root: "TemporaryNamedItem", name: str, directory: bool = False
@@ -427,17 +426,23 @@ class GameDriver:
         screens = []
         try:
             from fsui.qt import init_qt
+            from PyQt6 import QtGui
+            from PyQt6.QtGui import QScreen
 
-            qapplication = init_qt()
-            desktop = qapplication.desktop()
+            from PyQt6.QtWidgets import QMainWindow, QApplication
+
+            screenList = QtGui.QGuiApplication.screens()
+
         except AttributeError:
-            # no QApplication, probably not running via QT
-            # FIXME: log warning
+            print("Warning No Attributes found for screens.")
             pass
         else:
-            for i in range(desktop.screenCount()):
-                geometry = desktop.screenGeometry(i)
-                screens.append([geometry.x(), i, geometry])
+
+            j = 0
+            for i in screenList:
+                geometry = i.geometry()
+                screens.append([geometry.x(), j, geometry])
+                j = j+1
         return screens
 
     @classmethod

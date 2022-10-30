@@ -74,7 +74,7 @@ class Font(object):
         im = QImage(
             rect.x() + rect.width(),
             rect.height(),
-            QImage.Format_ARGB32_Premultiplied,
+            QImage.Format.Format_ARGB32_Premultiplied,
         )
         im.fill(QColor(0, 0, 0, 0))
         painter = QPainter()

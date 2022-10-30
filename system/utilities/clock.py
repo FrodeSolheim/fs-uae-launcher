@@ -69,11 +69,11 @@ class ClockQWidget(QWidget):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.setRenderHints(QPainter.Antialiasing)
+        painter.setRenderHints(QPainter.RenderHint.Antialiasing)
         pen = QPen(QColor(0x80, 0x80, 0x80))
         pen.setWidth(2)
         painter.setPen(pen)
-        painter.setBrush(QBrush(Qt.white))
+        painter.setBrush(QBrush(Qt.GlobalColor.white))
         x = 1
         y = 1
         w = self.width() - 2
@@ -82,19 +82,19 @@ class ClockQWidget(QWidget):
         rect = QRect(x, y, w, h)
         painter.drawEllipse(rect)
 
-        cx = x + w / 2
-        cy = y + h / 2
+        cx = int(x + w / 2)
+        cy = int(y + h / 2)
         a = w / 2 * 0.85
         b = h / 2 * 0.85
 
         pen.setWidth(0)
         painter.setPen(pen)
-        painter.setBrush(QBrush(Qt.black))
+        painter.setBrush(QBrush(Qt.GlobalColor.black))
 
         for i in range(12):
             px = cx + a * math.cos(2 * math.pi * i / 12)
             py = cy + b * math.sin(2 * math.pi * i / 12)
-            painter.drawEllipse(px - 3, py - 3, 6, 6)
+            painter.drawEllipse(int(px - 3), int(py - 3), 6, 6)
 
         hours, minutes, seconds = self.time[3:]
         minutes += seconds / 60.0
@@ -126,8 +126,8 @@ class ClockQWidget(QWidget):
     def draw_hand_line(self, painter, w, h, cx, cy, a, b, degrees):
         f2 = -math.pi / 2.0
         painter.drawLine(
-            cx,
-            cy,
-            cx + a * math.cos(degrees + f2),
-            cy + b * math.sin(degrees + f2),
+            int(cx),
+            int(cy),
+            int(cx + a * math.cos(degrees + f2)),
+            int(cy + b * math.sin(degrees + f2)),
         )

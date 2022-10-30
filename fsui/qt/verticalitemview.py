@@ -27,7 +27,7 @@ class Model(QAbstractListModel):
     # def set_item_count(self, count):
     #     self.count = count
 
-    # PyQt5-stubs uses parent = ... ?
+    # PyQt6-stubs uses parent = ... ?
     def rowCount(self, parent: QModelIndex) -> int:  # type: ignore
         # print("returning count", self.count, "for parent", parent)
         # return self.count
@@ -35,20 +35,20 @@ class Model(QAbstractListModel):
         assert p is not None
         return p.get_item_count()
 
-    # PyQt5-stubs uses parent = ... ?
+    # PyQt6-stubs uses parent = ... ?
     def data(self, index: QModelIndex, role: int) -> Any:  # type: ignore
         row = index.row()
         # print("data for", index, "role", role)
-        if role == Qt.SizeHintRole:
+        if role == Qt.ItemDataRole.SizeHintRole:
             height = self.parent()._row_height
             return QSize(height, height)
-        elif role == Qt.DecorationRole:
+        elif role == Qt.ItemDataRole.DecorationRole:
             icon = self.parent().get_item_icon(row)
             if icon:
                 return icon.qpixmap
-        elif role == Qt.DisplayRole:
+        elif role == Qt.ItemDataRole.DisplayRole:
             return self.parent().get_item_text(row)
-        elif role == Qt.ForegroundRole:
+        elif role == Qt.ItemDataRole.ForegroundRole:
             color = self.parent().get_item_text_color(row)
             if color is not None:
                 return QBrush(color)
@@ -85,7 +85,7 @@ class VerticalItemView(Widget):
 
     # FIXME
     # def keyPressEvent(self, event):
-    #     if event.key() == Qt.Key_Return:
+    #     if event.key() == Qt.Key.Key_Return:
     #         self.__double_clicked()
     #     else:
     #         QListView.keyPressEvent(self, event)

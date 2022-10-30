@@ -27,14 +27,11 @@ class Label(PlainLabel):
     ) -> None:
         super().__init__(parent, label)
 
-        self.qLabel.setTextFormat(Qt.RichText)
+        self.qLabel.setTextFormat(Qt.TextFormat.RichText)
         # self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
         if selectable:
             self.qLabel.setTextInteractionFlags(
-                cast(
-                    Qt.TextInteractionFlags,
-                    Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse,
-                )
+                Qt.TextInteractionFlag.TextSelectableByMouse | Qt.TextInteractionFlag.LinksAccessibleByMouse,
             )
         self.qLabel.setOpenExternalLinks(True)
         # self.setFocusPolicy(Qt.NoFocus)
@@ -45,7 +42,7 @@ class Label(PlainLabel):
 
     def set_text_alignment(self, alignment: int) -> None:
         if alignment == 1:
-            self.qLabel.setAlignment(Qt.AlignHCenter)
+            self.qLabel.setAlignment(Qt.AlignmentFlag.AlignHCenter)
 
     def set_text_color(self, color: Color) -> None:
         palette = self.qLabel.palette()
@@ -95,12 +92,12 @@ class MultiLineLabel(Widget):
         if min_width:
             self.set_min_width(min_width)
 
-        self.qLabel.setTextFormat(Qt.RichText)
-        self.qLabel.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        self.qLabel.setTextFormat(Qt.TextFormat.RichText)
+        self.qLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
         self.qLabel.setOpenExternalLinks(True)
         # FIXME: How to correctly fix multiple flags w.r.t typing?
         self.qLabel.setAlignment(
-            cast(Qt.AlignmentFlag, Qt.AlignLeft | Qt.AlignTop)
+            cast(Qt.AlignmentFlag, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
         )
 
     def get_min_height(self, width: int) -> int:
