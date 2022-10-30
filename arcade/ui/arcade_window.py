@@ -180,7 +180,7 @@ class QtWindow(QWidget):
         self.interval = interval
         self.quit_flag = False
         self.first_time = None
-        # self.setCursor(Qt.BlankCursor)
+        # self.setCursor(Qt.CursorShape.BlankCursor)
         self._window = weakref.ref(window)
         self.set_blank_cursor()
         self.show_cursor_until = None
@@ -190,9 +190,9 @@ class QtWindow(QWidget):
 
     def set_blank_cursor(self, blank=True):
         if blank:
-            cursor = Qt.BlankCursor
+            cursor = Qt.CursorShape.BlankCursor
         else:
-            cursor = Qt.ArrowCursor
+            cursor = Qt.CursorShape.ArrowCursor
         self.setCursor(cursor)
         if self.gl_widget is not None:
             self.gl_widget.setCursor(cursor)
@@ -224,7 +224,7 @@ class QtWindow(QWidget):
             self.gl_widget = GLWidget(self, self.callbacks)
             self.gl_widget.setMouseTracking(True)
             # if "--show-cursor" not in sys.argv:
-            # self.gl_widget.setCursor(Qt.BlankCursor)
+            # self.gl_widget.setCursor(Qt.CursorShape.BlankCursor)
             self.set_blank_cursor()
             self.gl_widget.setGeometry(
                 0, 0, self.size().width(), self.size().height()
@@ -309,10 +309,10 @@ class QtWindow(QWidget):
         if event.isAutoRepeat():
             return
         if modifier():
-            if event.key() == Qt.Key_Return:
+            if event.key() == Qt.Key.Key_Return:
                 self.window().set_fullscreen(not self.window().is_fullscreen())
                 return
-            if event.key() == Qt.Key_Q:
+            if event.key() == Qt.Key.Key_Q:
                 self.window().close()
                 return
 

@@ -47,7 +47,7 @@ class ListView(Widget):
         selection_model = self.qListView.selectionModel()
         print("QListView selectionModel", selection_model)
         selection_model.selectionChanged.connect(self.__on_selection_changed)
-        self.qListView.setEditTriggers(QListView.NoEditTriggers)
+        self.qListView.setEditTriggers(QListView.EditTrigger.NoEditTriggers)
         self.qListView.doubleClicked.connect(self.__on_double_clicked)
         # self.returnPressed.connect(self.__double_clicked)
         # self.activated.connect(self.__double_clicked)
@@ -83,7 +83,7 @@ class ListView(Widget):
 
     # FIXME:
     # def keyPressEvent(self, event):
-    #     if event.key() == Qt.Key_Return:
+    #     if event.key() == Qt.Key.Key_Return:
     #         self.__double_clicked()
     #     else:
     #         super().keyPressEvent(event)

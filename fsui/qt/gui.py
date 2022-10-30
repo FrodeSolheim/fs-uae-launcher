@@ -1,4 +1,4 @@
-from PyQt5.QtGui import (
+from PyQt6.QtGui import (
     QCloseEvent,
     QColor,
     QFont,
