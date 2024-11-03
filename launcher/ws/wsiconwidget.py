@@ -53,12 +53,12 @@ class IconWidget(Panel):
         tw, th = dc.measure_text(self.label)
         # self.draw_background(dc)
         dc.set_text_color(self.textcolor)
-        dc.draw_text(self.label, (ww - tw) / 2, wh - th)
+        dc.draw_text(self.label, int((ww - tw) / 2), int(wh - th))
         icon = self.icon
         if self._selected and self.selected_icon:
             icon = self.selected_icon
         iw, ih = icon.size
-        dc.draw_image(icon, (ww - iw) / 2, 8 + (64 - ih) / 2)
+        dc.draw_image(icon, int((ww - iw) / 2), int(8 + (64 - ih) / 2))
 
 
 class WSIconWidget(IconWidget):

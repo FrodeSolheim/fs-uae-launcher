@@ -338,12 +338,12 @@ class LinearLayout(Layout):
                     # position[0] += (self.size[0] - size[0]) // 2
                     pass
                 else:
-                    position[1] += (
+                    position[1] += int((
                         fill_size[1]
                         - child.margin_top
                         - child.margin_bottom
                         - size[1]
-                    ) * child.valign
+                    ) * child.valign) # because valign is a float
 
             child.element.set_position_and_size(position, size)
 
