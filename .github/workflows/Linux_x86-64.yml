@@ -1,24 +1,28 @@
-name: Linux
+name: Linux_x86-64
+
 on:
   push:
     branches:
-      - master
       - beta
+      - master
       - stable
+      - test
   pull_request:
     branches:
-      - master
       - beta
+      - master
       - stable
+      - test
+
 jobs:
   Linux_x86-64:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     env:
       UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -116,7 +120,7 @@ jobs:
         run: |
           fsbuild/archive
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: Linux_x86-64
           path: fsbuild/_dist/*
@@ -124,14 +128,17 @@ jobs:
       - name: Upload build to Dropbox folder
         if: >-
           env.UPLOAD_ENABLED != null && (
-            github.ref == 'refs/heads/master' ||
-            github.ref == 'refs/heads/dev' ||
             github.ref == 'refs/heads/beta' ||
-            github.ref == 'refs/heads/stable'
+            github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/master' ||
+            github.ref == 'refs/heads/stable' ||
+            github.ref == 'refs/heads/test'
           )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
         run: |
-          python3 -m pip install dropbox==11.23.0
+          python3 -m venv .venv
+          source .venv/bin/activate
+          python3 -m pip install dropbox==12.0.2
           fsbuild/upload
