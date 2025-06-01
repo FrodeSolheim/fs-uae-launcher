@@ -144,4 +144,4 @@ jobs:
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
         run: |
           uv add dropbox==12.0.2
-          uv run fsbuild/upload
+          uv run python3 fsbuild/upload

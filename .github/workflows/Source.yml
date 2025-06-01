@@ -30,10 +30,19 @@ jobs:
         run: |
           env
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.9"
+
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: 3.12
+
+      - name: Run uv sync
+        run: |
+          uv sync
 
       - name: Update version
         run: |
@@ -72,4 +81,4 @@ jobs:
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
         run: |
           uv add dropbox==12.0.2
-          uv run fsbuild/upload
+          uv run python3 fsbuild/upload
