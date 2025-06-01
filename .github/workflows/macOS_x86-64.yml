@@ -168,5 +168,5 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
         run: |
-          uv install dropbox==12.0.2
+          uv add dropbox==12.0.2
           uv run fsbuild/upload
