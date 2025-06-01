@@ -94,13 +94,9 @@ jobs:
         run: |
           fsbuild/configure
 
-      # - name: Build
-      #   run: |
-      #     pipenv run bash -c 'fsbuild/build'
-
       - name: Build
         run: |
-          uv run fsbuild/build
+          uv run bash -c 'fsbuild/build'
 
       - name: Bundle
         run: |

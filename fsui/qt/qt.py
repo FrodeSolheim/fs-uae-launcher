@@ -129,7 +129,7 @@ def initialize_qt_style(qapplication):
             pa.setColor(QPalette.ColorRole.Window, background)
             pa.setColor(QPalette.ColorRole.AlternateBase, background)
             pa.setColor(QPalette.ColorRole.Button, background)
-            # pa.setColor(QPalette.Base, QColor(255, 255, 255))
+            # pa.setColor(QPalette.ColorRole.Base, QColor(255, 255, 255))
             pa.setColor(
                 QPalette.ColorRole.Disabled, QPalette.ColorRole.Base, QColor(241, 241, 241)
             )
