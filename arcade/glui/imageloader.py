@@ -92,13 +92,13 @@ def load_image(relative_path):
             if not os.path.exists(path):
                 return None, (0, 0)
             im = QImage(path)
-        if im.format() != QImage.Format_ARGB32:
-            im = im.convertToFormat(QImage.Format_ARGB32)
+        if im.format() != QImage.Format.Format_ARGB32:
+            im = im.convertToFormat(QImage.Format.Format_ARGB32)
         bits = im.bits()
         try:
             pixels = bits.tobytes()
         except AttributeError:
-            bits.setsize(im.byteCount())
+            bits.setsize(im.sizeInBytes())
             pixels = bytes(bits)
         return pixels, (im.width(), im.height())
 

@@ -1029,6 +1029,14 @@ def render_screen():
         time.sleep(0.01)
         return
     # Render.get().dirty = True
+
+    try:
+        # FIXME: The previous gl operation (probably failed)
+        gl.glClearColor(0.0, 0.0, 0.0, 1.0)
+    except Exception:
+        print("FIXME: Check the previos OpenGL operation for error...")
+        pass
+
     gl.glClearColor(0.0, 0.0, 0.0, 1.0)
     gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
     do_render()

@@ -37,10 +37,10 @@ class GLWidget(QOpenGLWidget):
             print("[OPENGL] Version major:", gl_format.majorVersion())
             print("[OPENGL] Version minor:", gl_format.minorVersion())
             print("[OPENGL] Context profile:", gl_format.profile())
-            print("[OPENGL] Direct rendering:", gl_format.directRendering())
+            # print("[OPENGL] Direct rendering:", gl_format.directRendering())
             print("[OPENGL] Depth buffer size:", gl_format.depthBufferSize())
-            print("[OPENGL] Double buffering:", self.doubleBuffer())
-            print("[OPENGL] Auto buffer swap:", self.autoBufferSwap())
+            # print("[OPENGL] Double buffering:", self.doubleBuffer())
+            # print("[OPENGL] Auto buffer swap:", self.autoBufferSwap())
         except Exception:
             traceback.print_exc()
 

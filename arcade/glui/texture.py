@@ -170,7 +170,7 @@ class Texture(object):
         try:
             pixels = bits.tobytes()
         except AttributeError:
-            bits.setsize(im.byteCount())
+            bits.setsize(im.sizeInBytes())
             pixels = bytes(bits)
         size[0] = im.width()
         size[1] = im.height()

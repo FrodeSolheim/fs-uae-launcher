@@ -14,6 +14,14 @@ from fsui.qt import init_qt, Qt, QWidget, QKeyEvent
 
 CURSOR_SHOW_DURATION = 5.0
 
+# from PyQt6.QtGui import QSurfaceFormat
+# fmt = QSurfaceFormat()
+# fmt.setProfile(QSurfaceFormat.OpenGLContextProfile.CompatibilityProfile)
+# fmt.setOption(QSurfaceFormat.FormatOption.DeprecatedFunctions)
+# fmt.setVersion(3, 3)  # or whatever
+# QSurfaceFormat.setDefaultFormat(fmt)
+# # # import sys
+# # # sys.exit(1)
 
 def check_argument(name, options=None):
     name = name.replace("_", "-")
@@ -302,9 +310,9 @@ class QtWindow(QWidget):
         def modifier():
             if macosx:
                 # This should correspond to the Cmd key(s) on OS X
-                return int(event.modifiers()) & Qt.ControlModifier
+                return int(event.modifiers().value) & Qt.KeyboardModifier.ControlModifier.value
             else:
-                return int(event.modifiers()) & Qt.AltModifier
+                return int(event.modifiers().value) & Qt.KeyboardModifier.AltModifier.value
 
         assert isinstance(event, QKeyEvent)
         # print(event.isAutoRepeat(), event.type())
