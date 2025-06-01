@@ -54,7 +54,7 @@ def byte(v):
 
 
 SERVER_PROTOCOL_VERSION = 1
-MAX_PLAYERS = 6
+MAX_PLAYERS = 9
 max_drift = 25
 num_clients = 2
 port = 25100
@@ -62,6 +62,8 @@ host = "0.0.0.0"
 game = None
 game_password = 0
 launch_timeout = 0
+framerate = 0.02
+netplay_ntsc = 0
 server_protocol_version = byte(SERVER_PROTOCOL_VERSION)
 
 
@@ -82,26 +84,26 @@ def create_game_password(value):
     return bytes_to_int(h.digest()[:4])
 
 
-MESSAGE_READY = 0
-MESSAGE_MEM_CHECK = 5
-MESSAGE_RND_CHECK = 6
-MESSAGE_PING = 7
-MESSAGE_PLAYERS = 8
-MESSAGE_PLAYER_TAG_0 = 9
-MESSAGE_PLAYER_TAG_1 = 10
-MESSAGE_PLAYER_TAG_2 = 11
-MESSAGE_PLAYER_TAG_3 = 12
-MESSAGE_PLAYER_TAG_4 = 13
-MESSAGE_PLAYER_TAG_5 = 14
+MESSAGE_READY             =  0
+MESSAGE_MEM_CHECK         =  5
+MESSAGE_RND_CHECK         =  6
+MESSAGE_PING              =  7
+MESSAGE_PLAYERS           =  8
+MESSAGE_PLAYER_TAG_0      =  9
+MESSAGE_PLAYER_TAG_1      = 10
+MESSAGE_PLAYER_TAG_2      = 11
+MESSAGE_PLAYER_TAG_3      = 12
+MESSAGE_PLAYER_TAG_4      = 13
+MESSAGE_PLAYER_TAG_5      = 14
 
-MESSAGE_PLAYER_PING = 15
-MESSAGE_PLAYER_LAG = 16
-MESSAGE_SET_PLAYER_TAG = 17
-MESSAGE_PROTOCOL_VERSION = 18
+MESSAGE_PLAYER_PING       = 15
+MESSAGE_PLAYER_LAG        = 16
+MESSAGE_SET_PLAYER_TAG    = 17
+MESSAGE_PROTOCOL_VERSION  = 18
 MESSAGE_EMULATION_VERSION = 19
-MESSAGE_ERROR = 20
-MESSAGE_TEXT = 21
-MESSAGE_SESSION_KEY = 22
+MESSAGE_ERROR             = 20
+MESSAGE_TEXT              = 21
+MESSAGE_SESSION_KEY       = 22
 
 # MESSAGE_MEM_CHECK = 5
 # MESSAGE_RND_CHECK = 6
@@ -110,17 +112,17 @@ MESSAGE_SESSION_KEY = 22
 MESSAGE_MEM_CHECK_MASK = 0x80000000 | (MESSAGE_MEM_CHECK << 24)
 MESSAGE_RND_CHECK_MASK = 0x80000000 | (MESSAGE_RND_CHECK << 24)
 
-ERROR_PROTOCOL_MISMATCH = 1
-ERROR_WRONG_PASSWORD = 2
-ERROR_CANNOT_RESUME = 3
-ERROR_GAME_ALREADY_STARTED = 4
-ERROR_PLAYER_NUMBER = 5
-ERROR_EMULATOR_MISMATCH = 6
-ERROR_CLIENT_ERROR = 7
-ERROR_MEMORY_DESYNC = 8
-ERROR_RANDOM_DESYNC = 9
-ERROR_SESSION_KEY = 10
-ERROR_GAME_STOPPED = 99
+ERROR_PROTOCOL_MISMATCH    =  1
+ERROR_WRONG_PASSWORD       =  2
+ERROR_CANNOT_RESUME        =  3
+ERROR_GAME_ALREADY_STARTED =  4
+ERROR_PLAYER_NUMBER        =  5
+ERROR_EMULATOR_MISMATCH    =  6
+ERROR_CLIENT_ERROR         =  7
+ERROR_MEMORY_DESYNC        =  8
+ERROR_RANDOM_DESYNC        =  9
+ERROR_SESSION_KEY          = 10
+ERROR_GAME_STOPPED         = 99
 
 
 def create_ext_message(ext, data):
@@ -355,6 +357,27 @@ class Client:
                     text += part
                     remaining -= count
                     if remaining == 0:
+                        if text.lower() == b"!disconnectall":
+                            print("Server termination requested")
+                            text = b"Requested to terminate the server"
+                            game.stop = True
+                        if text.decode('utf-8').lower().startswith("!fps"):
+                            try:
+                                fps = text.decode('utf-8').lower().split()[1]
+                                print("FPS requested: " + fps)
+                                game.framerate = 1 / int(fps)
+                                text = b"FrameRate set to " + fps.encode('utf-8') + b"fps"
+                            except (IndexError, ValueError, ZeroDivisionError):
+                                print("Invalid FPS value")
+                                text = b"FrameRate unchanged"
+                        if text.lower() == b"!ntsc":
+                            game.framerate = 0.016667 #1/60
+                            text = b"moved server to NTSC Mode (60 FPS)"
+                            print("NTSC requested")
+                        if text.lower() == b"!pal":
+                            game.framerate = 0.020 #1/50
+                            text = b"moved server to PAL Mode (50 FPS)"
+                            print("PAL requested")
                         game.add_text_message(self, text)
                         break
 
@@ -399,10 +422,16 @@ class Game:
         self.emulator_version = b""
         self.verified_frame = -1
 
+        if netplay_ntsc == 1:
+            self.framerate = 0.016667 #1/60
+        else:
+            self.framerate = framerate #1/50
+
     def __start(self):
         if len(self.clients) != num_clients:
             print("error - cannot start until all players have connected")
             return
+
         print("{0} clients connected, starting game".format(num_clients))
         self.started = True
         threading.Thread(target=self.__thread_function).start()
@@ -485,7 +514,7 @@ class Game:
 
     def __game_loop_iteration(self):
         # FIXME: higher precision sleep?
-        target_time = self.time + 0.02
+        target_time = self.time + self.framerate
         t2 = time.time()
         diff = target_time - t2
         sleep = diff - 0.001
@@ -736,7 +765,7 @@ def run_server():
 
 
 def main():
-    global port, num_clients, game_password, launch_timeout
+    global port, num_clients, game_password, launch_timeout, netplay_ntsc, framerate
     for arg in sys.argv:
         if arg.startswith("--"):
             parts = arg[2:].split("=", 1)
@@ -751,6 +780,15 @@ def main():
                     # game_password = crc32(value) & 0xffffffff
                     game_password = create_game_password(value)
                     # print("game password (numeric) is", game_password)
+                elif key == "netplay-ntsc":
+                    print("Server launching in NTSC mode")
+                    netplay_ntsc = int(value)
+                elif key == "framerate":
+                    framerate = int(value)
+                    if framerate == 0:
+                        framerate = 0.02
+                    else:
+                        framerate = 1 / int(value)
                 elif key == "launch-timeout":
                     launch_timeout = int(value)
     run_server()
