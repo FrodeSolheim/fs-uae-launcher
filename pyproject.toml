@@ -12,7 +12,7 @@ dependencies = [
     "pyobjc-framework-cocoa>=11.0; sys_platform == 'darwin'",
     "pyobjc-framework-quartz>=11.0; sys_platform == 'darwin'",
     "pyopengl>=3.1.9",
-    "pyqt5>=5.15.11",
+    "pyqt6>=6.9.0",
     "pywin32-ctypes>=0.2.3; sys_platform == 'win32'",
     "requests>=2.32.3",
     "sentry-sdk>=2.29.1",
