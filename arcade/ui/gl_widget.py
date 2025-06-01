@@ -2,13 +2,13 @@ import threading
 import traceback
 
 from arcade.glui.opengl import gl
-from fsui.qt import QGLWidget
+from PyQt6.QtOpenGLWidgets import QOpenGLWidget
 
 
 # noinspection PyPep8Naming
-class GLWidget(QGLWidget):
+class GLWidget(QOpenGLWidget):
     def __init__(self, parent, callbacks):
-        QGLWidget.__init__(self, parent)
+        QOpenGLWidget.__init__(self, parent)
         self._callbacks = callbacks
         self._initialized = False
         self._first_initialize_gl_call = True

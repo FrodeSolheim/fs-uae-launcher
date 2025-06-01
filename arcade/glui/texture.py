@@ -163,8 +163,8 @@ class Texture(object):
         internal_format = gl.GL_RGBA
         texture_format = gl.GL_BGRA
 
-        if im.format() != QImage.Format_ARGB32_Premultiplied:
-            im = im.convertToFormat(QImage.Format_ARGB32_Premultiplied)
+        if im.format() != QImage.Format.Format_ARGB32_Premultiplied:
+            im = im.convertToFormat(QImage.Format.Format_ARGB32_Premultiplied)
 
         bits = im.bits()
         try:

@@ -74,10 +74,11 @@ def decorations():
 
 def screen_geometry():
     q_app = init_qt()
-    desktop = q_app.desktop()
+    # desktop = q_app.desktop()
+    qscreens = q_app.screens()
     screens = []
-    for i in range(desktop.screenCount()):
-        geom = desktop.screenGeometry(i)
+    for i, qscreen in enumerate(qscreens):
+        geom = qscreen.geometry()
         screens.append([geom.x(), i, geom])
     screens.sort()
     if monitor() == "left":
@@ -180,7 +181,7 @@ class QtWindow(QWidget):
         self.interval = interval
         self.quit_flag = False
         self.first_time = None
-        # self.setCursor(Qt.BlankCursor)
+        # self.setCursor(Qt.CursorShape.BlankCursor)
         self._window = weakref.ref(window)
         self.set_blank_cursor()
         self.show_cursor_until = None
@@ -190,9 +191,9 @@ class QtWindow(QWidget):
 
     def set_blank_cursor(self, blank=True):
         if blank:
-            cursor = Qt.BlankCursor
+            cursor = Qt.CursorShape.BlankCursor
         else:
-            cursor = Qt.ArrowCursor
+            cursor = Qt.CursorShape.ArrowCursor
         self.setCursor(cursor)
         if self.gl_widget is not None:
             self.gl_widget.setCursor(cursor)
@@ -254,7 +255,8 @@ class QtWindow(QWidget):
             self.window().close()
             return
         if self.callbacks.active():
-            self.gl_widget.updateGL()
+            # self.gl_widget.updateGL()
+            self.gl_widget.update()
         if self.show_cursor_until is not None:
             if self.show_cursor_until < time.time():
                 print("hide cursor again")
@@ -340,7 +342,7 @@ TEXT_WHITE_LIST = (
 def set_black_background(widget):
     palette = widget.palette()
     # FIXME
-    palette.setColor(widget.backgroundRole(), Qt.blue)
+    palette.setColor(widget.backgroundRole(), Qt.GlobalColor.blue)
     widget.setPalette(palette)
     widget.setAutoFillBackground(True)
     widget.setStyleSheet("background-color: black;")

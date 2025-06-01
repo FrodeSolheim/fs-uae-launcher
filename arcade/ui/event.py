@@ -54,7 +54,8 @@ class Event:
         else:
             raise Exception("Unexpected event type in create_mouse_event")
         # Normalize coordinates to a 1920x1080 OpenGL-like coordinate system
-        x, y = ev.x(), ev.y()
+        pos = ev.position()
+        x, y = pos.x(), pos.y()
         x = (x * 1920) // window_size[0]
         y = 1080 - (y * 1080) // window_size[1]
         event["pos"] = x, y
@@ -70,7 +71,7 @@ class Event:
 
 
 def get_key(ev):
-    print("Qt key:", ev.key(), int(ev.modifiers()), Qt.KeypadModifier)
+    # print("Qt key:", ev.key(), int(ev.modifiers()), Qt.KeypadModifier)
     if macosx:
         # FIXME: TODO: CHECK
         # if ev.key() == Qt.Key_Meta:
