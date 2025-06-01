@@ -1,5 +1,8 @@
 Version 3.1.x:
 
+* Prefer X11 over Wayland because Qt still seems to work better with X11.
+* Netplay server improvements [ztronzo].
+* PyQt6 support [BluewizardNet].
 * Allow FS_GAMESYS_RUN_DIR to be relative to cwd.
 * Fixes for PyQt5 errors observed on Fedora 35.
 * Removed cacert.pem (should be handled by certifi package now).

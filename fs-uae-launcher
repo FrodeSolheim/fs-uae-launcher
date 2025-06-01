@@ -7,6 +7,9 @@ init()
 import os
 import sys
 
+if sys.platform == "linux" and os.getenv("QT_QPA_PLATFORM", "") == "":
+    os.environ["QT_QPA_PLATFORM"] = "xcb"
+
 if sys.version_info[0] < 3 or sys.version_info[1] < 2:
     print("You need at least Python 3.2 to run FS-UAE Launcher")
     sys.exit(1)
