@@ -129,5 +129,4 @@ jobs:
         # shell: cmd
         run: |
           uv add dropbox==12.0.2
-          which python3
-          uv run python3 fsbuild/upload
+          uv run python fsbuild/upload
