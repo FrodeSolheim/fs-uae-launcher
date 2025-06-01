@@ -8,7 +8,7 @@ from fsui.qt import QCoreApplication, QEvent, QObject
 
 class CustomEvent(QEvent):
     def __init__(self) -> None:
-        QEvent.__init__(self, QEvent.User)
+        QEvent.__init__(self, QEvent.Type.User)
 
 
 class EventHandler(QObject):

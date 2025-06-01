@@ -1,3 +1,4 @@
+from tkinter.font import NORMAL
 from typing import Optional, Union
 
 from typing_extensions import TypedDict
@@ -101,16 +102,16 @@ class Font:
             iweight = weight
         # FIXME: Create proper table and add more
         if iweight == 400:
-            qt_weight = QFont.Normal
+            qt_weight = QFont.Weight.Normal
         elif iweight == 500:
-            qt_weight = QFont.Medium
+            qt_weight = QFont.Weight.Medium
         elif iweight == 600:
-            qt_weight = QFont.DemiBold
+            qt_weight = QFont.Weight.DemiBold
         elif iweight == 700:
-            qt_weight = QFont.Bold
+            qt_weight = QFont.Weight.Bold
         else:
             print(f"WARNING: Font.set_weight: Unknown font weight {weight}")
-            qt_weight = QFont.Normal
+            qt_weight = QFont.Weight.Normal
         # print(qt_weight)
         self.font.setWeight(qt_weight)
         # Allow chaining operations

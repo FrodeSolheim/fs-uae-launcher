@@ -2,6 +2,7 @@ import weakref
 from typing import Optional, cast
 
 from fsui.qt.core import Qt
+from fsui.qt.core import QtGui
 from fsui.qt.gui import QCloseEvent, QResizeEvent, QShowEvent
 from fsui.qt.qparent import QOptionalParent
 from fsui.qt.toplevelwidget import TopLevelWidget
@@ -20,14 +21,15 @@ class DialogWrapper(QDialog):
     ):
         super().__init__(QOptionalParent(parent, window=True))
         self.setWindowTitle(title)
-        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
 
-        flags: int = Qt.Dialog
+        flags: int = Qt.WindowType.Dialog
         if not border:
-            flags |= Qt.FramelessWindowHint
+            flags |= Qt.WindowType.FramelessWindowHint
             # flags |= Qt.NoDropShadowWindowHint
         # FIXME: How to correctly type?
-        self.setWindowFlags(cast(Qt.WindowFlags, flags))
+        #self.setWindowFlags(cast(Qt.WindowFlags, flags))
+        self.setWindowFlags(flags)
 
         # Maybe...
         self._fswidget_ref = weakref.ref(fswidget)
@@ -115,13 +117,13 @@ class Dialog(TopLevelWidget):
     def show(self) -> None:
         self.center_on_initial_show()
         # FIXME: Qt.WindowModal?
-        self.qDialog.setWindowModality(Qt.WindowModal)
-        self.qDialog.exec_()
+        self.qDialog.setWindowModality(Qt.WindowModality.WindowModal)
+        self.qDialog.exec()
 
     def show_modal(self) -> int:
         self.center_on_initial_show()
         # self.setWindowModality(Qt.WindowModal)
-        return self.qDialog.exec_()
+        return self.qDialog.exec()
 
     # FIXME: Move to BaseWindow
     @property

@@ -5,15 +5,15 @@ from fsui.qt.core import QTimer
 from fsui.qt.qparent import QOptionalParent
 from fsui.qt.qt import init_qt
 from fsui.qt.toplevelwidget import TopLevelWidget
-from fsui.qt.widgets import QDesktopWidget, QMessageBox
+#from fsui.qt.widgets import QDesktopWidget, QMessageBox
+from fsui.qt.widgets import QMessageBox
 from fswidgets.types import Size
+from PyQt6 import QtGui
 
 
 def get_screen_size() -> Size:
     init_qt()
-    # FIXME: QDesktopWidget is deprecated
-    desktop = QDesktopWidget()
-    geometry = desktop.geometry()
+    geometry = QtGui.QGuiApplication.primaryScreen().availableGeometry()
     size = geometry.width(), geometry.height()
     print("using screen size", size)
     return size

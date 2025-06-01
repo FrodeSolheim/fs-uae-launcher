@@ -51,8 +51,8 @@ class Choice(Widget):
     # keyPressEvent isn't intercepted anymore
     # def keyPressEvent(self, a0: QKeyEvent) -> None:
     #     if not self.cursor_keys:
-    #         print("cursor keys is false", a0.key(), Qt.Key_Up)
-    #         if a0.key() == Qt.Key_Up or a0.key() == Qt.Key_Down:
+    #         print("cursor keys is false", a0.key(), Qt.Key.Key_Up)
+    #         if a0.key() == Qt.Key.Key_Up or a0.key() == Qt.Key.Key_Down:
     #             print("ignoring")
     #             return
     #     super().keyPressEvent(a0)

@@ -16,7 +16,7 @@ case_sensitive = false
 follow_links = false
 
 [tool.pylint.MASTER]
-extension-pkg-whitelist = ["PyQt5"]
+extension-pkg-whitelist = ["PyQt6"]
 
 [tool.pylint."MESSAGES CONTROL"]
 disable = [

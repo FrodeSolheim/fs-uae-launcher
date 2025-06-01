@@ -162,6 +162,6 @@ def error_displaying_exception_2(e, e2):
         "Please see the log file(s) for full error messages and stack traces."
     )
     # pylint: disable=no-name-in-module
-    from PyQt5.QtWidgets import QMessageBox
+    from PyQt6.QtWidgets import QMessageBox
 
     QMessageBox.critical(None, "Software Failure (2)", message)

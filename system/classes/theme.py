@@ -15,7 +15,7 @@ def set_colors(
     disabled: Union[QColor, str] = None,
 ):
     palette.setColor(role, QColor(normal))
-    palette.setColor(QPalette.Disabled, role, QColor(disabled))
+    palette.setColor(QPalette.ColorGroup.Disabled, role, QColor(disabled))
 
 
 def initialize_qt_style(qapplication, theme):
@@ -33,17 +33,17 @@ def initialize_qt_style(qapplication, theme):
     text = "#000000"
     text_disabled = "#777777"
 
-    pa.setColor(QPalette.Window, background)
-    pa.setColor(QPalette.AlternateBase, background)
-    pa.setColor(QPalette.Button, background)
+    pa.setColor(QPalette.ColorRole.Window, background)
+    pa.setColor(QPalette.ColorRole.AlternateBase, background)
+    pa.setColor(QPalette.ColorRole.Button, background)
 
-    pa.setColor(QPalette.Highlight, QColor(0x66, 0x88, 0xBB))
+    pa.setColor(QPalette.ColorRole.Highlight, QColor(0x66, 0x88, 0xBB))
 
-    set_colors(pa, QPalette.Base, "#E8E8E8", "#C0C0C0")
+    set_colors(pa, QPalette.ColorRole.Base, "#E8E8E8", "#C0C0C0")
 
-    set_colors(pa, QPalette.Text, text, text_disabled)
-    set_colors(pa, QPalette.WindowText, text, text_disabled)
-    set_colors(pa, QPalette.ButtonText, text, text_disabled)
+    set_colors(pa, QPalette.ColorRole.Text, text, text_disabled)
+    set_colors(pa, QPalette.ColorRole.WindowText, text, text_disabled)
+    set_colors(pa, QPalette.ColorRole.ButtonText, text, text_disabled)
 
     # pa.setColor(QPalette.Base, QColor(0xE8, 0xE8, 0xE8))
     # pa.setColor(QPalette.Disabled, QPalette.Base, QColor(0xC0, 0xC0, 0xC0))
@@ -195,7 +195,7 @@ def initialize_qt_style(qapplication, theme):
     # font.setHintingPreference(QFont.PreferNoHinting)
 
     # font = QFont("Saira Condensed", 16, QFont.Medium)
-    font = QFont("Roboto", 15, QFont.Normal)
+    font = QFont("Roboto", 15, QFont.Weight.Normal)
     font.setPixelSize(15)
     qapplication.setFont(font)
 

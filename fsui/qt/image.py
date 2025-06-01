@@ -11,7 +11,7 @@ class Image:
     @classmethod
     def create_blank(cls, width: int, height: int) -> "Image":
         # qimage = QPixmap(16, 16).toImage()
-        qimage = QImage(QSize(16, 16), QImage.Format_ARGB32)
+        qimage = QImage(QSize(16, 16), QImage.Format.Format_ARGB32)
         qimage.fill(QColor(0, 0, 0, 0))
 
         return Image(qimage=qimage)
@@ -75,8 +75,8 @@ class Image:
 
     def grey_scale(self) -> "Image":
         # return Image(qimage=self.qimage.convertToFormat(
-        #     QImage.Format_ARGB32, Qt.AutoOnly))
-        copy = self.qimage.convertToFormat(QImage.Format_ARGB32, Qt.AutoColor)
+        #     QImage.Format.Format_ARGB32, Qt.AutoOnly))
+        copy = self.qimage.convertToFormat(QImage.Format.Format_ARGB32, Qt.ImageConversionFlag.AutoColor)
         # copy = self.qimage.copy(0, 0, *self.size)
 
         # WARNING: this is presumably a bit slow...
@@ -109,11 +109,11 @@ class Image:
         if size == self.size:
             return
         if filter_:
-            q = Qt.SmoothTransformation
+            q = Qt.TransformationMode.SmoothTransformation
         else:
-            q = Qt.FastTransformation
+            q = Qt.TransformationMode.SmoothTransformation
         self.qimage = self.qimage.scaled(
-            size[0], size[1], Qt.IgnoreAspectRatio, q
+            size[0], size[1], Qt.AspectRatioMode.IgnoreAspectRatio, q
         )
         # self._bitmap = None
 

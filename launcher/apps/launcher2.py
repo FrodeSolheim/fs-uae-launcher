@@ -37,7 +37,7 @@ def app_main(appname=None):
     except Exception as e:
         # We should be able to show a Qt error message dialog at least now
         # pylint: disable=no-name-in-module
-        from PyQt5.QtWidgets import QMessageBox
+        from PyQt6.QtWidgets import QMessageBox
 
         message = (
             f"An error of type {type(e).__name__} occurred during startup."
@@ -99,7 +99,7 @@ def _app_main_2(qapplication, appname):
     else:
         wsopen("SYS:Launcher")
 
-    qapplication.exec_()
+    qapplication.exec()
 
 
 def wsopen_main(appname):

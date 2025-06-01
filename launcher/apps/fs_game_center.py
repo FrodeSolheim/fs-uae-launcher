@@ -31,10 +31,10 @@ def app_main():
 
     # window.setFlags(Qt.FramelessWindowHint)
     window.setFlags(
-        Qt.Window
-        | Qt.FramelessWindowHint
-        | Qt.WindowMinimizeButtonHint
-        | Qt.WindowSystemMenuHint
+        Qt.WindowType.Window
+        | Qt.WindowType.FramelessWindowHint
+        | Qt.WindowType.WindowMinimizeButtonHint
+        | Qt.WindowType.WindowSystemMenuHint
     )
     # window.show()
     window.showMaximized()

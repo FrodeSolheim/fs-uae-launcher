@@ -26,7 +26,7 @@ class TextArea(Widget):
     ) -> None:
         super().__init__(parent, QTextEdit("", QParent(parent)))
         if not border:
-            self.qwidget.setFrameStyle(QFrame.NoFrame)
+            self.qwidget.setFrameStyle(QFrame.Shape.NoFrame)
         self.qwidget.setReadOnly(read_only)
         if font_family:
             print("FIXME: not respecting font_family yet")
@@ -58,7 +58,7 @@ class TextArea(Widget):
 
     def appendText(self, text: str) -> None:
         self.qwidget.append(text)
-        self.qwidget.moveCursor(QTextCursor.End)
+        self.qwidget.moveCursor(QTextCursor.MoveOperation.End)
 
     def appendTextWithColor(self, text: str, color: Optional[Color]) -> None:
         # text = text.replace("\n", "\r\n")
@@ -89,7 +89,7 @@ class TextArea(Widget):
         # FIXME: The name is a bit misleading because it also moves the
         # text cursor to the start...
         """
-        self.qwidget.moveCursor(QTextCursor.Start)
+        self.qwidget.moveCursor(QTextCursor.MoveOperation.Start)
 
     def setText(self, text: str) -> None:
         self.qwidget.setPlainText(text.replace("\n", "\r\n"))

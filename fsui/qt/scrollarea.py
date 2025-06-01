@@ -1,7 +1,7 @@
 import weakref
 from typing import Optional, cast
 
-from PyQt5.QtGui import QResizeEvent
+from PyQt6.QtGui import QResizeEvent
 from typing_extensions import Protocol
 
 from fsui.qt.callafter import call_after
@@ -58,9 +58,9 @@ class ScrollArea(Widget):
         # through).
         self.qScrollArea.viewport().setAutoFillBackground(False)
 
-        self.qScrollArea.setFrameShape(QFrame.NoFrame)
-        self.qScrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.qScrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.qScrollArea.setFrameShape(QFrame.Shape.NoFrame)
+        self.qScrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.qScrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
     def get_child(self) -> Optional[Widget]:
         # child = self.__child()
