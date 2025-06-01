@@ -29,15 +29,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - uses: msys2/setup-msys2@v2
-      #   with:
-      #     install: >-
-      #       make
-      #       dos2unix
-      #       tar
-      #       zip
-      #     path-type: inherit
-      #     update: true
+      - name: Install packages
+        uses: msys2/setup-msys2@v2
+        with:
+          install: >-
+            make
+            dos2unix
+            tar
+            zip
+          path-type: inherit
+          update: true
 
       # - name: Download Python
       #   run: |

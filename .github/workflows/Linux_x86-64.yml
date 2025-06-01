@@ -30,11 +30,11 @@ jobs:
       #   run: |
       #     env
 
-      # - name: Install additional tools
-      #   run: >-
-      #     sudo apt install
-      #     dos2unix
-      #     gettext
+      - name: Install packages
+        run: >-
+          sudo apt install
+          dos2unix
+          gettext
 
       # When pyinstaller collects libraries, it seems to ignore libraries that
       # are not found on the host. Example: Qt depends on

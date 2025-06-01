@@ -23,13 +23,13 @@ jobs:
       UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
 
     steps:
-      # - name: Install brew packages
-      #   run: |
-      #     brew install dos2unix
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Install packages
+        run: |
+          brew install dos2unix
 
       # - name: Download Python
       #   run: |
