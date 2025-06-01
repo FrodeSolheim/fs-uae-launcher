@@ -3,6 +3,9 @@
 
 import os
 
+import sys
+print(sys.path)
+
 import dropbox
 import requests
 
