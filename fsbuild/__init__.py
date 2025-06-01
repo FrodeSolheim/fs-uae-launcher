@@ -413,6 +413,18 @@ def updateCommitFs(version: Version) -> None:
             f.write("\n")
 
 
+def updatePyProjectToml(version: Version) -> None:
+    print("Updating pyproject.toml")
+    with open("pyproject.toml", "r") as f:
+        text = f.read()
+    text = text.replace(
+        'version = "0.0.0"',
+        f'version = "{version.major}.{version.minor}.{version.revision}"'
+    )
+    with open("pyproject.toml", "w") as f:
+        f.write(text)
+
+
 def calculateVersion(
     auto_revision: bool = False,
     increment_revision: bool = False,
@@ -474,6 +486,8 @@ def updateVersion(version: Version) -> None:
         updateDebianChangelog(version)
     if os.path.exists("PACKAGE.FS"):
         updatePackageFs(version)
+    if os.path.exists("pyproject.toml"):
+        updatePyProjectToml(version)
     for filename in os.listdir("."):
         if filename.endswith(".spec"):
             updateSpecFile(filename, version)
