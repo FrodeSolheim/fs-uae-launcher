@@ -150,13 +150,10 @@ def notarizeApp(pathToNotarize: str, bundleId: str):
 
     result = shell(
         "xcrun notarytool submit "
-        # "--primary-bundle-id {bundleId} "
         "--apple-id {appleId} "
-        "-p {applePassword} "
+        "--password {applePassword} "
         "--team-id {appleTeamId} "
         "--wait "
-        # "-itc_provider {itcProvider} "
-        # "--output-format xml "
         "{pathToNotarize}".format(
             appleTeamId=getAppleTeamId(),
             appleId=getAppleId(),
