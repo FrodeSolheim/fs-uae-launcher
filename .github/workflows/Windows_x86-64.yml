@@ -68,7 +68,8 @@ jobs:
           version: "0.7.9"
 
       - name: Set up Python
-        run: uv python install
+        run: |
+          uv python install
 
       # - name: Set up Python 3.12
       #   uses: actions/setup-python@v5
