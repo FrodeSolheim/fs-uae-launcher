@@ -101,9 +101,9 @@ jobs:
       - name: Notarize
         if: env.SIGNING_ENABLED != null
         env:
-          NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
-          NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}
-          NOTARIZATION_USERNAME: ${{ secrets.MACOS_NOTARIZATION_USERNAME }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
         run: |
           fsbuild/notarize
 
@@ -134,9 +134,9 @@ jobs:
       - name: Notarize DMG
         if: hashFiles('fsbuild/notarize-dmg') != '' && env.SIGNING_ENABLED != null
         env:
-          NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
-          NOTARIZATION_PROVIDER: ${{ secrets.MACOS_NOTARIZATION_PROVIDER }}
-          NOTARIZATION_USERNAME: ${{ secrets.MACOS_NOTARIZATION_USERNAME }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
         run: |
           fsbuild/notarize-dmg
 
