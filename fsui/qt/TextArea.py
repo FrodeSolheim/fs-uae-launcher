@@ -18,7 +18,6 @@ class TextArea(fsui.qt.QTextEdit, WidgetMixin):
         if font_family:
             print("FIXME: not respecting font_family yet")
             font = fsui.qt.QFont("Courier")
-            # font.setStyleHint(QtGui.QFont.TypeWriter)
             self.setFont(font)
         if text:
             self.append_text(text)

@@ -30,8 +30,8 @@ class Choice(QComboBox, WidgetMixin):
 
     def keyPressEvent(self, event):
         if not self.cursor_keys:
-            print("cursor keys is false", event.key(), Qt.Key_Up)
-            if event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:
+            print("cursor keys is false", event.key(), Qt.Key.Key_Up)
+            if event.key() == Qt.Key_Up or event.key() == Qt.Key.Key_Down:
                 print("ignoring")
                 return
         super().keyPressEvent(event)

@@ -13,11 +13,11 @@ class Label(fsui.Label):
                 font.setPixelSize(int(size[:-2]))
                 weight = weight.lower()
                 if weight == "regular":
-                    font.setWeight(QFont.Normal)
+                    font.setWeight(QFont.Weight.Normal)
                 elif weight == "medium":
-                    font.setWeight(QFont.DemiBold)
+                    font.setWeight(QFont.Weight.DemiBold)
                 elif weight == "bold":
-                    font.setWeight(QFont.Bold)
+                    font.setWeight(QFont.Weight.Bold)
                 else:
                     raise Exception("Unknown weight")
                 font = fsui.Font(font)

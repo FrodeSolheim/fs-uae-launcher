@@ -12,6 +12,7 @@
 .DS_Store
 *.egg-info
 fontconfig
+/fs-uae
 fs-uae-launcher-*
 fs-uae-launcher_*
 /.idea/tasks.xml

@@ -309,10 +309,10 @@ class QtWindow(QWidget):
         if event.isAutoRepeat():
             return
         if modifier():
-            if event.key() == Qt.Key_Return:
+            if event.key() == Qt.Key.Key_Return:
                 self.window().set_fullscreen(not self.window().is_fullscreen())
                 return
-            if event.key() == Qt.Key_Q:
+            if event.key() == Qt.Key.Key_Q:
                 self.window().close()
                 return
 

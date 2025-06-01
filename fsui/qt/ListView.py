@@ -27,7 +27,7 @@ class ListView(QListView, WidgetMixin):
         selection_model = self.selectionModel()
         print("QListView selectionModel", selection_model)
         selection_model.selectionChanged.connect(self.__selection_changed)
-        self.setEditTriggers(QListView.NoEditTriggers)
+        self.setEditTriggers(QListView.EditTrigger.NoEditTriggers)
         self.doubleClicked.connect(self.__double_clicked)
         # self.returnPressed.connect(self.__double_clicked)
         # self.activated.connect(self.__double_clicked)
@@ -37,7 +37,7 @@ class ListView(QListView, WidgetMixin):
         self._row_height = height
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Return:
+        if event.key() == Qt.Key.Key_Return:
             self.__double_clicked()
         else:
             super().keyPressEvent(event)
@@ -86,7 +86,7 @@ class ListView(QListView, WidgetMixin):
         item.setSizeHint(QSize(-1, self._row_height))
         if bold:
             font = self.font()
-            font.setWeight(QFont.Bold)
+            font.setWeight(QFont.Weight.Bold)
             item.setFont(font)
         self._model.appendRow(item)
 

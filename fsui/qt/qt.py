@@ -9,28 +9,28 @@ import fstd.desktop
 from fsbc.settings import Settings
 
 # noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtCore import *
+from PyQt6.QtCore import *
 
 # noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtGui import *
+from PyQt6.QtGui import *
 
 # noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 
 # noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtCore import pyqtSignal as Signal
+from PyQt6.QtCore import pyqtSignal as Signal
 
 # noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtCore import pyqtSignal as QSignal
+from PyQt6.QtCore import pyqtSignal as QSignal
 
 # noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt5.QtOpenGL import *
+from PyQt6.QtOpenGL import *
 
 from fsgs.option import Option
 
 try:
     # noinspection PyUnresolvedReferences, PyPackageRequirements
-    from PyQt5.QtX11Extras import *
+    from PyQt6.QtX11Extras import *
 except ImportError:
     pass
 
@@ -69,7 +69,7 @@ def init_qt():
     # Should not be necessary with Qt 5.2.x:
     # fix_qt_for_maverick()
 
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
     fsbc.desktop.set_open_url_in_browser_function(open_url_in_browser)
     qapplication = QtBaseApplication(sys.argv)
@@ -126,12 +126,12 @@ def initialize_qt_style(qapplication):
             pa = QPalette()
             # background = QColor("#f6f5f4")
             background = QColor("#eae7e5")
-            pa.setColor(QPalette.Window, background)
-            pa.setColor(QPalette.AlternateBase, background)
-            pa.setColor(QPalette.Button, background)
+            pa.setColor(QPalette.ColorRole.Window, background)
+            pa.setColor(QPalette.ColorRole.AlternateBase, background)
+            pa.setColor(QPalette.ColorRole.Button, background)
             # pa.setColor(QPalette.Base, QColor(255, 255, 255))
             pa.setColor(
-                QPalette.Disabled, QPalette.Base, QColor(241, 241, 241)
+                QPalette.ColorRole.Disabled, QPalette.ColorRole.Base, QColor(241, 241, 241)
             )
 
             # pa.setColor(QPalette.Window, QColor("#aeaeae"))
@@ -141,25 +141,25 @@ def initialize_qt_style(qapplication):
             qapplication.setPalette(pa)
         elif fusion_variant == "fws" or fusion_variant == "windows10":
             pa = QPalette()
-            pa.setColor(QPalette.Window, QColor(242, 242, 242))
-            pa.setColor(QPalette.AlternateBase, QColor(242, 242, 242))
-            pa.setColor(QPalette.Button, QColor(242, 242, 242))
+            pa.setColor(QPalette.ColorRole.Window, QColor(242, 242, 242))
+            pa.setColor(QPalette.ColorRole.AlternateBase, QColor(242, 242, 242))
+            pa.setColor(QPalette.ColorRole.Button, QColor(242, 242, 242))
             qapplication.setPalette(pa)
         elif fusion_variant == "dark":
             pa = QPalette()
-            pa.setColor(QPalette.Window, QColor(53, 53, 53))
-            pa.setColor(QPalette.WindowText, Qt.white)
-            pa.setColor(QPalette.Base, QColor(25, 25, 25))
-            pa.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-            pa.setColor(QPalette.ToolTipBase, Qt.white)
-            pa.setColor(QPalette.ToolTipText, Qt.white)
-            pa.setColor(QPalette.Text, Qt.white)
-            pa.setColor(QPalette.Button, QColor(53, 53, 53))
-            pa.setColor(QPalette.ButtonText, Qt.white)
-            pa.setColor(QPalette.BrightText, Qt.red)
-            pa.setColor(QPalette.Link, QColor(42, 130, 218))
-            pa.setColor(QPalette.Highlight, QColor(42, 130, 218))
-            pa.setColor(QPalette.HighlightedText, Qt.black)
+            pa.setColor(QPalette.ColorRole.Window, QColor(53, 53, 53))
+            pa.setColor(QPalette.ColorRole.WindowText, Qt.white)
+            pa.setColor(QPalette.ColorRole.Base, QColor(25, 25, 25))
+            pa.setColor(QPalette.ColorRole.AlternateBase, QColor(53, 53, 53))
+            pa.setColor(QPalette.ColorRole.ToolTipBase, Qt.white)
+            pa.setColor(QPalette.ColorRole.ToolTipText, Qt.white)
+            pa.setColor(QPalette.ColorRole.Text, Qt.white)
+            pa.setColor(QPalette.ColorRole.Button, QColor(53, 53, 53))
+            pa.setColor(QPalette.ColorRole.ButtonText, Qt.white)
+            pa.setColor(QPalette.ColorRole.BrightText, Qt.red)
+            pa.setColor(QPalette.ColorRole.Link, QColor(42, 130, 218))
+            pa.setColor(QPalette.ColorRole.Highlight, QColor(42, 130, 218))
+            pa.setColor(QPalette.ColorRole.HighlightedText, Qt.black)
             qapplication.setPalette(pa)
             qapplication.setStyleSheet(
                 "QToolTip { color: #ffffff; background-color: #2a82da; "
@@ -181,7 +181,7 @@ def initialize_qt_style(qapplication):
             if fusion_variant == "fws":
                 font = QFont("Roboto")
                 font.setPointSizeF(10.5)
-                font.setHintingPreference(QFont.PreferNoHinting)
+                font.setHintingPreference(QFont.HintingPreference.PreferNoHinting)
             qapplication.setFont(font)
 
     import fsui

@@ -25,10 +25,10 @@ class Event:
         # event = Event()
         # event.key = Key()
         event = {}
-        if ev.type() == QEvent.KeyPress:
+        if ev.type() == QEvent.Type.KeyPress:
             # event.type = sdl2.SDL_KEYDOWN
             event["type"] = "key-down"
-        elif ev.type() == QEvent.KeyRelease:
+        elif ev.type() == QEvent.Type.KeyRelease:
             # event.type = sdl2.SDL_KEYUP
             event["type"] = "key-up"
         else:
@@ -43,13 +43,13 @@ class Event:
     @classmethod
     def create_mouse_event(cls, ev, window_size):
         event = {}
-        if ev.type() == QEvent.MouseMove:
+        if ev.type() == QEvent.Type.MouseMove:
             event["type"] = "mouse-motion"
-        elif ev.type() == QEvent.MouseButtonPress:
+        elif ev.type() == QEvent.Type.MouseButtonPress:
             event["type"] = "mouse-press"
-        elif ev.type() == QEvent.MouseButtonRelease:
+        elif ev.type() == QEvent.Type.MouseButtonRelease:
             event["type"] = "mouse-release"
-        elif ev.type() == QEvent.MouseButtonDblClick:
+        elif ev.type() == QEvent.Type.MouseButtonDblClick:
             event["type"] = "mouse-press"
         else:
             raise Exception("Unexpected event type in create_mouse_event")

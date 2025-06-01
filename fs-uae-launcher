@@ -145,7 +145,7 @@ import pkg_resources._vendor.pyparsing
 import pkg_resources._vendor.six
 
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
-import PyQt5.sip
+import PyQt6.sip
 
 # noinspection PyUnreachableCode,PyUnresolvedReferences,PyProtectedMember
 import _sysconfigdata_m_darwin_darwin

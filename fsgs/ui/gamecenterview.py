@@ -1,11 +1,11 @@
 import os
 import sys
 from fsui.qt import QUrl, QLibraryInfo
-from PyQt5.QtQuick import QQuickView
+from PyQt6.QtQuick import QQuickView
 
 # to make sure cxFreeze includes it
-import PyQt5.QtNetwork
-import PyQt5.QtQml
+import PyQt6.QtNetwork
+import PyQt6.QtQml
 from fsbc.application import app
 
 

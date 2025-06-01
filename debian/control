@@ -14,8 +14,8 @@ Depends:
  ${misc:Depends},
  python3-lhafile,
  python3-opengl,
- python3-pyqt5,
- python3-pyqt5.qtopengl,
+ python3-pyqt6,
+ python3-pyqt6.qtopengl,
  python3-requests,
  python3-setuptools,
  fs-uae

@@ -4,8 +4,8 @@ import weakref
 from fsbc.system import macosx
 
 # from fsui import default_window_center, default_window_parent
-from fsui.qt import QMainWindow, QObject, QSignal, QWidget, Qt, QDesktopWidget
-from fsui.qt import QPainter, QPoint, QRect
+from fsui.qt import QMainWindow, QObject, QSignal, QWidget, Qt
+from fsui.qt import QPainter, QPoint, QRect, QGuiApplication
 from fsui.qt.Image import Image
 from fsui.qt.qt import init_qt, QEvent
 
@@ -45,25 +45,25 @@ class RealWindow(QMainWindow):
         super().__init__(parent)
         self.margins = Margins()
 
-        flags = Qt.Window
+        flags = Qt.WindowType.Window
         if macosx:
-            flags &= ~Qt.WindowFullscreenButtonHint
+            flags &= ~Qt.WindowType.WindowFullscreenButtonHint
 
         if border:
-            flags |= Qt.CustomizeWindowHint
-            flags |= Qt.WindowCloseButtonHint
-            flags |= Qt.WindowTitleHint
+            flags |= Qt.WindowType.CustomizeWindowHint
+            flags |= Qt.WindowType.WindowCloseButtonHint
+            flags |= Qt.WindowType.WindowTitleHint
             if minimizable:
-                flags |= Qt.WindowMinimizeButtonHint
+                flags |= Qt.WindowType.WindowMinimizeButtonHint
             if maximizable:
-                flags |= Qt.WindowMaximizeButtonHint
+                flags |= Qt.WindowType.WindowMaximizeButtonHint
             # else:
             #     flags &= ~Qt.WindowMaximizeButtonHint
         else:
-            flags |= Qt.FramelessWindowHint
-            flags |= Qt.NoDropShadowWindowHint
+            flags |= Qt.WindowType.FramelessWindowHint
+            flags |= Qt.WindowType.NoDropShadowWindowHint
             if below:
-                flags |= Qt.WindowStaysOnBottomHint
+                flags |= Qt.WindowType.WindowStaysOnBottomHint
         self.setWindowFlags(flags)
         # self.setAttribute(Qt.WA_DeleteOnClose, True)
 
@@ -144,8 +144,7 @@ class RealWindow(QMainWindow):
         self.resize_to((size.width(), size.height()))
 
     def changeEvent(self, event):
-        # print(event.type(), QEvent.WindowStateChange)
-        if event.type() == QEvent.WindowStateChange:
+        if event.type() == QEvent.Type.WindowStateChange:
             # print("RealWindow.changeEvent(WindowStateChange)")
             self.child.on_resize()
         QMainWindow.changeEvent(self, event)
@@ -171,10 +170,10 @@ class RealWindow(QMainWindow):
             traceback.print_exc()
 
     def is_maximized(self):
-        return self.windowState() == Qt.WindowMaximized
+        return int(self.windowState().value) & Qt.WindowState.WindowMaximized.value != 0
 
     def is_fullscreen(self):
-        return self.windowState() == Qt.WindowFullScreen
+        return int(self.windowState().value) & Qt.WindowState.WindowFullScreen.value != 0
 
     def restore_margins(self):
         self.margins.set(0)
@@ -200,7 +199,7 @@ class RealWindow(QMainWindow):
             )
         else:
             self.restore_margins()
-            self.setWindowState(Qt.WindowNoState)
+            self.setWindowState(Qt.WindowState.WindowNoState)
 
     def set_fullscreen(self, fullscreen=True, geometry=None):
         print("set_fullscreen", fullscreen)
@@ -224,10 +223,10 @@ class RealWindow(QMainWindow):
             )
         else:
             self.restore_margins()
-            self.setWindowState(Qt.WindowNoState)
+            self.setWindowState(Qt.WindowState.WindowNoState)
 
     def minimize(self):
-        self.setWindowState(Qt.WindowMinimized)
+        self.setWindowState(Qt.WindowState.WindowMinimized)
 
 
 # noinspection PyProtectedMember
@@ -321,7 +320,7 @@ class Window(QObject):
         # _windows.add(self)
         self.destroyed.connect(self.__destroyed)
 
-        self._real_window.setAttribute(Qt.WA_DeleteOnClose, True)
+        self._real_window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
 
         # if not border:
         #     self.setWindowFlags(Qt.FramelessWindowHint |
@@ -542,7 +541,7 @@ class Window(QObject):
 
     def center_on_screen(self):
         frame_rect = self._real_window.frameGeometry()
-        frame_rect.moveCenter(QDesktopWidget().availableGeometry().center())
+        frame_rect.moveCenter(QGuiApplication.screens()[0].availableGeometry().center())
         self._real_window.move(frame_rect.topLeft())
 
     def set_background_color(self, color):
@@ -636,9 +635,9 @@ class FwsWindow(RealWindow):
         # self.setWindowFlags(Qt.FramelessWindowHint)
         from fsui.qt import Qt
 
-        self.setAttribute(Qt.WA_NoSystemBackground)
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setAttribute(Qt.WA_TransparentForMouseEvents)
+        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
 
     def restore_margins(self):
         self.margins.set(10)

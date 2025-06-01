@@ -20,16 +20,16 @@ class Model(QAbstractListModel):
     def data(self, index, role):
         row = index.row()
         # print("data for", index, "role", role)
-        if role == Qt.SizeHintRole:
+        if role == Qt.ItemDataRole.SizeHintRole:
             height = self.parent()._row_height
             return QSize(height, height)
-        elif role == Qt.DecorationRole:
+        elif role == Qt.ItemDataRole.DecorationRole:
             icon = self.parent().get_item_icon(row)
             if icon:
                 return icon.qpixmap
-        elif role == Qt.DisplayRole:
+        elif role == Qt.ItemDataRole.DisplayRole:
             return self.parent().get_item_text(row)
-        elif role == Qt.ForegroundRole:
+        elif role == Qt.ItemDataRole.ForegroundRole:
             color = self.parent().get_item_text_color(row)
             if color is not None:
                 return QBrush(color)
@@ -67,7 +67,7 @@ class VerticalItemView(QListView, WidgetMixin):
         self._row_height = height
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Return:
+        if event.key() == Qt.Key.Key_Return:
             self.__double_clicked()
         else:
             QListView.keyPressEvent(self, event)

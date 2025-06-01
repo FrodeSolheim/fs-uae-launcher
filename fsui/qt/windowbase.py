@@ -1,5 +1,5 @@
 from weakref import ref
-from .qt import Qt, QDesktopWidget, QSignal
+from .qt import Qt, QSignal
 
 # from .. import default_window_center, default_window_parent
 
