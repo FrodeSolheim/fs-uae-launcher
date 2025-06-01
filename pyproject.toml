@@ -1,2 +1,25 @@
+[project]
+name = "fs-uae-launcher-3"
+version = "0.0.0"
+description = "FS-UAE Launcher"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "lhafile>=0.3.1",
+    "macholib>=1.16.3",
+    "pefile>=2024.8.26",
+    "pillow>=11.2.1",
+    "pyobjc-core>=11.0",
+    "pyobjc-framework-cocoa>=11.0",
+    "pyobjc-framework-quartz>=11.0",
+    "pyopengl>=3.1.9",
+    "pyqt5>=5.15.11",
+    "pywin32-ctypes>=0.2.3",
+    "requests>=2.32.3",
+    "sentry-sdk>=2.29.1",
+    "setuptools>=80.9.0",
+    "typing-extensions>=4.13.2",
+]
+
 [tool.black]
 line-length = 79
