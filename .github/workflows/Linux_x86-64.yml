@@ -115,7 +115,7 @@ jobs:
 
       - name: Build
         run: |
-          uv run run fsbuild/build
+          uv run fsbuild/build
 
       - name: Bundle
         run: |

@@ -23,39 +23,49 @@ jobs:
       UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
 
     steps:
-      - name: Install brew packages
-        run: |
-          brew install dos2unix
+      # - name: Install brew packages
+      #   run: |
+      #     brew install dos2unix
 
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Download Python
-        run: |
-          wget https://www.python.org/ftp/python/3.9.7/python-3.9.7-macosx10.9.pkg
-          echo "f40f7407d20f88a6a64678b6586853de16cc5d7d07c82a8a2a7e43bba59dbae5 *python-3.9.7-macosx10.9.pkg" > SHA256SUMS
-          shasum -c SHA256SUMS
+      # - name: Download Python
+      #   run: |
+      #     wget https://www.python.org/ftp/python/3.9.7/python-3.9.7-macosx10.9.pkg
+      #     echo "f40f7407d20f88a6a64678b6586853de16cc5d7d07c82a8a2a7e43bba59dbae5 *python-3.9.7-macosx10.9.pkg" > SHA256SUMS
+      #     shasum -c SHA256SUMS
 
-      - name: Install Python
-        run: |
-          sudo installer -pkg python-3.9.7-macosx10.9.pkg -target /
+      # - name: Install Python
+      #   run: |
+      #     sudo installer -pkg python-3.9.7-macosx10.9.pkg -target /
 
-      - name: Add Python to PATH
-        run: |
-          echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
+      # - name: Add Python to PATH
+      #   run: |
+      #     echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
 
-      - name: Install pip and pipenv
-        run: |
-          python3 -m pip install pip==21.3.1 pipenv==2021.5.29
+      # - name: Install pip and pipenv
+      #   run: |
+      #     python3 -m pip install pip==21.3.1 pipenv==2021.5.29
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.9"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
 
       - name: Install appdmg
         run: |
           npm install -g appdmg
 
-      - name: Run pipenv sync --dev
+      - name: Run uv sync
         run: |
-          pipenv sync --dev
+          uv sync
 
       - name: Update version
         run: |
@@ -73,7 +83,7 @@ jobs:
 
       - name: Build
         run: |
-          pipenv run fsbuild/build
+          uv run fsbuild/build
 
       - name: Bundle
         run: |

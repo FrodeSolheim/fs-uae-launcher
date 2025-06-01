@@ -29,45 +29,55 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: msys2/setup-msys2@v2
+      # - uses: msys2/setup-msys2@v2
+      #   with:
+      #     install: >-
+      #       make
+      #       dos2unix
+      #       tar
+      #       zip
+      #     path-type: inherit
+      #     update: true
+
+      # - name: Download Python
+      #   run: |
+      #     wget https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe
+      #     echo "7628244cb53408b50639d2c1287c659f4e29d3dfdb9084b11aed5870c0c6a48a *python-3.8.10-amd64.exe" > SHA256SUMS
+      #     sha256sum -c SHA256SUMS
+
+      # - name: Install Python
+      #   shell: cmd
+      #   run: |
+      #     START /WAIT python-3.8.10-amd64.exe /install /quiet PrependPath=1
+
+      # - name: Add Python to PATH
+      #   run: |
+      #     export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python38
+      #     cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
+      #     echo $PYTHONDIR/Scripts >> $GITHUB_PATH
+      #     echo $PYTHONDIR >> $GITHUB_PATH
+
+      # - name: Install pip and pipenv
+      #   run: |
+      #     python3 -m pip install pip==21.3.1 pipenv==2021.5.29
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          install: >-
-            make
-            dos2unix
-            tar
-            zip
-          path-type: inherit
-          update: true
+          version: "0.7.9"
 
-      - name: Download Python
-        run: |
-          wget https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe
-          echo "7628244cb53408b50639d2c1287c659f4e29d3dfdb9084b11aed5870c0c6a48a *python-3.8.10-amd64.exe" > SHA256SUMS
-          sha256sum -c SHA256SUMS
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
 
-      - name: Install Python
-        shell: cmd
+      - name: Run uv sync
         run: |
-          START /WAIT python-3.8.10-amd64.exe /install /quiet PrependPath=1
+          uv sync
 
-      - name: Add Python to PATH
-        run: |
-          export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python38
-          cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
-          echo $PYTHONDIR/Scripts >> $GITHUB_PATH
-          echo $PYTHONDIR >> $GITHUB_PATH
-
-      - name: Install pip and pipenv
-        run: |
-          python3 -m pip install pip==21.3.1 pipenv==2021.5.29
-
-      - name: Run pipenv sync --dev
-        run: |
-          pipenv sync --dev --python 3.8
-
-      - name: Create python3 alias in virtualenv
-        run: |
-          pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
+      # - name: Create python3 alias in virtualenv
+      #   run: |
+      #     pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
 
       - name: Update version
         run: |
@@ -83,9 +93,13 @@ jobs:
         run: |
           fsbuild/configure
 
+      # - name: Build
+      #   run: |
+      #     pipenv run bash -c 'fsbuild/build'
+
       - name: Build
         run: |
-          pipenv run bash -c 'fsbuild/build'
+          uv run fsbuild/build
 
       - name: Bundle
         run: |
