@@ -1,4 +1,4 @@
-name: macOS_x86-64
+name: macOS_ARM64
 
 on:
   push:
@@ -15,8 +15,8 @@ on:
       - test
 
 jobs:
-  macOS_x86-64:
-    runs-on: macos-13
+  macOS_ARM64:
+    runs-on: macos-14
 
     env:
       SIGNING_ENABLED: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
@@ -138,7 +138,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: macOS_x86-64
+          name: macOS_ARM64
           path: fsbuild/_dist/*
 
       - name: Upload build to Dropbox folder
