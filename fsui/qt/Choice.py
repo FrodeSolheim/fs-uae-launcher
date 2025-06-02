@@ -28,13 +28,13 @@ class Choice(QComboBox, WidgetMixin):
         self.changed = SignalWrapper(self, "changed")
         # self.changed.inhibit = self.inhibit_signal
 
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, e):
         if not self.cursor_keys:
-            print("cursor keys is false", event.key(), Qt.Key.Key_Up)
-            if event.key() == Qt.Key_Up or event.key() == Qt.Key.Key_Down:
+            print("cursor keys is false", e.key(), Qt.Key.Key_Up)
+            if e.key() == Qt.Key.Key_Up or e.key() == Qt.Key.Key_Down:
                 print("ignoring")
                 return
-        super().keyPressEvent(event)
+        super().keyPressEvent(e)
 
     # @contextmanager
     # def inhibit_signal(self, name):

@@ -41,7 +41,7 @@ class EventHandler(QObject):
         QObject.__init__(self)
         self.queue = queue.Queue()
 
-    def customEvent(self, event):
+    def customEvent(self, a0):
         while True:
             try:
                 function, args, kwargs = self.queue.get_nowait()

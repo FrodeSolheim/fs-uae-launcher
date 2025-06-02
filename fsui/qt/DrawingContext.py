@@ -18,13 +18,7 @@ class Font(object):
         return self.font
 
     def set_bold(self, bold=True):
-        self.font.setBold(bold)
-
-    # def size(self):
-    #     return self.font.pixelSize()
-    #
-    # def set_size(self, size):
-    #     self.font.setPixelSize(size)
+        self.font.setWeight(QFont.Weight.DemiBold if bold else QFont.Weight.Normal)
 
     def adjust_size(self, increment=1):
         size = self.font.pointSize()

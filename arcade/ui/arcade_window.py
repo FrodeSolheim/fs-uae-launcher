@@ -197,6 +197,8 @@ class QtWindow(QWidget):
         # self.window_created_at = time.time()
         self.first_motion_event = True
 
+        # self.create_gl_window_2()
+
     def set_blank_cursor(self, blank=True):
         if blank:
             cursor = Qt.CursorShape.BlankCursor
@@ -229,7 +231,9 @@ class QtWindow(QWidget):
         # EDIT: The problem may no longer exist, but it is fine to delay
         # anyway so the black screen has time to show before the main thread
         # will block a short while (while resources are loaded).
+
         if time.time() - self.first_time > 0.5:
+        # if True:
             self.gl_widget = GLWidget(self, self.callbacks)
             self.gl_widget.setMouseTracking(True)
             # if "--show-cursor" not in sys.argv:
@@ -257,6 +261,7 @@ class QtWindow(QWidget):
             self.first_time = time.time()
         if not self.create_gl_window_2():
             return
+
         self.callbacks.timer()
         if self.quit_flag:
             self.killTimer(self.timer_id)

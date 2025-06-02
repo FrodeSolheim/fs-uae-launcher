@@ -1,36 +1,36 @@
 import functools
-import os
 import sys
+
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt6.QtCore import *  # type: ignore # noqa: F403
+from PyQt6.QtCore import Qt, QUrl
+
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt6.QtCore import pyqtSignal as QSignal  # noqa: F401
+
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt6.QtCore import pyqtSignal as Signal  # noqa: F401
+
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt6.QtGui import *  # type: ignore # noqa: F403
+from PyQt6.QtGui import QColor, QDesktopServices, QFont, QPalette
+
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt6.QtOpenGL import *  # type: ignore # noqa: F403
+
+# noinspection PyUnresolvedReferences, PyPackageRequirements
+from PyQt6.QtWidgets import *  # type: ignore # noqa: F403
+from PyQt6.QtWidgets import QApplication, QStyleFactory
 
 import fsbc.application
 import fsbc.desktop
-import fsboot
 import fstd.desktop
 from fsbc.settings import Settings
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtCore import *
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtGui import *
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtWidgets import *
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtCore import pyqtSignal as Signal
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtCore import pyqtSignal as QSignal
-
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtOpenGL import *
-
 from fsgs.option import Option
 
 try:
     # noinspection PyUnresolvedReferences, PyPackageRequirements
-    from PyQt6.QtX11Extras import *
+    from PyQt6.QtX11Extras import *  # type: ignore # noqa: F403
 except ImportError:
     pass
 
@@ -122,49 +122,55 @@ def initialize_qt_style(qapplication):
     if use_fusion_theme:
         # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
         qapplication.setStyle(QStyleFactory.create("Fusion"))
+        pa = QPalette()
+
         if fusion_variant == "adwaita":
-            pa = QPalette()
-            # background = QColor("#f6f5f4")
-            background = QColor("#eae7e5")
+            background = QColor("#f2f2f2")
             pa.setColor(QPalette.ColorRole.Window, background)
             pa.setColor(QPalette.ColorRole.AlternateBase, background)
             pa.setColor(QPalette.ColorRole.Button, background)
+
             # pa.setColor(QPalette.ColorRole.Base, QColor(255, 255, 255))
-            pa.setColor(
-                QPalette.ColorRole.Disabled, QPalette.ColorRole.Base, QColor(241, 241, 241)
-            )
+
+            # No Disabled role any more?
+            # pa.setColor(
+            #     QPalette.ColorRole.Disabled, QPalette.ColorRole.Base, QColor(241, 241, 241)
+            # )
 
             # pa.setColor(QPalette.Window, QColor("#aeaeae"))
             # pa.setColor(QPalette.AlternateBase, QColor("#aeaeae"))
-            # pa.setColor(QPalette.Button, QColor("#aeaeae"))
+            # pa.setColor(QPalette.Button, ("#aeaeae"))
 
-            qapplication.setPalette(pa)
         elif fusion_variant == "fws" or fusion_variant == "windows10":
-            pa = QPalette()
             pa.setColor(QPalette.ColorRole.Window, QColor(242, 242, 242))
             pa.setColor(QPalette.ColorRole.AlternateBase, QColor(242, 242, 242))
             pa.setColor(QPalette.ColorRole.Button, QColor(242, 242, 242))
-            qapplication.setPalette(pa)
         elif fusion_variant == "dark":
-            pa = QPalette()
             pa.setColor(QPalette.ColorRole.Window, QColor(53, 53, 53))
-            pa.setColor(QPalette.ColorRole.WindowText, Qt.white)
+            pa.setColor(QPalette.ColorRole.WindowText, Qt.GlobalColor.white)
             pa.setColor(QPalette.ColorRole.Base, QColor(25, 25, 25))
             pa.setColor(QPalette.ColorRole.AlternateBase, QColor(53, 53, 53))
-            pa.setColor(QPalette.ColorRole.ToolTipBase, Qt.white)
-            pa.setColor(QPalette.ColorRole.ToolTipText, Qt.white)
-            pa.setColor(QPalette.ColorRole.Text, Qt.white)
+            pa.setColor(QPalette.ColorRole.ToolTipBase, Qt.GlobalColor.white)
+            pa.setColor(QPalette.ColorRole.ToolTipText, Qt.GlobalColor.white)
+            pa.setColor(QPalette.ColorRole.Text, Qt.GlobalColor.white)
             pa.setColor(QPalette.ColorRole.Button, QColor(53, 53, 53))
-            pa.setColor(QPalette.ColorRole.ButtonText, Qt.white)
-            pa.setColor(QPalette.ColorRole.BrightText, Qt.red)
+            pa.setColor(QPalette.ColorRole.ButtonText, Qt.GlobalColor.white)
+            pa.setColor(QPalette.ColorRole.BrightText, Qt.GlobalColor.red)
             pa.setColor(QPalette.ColorRole.Link, QColor(42, 130, 218))
             pa.setColor(QPalette.ColorRole.Highlight, QColor(42, 130, 218))
-            pa.setColor(QPalette.ColorRole.HighlightedText, Qt.black)
-            qapplication.setPalette(pa)
+            pa.setColor(QPalette.ColorRole.HighlightedText, Qt.GlobalColor.black)
             qapplication.setStyleSheet(
                 "QToolTip { color: #ffffff; background-color: #2a82da; "
                 "border: 1px solid white; }"
             )
+
+        else:
+            background = QColor("#f2f2f2")
+            pa.setColor(QPalette.ColorRole.Window, background)
+            pa.setColor(QPalette.ColorRole.AlternateBase, background)
+            pa.setColor(QPalette.ColorRole.Button, background)            
+
+        qapplication.setPalette(pa)
 
         try:
             launcher_font_size = int(

@@ -13,7 +13,7 @@ class TextArea(fsui.qt.QTextEdit, WidgetMixin):
         # Widget.__init__(self, parent)
         self.init_widget(parent)
         if not border:
-            self.setFrameStyle(fsui.qt.QFrame.NoFrame)
+            self.setFrameStyle(fsui.qt.QFrame.Shape.NoFrame)
         self.setReadOnly(read_only)
         if font_family:
             print("FIXME: not respecting font_family yet")
@@ -38,10 +38,10 @@ class TextArea(fsui.qt.QTextEdit, WidgetMixin):
             self.setTextColor(fsui.qt.QColor(*color))
         # self.appendPlainText(text.strip())
         self.append(text.strip())
-        self.moveCursor(fsui.qt.QTextCursor.End)
+        self.moveCursor(fsui.qt.QTextCursor.MoveOperation.End)
 
     def scroll_to_start(self):
-        self.moveCursor(fsui.qt.QTextCursor.Start)
+        self.moveCursor(fsui.qt.QTextCursor.MoveOperation.Start)
 
     def __text_changed(self):
         self.changed.emit()

@@ -86,7 +86,7 @@ class ListView(QListView, WidgetMixin):
         item.setSizeHint(QSize(-1, self._row_height))
         if bold:
             font = self.font()
-            font.setWeight(QFont.Weight.Bold)
+            font.setWeight(QFont.Weight.DemiBold)
             item.setFont(font)
         self._model.appendRow(item)
 

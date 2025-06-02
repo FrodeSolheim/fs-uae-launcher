@@ -17,7 +17,7 @@ class Label(fsui.Label):
                 elif weight == "medium":
                     font.setWeight(QFont.Weight.DemiBold)
                 elif weight == "bold":
-                    font.setWeight(QFont.Weight.Bold)
+                    font.setWeight(QFont.Weight.DemiBold)
                 else:
                     raise Exception("Unknown weight")
                 font = fsui.Font(font)
