@@ -1,4 +1,3 @@
-import weakref
 from fsui.qt import Qt, QScrollArea, QFrame
 from .widget_mixin import WidgetMixin
 
