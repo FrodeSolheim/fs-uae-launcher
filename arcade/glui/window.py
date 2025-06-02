@@ -541,7 +541,7 @@ def character_press(char):
         print(char_buffer, len(char_buffer))
         print("returning false")
         return False
-    elif char == "BACKSPACE" or char == u"\b":
+    elif char == "BACKSPACE" or char == "\b":
         if ArcadeSettings().search():
             char_buffer = char_buffer[:-1]
             if len(char_buffer) <= 2:
@@ -659,7 +659,6 @@ def default_input_func(button):
     elif button == "SKIP_RIGHT":
         State.get().navigatable.go_right(10)
     elif button == "PRIMARY":
-
         # global char_buffer
         # char_buffer = ""
 

@@ -4,7 +4,6 @@ from .widget_mixin import WidgetMixin
 
 
 class Choice(QComboBox, WidgetMixin):
-
     changed_signal = Signal()
     item_selected = Signal(int)
     ITEM_SEPARATOR = "---"

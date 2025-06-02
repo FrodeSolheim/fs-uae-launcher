@@ -537,14 +537,14 @@ class TypeVar(_TypingBase, _root=True):
         *constraints,
         bound=None,
         covariant=False,
-        contravariant=False
+        contravariant=False,
     ):
         super().__init__(
             name,
             *constraints,
             bound=bound,
             covariant=covariant,
-            contravariant=contravariant
+            contravariant=contravariant,
         )
         self.__name__ = name
         if covariant and contravariant:
@@ -1680,8 +1680,9 @@ def get_type_hints(obj, globalns=None, localns=None):
             return {}
         else:
             raise TypeError(
-                "{!r} is not a module, class, method, "
-                "or function.".format(obj)
+                "{!r} is not a module, class, method, " "or function.".format(
+                    obj
+                )
             )
     defaults = _get_defaults(obj)
     hints = dict(hints)
@@ -2077,7 +2078,6 @@ class ByteString(Sequence[int], extra=collections_abc.ByteString):
 
 
 class List(list, MutableSequence[T], extra=list):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2089,7 +2089,6 @@ class List(list, MutableSequence[T], extra=list):
 
 
 class Deque(collections.deque, MutableSequence[T], extra=collections.deque):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2099,7 +2098,6 @@ class Deque(collections.deque, MutableSequence[T], extra=collections.deque):
 
 
 class Set(set, MutableSet[T], extra=set):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2217,7 +2215,6 @@ __all__.append('AsyncContextManager')
 
 
 class Dict(dict, MutableMapping[KT, VT], extra=dict):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2233,7 +2230,6 @@ class DefaultDict(
     MutableMapping[KT, VT],
     extra=collections.defaultdict,
 ):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2243,7 +2239,6 @@ class DefaultDict(
 
 
 class Counter(collections.Counter, Dict[T, int], extra=collections.Counter):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2261,7 +2256,6 @@ if hasattr(collections, "ChainMap"):
         MutableMapping[KT, VT],
         extra=collections.ChainMap,
     ):
-
         __slots__ = ()
 
         def __new__(cls, *args, **kwds):

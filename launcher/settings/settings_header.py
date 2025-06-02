@@ -4,7 +4,6 @@ from launcher.ui.skin import Skin
 
 
 class SettingsHeader(fsui.Group):
-
     ICON_LEFT = 0
     ICON_RIGHT = 1
 

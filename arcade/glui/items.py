@@ -78,7 +78,7 @@ def create_mesh(width, height, upsidedown):
                 ny = -d if y < 0 else d
                 nz = z
                 # edge = True
-            nl = math.sqrt(nx ** 2 + ny ** 2 + nz ** 2)
+            nl = math.sqrt(nx**2 + ny**2 + nz**2)
             nx /= nl
             ny /= nl
             nz /= nl
@@ -221,7 +221,7 @@ class MenuItem(object):
         if name:
             try:
                 return resources.resource_filename(
-                    os.path.join(u"items", name + u".png")
+                    os.path.join("items", name + ".png")
                 )
             except Exception:
                 pass

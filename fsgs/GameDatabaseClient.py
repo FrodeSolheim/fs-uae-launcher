@@ -453,4 +453,4 @@ class GameDatabaseClient(object):
 
 
 def create_update_stamp():
-    return random.randint(0, 2 ** 32 - 1)
+    return random.randint(0, 2**32 - 1)

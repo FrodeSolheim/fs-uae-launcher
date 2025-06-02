@@ -101,7 +101,6 @@ def get_games_handler(request):
     database_items = fsgs.database().find_games_new(" ".join(terms))
     result = []
     for item in database_items:
-
         # query = "SELECT DISTINCT uuid, name, platform, year, publisher, " \
         #         "front_image, title_image, screen1_image, screen2_image, " \
         #         "screen3_image, screen4_image, screen5_image, have, path, " \
@@ -281,7 +280,6 @@ url_map = [
 
 
 def create_application():
-
     fsgs = FSGameSystemContext()
 
     # A relatively simple WSGI application. It's going to print out the

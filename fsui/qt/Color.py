@@ -172,7 +172,6 @@ class HSLColor(BaseColor):
         return self
 
     def to_rgb(self):
-
         if self.l < 0.5:
             q = self.l * (1 + self.s)
         else:  # c.l >= 0.5

@@ -143,7 +143,9 @@ def initialize_qt_style(qapplication):
 
         elif fusion_variant == "fws" or fusion_variant == "windows10":
             pa.setColor(QPalette.ColorRole.Window, QColor(242, 242, 242))
-            pa.setColor(QPalette.ColorRole.AlternateBase, QColor(242, 242, 242))
+            pa.setColor(
+                QPalette.ColorRole.AlternateBase, QColor(242, 242, 242)
+            )
             pa.setColor(QPalette.ColorRole.Button, QColor(242, 242, 242))
         elif fusion_variant == "dark":
             pa.setColor(QPalette.ColorRole.Window, QColor(53, 53, 53))
@@ -158,7 +160,9 @@ def initialize_qt_style(qapplication):
             pa.setColor(QPalette.ColorRole.BrightText, Qt.GlobalColor.red)
             pa.setColor(QPalette.ColorRole.Link, QColor(42, 130, 218))
             pa.setColor(QPalette.ColorRole.Highlight, QColor(42, 130, 218))
-            pa.setColor(QPalette.ColorRole.HighlightedText, Qt.GlobalColor.black)
+            pa.setColor(
+                QPalette.ColorRole.HighlightedText, Qt.GlobalColor.black
+            )
             qapplication.setStyleSheet(
                 "QToolTip { color: #ffffff; background-color: #2a82da; "
                 "border: 1px solid white; }"
@@ -168,7 +172,7 @@ def initialize_qt_style(qapplication):
             background = QColor("#f2f2f2")
             pa.setColor(QPalette.ColorRole.Window, background)
             pa.setColor(QPalette.ColorRole.AlternateBase, background)
-            pa.setColor(QPalette.ColorRole.Button, background)            
+            pa.setColor(QPalette.ColorRole.Button, background)
 
         qapplication.setPalette(pa)
 
@@ -187,7 +191,9 @@ def initialize_qt_style(qapplication):
             if fusion_variant == "fws":
                 font = QFont("Roboto")
                 font.setPointSizeF(10.5)
-                font.setHintingPreference(QFont.HintingPreference.PreferNoHinting)
+                font.setHintingPreference(
+                    QFont.HintingPreference.PreferNoHinting
+                )
             qapplication.setFont(font)
 
     import fsui

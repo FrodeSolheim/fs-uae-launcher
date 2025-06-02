@@ -300,12 +300,15 @@ class LinearLayout(Layout):
                     # position[0] += (self.size[0] - size[0]) // 2
                     pass
                 else:
-                    position[1] += round((
-                        fill_size[1]
-                        - child.margin_top
-                        - child.margin_bottom
-                        - size[1]
-                    ) * child.valign)
+                    position[1] += round(
+                        (
+                            fill_size[1]
+                            - child.margin_top
+                            - child.margin_bottom
+                            - size[1]
+                        )
+                        * child.valign
+                    )
 
             child.element.set_position_and_size(position, size)
 

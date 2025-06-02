@@ -7,7 +7,6 @@ from fsui.qt import QParent, QPushButton, QSignal
 
 
 class ImageButton(Widget):
-
     activated = QSignal()
 
     def __init__(self, parent, image):

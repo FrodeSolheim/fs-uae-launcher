@@ -137,8 +137,9 @@ class FileContext(BaseContext):
                 if not license_status["accepted"]:
                     # FIXME: custom exception here
                     raise Exception(
-                        'Usage terms "{0}" was not '
-                        "accepted".format(license_code)
+                        'Usage terms "{0}" was not ' "accepted".format(
+                            license_code
+                        )
                     )
         path = Downloader.cache_file_from_url(url)
         return path + hash_part
@@ -363,12 +364,12 @@ class FSGameSystemContext(object):
         sortable_items = []
         for i, variant in enumerate(variants):
             game_database = self.game_database(variant["database"])
-            variant["like_rating"], variant[
-                "work_rating"
-            ] = game_database.get_ratings_for_game(variant["uuid"])
-            variant[
-                "personal_rating"
-            ], ignored = database.get_ratings_for_game(variant["uuid"])
+            variant["like_rating"], variant["work_rating"] = (
+                game_database.get_ratings_for_game(variant["uuid"])
+            )
+            variant["personal_rating"], ignored = (
+                database.get_ratings_for_game(variant["uuid"])
+            )
             # variant_uuid = variant["uuid"]
 
             name = variant["name"]

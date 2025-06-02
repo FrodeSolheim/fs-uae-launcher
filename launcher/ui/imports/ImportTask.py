@@ -12,7 +12,6 @@ from fsgs.filedatabase import FileDatabase
 
 
 class ImportTask(threading.Thread):
-
     AMIGA_FOREVER = 1
 
     def __init__(self, path, import_type):

@@ -294,7 +294,6 @@ class RefreshRateTool(object):
                 and bpp == mode["bpp"]
                 and flags == mode["flags"]
             ):
-
                 # print("trying to override with refresh", int(round(self.game_refresh)))
                 # #refresh == mode['refresh'] and \
                 # settings.DisplayFrequency = int(round(self.game_refresh))

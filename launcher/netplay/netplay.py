@@ -134,8 +134,9 @@ class Netplay:
         want_players = int(LauncherConfig.get("__netplay_players") or "0")
         if player_count != want_players:
             self.game_warning(
-                "cannot start game, wanted {0} players, "
-                "has {1}".format(want_players, player_count)
+                "cannot start game, wanted {0} players, " "has {1}".format(
+                    want_players, player_count
+                )
             )
             return
         self.game_info("sending game start command to all clients!")
@@ -765,8 +766,9 @@ class Netplay:
                 )
             else:
                 channel.action(
-                    "could not find (ext) kickstart "
-                    "for {0}".format(repr(value))
+                    "could not find (ext) kickstart " "for {0}".format(
+                        repr(value)
+                    )
                 )
 
     def set_file_config(self, key, value):
@@ -792,22 +794,22 @@ class Netplay:
 
     file_config = {}
     for i in range(Amiga.MAX_FLOPPY_DRIVES):
-        file_config[
-            "x_floppy_drive_{0}_sha1".format(i)
-        ] = "floppy_drive_{0}".format(i)
+        file_config["x_floppy_drive_{0}_sha1".format(i)] = (
+            "floppy_drive_{0}".format(i)
+        )
     for i in range(Amiga.MAX_FLOPPY_IMAGES):
-        file_config[
-            "x_floppy_image_{0}_sha1".format(i)
-        ] = "floppy_image_{0}".format(i)
+        file_config["x_floppy_image_{0}_sha1".format(i)] = (
+            "floppy_image_{0}".format(i)
+        )
     for i in range(Amiga.MAX_CDROM_DRIVES):
-        file_config[
-            "x_cdrom_drive_{0}_sha1".format(i)
-        ] = "cdrom_drive_{0}".format(i)
+        file_config["x_cdrom_drive_{0}_sha1".format(i)] = (
+            "cdrom_drive_{0}".format(i)
+        )
     for i in range(Amiga.MAX_CDROM_IMAGES):
-        file_config[
-            "x_cdrom_image_{0}_sha1".format(i)
-        ] = "cdrom_image_{0}".format(i)
+        file_config["x_cdrom_image_{0}_sha1".format(i)] = (
+            "cdrom_image_{0}".format(i)
+        )
     for i in range(Amiga.MAX_HARD_DRIVES):
-        file_config[
-            "x_hard_drive_{0}_sha1".format(i)
-        ] = "hard_drive_{0}".format(i)
+        file_config["x_hard_drive_{0}_sha1".format(i)] = (
+            "hard_drive_{0}".format(i)
+        )

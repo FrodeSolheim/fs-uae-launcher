@@ -21,7 +21,6 @@ from .loader import SimpleLoader
 
 
 class AmstradCPCPlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Amstrad CPC"
 
     def __init__(self):

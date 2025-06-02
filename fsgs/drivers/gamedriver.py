@@ -82,7 +82,9 @@ class GameDriver:
         self.files.install()
 
     def run(self):
-        executable = PluginExecutableFinder().find_executable(self.emulator.name)
+        executable = PluginExecutableFinder().find_executable(
+            self.emulator.name
+        )
         if executable is None:
             raise LookupError(
                 "Could not find emulator " + repr(self.emulator.name)
@@ -366,7 +368,7 @@ class GameDriver:
             from fsui.qt import init_qt
 
             qapplication = init_qt()
-             # desktop = qapplication.desktop()
+            # desktop = qapplication.desktop()
             qscreens = qapplication.screens()
         except AttributeError:
             # no QApplication, probably not running via QT

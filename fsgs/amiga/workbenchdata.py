@@ -4,6 +4,7 @@ disks. The data is used when creating a Workbench environment on demand.
 Some files are removed because they differ between Cloanto WB floppies and
 original WB floppies.
 """
+
 import os
 import sys
 import hashlib

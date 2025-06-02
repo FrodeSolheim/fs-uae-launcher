@@ -356,7 +356,6 @@ class GameConfigList(Navigatable):
         self.set_controller(controller)
 
     def set_controller(self, controller):
-
         self.items = []
         self.items.append(Option.create_group("Game Control", -2.5))
         play_option = Option.create_play_option()
@@ -442,7 +441,6 @@ class GameConfigList(Navigatable):
             return
         result = self.items[self.index].activate()
         if result == "PLAY":
-
             # noinspection PyDecorator
             # @staticmethod
             def show_input():

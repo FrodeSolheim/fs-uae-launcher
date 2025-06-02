@@ -5,7 +5,6 @@ from fsui.qt.widget import Widget
 
 
 class Button(Widget):
-
     activated = QSignal()
 
     def __init__(self, parent, label=""):

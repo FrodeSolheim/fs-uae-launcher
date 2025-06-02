@@ -35,6 +35,6 @@ class FSUAEDeviceHelper(object):
             env=env,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            **kwargs
+            **kwargs,
         )
         return process

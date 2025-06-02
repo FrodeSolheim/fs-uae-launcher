@@ -165,7 +165,7 @@ def render_bottom_bar_text(item):
         text = text.strip()
         if text:
             if text not in companies:
-                text_str = text_str + u" \u00b7 " + text
+                text_str = text_str + " \u00b7 " + text
                 companies.add(text)
     developer_text = (
         getattr(State.get().current_menu.selected_item, "developer", "") or ""
@@ -174,7 +174,7 @@ def render_bottom_bar_text(item):
         text = text.strip()
         if text:
             if text not in companies:
-                text_str = text_str + u" \u00b7 " + text
+                text_str = text_str + " \u00b7 " + text
                 companies.add(text)
     if len(text_str) > 3:
         text_str = text_str[3:]  # remove initial middle dot

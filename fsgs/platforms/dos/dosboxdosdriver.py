@@ -23,6 +23,7 @@ IMGMOUNT in autoexec can refer to paths beginning with $DRIVES, which will be
 replaced by this driver when creating dosbox config.
 
 """
+
 import hashlib
 import json
 import os

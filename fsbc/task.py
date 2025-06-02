@@ -18,7 +18,6 @@ class TaskStopped(Exception):
 
 
 class Task(object):
-
     Failure = TaskFailure
     Stopped = TaskStopped
 

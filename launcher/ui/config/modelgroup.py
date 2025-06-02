@@ -24,7 +24,6 @@ from launcher.ui.options import ConfigWidgetFactory
 
 
 class ModelGroup(fsui.Group):
-
     # FIXME: remove with_more_button=True
     def __init__(self, parent, with_more_button=True):
         unused(with_more_button)

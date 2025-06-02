@@ -9,7 +9,6 @@ TIMER_INTERVAL = 100
 
 
 class ImportDialog(fsui.Window):
-
     AMIGA_FOREVER = 1
 
     def __init__(self, parent, path, import_type):

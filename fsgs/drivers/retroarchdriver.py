@@ -365,9 +365,7 @@ overlay0_overlay = {overlay}
 overlay0_full_screen = true
 overlay0_rect = "0.0,0.0,1.0,1.0"
 overlay0_descs = 0
-""".format(
-            overlay=overlay_png_file
-        )
+""".format(overlay=overlay_png_file)
         #         overlay_config = (
         #             """overlays = 2
         # overlay0_overlay = {left}

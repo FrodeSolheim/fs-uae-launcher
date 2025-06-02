@@ -4,7 +4,6 @@ from .ImportDialog import ImportDialog
 
 
 class ImportGroup(fsui.Group):
-
     AMIGA_FOREVER = 1
 
     def __init__(self, parent, import_type=0):

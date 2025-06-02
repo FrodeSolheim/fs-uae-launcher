@@ -47,6 +47,4 @@ Options:
   --disable-search                     Disable search function in Arcade UI
 
 TODO: Add more documentation
-""".format(
-    version=VERSION
-)
+""".format(version=VERSION)

@@ -153,7 +153,9 @@ class Application(object):
                 data_dirs.append(data_dir)
 
         if macosx:
-            data_dir = os.path.join(self.executable_dir(), "..", "Resources", "Data")
+            data_dir = os.path.join(
+                self.executable_dir(), "..", "Resources", "Data"
+            )
             if os.path.exists(data_dir):
                 data_dirs.append(data_dir)
 

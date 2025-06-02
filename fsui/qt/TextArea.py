@@ -3,7 +3,6 @@ from .widget_mixin import WidgetMixin
 
 
 class TextArea(fsui.qt.QTextEdit, WidgetMixin):
-
     changed = fsui.qt.Signal()
 
     def __init__(

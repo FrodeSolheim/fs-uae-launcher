@@ -27,3 +27,8 @@ dev = [
 
 [tool.black]
 line-length = 79
+
+[tool.ruff]
+target-version = "py312"
+exclude = [".venv", "attic", "amitools", "oyoyo"]
+line-length = 79

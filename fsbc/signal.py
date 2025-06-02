@@ -58,7 +58,6 @@ class Listener(object):
 
 
 class Signal:
-
     # FIXME: should have type Dict[str, Callable]
     # or # type_xxx: Dict[str, Function]
     signal_listeners = {}  # type: Dict[str, Any]

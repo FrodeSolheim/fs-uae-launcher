@@ -21,7 +21,6 @@ class WindowImages:
 
 
 class WindowBorder(RealWindow):
-
     _images = None
 
     @classmethod

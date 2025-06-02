@@ -100,7 +100,10 @@ def get_key(ev):
         Qt.Key.Key_Up,
         Qt.Key.Key_Down,
     ]
-    if int(ev.modifiers().value) & Qt.KeyboardModifier.KeypadModifier.value and not macos_arrow_key:
+    if (
+        int(ev.modifiers().value) & Qt.KeyboardModifier.KeypadModifier.value
+        and not macos_arrow_key
+    ):
         print("keypad!")
         print(ev.key(), "vs", Qt.Key.Key_4)
         return {

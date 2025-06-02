@@ -11,7 +11,6 @@ from fsui.qt.signal import Signal
 
 # noinspection PyPep8Naming
 class Widget(QObject):
-
     destroyed = Signal()
 
     def __init__(self, parent, *_):

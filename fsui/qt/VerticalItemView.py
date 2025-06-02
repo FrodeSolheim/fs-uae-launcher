@@ -37,7 +37,6 @@ class Model(QAbstractListModel):
 
 
 class VerticalItemView(QListView, WidgetMixin):
-
     item_selected = Signal(int)
     item_activated = Signal(int)
 

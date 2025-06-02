@@ -4,7 +4,6 @@ from fsui.qt.widget_mixin import WidgetMixin
 
 
 class TextField(QLineEdit, WidgetMixin):
-
     changed_signal = Signal()
     activated_signal = Signal()
 

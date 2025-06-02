@@ -47,7 +47,6 @@ class ConfigBrowser(fsui.VerticalItemView):
 
     def update_from_implicit(self, implicit):
         def flatten(item_list, level):
-
             for model_item in item_list:
                 if model_item.active:
                     # text = "    " * level + str(model_item.text)

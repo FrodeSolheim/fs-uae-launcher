@@ -13,7 +13,6 @@ QUOTED_TERMS_RE = re.compile('["].*?["]')
 
 
 class Database(BaseDatabase):
-
     VERSION = VERSION
     RESET_VERSION = RESET_VERSION
     GAME_LIST_GAMES = "cbc209ef-c93d-4db7-be52-c159bfec43dc"

@@ -29,7 +29,9 @@ class LauncherTheme(object):
         from fsui.qt import QPalette
 
         palette = QPalette()
-        self.sidebar_list_background = fsui.Color(palette.color(QPalette.ColorRole.Base))
+        self.sidebar_list_background = fsui.Color(
+            palette.color(QPalette.ColorRole.Base)
+        )
         self.sidebar_list_row_height = 28
         self.sidebar_list_row_text = fsui.Color(
             palette.color(QPalette.ColorRole.HighlightedText)
@@ -54,7 +56,6 @@ class LauncherTheme(object):
 
 
 class Skin(object):
-
     EXTRA_GROUP_MARGIN = 0
     _fws = None
 

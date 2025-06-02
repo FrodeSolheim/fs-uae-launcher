@@ -7,7 +7,6 @@ from fsgs.platform import PlatformHandler
 
 
 class Instance:
-
     STATE_INITIALIZED = "INITIALIZED"
     STATE_PREPARING = "PREPARING"
     STATE_READY = "READY"

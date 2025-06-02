@@ -170,10 +170,18 @@ class RealWindow(QMainWindow):
             traceback.print_exc()
 
     def is_maximized(self):
-        return int(self.windowState().value) & Qt.WindowState.WindowMaximized.value != 0
+        return (
+            int(self.windowState().value)
+            & Qt.WindowState.WindowMaximized.value
+            != 0
+        )
 
     def is_fullscreen(self):
-        return int(self.windowState().value) & Qt.WindowState.WindowFullScreen.value != 0
+        return (
+            int(self.windowState().value)
+            & Qt.WindowState.WindowFullScreen.value
+            != 0
+        )
 
     def restore_margins(self):
         self.margins.set(0)
@@ -256,7 +264,6 @@ class RealWidget(QWidget):
 
 # noinspection PyPep8Naming
 class Window(QObject):
-
     shown = QSignal()
     closed = QSignal()
 
@@ -274,7 +281,7 @@ class Window(QObject):
         below=False,
         closable=True,
         color=None,
-        **_
+        **_,
     ):
         init_qt()
         super().__init__()
@@ -320,7 +327,9 @@ class Window(QObject):
         # _windows.add(self)
         self.destroyed.connect(self.__destroyed)
 
-        self._real_window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+        self._real_window.setAttribute(
+            Qt.WidgetAttribute.WA_DeleteOnClose, True
+        )
 
         # if not border:
         #     self.setWindowFlags(Qt.FramelessWindowHint |
@@ -541,7 +550,9 @@ class Window(QObject):
 
     def center_on_screen(self):
         frame_rect = self._real_window.frameGeometry()
-        frame_rect.moveCenter(QGuiApplication.screens()[0].availableGeometry().center())
+        frame_rect.moveCenter(
+            QGuiApplication.screens()[0].availableGeometry().center()
+        )
         self._real_window.move(frame_rect.topLeft())
 
     def set_background_color(self, color):

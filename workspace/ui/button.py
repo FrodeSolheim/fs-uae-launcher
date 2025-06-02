@@ -8,7 +8,6 @@ class Button(fsui.Button):
 
 
 class CustomButton(Canvas):
-
     activated = fsui.Signal
 
     def __init__(self, parent):

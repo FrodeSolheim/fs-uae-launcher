@@ -115,7 +115,6 @@ def _render_menu(menu, what=None, skip_center_item=False):
         fs_emu_blending(False)
 
         for item_index in list(yield_render_item_sequence()):
-
             if num_items < MIN_WRAPAROUND_ITEMS:
                 if not (
                     0

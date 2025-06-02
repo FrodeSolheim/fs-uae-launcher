@@ -35,7 +35,6 @@ class InputDeviceInfo(object):
 
 
 class InputDevice(object):
-
     MissingPlatformSupportException = MissingPlatformSupportException
 
     def __init__(

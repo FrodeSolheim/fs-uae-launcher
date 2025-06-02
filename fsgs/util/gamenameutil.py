@@ -9,7 +9,6 @@ QUOTED_TERMS_RE = re.compile('["].*?["]')
 
 
 class GameNameUtil(object):
-
     TOSEC = "TOSEC"
     NOINTRO = "NOINTRO"
 

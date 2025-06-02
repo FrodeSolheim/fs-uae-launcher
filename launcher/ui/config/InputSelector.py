@@ -50,14 +50,18 @@ class InputSelector(fsui.Group):
         ]
 
         if port < 2:
-            self.joystick_mode_values.extend([
-                "mouse",
-                "cd32 gamepad",
-            ])
-            self.joystick_mode_titles.extend([
-                gettext("Amiga Mouse"),
-                gettext("CD32 Pad"),
-            ])
+            self.joystick_mode_values.extend(
+                [
+                    "mouse",
+                    "cd32 gamepad",
+                ]
+            )
+            self.joystick_mode_titles.extend(
+                [
+                    gettext("Amiga Mouse"),
+                    gettext("CD32 Pad"),
+                ]
+            )
 
         self.mode_choice = fsui.Choice(self, self.joystick_mode_titles)
         self.mode_choice.set_min_width(MIN_TYPE_CHOICE_WIDTH)

@@ -36,6 +36,7 @@ FIXME:
   Keyboard: Error - Cannot load keymap `sdl_pos.vkm'.
 
 """
+
 import json
 import os
 
@@ -104,17 +105,17 @@ class Commodore64Loader(SimpleLoader):
                     self.config["tape_drive_0"] = "sha1://{}/{}".format(
                         item["sha1"], item["name"]
                     )
-                self.config[
-                    "tape_image_{0}".format(i)
-                ] = "sha1://{}/{}".format(item["sha1"], item["name"])
+                self.config["tape_image_{0}".format(i)] = (
+                    "sha1://{}/{}".format(item["sha1"], item["name"])
+                )
             elif ext in [".D64"]:
                 if i == 0:
                     self.config["floppy_drive_0"] = "sha1://{}/{}".format(
                         item["sha1"], item["name"]
                     )
-                self.config[
-                    "floppy_image_{}".format(i)
-                ] = "sha1://{0}/{1}".format(item["sha1"], item["name"])
+                self.config["floppy_image_{}".format(i)] = (
+                    "sha1://{0}/{1}".format(item["sha1"], item["name"])
+                )
 
     def load_extra(self, values):
         # FIXME: Replace with c64_model?

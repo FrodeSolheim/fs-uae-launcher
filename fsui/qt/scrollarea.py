@@ -14,7 +14,9 @@ class VerticalScrollArea(QScrollArea, WidgetMixin):
         self.move(0, 2000)
         # self.setAutoFillBackground(True)
         self.setFrameShape(QFrame.Shape.NoFrame)
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
 
     @property
     def size(self):

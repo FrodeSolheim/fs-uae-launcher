@@ -23,6 +23,7 @@ CURSOR_SHOW_DURATION = 5.0
 # # # import sys
 # # # sys.exit(1)
 
+
 def check_argument(name, options=None):
     name = name.replace("_", "-")
     if options is not None:
@@ -233,7 +234,7 @@ class QtWindow(QWidget):
         # will block a short while (while resources are loaded).
 
         if time.time() - self.first_time > 0.5:
-        # if True:
+            # if True:
             self.gl_widget = GLWidget(self, self.callbacks)
             self.gl_widget.setMouseTracking(True)
             # if "--show-cursor" not in sys.argv:
@@ -315,9 +316,15 @@ class QtWindow(QWidget):
         def modifier():
             if macosx:
                 # This should correspond to the Cmd key(s) on OS X
-                return int(event.modifiers().value) & Qt.KeyboardModifier.ControlModifier.value
+                return (
+                    int(event.modifiers().value)
+                    & Qt.KeyboardModifier.ControlModifier.value
+                )
             else:
-                return int(event.modifiers().value) & Qt.KeyboardModifier.AltModifier.value
+                return (
+                    int(event.modifiers().value)
+                    & Qt.KeyboardModifier.AltModifier.value
+                )
 
         assert isinstance(event, QKeyEvent)
         # print(event.isAutoRepeat(), event.type())

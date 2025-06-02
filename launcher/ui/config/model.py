@@ -2,7 +2,6 @@ import weakref
 
 
 class StrWithExplicit(str):
-
     # def __init__(self, object):
     #     super().__init__(object)
     #     self.explicit = ""
@@ -432,7 +431,6 @@ def create_model(c, show_all=False):
         model.add(rtc_item)
 
     if c.uae_cd32fmv == "true":
-
         fmv_item = Item("CD32 FMV Module")
         model.add(fmv_item)
 

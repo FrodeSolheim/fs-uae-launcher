@@ -30,7 +30,7 @@ class DatFile(object):
         self.load_data(f.read())
 
     def load_data(self, data):
-        if data.startswith("<") or data.startswith("\uFEFF"):
+        if data.startswith("<") or data.startswith("\ufeff"):
             # assume XML
             self._load_xml(data)
         else:

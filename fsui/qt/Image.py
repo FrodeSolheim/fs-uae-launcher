@@ -3,7 +3,6 @@ from fsui.qt import Qt, QImage, QIcon, QPixmap
 
 
 class Image(object):
-
     NEAREST = 0
 
     def __init__(self, name="", object=None):
@@ -56,7 +55,9 @@ class Image(object):
     def grey_scale(self):
         # return Image(object=self.qimage.convertToFormat(
         #     QImage.Format_ARGB32, Qt.AutoOnly))
-        copy = self.qimage.convertToFormat(QImage.Format.Format_ARGB32, Qt.ImageConversionFlag.AutoColor)
+        copy = self.qimage.convertToFormat(
+            QImage.Format.Format_ARGB32, Qt.ImageConversionFlag.AutoColor
+        )
         # copy = self.qimage.copy(0, 0, *self.size)
 
         # WARNING: this is presumably a bit slow...

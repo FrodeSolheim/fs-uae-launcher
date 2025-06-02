@@ -12,7 +12,8 @@ class Label(fsui.qt.QLabel, WidgetMixin):
         self.setTextFormat(fsui.qt.Qt.TextFormat.RichText)
         # self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
         self.setTextInteractionFlags(
-            Qt.TextInteractionFlag.TextSelectableByMouse | Qt.TextInteractionFlag.LinksAccessibleByMouse
+            Qt.TextInteractionFlag.TextSelectableByMouse
+            | Qt.TextInteractionFlag.LinksAccessibleByMouse
         )
         self.setOpenExternalLinks(True)
         # self.setFocusPolicy(Qt.NoFocus)
@@ -75,9 +76,14 @@ class MultiLineLabel(WidgetMixin):
             self.set_min_width(min_width)
 
         self._widget.setTextFormat(fsui.qt.Qt.TextFormat.RichText)
-        self._widget.setTextInteractionFlags(fsui.qt.Qt.TextInteractionFlag.TextBrowserInteraction)
+        self._widget.setTextInteractionFlags(
+            fsui.qt.Qt.TextInteractionFlag.TextBrowserInteraction
+        )
         self._widget.setOpenExternalLinks(True)
-        self._widget.setAlignment(fsui.qt.Qt.AlignmentFlag.AlignLeft | fsui.qt.Qt.AlignmentFlag.AlignTop)
+        self._widget.setAlignment(
+            fsui.qt.Qt.AlignmentFlag.AlignLeft
+            | fsui.qt.Qt.AlignmentFlag.AlignTop
+        )
 
     def set_text(self, label):
         self._widget.setText(label)

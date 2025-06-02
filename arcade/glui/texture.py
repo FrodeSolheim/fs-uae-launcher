@@ -81,7 +81,7 @@ class Texture(object):
                 target=target,
                 size=self.size,
                 out_data=out_data,
-                **kwargs
+                **kwargs,
             )
             self.data = out_data["im_data"]
             self.gl_type = out_data["type"]

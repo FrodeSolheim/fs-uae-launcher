@@ -86,9 +86,9 @@ class OptionUI(object):
 
             if name == Option.LAUNCHER_FONT_SIZE:
                 font = app.qapplication.font()
-                Option.get(Option.LAUNCHER_FONT_SIZE)[
-                    "default"
-                ] = font.pointSize()
+                Option.get(Option.LAUNCHER_FONT_SIZE)["default"] = (
+                    font.pointSize()
+                )
 
             current_int = int(option["default"])
             if current:

@@ -16,6 +16,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with this library; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 """
+
 import sys
 import time
 from collections import deque
@@ -84,26 +85,26 @@ def create_game_password(value):
     return bytes_to_int(h.digest()[:4])
 
 
-MESSAGE_READY             =  0
-MESSAGE_MEM_CHECK         =  5
-MESSAGE_RND_CHECK         =  6
-MESSAGE_PING              =  7
-MESSAGE_PLAYERS           =  8
-MESSAGE_PLAYER_TAG_0      =  9
-MESSAGE_PLAYER_TAG_1      = 10
-MESSAGE_PLAYER_TAG_2      = 11
-MESSAGE_PLAYER_TAG_3      = 12
-MESSAGE_PLAYER_TAG_4      = 13
-MESSAGE_PLAYER_TAG_5      = 14
+MESSAGE_READY = 0
+MESSAGE_MEM_CHECK = 5
+MESSAGE_RND_CHECK = 6
+MESSAGE_PING = 7
+MESSAGE_PLAYERS = 8
+MESSAGE_PLAYER_TAG_0 = 9
+MESSAGE_PLAYER_TAG_1 = 10
+MESSAGE_PLAYER_TAG_2 = 11
+MESSAGE_PLAYER_TAG_3 = 12
+MESSAGE_PLAYER_TAG_4 = 13
+MESSAGE_PLAYER_TAG_5 = 14
 
-MESSAGE_PLAYER_PING       = 15
-MESSAGE_PLAYER_LAG        = 16
-MESSAGE_SET_PLAYER_TAG    = 17
-MESSAGE_PROTOCOL_VERSION  = 18
+MESSAGE_PLAYER_PING = 15
+MESSAGE_PLAYER_LAG = 16
+MESSAGE_SET_PLAYER_TAG = 17
+MESSAGE_PROTOCOL_VERSION = 18
 MESSAGE_EMULATION_VERSION = 19
-MESSAGE_ERROR             = 20
-MESSAGE_TEXT              = 21
-MESSAGE_SESSION_KEY       = 22
+MESSAGE_ERROR = 20
+MESSAGE_TEXT = 21
+MESSAGE_SESSION_KEY = 22
 
 # MESSAGE_MEM_CHECK = 5
 # MESSAGE_RND_CHECK = 6
@@ -112,17 +113,17 @@ MESSAGE_SESSION_KEY       = 22
 MESSAGE_MEM_CHECK_MASK = 0x80000000 | (MESSAGE_MEM_CHECK << 24)
 MESSAGE_RND_CHECK_MASK = 0x80000000 | (MESSAGE_RND_CHECK << 24)
 
-ERROR_PROTOCOL_MISMATCH    =  1
-ERROR_WRONG_PASSWORD       =  2
-ERROR_CANNOT_RESUME        =  3
-ERROR_GAME_ALREADY_STARTED =  4
-ERROR_PLAYER_NUMBER        =  5
-ERROR_EMULATOR_MISMATCH    =  6
-ERROR_CLIENT_ERROR         =  7
-ERROR_MEMORY_DESYNC        =  8
-ERROR_RANDOM_DESYNC        =  9
-ERROR_SESSION_KEY          = 10
-ERROR_GAME_STOPPED         = 99
+ERROR_PROTOCOL_MISMATCH = 1
+ERROR_WRONG_PASSWORD = 2
+ERROR_CANNOT_RESUME = 3
+ERROR_GAME_ALREADY_STARTED = 4
+ERROR_PLAYER_NUMBER = 5
+ERROR_EMULATOR_MISMATCH = 6
+ERROR_CLIENT_ERROR = 7
+ERROR_MEMORY_DESYNC = 8
+ERROR_RANDOM_DESYNC = 9
+ERROR_SESSION_KEY = 10
+ERROR_GAME_STOPPED = 99
 
 
 def create_ext_message(ext, data):
@@ -361,21 +362,25 @@ class Client:
                             print("Server termination requested")
                             text = b"Requested to terminate the server"
                             game.stop = True
-                        if text.decode('utf-8').lower().startswith("!fps"):
+                        if text.decode("utf-8").lower().startswith("!fps"):
                             try:
-                                fps = text.decode('utf-8').lower().split()[1]
+                                fps = text.decode("utf-8").lower().split()[1]
                                 print("FPS requested: " + fps)
                                 game.framerate = 1 / int(fps)
-                                text = b"FrameRate set to " + fps.encode('utf-8') + b"fps"
+                                text = (
+                                    b"FrameRate set to "
+                                    + fps.encode("utf-8")
+                                    + b"fps"
+                                )
                             except (IndexError, ValueError, ZeroDivisionError):
                                 print("Invalid FPS value")
                                 text = b"FrameRate unchanged"
                         if text.lower() == b"!ntsc":
-                            game.framerate = 0.016667 #1/60
+                            game.framerate = 0.016667  # 1/60
                             text = b"moved server to NTSC Mode (60 FPS)"
                             print("NTSC requested")
                         if text.lower() == b"!pal":
-                            game.framerate = 0.020 #1/50
+                            game.framerate = 0.020  # 1/50
                             text = b"moved server to PAL Mode (50 FPS)"
                             print("PAL requested")
                         game.add_text_message(self, text)
@@ -406,7 +411,7 @@ class Client:
 
 
 def create_session_key():
-    return random.randint(0, 2 ** 24 - 1)
+    return random.randint(0, 2**24 - 1)
 
 
 class Game:
@@ -423,9 +428,9 @@ class Game:
         self.verified_frame = -1
 
         if netplay_ntsc == 1:
-            self.framerate = 0.016667 #1/60
+            self.framerate = 0.016667  # 1/60
         else:
-            self.framerate = framerate #1/50
+            self.framerate = framerate  # 1/50
 
     def __start(self):
         if len(self.clients) != num_clients:
@@ -765,7 +770,13 @@ def run_server():
 
 
 def main():
-    global port, num_clients, game_password, launch_timeout, netplay_ntsc, framerate
+    global \
+        port, \
+        num_clients, \
+        game_password, \
+        launch_timeout, \
+        netplay_ntsc, \
+        framerate
     for arg in sys.argv:
         if arg.startswith("--"):
             parts = arg[2:].split("=", 1)

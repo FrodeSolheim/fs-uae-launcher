@@ -267,7 +267,6 @@ class ByteSwapWordsFilter:
 
 
 class Archive(object):
-
     extensions = archive_extensions
 
     def __init__(self, path):

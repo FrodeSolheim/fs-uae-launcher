@@ -86,7 +86,6 @@ class DiskNameUtil(object):
                     # break
                 without_flags = GameNameUtil.strip_flags(without_number)
                 if without_flags == first_without_flags:
-
                     flags_1 = extract_flags(first_without_number)
                     cr_flag_1 = ""
                     for flag in flags_1:

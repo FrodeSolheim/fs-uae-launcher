@@ -202,8 +202,12 @@ class BitmapFont(object):
         # Set up some renderbuffer state
 
         from OpenGL.GL import (
-            glGenFramebuffers, glBindFramebuffer, glDeleteFramebuffers,
-            glFramebufferTexture2D, glCheckFramebufferStatus, glDeleteFramebuffers
+            glGenFramebuffers,
+            glBindFramebuffer,
+            glDeleteFramebuffers,
+            glFramebufferTexture2D,
+            glCheckFramebufferStatus,
+            glDeleteFramebuffers,
         )
 
         frame_buffer = gl.GLuint()
