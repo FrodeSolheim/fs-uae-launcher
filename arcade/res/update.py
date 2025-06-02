@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import json
-from PIL import Image
 
+from PIL import Image
 
 # def fix(name, w, h):
 #    with open(name + ".raw", "rb") as f:

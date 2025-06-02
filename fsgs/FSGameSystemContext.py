@@ -5,15 +5,16 @@ import threading
 import time
 import traceback
 import weakref
+
 from fsbc.paths import Paths
 from fsbc.util import unused
 from fsgs.archive import Archive
 from fsgs.BaseContext import BaseContext
 from fsgs.Database import Database
+from fsgs.download import Downloader, offline_mode
 from fsgs.filedatabase import FileDatabase
 from fsgs.GameDatabase import GameDatabase, IncompleteGameException
 from fsgs.LockerDatabase import LockerDatabase
-from fsgs.download import Downloader, offline_mode
 from fsgs.network import is_http_url
 from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
 from fsgs.plugins.pluginmanager import PluginManager

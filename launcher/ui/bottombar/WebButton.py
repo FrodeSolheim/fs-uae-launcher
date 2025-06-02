@@ -1,6 +1,7 @@
 from fsbc.desktop import open_url_in_browser
 from fsgs.network import openretro_url_prefix
 from fsui import Image, Panel
+
 from ...launcher_config import LauncherConfig
 from ..skin import Skin
 

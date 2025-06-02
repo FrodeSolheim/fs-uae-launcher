@@ -1,12 +1,13 @@
 import os
 import sys
-from fsui.qt import QUrl, QLibraryInfo
-from PyQt6.QtQuick import QQuickView
 
 # to make sure cxFreeze includes it
 import PyQt6.QtNetwork
 import PyQt6.QtQml
+from PyQt6.QtQuick import QQuickView
+
 from fsbc.application import app
+from fsui.qt import QLibraryInfo, QUrl
 
 
 class GameCenterView(QQuickView):

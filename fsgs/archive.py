@@ -1,6 +1,6 @@
 import gzip
-import lzma
 import io
+import lzma
 import os
 import traceback
 from io import BytesIO

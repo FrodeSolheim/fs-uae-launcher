@@ -4,12 +4,12 @@ import time
 from binascii import hexlify
 from functools import lru_cache
 
-from fsgs import openretro, OPENRETRO_DEFAULT_DATABASES
-from fsgs.FSGSDirectories import FSGSDirectories
+from fsgs import OPENRETRO_DEFAULT_DATABASES, openretro
+from fsgs.context import fsgs
 from fsgs.filedatabase import FileDatabase
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.GameDatabase import IncompleteGameException
 from fsgs.GameDatabaseClient import GameDatabaseClient
-from fsgs.context import fsgs
 from fsgs.ogd.GameDatabaseSynchronizer import GameDatabaseSynchronizer
 from fsgs.ogd.locker import LockerSynchronizer
 from fsgs.option import Option

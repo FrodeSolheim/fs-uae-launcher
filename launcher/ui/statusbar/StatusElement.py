@@ -1,4 +1,4 @@
-from fsui import Panel, Color
+from fsui import Color, Panel
 
 
 class StatusElement(Panel):

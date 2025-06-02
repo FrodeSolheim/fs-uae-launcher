@@ -1,11 +1,12 @@
-import re
 import json
+import re
 import traceback
-from wsgiref.util import setup_testing_defaults
 from wsgiref.simple_server import make_server
+from wsgiref.util import setup_testing_defaults
+
 from fsgs.FSGameSystemContext import FSGameSystemContext
-from fsgs.session import Session
 from fsgs.http.request import Request
+from fsgs.session import Session
 
 """
 

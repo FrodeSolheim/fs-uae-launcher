@@ -1,11 +1,11 @@
 import abc
-from abc import abstractmethod, abstractproperty
 import collections
 import contextlib
 import functools
 import re as stdlib_re  # Avoid confusion with the re we export.
 import sys
 import types
+from abc import abstractmethod, abstractproperty
 
 try:
     import collections.abc as collections_abc
@@ -14,11 +14,8 @@ except ImportError:
 if sys.version_info[:2] >= (3, 6):
     import _collections_abc  # Needed for private function _check_methods # noqa
 try:
-    from types import (
-        WrapperDescriptorType,
-        MethodWrapperType,
-        MethodDescriptorType,
-    )
+    from types import (MethodDescriptorType, MethodWrapperType,
+                       WrapperDescriptorType)
 except ImportError:
     WrapperDescriptorType = type(object.__init__)
     MethodWrapperType = type(object().__str__)

@@ -1,10 +1,10 @@
 import os
 
+from fsgs.drivers.gamedriver import Emulator, GameDriver
 from fsgs.drivers.retroarchdriver import RetroArchDriver
+from fsgs.input.mapper import InputMapper
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
-from fsgs.drivers.gamedriver import GameDriver, Emulator
-from fsgs.input.mapper import InputMapper
 
 N64_PLATFORM_ID = "n64"
 N64_PLATFORM_NAME = "Nintendo 64"

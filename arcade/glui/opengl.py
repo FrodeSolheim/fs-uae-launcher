@@ -87,7 +87,7 @@ class GL:
             # a problem if comma is used as a decimal separator (problem
             # parsing the OpenGL version)
             locale.setlocale(locale.LC_NUMERIC, str("C"))
-        from .pyopengl import pyopengl_globals, filter_global
+        from .pyopengl import filter_global, pyopengl_globals
 
         for name in list(pyopengl_globals()):
             if filter_global(name):
@@ -123,62 +123,44 @@ if False:
     # and other problems related to required modules missing from pyOpenGL
     # noinspection PyUnresolvedReferences
     import ctypes
-
     # noinspection PyUnresolvedReferences
     import logging
 
     # noinspection PyUnresolvedReferences
-    import OpenGL.platform.win32
-
-    # noinspection PyUnresolvedReferences
     import OpenGL.arrays._buffers
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays._numeric
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays._strings
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.arraydatatype
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.arrayhelpers
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.buffers
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.ctypesarrays
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.ctypesparameters
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.ctypespointers
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.formathandler
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.lists
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.nones
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.numbers
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.numeric
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.numericnames
-
     # noinspection PyUnresolvedReferences
     # import OpenGL.arrays.numpymodule
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.strings
-
     # noinspection PyUnresolvedReferences
     import OpenGL.arrays.vbo
+    # noinspection PyUnresolvedReferences
+    import OpenGL.platform.win32

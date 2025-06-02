@@ -1,8 +1,8 @@
 import os
 import sqlite3
 import threading
-import fsbc.settings
 
+import fsbc.settings
 
 global_database_lock = threading.Lock()
 

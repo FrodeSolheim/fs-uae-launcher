@@ -1,9 +1,8 @@
 import ctypes
 
-from .opengl import gl, fs_emu_texturing
+from .opengl import fs_emu_texturing, gl
 from .render import Render
-from .window import set_program
-from .window import texture_program, premultiplied_texture_program
+from .window import premultiplied_texture_program, set_program, texture_program
 
 
 class FrameBufferObject(object):  # Renderable, RendererBase):

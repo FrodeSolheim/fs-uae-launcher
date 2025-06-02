@@ -1,6 +1,5 @@
 import filecmp
 import os
-
 import shutil
 
 from fsgs.drivers.messdriver import MessDriver

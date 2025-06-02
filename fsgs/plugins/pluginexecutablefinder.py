@@ -1,9 +1,9 @@
-from os import path
 import platform
+from os import path
 from typing import Union
 
-from fsbc.system import System
 import fsboot
+from fsbc.system import System
 
 X86_MACHINES = ["x86", "i386", "i486", "i586", "i686"]
 X86_64_MACHINES = ["x86_64", "x86-64", "amd64"]

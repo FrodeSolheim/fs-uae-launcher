@@ -1,5 +1,5 @@
-import os
 import io
+import os
 import xml.etree.cElementTree as ElementTree
 
 

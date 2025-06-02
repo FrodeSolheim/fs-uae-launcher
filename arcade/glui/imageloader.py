@@ -6,6 +6,7 @@ from uuid import uuid4
 from zipfile import ZipFile
 
 import requests
+
 from arcade.glui.texturemanager import TextureManager
 from arcade.resources import logger
 from fsgs.FSGSDirectories import FSGSDirectories

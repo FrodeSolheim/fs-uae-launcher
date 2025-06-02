@@ -2,7 +2,7 @@ import re
 import subprocess
 import traceback
 
-from fsbc.system import windows, macosx
+from fsbc.system import macosx, windows
 
 if windows:
     # noinspection PyUnresolvedReferences

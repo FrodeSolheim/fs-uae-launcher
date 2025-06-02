@@ -1,8 +1,8 @@
 from functools import lru_cache
 
-from fsgs.util import sdl2
 from fsbc.system import macosx
-from fsui.qt import Qt, QEvent
+from fsgs.util import sdl2
+from fsui.qt import QEvent, Qt
 
 
 class KeySym:

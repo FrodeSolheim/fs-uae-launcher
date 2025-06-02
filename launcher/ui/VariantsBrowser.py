@@ -1,11 +1,13 @@
 import traceback
-from launcher.ui.ConfigGroup import ConfigGroup
+
+import fsui
 from fsgs.context import fsgs
 from fsgs.Database import Database
-import fsui
+from launcher.ui.ConfigGroup import ConfigGroup
+
 from ..launcher_config import LauncherConfig
-from ..launcher_signal import LauncherSignal
 from ..launcher_settings import LauncherSettings
+from ..launcher_signal import LauncherSignal
 
 
 class LastVariants(object):

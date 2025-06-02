@@ -10,7 +10,7 @@ from arcade.ui.event import Event
 from arcade.ui.gl_widget import GLWidget
 from fsbc.settings import Settings
 from fsbc.system import macosx
-from fsui.qt import init_qt, Qt, QWidget, QKeyEvent
+from fsui.qt import QKeyEvent, Qt, QWidget, init_qt
 
 CURSOR_SHOW_DURATION = 5.0
 

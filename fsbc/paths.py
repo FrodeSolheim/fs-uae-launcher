@@ -4,7 +4,7 @@ import sys
 import unicodedata
 
 import fsboot
-from fsbc.system import windows, macosx
+from fsbc.system import macosx, windows
 
 
 class Paths(object):

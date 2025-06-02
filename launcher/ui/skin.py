@@ -1,10 +1,11 @@
-import fsui
 import fsbc.system
-from fsbc.util import memoize
-from .Constants import Constants
-from ..option import Option
-from ..launcher_settings import LauncherSettings
 import fsboot
+import fsui
+from fsbc.util import memoize
+
+from ..launcher_settings import LauncherSettings
+from ..option import Option
+from .Constants import Constants
 
 try:
     import workspace

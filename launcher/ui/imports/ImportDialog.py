@@ -1,9 +1,10 @@
 import fsui
 from launcher.ui.skin import LauncherTheme
 from launcher.ui.widgets import CloseButton
+
 from ...i18n import gettext
-from .ImportTask import ImportTask
 from ...launcher_signal import LauncherSignal
+from .ImportTask import ImportTask
 
 TIMER_INTERVAL = 100
 

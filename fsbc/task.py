@@ -1,7 +1,7 @@
 import threading
 import traceback
-from .signal import Signal
 
+from .signal import Signal
 
 local_tasks = threading.local()
 

@@ -1,10 +1,11 @@
 import os
-from binascii import unhexlify
 import sqlite3
+from binascii import unhexlify
 
 # FIXME: remove dependency on launcher, have the Launcher tell this class
 # the path instead
 from fsgs.FSGSDirectories import FSGSDirectories
+
 from .BaseDatabase import BaseDatabase
 
 VERSION = 1

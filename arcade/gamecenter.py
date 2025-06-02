@@ -1,6 +1,6 @@
 import os
 
-from fsbc.system import windows, macosx
+from fsbc.system import macosx, windows
 
 
 class GameCenter(object):

@@ -9,12 +9,10 @@ from launcher.settings.advanced_settings_page import AdvancedSettingsPage
 from launcher.settings.advanced_video_settings import AdvancedVideoSettingsPage
 from launcher.settings.arcade_settings_page import ArcadeSettingsPage
 from launcher.settings.audio_settings_page import AudioSettingsPage
-from launcher.settings.directories_settings_page import DirectoriesSettingsPage
 from launcher.settings.fs_uae_settings_page import FSUAESettingsPage
 from launcher.settings.gamedatabasesettingspage import GameDatabaseSettingsPage
-from launcher.settings.gameplatformssettingspage import (
-    GamePlatformsSettingsPage,
-)
+from launcher.settings.gameplatformssettingspage import \
+    GamePlatformsSettingsPage
 from launcher.settings.joystick_settings_page import JoystickSettingsPage
 from launcher.settings.keyboard_settings_page import KeyboardSettingsPage
 from launcher.settings.language_settings_page import LanguageSettingsPage

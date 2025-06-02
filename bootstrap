@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+
 import config as project
 
 f = open("setup.py", "w", newline="\n")

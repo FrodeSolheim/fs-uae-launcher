@@ -7,10 +7,7 @@ from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
-from launcher.settings.fullscreenmodebutton import FullscreenModeButton
-from launcher.settings.monitorbutton import MonitorButton
 from launcher.settings.override_warning import OverrideWarning
-from launcher.settings.videosynccheckbox import VideoSyncCheckBox
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 
 

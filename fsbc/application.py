@@ -7,7 +7,7 @@ import time
 import fsboot
 from fsbc.paths import Paths
 from fsbc.settings import Settings
-from fsbc.system import windows, macosx
+from fsbc.system import macosx, windows
 from fsbc.util import memoize
 
 logger = logging.getLogger("APP")

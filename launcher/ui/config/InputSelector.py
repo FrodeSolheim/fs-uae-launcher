@@ -1,19 +1,17 @@
 import sys
 
 import fsui
-from fsgs.platform import Platform
-from launcher.option import Option
 from fsgs.context import fsgs
+from fsgs.platform import Platform
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_signal import LauncherSignal
+from launcher.option import Option
+from launcher.ui.behaviors.platformbehavior import (AMIGA_PLATFORMS,
+                                                    AmigaShowBehavior)
 from launcher.ui.HelpButton import HelpButton
 from launcher.ui.IconButton import IconButton
-from launcher.ui.behaviors.platformbehavior import (
-    AMIGA_PLATFORMS,
-    AmigaShowBehavior,
-)
 
 MIN_TYPE_CHOICE_WIDTH = 200
 

@@ -1,9 +1,10 @@
-from fsgs.plugins.pluginexecutablefinder import PluginExecutableFinder
 import os
 import subprocess
 
 from fsbc import settings
 from fsgs.option import Option
+from fsgs.plugins.pluginexecutablefinder import PluginExecutableFinder
+
 from .fsuae import FSUAE
 
 

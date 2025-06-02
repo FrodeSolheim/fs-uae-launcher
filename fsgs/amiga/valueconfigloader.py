@@ -1,13 +1,14 @@
 # FIXME: send fsgs as parameter to ValueConfigLoader instead
-from fsgs.context import fsgs
-import os
 import json
+import os
+
 from fsbc.paths import Paths
+from fsgs.amiga import whdload
 from fsgs.amiga.amiga import Amiga
+from fsgs.context import fsgs
 from fsgs.filedatabase import FileDatabase
 from fsgs.network import openretro_url_prefix
 from fsgs.option import Option
-from fsgs.amiga import whdload
 
 
 class ValueConfigLoader(object):

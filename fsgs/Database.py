@@ -1,10 +1,11 @@
 import os
 import re
+import threading
+
 from fsbc.application import app
 from fsbc.settings import Settings
 from fsgs.BaseDatabase import BaseDatabase
 from fsgs.FSGSDirectories import FSGSDirectories
-import threading
 
 thread_local = threading.local()
 VERSION = 40

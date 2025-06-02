@@ -4,38 +4,34 @@ import sys
 import time
 from collections import deque
 
-from arcade.gamecentersettings import ArcadeSettings
-from fsbc import settings
-from fsgs.FSGSDirectories import FSGSDirectories
-
 from arcade.gamecenter import GameCenter
-from arcade.resources import resources
+from arcade.gamecentersettings import ArcadeSettings
+from arcade.glui.animation import AnimateValueBezier, AnimationSystem
+from arcade.glui.bezier import Bezier
+from arcade.glui.constants import TOP_HEIGHT
+from arcade.glui.displaylists import DisplayLists
+from arcade.glui.font import BitmapFont, Font
+from arcade.glui.imageloader import ImageLoader
+from arcade.glui.input import InputHandler
+from arcade.glui.itemmenu import ItemMenu
+from arcade.glui.items import (AllMenuItem, ListItem, MenuItem, NoItem,
+                               PlatformItem)
+from arcade.glui.notificationrender import NotificationRender
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
+from arcade.glui.render import Render
+from arcade.glui.sdl import SDL_IsMinimized
+from arcade.glui.settings import Settings
+from arcade.glui.state import State
+from arcade.glui.texture import Texture
+from arcade.glui.texturemanager import TextureManager
+# from arcade.main import Main
+from arcade.resources import logger, resources
+from fsbc import settings
 from fsbc.system import windows
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.option import Option
 from fsgs.platform import PlatformHandler
 from fsgs.util.gamenameutil import GameNameUtil
-
-# from arcade.main import Main
-from arcade.resources import logger
-from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
-from arcade.glui.settings import Settings
-from arcade.glui.sdl import SDL_IsMinimized
-from arcade.glui.imageloader import ImageLoader
-from arcade.glui.itemmenu import ItemMenu
-from arcade.glui.displaylists import DisplayLists
-from arcade.glui.bezier import Bezier
-from arcade.glui.input import InputHandler
-from arcade.glui.animation import AnimationSystem
-from arcade.glui.animation import AnimateValueBezier
-from arcade.glui.state import State
-from arcade.glui.render import Render
-from arcade.glui.notificationrender import NotificationRender
-from arcade.glui.font import Font, BitmapFont
-from arcade.glui.items import MenuItem, AllMenuItem, NoItem, PlatformItem
-from arcade.glui.items import ListItem
-from arcade.glui.texture import Texture
-from arcade.glui.texturemanager import TextureManager
-from arcade.glui.constants import TOP_HEIGHT
 
 # FIXME: rename to manager or director or somethign
 main_window = None

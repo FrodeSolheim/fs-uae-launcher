@@ -2,13 +2,15 @@ import os
 import shutil
 import threading
 import traceback
-from fsbc.path import is_same_file
+
 import fsui
-from ...i18n import gettext
+from fsbc.path import is_same_file
 from fsgs.amiga.rommanager import ROMManager
-from fsgs.FSGSDirectories import FSGSDirectories
-from ...launcher_signal import LauncherSignal
 from fsgs.filedatabase import FileDatabase
+from fsgs.FSGSDirectories import FSGSDirectories
+
+from ...i18n import gettext
+from ...launcher_signal import LauncherSignal
 
 
 class ImportTask(threading.Thread):

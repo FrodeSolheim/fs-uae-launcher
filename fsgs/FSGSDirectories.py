@@ -8,9 +8,8 @@ from typing import Dict, List, Optional
 import fsboot
 from fsbc.paths import Paths
 from fsbc.settings import Settings
-from fsbc.system import windows, macosx
-from fsbc.user import get_common_documents_dir
-from fsbc.user import get_documents_dir
+from fsbc.system import macosx, windows
+from fsbc.user import get_common_documents_dir, get_documents_dir
 from fsgs import openretro
 
 

@@ -12,13 +12,13 @@ from fsbc.resources import Resources
 from fsbc.settings import Settings
 from fsbc.system import System
 from fsbc.task import current_task
-from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.fsuae import FSUAE
-from launcher.option import Option
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.plugins.pluginexecutablefinder import PluginExecutableFinder
-from fsgs.plugins.pluginmanager import PluginManager, Executable
+from fsgs.plugins.pluginmanager import Executable, PluginManager
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.util.gamenameutil import GameNameUtil
+from launcher.option import Option
 
 
 class GameDriverLogger:

@@ -1,6 +1,4 @@
 import fsui
-from fsbc.util import unused
-from launcher.ui.skin import Skin
 
 
 class WizardHeader(fsui.Panel):

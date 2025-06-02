@@ -1,8 +1,9 @@
 import threading
 import traceback
 
-from arcade.glui.opengl import gl
 from PyQt6.QtOpenGLWidgets import QOpenGLWidget
+
+from arcade.glui.opengl import gl
 
 
 # noinspection PyPep8Naming

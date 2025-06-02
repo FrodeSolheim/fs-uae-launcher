@@ -1,4 +1,4 @@
-from fsbc.system import windows, linux, macosx
+from fsbc.system import linux, macosx, windows
 
 
 class Device(object):

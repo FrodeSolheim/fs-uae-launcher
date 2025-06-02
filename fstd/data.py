@@ -1,10 +1,8 @@
 # import os
-import zipfile
 import tempfile
-
+import zipfile
 # noinspection PyUnresolvedReferences
 from typing import BinaryIO, Dict
-
 
 _archive = None  # type: zipfile.ZipFile
 _archive_initialized = False

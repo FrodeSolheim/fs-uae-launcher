@@ -1,12 +1,12 @@
 from arcade.glui.font import BitmapFont
 from arcade.glui.inputmenu import InputMenu
-from arcade.glui.topmenu import GameCenterItem
 from arcade.glui.menu import Menu
 from arcade.glui.navigatable import Navigatable
-from arcade.glui.opengl import gl, fs_emu_blending, fs_emu_texturing
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
+from arcade.glui.topmenu import GameCenterItem
 from arcade.option import Option
 from fsgs.context import fsgs
 from fsgs.platform import PlatformHandler

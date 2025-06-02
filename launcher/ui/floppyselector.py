@@ -9,9 +9,9 @@ from launcher.cd_manager import CDManager
 from launcher.floppy_manager import FloppyManager
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
+from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
-from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS
 
 
 class FloppySelector(fsui.Panel):

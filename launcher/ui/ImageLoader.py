@@ -3,11 +3,11 @@ import traceback
 import weakref
 
 import fsui
-from .Constants import Constants
-from ..launcher_signal import LauncherSignal
-
 # FIXME: Remove dependency on arcade package (move stuff into fsgs instead)
 from arcade.glui.imageloader import get_file_for_sha1_cached
+
+from ..launcher_signal import LauncherSignal
+from .Constants import Constants
 
 
 class ImageLoader(object):

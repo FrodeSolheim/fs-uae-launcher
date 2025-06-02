@@ -1,6 +1,6 @@
-import re
 import functools
-from typing import List, Union, Any
+import re
+from typing import Any, List, Union
 
 
 def unused(_: Any) -> None:

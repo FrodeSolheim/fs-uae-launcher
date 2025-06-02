@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
+import hashlib
 import os
 import sys
-import hashlib
 from io import BytesIO
-from typing import List, Dict, Undefined, Union, IO
-
+from typing import IO, Dict, List, Undefined, Union
 
 B_SIZE = 512
 B_COUNT = 880 * 2

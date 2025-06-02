@@ -1,4 +1,4 @@
-from fsui import ImageButton, Image
+from fsui import Image, ImageButton
 
 
 class IconButton(ImageButton):

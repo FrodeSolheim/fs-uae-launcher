@@ -5,12 +5,12 @@ Some files are removed because they differ between Cloanto WB floppies and
 original WB floppies.
 """
 
+import hashlib
 import os
 import sys
-import hashlib
 import traceback
-from fsgs.amiga.adf import ADFFile
 
+from fsgs.amiga.adf import ADFFile
 
 wb_133_startup_sequence = """\
 c:SetPatch >NIL: ;patch system functions

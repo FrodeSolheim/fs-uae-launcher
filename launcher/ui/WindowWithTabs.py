@@ -1,8 +1,9 @@
 import fsui
-from .TabPanel import TabPanel
-from .TabButton import TabButton
+
 from .Constants import Constants
 from .skin import Skin
+from .TabButton import TabButton
+from .TabPanel import TabPanel
 
 
 class WindowWithTabs(fsui.Window):

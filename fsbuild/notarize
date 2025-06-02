@@ -5,14 +5,8 @@ import os
 import sys
 
 sys.path.insert(0, ".")
-from fsbuild import (
-    getBundlePath,
-    getPackageInformation,
-    isMacOS,
-    notarizeApp,
-    run,
-    shell,
-)
+from fsbuild import (getBundlePath, getPackageInformation, isMacOS,
+                     notarizeApp, run, shell)
 
 
 def notarizeForMacOS():

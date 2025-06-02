@@ -5,9 +5,9 @@ from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
-from launcher.ui.HelpButton import HelpButton
 from launcher.ui.behaviors import OptionsBehavior
 from launcher.ui.behaviors.platformbehavior import PlatformEnableBehavior
+from launcher.ui.HelpButton import HelpButton
 
 
 class OptionWidgetFactory(object):

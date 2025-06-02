@@ -3,7 +3,7 @@ import os
 from binascii import unhexlify
 
 from fsbc import settings
-from fsgs.drivers.gamedriver import GameDriver, Emulator
+from fsgs.drivers.gamedriver import Emulator, GameDriver
 from fsgs.drivers.mednafendriver import MednafenDriver
 from fsgs.drivers.mess.messnesdriver import MessNesDriver
 from fsgs.drivers.retroarchdriver import RetroArchDriver

@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import List, Dict, DefaultDict, BinaryIO
+from typing import BinaryIO, DefaultDict, Dict, List
 
 from fsbc import settings
 from fsgs.archive import Archive

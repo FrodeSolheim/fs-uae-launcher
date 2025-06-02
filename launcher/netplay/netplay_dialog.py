@@ -1,5 +1,6 @@
 import fsui
 from launcher.i18n import gettext
+
 from .netplay_panel import NetplayPanel
 
 

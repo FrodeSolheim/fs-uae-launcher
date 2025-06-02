@@ -1,7 +1,8 @@
-import time
 import threading
+import time
 import traceback
 from uuid import uuid4
+
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.platform import PlatformHandler
 

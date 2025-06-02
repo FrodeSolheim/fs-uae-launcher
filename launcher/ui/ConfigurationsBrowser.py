@@ -1,8 +1,9 @@
+import fsui
 from fsgs import openretro
 from fsgs.Database import Database
 from fsgs.platform import PlatformHandler
 from fsgs.util.gamenameutil import GameNameUtil
-import fsui
+
 from ..launcher_config import LauncherConfig
 from ..launcher_settings import LauncherSettings
 

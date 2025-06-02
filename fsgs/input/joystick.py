@@ -1,7 +1,8 @@
 import os
-import time
 import threading
-from fsbc.system import windows, macosx
+import time
+
+from fsbc.system import macosx, windows
 
 
 class Joystick(object):

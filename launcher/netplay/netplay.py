@@ -1,18 +1,19 @@
 import random
 import traceback
-from urllib.parse import parse_qs
 import uuid
+from urllib.parse import parse_qs
 
 import requests
 
 from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
+
+from ..launcher_config import LauncherConfig
+from ..server.Server import Server
 from .connection_tester import ConnectionTester
 from .irc import IRC
 from .irc_broadcaster import IRCBroadcaster
 from .irc_color import IRCColor
-from ..launcher_config import LauncherConfig
-from ..server.Server import Server
 
 
 class Netplay:

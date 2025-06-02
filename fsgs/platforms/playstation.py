@@ -1,7 +1,7 @@
 from fsgs import Option
 from fsgs.drivers.mednafendriver import MednafenDriver
 from fsgs.knownfiles import KnownFile
-from fsgs.platform import PlatformHandler, Platform
+from fsgs.platform import Platform, PlatformHandler
 from fsgs.platforms.loader import SimpleLoader
 
 PSX_PLATFORM_ID = "PSX"

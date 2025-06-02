@@ -10,17 +10,17 @@ import fsui
 from fsbc.application import app
 from fsbc.settings import Settings
 from fsbc.task import Task
-from fsbc.util import unused, is_uuid
-from fsgs.archive import Archive
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.filedatabase import FileDatabase
+from fsbc.util import is_uuid, unused
 from fsgs.amiga import whdload
 from fsgs.amiga.amiga import Amiga
 from fsgs.application import ApplicationMixin
+from fsgs.archive import Archive
 from fsgs.context import fsgs
 from fsgs.download import Downloader
+from fsgs.filedatabase import FileDatabase
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.input.enumeratehelper import EnumerateHelper
-from fsgs.platform import PlatformHandler, PLATFORM_IDS
+from fsgs.platform import PLATFORM_IDS, PlatformHandler
 from fsgs.util.archiveutil import ArchiveUtil
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
@@ -28,11 +28,9 @@ from launcher.launcher_settings import LauncherSettings
 from launcher.option import Option
 from launcher.startup_scan import StartupScan
 from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS
-from launcher.ui.config.HardDriveGroup import HardDriveGroup
 from launcher.ui.download import DownloadGameWindow, DownloadTermsDialog
 from launcher.ui.launch import LaunchDialog
 from launcher.ui.launcherwindow import LauncherWindow
-from launcher.version import VERSION
 
 
 class StringDict(defaultdict):

@@ -2,17 +2,18 @@ import time
 
 import requests
 
-from launcher.filescanner import FileScanner
-from fsgs.download import Downloader
-from fsgs.FSGSDirectories import FSGSDirectories
 import fsui
-from fsui.extra.iconheader import IconHeader
 from fsbc.application import app
 from fsbc.signal import Signal
 from fsbc.task import Task
 from fsgs.Database import Database
+from fsgs.download import Downloader
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.ogd.context import SynchronizerContext
+from fsui.extra.iconheader import IconHeader
+from launcher.filescanner import FileScanner
 from launcher.gamescanner import GameScanner
+
 from ..i18n import gettext
 
 

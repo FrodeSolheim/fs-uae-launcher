@@ -1,5 +1,6 @@
-import fsbc.logging
 import nose.tools
+
+import fsbc.logging
 
 
 def test_mypy():

@@ -39,16 +39,15 @@ FIXME:
 
 import json
 import os
-
 import shutil
 
-from fsbc.system import windows, macosx
+from fsbc.system import macosx, windows
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.input.mapper import InputMapper
-from fsgs.util import sdl2
 from fsgs.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
+from fsgs.util import sdl2
 
 C64_MODEL_C64 = "c64"
 C64_MODEL_C64C = "c64c"
