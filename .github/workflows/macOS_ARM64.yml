@@ -124,7 +124,7 @@ jobs:
       - name: Build DMG
         if: hashFiles('fsbuild/build-dmg') != '' && env.SIGNING_ENABLED != null
         run: |
-          fsbuild/build-dmg
+          uv run fsbuild/build-dmg
 
       - name: Unlock keychain again
         if: env.SIGNING_ENABLED != null

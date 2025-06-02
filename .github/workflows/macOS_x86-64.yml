@@ -54,40 +54,19 @@ jobs:
         with:
           version: "0.7.9"
 
-      - name: Set up Python
-        run: |
-          uv python install
+      - run: uv python install
 
-      # - name: Set up Python 3.12
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: 3.12
+      - run: uv sync
 
-      - name: Run uv sync
-        run: |
-          uv sync
+      - run: fsbuild/version
 
-      - name: Update version
-        run: |
-          fsbuild/version
+      - run: fsbuild/bootstrap
 
-      - name: Bootstrap
-        if: hashFiles('fsbuild/bootstrap') != ''
-        run: |
-          fsbuild/bootstrap
+      - run: fsbuild/configure
 
-      - name: Configure
-        if: hashFiles('fsbuild/configure') != ''
-        run: |
-          fsbuild/configure
+      - run: uv run fsbuild/build
 
-      - name: Build
-        run: |
-          uv run fsbuild/build
-
-      - name: Bundle
-        run: |
-          fsbuild/bundle
+      - run: fsbuild/bundle
 
       - name: Prepare signing certificate
         if: env.SIGNING_ENABLED != null
@@ -105,8 +84,7 @@ jobs:
 
       - name: Sign
         if: env.SIGNING_ENABLED != null
-        run: |
-          fsbuild/sign
+        run: fsbuild/sign
 
       - name: Notarize
         if: env.SIGNING_ENABLED != null
@@ -118,28 +96,21 @@ jobs:
           fsbuild/notarize
 
       - name: Archive
-        run: |
-          fsbuild/archive
+        run: fsbuild/archive
 
       - name: Build DMG
         if: hashFiles('fsbuild/build-dmg') != '' && env.SIGNING_ENABLED != null
-        run: |
-          fsbuild/build-dmg
+        run: uv run fsbuild/build-dmg
 
       - name: Unlock keychain again
         if: env.SIGNING_ENABLED != null
         env:
           KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
-          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-        run: |
-          echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
-          security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
+        run: security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
 
       - name: Sign DMG
         if: hashFiles('fsbuild/sign-dmg') != '' && env.SIGNING_ENABLED != null
-        run: |
-          fsbuild/sign-dmg
+        run: fsbuild/sign-dmg
 
       - name: Notarize DMG
         if: hashFiles('fsbuild/notarize-dmg') != '' && env.SIGNING_ENABLED != null
@@ -147,8 +118,7 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: |
-          fsbuild/notarize-dmg
+        run: fsbuild/notarize-dmg
 
       - uses: actions/upload-artifact@v4
         with:
@@ -170,5 +140,4 @@ jobs:
           DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
           DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
         run: |
-          uv add dropbox==12.0.2
           uv run python fsbuild/upload
