@@ -5,7 +5,7 @@ import os
 import sys
 
 sys.path.insert(0, ".")
-from fsbuild import getBundlePath, getPackageInformation, isMacOS, runCodeSign
+from fsbuild import getBundlePath, getPackageInformation, isMacOS, runCodeSign, getAppleCodesignIdentity
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
             "--options",
             "runtime",
             "--sign",
-            "Developer ID Application",
+            getAppleCodesignIdentity(),
             "--digest-algorithm=sha1,sha256",
         ]
         if os.path.exists("fsbuild/Entitlements.plist"):

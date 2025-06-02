@@ -56,6 +56,31 @@ wheels = [
 ]
 
 [[package]]
+name = "dmgbuild"
+version = "1.6.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "ds-store" },
+    { name = "mac-alias" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/16/93/b9702c68d5dedfd6b91c76268a89091ff681b8e3b9a026e7919b6ab730a4/dmgbuild-1.6.5.tar.gz", hash = "sha256:c5cbeec574bad84a324348aa7c36d4aada04568c99fb104dec18d22ba3259f45", size = 36848, upload-time = "2025-03-21T01:04:10.093Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/48/4a/b16f1081f69592c6dba92baa4d3ca7a5685091a0f840f4b5e01be41aaf84/dmgbuild-1.6.5-py3-none-any.whl", hash = "sha256:e19ab8c5e8238e6455d9ccb9175817be7fd62b9cdd1eef20f63dd88e0ec469ab", size = 34906, upload-time = "2025-03-21T01:04:08.044Z" },
+]
+
+[[package]]
+name = "ds-store"
+version = "1.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mac-alias" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7c/36/902259bf7ddb142dd91cf7a9794aa15e1a8ab985974f90375e5d3463b441/ds_store-1.3.1.tar.gz", hash = "sha256:c27d413caf13c19acb85d75da4752673f1f38267f9eb6ba81b3b5aa99c2d207c", size = 27052, upload-time = "2022-11-24T06:13:34.376Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/47/bf/b1c10362a0d670ee8ae086d92c3ab795fca2a927e4ff25e7cd15224d3863/ds_store-1.3.1-py3-none-any.whl", hash = "sha256:fbacbb0bd5193ab3e66e5a47fff63619f15e374ffbec8ae29744251a6c8f05b5", size = 16268, upload-time = "2022-11-24T06:13:30.797Z" },
+]
+
+[[package]]
 name = "fs-uae-launcher-3"
 version = "0.0.0"
 source = { virtual = "." }
@@ -76,6 +101,11 @@ dependencies = [
     { name = "typing-extensions" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "dmgbuild" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "lhafile", specifier = ">=0.3.1" },
@@ -93,6 +123,9 @@ requires-dist = [
     { name = "setuptools", specifier = ">=80.9.0" },
     { name = "typing-extensions", specifier = ">=4.13.2" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "dmgbuild", specifier = ">=1.6.5" }]
 
 [[package]]
 name = "idna"
@@ -125,6 +158,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/77/6c/55cdfa56ce910a5f274991f73761ce8b7a42976d2571d08eb5e389184ce2/lhafile-0.3.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:d0bad1bd7f394f6799833fcb557d88f2b5ee364704a05ab47d5ded489fe99eb1", size = 58797, upload-time = "2025-02-24T23:27:29.98Z" },
     { url = "https://files.pythonhosted.org/packages/38/cc/4cc138db0d499fb22b4b3ee71220288b09451310679b6dd48fae37c3ebfb/lhafile-0.3.1-cp313-cp313-win32.whl", hash = "sha256:0ca3bc909d335443af714bb35e76a69beab4039915692be0d1612da4768b4176", size = 16619, upload-time = "2025-02-24T23:35:03.179Z" },
     { url = "https://files.pythonhosted.org/packages/9f/4b/1a1f14f85c7e4270513aa5a0041cf65e45102710392ee2b38714bad58566/lhafile-0.3.1-cp313-cp313-win_amd64.whl", hash = "sha256:e2de020b1d1537d5f347dd29efa96fa78f4104b8a2a49bfc58e523788aef67e0", size = 18915, upload-time = "2025-02-24T23:35:04.072Z" },
+]
+
+[[package]]
+name = "mac-alias"
+version = "2.2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ea/a3/83b50f620d318a98363dc7e701fb94856eaaecc472e23a89ac625697b3ea/mac_alias-2.2.2.tar.gz", hash = "sha256:c99c728eb512e955c11f1a6203a0ffa8883b26549e8afe68804031aa5da856b7", size = 34073, upload-time = "2022-12-06T00:37:47.779Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/39/a1/4136777ed6a56df83e7c748ad28892f0672cbbcdc3b3d15a57df6ba72443/mac_alias-2.2.2-py3-none-any.whl", hash = "sha256:504ab8ac546f35bbd75ad014d6ad977c426660aa721f2cd3acf3dc2f664141bd", size = 21220, upload-time = "2022-12-06T00:37:46.025Z" },
 ]
 
 [[package]]

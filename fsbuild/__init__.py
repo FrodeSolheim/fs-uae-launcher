@@ -523,7 +523,7 @@ def buildDmg():
         os.makedirs(path.dirname(dmgPath))
     if os.path.exists(dmgPath):
         os.unlink(dmgPath)
-    tool = "appdmg"
+    tool = "dmgbuild"
     if tool == "appdmg":
         bundlePath = getBundlePath(prefix="")
         settingsPath = "fsbuild/_build/appdmg.json"
@@ -557,19 +557,22 @@ def buildDmg():
         )
     elif tool == "dmgbuild":  # type: ignore
         bundlePath = getBundlePath()
-        settingsPath = "fsbuild/_build/dmgbuild-settings.py"
-        with open(settingsPath, "w", encoding="UTF-8") as f:
-            f.write("format = 'UDZO'\n")
-            f.write("files = [\n")
-            f.write(f"    '{bundlePath}',\n")
-            f.write("]\n")
-            f.write("symlinks = { 'Applications': '/Applications' }\n")
-            f.write("badge_icon = 'icon/fs-uae-launcher.icns'\n")
+        settingsPath = "build/dmgbuild/settings.py"
+        # settingsPath = "fsbuild/_build/dmgbuild-settings.py"
+        # with open(settingsPath, "w", encoding="UTF-8") as f:
+        #     f.write("format = 'UDZO'\n")
+        #     f.write("files = [\n")
+        #     f.write(f"    '{bundlePath}',\n")
+        #     f.write("]\n")
+        #     f.write("symlinks = { 'Applications': '/Applications' }\n")
+        #     f.write("badge_icon = 'icon/fs-uae-launcher.icns'\n")
         subprocess.check_call(
             [
                 "dmgbuild",
                 "-s",
                 settingsPath,
+                "-D",
+                f'app="{bundlePath}"',
                 "FS-UAE-Launcher",
                 dmgPath,
             ]

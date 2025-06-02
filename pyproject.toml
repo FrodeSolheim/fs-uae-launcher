@@ -23,3 +23,8 @@ dependencies = [
 
 [tool.black]
 line-length = 79
+
+[dependency-groups]
+dev = [
+    "dmgbuild>=1.6.5",
+]
