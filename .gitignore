@@ -1,6 +1,6 @@
 *~
 /base-dir
-/build/
+/build/fs-uae-launcher/
 /debian/.debhelper/
 /debian/files
 /debian/fs-uae-launcher

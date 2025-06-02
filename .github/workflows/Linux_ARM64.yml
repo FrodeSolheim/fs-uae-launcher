@@ -16,7 +16,7 @@ on:
 
 jobs:
   Linux_x86-64:
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-24.04-arm
 
     env:
       UPLOAD_ENABLED: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
