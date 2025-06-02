@@ -79,7 +79,7 @@ class WidgetWithEventHandlers(QWidget):
         #     return
 
         self.owner()._painter = QPainter(self)
-        self.owner()._painter.setRenderHint(QPainter.Antialiasing)
+        self.owner()._painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         # self._painter.setRenderHint(QPainter.Qt4CompatiblePainting)
         try:
             self.owner().on_paint()
@@ -89,7 +89,7 @@ class WidgetWithEventHandlers(QWidget):
             self.owner()._painter = None
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             # A temp code is made in case _ignore_next_left_down_event is
             # altered inside on_left_down.
             ignore = self.owner()._ignore_next_left_down_event
@@ -103,14 +103,14 @@ class WidgetWithEventHandlers(QWidget):
         self.owner().on_key_press(event)
 
     def mouseReleaseEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.owner().on_left_up()
 
     def mouseMoveEvent(self, event):
         self.owner().on_mouse_motion()
 
     def mouseDoubleClickEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.owner().on_left_dclick()
 
     def showEvent(self, event):

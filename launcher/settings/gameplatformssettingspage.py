@@ -1,11 +1,10 @@
-from fsgs import openretro
-from fsgs.platform import Platform
-from launcher.settings.option_ui import OptionUI
-
 import fsui
 from fsbc import settings
+from fsgs import openretro
+from fsgs.platform import Platform
 from launcher.i18n import gettext
 from launcher.option import Option
+from launcher.settings.option_ui import OptionUI
 from launcher.settings.platformsettingsdialog import PlatformSettingsDialog
 from launcher.settings.settings_page import SettingsPage
 from launcher.ui.IconButton import IconButton

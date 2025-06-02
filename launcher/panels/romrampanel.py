@@ -6,10 +6,10 @@ from fsgs.FSGSDirectories import FSGSDirectories
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.option import Option
-from launcher.ui.IconButton import IconButton
-from launcher.ui.LauncherFilePicker import LauncherFilePicker
 from launcher.ui.behaviors.platformbehavior import AmigaEnableBehavior
 from launcher.ui.config.configpanel import ConfigPanel
+from launcher.ui.IconButton import IconButton
+from launcher.ui.LauncherFilePicker import LauncherFilePicker
 from launcher.ui.options import ConfigWidgetFactory
 
 

@@ -1,16 +1,13 @@
+import launcher.version
 from arcade.Application import Application
 from arcade.glui.imageloader import ImageLoader
-from arcade.ui.arcade_window import (
-    ArcadeWindow,
-    check_argument,
-    fullscreen,
-    maximized,
-)
+from arcade.ui.arcade_window import (ArcadeWindow, check_argument, fullscreen,
+                                     maximized)
+from fsbc.init import initialize_application
 from fsbc.settings import Settings
 from fsbc.system import macosx
-from .gnome3 import running_in_gnome_3, handle_gnome_extensions
-import launcher.version
-from fsbc.init import initialize_application
+
+from .gnome3 import handle_gnome_extensions, running_in_gnome_3
 
 K_UI_MODE_ALL_HIDDEN = 3
 K_UI_OPTION_AUTO_SHOW_MENU_BAR = 1 << 0
@@ -19,7 +16,6 @@ K_UI_OPTION_AUTO_SHOW_MENU_BAR = 1 << 0
 def os_x_set_system_ui_mode(mode, option):
     # noinspection PyUnresolvedReferences
     import objc
-
     # noinspection PyUnresolvedReferences
     from Foundation import NSBundle
 

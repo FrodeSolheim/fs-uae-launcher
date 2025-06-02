@@ -15,22 +15,22 @@ on:
       - test
 
 jobs:
-  Linux_ARM64:
+  Linux_x86-64:
     runs-on: ubuntu-22.04-arm
 
     env:
-      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Log environment
-        run: |
-          env
+      # - name: Log environment
+      #   run: |
+      #     env
 
-      - name: Install additional tools
+      - name: Install packages
         run: >-
           sudo apt install
           dos2unix
@@ -41,58 +41,67 @@ jobs:
       # libxkbcommon-x11.so.0 which is not bundled unless explicitly installed
       # first So we install some dependencies here.
 
-      - name: Install library dependencies
-        run: >-
-          sudo apt install
-          libxcb-glx0
-          libxcb-icccm4
-          libxcb-image0
-          libxcb-keysyms1
-          libxcb-randr0
-          libxcb-render0
-          libxcb-render-util0
-          libxcb-shape0
-          libxcb-shm0
-          libxcb-sync1
-          libxcb-util1
-          libxcb-xfixes0
-          libxcb-xinerama0
-          libxcb-xkb1
-          libxkbcommon-x11-0
+      # - name: Install library dependencies
+      #   run: >-
+      #     sudo apt install
+      #     libxcb-glx0
+      #     libxcb-icccm4
+      #     libxcb-image0
+      #     libxcb-keysyms1
+      #     libxcb-randr0
+      #     libxcb-render0
+      #     libxcb-render-util0
+      #     libxcb-shape0
+      #     libxcb-shm0
+      #     libxcb-sync1
+      #     libxcb-util1
+      #     libxcb-xfixes0
+      #     libxcb-xinerama0
+      #     libxcb-xkb1
+      #     libxkbcommon-x11-0
 
-      - name: Debug list libraries
-        run: |
-          ls /usr/lib/x86_64-linux-gnu
+      # - name: Debug list libraries
+      #   run: |
+      #     ls /usr/lib/x86_64-linux-gnu
 
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.9
+          version: "0.7.9"
 
-      - name: Install pip and pipenv
+      - name: Set up Python
         run: |
-          python -m pip install pip==21.3.1 pipenv==2021.5.29
+          uv python install
 
-      - name: Run pipenv sync --dev
-        run: |
-          pipenv sync --dev
+      # - name: Set up Python 3.12
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: 3.12
 
-      - name: Download pyinstaller source
-        run: |
-          wget https://github.com/pyinstaller/pyinstaller/releases/download/v4.2/PyInstaller-4.2.tar.gz
-          echo "f5c0eeb2aa663cce9a5404292c0195011fa500a6501c873a466b2e8cad3c950c *PyInstaller-4.2.tar.gz" > SHA256SUMS
-          shasum -c SHA256SUMS
-          tar xf PyInstaller-4.2.tar.gz
+      # - name: Install pip and pipenv
+      #   run: |
+      #     python -m pip install pip==21.3.1 pipenv==2021.5.29
 
-      - name: Compile new bootloader for pyinstaller
+      - name: Run uv sync
         run: |
-          cd pyinstaller-4.2/bootloader
-          CC="gcc -no-pie" ./waf all
+          uv sync
 
-      - name: Replace pyinstaller with custom version
-        run: |
-          pipenv uninstall pyinstaller
-          pipenv install `pwd`/pyinstaller-4.2
+      # - name: Download pyinstaller source
+      #   run: |
+      #     wget https://github.com/pyinstaller/pyinstaller/releases/download/v4.2/PyInstaller-4.2.tar.gz
+      #     echo "f5c0eeb2aa663cce9a5404292c0195011fa500a6501c873a466b2e8cad3c950c *PyInstaller-4.2.tar.gz" > SHA256SUMS
+      #     shasum -c SHA256SUMS
+      #     tar xf PyInstaller-4.2.tar.gz
+
+      # - name: Compile new bootloader for pyinstaller
+      #   run: |
+      #     cd pyinstaller-4.2/bootloader
+      #     CC="gcc -no-pie" ./waf all
+
+      # - name: Replace pyinstaller with custom version
+      #   run: |
+      #     pipenv uninstall pyinstaller
+      #     pipenv install `pwd`/pyinstaller-4.2
 
       - name: Update version
         run: |
@@ -110,7 +119,7 @@ jobs:
 
       - name: Build
         run: |
-          pipenv run fsbuild/build
+          uv run fsbuild/build
 
       - name: Bundle
         run: |
@@ -136,9 +145,9 @@ jobs:
           )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+          DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
-          python3 -m pip install dropbox==12.0.2
-          fsbuild/upload
+          uv add dropbox==12.0.2
+          uv run python fsbuild/upload

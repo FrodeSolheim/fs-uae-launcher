@@ -1,11 +1,12 @@
-import os
 import hashlib
+import os
 import traceback
+
 from fsgs.amiga.adf import ADFFile
-from .workbenchdata import wb_204_startup_sequence, wb_204_files
-from .workbenchdata import wb_204_floppies
-from .workbenchdata import wb_300_startup_sequence, wb_300_files
-from .workbenchdata import wb_300_floppies
+
+from .workbenchdata import (wb_204_files, wb_204_floppies,
+                            wb_204_startup_sequence, wb_300_files,
+                            wb_300_floppies, wb_300_startup_sequence)
 
 
 class WorkbenchExtractor(object):

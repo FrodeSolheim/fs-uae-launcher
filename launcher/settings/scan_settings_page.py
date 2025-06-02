@@ -1,8 +1,7 @@
-from launcher.settings.scan_paths_group import ScanPathsGroup
-
 import fsui
 from fsgs.option import Option
 from launcher.i18n import gettext
+from launcher.settings.scan_paths_group import ScanPathsGroup
 from launcher.settings.settings_page import SettingsPage
 
 

@@ -1,8 +1,9 @@
 import os
 import tempfile
-import fsbc.settings
+
 import nose.tools
 
+import fsbc.settings
 
 # def test_unload():
 #     fd, path = tempfile.mkstemp()

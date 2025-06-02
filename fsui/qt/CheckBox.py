@@ -4,7 +4,6 @@ from .widget_mixin import WidgetMixin
 
 
 class CheckBox(QCheckBox, WidgetMixin):
-
     changed_signal = Signal()
 
     def __init__(self, parent, text="", check=False):

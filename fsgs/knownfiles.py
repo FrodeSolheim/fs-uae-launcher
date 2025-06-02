@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+
 from fsgs.platforms import PLATFORM_AMIGA
 
 

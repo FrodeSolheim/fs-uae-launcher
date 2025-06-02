@@ -74,6 +74,4 @@ Or you can execute fs-uae-launcher <command> - where command is one of:
   * fs-uae-netplay-server              Run netplay server
   * list-dirs                          List directories used by the Launcher
   * list-plugins                       List installed plugins
-""".format(
-    version=VERSION
-)
+""".format(version=VERSION)

@@ -19,7 +19,7 @@ jobs:
     runs-on: windows-2019
 
     env:
-      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
 
     defaults:
       run:
@@ -29,7 +29,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: msys2/setup-msys2@v2
+      - name: Install packages
+        uses: msys2/setup-msys2@v2
         with:
           install: >-
             make
@@ -39,35 +40,49 @@ jobs:
           path-type: inherit
           update: true
 
-      - name: Download Python
-        run: |
-          wget https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe
-          echo "7628244cb53408b50639d2c1287c659f4e29d3dfdb9084b11aed5870c0c6a48a *python-3.8.10-amd64.exe" > SHA256SUMS
-          sha256sum -c SHA256SUMS
+      # - name: Download Python
+      #   run: |
+      #     wget https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe
+      #     echo "7628244cb53408b50639d2c1287c659f4e29d3dfdb9084b11aed5870c0c6a48a *python-3.8.10-amd64.exe" > SHA256SUMS
+      #     sha256sum -c SHA256SUMS
 
-      - name: Install Python
-        shell: cmd
-        run: |
-          START /WAIT python-3.8.10-amd64.exe /install /quiet PrependPath=1
+      # - name: Install Python
+      #   shell: cmd
+      #   run: |
+      #     START /WAIT python-3.8.10-amd64.exe /install /quiet PrependPath=1
 
-      - name: Add Python to PATH
-        run: |
-          export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python38
-          cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
-          echo $PYTHONDIR/Scripts >> $GITHUB_PATH
-          echo $PYTHONDIR >> $GITHUB_PATH
+      # - name: Add Python to PATH
+      #   run: |
+      #     export PYTHONDIR=$LOCALAPPDATA/Programs/Python/Python38
+      #     cp $PYTHONDIR/python.exe $PYTHONDIR/python3.exe
+      #     echo $PYTHONDIR/Scripts >> $GITHUB_PATH
+      #     echo $PYTHONDIR >> $GITHUB_PATH
 
-      - name: Install pip and pipenv
-        run: |
-          python3 -m pip install pip==21.3.1 pipenv==2021.5.29
+      # - name: Install pip and pipenv
+      #   run: |
+      #     python3 -m pip install pip==21.3.1 pipenv==2021.5.29
 
-      - name: Run pipenv sync --dev
-        run: |
-          pipenv sync --dev --python 3.8
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.9"
 
-      - name: Create python3 alias in virtualenv
+      - name: Set up Python
         run: |
-          pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
+          uv python install
+
+      # - name: Set up Python 3.12
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: 3.12
+
+      - name: Run uv sync
+        run: |
+          uv sync
+
+      # - name: Create python3 alias in virtualenv
+      #   run: |
+      #     pipenv run bash -c 'cp $VIRTUAL_ENV/Scripts/python.exe $VIRTUAL_ENV/Scripts/python3.exe'
 
       - name: Update version
         run: |
@@ -85,7 +100,7 @@ jobs:
 
       - name: Build
         run: |
-          pipenv run bash -c 'fsbuild/build'
+          uv run bash -c 'fsbuild/build'
 
       - name: Bundle
         run: |
@@ -111,9 +126,10 @@ jobs:
           )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+          DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
+        # shell: cmd
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
-          python3 -m pip install dropbox==12.0.2
-          fsbuild/upload
+          uv add dropbox==12.0.2
+          uv run python fsbuild/upload

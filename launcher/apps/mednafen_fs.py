@@ -1,4 +1,5 @@
 import sys
+
 from fsgs.plugins.pluginmanager import PluginManager
 
 """

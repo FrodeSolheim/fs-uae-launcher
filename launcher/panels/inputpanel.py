@@ -1,6 +1,6 @@
 import fsui
-from launcher.ui.skin import Skin
 from launcher.ui.config.InputGroup import InputGroup
+from launcher.ui.skin import Skin
 
 
 class InputPanel(fsui.Panel):

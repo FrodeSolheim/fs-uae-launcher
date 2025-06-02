@@ -4,7 +4,6 @@ from fsgs.platforms.loader import SimpleLoader
 
 
 class ArcadePlatformHandler(PlatformHandler):
-
     PLATFORM_NAME = "Arcade"
 
     def __init__(self):

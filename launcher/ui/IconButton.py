@@ -1,8 +1,7 @@
-from fsui import ImageButton, Image
+from fsui import Image, ImageButton
 
 
 class IconButton(ImageButton):
-
     BUTTON_WIDTH = 40
 
     def __init__(self, parent, name):

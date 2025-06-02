@@ -1,11 +1,13 @@
 import traceback
-from launcher.ui.ConfigGroup import ConfigGroup
+
+import fsui
 from fsgs.context import fsgs
 from fsgs.Database import Database
-import fsui
+from launcher.ui.ConfigGroup import ConfigGroup
+
 from ..launcher_config import LauncherConfig
-from ..launcher_signal import LauncherSignal
 from ..launcher_settings import LauncherSettings
+from ..launcher_signal import LauncherSignal
 
 
 class LastVariants(object):
@@ -180,12 +182,12 @@ class VariantsBrowser(fsui.ItemChoice):
             # name = name.split("\n", 1)[-1]
 
             game_database = fsgs.game_database(variant["database"])
-            variant["like_rating"], variant[
-                "work_rating"
-            ] = game_database.get_ratings_for_game(variant["uuid"])
-            variant[
-                "personal_rating"
-            ], ignored = database.get_ratings_for_game(variant["uuid"])
+            variant["like_rating"], variant["work_rating"] = (
+                game_database.get_ratings_for_game(variant["uuid"])
+            )
+            variant["personal_rating"], ignored = (
+                database.get_ratings_for_game(variant["uuid"])
+            )
 
             if variant["published"] == 0:
                 primary_sort = 1

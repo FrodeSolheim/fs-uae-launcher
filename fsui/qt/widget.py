@@ -11,7 +11,6 @@ from fsui.qt.signal import Signal
 
 # noinspection PyPep8Naming
 class Widget(QObject):
-
     destroyed = Signal()
 
     def __init__(self, parent, *_):
@@ -85,7 +84,8 @@ class Widget(QObject):
     def measure_text(self, text):
         font = self.widget().font()
         metrics = QFontMetrics(font)
-        return metrics.width(text), metrics.height()
+        rect = metrics.boundingRect(text)
+        return rect.width(), rect.height()
 
     def set_hand_cursor(self):
         self.widget().setCursor(Qt.PointingHandCursor)
@@ -206,7 +206,7 @@ class Widget(QObject):
 
     def get_background_color(self):
         # noinspection PyUnresolvedReferences
-        return Color(self.widget().palette().color(QPalette.Window))
+        return Color(self.widget().palette().color(QPalette.ColorRole.Window))
 
     def set_background_color(self, color):
         widget = self.widget()

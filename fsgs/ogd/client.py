@@ -11,6 +11,7 @@ from urllib.request import Request
 from uuid import uuid4
 
 import requests
+
 from fsbc.application import app
 from fsbc.settings import Settings
 from fsbc.task import Task

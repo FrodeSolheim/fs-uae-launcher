@@ -2,9 +2,9 @@ import time
 from functools import lru_cache
 
 import fsbc.settings
+from fsgs.download import Downloader
 from fsgs.filedatabase import FileDatabase
 from fsgs.LockerDatabase import LockerDatabase
-from fsgs.download import Downloader
 from fsgs.network import openretro_url_prefix
 from fsgs.ogd.base import SynchronizerBase
 from fsgs.ogd.context import SynchronizerContext

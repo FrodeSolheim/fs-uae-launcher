@@ -3,7 +3,6 @@ from ..common.group import Group
 
 
 class IconHeader(Group):
-
     ICON_LEFT = 0
     ICON_RIGHT = 1
 
@@ -31,7 +30,6 @@ class IconHeader(Group):
 
 
 class NewIconHeader(Group):
-
     ICON_LEFT = 0
     ICON_RIGHT = 1
 

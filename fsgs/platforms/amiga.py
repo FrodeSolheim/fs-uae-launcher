@@ -1,7 +1,7 @@
+from fsgs.amiga.fsuaeamigadriver import FSUAEAmigaDriver
+from fsgs.amiga.valueconfigloader import ValueConfigLoader
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.platform import PlatformHandler
-from fsgs.amiga.valueconfigloader import ValueConfigLoader
-from fsgs.amiga.fsuaeamigadriver import FSUAEAmigaDriver
 
 
 class AmigaPlatformHandler(PlatformHandler):

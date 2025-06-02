@@ -1,12 +1,12 @@
 from arcade.glui.font import BitmapFont
 from arcade.glui.inputmenu import InputMenu
-from arcade.glui.topmenu import GameCenterItem
 from arcade.glui.menu import Menu
 from arcade.glui.navigatable import Navigatable
-from arcade.glui.opengl import gl, fs_emu_blending, fs_emu_texturing
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
+from arcade.glui.topmenu import GameCenterItem
 from arcade.option import Option
 from fsgs.context import fsgs
 from fsgs.platform import PlatformHandler
@@ -356,7 +356,6 @@ class GameConfigList(Navigatable):
         self.set_controller(controller)
 
     def set_controller(self, controller):
-
         self.items = []
         self.items.append(Option.create_group("Game Control", -2.5))
         play_option = Option.create_play_option()
@@ -442,7 +441,6 @@ class GameConfigList(Navigatable):
             return
         result = self.items[self.index].activate()
         if result == "PLAY":
-
             # noinspection PyDecorator
             # @staticmethod
             def show_input():

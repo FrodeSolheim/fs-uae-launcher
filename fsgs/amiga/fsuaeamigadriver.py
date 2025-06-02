@@ -110,9 +110,9 @@ class FSUAEAmigaDriver(GameDriver):
             if not self.launch_handler.config.get("fullscreen_mode", ""):
                 # Check if fullscreen mode is overridden by temporary setting.
                 if Settings.instance()["__fullscreen_mode"]:
-                    self.launch_handler.config[
-                        "fullscreen_mode"
-                    ] = Settings.instance()["__fullscreen_mode"]
+                    self.launch_handler.config["fullscreen_mode"] = (
+                        Settings.instance()["__fullscreen_mode"]
+                    )
             if Settings.instance()["__arcade"]:
                 # Remove window border when launched from FS-UAE Arcade in
                 # order to reduce flickering

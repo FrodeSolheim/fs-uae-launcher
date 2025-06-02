@@ -1,4 +1,5 @@
 import weakref
+
 from launcher.launcher_settings import LauncherSettings
 
 
@@ -29,7 +30,7 @@ class SettingsBehavior:
             try:
                 func = getattr(widget, "on_{0}_setting".format(key))
             except AttributeError:
-                func = getattr(widget, "on_settings".format(key))
+                func = getattr(widget, "on_settings")
                 func(key, value)
             else:
                 func(value)

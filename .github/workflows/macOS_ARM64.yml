@@ -20,38 +20,52 @@ jobs:
 
     env:
       SIGNING_ENABLED: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
-      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
 
     steps:
-      - name: Install brew packages
-        run: |
-          brew install dos2unix
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Download Python
+      - name: Install packages
         run: |
-          wget https://www.python.org/ftp/python/3.9.7/python-3.9.7-macosx10.9.pkg
-          echo "f40f7407d20f88a6a64678b6586853de16cc5d7d07c82a8a2a7e43bba59dbae5 *python-3.9.7-macosx10.9.pkg" > SHA256SUMS
-          shasum -c SHA256SUMS
+          brew install dos2unix
 
-      - name: Install Python
-        run: |
-          sudo installer -pkg python-3.9.7-macosx10.9.pkg -target /
+      # - name: Download Python
+      #   run: |
+      #     wget https://www.python.org/ftp/python/3.9.7/python-3.9.7-macosx10.9.pkg
+      #     echo "f40f7407d20f88a6a64678b6586853de16cc5d7d07c82a8a2a7e43bba59dbae5 *python-3.9.7-macosx10.9.pkg" > SHA256SUMS
+      #     shasum -c SHA256SUMS
 
-      - name: Add Python to PATH
-        run: |
-          echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
+      # - name: Install Python
+      #   run: |
+      #     sudo installer -pkg python-3.9.7-macosx10.9.pkg -target /
 
-      - name: Install pip and pipenv
-        run: |
-          python3 -m pip install pip==21.3.1 pipenv==2021.5.29
+      # - name: Add Python to PATH
+      #   run: |
+      #     echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
 
-      - name: Run pipenv sync --dev
+      # - name: Install pip and pipenv
+      #   run: |
+      #     python3 -m pip install pip==21.3.1 pipenv==2021.5.29
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.9"
+
+      - name: Set up Python
         run: |
-          pipenv sync --dev
+          uv python install
+
+      # - name: Set up Python 3.12
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: 3.12
+
+      - name: Run uv sync
+        run: |
+          uv sync
 
       - name: Update version
         run: |
@@ -69,7 +83,7 @@ jobs:
 
       - name: Build
         run: |
-          pipenv run fsbuild/build
+          uv run fsbuild/build
 
       - name: Bundle
         run: |
@@ -97,9 +111,9 @@ jobs:
       - name: Notarize
         if: env.SIGNING_ENABLED != null
         env:
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           fsbuild/notarize
 
@@ -130,9 +144,9 @@ jobs:
       - name: Notarize DMG
         if: hashFiles('fsbuild/notarize-dmg') != '' && env.SIGNING_ENABLED != null
         env:
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           fsbuild/notarize-dmg
 
@@ -152,9 +166,9 @@ jobs:
           )
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+          DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
-          python3 -m pip install dropbox==12.0.2
-          fsbuild/upload
+          uv add dropbox==12.0.2
+          uv run python fsbuild/upload

@@ -1,11 +1,11 @@
 import abc
-from abc import abstractmethod, abstractproperty
 import collections
 import contextlib
 import functools
 import re as stdlib_re  # Avoid confusion with the re we export.
 import sys
 import types
+from abc import abstractmethod, abstractproperty
 
 try:
     import collections.abc as collections_abc
@@ -14,11 +14,8 @@ except ImportError:
 if sys.version_info[:2] >= (3, 6):
     import _collections_abc  # Needed for private function _check_methods # noqa
 try:
-    from types import (
-        WrapperDescriptorType,
-        MethodWrapperType,
-        MethodDescriptorType,
-    )
+    from types import (MethodDescriptorType, MethodWrapperType,
+                       WrapperDescriptorType)
 except ImportError:
     WrapperDescriptorType = type(object.__init__)
     MethodWrapperType = type(object().__str__)
@@ -537,14 +534,14 @@ class TypeVar(_TypingBase, _root=True):
         *constraints,
         bound=None,
         covariant=False,
-        contravariant=False
+        contravariant=False,
     ):
         super().__init__(
             name,
             *constraints,
             bound=bound,
             covariant=covariant,
-            contravariant=contravariant
+            contravariant=contravariant,
         )
         self.__name__ = name
         if covariant and contravariant:
@@ -1680,8 +1677,9 @@ def get_type_hints(obj, globalns=None, localns=None):
             return {}
         else:
             raise TypeError(
-                "{!r} is not a module, class, method, "
-                "or function.".format(obj)
+                "{!r} is not a module, class, method, " "or function.".format(
+                    obj
+                )
             )
     defaults = _get_defaults(obj)
     hints = dict(hints)
@@ -2077,7 +2075,6 @@ class ByteString(Sequence[int], extra=collections_abc.ByteString):
 
 
 class List(list, MutableSequence[T], extra=list):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2089,7 +2086,6 @@ class List(list, MutableSequence[T], extra=list):
 
 
 class Deque(collections.deque, MutableSequence[T], extra=collections.deque):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2099,7 +2095,6 @@ class Deque(collections.deque, MutableSequence[T], extra=collections.deque):
 
 
 class Set(set, MutableSet[T], extra=set):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2217,7 +2212,6 @@ __all__.append('AsyncContextManager')
 
 
 class Dict(dict, MutableMapping[KT, VT], extra=dict):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2233,7 +2227,6 @@ class DefaultDict(
     MutableMapping[KT, VT],
     extra=collections.defaultdict,
 ):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2243,7 +2236,6 @@ class DefaultDict(
 
 
 class Counter(collections.Counter, Dict[T, int], extra=collections.Counter):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2261,7 +2253,6 @@ if hasattr(collections, "ChainMap"):
         MutableMapping[KT, VT],
         extra=collections.ChainMap,
     ):
-
         __slots__ = ()
 
         def __new__(cls, *args, **kwds):

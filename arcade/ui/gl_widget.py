@@ -1,14 +1,15 @@
 import threading
 import traceback
 
+from PyQt6.QtOpenGLWidgets import QOpenGLWidget
+
 from arcade.glui.opengl import gl
-from fsui.qt import QGLWidget
 
 
 # noinspection PyPep8Naming
-class GLWidget(QGLWidget):
+class GLWidget(QOpenGLWidget):
     def __init__(self, parent, callbacks):
-        QGLWidget.__init__(self, parent)
+        QOpenGLWidget.__init__(self, parent)
         self._callbacks = callbacks
         self._initialized = False
         self._first_initialize_gl_call = True
@@ -37,10 +38,10 @@ class GLWidget(QGLWidget):
             print("[OPENGL] Version major:", gl_format.majorVersion())
             print("[OPENGL] Version minor:", gl_format.minorVersion())
             print("[OPENGL] Context profile:", gl_format.profile())
-            print("[OPENGL] Direct rendering:", gl_format.directRendering())
+            # print("[OPENGL] Direct rendering:", gl_format.directRendering())
             print("[OPENGL] Depth buffer size:", gl_format.depthBufferSize())
-            print("[OPENGL] Double buffering:", self.doubleBuffer())
-            print("[OPENGL] Auto buffer swap:", self.autoBufferSwap())
+            # print("[OPENGL] Double buffering:", self.doubleBuffer())
+            # print("[OPENGL] Auto buffer swap:", self.autoBufferSwap())
         except Exception:
             traceback.print_exc()
 

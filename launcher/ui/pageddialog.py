@@ -1,5 +1,6 @@
 import fsui
 from launcher.ui.widgets import CloseButton
+
 from .skin import LauncherTheme
 
 

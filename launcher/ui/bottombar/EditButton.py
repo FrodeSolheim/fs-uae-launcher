@@ -1,5 +1,6 @@
 from fsgs.network import openretro_url_prefix
 from fsui import Image
+
 from ...launcher_config import LauncherConfig
 from .WebButton import WebButton
 

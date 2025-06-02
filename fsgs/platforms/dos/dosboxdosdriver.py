@@ -23,6 +23,7 @@ IMGMOUNT in autoexec can refer to paths beginning with $DRIVES, which will be
 replaced by this driver when creating dosbox config.
 
 """
+
 import hashlib
 import json
 import os
@@ -30,8 +31,8 @@ import shutil
 
 from fsbc.path import str_path
 from fsbc.system import System
-from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.drivers.gamedriver import GameDriver
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.option import Option
 from fsgs.saves import SaveHandler
 

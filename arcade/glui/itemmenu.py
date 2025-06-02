@@ -1,12 +1,10 @@
 import math
 
-from arcade.glui.bottombar import (
-    render_bottom_bar,
-    render_bottom_bar_transparent,
-)
+from arcade.glui.bottombar import (render_bottom_bar,
+                                   render_bottom_bar_transparent)
 from arcade.glui.displaylists import DisplayLists
 from arcade.glui.menu import Menu
-from arcade.glui.opengl import gl, fs_emu_blending, fs_emu_texturing
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
@@ -115,7 +113,6 @@ def _render_menu(menu, what=None, skip_center_item=False):
         fs_emu_blending(False)
 
         for item_index in list(yield_render_item_sequence()):
-
             if num_items < MIN_WRAPAROUND_ITEMS:
                 if not (
                     0

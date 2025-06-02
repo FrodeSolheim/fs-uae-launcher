@@ -10,7 +10,7 @@ import launcher.ui
 from fsbc.application import Application
 from fsbc.util import unused
 from fsgs.context import default_context
-from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
+from fsgs.ogd.locker import is_locker_enabled
 from launcher.i18n import gettext
 from launcher.implicit_handler import ImplicitConfigHandler
 from launcher.launcher_config import LauncherConfig
@@ -32,7 +32,6 @@ from launcher.ui.book import Book
 from launcher.ui.bottombar.BottomPanel import BottomPanel
 from launcher.ui.bottombar.GameInfoPanel import GameInfoPanel
 from launcher.ui.bottombar.ScreenshotsPanel import ScreenshotsPanel
-from launcher.ui.config.browser import ConfigBrowser
 from launcher.ui.config.configscrollarea import ConfigScrollArea
 from launcher.ui.ConfigurationsPanel import ConfigurationsPanel
 from launcher.ui.Constants import Constants

@@ -3,10 +3,10 @@ import traceback
 
 from arcade.resources import logger
 from fsbc.util import memoize
+from fsgs.input.devicemanager import DeviceManager
 from fsgs.input.eventlistener import EventListener
 from fsgs.input.inputdevice import InputDevice
 from fsgs.input.keyboard import Keyboard
-from fsgs.input.devicemanager import DeviceManager
 
 REPEAT_THRESHOLD = 0.300
 REPEAT_INTERVAL = 0.075

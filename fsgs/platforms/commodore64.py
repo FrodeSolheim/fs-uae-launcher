@@ -36,18 +36,18 @@ FIXME:
   Keyboard: Error - Cannot load keymap `sdl_pos.vkm'.
 
 """
+
 import json
 import os
-
 import shutil
 
-from fsbc.system import windows, macosx
+from fsbc.system import macosx, windows
 from fsgs.drivers.gamedriver import GameDriver
 from fsgs.input.mapper import InputMapper
-from fsgs.util import sdl2
 from fsgs.option import Option
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
+from fsgs.util import sdl2
 
 C64_MODEL_C64 = "c64"
 C64_MODEL_C64C = "c64c"
@@ -104,17 +104,17 @@ class Commodore64Loader(SimpleLoader):
                     self.config["tape_drive_0"] = "sha1://{}/{}".format(
                         item["sha1"], item["name"]
                     )
-                self.config[
-                    "tape_image_{0}".format(i)
-                ] = "sha1://{}/{}".format(item["sha1"], item["name"])
+                self.config["tape_image_{0}".format(i)] = (
+                    "sha1://{}/{}".format(item["sha1"], item["name"])
+                )
             elif ext in [".D64"]:
                 if i == 0:
                     self.config["floppy_drive_0"] = "sha1://{}/{}".format(
                         item["sha1"], item["name"]
                     )
-                self.config[
-                    "floppy_image_{}".format(i)
-                ] = "sha1://{0}/{1}".format(item["sha1"], item["name"])
+                self.config["floppy_image_{}".format(i)] = (
+                    "sha1://{0}/{1}".format(item["sha1"], item["name"])
+                )
 
     def load_extra(self, values):
         # FIXME: Replace with c64_model?

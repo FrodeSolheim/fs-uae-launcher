@@ -32,6 +32,7 @@ TODO:
   global screenshots directory.
 
 """
+
 import os
 import traceback
 

@@ -1,5 +1,6 @@
-import bottle
 import threading
+
+import bottle
 
 
 class Request(object):

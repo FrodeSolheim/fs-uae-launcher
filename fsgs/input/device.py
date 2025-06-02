@@ -1,8 +1,7 @@
-from fsbc.system import windows, linux, macosx
+from fsbc.system import linux, macosx, windows
 
 
 class Device(object):
-
     TYPE_KEYBOARD = "keyboard"
     TYPE_JOYSTICK = "joystick"
     TYPE_MOUSE = "mouse"

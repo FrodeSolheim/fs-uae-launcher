@@ -1,0 +1,10 @@
+{
+    "makefile.configureOnOpen": false,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportOptionalMemberAccess": "none",
+        "reportOptionalCall": "none",
+        "reportOptionalIterable": "none",
+        "reportOptionalSubscript": "none"
+    },
+    "python.analysis.typeCheckingMode": "standard"
+}

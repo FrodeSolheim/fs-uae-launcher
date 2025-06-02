@@ -1,6 +1,6 @@
 import gzip
-import lzma
 import io
+import lzma
 import os
 import traceback
 from io import BytesIO
@@ -267,7 +267,6 @@ class ByteSwapWordsFilter:
 
 
 class Archive(object):
-
     extensions = archive_extensions
 
     def __init__(self, path):

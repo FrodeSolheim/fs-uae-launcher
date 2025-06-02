@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
+import hashlib
 import os
 import sys
-import hashlib
 from io import BytesIO
-
 # noinspection PyUnresolvedReferences
-from typing import List, Dict
-
+from typing import Dict, List
 
 B_SIZE = 512
 B_COUNT = 880 * 2
@@ -85,7 +83,6 @@ class FileInfo(object):
 
 
 class ADFFile(object):
-
     FFS_FLAG = 1
     INTL_ONLY_FLAG = 2
     DIRC_AND_INTL_FLAG = 4
@@ -132,8 +129,9 @@ class ADFFile(object):
         self.bitmap_pages = []
         if self.root_block_number != 880:
             self.warnings.append(
-                "Root block is at position {0}, "
-                "not 880".format(self.root_block_number)
+                "Root block is at position {0}, " "not 880".format(
+                    self.root_block_number
+                )
             )
             self.root_block_number = 880
             self.warnings.append("Trying 880 anyway...")

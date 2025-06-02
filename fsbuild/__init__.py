@@ -124,7 +124,9 @@ def getApplePassword() -> str:
 
 
 def getAppleCodesignIdentity() -> str:
-    return os.environ.get("APPLE_CODESIGN_IDENTITY", "Developer ID Application")
+    return os.environ.get(
+        "APPLE_CODESIGN_IDENTITY", "Developer ID Application"
+    )
 
 
 def getOperatingSystemDist() -> str:
@@ -160,7 +162,7 @@ def notarizeApp(pathToNotarize: str, bundleId: str):
             applePassword=getApplePassword(),
             pathToNotarize=pathToNotarize,
         ),
-        censor=True
+        censor=True,
     )
     print(result)
     if "status: Accepted" not in result:
@@ -197,7 +199,7 @@ def quoteArgs(args: List[str]) -> str:
     return " ".join(f"{quoteArg(a)}" for a in args)
 
 
-def shell(cmd: str, censor: bool=False) -> str:
+def shell(cmd: str, censor: bool = False) -> str:
     if censor:
         print("Running command (censored)")
     else:
@@ -308,7 +310,9 @@ def updateConfigureAc(version: Version, commit: str = "") -> None:
             #         d = "Full version"
             #     line = "AC_DEFINE_UNQUOTED([{}], [{}], [{}])\n".format(k, v, d)
             if line.startswith("m4_define([fsbuild_commit"):
-                line = "m4_define([{}], [{}])\n".format("fsbuild_commit", commit)
+                line = "m4_define([{}], [{}])\n".format(
+                    "fsbuild_commit", commit
+                )
             # if line.startswith("AC_DEFINE_UNQUOTED([FSBUILD_COMMIT"):
             #     k = "FSBUILD_COMMIT"
             #     v = commit
@@ -336,7 +340,9 @@ def updateDebianChangelog(version: Version) -> None:
                 first_line = False
                 deb_package = line.split(" ", 1)[0]
                 lines.append(
-                    "{} ({}-0) unstable; urgency=low\n".format(deb_package, deb_version)
+                    "{} ({}-0) unstable; urgency=low\n".format(
+                        deb_package, deb_version
+                    )
                 )
                 if lines[-1] != line:
                     first_line_changed = True
@@ -366,7 +372,9 @@ def updateSpecFile(path: str, version: Version) -> None:
     with open(path, "r", encoding="UTF-8") as f:
         for line in f:
             if line.startswith("%define fsbuild_version "):
-                lines.append("%define fsbuild_version {}\n".format(rpm_version))
+                lines.append(
+                    "%define fsbuild_version {}\n".format(rpm_version)
+                )
             # elif line.startswith("%define unmangled_version "):
             #     lines.append("%define unmangled_version {0}\n".format(version))
             else:
@@ -387,7 +395,9 @@ def updatePackageFs(version: Version) -> None:
             elif line.startswith("PACKAGE_VERSION_MINOR="):
                 lines.append(f"PACKAGE_VERSION_MINOR={str(version.minor)}\n")
             elif line.startswith("PACKAGE_VERSION_REVISION="):
-                lines.append(f"PACKAGE_VERSION_REVISION={str(version.revision)}\n")
+                lines.append(
+                    f"PACKAGE_VERSION_REVISION={str(version.revision)}\n"
+                )
             elif line.startswith("PACKAGE_VERSION_TAG="):
                 lines.append(f"PACKAGE_VERSION_TAG={str(version.tag)}\n")
             elif line.startswith("PACKAGE_COMMIT="):
@@ -411,6 +421,18 @@ def updateCommitFs(version: Version) -> None:
         if version.commit:
             f.write(version.commit)
             f.write("\n")
+
+
+def updatePyProjectToml(version: Version) -> None:
+    print("Updating pyproject.toml")
+    with open("pyproject.toml", "r") as f:
+        text = f.read()
+    text = text.replace(
+        'version = "0.0.0"',
+        f'version = "{version.major}.{version.minor}.{version.revision}"',
+    )
+    with open("pyproject.toml", "w") as f:
+        f.write(text)
 
 
 def calculateVersion(
@@ -447,7 +469,9 @@ def calculateVersion(
             if githubRef.startswith("refs/heads/"):
                 branch = githubRef[len("refs/heads/") :]
             if githubRef.startswith("refs/pull/"):
-                branch = "pull" + githubRef[len("refs/pull/") :].replace("/", "")
+                branch = "pull" + githubRef[len("refs/pull/") :].replace(
+                    "/", ""
+                )
         if not branch:
             branch = subprocess.check_output(
                 ["git", "symbolic-ref", "--short", "HEAD"], encoding="UTF-8"
@@ -474,6 +498,8 @@ def updateVersion(version: Version) -> None:
         updateDebianChangelog(version)
     if os.path.exists("PACKAGE.FS"):
         updatePackageFs(version)
+    if os.path.exists("pyproject.toml"):
+        updatePyProjectToml(version)
     for filename in os.listdir("."):
         if filename.endswith(".spec"):
             updateSpecFile(filename, version)

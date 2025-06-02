@@ -1,7 +1,7 @@
 import fsgs
 import fsui
-from fsui.extra.iconheader import IconHeader
 from fsbc.application import app
+from fsui.extra.iconheader import IconHeader
 from launcher.i18n import gettext
 from launcher.ui.skin import LauncherTheme
 from launcher.ui.widgets import CloseButton

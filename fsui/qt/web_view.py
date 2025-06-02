@@ -1,9 +1,9 @@
 from fsui.qt import QUrl
 from fsui.qt.helpers import QParent
 from .widget import Widget
-from PyQt5.QtWebKitWidgets import QWebView
+from PyQt6.QtWebKitWidgets import QWebView
 
-# from PyQt5.QtWebEngineWidgets import QWebEngineView
+# from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 
 class WebView(Widget):

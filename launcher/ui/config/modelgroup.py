@@ -4,27 +4,20 @@ from fsbc.util import unused
 from fsgs import openretro
 from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
-from fsgs.platform import PLATFORM_IDS
-from launcher.option import Option
-from fsgs.platforms import PLATFORM_ZXS
 from launcher.cd_manager import CDManager
 from launcher.floppy_manager import FloppyManager
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
+from launcher.option import Option
 from launcher.panels.additionalconfigpanel import CustomConfigButton
-from launcher.ui.behaviors.amigaenablebehavior import AmigaEnableBehavior
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.behaviors.platformbehavior import (
-    AMIGA_PLATFORMS,
-    PlatformShowBehavior,
-    AmigaShowBehavior,
-)
+from launcher.ui.behaviors.platformbehavior import (AMIGA_PLATFORMS,
+                                                    AmigaShowBehavior)
 from launcher.ui.config.ConfigCheckBox import ConfigCheckBox
 from launcher.ui.options import ConfigWidgetFactory
 
 
 class ModelGroup(fsui.Group):
-
     # FIXME: remove with_more_button=True
     def __init__(self, parent, with_more_button=True):
         unused(with_more_button)

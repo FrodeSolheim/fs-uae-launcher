@@ -1,8 +1,8 @@
 import os
 import sqlite3
 import threading
-import fsbc.settings
 
+import fsbc.settings
 
 global_database_lock = threading.Lock()
 
@@ -20,7 +20,6 @@ class ResetException(Exception):
 
 
 class BaseDatabase(object):
-
     SENTINEL = "fae7671d-e232-4b71-b179-b3cd45995f92"
 
     thread_local = threading.local()
@@ -87,7 +86,7 @@ class BaseDatabase(object):
         return self.connection.cursor()
 
     def create_cursor(self):
-        """"
+        """ "
         :deprecated:
         """
         return self.cursor()

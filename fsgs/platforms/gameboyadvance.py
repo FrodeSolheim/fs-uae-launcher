@@ -183,9 +183,9 @@ class GameBoyAdvanceMednafenDriver(MednafenDriver):
                 # h, l, s = colorsys.rgb_to_hls(r, g, b)
                 # l = l ** gamma
                 # r, g, b = colorsys.hls_to_rgb(h, l, s)
-                r = r ** gamma
-                g = g ** gamma
-                b = b ** gamma
+                r = r**gamma
+                g = g**gamma
+                b = b**gamma
                 f.write(bytes([int(r * 255)]))
                 f.write(bytes([int(g * 255)]))
                 f.write(bytes([int(b * 255)]))

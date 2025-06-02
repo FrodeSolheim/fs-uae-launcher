@@ -1,5 +1,5 @@
-import sys
 import platform as _platform
+import sys
 
 windows = sys.platform == "win32"
 linux = sys.platform.startswith("linux")

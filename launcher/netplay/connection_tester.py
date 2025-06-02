@@ -4,6 +4,7 @@ import time
 import traceback
 
 from fsbc.application import call_after
+
 from ..launcher_config import LauncherConfig
 from ..launcher_signal import LauncherSignal
 

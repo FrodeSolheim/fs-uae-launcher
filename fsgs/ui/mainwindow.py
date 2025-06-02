@@ -1,4 +1,5 @@
-from fsui.qt import QMainWindow, QWidget, Qt
+from fsui.qt import QMainWindow, Qt, QWidget
+
 from .gamecenterview import GameCenterView
 
 

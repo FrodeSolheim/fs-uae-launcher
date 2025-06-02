@@ -1,4 +1,5 @@
 import weakref
+
 from launcher.launcher_config import LauncherConfig
 
 

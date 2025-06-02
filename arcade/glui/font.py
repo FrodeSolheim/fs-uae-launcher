@@ -1,12 +1,12 @@
 import json
 import traceback
 
-from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.texture import Texture
 from arcade.resources import resources
 from fsbc.util import memoize
-from fsui.qt import QFontDatabase, QPainter, QImage, QFontMetrics, QPoint
-from fsui.qt import QPen, QColor
+from fsui.qt import (QColor, QFontDatabase, QFontMetrics, QImage, QPainter,
+                     QPen, QPoint)
 
 CACHE_SIZE = 100
 text_cache = []
@@ -25,7 +25,7 @@ class Font(object):
     font_ids = {}
 
     def __init__(self, path, size):
-        self.database = QFontDatabase()
+        self.database = QFontDatabase
         try:
             self.font_id = Font.font_ids[path]
         except Exception:
@@ -67,7 +67,7 @@ class Font(object):
         im = QImage(
             rect.x() + rect.width(),
             rect.height(),
-            QImage.Format_ARGB32_Premultiplied,
+            QImage.Format.Format_ARGB32_Premultiplied,
         )
         im.fill(QColor(0, 0, 0, 0))
         painter = QPainter()
@@ -81,7 +81,7 @@ class Font(object):
         try:
             pixels = bits.tobytes()
         except AttributeError:
-            bits.setsize(im.byteCount())
+            bits.setsize(im.sizeInBytes())
             pixels = bytes(bits)
         return pixels, (rect.x() + rect.width(), rect.height())
 
@@ -201,10 +201,14 @@ class BitmapFont(object):
 
         # Set up some renderbuffer state
 
+        from OpenGL.GL import (glBindFramebuffer, glCheckFramebufferStatus,
+                               glDeleteFramebuffers, glFramebufferTexture2D,
+                               glGenFramebuffers)
+
         frame_buffer = gl.GLuint()
-        gl.glGenFramebuffersEXT(1, frame_buffer)
-        gl.glBindFramebufferEXT(gl.GL_FRAMEBUFFER_EXT, frame_buffer)
-        gl.glFramebufferTexture2DEXT(
+        glGenFramebuffers(1, frame_buffer)
+        glBindFramebuffer(gl.GL_FRAMEBUFFER_EXT, frame_buffer)
+        glFramebufferTexture2D(
             gl.GL_FRAMEBUFFER_EXT,
             gl.GL_COLOR_ATTACHMENT0_EXT,
             gl.GL_TEXTURE_2D,
@@ -212,7 +216,7 @@ class BitmapFont(object):
             0,
         )
 
-        status = gl.glCheckFramebufferStatusEXT(gl.GL_FRAMEBUFFER_EXT)
+        status = glCheckFramebufferStatus(gl.GL_FRAMEBUFFER_EXT)
         if status != gl.GL_FRAMEBUFFER_COMPLETE_EXT:
             print("glCheckFramebufferStatusEXT error", status)
 
@@ -261,10 +265,10 @@ class BitmapFont(object):
         gl.glPopMatrix()
         gl.glMatrixMode(gl.GL_MODELVIEW)
         gl.glPopAttrib()
-        gl.glBindFramebufferEXT(gl.GL_FRAMEBUFFER_EXT, 0)
+        glBindFramebuffer(gl.GL_FRAMEBUFFER_EXT, 0)
         gl.glPopMatrix()
 
-        gl.glDeleteFramebuffersEXT(1, frame_buffer)
+        glDeleteFramebuffers(1, frame_buffer)
 
         if mip_mapping:
             gl.glBindTexture(gl.GL_TEXTURE_2D, render_texture)

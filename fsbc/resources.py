@@ -1,4 +1,5 @@
 import os
+
 from pkg_resources import resource_filename, resource_stream
 
 from .application import Application

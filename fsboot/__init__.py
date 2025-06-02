@@ -122,8 +122,7 @@ if sys.platform == "win32":
     CSIDL_MYPICTURES = 39
     CSIDL_PROFILE = 40
     CSIDL_COMMON_DOCUMENTS = 46
-    from ctypes import windll
-    from ctypes import wintypes
+    from ctypes import windll, wintypes
 
     _SHGetFolderPath = windll.shell32.SHGetFolderPathW
     _SHGetFolderPath.argtypes = [

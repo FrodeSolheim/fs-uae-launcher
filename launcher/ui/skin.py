@@ -1,10 +1,11 @@
-import fsui
 import fsbc.system
-from fsbc.util import memoize
-from .Constants import Constants
-from ..option import Option
-from ..launcher_settings import LauncherSettings
 import fsboot
+import fsui
+from fsbc.util import memoize
+
+from ..launcher_settings import LauncherSettings
+from ..option import Option
+from .Constants import Constants
 
 try:
     import workspace
@@ -29,13 +30,15 @@ class LauncherTheme(object):
         from fsui.qt import QPalette
 
         palette = QPalette()
-        self.sidebar_list_background = fsui.Color(palette.color(QPalette.Base))
+        self.sidebar_list_background = fsui.Color(
+            palette.color(QPalette.ColorRole.Base)
+        )
         self.sidebar_list_row_height = 28
         self.sidebar_list_row_text = fsui.Color(
-            palette.color(QPalette.HighlightedText)
+            palette.color(QPalette.ColorRole.HighlightedText)
         )
         self.sidebar_list_row_background = fsui.Color(
-            palette.color(QPalette.Highlight)
+            palette.color(QPalette.ColorRole.Highlight)
         )
 
         if Skin.fws():
@@ -54,7 +57,6 @@ class LauncherTheme(object):
 
 
 class Skin(object):
-
     EXTRA_GROUP_MARGIN = 0
     _fws = None
 

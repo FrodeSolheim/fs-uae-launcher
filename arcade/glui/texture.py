@@ -1,16 +1,13 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 from arcade.arcadetheme import ArcadeTheme
-from fsui.qt import QImage
-
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 # import numpy
 # from PIL import Image
 # from fsbc.Application import app
 from arcade.resources import resources
-from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
+from fsui.qt import QImage
 
 
 class Texture(object):
@@ -81,7 +78,7 @@ class Texture(object):
                 target=target,
                 size=self.size,
                 out_data=out_data,
-                **kwargs
+                **kwargs,
             )
             self.data = out_data["im_data"]
             self.gl_type = out_data["type"]
@@ -163,14 +160,14 @@ class Texture(object):
         internal_format = gl.GL_RGBA
         texture_format = gl.GL_BGRA
 
-        if im.format() != QImage.Format_ARGB32_Premultiplied:
-            im = im.convertToFormat(QImage.Format_ARGB32_Premultiplied)
+        if im.format() != QImage.Format.Format_ARGB32_Premultiplied:
+            im = im.convertToFormat(QImage.Format.Format_ARGB32_Premultiplied)
 
         bits = im.bits()
         try:
             pixels = bits.tobytes()
         except AttributeError:
-            bits.setsize(im.byteCount())
+            bits.setsize(im.sizeInBytes())
             pixels = bytes(bits)
         size[0] = im.width()
         size[1] = im.height()

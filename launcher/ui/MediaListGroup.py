@@ -2,22 +2,20 @@ import os
 
 import fsui
 from fsbc.paths import Paths
-from fsgs.checksumtool import ChecksumTool
-from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.amiga import Amiga
+from fsgs.checksumtool import ChecksumTool
 from fsgs.context import fsgs
+from fsgs.FSGSDirectories import FSGSDirectories
 from launcher.cd_manager import CDManager
 from launcher.floppy_manager import FloppyManager
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.option import Option
+from launcher.ui.behaviors.configbehavior import ConfigBehavior
+from launcher.ui.behaviors.platformbehavior import (AMIGA_PLATFORMS,
+                                                    PlatformEnableBehavior)
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
-from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.behaviors.platformbehavior import (
-    AMIGA_PLATFORMS,
-    PlatformEnableBehavior,
-)
 
 
 class MediaListGroup(fsui.Group):

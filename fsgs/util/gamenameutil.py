@@ -1,15 +1,13 @@
+import itertools
 import os
 import re
 import unicodedata
 import unittest
-import itertools
-
 
 QUOTED_TERMS_RE = re.compile('["].*?["]')
 
 
 class GameNameUtil(object):
-
     TOSEC = "TOSEC"
     NOINTRO = "NOINTRO"
 

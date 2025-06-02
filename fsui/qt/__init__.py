@@ -4,7 +4,7 @@ import queue
 from fsui.res import gettext
 from fsui.qt.qt import (
     init_qt,
-    QDesktopWidget,
+    QGuiApplication,
     QEvent,
     QObject,
     QCoreApplication,
@@ -18,8 +18,8 @@ from fsui.qt.helpers import QParent
 
 def get_screen_size():
     init_qt()
-    desktop = QDesktopWidget()
-    geometry = desktop.geometry()
+    screens = QGuiApplication.screens()
+    geometry = screens[0].geometry()
     size = geometry.width(), geometry.height()
     print("using screen size", size)
     return size
@@ -33,7 +33,7 @@ def get_mouse_position():
 
 class CustomEvent(QEvent):
     def __init__(self):
-        QEvent.__init__(self, QEvent.User)
+        QEvent.__init__(self, QEvent.Type.User)
 
 
 class EventHandler(QObject):
@@ -41,7 +41,7 @@ class EventHandler(QObject):
         QObject.__init__(self)
         self.queue = queue.Queue()
 
-    def customEvent(self, event):
+    def customEvent(self, a0):
         while True:
             try:
                 function, args, kwargs = self.queue.get_nowait()

@@ -1,4 +1,5 @@
 import fsui
+
 from ...devicemanager import DeviceManager
 from ...i18n import gettext
 from ..IconButton import IconButton

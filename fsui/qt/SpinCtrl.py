@@ -5,6 +5,8 @@ from fsui.qt.widget import Widget
 
 
 class SpinCtrl(Widget):
+    _widget: QSpinBox
+
     changed_signal = Signal()
 
     def __init__(self, parent, min_value, max_value, initial_value):
@@ -25,5 +27,5 @@ class SpinCtrl(Widget):
         if not self.changed.inhibit:
             self.on_changed()
 
-    def on_change(self):
+    def on_changed(self):
         self.changed.emit()

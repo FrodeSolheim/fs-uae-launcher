@@ -1,8 +1,10 @@
-import fstd.adffile
-import os
 import hashlib
-import fstd.mypy
+import os
+
 from nose.tools import *
+
+import fstd.adffile
+import fstd.mypy
 
 
 def get_transplant_adf() -> fstd.adffile.ADFFile:
