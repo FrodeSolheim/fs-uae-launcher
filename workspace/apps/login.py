@@ -43,8 +43,7 @@ class LoginWindow(fsui.Window):
             fsui.Label(
                 self,
                 gettext(
-                    "Logging in will enable the online game database "
-                    "and more"
+                    "Logging in will enable the online game database and more"
                 ),
             )
         )

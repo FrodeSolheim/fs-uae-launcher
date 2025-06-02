@@ -1,6 +1,7 @@
 import os
 
 from fsbc.system import windows
+
 # import pygame
 from fsbc.user import get_documents_dir, get_home_dir
 from fsbc.util import memoize

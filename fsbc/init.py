@@ -3,6 +3,7 @@ import sys
 
 import fsbc.debug
 import fsbc.logging
+
 # import fsbc.unicode
 from fsbc.application import Application
 

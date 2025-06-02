@@ -4,6 +4,7 @@ import sys
 
 # noinspection PyUnresolvedReferences
 from fsbc.system import macosx, windows
+
 # noinspection PyUnresolvedReferences
 from fsbc.user import get_data_dir
 
@@ -132,6 +133,7 @@ def normalize_path(path):
 
 # noinspection PyUnresolvedReferences
 from .user import get_home_dir
+
 # noinspection PyUnresolvedReferences
 # noinspection PyUnresolvedReferences
 # noinspection PyUnresolvedReferences

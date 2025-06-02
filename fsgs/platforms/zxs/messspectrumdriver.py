@@ -1,8 +1,14 @@
 from fsgs.drivers.messdriver import MessDriver
 from fsgs.option import Option
-from fsgs.spectrum import (ZXS_48_ROM, ZXS_128_0_ROM, ZXS_128_1_ROM,
-                           ZXS_PLUS3_0_ROM, ZXS_PLUS3_1_ROM, ZXS_PLUS3_2_ROM,
-                           ZXS_PLUS3_3_ROM)
+from fsgs.spectrum import (
+    ZXS_48_ROM,
+    ZXS_128_0_ROM,
+    ZXS_128_1_ROM,
+    ZXS_PLUS3_0_ROM,
+    ZXS_PLUS3_1_ROM,
+    ZXS_PLUS3_2_ROM,
+    ZXS_PLUS3_3_ROM,
+)
 
 MESS_SPECTRUM = "spectrum"  # ZX Spectrum
 MESS_SPEC128 = "spec128"  # ZX Spectrum 128

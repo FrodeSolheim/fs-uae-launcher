@@ -7,8 +7,12 @@ from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
 from arcade.glui.topmenu import GameCenterItem
-from arcade.glui.window import (back_to_menu_from_game, render_fade,
-                                set_current_menu, set_ingame_status)
+from arcade.glui.window import (
+    back_to_menu_from_game,
+    render_fade,
+    set_current_menu,
+    set_ingame_status,
+)
 
 STATE_STARTING = 0
 STATE_PREPARING = 1

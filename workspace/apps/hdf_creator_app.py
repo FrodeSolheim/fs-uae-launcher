@@ -35,8 +35,7 @@ class HDFCreatorWindow(fsui.DialogWindow):
             fsui.Icon("hd-volume", "pkg:workspace"),
             gettext("HDF Disk Image Creator"),
             gettext(
-                "Create a single-partition or partitionable hard "
-                "drive image"
+                "Create a single-partition or partitionable hard drive image"
             ),
         )
         layout.add(self.icon_header, fill=True, margin_bottom=20)

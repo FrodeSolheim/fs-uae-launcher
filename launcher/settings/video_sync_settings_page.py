@@ -11,7 +11,7 @@ class VideoSyncSettingsPage(SettingsPage):
         gettext("Video Synchronization Settings")
         title = gettext("Synchronization")
         subtitle = gettext(
-            "Synchronize FS-UAE with your display for " "smooth video"
+            "Synchronize FS-UAE with your display for smooth video"
         )
         self.add_header(icon, title, subtitle)
 

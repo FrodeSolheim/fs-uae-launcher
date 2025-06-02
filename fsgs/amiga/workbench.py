@@ -4,9 +4,14 @@ import traceback
 
 from fsgs.amiga.adf import ADFFile
 
-from .workbenchdata import (wb_204_files, wb_204_floppies,
-                            wb_204_startup_sequence, wb_300_files,
-                            wb_300_floppies, wb_300_startup_sequence)
+from .workbenchdata import (
+    wb_204_files,
+    wb_204_floppies,
+    wb_204_startup_sequence,
+    wb_300_files,
+    wb_300_floppies,
+    wb_300_startup_sequence,
+)
 
 
 class WorkbenchExtractor(object):

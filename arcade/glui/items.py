@@ -2,14 +2,19 @@ import math
 import os
 import random
 
-from arcade.glui.constants import (ROW_NAME, ROW_PLATFORM, TOP_ITEM_ARROW,
-                                   TOP_ITEM_LEFT)
+from arcade.glui.constants import (
+    ROW_NAME,
+    ROW_PLATFORM,
+    TOP_ITEM_ARROW,
+    TOP_ITEM_LEFT,
+)
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
 from arcade.glui.texturemanager import TextureManager
 from arcade.resources import gettext, resources
 from fsbc.util import memoize
 from fsgs.Database import Database
+
 # from numpy import array, float32
 from fsgs.platform import PlatformHandler
 from fsgs.util.gamenameutil import GameNameUtil

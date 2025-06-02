@@ -14,7 +14,7 @@ class JoystickSettingsPage(SettingsPage):
         # gettext("Joystick Settings")
         title = gettext("Controllers")
         subtitle = gettext(
-            "Configure joysticks and set preferred joystick " "devices"
+            "Configure joysticks and set preferred joystick devices"
         )
         self.add_header(icon, title, subtitle)
 

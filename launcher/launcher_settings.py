@@ -153,7 +153,7 @@ class LauncherSettings(object):
             value = get_user_name()
         # these are probably valid too: \`
         valid_chars = (
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "abcdefghijklmnopqrstuvwxyz" "_[]{}|^"
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_[]{}|^"
         )
         extra_valid_chars = "0123456789-"
         nick = ""

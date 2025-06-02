@@ -3,6 +3,7 @@ import traceback
 import weakref
 
 import fsui
+
 # FIXME: Remove dependency on arcade package (move stuff into fsgs instead)
 from arcade.glui.imageloader import get_file_for_sha1_cached
 

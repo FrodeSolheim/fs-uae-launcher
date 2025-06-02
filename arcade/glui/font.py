@@ -5,8 +5,15 @@ from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.texture import Texture
 from arcade.resources import resources
 from fsbc.util import memoize
-from fsui.qt import (QColor, QFontDatabase, QFontMetrics, QImage, QPainter,
-                     QPen, QPoint)
+from fsui.qt import (
+    QColor,
+    QFontDatabase,
+    QFontMetrics,
+    QImage,
+    QPainter,
+    QPen,
+    QPoint,
+)
 
 CACHE_SIZE = 100
 text_cache = []
@@ -201,9 +208,13 @@ class BitmapFont(object):
 
         # Set up some renderbuffer state
 
-        from OpenGL.GL import (glBindFramebuffer, glCheckFramebufferStatus,
-                               glDeleteFramebuffers, glFramebufferTexture2D,
-                               glGenFramebuffers)
+        from OpenGL.GL import (
+            glBindFramebuffer,
+            glCheckFramebufferStatus,
+            glDeleteFramebuffers,
+            glFramebufferTexture2D,
+            glGenFramebuffers,
+        )
 
         frame_buffer = gl.GLuint()
         glGenFramebuffers(1, frame_buffer)

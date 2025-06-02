@@ -2,8 +2,10 @@ import json
 
 from fsgs.option import Option
 from fsgs.platform import PlatformHandler
-from fsgs.platforms.atari.hatariataridriver import (ATARI_MODEL_1040ST,
-                                                    HatariAtariDriver)
+from fsgs.platforms.atari.hatariataridriver import (
+    ATARI_MODEL_1040ST,
+    HatariAtariDriver,
+)
 from fsgs.platforms.loader import SimpleLoader
 
 

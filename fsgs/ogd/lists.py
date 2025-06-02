@@ -23,7 +23,7 @@ class ListsSynchronizer(SynchronizerBase):
                 (list_uuid, game_uuid, variant_uuid, position),
             )
         cursor.execute(
-            "INSERT INTO game_list (uuid, name, sync) " "VALUES (?, ?, ?)",
+            "INSERT INTO game_list (uuid, name, sync) VALUES (?, ?, ?)",
             (list_uuid, list_info["name"], list_info["sync"]),
         )
 

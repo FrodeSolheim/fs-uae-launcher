@@ -15,8 +15,7 @@ class SignalBehavior:
             parent.destroyed.connect(self.on_parent_destroyed)
         except AttributeError:
             print(
-                "WARNING:SignalBehavior without remove_listener "
-                "implementation"
+                "WARNING:SignalBehavior without remove_listener implementation"
             )
         for signal in self._names:
             self._context.connect(

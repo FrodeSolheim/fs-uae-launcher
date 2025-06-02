@@ -135,7 +135,7 @@ class Netplay:
         want_players = int(LauncherConfig.get("__netplay_players") or "0")
         if player_count != want_players:
             self.game_warning(
-                "cannot start game, wanted {0} players, " "has {1}".format(
+                "cannot start game, wanted {0} players, has {1}".format(
                     want_players, player_count
                 )
             )
@@ -182,7 +182,7 @@ class Netplay:
             return False
         if not LauncherConfig.get("__netplay_host"):
             self.game_warning(
-                "cannot set ready - no connection to game " "server"
+                "cannot set ready - no connection to game server"
             )
             return False
         LauncherConfig.set("__netplay_ready", "1")
@@ -443,7 +443,7 @@ class Netplay:
         result = self.parse_server_args(args, 25101)
         if not result:
             self.irc.warning(
-                "usage: /startgame <host>[:<port>] " "[<players>] [<password>]"
+                "usage: /startgame <host>[:<port>] [<players>] [<password>]"
             )
             return
         host, port, players, password = result
@@ -527,8 +527,9 @@ class Netplay:
             ]
         )
         channel.info(
-            "started game id: {0} password: {1} "
-            "server: {2} port: {3}".format(game_id, password, addresses, port)
+            "started game id: {0} password: {1} server: {2} port: {3}".format(
+                game_id, password, addresses, port
+            )
         )
 
     # noinspection SpellCheckingInspection
@@ -565,8 +566,9 @@ class Netplay:
             ]
         )
         channel.info(
-            "started game id: {0} password: {1} "
-            "server: {2} port: {3}".format(game_id, password, addresses, port)
+            "started game id: {0} password: {1} server: {2} port: {3}".format(
+                game_id, password, addresses, port
+            )
         )
 
     def command_set(self, args):
@@ -614,7 +616,7 @@ class Netplay:
                     return
                 if LauncherConfig.get("__netplay_ready") != "1":
                     channel.privmsg(
-                        "(op tried to start game, " "but I am not ready)"
+                        "(op tried to start game, but I am not ready)"
                     )
                     return
                 channel.privmsg(
@@ -632,7 +634,7 @@ class Netplay:
                 my_config_hash = self.get_config_hash()
                 if my_config_hash != config_hash:
                     channel.action(
-                        "could not start game " "(mismatching config hash)"
+                        "could not start game (mismatching config hash)"
                     )
                     return
                 self.do_start_game()
@@ -767,7 +769,7 @@ class Netplay:
                 )
             else:
                 channel.action(
-                    "could not find (ext) kickstart " "for {0}".format(
+                    "could not find (ext) kickstart for {0}".format(
                         repr(value)
                     )
                 )
@@ -790,7 +792,7 @@ class Netplay:
         else:
             LauncherConfig.set_multiple([(set_key, ""), (key, "")])
             channel.action(
-                "could not find {1} for " "for {0}".format(value, set_key)
+                "could not find {1} for for {0}".format(value, set_key)
             )
 
     file_config = {}

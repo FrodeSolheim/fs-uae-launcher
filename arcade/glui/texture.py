@@ -1,8 +1,13 @@
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 from arcade.arcadetheme import ArcadeTheme
 from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
+
 # import numpy
 # from PIL import Image
 # from fsbc.Application import app

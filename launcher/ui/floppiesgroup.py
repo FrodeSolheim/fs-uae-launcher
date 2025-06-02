@@ -3,9 +3,11 @@ from launcher.cd_manager import CDManager
 from launcher.floppy_manager import FloppyManager
 from launcher.i18n import gettext
 from launcher.option import Option
-from launcher.ui.behaviors.platformbehavior import (AMIGA_PLATFORMS,
-                                                    CDEnableBehavior,
-                                                    FloppyEnableBehavior)
+from launcher.ui.behaviors.platformbehavior import (
+    AMIGA_PLATFORMS,
+    CDEnableBehavior,
+    FloppyEnableBehavior,
+)
 from launcher.ui.floppyselector import FloppySelector
 from launcher.ui.options import ConfigWidgetFactory
 

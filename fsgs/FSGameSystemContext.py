@@ -138,7 +138,7 @@ class FileContext(BaseContext):
                 if not license_status["accepted"]:
                     # FIXME: custom exception here
                     raise Exception(
-                        'Usage terms "{0}" was not ' "accepted".format(
+                        'Usage terms "{0}" was not accepted'.format(
                             license_code
                         )
                     )

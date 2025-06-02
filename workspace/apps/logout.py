@@ -41,9 +41,7 @@ class LogoutWindow(fsui.Window):
         heading_layout_2.add(
             fsui.Label(
                 self,
-                gettext(
-                    "While logged out you will not get " "database updates"
-                ),
+                gettext("While logged out you will not get database updates"),
             )
         )
 

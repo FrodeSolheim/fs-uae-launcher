@@ -12,8 +12,10 @@ from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.option import Option
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.behaviors.platformbehavior import (AMIGA_PLATFORMS,
-                                                    PlatformEnableBehavior)
+from launcher.ui.behaviors.platformbehavior import (
+    AMIGA_PLATFORMS,
+    PlatformEnableBehavior,
+)
 from launcher.ui.IconButton import IconButton
 from launcher.ui.LauncherFilePicker import LauncherFilePicker
 

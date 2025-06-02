@@ -13,9 +13,11 @@ from launcher.settings.platformsettingsdialog import PlatformSettingsDialog
 from launcher.settings.settings_dialog import SettingsDialog
 from launcher.settings.videosynccheckbox import VideoSyncCheckBox
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.behaviors.platformbehavior import (AMIGA_PLATFORMS,
-                                                    PlatformEnableBehavior,
-                                                    PlatformShowBehavior)
+from launcher.ui.behaviors.platformbehavior import (
+    AMIGA_PLATFORMS,
+    PlatformEnableBehavior,
+    PlatformShowBehavior,
+)
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
 from launcher.ui.IconButton import IconButton
 

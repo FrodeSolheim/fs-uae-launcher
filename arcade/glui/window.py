@@ -14,8 +14,13 @@ from arcade.glui.font import BitmapFont, Font
 from arcade.glui.imageloader import ImageLoader
 from arcade.glui.input import InputHandler
 from arcade.glui.itemmenu import ItemMenu
-from arcade.glui.items import (AllMenuItem, ListItem, MenuItem, NoItem,
-                               PlatformItem)
+from arcade.glui.items import (
+    AllMenuItem,
+    ListItem,
+    MenuItem,
+    NoItem,
+    PlatformItem,
+)
 from arcade.glui.notificationrender import NotificationRender
 from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
 from arcade.glui.render import Render
@@ -24,6 +29,7 @@ from arcade.glui.settings import Settings
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
 from arcade.glui.texturemanager import TextureManager
+
 # from arcade.main import Main
 from arcade.resources import logger, resources
 from fsbc import settings

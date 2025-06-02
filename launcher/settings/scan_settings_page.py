@@ -12,7 +12,7 @@ class ScanSettingsPage(SettingsPage):
         gettext("File Database Settings")
         title = gettext("File Database")
         subtitle = gettext(
-            "Choose what folders you want to scan for Amiga " "files"
+            "Choose what folders you want to scan for Amiga files"
         )
         self.add_header(icon, title, subtitle)
 
@@ -20,7 +20,7 @@ class ScanSettingsPage(SettingsPage):
             fsui.MultiLineLabel(
                 self,
                 gettext(
-                    "Choose what folders you want to scan for Amiga " "files"
+                    "Choose what folders you want to scan for Amiga files"
                 ),
             ),
             fill=True,

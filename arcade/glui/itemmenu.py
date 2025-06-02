@@ -1,7 +1,9 @@
 import math
 
-from arcade.glui.bottombar import (render_bottom_bar,
-                                   render_bottom_bar_transparent)
+from arcade.glui.bottombar import (
+    render_bottom_bar,
+    render_bottom_bar_transparent,
+)
 from arcade.glui.displaylists import DisplayLists
 from arcade.glui.menu import Menu
 from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl

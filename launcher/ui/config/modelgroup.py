@@ -11,8 +11,10 @@ from launcher.launcher_config import LauncherConfig
 from launcher.option import Option
 from launcher.panels.additionalconfigpanel import CustomConfigButton
 from launcher.ui.behaviors.configbehavior import ConfigBehavior
-from launcher.ui.behaviors.platformbehavior import (AMIGA_PLATFORMS,
-                                                    AmigaShowBehavior)
+from launcher.ui.behaviors.platformbehavior import (
+    AMIGA_PLATFORMS,
+    AmigaShowBehavior,
+)
 from launcher.ui.config.ConfigCheckBox import ConfigCheckBox
 from launcher.ui.options import ConfigWidgetFactory
 

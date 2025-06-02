@@ -136,7 +136,7 @@ class Database(BaseDatabase):
         # self._cursor.execute(query, args)
         a = "$/Configurations/"
         b = "$/Configurations" + "\u0030"  # one more than forward slash
-        query = "SELECT id, path FROM game WHERE " "path >= ? AND path < ?"
+        query = "SELECT id, path FROM game WHERE path >= ? AND path < ?"
         cursor.execute(query, (a, b))
         result = {}
         for row in cursor.fetchall():
@@ -212,7 +212,7 @@ class Database(BaseDatabase):
     def find_game_database_for_game_variant(self, uuid):
         cursor = self.internal_cursor()
         cursor.execute(
-            "SELECT database FROM game_variant WHERE " "uuid = ?", (uuid,)
+            "SELECT database FROM game_variant WHERE uuid = ?", (uuid,)
         )
         row = cursor.fetchone()
         if row is None:
@@ -255,8 +255,7 @@ class Database(BaseDatabase):
             "DELETE FROM last_variant WHERE game_uuid = ?", (game_uuid,)
         )
         cursor.execute(
-            "INSERT INTO last_variant (game_uuid, variant_uuid) "
-            "VALUES (?, ?)",
+            "INSERT INTO last_variant (game_uuid, variant_uuid) VALUES (?, ?)",
             (game_uuid, variant_uuid),
         )
 
@@ -438,7 +437,7 @@ class Database(BaseDatabase):
             )
             for term in search_terms:
                 cursor.execute(
-                    "INSERT INTO search_term (game, " "term) VALUES (?, ?)",
+                    "INSERT INTO search_term (game, term) VALUES (?, ?)",
                     (game_id, term),
                 )
 
@@ -644,8 +643,7 @@ class Database(BaseDatabase):
     def get_ratings_for_game(self, game_uuid):
         cursor = self.internal_cursor()
         cursor.execute(
-            "SELECT like_rating, work_rating FROM rating WHERE "
-            "game_uuid = ?",
+            "SELECT like_rating, work_rating FROM rating WHERE game_uuid = ?",
             (game_uuid,),
         )
         row = cursor.fetchone()
@@ -738,7 +736,7 @@ class Database(BaseDatabase):
         )
         cursor.execute("CREATE INDEX game_variant_uuid ON game_variant(uuid)")
         cursor.execute(
-            "CREATE INDEX game_variant_game_uuid " "ON game_variant(game_uuid)"
+            "CREATE INDEX game_variant_game_uuid ON game_variant(game_uuid)"
         )
         cursor.execute("CREATE INDEX game_path ON game(path)")
         cursor.execute(
