@@ -20,7 +20,7 @@ jobs:
 
     env:
       SIGNING_ENABLED: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
-      UPLOAD_ENABLED: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+      UPLOAD_ENABLED: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
