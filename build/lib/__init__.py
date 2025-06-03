@@ -31,7 +31,7 @@ else:
     os_name = "Unknown"
 
 machine = platform.machine()
-if machine == "arm64":
+if machine == "arm64" or machine == "aarch64":
     arch_name = "ARM64"
 else:
     arch_name = "x86-64"
