@@ -247,7 +247,8 @@ def notarize():
     bundleParentDir = os.path.dirname(bundlePath)
     if os.path.exists("build/_build/notarize.zip"):
         os.remove("build/_build/notarize.zip")
-    zip = "../../../notarize.zip"
+    # zip = "../../../notarize.zip"
+    zip = "notarize.zip"
     shell(
         f'cd {bundleParentDir} && ditto -c -k --keepParent "{bundleName}" "{zip}"'
     )
