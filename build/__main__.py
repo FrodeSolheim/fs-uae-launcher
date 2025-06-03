@@ -104,6 +104,9 @@ def _remove_unwanted_pyqt_files(dir):
 
 
 def build():
+    # Running make to create locales (among other things)
+    run(["make"])
+
     build_dir = "build/_build"
     script_name = "fs-uae-launcher"
 
