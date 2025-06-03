@@ -16,7 +16,7 @@ on:
 
 jobs:
   Windows_x86-64:
-    runs-on: windows-2019
+    runs-on: windows-2022
 
     env:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
