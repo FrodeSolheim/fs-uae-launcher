@@ -1,4 +1,4 @@
-name: macOS_ARM64
+name: macOS_x86-64
 
 on:
   push:
@@ -15,39 +15,36 @@ on:
       - test
 
 jobs:
-  macOS_ARM64:
+  macOS_x86-64:
     runs-on: macos-14
 
     env:
-      SIGNING_ENABLED: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
-      UPLOAD_ENABLED: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
+      KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+      SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
+      SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
 
     steps:
+      - name: Prepare signing certificate
+        if: env.SIGNING_CERTIFICATE_P12_DATA != null
+        run: |
+          echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
+          security create-keychain -p $KEYCHAIN_PASSWORD build.keychain
+          security set-keychain-settings -t 7200 build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
+          security import certificate.p12 -k build.keychain -P $SIGNING_CERTIFICATE_PASSWORD -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD build.keychain
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Install packages
-        run: |
-          brew install dos2unix
-
-      # - name: Download Python
-      #   run: |
-      #     wget https://www.python.org/ftp/python/3.9.7/python-3.9.7-macosx10.9.pkg
-      #     echo "f40f7407d20f88a6a64678b6586853de16cc5d7d07c82a8a2a7e43bba59dbae5 *python-3.9.7-macosx10.9.pkg" > SHA256SUMS
-      #     shasum -c SHA256SUMS
-
-      # - name: Install Python
-      #   run: |
-      #     sudo installer -pkg python-3.9.7-macosx10.9.pkg -target /
-
-      # - name: Add Python to PATH
-      #   run: |
-      #     echo /Library/Frameworks/Python.framework/Versions/3.9/bin >> $GITHUB_PATH
-
-      # - name: Install pip and pipenv
-      #   run: |
-      #     python3 -m pip install pip==21.3.1 pipenv==2021.5.29
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -55,120 +52,30 @@ jobs:
           version: "0.7.9"
 
       - name: Set up Python
-        run: |
-          uv python install
-
-      # - name: Set up Python 3.12
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: 3.12
+        run: uv python install
 
       - name: Run uv sync
-        run: |
-          uv sync
+        run: uv sync
 
       - name: Update version
-        run: |
-          fsbuild/version
-
-      - name: Bootstrap
-        if: hashFiles('fsbuild/bootstrap') != ''
-        run: |
-          fsbuild/bootstrap
-
-      - name: Configure
-        if: hashFiles('fsbuild/configure') != ''
-        run: |
-          fsbuild/configure
+        run: uv run python -m build version
 
       - name: Build
-        run: |
-          uv run fsbuild/build
-
-      - name: Bundle
-        run: |
-          fsbuild/bundle
-
-      - name: Prepare signing certificate
-        if: env.SIGNING_ENABLED != null
-        env:
-          KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
-          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-        run: |
-          echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
-          security create-keychain -p $KEYCHAIN_PASSWORD build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
-          security import certificate.p12 -k build.keychain -P $SIGNING_CERTIFICATE_PASSWORD -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD build.keychain
-
-      - name: Sign
-        if: env.SIGNING_ENABLED != null
-        run: |
-          fsbuild/sign
-
-      - name: Notarize
-        if: env.SIGNING_ENABLED != null
-        env:
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: |
-          fsbuild/notarize
-
-      - name: Archive
-        run: |
-          fsbuild/archive
-
-      - name: Build DMG
-        if: hashFiles('fsbuild/build-dmg') != '' && env.SIGNING_ENABLED != null
-        run: |
-          uv run fsbuild/build-dmg
-
-      - name: Unlock keychain again
-        if: env.SIGNING_ENABLED != null
-        env:
-          KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
-          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-        run: |
-          echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
-          security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
-
-      - name: Sign DMG
-        if: hashFiles('fsbuild/sign-dmg') != '' && env.SIGNING_ENABLED != null
-        run: |
-          fsbuild/sign-dmg
-
-      - name: Notarize DMG
-        if: hashFiles('fsbuild/notarize-dmg') != '' && env.SIGNING_ENABLED != null
-        env:
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: |
-          fsbuild/notarize-dmg
+        run: uv run python -m build all
 
       - uses: actions/upload-artifact@v4
         with:
-          name: macOS_ARM64
-          path: fsbuild/_dist/*
+          path: build/_dist/*
 
-      - name: Upload build to Dropbox folder
+      - name: Upload to Dropbox
         if: >-
-          env.UPLOAD_ENABLED != null && (
+          env.DROPBOX_REFRESH_TOKEN != null && (
             github.ref == 'refs/heads/beta' ||
             github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/main' ||
             github.ref == 'refs/heads/master' ||
             github.ref == 'refs/heads/stable' ||
             github.ref == 'refs/heads/test'
           )
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
-          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
-          DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
         run: |
-          uv add dropbox==12.0.2
-          uv run python fsbuild/upload
+          uv run python -m build upload

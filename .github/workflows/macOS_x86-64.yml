@@ -61,27 +61,11 @@ jobs:
         run: uv run python -m build version
 
       - name: Build
-        run: uv run python -m build
-
-      - name: Sign and notarize
-        run: uv run python -m build sign notarize
-
-      # - name: Archive
-      #   run: uv run python -m build archive
-
-      - name: Build DMG
-        run: uv run python -m build build-dmg
-
-      # - name: Unlock keychain again
-      #   if: env.SIGNING_CERTIFICATE_P12_DATA != null
-      #  run: security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
-
-      - name: Sign and notarize DMG
-        run: uv run python -m build sign-dmg notarize-dmg
+        run: uv run python -m build all
 
       - uses: actions/upload-artifact@v4
         with:
-          path: fsbuild/_dist/*
+          path: build/_dist/*
 
       - name: Upload to Dropbox
         if: >-

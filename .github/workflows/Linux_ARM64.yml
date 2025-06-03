@@ -16,7 +16,7 @@ on:
 
 jobs:
   Linux_x86-64:
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-24.04-arm
 
     env:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -47,10 +47,7 @@ jobs:
         run: uv run python -m build version
 
       - name: Build
-        run: uv run python -m build
-
-      - name: Archive
-        run: uv run python -m build archive
+        run: uv run python -m build all
 
       - uses: actions/upload-artifact@v4
         with:

@@ -24,6 +24,11 @@ from build.lib import (
 
 def version():
     update_version_command()
+    info = getPackageInformation()
+    with open("launcher/version.py", "w") as f:
+        f.write(f'VERSION = "{info.version}"\n')
+        f.write('PACKAGER = ""\n')
+        f.write('COMMIT = ""\n')
 
 
 def bootstrap():
@@ -305,7 +310,7 @@ def default():
 
 
 def all():
-    version()
+    # version()
     bootstrap()
     configure()
     build()
@@ -318,7 +323,7 @@ def all():
         notarize_dmg()
     else:
         archive()
-    upload()
+    # upload()
 
 
 def main():
@@ -330,7 +335,7 @@ def main():
         print("BUILD command:", command)
         if command == "all":
             all()
-        if command == "default":
+        elif command == "default":
             default()
         elif command == "version":
             version()
