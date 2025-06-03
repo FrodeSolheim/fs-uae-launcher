@@ -1,2 +1,2 @@
 # noinspection PyUnresolvedReferences
-from launcher.i18n import gettext
+from launcher.i18n import gettext as gettext

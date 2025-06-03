@@ -3,6 +3,7 @@ import os
 import sys
 import threading
 import time
+from typing import Self
 
 import fsboot
 from fsbc.paths import Paths
@@ -19,21 +20,21 @@ class Application(object):
     _instance = None
 
     @classmethod
-    def instance(cls):
+    def instance(cls) -> Self:
         """
         :rtype : Application
         """
         return cls._instance
 
     @classmethod
-    def get_instance(cls):
+    def get_instance(cls) -> Self:
         """
         :deprecated
         """
         return cls._instance
 
     @classmethod
-    def get(cls):
+    def get(cls) -> Self:
         """
         :deprecated
         """
@@ -152,9 +153,30 @@ class Application(object):
             if os.path.exists(data_dir):
                 data_dirs.append(data_dir)
 
+        if not macosx:
+            data_dir = os.path.join(
+                self.executable_dir(),
+                "..",
+                "..",
+                "Resources",
+            )
+            if os.path.exists(data_dir):
+                data_dirs.append(data_dir)
+
+        data_dir = os.path.join(
+            self.executable_dir(),
+            "System",
+            "Launcher",
+            "Resources",
+        )
+        if os.path.exists(data_dir):
+            data_dirs.append(data_dir)
+
         if macosx:
             data_dir = os.path.join(
-                self.executable_dir(), "..", "Resources", "Data"
+                self.executable_dir(),
+                "..",
+                "Resources",
             )
             if os.path.exists(data_dir):
                 data_dirs.append(data_dir)

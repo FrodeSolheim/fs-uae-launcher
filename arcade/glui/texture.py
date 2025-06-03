@@ -71,7 +71,7 @@ class Texture(object):
     def __init__(self, name, target=gl.GL_TEXTURE_2D, **kwargs):
         # print(repr(type(name)))
         # if isinstance(name, (int, long)):
-        if isinstance(name, int):
+        if not isinstance(name, str):
             self.size = kwargs["size"]
             self.texture = name
         else:

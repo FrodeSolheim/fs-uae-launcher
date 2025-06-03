@@ -92,35 +92,35 @@ class Platform(PlatformHandler):
         raise NotImplementedError()
 
 
-from fsgs.platforms.amiga import AmigaPlatformHandler
-from fsgs.platforms.amstrad_cpc import AmstradCPCPlatformHandler
-from fsgs.platforms.arcade.arcadeplatform import ArcadePlatformHandler
-from fsgs.platforms.atari5200 import Atari5200PlatformHandler
-from fsgs.platforms.atari7800 import Atari7800PlatformHandler
-from fsgs.platforms.atari.atariplatform import AtariSTPlatformHandler
-from fsgs.platforms.atari_2600 import Atari2600PlatformHandler
-from fsgs.platforms.cd32 import CD32PlatformHandler
-from fsgs.platforms.cdtv import CDTVPlatformHandler
-from fsgs.platforms.commodore64 import Commodore64Platform
-from fsgs.platforms.dos.dosplatform import DOSPlatformHandler
-from fsgs.platforms.gameboy import GameBoyPlatform
-from fsgs.platforms.gameboyadvance import GameBoyAdvancePlatform
-from fsgs.platforms.gameboycolor import GameBoyColorPlatform
-from fsgs.platforms.gamecube import GameCubePlatform
-from fsgs.platforms.gamegear import GameGearPlatform
-from fsgs.platforms.lynx import LynxPlatformHandler
-from fsgs.platforms.mastersystem import MasterSystemPlatform
-from fsgs.platforms.megadrive import MegaDrivePlatform
-from fsgs.platforms.msx import MsxPlatformHandler
-from fsgs.platforms.neogeo import NeoGeoPlatform
-from fsgs.platforms.nintendo import NintendoPlatform
-from fsgs.platforms.nintendo64 import Nintendo64Platform
-from fsgs.platforms.nintendods import NintendoDSPlatform
-from fsgs.platforms.playstation import PlayStationPlatform
-from fsgs.platforms.supernintendo import SuperNintendoPlatformHandler
-from fsgs.platforms.turbografx16 import TurboGrafx16Platform
-from fsgs.platforms.turbografxcd import TurboGrafxCDPlatform
-from fsgs.platforms.zxs import SpectrumPlatformHandler
+from fsgs.platforms.amiga import AmigaPlatformHandler  # noqa: E402
+from fsgs.platforms.amstrad_cpc import AmstradCPCPlatformHandler  # noqa: E402
+from fsgs.platforms.arcade.arcadeplatform import ArcadePlatformHandler  # noqa: E402
+from fsgs.platforms.atari5200 import Atari5200PlatformHandler  # noqa: E402
+from fsgs.platforms.atari7800 import Atari7800PlatformHandler  # noqa: E402
+from fsgs.platforms.atari.atariplatform import AtariSTPlatformHandler  # noqa: E402
+from fsgs.platforms.atari_2600 import Atari2600PlatformHandler  # noqa: E402
+from fsgs.platforms.cd32 import CD32PlatformHandler  # noqa: E402
+from fsgs.platforms.cdtv import CDTVPlatformHandler  # noqa: E402
+from fsgs.platforms.commodore64 import Commodore64Platform  # noqa: E402
+from fsgs.platforms.dos.dosplatform import DOSPlatformHandler  # noqa: E402
+from fsgs.platforms.gameboy import GameBoyPlatform  # noqa: E402
+from fsgs.platforms.gameboyadvance import GameBoyAdvancePlatform  # noqa: E402
+from fsgs.platforms.gameboycolor import GameBoyColorPlatform  # noqa: E402
+from fsgs.platforms.gamecube import GameCubePlatform  # noqa: E402
+from fsgs.platforms.gamegear import GameGearPlatform  # noqa: E402
+from fsgs.platforms.lynx import LynxPlatformHandler  # noqa: E402
+from fsgs.platforms.mastersystem import MasterSystemPlatform  # noqa: E402
+from fsgs.platforms.megadrive import MegaDrivePlatform  # noqa: E402
+from fsgs.platforms.msx import MsxPlatformHandler  # noqa: E402
+from fsgs.platforms.neogeo import NeoGeoPlatform  # noqa: E402
+from fsgs.platforms.nintendo import NintendoPlatform  # noqa: E402
+from fsgs.platforms.nintendo64 import Nintendo64Platform  # noqa: E402
+from fsgs.platforms.nintendods import NintendoDSPlatform  # noqa: E402
+from fsgs.platforms.playstation import PlayStationPlatform  # noqa: E402
+from fsgs.platforms.supernintendo import SuperNintendoPlatformHandler  # noqa: E402
+from fsgs.platforms.turbografx16 import TurboGrafx16Platform  # noqa: E402
+from fsgs.platforms.turbografxcd import TurboGrafxCDPlatform  # noqa: E402
+from fsgs.platforms.zxs import SpectrumPlatformHandler  # noqa: E402
 
 
 class UnsupportedPlatform(PlatformHandler):

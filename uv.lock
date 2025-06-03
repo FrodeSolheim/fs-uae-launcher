@@ -110,7 +110,6 @@ dependencies = [
     { name = "pywin32-ctypes", marker = "sys_platform == 'win32'" },
     { name = "requests" },
     { name = "sentry-sdk" },
-    { name = "setuptools" },
     { name = "typing-extensions" },
 ]
 
@@ -136,7 +135,6 @@ requires-dist = [
     { name = "pywin32-ctypes", marker = "sys_platform == 'win32'", specifier = ">=0.2.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "sentry-sdk", specifier = ">=2.29.1" },
-    { name = "setuptools", specifier = ">=80.9.0" },
     { name = "typing-extensions", specifier = ">=4.13.2" },
 ]
 

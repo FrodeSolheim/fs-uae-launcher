@@ -1,6 +1,10 @@
 *~
 /base-dir
 /build/fs-uae-launcher/
+
+/build/_build/
+/build/_dist/
+
 /debian/.debhelper/
 /debian/files
 /debian/fs-uae-launcher
@@ -29,3 +33,4 @@ Lib
 *.pyo
 /setup.py
 *.swp
+*.zip

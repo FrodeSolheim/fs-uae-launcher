@@ -5,9 +5,9 @@ make
 
 BUILDDIR=fsbuild/_build
 
-# Remove files from PyQt5 that we don't want to bundle (before pyinstaller
+# Remove files from PyQt6 that we don't want to bundle (before pyinstaller
 # pulls in their dependencies).
-# python3 fsbuild/fix-pyqt5.py
+# python3 fsbuild/fix-pyqt6.py
 
 rm -Rf $BUILDDIR/pyinstaller
 if [ "$SYSTEM_OS" = "Windows" ]; then

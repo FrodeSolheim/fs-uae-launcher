@@ -3,7 +3,7 @@ import warnings
 
 from fsui.common.layout import Layout
 from fsui.qt import QPoint
-from fsui.qt import Qt, QObject, QFontMetrics, QWidget, QPalette, QCursor
+from fsui.qt import Qt, QObject, QFontMetrics, QWidget, QPalette
 from fsui.qt.Color import Color
 from fsui.qt.DrawingContext import Font
 from fsui.qt.signal import Signal
@@ -63,7 +63,7 @@ class Widget(QObject):
     def hide(self):
         self.set_visible(False)
 
-    def eventFilter(self, obj, event):
+    def eventFilter(self, a0, a1):
         return False
 
     def parent(self):
@@ -88,10 +88,10 @@ class Widget(QObject):
         return rect.width(), rect.height()
 
     def set_hand_cursor(self):
-        self.widget().setCursor(Qt.PointingHandCursor)
+        self.widget().setCursor(Qt.CursorShape.PointingHandCursor)
 
     def set_normal_cursor(self):
-        self.widget().setCursor(Qt.ArrowCursor)
+        self.widget().setCursor(Qt.CursorShape.ArrowCursor)
 
     def is_enabled(self):
         return self.widget().isEnabled()

@@ -1,4 +1,3 @@
-import pkg_resources
 import fsui
 from fsui.qt.window import RealWindow
 from .application import Application

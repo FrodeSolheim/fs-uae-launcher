@@ -234,7 +234,7 @@ class FileScanner(object):
 
         try:
             st = os.stat(path)
-        except:
+        except Exception:
             print("[FILES] WARNING: Error stat-ing file", repr(path))
             return
         size = st.st_size

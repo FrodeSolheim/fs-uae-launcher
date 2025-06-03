@@ -3,14 +3,14 @@ import os
 import shutil
 import sys
 
-from PyQt5.QtCore import QLibraryInfo
+from PyQt6.QtCore import QLibraryInfo
 
 
 def main():
     # This is mainly to avoid bundling libraries that can cause issues,
     # such as GTK (and dependencies) being included if GTK platform
     # integration is included.
-    print("Fixing PyQt5 installation before running pyinstaller")
+    print("Fixing PyQt6 installation before running pyinstaller")
     print("(Removing unnecessary stuff")
 
     # librariesPath = QLibraryInfo.location(QLibraryInfo.LibrariesPath)
@@ -22,13 +22,15 @@ def main():
             print("Removing", path)
             shutil.rmtree(path)
 
-    qmlPath = QLibraryInfo.location(QLibraryInfo.Qml2ImportsPath)
+    qmlPath = QLibraryInfo.path(QLibraryInfo.LibraryPath.Qml2ImportsPath)
     removePath(qmlPath)
 
-    translationsPath = QLibraryInfo.location(QLibraryInfo.TranslationsPath)
+    translationsPath = QLibraryInfo.path(
+        QLibraryInfo.LibraryPath.TranslationsPath
+    )
     removePath(translationsPath)
 
-    pluginsPath = QLibraryInfo.location(QLibraryInfo.PluginsPath)
+    pluginsPath = QLibraryInfo.path(QLibraryInfo.LibraryPath.PluginsPath)
     print(pluginsPath)
 
     def removePlugins(type):

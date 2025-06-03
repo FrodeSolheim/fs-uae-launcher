@@ -1,12 +1,7 @@
-import filecmp
-import os
-import shutil
-
 from fsgs.drivers.messdriver import MessDriver
 from fsgs.knownfiles import KnownFile
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
-from fsgs.plugins.pluginmanager import PluginManager
 
 # noinspection SpellCheckingInspection
 A5200_ROM = KnownFile(
