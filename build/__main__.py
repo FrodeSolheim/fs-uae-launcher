@@ -233,8 +233,8 @@ def sign():
         getAppleCodesignIdentity(),
         "--digest-algorithm=sha1,sha256",
     ]
-    if os.path.exists("fsbuild/Entitlements.plist"):
-        args.extend(["--entitlements", "fsbuild/Entitlements.plist"])
+    if os.path.exists("build/Entitlements.plist"):
+        args.extend(["--entitlements", "build/Entitlements.plist"])
     args.append(getBundlePath())
     run(args)
     # runCodeSign(args)
@@ -245,13 +245,13 @@ def notarize():
     bundlePath = getBundlePath()
     bundleName = os.path.basename(bundlePath)
     bundleParentDir = os.path.dirname(bundlePath)
-    if os.path.exists("fsbuild/_build/notarize.zip"):
-        os.remove("fsbuild/_build/notarize.zip")
+    if os.path.exists("build/_build/notarize.zip"):
+        os.remove("build/_build/notarize.zip")
     zip = "../../../notarize.zip"
     shell(
         f'cd {bundleParentDir} && ditto -c -k --keepParent "{bundleName}" "{zip}"'
     )
-    notarizeApp("fsbuild/_build/notarize.zip", bundleId)
+    notarizeApp("build/_build/notarize.zip", bundleId)
     # if bundlePath.endswith(".framework"):
     #     print(
     #         "Does not seem to be possible to staple tickets to frameworks? (error 73)"

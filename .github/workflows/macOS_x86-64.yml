@@ -31,6 +31,17 @@ jobs:
       SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
 
     steps:
+      - name: Prepare signing certificate
+        if: env.SIGNING_CERTIFICATE_P12_DATA != null
+        run: |
+          echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
+          security create-keychain -p $KEYCHAIN_PASSWORD build.keychain
+          security set-keychain-settings -t 7200 build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
+          security import certificate.p12 -k build.keychain -P $SIGNING_CERTIFICATE_PASSWORD -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD build.keychain
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -52,16 +63,6 @@ jobs:
       - name: Build
         run: uv run python -m build
 
-      - name: Prepare signing certificate
-        if: env.SIGNING_CERTIFICATE_P12_DATA != null
-        run: |
-          echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode > certificate.p12
-          security create-keychain -p $KEYCHAIN_PASSWORD build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
-          security import certificate.p12 -k build.keychain -P $SIGNING_CERTIFICATE_PASSWORD -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD build.keychain
-
       - name: Sign and notarize
         run: uv run python -m build sign notarize
 
@@ -71,9 +72,9 @@ jobs:
       - name: Build DMG
         run: uv run python -m build build-dmg
 
-      - name: Unlock keychain again
-        if: env.SIGNING_CERTIFICATE_P12_DATA != null
-        run: security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
+      # - name: Unlock keychain again
+      #   if: env.SIGNING_CERTIFICATE_P12_DATA != null
+      #  run: security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
 
       - name: Sign and notarize DMG
         run: uv run python -m build sign-dmg notarize-dmg

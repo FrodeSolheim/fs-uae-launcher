@@ -10,11 +10,12 @@ import re
 import shutil
 import subprocess
 import sys
-import dropbox
 import time
 from os import path
 from typing import Dict, List, Optional
 
+import dropbox
+import requests
 
 macos = sys.platform == "darwin"
 windows = sys.platform == "win32"
@@ -120,10 +121,12 @@ def getBundleName() -> str:
 
 
 def getBundlePath(prefix: str = "build/_build/") -> str:
-    prettyName = getPackageInformation().pretty_name
-    bundleName = getBundleName()
-    arch = getArchitecture()
-    path = f"{prefix}{prettyName}/macOS/{arch}/{bundleName}"
+    # prettyName = getPackageInformation().pretty_name
+    # bundleName = getBundleName()
+    # arch = getArchitecture()
+    # path = f"{prefix}{prettyName}/macOS/{arch}/{bundleName}"
+    bundle_name = getBundleName()
+    path = f"{prefix}/{bundle_name}"
     return path
 
 
@@ -674,19 +677,6 @@ def notarizeDmg():
     print(f"[BUILD] Notarized {dmgPath}")
 
 
-import dropbox
-import requests
-
-package_data = {}
-with open("PACKAGE.FS", "r") as f:
-    for line in f:
-        try:
-            key, value = line.strip().split("=", 1)
-            package_data[key] = value
-        except ValueError:
-            pass
-
-
 def execute_discord_webhook(name, link):
     webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
     if not webhook_url:
@@ -744,7 +734,7 @@ def upload():
         app_secret=os.getenv("DROPBOX_APP_SECRET"),
         oauth2_refresh_token=os.getenv("DROPBOX_REFRESH_TOKEN"),
     )
-    package = package_data["PACKAGE_NAME_PRETTY"]
-    version = package_data["PACKAGE_VERSION"]
+    package = getPackageInformation().pretty_name
+    version = getPackageInformation().version
     for item in upload_items:
         upload_package(dbx, package, version, os.path.join(dist_dir, item))
