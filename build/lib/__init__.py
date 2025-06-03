@@ -737,7 +737,7 @@ def upload_package(dbx, package, version, path):
 
 
 def upload():
-    dist_dir = "fsbuild/_dist"
+    dist_dir = "build/_dist"
     upload_items = os.listdir(dist_dir)
     dbx = dropbox.Dropbox(
         app_key=os.getenv("DROPBOX_APP_KEY"),
