@@ -11,6 +11,14 @@ from build.lib import (
     windows,
     # rmtree_if_exists,
     getPackageInformation,
+    getAppleCodesignIdentity,
+    getBundlePath,
+    buildDmg,
+    signDmg,
+    notarizeApp,
+    notarizeDmg,
+    shell,
+    upload
 )
 
 
@@ -142,15 +150,17 @@ def bundle():
     # macos_bundle_id = "no.fengestad.fs-uae-launcher"
     package = getPackageInformation()
 
-    bundle_dir = f"build/_build/{package.pretty_name}"
-    if os.path.exists(bundle_dir):
-        shutil.rmtree(bundle_dir)
-    bin_dir = os.path.join(bundle_dir, os_name, arch_name)
-
     if macos:
+        src_dir = f"build/_build/pyinstaller/{package.name}.app"
+        app_dir = f"build/_build/{package.display_name}.app"
+        if os.path.exists(app_dir):
+            shutil.rmtree(app_dir)
+
+        shutil.move(src_dir, app_dir)
+
         # os.makedirs(bin_bin)
-        contents_dir = os.path.join(bin_dir, package.display_name, "Contents")
-        os.makedirs(contents_dir)
+        contents_dir = os.path.join(app_dir, "Contents")
+        # os.makedirs(contents_dir)
         info_plist_file = os.path.join(contents_dir, "Info.plist")
         with open(info_plist_file, "w") as f:
             f.write(f"""<?xml version="1.0" encoding="UTF-8"?>
@@ -180,19 +190,29 @@ def bundle():
   </dict>
 </plist>
 """)
-        resources_dir = os.path.join(bundle_dir, "Resources")
+        resources_dir = os.path.join(contents_dir, "Resources")
+        shutil.copy("icon/fs-uae-launcher.icns",
+                    os.path.join(resources_dir, "fs-uae-launcher.icns"))
+
         locale_dir = os.path.join(resources_dir, "Locale")
     else:
+        bundle_dir = f"build/_build/{package.pretty_name}"
+        if os.path.exists(bundle_dir):
+            shutil.rmtree(bundle_dir)
+        bin_dir = os.path.join(bundle_dir, os_name, arch_name)
+
         src = f"build/_build/pyinstaller/{package.name}"
-        shutil.copytree(src, bin_dir, symlinks=True)
+        # shutil.copytree(src, bin_dir, symlinks=True)
+        shutil.move(src, bin_dir)
 
         resources_dir = os.path.join(bundle_dir, "Resources")
+        os.makedirs(resources_dir)
+
         # Or put locale_dir in Resources?
         locale_dir = os.path.join(bundle_dir, "Locale")
 
     shutil.copytree("share/locale", locale_dir)
 
-    os.makedirs(resources_dir)
     for item in ["arcade", "fsgs", "launcher", "workspace"]:
         archive = shutil.make_archive(
             os.path.join(resources_dir, item),
@@ -200,6 +220,45 @@ def bundle():
             os.path.join("System", "Launcher", "Resources", item),
         )
         print(archive)
+
+
+def sign():
+    args = [
+        "codesign",
+        "--force",
+        "--deep",
+        "--options",
+        "runtime",
+        "--sign",
+        getAppleCodesignIdentity(),
+        "--digest-algorithm=sha1,sha256",
+    ]
+    if os.path.exists("fsbuild/Entitlements.plist"):
+        args.extend(["--entitlements", "fsbuild/Entitlements.plist"])
+    args.append(getBundlePath())
+    run(args)
+    # runCodeSign(args)
+
+
+def notarize():
+    bundleId = getPackageInformation().macos_bundle_id
+    bundlePath = getBundlePath()
+    bundleName = os.path.basename(bundlePath)
+    bundleParentDir = os.path.dirname(bundlePath)
+    if os.path.exists("fsbuild/_build/notarize.zip"):
+        os.remove("fsbuild/_build/notarize.zip")
+    zip = "../../../notarize.zip"
+    shell(
+        f'cd {bundleParentDir} && ditto -c -k --keepParent "{bundleName}" "{zip}"'
+    )
+    notarizeApp("fsbuild/_build/notarize.zip", bundleId)
+    # if bundlePath.endswith(".framework"):
+    #     print(
+    #         "Does not seem to be possible to staple tickets to frameworks? (error 73)"
+    #     )
+    #     print("Exiting...")
+    #     sys.exit(0)
+    run(["xcrun", "stapler", "staple", bundlePath])
 
 
 def archive():
@@ -225,6 +284,18 @@ def archive():
         print(archive)
 
 
+def build_dmg():
+    buildDmg()
+
+
+def sign_dmg():
+    signDmg()
+
+
+def notarize_dmg():
+    notarizeDmg()
+
+
 def main():
     args = sys.argv[1:]
     if len(args) == 0:
@@ -242,8 +313,20 @@ def main():
             build()
         elif command == "bundle":
             bundle()
+        elif command == "sign":
+            sign()
+        elif command == "notarize":
+            notarize()
         elif command == "archive":
             archive()
+        elif command == "build-dmg":
+            build_dmg()
+        elif command == "sign-dmg":
+            sign_dmg()
+        elif command == "notarize-dmg":
+            notarize_dmg()
+        elif command == "upload":
+            upload()
         else:
             print(f"Unsupported command: {command}", file=sys.stderr)
             sys.exit(1)
