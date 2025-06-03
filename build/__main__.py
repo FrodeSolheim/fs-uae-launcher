@@ -296,14 +296,42 @@ def notarize_dmg():
     notarizeDmg()
 
 
+def default():
+    bootstrap()
+    configure()
+    build()
+    bundle()
+
+
+def all():
+    version()
+    bootstrap()
+    configure()
+    build()
+    bundle()
+    if macos:
+        sign()
+        notarize()
+        build_dmg()
+        sign_dmg()
+        notarize_dmg()
+    else:
+        archive()
+    upload()
+
+
 def main():
     args = sys.argv[1:]
     if len(args) == 0:
-        args = ["bootstrap", "configure", "build", "bundle"]
+        args = ["default"]
     for arg in args:
         command = arg
         print("BUILD command:", command)
-        if command == "version":
+        if command == "all":
+            all()
+        if command == "default":
+            default()
+        elif command == "version":
             version()
         elif command == "bootstrap":
             bootstrap()
