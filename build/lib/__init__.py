@@ -118,7 +118,7 @@ def getBundleName() -> str:
         return getAppName()
 
 
-def getBundlePath(prefix: str = "fsbuild/_build/") -> str:
+def getBundlePath(prefix: str = "build/_build/") -> str:
     prettyName = getPackageInformation().pretty_name
     bundleName = getBundleName()
     arch = getArchitecture()
@@ -132,7 +132,7 @@ def getDmgPath() -> str:
     version = packageInformation.version
     arch = getArchitecture()
     osDist = getOperatingSystemDist()
-    path = f"fsbuild/_dist/{prettyName}_{version}_{osDist}_{arch}.dmg"
+    path = f"build/_dist/{prettyName}_{version}_{osDist}_{arch}.dmg"
     return path
 
 
@@ -475,7 +475,7 @@ def calculateVersion(
     increment_revision: bool = False,
     include_commit: bool = False,
 ) -> Version:
-    # with open("fsbuild/VERSION") as f:
+    # with open("build/VERSION") as f:
     with open("BASEVERSION.FS") as f:
         version_str = f.read().strip()
     if version_str.startswith("BASEVERSION_FS="):
@@ -587,7 +587,7 @@ def buildDmg():
     tool = "dmgbuild"
     if tool == "appdmg":
         bundlePath = getBundlePath(prefix="")
-        settingsPath = "fsbuild/_build/appdmg.json"
+        settingsPath = "build/_build/appdmg.json"
         with open(settingsPath, "w", encoding="UTF-8") as f:
             json.dump(
                 {
@@ -619,7 +619,7 @@ def buildDmg():
     elif tool == "dmgbuild":  # type: ignore
         bundlePath = getBundlePath()
         settingsPath = "build/dmgbuild/settings.py"
-        # settingsPath = "fsbuild/_build/dmgbuild-settings.py"
+        # settingsPath = "build/_build/dmgbuild-settings.py"
         # with open(settingsPath, "w", encoding="UTF-8") as f:
         #     f.write("format = 'UDZO'\n")
         #     f.write("files = [\n")
@@ -671,7 +671,7 @@ def notarizeDmg():
     assert os.system('xcrun stapler staple "{}"'.format(dmgPath)) == 0
 
     print("-" * 80)
-    print(f"[FSBUILD] Notarized {dmgPath}")
+    print(f"[BUILD] Notarized {dmgPath}")
 
 
 if __name__ == "__main__":
