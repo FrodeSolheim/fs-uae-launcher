@@ -1,7 +1,9 @@
 import json
 import traceback
 
-from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing
+from OpenGL import GL as gl
+from OpenGL.GLU import gluOrtho2D
 from arcade.glui.texture import Texture
 from arcade.resources import resources
 from fsbc.util import memoize
@@ -198,7 +200,7 @@ class BitmapFont(object):
             gl.glTexParameteri(
                 gl.GL_TEXTURE_2D, gl.GL_GENERATE_MIPMAP, gl.GL_TRUE
             )
-            gl.glGenerateMipmapEXT(gl.GL_TEXTURE_2D)
+            gl.glGenerateMipmap(gl.GL_TEXTURE_2D)
         else:
             gl.glTexParameteri(
                 gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR
@@ -218,17 +220,17 @@ class BitmapFont(object):
 
         frame_buffer = gl.GLuint()
         glGenFramebuffers(1, frame_buffer)
-        glBindFramebuffer(gl.GL_FRAMEBUFFER_EXT, frame_buffer)
+        glBindFramebuffer(gl.GL_FRAMEBUFFER, frame_buffer)
         glFramebufferTexture2D(
-            gl.GL_FRAMEBUFFER_EXT,
-            gl.GL_COLOR_ATTACHMENT0_EXT,
+            gl.GL_FRAMEBUFFER,
+            gl.GL_COLOR_ATTACHMENT0,
             gl.GL_TEXTURE_2D,
             render_texture,
             0,
         )
 
-        status = glCheckFramebufferStatus(gl.GL_FRAMEBUFFER_EXT)
-        if status != gl.GL_FRAMEBUFFER_COMPLETE_EXT:
+        status = glCheckFramebufferStatus(gl.GL_FRAMEBUFFER)
+        if status != gl.GL_FRAMEBUFFER_COMPLETE:
             print("glCheckFramebufferStatusEXT error", status)
 
         gl.glPushMatrix()
@@ -238,7 +240,7 @@ class BitmapFont(object):
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glPushMatrix()
         gl.glLoadIdentity()
-        gl.gluOrtho2D(0, required_width, 0, required_height)
+        gluOrtho2D(0, required_width, 0, required_height)
 
         gl.glClearColor(0.0, 0.0, 0.0, 0.0)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
@@ -276,14 +278,14 @@ class BitmapFont(object):
         gl.glPopMatrix()
         gl.glMatrixMode(gl.GL_MODELVIEW)
         gl.glPopAttrib()
-        glBindFramebuffer(gl.GL_FRAMEBUFFER_EXT, 0)
+        glBindFramebuffer(gl.GL_FRAMEBUFFER, 0)
         gl.glPopMatrix()
 
         glDeleteFramebuffers(1, frame_buffer)
 
         if mip_mapping:
             gl.glBindTexture(gl.GL_TEXTURE_2D, render_texture)
-            gl.glGenerateMipmapEXT(gl.GL_TEXTURE_2D)
+            gl.glGenerateMipmap(gl.GL_TEXTURE_2D)
             gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
 
         new_item = {

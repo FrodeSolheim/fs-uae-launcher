@@ -51,7 +51,7 @@ class GLWidget(QOpenGLWidget):
             print("[OPENGL]", threading.current_thread())
             self._first_resize_gl_call = False
 
-        gl.load()
+        # gl.load()
         try:
             if not self._initialized:
                 if width == 160 and height == 160:
@@ -77,18 +77,18 @@ class GLWidget(QOpenGLWidget):
             self._callbacks.resize(width, height)
         except Exception:
             traceback.print_exc()
-        gl.unload()
+        # gl.unload()
 
     def paintGL(self):
         if self._first_paint_gl_call:
             print("[OPENGL] GLWidget.paintGL")
             print("[OPENGL]", threading.current_thread())
             self._first_paint_gl_call = False
-        gl.load()
+        # gl.load()
         try:
             self._callbacks.render()
         except Exception:
             traceback.print_exc()
             # import sys
             # sys.exit(1)
-        gl.unload()
+        # gl.unload()

@@ -6,7 +6,8 @@ from __future__ import (
 )
 
 from arcade.arcadetheme import ArcadeTheme
-from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing
+from OpenGL import GL as gl
 
 # import numpy
 # from PIL import Image
