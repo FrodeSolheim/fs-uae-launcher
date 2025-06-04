@@ -4,6 +4,14 @@ import sys
 import time
 from collections import deque
 
+from OpenGL import GL as gl
+from OpenGL.GL.ARB.shader_objects import (
+    glCompileShaderARB,
+    glCreateShaderObjectARB,
+    glDeleteObjectARB,
+    glShaderSourceARB,
+)
+
 from arcade.gamecenter import GameCenter
 from arcade.gamecentersettings import ArcadeSettings
 from arcade.glui.animation import AnimateValueBezier, AnimationSystem
@@ -22,7 +30,7 @@ from arcade.glui.items import (
     PlatformItem,
 )
 from arcade.glui.notificationrender import NotificationRender
-from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing
 from arcade.glui.render import Render
 from arcade.glui.sdl import SDL_IsMinimized
 from arcade.glui.settings import Settings
@@ -169,9 +177,9 @@ def set_items_brightness(brightness, duration=1.0, delay=0.0):
 
 
 def compile_shader(source, shader_type):
-    shader = gl.glCreateShaderObjectARB(shader_type)
-    gl.glShaderSourceARB(shader, source)
-    gl.glCompileShaderARB(shader)
+    shader = glCreateShaderObjectARB(shader_type)
+    glShaderSourceARB(shader, source)
+    glCompileShaderARB(shader)
     try:
         status = ctypes.c_int()
         gl.glGetShaderiv(shader, gl.GL_COMPILE_STATUS, ctypes.byref(status))
@@ -180,7 +188,7 @@ def compile_shader(source, shader_type):
         status = gl.glGetShaderiv(shader, gl.GL_COMPILE_STATUS)
     if not status:
         print_log(shader)
-        gl.glDeleteObjectARB(shader)
+        glDeleteObjectARB(shader)
         raise ValueError("Shader compilation failed")
     return shader
 
@@ -1031,12 +1039,10 @@ def render_screen():
         return
     # Render.get().dirty = True
 
-    try:
-        # FIXME: The previous gl operation (probably failed)
-        gl.glClearColor(0.0, 0.0, 0.0, 1.0)
-    except Exception:
-        print("FIXME: Check the previos OpenGL operation for error...")
-        pass
+    error = gl.glGetError()
+    if error:
+        # FIXME: Why error?
+        print(error)
 
     gl.glClearColor(0.0, 0.0, 0.0, 1.0)
     gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
@@ -1388,6 +1394,10 @@ def on_resize(display_size):
     global display
     global real_display_height, display_yoffset
     global browse_curve, header_curve  # ,screenshot_curve
+
+    error = gl.glGetError()
+    if error:
+        print(error)
 
     DisplayLists.clear()
 

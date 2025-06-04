@@ -1,4 +1,6 @@
-from arcade.glui.opengl import fs_emu_blending, gl
+from arcade.glui.opengl import fs_emu_blending
+from OpenGL import GL as gl
+
 from arcade.glui.render import Render
 
 from .state import State

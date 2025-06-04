@@ -1,18 +1,18 @@
-from OpenGL import GL as gl
+from OpenGL import GL
 
 
 def fs_emu_blending(enable):
     if enable:
-        gl.glEnable(gl.GL_BLEND)
+        GL.glEnable(GL.GL_BLEND)
     else:
-        gl.glDisable(gl.GL_BLEND)
+        GL.glDisable(GL.GL_BLEND)
 
 
 def fs_emu_texturing(enable):
     if enable:
-        gl.glEnable(gl.GL_TEXTURE_2D)
+        GL.glEnable(GL.GL_TEXTURE_2D)
     else:
-        gl.glDisable(gl.GL_TEXTURE_2D)
+        GL.glDisable(GL.GL_TEXTURE_2D)
 
 
 # class GL:

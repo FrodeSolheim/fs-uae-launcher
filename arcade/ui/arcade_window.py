@@ -198,7 +198,11 @@ class QtWindow(QWidget):
         # self.window_created_at = time.time()
         self.first_motion_event = True
 
-        # self.create_gl_window_2()
+        # Override later code, initialize at once
+        self.first_time = time.time() - 1.0
+        self.create_gl_window_2()
+        self._last_width = 0
+        self._last_height = 0
 
     def set_blank_cursor(self, blank=True):
         if blank:
@@ -249,15 +253,22 @@ class QtWindow(QWidget):
     def restore_window_if_necessary(self):
         pass
 
-    def resizeEvent(self, event):
-        size = event.size()
-        print("QtWindow.resizeEvent size =", (size.width(), size.height()))
-        # if (size.width(), size.height()) == (100, 30):
-        # traceback.print_stack()
+    def handle_size(self, width: int, height: int) -> None:
+        if width == self._last_width and height == self.last_height:
+            return
         if self.gl_widget is not None:
-            self.gl_widget.setGeometry(0, 0, size.width(), size.height())
+            self.gl_widget.setGeometry(0, 0, width, height)
+            self.last_height = height
+            self.last_width = width
 
-    def timerEvent(self, event):
+    def resizeEvent(self, a0):
+        size = a0.size()
+        print("QtWindow.resizeEvent size =", (size.width(), size.height()))
+        self.handle_size(size.width(), size.height())
+
+    def timerEvent(self, a0):
+        # self.handle_size(self.width(), self.height())
+
         if self.first_time is None:
             self.first_time = time.time()
         if not self.create_gl_window_2():

@@ -7,7 +7,8 @@ from arcade.glui.constants import TOP_ITEM_LEFT, TOP_ITEM_NOBORDER
 from arcade.glui.font import BitmapFont
 from arcade.glui.items import MenuItem, create_item_menu
 from arcade.glui.navigatable import Navigatable
-from arcade.glui.opengl import fs_emu_blending, gl
+from arcade.glui.opengl import fs_emu_blending
+from OpenGL import GL as gl
 from arcade.glui.sdl import *
 from arcade.glui.state import State
 from arcade.glui.texture import Texture

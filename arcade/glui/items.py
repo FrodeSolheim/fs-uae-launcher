@@ -21,7 +21,8 @@ from fsgs.util.gamenameutil import GameNameUtil
 
 from .errordialog import show_exception
 from .font import BitmapFont
-from .opengl import fs_emu_blending, fs_emu_texturing, gl
+from .opengl import fs_emu_blending, fs_emu_texturing
+from OpenGL import GL as gl
 from .render import Render
 
 LIGHTING = False

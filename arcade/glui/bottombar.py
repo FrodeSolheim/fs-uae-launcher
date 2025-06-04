@@ -1,7 +1,8 @@
 import random
 
 from arcade.glui.font import Font
-from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing, gl
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing
+from OpenGL import GL as gl
 from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
