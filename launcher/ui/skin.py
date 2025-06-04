@@ -99,12 +99,12 @@ class Skin(object):
             return None
         elif cls.fws():
             return None
-        elif fsbc.system.windows:
-            # FIXME: Should really just check for Windows XP here, or maybe
-            # just remove it altogether.
-            return fsui.Color(LEVEL, LEVEL, LEVEL)
-        elif fsbc.system.macosx:
-            return fsui.Color(237, 237, 237)
+        # elif fsbc.system.windows:
+        #     # FIXME: Should really just check for Windows XP here, or maybe
+        #     # just remove it altogether.
+        #     return fsui.Color(LEVEL, LEVEL, LEVEL)
+        # elif fsbc.system.macosx:
+        #     return fsui.Color(237, 237, 237)
         return None
 
     @classmethod

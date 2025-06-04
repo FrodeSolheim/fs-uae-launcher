@@ -189,7 +189,7 @@ def bundle():
     <key>CFBundleShortVersionString</key>
     <string>{package.simple_version}</string>
     <key>NSRequiresAquaSystemAppearance</key>
-    <true/>
+    <false/>
     <key>NSHighResolutionCapable</key>
     <true/>
   </dict>
