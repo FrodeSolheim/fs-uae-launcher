@@ -1,5 +1,7 @@
 Version 3.2.x:
 
+* Improved fusion dark theme.
+* Automatically use fusion dark theme if Windows or macOS in dark mode.
 * Arcade: Fixed error with Texture getting multiple size args.
 * Prefer X11 over Wayland because Qt still seems to work better with X11.
 * Netplay server improvements [ztronzo].

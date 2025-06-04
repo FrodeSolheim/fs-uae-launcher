@@ -1,3 +1,4 @@
+from typing import Self
 import fsbc.system
 import fsboot
 import fsui
@@ -21,7 +22,7 @@ class LauncherTheme(object):
     __instance = None
 
     @classmethod
-    def get(cls):
+    def get(cls) -> Self:
         if cls.__instance is None:
             cls.__instance = cls()
         return cls.__instance
@@ -40,6 +41,15 @@ class LauncherTheme(object):
         self.sidebar_list_row_background = fsui.Color(
             palette.color(QPalette.ColorRole.Highlight)
         )
+
+        self.text_color = fsui.Color(
+            palette.color(QPalette.ColorRole.Text)
+        )
+
+        self.window_color = fsui.Color(
+            palette.color(QPalette.ColorRole.Window)
+        )
+        self.dark_mode = self.window_color.red() < 128
 
         if Skin.fws():
             from workspace.ui.theme import WorkspaceTheme as WorkspaceTheme

@@ -3,7 +3,7 @@ import fsui
 from fsbc.util import unused
 
 from .Constants import Constants
-from .skin import Skin
+from .skin import LauncherTheme, Skin
 
 
 class TabPanel(fsui.Panel):
@@ -68,7 +68,10 @@ class TabPanel(fsui.Panel):
             line_color_1 = line_color_1.mix(fsui.Color(0xFF, 0xFF, 0xFF))
             line_color_2 = line_color_1
         else:
-            line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0xA0)
+            if LauncherTheme.get().dark_mode:
+                line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x50)
+            else:
+                line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0xA0)
             line_color_2 = line_color_1
 
         # line_color_1 = fsui.Color(0xff, 0x00, 0x00, 0xff)
@@ -216,8 +219,12 @@ class TabPanel(fsui.Panel):
                 fsui.Color(0xFF, 0xFF, 0xFF)
             )
         else:
-            line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x00)
-            line_color_2 = fsui.Color(0xFF, 0xFF, 0xFF, 0xA0)
+            if LauncherTheme.get().dark_mode:
+                line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x00)
+                line_color_2 = fsui.Color(0xFF, 0xFF, 0xFF, 0x50)
+            else:
+                line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x00)
+                line_color_2 = fsui.Color(0xFF, 0xFF, 0xFF, 0xA0)
 
         size = widget.size()
         dc.draw_vertical_gradient(0, 0, 2, size[1], line_color_1, line_color_2)

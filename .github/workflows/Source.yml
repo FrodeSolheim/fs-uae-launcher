@@ -19,16 +19,18 @@ jobs:
     runs-on: ubuntu-22.04
 
     env:
-      UPLOAD_ENABLED: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Log environment
-        run: |
-          env
+      - name: Install packages
+        run: sudo apt install gettext
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -36,55 +38,30 @@ jobs:
           version: "0.7.9"
 
       - name: Set up Python
-        run: |
-          uv python install
-
-      # - name: Set up Python 3.12
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: 3.12
+        run: uv python install
 
       - name: Run uv sync
-        run: |
-          uv sync
+        run: uv sync
 
       - name: Update version
-        run: |
-          fsbuild/version --update
+        run: uv run python -m build version
 
-      - name: Bootstrap
-        if: hashFiles('fsbuild/bootstrap') != ''
-        run: |
-          fsbuild/bootstrap
-
-      - name: Configure
-        if: hashFiles('fsbuild/configure') != ''
-        run: |
-          fsbuild/configure
-
-      - name: Source
-        run: |
-          fsbuild/source
+      - name: Build source package
+        run: uv run python -m build bootstrap configure source
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Source
-          path: fsbuild/_dist/*
+          path: build/_dist/*
 
-      - name: Upload build to Dropbox folder
+      - name: Upload to Dropbox
         if: >-
-          env.UPLOAD_ENABLED != null && (
+          env.DROPBOX_REFRESH_TOKEN != null && (
             github.ref == 'refs/heads/beta' ||
             github.ref == 'refs/heads/dev' ||
+            github.ref == 'refs/heads/main' ||
             github.ref == 'refs/heads/master' ||
             github.ref == 'refs/heads/stable' ||
             github.ref == 'refs/heads/test'
           )
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
-          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
-          DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
         run: |
-          uv add dropbox==12.0.2
-          uv run python3 fsbuild/upload
+          uv run python -m build upload

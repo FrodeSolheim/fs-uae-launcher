@@ -82,6 +82,8 @@ def initialize_qt_style(qapplication):
     # from fsui.qt import QStyleFactory, QPalette, QColor, Qt, QFont
     fusion_variant = ""
 
+    pa = QPalette()
+
     launcher_theme = Settings.instance().get(Option.LAUNCHER_THEME)
     if launcher_theme == "standard":
         use_fusion_theme = False
@@ -107,7 +109,10 @@ def initialize_qt_style(qapplication):
         FwsWindow.set_default()
     else:
         use_fusion_theme = True
-        if fstd.desktop.is_running_gnome_3():
+
+        if pa.color(QPalette.ColorRole.Window).red() < 128:
+            fusion_variant = "dark"
+        elif fstd.desktop.is_running_gnome_3():
             fusion_variant = "adwaita"
         elif fstd.desktop.is_running_windows_10():
             fusion_variant = "windows10"
@@ -122,7 +127,6 @@ def initialize_qt_style(qapplication):
     if use_fusion_theme:
         # noinspection PyCallByClass,PyTypeChecker,PyArgumentList
         qapplication.setStyle(QStyleFactory.create("Fusion"))
-        pa = QPalette()
 
         if fusion_variant == "adwaita":
             background = QColor("#f2f2f2")

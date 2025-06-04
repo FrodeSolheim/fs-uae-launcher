@@ -302,6 +302,15 @@ def notarize_dmg():
     notarizeDmg()
 
 
+def source():
+    run(["make", "dist-xz"])
+    package = getPackageInformation()
+    archive = f"{package.name}-{package.version}.tar.xz"
+    if not os.path.exists("build/_dist"):
+        os.makedirs("build/_dist")
+    shutil.move(archive, "build/_dist")
+
+
 def default():
     bootstrap()
     configure()
@@ -361,6 +370,8 @@ def main():
             notarize_dmg()
         elif command == "upload":
             upload()
+        elif command == "source":
+            source()
         else:
             print(f"Unsupported command: {command}", file=sys.stderr)
             sys.exit(1)
