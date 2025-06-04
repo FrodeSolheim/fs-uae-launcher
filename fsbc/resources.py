@@ -37,9 +37,10 @@ class Resources(object):
         print("Resources.stream", self.package, resource)
         zip = self.resource_zip(self.package)
         if zip is not None:
-            print("Resources zip.open", zip, resource)
+            resource_name = self.resource_name(resource)
+            print("Resources zip.open", zip, resource_name)
             try:
-                return zip.open(resource)
+                return zip.open(resource_name)
             except KeyError:
                 pass
 
