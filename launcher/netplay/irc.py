@@ -4,10 +4,11 @@ import threading
 from fsbc.application import call_after
 from oyoyo import helpers
 from oyoyo.client import IRCClient
+
+from ..launcher_settings import LauncherSettings
 from .command_handler import CommandHandler
 from .irc_broadcaster import IRCBroadcaster
 from .irc_color import IRCColor
-from ..launcher_settings import LauncherSettings
 
 LOBBY_CHANNEL = "#Lobby2.8"
 

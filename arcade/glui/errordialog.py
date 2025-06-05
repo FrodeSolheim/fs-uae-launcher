@@ -2,7 +2,8 @@ import sys
 import time
 
 from arcade.glui.dialog import Dialog
-from arcade.glui.opengl import gl
+from OpenGL import GL as gl
+
 from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.resources import resources

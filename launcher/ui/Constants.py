@@ -1,5 +1,4 @@
 class Constants:
-
     TAB_WIDTH = 64
     TAB_HEIGHT = 64
 

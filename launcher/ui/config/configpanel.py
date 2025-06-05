@@ -1,7 +1,7 @@
 from fsui import Panel, VerticalLayout
 from launcher.ui.behaviors.platformbehavior import AMIGA_PLATFORMS
-from launcher.ui.skin import Skin
 from launcher.ui.options import ConfigWidgetFactory
+from launcher.ui.skin import Skin
 
 
 class ConfigPanel(Panel):

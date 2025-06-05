@@ -1,13 +1,14 @@
 import fsui
+
+from ...game_paths import GamePaths
 from ...launcher_config import LauncherConfig
 from ...launcher_settings import LauncherSettings
-from ...game_paths import GamePaths
-from .BottomPanel import BottomPanel
 from ..Constants import Constants
 from ..ImageLoader import ImageLoader
+from ..skin import LauncherTheme, Skin
+from .BottomPanel import BottomPanel
 from .EditButton import EditButton
 from .WebButton import WebButton
-from ..skin import Skin
 
 BORDER = 20
 
@@ -182,6 +183,7 @@ class GameInfoPanel(BottomPanel):
 
     def on_paint(self):
         dc = self.create_dc()
+        dc.set_text_color(LauncherTheme.get().text_color)
         self.draw_background(dc)
 
         if self.cover_on_right:

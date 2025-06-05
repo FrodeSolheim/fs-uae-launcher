@@ -1,4 +1,3 @@
-import pkg_resources
 import fsui
 from fsui.qt.window import RealWindow
 from .application import Application
@@ -21,7 +20,6 @@ class WindowImages:
 
 
 class WindowBorder(RealWindow):
-
     _images = None
 
     @classmethod

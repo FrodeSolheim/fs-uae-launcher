@@ -5,15 +5,16 @@ import threading
 import time
 import traceback
 import weakref
+
 from fsbc.paths import Paths
 from fsbc.util import unused
 from fsgs.archive import Archive
 from fsgs.BaseContext import BaseContext
 from fsgs.Database import Database
+from fsgs.download import Downloader, offline_mode
 from fsgs.filedatabase import FileDatabase
 from fsgs.GameDatabase import GameDatabase, IncompleteGameException
 from fsgs.LockerDatabase import LockerDatabase
-from fsgs.download import Downloader, offline_mode
 from fsgs.network import is_http_url
 from fsgs.ogd.locker import is_locker_enabled, open_locker_uri
 from fsgs.plugins.pluginmanager import PluginManager
@@ -137,8 +138,9 @@ class FileContext(BaseContext):
                 if not license_status["accepted"]:
                     # FIXME: custom exception here
                     raise Exception(
-                        'Usage terms "{0}" was not '
-                        "accepted".format(license_code)
+                        'Usage terms "{0}" was not accepted'.format(
+                            license_code
+                        )
                     )
         path = Downloader.cache_file_from_url(url)
         return path + hash_part
@@ -363,12 +365,12 @@ class FSGameSystemContext(object):
         sortable_items = []
         for i, variant in enumerate(variants):
             game_database = self.game_database(variant["database"])
-            variant["like_rating"], variant[
-                "work_rating"
-            ] = game_database.get_ratings_for_game(variant["uuid"])
-            variant[
-                "personal_rating"
-            ], ignored = database.get_ratings_for_game(variant["uuid"])
+            variant["like_rating"], variant["work_rating"] = (
+                game_database.get_ratings_for_game(variant["uuid"])
+            )
+            variant["personal_rating"], ignored = (
+                database.get_ratings_for_game(variant["uuid"])
+            )
             # variant_uuid = variant["uuid"]
 
             name = variant["name"]

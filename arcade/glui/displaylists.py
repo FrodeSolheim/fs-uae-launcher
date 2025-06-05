@@ -1,4 +1,4 @@
-from arcade.glui.opengl import gl
+from OpenGL import GL as gl
 
 
 class DisplayLists(object):

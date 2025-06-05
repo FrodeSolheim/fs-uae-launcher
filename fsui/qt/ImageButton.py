@@ -1,13 +1,11 @@
 import warnings
 
 import fsui.qt
-from .widget_mixin import WidgetMixin
 from fsui.qt.widget import Widget
 from fsui.qt import QParent, QPushButton, QSignal
 
 
 class ImageButton(Widget):
-
     activated = QSignal()
 
     def __init__(self, parent, image):

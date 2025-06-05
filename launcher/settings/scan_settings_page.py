@@ -1,8 +1,7 @@
-from launcher.settings.scan_paths_group import ScanPathsGroup
-
 import fsui
 from fsgs.option import Option
 from launcher.i18n import gettext
+from launcher.settings.scan_paths_group import ScanPathsGroup
 from launcher.settings.settings_page import SettingsPage
 
 
@@ -13,7 +12,7 @@ class ScanSettingsPage(SettingsPage):
         gettext("File Database Settings")
         title = gettext("File Database")
         subtitle = gettext(
-            "Choose what folders you want to scan for Amiga " "files"
+            "Choose what folders you want to scan for Amiga files"
         )
         self.add_header(icon, title, subtitle)
 
@@ -21,7 +20,7 @@ class ScanSettingsPage(SettingsPage):
             fsui.MultiLineLabel(
                 self,
                 gettext(
-                    "Choose what folders you want to scan for Amiga " "files"
+                    "Choose what folders you want to scan for Amiga files"
                 ),
             ),
             fill=True,

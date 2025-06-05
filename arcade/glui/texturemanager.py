@@ -1,6 +1,6 @@
 import threading
 
-from arcade.glui.opengl import gl
+from OpenGL import GL as gl
 from arcade.glui.render import Render
 from arcade.glui.texture import Texture
 

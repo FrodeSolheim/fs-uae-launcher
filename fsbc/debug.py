@@ -2,6 +2,7 @@ import os
 import sys
 import threading
 import traceback
+
 from .signal import Signal
 
 main_thread_id = threading.current_thread().ident
@@ -19,9 +20,7 @@ def enable_exception_handler(force=False):
     already_run = True
 
     if not force and is_running_in_debugger():
-        print(
-            "running in debugger, not enabling exception handler " "after all."
-        )
+        print("running in debugger, not enabling exception handler after all.")
         _let_thread_exceptions_be_unhandled()
         return False
 
@@ -144,11 +143,17 @@ def _thread_bootstrap_2_7(self):
 
     # noinspection PyProtectedMember
     # noinspection PyUnresolvedReferences
-    from threading import _active_limbo_lock, _active, _limbo, _trace_hook
-
     # noinspection PyProtectedMember
     # noinspection PyUnresolvedReferences
-    from threading import _profile_hook, _sys, _get_ident
+    from threading import (
+        _active,
+        _active_limbo_lock,
+        _get_ident,
+        _limbo,
+        _profile_hook,
+        _sys,
+        _trace_hook,
+    )
 
     try:
         self._set_ident()

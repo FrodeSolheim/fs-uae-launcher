@@ -1,5 +1,6 @@
 import hashlib
 import os
+
 from fsgs import Option
 from fsgs.drivers.mednafendriver import MednafenDriver
 from fsgs.platform import Platform

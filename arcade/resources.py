@@ -1,7 +1,5 @@
 import logging
 
-from pkg_resources import resource_stream
-
 from fsbc.resources import Resources as BaseResources
 
 logger = logging.getLogger("arcade")
@@ -43,32 +41,6 @@ class Resources(BaseResources):
     def resource_filename(self, resource):
         return self.path(resource)
 
-
-def resource_pil_image(package_or_requirement, resource_name):
-    # print("resource_pil_image", package_or_requirement, resource_name)
-    stream = resource_stream(package_or_requirement, resource_name)
-    # noinspection PyUnresolvedReferences
-    from PIL import Image
-
-    return Image.open(stream)
-
-
-# def resource_icon_stream(package_or_requirement, name, size):
-#     #print(name, size)
-#     resource_name = encode_path(u'res/icons/%dx%d/%s.png' % (size, size,
-# name))
-#     return resource_stream(package_or_requirement, resource_name)
-
-
-# def resource_icon_pil(package_or_requirement, name, size):
-#     #print("resource_icon_pil", name, size)
-#     #path = os.path.join(self.path, "icons",
-#     #        "%dx%d" % (size, size), name + ".png")
-#     #if os.path.isfile(path):
-#     #    return Image.open(path)
-#     stream = resource_icon_stream(package_or_requirement, name, size)
-#     from PIL import Image
-#     return Image.open(stream)
 
 gettext = _
 

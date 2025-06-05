@@ -1,6 +1,6 @@
 import fsui
-from ..skin import Skin
 
+from ..skin import LauncherTheme, Skin
 
 BORDER_COLOR = (0xE5, 0xE5, 0xE5, 0xFF)
 
@@ -28,10 +28,16 @@ class BottomPanel(fsui.Panel):
         else:
             # self.color_1 = fsui.Color(0x00, 0x00, 0x00, 0x20)
             # self.color_2 = fsui.Color(0x00, 0x00, 0x00, 0x00)
-            self.color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x60)
+            if LauncherTheme.get().dark_mode:
+                self.color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x20)
+                self.line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x50)
+                self.line_color_2 = self.line_color_1
+            else:
+                self.color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0x60)
+                self.line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0xA0)
+                self.line_color_2 = self.line_color_1
+
             self.color_2 = fsui.Color(0xFF, 0xFF, 0xFF, 0x00)
-            self.line_color_1 = fsui.Color(0xFF, 0xFF, 0xFF, 0xA0)
-            self.line_color_2 = self.line_color_1
 
         self.border_color = fsui.Color(*BORDER_COLOR)
         self.white_color = fsui.Color(0xFF, 0xFF, 0xFF, 0xFF)

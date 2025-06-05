@@ -3,7 +3,6 @@ import fsui as fsui
 
 
 class WidgetTestCase(unittest.TestCase):
-
     # noinspection PyPep8Naming
     def __init__(self, methodName="runTest"):
         unittest.TestCase.__init__(self, methodName=methodName)

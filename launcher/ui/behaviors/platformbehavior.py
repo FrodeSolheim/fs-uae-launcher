@@ -1,4 +1,5 @@
 import weakref
+
 from launcher.launcher_config import LauncherConfig
 
 AMIGA_PLATFORMS = ["", "amiga", "cd32", "cdtv"]

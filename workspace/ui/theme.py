@@ -4,7 +4,6 @@ from launcher.launcher_settings import LauncherSettings
 
 
 class WorkspaceTheme:
-
     __instance = None
 
     @classmethod

@@ -5,6 +5,7 @@ from collections import defaultdict
 
 from fsbc import settings
 from fsgs.option import Option
+
 from .contextaware import ContextAware
 
 

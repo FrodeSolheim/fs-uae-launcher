@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
+import hashlib
 import os
 import sys
-import hashlib
 from io import BytesIO
-from typing import List, Dict, Undefined, Union, IO
-
+from typing import IO, Dict, List, Undefined, Union
 
 B_SIZE = 512
 B_COUNT = 880 * 2
@@ -83,7 +82,6 @@ class FileInfo(object):
 
 
 class ADFFile(object):
-
     FFS_FLAG = 1
     INTL_ONLY_FLAG = 2
     DIRC_AND_INTL_FLAG = 4
@@ -130,8 +128,9 @@ class ADFFile(object):
         self.bitmap_pages = []
         if self.root_block_number != 880:
             self.warnings.append(
-                "Root block is at position {0}, "
-                "not 880".format(self.root_block_number)
+                "Root block is at position {0}, not 880".format(
+                    self.root_block_number
+                )
             )
             self.root_block_number = 880
             self.warnings.append("Trying 880 anyway...")
@@ -163,7 +162,7 @@ class ADFFile(object):
             self.warnings.append("root block does not have T_HEADER type")
         if secondary_type != ST_ROOT:
             self.warnings.append(
-                "root block does not have ST_ROOT secondary " "type"
+                "root block does not have ST_ROOT secondary type"
             )
 
         days = b.ulong(B_SIZE - 92)
@@ -226,7 +225,7 @@ class ADFFile(object):
             b = self.blocks[block_number]
             if not verify_block(b.data):
                 self.warnings.append(
-                    "bitmap block checksum is invalid (" "ignoring this block)"
+                    "bitmap block checksum is invalid (ignoring this block)"
                 )
                 continue
             for bit_index in range(1758):
@@ -289,7 +288,7 @@ class ADFFile(object):
         file_key = file_info.path.lower()
         if file_key in self.file_map:
             self.warnings.append(
-                "duplicate entries for file name " "{0}".format(file_key)
+                "duplicate entries for file name {0}".format(file_key)
             )
         self.file_map[file_key] = file_info
 
@@ -431,7 +430,7 @@ class ADFFile(object):
         file_key = file_info.path.lower()
         if file_key[:-1] in self.file_map:
             self.warnings.append(
-                "Duplicate entries for file name " "{0}".format(file_key)
+                "Duplicate entries for file name {0}".format(file_key)
             )
         self.file_map[file_key] = file_info
 

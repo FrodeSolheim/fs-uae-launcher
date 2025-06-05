@@ -1,7 +1,5 @@
 import os
 
-import pkg_resources
-
 import fsboot
 import fsui
 from fsui.qt import QFont
@@ -19,6 +17,4 @@ class Font(fsui.Font):
         try:
             return open(path, "rb")
         except FileNotFoundError:
-            return pkg_resources.resource_stream(
-                "workspace.ui", "data/" + name
-            )
+            raise NotImplementedError()

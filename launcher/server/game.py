@@ -16,13 +16,14 @@ You should have received a copy of the GNU Lesser General Public License
 along with this library; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 """
-import sys
-import time
-from collections import deque
-import socket
-import traceback
-import threading
+
 import random
+import socket
+import sys
+import threading
+import time
+import traceback
+from collections import deque
 from hashlib import sha1
 
 
@@ -54,7 +55,7 @@ def byte(v):
 
 
 SERVER_PROTOCOL_VERSION = 1
-MAX_PLAYERS = 6
+MAX_PLAYERS = 9
 max_drift = 25
 num_clients = 2
 port = 25100
@@ -62,6 +63,8 @@ host = "0.0.0.0"
 game = None
 game_password = 0
 launch_timeout = 0
+framerate = 0.02
+netplay_ntsc = 0
 server_protocol_version = byte(SERVER_PROTOCOL_VERSION)
 
 
@@ -355,6 +358,31 @@ class Client:
                     text += part
                     remaining -= count
                     if remaining == 0:
+                        if text.lower() == b"!disconnectall":
+                            print("Server termination requested")
+                            text = b"Requested to terminate the server"
+                            game.stop = True
+                        if text.decode("utf-8").lower().startswith("!fps"):
+                            try:
+                                fps = text.decode("utf-8").lower().split()[1]
+                                print("FPS requested: " + fps)
+                                game.framerate = 1 / int(fps)
+                                text = (
+                                    b"FrameRate set to "
+                                    + fps.encode("utf-8")
+                                    + b"fps"
+                                )
+                            except (IndexError, ValueError, ZeroDivisionError):
+                                print("Invalid FPS value")
+                                text = b"FrameRate unchanged"
+                        if text.lower() == b"!ntsc":
+                            game.framerate = 0.016667  # 1/60
+                            text = b"moved server to NTSC Mode (60 FPS)"
+                            print("NTSC requested")
+                        if text.lower() == b"!pal":
+                            game.framerate = 0.020  # 1/50
+                            text = b"moved server to PAL Mode (50 FPS)"
+                            print("PAL requested")
                         game.add_text_message(self, text)
                         break
 
@@ -383,7 +411,7 @@ class Client:
 
 
 def create_session_key():
-    return random.randint(0, 2 ** 24 - 1)
+    return random.randint(0, 2**24 - 1)
 
 
 class Game:
@@ -399,10 +427,16 @@ class Game:
         self.emulator_version = b""
         self.verified_frame = -1
 
+        if netplay_ntsc == 1:
+            self.framerate = 0.016667  # 1/60
+        else:
+            self.framerate = framerate  # 1/50
+
     def __start(self):
         if len(self.clients) != num_clients:
             print("error - cannot start until all players have connected")
             return
+
         print("{0} clients connected, starting game".format(num_clients))
         self.started = True
         threading.Thread(target=self.__thread_function).start()
@@ -485,7 +519,7 @@ class Game:
 
     def __game_loop_iteration(self):
         # FIXME: higher precision sleep?
-        target_time = self.time + 0.02
+        target_time = self.time + self.framerate
         t2 = time.time()
         diff = target_time - t2
         sleep = diff - 0.001
@@ -736,7 +770,13 @@ def run_server():
 
 
 def main():
-    global port, num_clients, game_password, launch_timeout
+    global \
+        port, \
+        num_clients, \
+        game_password, \
+        launch_timeout, \
+        netplay_ntsc, \
+        framerate
     for arg in sys.argv:
         if arg.startswith("--"):
             parts = arg[2:].split("=", 1)
@@ -751,6 +791,15 @@ def main():
                     # game_password = crc32(value) & 0xffffffff
                     game_password = create_game_password(value)
                     # print("game password (numeric) is", game_password)
+                elif key == "netplay-ntsc":
+                    print("Server launching in NTSC mode")
+                    netplay_ntsc = int(value)
+                elif key == "framerate":
+                    framerate = int(value)
+                    if framerate == 0:
+                        framerate = 0.02
+                    else:
+                        framerate = 1 / int(value)
                 elif key == "launch-timeout":
                     launch_timeout = int(value)
     run_server()

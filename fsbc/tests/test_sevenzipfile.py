@@ -1,5 +1,6 @@
-import fsbc.seven_zip_file
 import nose.tools
+
+import fsbc.seven_zip_file
 
 
 def test_mypy():

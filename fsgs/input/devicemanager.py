@@ -5,7 +5,6 @@ from .enumeratehelper import EnumerateHelper
 
 
 class DeviceManager(object):
-
     __instance = None
 
     @classmethod

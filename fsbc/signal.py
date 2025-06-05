@@ -1,8 +1,7 @@
 import threading
 import traceback
+from typing import Any, Dict, List, Tuple
 from weakref import ref
-from typing import Dict, List, Any, Tuple
-
 
 main_thread_id = threading.current_thread().ident
 _signal_id = 0
@@ -58,7 +57,6 @@ class Listener(object):
 
 
 class Signal:
-
     # FIXME: should have type Dict[str, Callable]
     # or # type_xxx: Dict[str, Function]
     signal_listeners = {}  # type: Dict[str, Any]

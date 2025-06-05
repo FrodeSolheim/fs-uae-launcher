@@ -1,6 +1,6 @@
-import re
 import functools
-from typing import List, Union, Any
+import re
+from typing import Any, List, Union
 
 
 def unused(_: Any) -> None:
@@ -71,10 +71,10 @@ class Version(object):
         self.minor = int(v[1] or "0")
         self.revision = int(v[2] or "0")
         self.build = int(v[3] or "0")
-        self.val = self.major * 10000 ** 3
-        self.val += self.minor * 10000 ** 2
-        self.val += self.revision * 10000 ** 1
-        self.val += self.build * 10000 ** 0
+        self.val = self.major * 10000**3
+        self.val += self.minor * 10000**2
+        self.val += self.revision * 10000**1
+        self.val += self.build * 10000**0
         self.mod = v[4]
         self.release = -1 if v[5] is None else int(v[5])
         # print(

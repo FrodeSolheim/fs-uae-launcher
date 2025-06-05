@@ -1,2 +1,2 @@
 # noinspection PyUnresolvedReferences
-from fsui.qt.web_view import WebView
+from fsui.qt.web_view import WebView as WebView

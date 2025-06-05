@@ -1,14 +1,13 @@
 import threading
 import traceback
 
-from arcade.glui.opengl import gl
-from fsui.qt import QGLWidget
+from PyQt6.QtOpenGLWidgets import QOpenGLWidget
 
 
 # noinspection PyPep8Naming
-class GLWidget(QGLWidget):
+class GLWidget(QOpenGLWidget):
     def __init__(self, parent, callbacks):
-        QGLWidget.__init__(self, parent)
+        QOpenGLWidget.__init__(self, parent)
         self._callbacks = callbacks
         self._initialized = False
         self._first_initialize_gl_call = True
@@ -37,23 +36,23 @@ class GLWidget(QGLWidget):
             print("[OPENGL] Version major:", gl_format.majorVersion())
             print("[OPENGL] Version minor:", gl_format.minorVersion())
             print("[OPENGL] Context profile:", gl_format.profile())
-            print("[OPENGL] Direct rendering:", gl_format.directRendering())
+            # print("[OPENGL] Direct rendering:", gl_format.directRendering())
             print("[OPENGL] Depth buffer size:", gl_format.depthBufferSize())
-            print("[OPENGL] Double buffering:", self.doubleBuffer())
-            print("[OPENGL] Auto buffer swap:", self.autoBufferSwap())
+            # print("[OPENGL] Double buffering:", self.doubleBuffer())
+            # print("[OPENGL] Auto buffer swap:", self.autoBufferSwap())
         except Exception:
             traceback.print_exc()
 
-    def resizeGL(self, width, height):
-        print("[OPENGL] GLWidget.resizeGL", width, height)
+    def resizeGL(self, w, h):
+        print("[OPENGL] GLWidget.resizeGL", w, h)
         if self._first_resize_gl_call:
             print("[OPENGL]", threading.current_thread())
             self._first_resize_gl_call = False
 
-        gl.load()
+        # gl.load()
         try:
             if not self._initialized:
-                if width == 160 and height == 160:
+                if w == 160 and h == 160:
                     print("[OPENGL] WARNING: OS X 160x160 workaround(?)")
                     # work around bug(?) on os x
                     return
@@ -63,31 +62,31 @@ class GLWidget(QGLWidget):
             #     width = 100
             # if height == 0:
             #     height = 100
-            if width < 480:
+            if w < 480:
                 print("[OPENGL] Setting minimum width 480")
-                width = 480
-            if height < 270:
+                w = 480
+            if h < 270:
                 print("[OPENGL] Setting minimum height 270")
-                height = 270
+                h = 270
             if not self._initialized:
-                self._callbacks.initialize(width, height)
+                self._callbacks.initialize(w, h)
                 self._initialized = True
                 return
-            self._callbacks.resize(width, height)
+            self._callbacks.resize(w, h)
         except Exception:
             traceback.print_exc()
-        gl.unload()
+        # gl.unload()
 
     def paintGL(self):
         if self._first_paint_gl_call:
             print("[OPENGL] GLWidget.paintGL")
             print("[OPENGL]", threading.current_thread())
             self._first_paint_gl_call = False
-        gl.load()
+        # gl.load()
         try:
             self._callbacks.render()
         except Exception:
             traceback.print_exc()
             # import sys
             # sys.exit(1)
-        gl.unload()
+        # gl.unload()

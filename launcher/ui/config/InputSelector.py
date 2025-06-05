@@ -1,19 +1,19 @@
 import sys
 
 import fsui
-from fsgs.platform import Platform
-from launcher.option import Option
 from fsgs.context import fsgs
+from fsgs.platform import Platform
 from launcher.devicemanager import DeviceManager
 from launcher.i18n import gettext
 from launcher.launcher_config import LauncherConfig
 from launcher.launcher_signal import LauncherSignal
-from launcher.ui.HelpButton import HelpButton
-from launcher.ui.IconButton import IconButton
+from launcher.option import Option
 from launcher.ui.behaviors.platformbehavior import (
     AMIGA_PLATFORMS,
     AmigaShowBehavior,
 )
+from launcher.ui.HelpButton import HelpButton
+from launcher.ui.IconButton import IconButton
 
 MIN_TYPE_CHOICE_WIDTH = 200
 
@@ -50,14 +50,18 @@ class InputSelector(fsui.Group):
         ]
 
         if port < 2:
-            self.joystick_mode_values.extend([
-                "mouse",
-                "cd32 gamepad",
-            ])
-            self.joystick_mode_titles.extend([
-                gettext("Amiga Mouse"),
-                gettext("CD32 Pad"),
-            ])
+            self.joystick_mode_values.extend(
+                [
+                    "mouse",
+                    "cd32 gamepad",
+                ]
+            )
+            self.joystick_mode_titles.extend(
+                [
+                    gettext("Amiga Mouse"),
+                    gettext("CD32 Pad"),
+                ]
+            )
 
         self.mode_choice = fsui.Choice(self, self.joystick_mode_titles)
         self.mode_choice.set_min_width(MIN_TYPE_CHOICE_WIDTH)

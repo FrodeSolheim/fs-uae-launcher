@@ -1,4 +1,6 @@
-from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing
+from OpenGL import GL as gl
+from OpenGL.GLU import gluPerspective
 from arcade.glui.text import TextRenderer
 
 DISPLAY_FPS = False
@@ -153,7 +155,7 @@ class Render(object):
         # gluPerspective(cls.fov_y, cls.display_aspect, 0.1, 10.1)
         # glTranslatef(-cls.offset_x, -cls.offset_y, 0.0)
 
-        gl.gluPerspective(45.0, 16.0 / 9.0, 0.1, 100.0)
+        gluPerspective(45.0, 16.0 / 9.0, 0.1, 100.0)
 
         self.projection = gl.glGetFloatv(gl.GL_PROJECTION_MATRIX)
         gl.glMatrixMode(gl.GL_MODELVIEW)

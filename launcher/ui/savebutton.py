@@ -1,17 +1,18 @@
-import os
-import io
-import time
-import hashlib
 import datetime
-from launcher.launcher_config import LauncherConfig
+import hashlib
+import io
+import os
+import time
+
+from fsgs.context import fsgs
+from fsgs.Database import Database
+from fsgs.filedatabase import FileDatabase
+from fsgs.FSGSDirectories import FSGSDirectories
 from launcher.configuration_scanner import ConfigurationScanner
 from launcher.i18n import gettext
+from launcher.launcher_config import LauncherConfig
 from launcher.launcher_settings import LauncherSettings
 from launcher.ui.IconButton import IconButton
-from fsgs.Database import Database
-from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.filedatabase import FileDatabase
-from fsgs.context import fsgs
 
 
 class SaveButton(IconButton):

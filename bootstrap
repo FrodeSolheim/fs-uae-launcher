@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+
 import config as project
 
 f = open("setup.py", "w", newline="\n")
@@ -407,11 +408,11 @@ write(
 write(
     """\
 dist: distdir
-    find $(dist_dir) -exec touch \{\} \;
+    find $(dist_dir) -exec touch \\{\\} \\;
     cd "$(build_dir)" && tar cfvz $(dist_name).tar.gz $(dist_name)
 
 dist-xz: distdir
-    find $(dist_dir) -exec touch \{\} \;
+    find $(dist_dir) -exec touch \\{\\} \\;
     cd "$(build_dir)" && tar cfJv $(dist_name).tar.xz $(dist_name)
 
 """

@@ -1,7 +1,7 @@
 import os
 
 from fsgs.drivers.dolphindriver import DolphinDriver, DolphinInputMapper
-from fsgs.drivers.gamedriver import GameDriver, Emulator
+from fsgs.drivers.gamedriver import Emulator, GameDriver
 from fsgs.platform import Platform
 from fsgs.platforms.loader import SimpleLoader
 

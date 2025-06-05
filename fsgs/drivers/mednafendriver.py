@@ -1,17 +1,16 @@
-from binascii import hexlify
 import hashlib
 import json
 import os
+import shutil
 import struct
 from base64 import b64decode
+from binascii import hexlify
 from functools import lru_cache
-
-import shutil
 
 from fsbc.paths import Paths
 from fsbc.system import System
 from fsgs.archive import Archive
-from fsgs.drivers.gamedriver import GameDriver, Emulator
+from fsgs.drivers.gamedriver import Emulator, GameDriver
 from fsgs.input.enumeratehelper import EnumerateHelper
 from fsgs.input.mapper import InputMapper
 from fsgs.option import Option

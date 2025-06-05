@@ -1,4 +1,5 @@
 import fsui
+
 from ...launcher_config import LauncherConfig
 
 

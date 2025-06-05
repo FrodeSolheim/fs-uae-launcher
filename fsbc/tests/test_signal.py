@@ -1,5 +1,6 @@
-import fsbc.signal
 import nose.tools
+
+import fsbc.signal
 
 
 def test_mypy():

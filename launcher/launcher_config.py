@@ -5,13 +5,14 @@ from configparser import ConfigParser, NoSectionError
 
 from fsbc.paths import Paths
 from fsbc.signal import Signal
-from fsgs.checksumtool import ChecksumTool
-from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.amiga import Amiga
 from fsgs.amiga.valueconfigloader import ValueConfigLoader
+from fsgs.checksumtool import ChecksumTool
 from fsgs.context import fsgs
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.platform import PlatformHandler
 from launcher.option import Option
+
 from .launcher_settings import LauncherSettings
 
 cfg = [

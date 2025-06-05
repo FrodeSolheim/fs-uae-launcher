@@ -5,9 +5,10 @@ import requests
 
 import launcher.version
 from fsbc.application import Application
-from fsbc.system import windows, macosx, linux
+from fsbc.system import linux, macosx, windows
 from fsbc.util import compare_versions, unused
 from fstd.desktop import open_url_in_browser
+
 from .launcher_settings import LauncherSettings
 from .launcher_signal import LauncherSignal
 

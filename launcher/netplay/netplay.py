@@ -1,18 +1,19 @@
 import random
 import traceback
-from urllib.parse import parse_qs
 import uuid
+from urllib.parse import parse_qs
 
 import requests
 
 from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
+
+from ..launcher_config import LauncherConfig
+from ..server.Server import Server
 from .connection_tester import ConnectionTester
 from .irc import IRC
 from .irc_broadcaster import IRCBroadcaster
 from .irc_color import IRCColor
-from ..launcher_config import LauncherConfig
-from ..server.Server import Server
 
 
 class Netplay:
@@ -134,8 +135,9 @@ class Netplay:
         want_players = int(LauncherConfig.get("__netplay_players") or "0")
         if player_count != want_players:
             self.game_warning(
-                "cannot start game, wanted {0} players, "
-                "has {1}".format(want_players, player_count)
+                "cannot start game, wanted {0} players, has {1}".format(
+                    want_players, player_count
+                )
             )
             return
         self.game_info("sending game start command to all clients!")
@@ -180,7 +182,7 @@ class Netplay:
             return False
         if not LauncherConfig.get("__netplay_host"):
             self.game_warning(
-                "cannot set ready - no connection to game " "server"
+                "cannot set ready - no connection to game server"
             )
             return False
         LauncherConfig.set("__netplay_ready", "1")
@@ -441,7 +443,7 @@ class Netplay:
         result = self.parse_server_args(args, 25101)
         if not result:
             self.irc.warning(
-                "usage: /startgame <host>[:<port>] " "[<players>] [<password>]"
+                "usage: /startgame <host>[:<port>] [<players>] [<password>]"
             )
             return
         host, port, players, password = result
@@ -525,8 +527,9 @@ class Netplay:
             ]
         )
         channel.info(
-            "started game id: {0} password: {1} "
-            "server: {2} port: {3}".format(game_id, password, addresses, port)
+            "started game id: {0} password: {1} server: {2} port: {3}".format(
+                game_id, password, addresses, port
+            )
         )
 
     # noinspection SpellCheckingInspection
@@ -563,8 +566,9 @@ class Netplay:
             ]
         )
         channel.info(
-            "started game id: {0} password: {1} "
-            "server: {2} port: {3}".format(game_id, password, addresses, port)
+            "started game id: {0} password: {1} server: {2} port: {3}".format(
+                game_id, password, addresses, port
+            )
         )
 
     def command_set(self, args):
@@ -612,7 +616,7 @@ class Netplay:
                     return
                 if LauncherConfig.get("__netplay_ready") != "1":
                     channel.privmsg(
-                        "(op tried to start game, " "but I am not ready)"
+                        "(op tried to start game, but I am not ready)"
                     )
                     return
                 channel.privmsg(
@@ -630,7 +634,7 @@ class Netplay:
                 my_config_hash = self.get_config_hash()
                 if my_config_hash != config_hash:
                     channel.action(
-                        "could not start game " "(mismatching config hash)"
+                        "could not start game (mismatching config hash)"
                     )
                     return
                 self.do_start_game()
@@ -765,8 +769,9 @@ class Netplay:
                 )
             else:
                 channel.action(
-                    "could not find (ext) kickstart "
-                    "for {0}".format(repr(value))
+                    "could not find (ext) kickstart for {0}".format(
+                        repr(value)
+                    )
                 )
 
     def set_file_config(self, key, value):
@@ -787,27 +792,27 @@ class Netplay:
         else:
             LauncherConfig.set_multiple([(set_key, ""), (key, "")])
             channel.action(
-                "could not find {1} for " "for {0}".format(value, set_key)
+                "could not find {1} for for {0}".format(value, set_key)
             )
 
     file_config = {}
     for i in range(Amiga.MAX_FLOPPY_DRIVES):
-        file_config[
-            "x_floppy_drive_{0}_sha1".format(i)
-        ] = "floppy_drive_{0}".format(i)
+        file_config["x_floppy_drive_{0}_sha1".format(i)] = (
+            "floppy_drive_{0}".format(i)
+        )
     for i in range(Amiga.MAX_FLOPPY_IMAGES):
-        file_config[
-            "x_floppy_image_{0}_sha1".format(i)
-        ] = "floppy_image_{0}".format(i)
+        file_config["x_floppy_image_{0}_sha1".format(i)] = (
+            "floppy_image_{0}".format(i)
+        )
     for i in range(Amiga.MAX_CDROM_DRIVES):
-        file_config[
-            "x_cdrom_drive_{0}_sha1".format(i)
-        ] = "cdrom_drive_{0}".format(i)
+        file_config["x_cdrom_drive_{0}_sha1".format(i)] = (
+            "cdrom_drive_{0}".format(i)
+        )
     for i in range(Amiga.MAX_CDROM_IMAGES):
-        file_config[
-            "x_cdrom_image_{0}_sha1".format(i)
-        ] = "cdrom_image_{0}".format(i)
+        file_config["x_cdrom_image_{0}_sha1".format(i)] = (
+            "cdrom_image_{0}".format(i)
+        )
     for i in range(Amiga.MAX_HARD_DRIVES):
-        file_config[
-            "x_hard_drive_{0}_sha1".format(i)
-        ] = "hard_drive_{0}".format(i)
+        file_config["x_hard_drive_{0}_sha1".format(i)] = (
+            "hard_drive_{0}".format(i)
+        )

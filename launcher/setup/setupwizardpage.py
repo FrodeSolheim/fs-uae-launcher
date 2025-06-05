@@ -2,7 +2,6 @@ import fsui
 
 
 class SetupWizardPage(fsui.Panel):
-
     WIDTH = 640
     HEIGHT = 400
 

@@ -1,12 +1,11 @@
-import fsgs
-from fsgs import openretro
-from launcher.settings.maintenance_settings_page import DefragmentDatabasesTask
-
 import fsboot
+import fsgs
 import fsui
+from fsgs import openretro
 from fsui.extra.taskdialog import TaskDialog
 from launcher.option import Option
 from launcher.res import gettext
+from launcher.settings.maintenance_settings_page import DefragmentDatabasesTask
 from launcher.settings.settings_page import SettingsPage
 
 

@@ -1,11 +1,11 @@
-from fsgs.plugins.pluginexecutablefinder import PluginExecutableFinder
 import os
 import subprocess
 import tempfile
 import traceback
 
 from fsbc.application import Application, app
-from fsbc.system import windows, macosx
+from fsbc.system import macosx, windows
+from fsgs.plugins.pluginexecutablefinder import PluginExecutableFinder
 from fsgs.plugins.pluginmanager import Plugin
 
 

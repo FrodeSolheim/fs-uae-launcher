@@ -9,6 +9,7 @@ and UTF-8 name lookup (with Python 3). Complications arise because Python
 seems to detect UTF-8 in some zip files (based on a flag) and then
 automatically convert to/from unicode.
 """
+
 import os
 import sys
 import zipfile
@@ -109,14 +110,14 @@ def create_deterministic_archive(
             size = (
                 f.read(1)[0]
                 + f.read(1)[0] * 256
-                + f.read(1)[0] * 256 ** 2
-                + f.read(1)[0] * 256 ** 2
+                + f.read(1)[0] * 256**2
+                + f.read(1)[0] * 256**2
             )
             socd = (
                 f.read(1)[0]
                 + f.read(1)[0] * 256
-                + f.read(1)[0] * 256 ** 2
-                + f.read(1)[0] * 256 ** 2
+                + f.read(1)[0] * 256**2
+                + f.read(1)[0] * 256**2
             )
             f.seek(socd)
             data = f.read(size)

@@ -1,2 +1,37 @@
+[project]
+name = "fs-uae-launcher-3"
+version = "0.0.0"
+description = "FS-UAE Launcher"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "lhafile>=0.3.1",
+    "macholib>=1.16.3",
+    "pillow>=11.2.1",
+    "pyobjc-core>=11.0; sys_platform == 'darwin'",
+    "pyobjc-framework-cocoa>=11.0; sys_platform == 'darwin'",
+    "pyobjc-framework-quartz>=11.0; sys_platform == 'darwin'",
+    "pyopengl>=3.1.9",
+    "pyqt6>=6.9.0",
+    "pywin32-ctypes>=0.2.3; sys_platform == 'win32'",
+    "requests>=2.32.3",
+    "sentry-sdk>=2.29.1",
+    "typing-extensions>=4.13.2",
+]
+
+[dependency-groups]
+dev = [
+    "dmgbuild>=1.6.5",
+    "dropbox>=12.0.2",
+    "isort>=6.0.1",
+    "pyinstaller>=6.13.0",
+    "ruff>=0.11.12",
+]
+
 [tool.black]
+line-length = 79
+
+[tool.ruff]
+target-version = "py312"
+exclude = [".venv", "attic", "amitools", "oyoyo"]
 line-length = 79

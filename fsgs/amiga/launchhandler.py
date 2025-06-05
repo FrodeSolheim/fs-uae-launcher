@@ -109,9 +109,9 @@ class LaunchHandler(object):
         self.change_handler = GameChangeHandler(self.temp_dir)
 
         self.config["cdroms_dir"] = FSGSDirectories.get_cdroms_dir()
-        self.config[
-            "configurations_dir"
-        ] = FSGSDirectories.get_configurations_dir()
+        self.config["configurations_dir"] = (
+            FSGSDirectories.get_configurations_dir()
+        )
         self.config["controllers_dir"] = FSGSDirectories.get_controllers_dir()
         self.config["hard_drives_dir"] = FSGSDirectories.get_hard_drives_dir()
         self.config["kickstarts_dir"] = FSGSDirectories.get_kickstarts_dir()
@@ -292,8 +292,9 @@ class LaunchHandler(object):
                 except FileNotFoundError:
                     raise TaskFailure(
                         gettext(
-                            "Cannot find required ROM "
-                            "file: {name}".format(name=repr(org_src))
+                            "Cannot find required ROM file: {name}".format(
+                                name=repr(org_src)
+                            )
                         )
                     )
             with open(dest, "wb") as f:

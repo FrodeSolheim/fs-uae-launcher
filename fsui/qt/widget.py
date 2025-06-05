@@ -3,7 +3,7 @@ import warnings
 
 from fsui.common.layout import Layout
 from fsui.qt import QPoint
-from fsui.qt import Qt, QObject, QFontMetrics, QWidget, QPalette, QCursor
+from fsui.qt import Qt, QObject, QFontMetrics, QWidget, QPalette
 from fsui.qt.Color import Color
 from fsui.qt.DrawingContext import Font
 from fsui.qt.signal import Signal
@@ -11,7 +11,6 @@ from fsui.qt.signal import Signal
 
 # noinspection PyPep8Naming
 class Widget(QObject):
-
     destroyed = Signal()
 
     def __init__(self, parent, *_):
@@ -64,7 +63,7 @@ class Widget(QObject):
     def hide(self):
         self.set_visible(False)
 
-    def eventFilter(self, obj, event):
+    def eventFilter(self, a0, a1):
         return False
 
     def parent(self):
@@ -85,13 +84,14 @@ class Widget(QObject):
     def measure_text(self, text):
         font = self.widget().font()
         metrics = QFontMetrics(font)
-        return metrics.width(text), metrics.height()
+        rect = metrics.boundingRect(text)
+        return rect.width(), rect.height()
 
     def set_hand_cursor(self):
-        self.widget().setCursor(Qt.PointingHandCursor)
+        self.widget().setCursor(Qt.CursorShape.PointingHandCursor)
 
     def set_normal_cursor(self):
-        self.widget().setCursor(Qt.ArrowCursor)
+        self.widget().setCursor(Qt.CursorShape.ArrowCursor)
 
     def is_enabled(self):
         return self.widget().isEnabled()
@@ -206,7 +206,7 @@ class Widget(QObject):
 
     def get_background_color(self):
         # noinspection PyUnresolvedReferences
-        return Color(self.widget().palette().color(QPalette.Window))
+        return Color(self.widget().palette().color(QPalette.ColorRole.Window))
 
     def set_background_color(self, color):
         widget = self.widget()

@@ -1,7 +1,8 @@
 import random
 
 from arcade.glui.font import Font
-from arcade.glui.opengl import gl, fs_emu_blending, fs_emu_texturing
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing
+from OpenGL import GL as gl
 from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
@@ -165,7 +166,7 @@ def render_bottom_bar_text(item):
         text = text.strip()
         if text:
             if text not in companies:
-                text_str = text_str + u" \u00b7 " + text
+                text_str = text_str + " \u00b7 " + text
                 companies.add(text)
     developer_text = (
         getattr(State.get().current_menu.selected_item, "developer", "") or ""
@@ -174,7 +175,7 @@ def render_bottom_bar_text(item):
         text = text.strip()
         if text:
             if text not in companies:
-                text_str = text_str + u" \u00b7 " + text
+                text_str = text_str + " \u00b7 " + text
                 companies.add(text)
     if len(text_str) > 3:
         text_str = text_str[3:]  # remove initial middle dot

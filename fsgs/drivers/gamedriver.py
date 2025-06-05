@@ -12,13 +12,13 @@ from fsbc.resources import Resources
 from fsbc.settings import Settings
 from fsbc.system import System
 from fsbc.task import current_task
-from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.amiga.fsuae import FSUAE
-from launcher.option import Option
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.plugins.pluginexecutablefinder import PluginExecutableFinder
-from fsgs.plugins.pluginmanager import PluginManager, Executable
+from fsgs.plugins.pluginmanager import Executable, PluginManager
 from fsgs.refreshratetool import RefreshRateTool
 from fsgs.util.gamenameutil import GameNameUtil
+from launcher.option import Option
 
 
 class GameDriverLogger:
@@ -82,7 +82,9 @@ class GameDriver:
         self.files.install()
 
     def run(self):
-        executable = PluginExecutableFinder().find_executable(self.emulator.name)
+        executable = PluginExecutableFinder().find_executable(
+            self.emulator.name
+        )
         if executable is None:
             raise LookupError(
                 "Could not find emulator " + repr(self.emulator.name)
@@ -366,14 +368,15 @@ class GameDriver:
             from fsui.qt import init_qt
 
             qapplication = init_qt()
-            desktop = qapplication.desktop()
+            # desktop = qapplication.desktop()
+            qscreens = qapplication.screens()
         except AttributeError:
             # no QApplication, probably not running via QT
             # FIXME: log warning
             pass
         else:
-            for i in range(desktop.screenCount()):
-                geometry = desktop.screenGeometry(i)
+            for i, qscreen in enumerate(qscreens):
+                geometry = qscreen.geometry()
                 screens.append([geometry.x(), i, geometry])
         return screens
 

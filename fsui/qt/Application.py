@@ -12,7 +12,7 @@ class Application(FSBCApplication):
         pass
 
     def run(self):
-        self.qapplication.exec_()
+        self.qapplication.exec()
         self.stop()
 
     def set_icon(self, icon):

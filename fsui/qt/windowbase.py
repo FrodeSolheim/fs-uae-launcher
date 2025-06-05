@@ -1,5 +1,5 @@
 from weakref import ref
-from .qt import Qt, QDesktopWidget, QSignal
+from .qt import Qt, QSignal
 
 # from .. import default_window_center, default_window_parent
 
@@ -9,10 +9,8 @@ _windows = set()
 
 # noinspection PyPep8Naming
 def WindowBase(BaseClass):
-
     # noinspection PyPep8Naming
     class WindowBaseImplementation(BaseClass):
-
         closed = QSignal()
 
         def __init__(self, parent, *args, title="", border=True, **kwargs):

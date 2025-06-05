@@ -1,6 +1,7 @@
-from launcher.ui.config.model import create_model
-import fsui
 import traceback
+
+import fsui
+from launcher.ui.config.model import create_model
 
 
 class ConfigBrowser(fsui.VerticalItemView):
@@ -47,7 +48,6 @@ class ConfigBrowser(fsui.VerticalItemView):
 
     def update_from_implicit(self, implicit):
         def flatten(item_list, level):
-
             for model_item in item_list:
                 if model_item.active:
                     # text = "    " * level + str(model_item.text)

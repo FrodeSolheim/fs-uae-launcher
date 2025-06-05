@@ -1,7 +1,8 @@
-from arcade.glui.opengl import gl, fs_emu_blending, fs_emu_texturing
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing
+from OpenGL import GL as gl
+
 from arcade.glui.render import Render
 from arcade.notification import Notification
-
 
 START_X = 20
 START_Y = 1080 - 60 - 20

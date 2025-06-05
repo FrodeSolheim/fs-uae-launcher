@@ -131,7 +131,7 @@ class ShellIcon(workspace.ui.Canvas):
             workspace.shell.open(path)
         elif workspace.path.isdir(path):
             # FIXME: Ugly hack (app is set by FileManager.py)
-            app.open(path)
+            app.open(path)  # noqa: F821
         else:
             workspace.shell.open(path)
 

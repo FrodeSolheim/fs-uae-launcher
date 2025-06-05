@@ -1,15 +1,13 @@
+import itertools
 import os
 import re
 import unicodedata
 import unittest
-import itertools
-
 
 QUOTED_TERMS_RE = re.compile('["].*?["]')
 
 
 class GameNameUtil(object):
-
     TOSEC = "TOSEC"
     NOINTRO = "NOINTRO"
 
@@ -611,8 +609,7 @@ class TestGameNameUtil(unittest.TestCase):
 
     def test_tosec_name(self):
         full_name = (
-            "Lotus Turbo Challenge 2 (1991)(Gremlin)[cr CPY]"
-            "[t +4 Goonies].adf"
+            "Lotus Turbo Challenge 2 (1991)(Gremlin)[cr CPY][t +4 Goonies].adf"
         )
         name, variant = GameNameUtil.extract_names(full_name)
         self.assertEquals(name, "Lotus Turbo Challenge 2")
@@ -638,7 +635,7 @@ class TestGameNameUtil(unittest.TestCase):
 
     def test_leather_goddesses_of_phobos(self):
         full_name = (
-            "Hitchhiker's Guide to the Galaxy, The r58 " "(1986)(Infocom).adf"
+            "Hitchhiker's Guide to the Galaxy, The r58 (1986)(Infocom).adf"
         )
         name, variant = GameNameUtil.extract_names(full_name)
         self.assertEquals(name, "Hitchhiker's Guide to the Galaxy, The")

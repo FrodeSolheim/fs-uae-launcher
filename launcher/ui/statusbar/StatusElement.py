@@ -1,4 +1,5 @@
-from fsui import Panel, Color
+from fsui import Color, Panel
+from launcher.ui.skin import LauncherTheme
 
 
 class StatusElement(Panel):
@@ -18,6 +19,7 @@ class StatusElement(Panel):
 
     def on_paint(self):
         dc = self.create_dc()
+        dc.set_text_color(LauncherTheme.get().text_color)
         from .StatusBar import StatusBar
 
         StatusBar.draw_element_background(self, dc)

@@ -18,13 +18,9 @@ class Font(object):
         return self.font
 
     def set_bold(self, bold=True):
-        self.font.setBold(bold)
-
-    # def size(self):
-    #     return self.font.pixelSize()
-    #
-    # def set_size(self, size):
-    #     self.font.setPixelSize(size)
+        self.font.setWeight(
+            QFont.Weight.DemiBold if bold else QFont.Weight.Normal
+        )
 
     def adjust_size(self, increment=1):
         size = self.font.pointSize()
@@ -61,14 +57,24 @@ class DrawingContext(object):
         # self.qpainter.drawText(QPoint(x, y), text)
         self.qpainter.setPen(QPen(self.text_color))
         self.qpainter.drawText(
-            x, y, 10000, 1000, Qt.AlignLeft | Qt.AlignTop, text
+            x,
+            y,
+            10000,
+            1000,
+            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop,
+            text,
         )
 
     def measure_text(self, text: str) -> Tuple[int, int]:
         # return self.dc.GetTextExtent(text)
         # return (10, 10)
         rect = self.qpainter.boundingRect(
-            0, 0, 10000, 1000, Qt.AlignLeft | Qt.AlignTop, text
+            0,
+            0,
+            10000,
+            1000,
+            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop,
+            text,
         )
         return rect.width(), rect.height()
 

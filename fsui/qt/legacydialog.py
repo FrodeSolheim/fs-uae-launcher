@@ -4,7 +4,6 @@ from fsui.qt.helpers import QParent
 
 
 class LegacyDialog(QDialog):
-
     closed = Signal()
 
     def __init__(self, parent=None, title=""):

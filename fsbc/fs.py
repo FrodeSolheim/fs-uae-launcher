@@ -1,9 +1,9 @@
+import functools
 import os
 import sys
-import functools
 
 # noinspection PyUnresolvedReferences
-from fsbc.system import windows, macosx
+from fsbc.system import macosx, windows
 
 # noinspection PyUnresolvedReferences
 from fsbc.user import get_data_dir
@@ -135,10 +135,6 @@ def normalize_path(path):
 from .user import get_home_dir
 
 # noinspection PyUnresolvedReferences
-from .util import Version
-
 # noinspection PyUnresolvedReferences
-from .util import split_version
-
 # noinspection PyUnresolvedReferences
-from .util import compare_versions
+from .util import Version, compare_versions, split_version

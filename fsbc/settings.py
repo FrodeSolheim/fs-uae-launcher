@@ -192,7 +192,7 @@ class SettingsProvider:
         # We want the settings section to be listed first.
         cp.add_section("settings")
 
-        for (section, key) in sorted(save_values.keys()):
+        for section, key in sorted(save_values.keys()):
             value = save_values[(section, key)]
             if not value:
                 # We do not need to write empty values, as non-existing

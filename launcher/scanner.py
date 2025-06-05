@@ -80,7 +80,6 @@ class Scanner:
         scanner.scan(database)
 
         if cls.update_game_database:
-
             context = SynchronizerContext()
 
             synchronizer = MetaSynchronizer(

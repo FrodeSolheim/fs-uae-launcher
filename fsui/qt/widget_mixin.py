@@ -58,7 +58,7 @@ class WidgetMixin(MixinBase):
     def on_destroy(self):
         print("on_destroy")
 
-    def eventFilter(self, obj, event):
+    def eventFilter(self, a0, a1) -> bool:
         return False
 
     def get_parent(self):

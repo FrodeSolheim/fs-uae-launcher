@@ -2,7 +2,6 @@ import fsui.qt
 
 
 class IntervalTimer(fsui.qt.QObject):
-
     activated = fsui.qt.QSignal()
 
     def __init__(self, interval):
@@ -12,8 +11,7 @@ class IntervalTimer(fsui.qt.QObject):
     def __del__(self):
         print("IntervalTimer.__del__", self)
 
-    # noinspection PyPep8Naming
-    def timerEvent(self, _):
+    def timerEvent(self, a0):
         self.activated.emit()
 
     def stop(self):

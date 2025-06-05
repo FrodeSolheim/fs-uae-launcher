@@ -1,6 +1,7 @@
 from fsui import Image
-from ...launcher_config import LauncherConfig
+
 from ...i18n import gettext
+from ...launcher_config import LauncherConfig
 from .StatusElement import StatusElement
 
 

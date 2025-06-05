@@ -1,9 +1,14 @@
 import ctypes
 
-from .opengl import gl, fs_emu_texturing
-from .render import Render
-from .window import set_program
-from .window import texture_program, premultiplied_texture_program
+from OpenGL import GL as gl
+
+from arcade.glui.opengl import fs_emu_texturing
+from arcade.glui.render import Render
+from arcade.glui.window import (
+    premultiplied_texture_program,
+    set_program,
+    texture_program,
+)
 
 
 class FrameBufferObject(object):  # Renderable, RendererBase):
@@ -22,11 +27,11 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
 
     def free(self):
         if self._fb:
-            gl.glDeleteFramebuffersEXT(1, self._fb)
+            gl.glDeleteFramebuffers(1, self._fb)
         if self._depth_rb:
-            gl.glDeleteRenderbuffersEXT(1, self._depth_rb)
+            gl.glDeleteRenderbuffers(1, self._depth_rb)
         if self._stencil_rb:
-            gl.glDeleteRenderbuffersEXT(1, self._stencil_rb)
+            gl.glDeleteRenderbuffers(1, self._stencil_rb)
         if self._texture:
             gl.glDeleteTextures([self._texture])
 
@@ -45,13 +50,13 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
         depth_rb = gl.GLuint()
         stencil_rb = gl.GLuint()
 
-        gl.glGenFramebuffersEXT(1, ctypes.byref(fb))
+        gl.glGenFramebuffers(1, ctypes.byref(fb))
         color_tex = Render.get().create_texture()
-        gl.glGenRenderbuffersEXT(1, ctypes.byref(depth_rb))
-        gl.glGenRenderbuffersEXT(1, ctypes.byref(stencil_rb))
+        gl.glGenRenderbuffers(1, ctypes.byref(depth_rb))
+        gl.glGenRenderbuffers(1, ctypes.byref(stencil_rb))
 
         fb = fb.value
-        gl.glBindFramebufferEXT(gl.GL_FRAMEBUFFER_EXT, fb)
+        gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, fb)
 
         # initialize color texture
         gl.glBindTexture(texture_target, color_tex)
@@ -75,9 +80,9 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
         try:
             # FIXME: An error seems to be thrown here on Windows, even
             # though it seems to work...
-            gl.glFramebufferTexture2DEXT(
-                gl.GL_FRAMEBUFFER_EXT,
-                gl.GL_COLOR_ATTACHMENT0_EXT,
+            gl.glFramebufferTexture2D(
+                gl.GL_FRAMEBUFFER,
+                gl.GL_COLOR_ATTACHMENT0,
                 texture_target,
                 color_tex,
                 0,
@@ -86,14 +91,14 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
             pass
 
         # initialize depth renderbuffer
-        gl.glBindRenderbufferEXT(gl.GL_RENDERBUFFER_EXT, depth_rb)
-        gl.glRenderbufferStorageEXT(
-            gl.GL_RENDERBUFFER_EXT, gl.GL_DEPTH_COMPONENT24, w, h
+        gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, depth_rb)
+        gl.glRenderbufferStorage(
+            gl.GL_RENDERBUFFER, gl.GL_DEPTH_COMPONENT24, w, h
         )
-        gl.glFramebufferRenderbufferEXT(
-            gl.GL_FRAMEBUFFER_EXT,
-            gl.GL_DEPTH_ATTACHMENT_EXT,
-            gl.GL_RENDERBUFFER_EXT,
+        gl.glFramebufferRenderbuffer(
+            gl.GL_FRAMEBUFFER,
+            gl.GL_DEPTH_ATTACHMENT,
+            gl.GL_RENDERBUFFER,
             depth_rb,
         )
 
@@ -107,8 +112,8 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
         gl.glBindTexture(texture_target, 0)
 
         # Check framebuffer completeness at the end of initialization.
-        status = gl.glCheckFramebufferStatusEXT(gl.GL_FRAMEBUFFER_EXT)
-        assert status == gl.GL_FRAMEBUFFER_COMPLETE_EXT, str(status)
+        status = gl.glCheckFramebufferStatus(gl.GL_FRAMEBUFFER)
+        assert status == gl.GL_FRAMEBUFFER_COMPLETE, str(status)
         self._fb = fb
         self._depth_rb = depth_rb
         self._stencil_rb = stencil_rb
@@ -117,11 +122,11 @@ class FrameBufferObject(object):  # Renderable, RendererBase):
     def bind(self):
         if self._fb is None:
             self._create()
-        gl.glBindFramebufferEXT(gl.GL_FRAMEBUFFER_EXT, self._fb)
+        gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self._fb)
         # glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, self._depth_rb)
 
     def unbind(self):
-        gl.glBindFramebufferEXT(gl.GL_FRAMEBUFFER_EXT, 0)
+        gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0)
         # glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0)
 
     def set_viewport(self):

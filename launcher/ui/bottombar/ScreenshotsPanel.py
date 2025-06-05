@@ -1,7 +1,8 @@
-from fsbc.util import unused
 import fsui
-from ...launcher_settings import LauncherSettings
+from fsbc.util import unused
+
 from ...game_paths import GamePaths
+from ...launcher_settings import LauncherSettings
 from ..Constants import Constants
 from ..ImageLoader import ImageLoader
 from ..skin import Skin

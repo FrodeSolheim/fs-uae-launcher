@@ -1,5 +1,5 @@
-import sys
 import subprocess
+import sys
 from distutils.spawn import find_executable
 
 try:

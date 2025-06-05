@@ -1,9 +1,9 @@
 import fsui
+from fsbc.util import unused
+from fsgs.FSGSDirectories import FSGSDirectories
 from launcher.i18n import gettext
 from launcher.launcher_settings import LauncherSettings
 from launcher.ui.IconButton import IconButton
-from fsbc.util import unused
-from fsgs.FSGSDirectories import FSGSDirectories
 
 
 class ScanPathsGroup(fsui.Group):
@@ -82,10 +82,10 @@ class ScanPathsGroup(fsui.Group):
         # modification time has changed). If we don't include it here too
         # always, the result will be that the configs sometimes appear (on
         # startup) and disappear (on scan).
-        if not FSGSDirectories.get_configurations_dir() in paths:
+        if FSGSDirectories.get_configurations_dir() not in paths:
             paths.append(FSGSDirectories.get_configurations_dir())
         # Likewise, we force the Kickstarts directory to always be scanned.
-        if not FSGSDirectories.get_kickstarts_dir() in paths:
+        if FSGSDirectories.get_kickstarts_dir() not in paths:
             paths.append(FSGSDirectories.get_kickstarts_dir())
         return paths
 

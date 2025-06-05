@@ -1,13 +1,13 @@
 import os
-import time
 import threading
-from fsbc.system import windows, macosx
+import time
+
+from fsbc.system import macosx, windows
 
 
 class Joystick(object):
     @classmethod
     def _get_joystick_hash(cls):
-
         if windows:
             # FIXME: WARNING: DISABLING FOR NOW, SINCE STARTING THIS CONSOLE
             # APPLICATION CAUSES NOTICEABLE DELAYS (AND AN HOURGLASS)

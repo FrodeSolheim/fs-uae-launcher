@@ -1,7 +1,9 @@
+import doctest
+
+import nose.tools
+
 import fsbc.util
 import fstd.mypy
-import doctest
-import nose.tools
 
 
 def test_mypy():

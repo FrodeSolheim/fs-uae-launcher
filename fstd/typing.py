@@ -1,11 +1,11 @@
 import abc
-from abc import abstractmethod, abstractproperty
 import collections
 import contextlib
 import functools
 import re as stdlib_re  # Avoid confusion with the re we export.
 import sys
 import types
+from abc import abstractmethod, abstractproperty
 
 try:
     import collections.abc as collections_abc
@@ -15,9 +15,9 @@ if sys.version_info[:2] >= (3, 6):
     import _collections_abc  # Needed for private function _check_methods # noqa
 try:
     from types import (
-        WrapperDescriptorType,
-        MethodWrapperType,
         MethodDescriptorType,
+        MethodWrapperType,
+        WrapperDescriptorType,
     )
 except ImportError:
     WrapperDescriptorType = type(object.__init__)
@@ -347,16 +347,14 @@ class _TypeAlias(_TypingBase, _root=True):
     def __instancecheck__(self, obj):
         if not isinstance(self.type_var, TypeVar):
             raise TypeError(
-                "Parameterized type aliases cannot be used "
-                "with isinstance()."
+                "Parameterized type aliases cannot be used with isinstance()."
             )
         return isinstance(obj, self.impl_type)
 
     def __subclasscheck__(self, cls):
         if not isinstance(self.type_var, TypeVar):
             raise TypeError(
-                "Parameterized type aliases cannot be used "
-                "with issubclass()."
+                "Parameterized type aliases cannot be used with issubclass()."
             )
         return issubclass(cls, self.impl_type)
 
@@ -537,14 +535,14 @@ class TypeVar(_TypingBase, _root=True):
         *constraints,
         bound=None,
         covariant=False,
-        contravariant=False
+        contravariant=False,
     ):
         super().__init__(
             name,
             *constraints,
             bound=bound,
             covariant=covariant,
-            contravariant=contravariant
+            contravariant=contravariant,
         )
         self.__name__ = name
         if covariant and contravariant:
@@ -1267,8 +1265,7 @@ class GenericMeta(TypingMeta, abc.ABCMeta):
             return False
         if self is Generic:
             raise TypeError(
-                "Class %r cannot be used with class "
-                "or instance checks" % self
+                "Class %r cannot be used with class or instance checks" % self
             )
         return super().__subclasscheck__(cls)
 
@@ -1394,14 +1391,14 @@ class TupleMeta(GenericMeta):
         if self.__args__ is None:
             return isinstance(obj, tuple)
         raise TypeError(
-            "Parameterized Tuple cannot be used " "with isinstance()."
+            "Parameterized Tuple cannot be used with isinstance()."
         )
 
     def __subclasscheck__(self, cls):
         if self.__args__ is None:
             return issubclass(cls, tuple)
         raise TypeError(
-            "Parameterized Tuple cannot be used " "with issubclass()."
+            "Parameterized Tuple cannot be used with issubclass()."
         )
 
 
@@ -1420,7 +1417,7 @@ class Tuple(tuple, extra=tuple, metaclass=TupleMeta):
     def __new__(cls, *args, **kwds):
         if cls._gorg is Tuple:
             raise TypeError(
-                "Type Tuple cannot be instantiated; " "use tuple() instead"
+                "Type Tuple cannot be instantiated; use tuple() instead"
             )
         return _generic_new(tuple, cls, *args, **kwds)
 
@@ -1460,7 +1457,7 @@ class CallableMeta(GenericMeta):
             return super().__getitem__(parameters)
         if not isinstance(parameters, tuple) or len(parameters) != 2:
             raise TypeError(
-                "Callable must be used as " "Callable[[arg, ...], result]."
+                "Callable must be used as Callable[[arg, ...], result]."
             )
         args, result = parameters
         if args is Ellipsis:
@@ -1680,8 +1677,7 @@ def get_type_hints(obj, globalns=None, localns=None):
             return {}
         else:
             raise TypeError(
-                "{!r} is not a module, class, method, "
-                "or function.".format(obj)
+                "{!r} is not a module, class, method, or function.".format(obj)
             )
     defaults = _get_defaults(obj)
     hints = dict(hints)
@@ -2077,19 +2073,17 @@ class ByteString(Sequence[int], extra=collections_abc.ByteString):
 
 
 class List(list, MutableSequence[T], extra=list):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is List:
             raise TypeError(
-                "Type List cannot be instantiated; " "use list() instead"
+                "Type List cannot be instantiated; use list() instead"
             )
         return _generic_new(list, cls, *args, **kwds)
 
 
 class Deque(collections.deque, MutableSequence[T], extra=collections.deque):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2099,13 +2093,12 @@ class Deque(collections.deque, MutableSequence[T], extra=collections.deque):
 
 
 class Set(set, MutableSet[T], extra=set):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is Set:
             raise TypeError(
-                "Type Set cannot be instantiated; " "use set() instead"
+                "Type Set cannot be instantiated; use set() instead"
             )
         return _generic_new(set, cls, *args, **kwds)
 
@@ -2217,13 +2210,12 @@ __all__.append('AsyncContextManager')
 
 
 class Dict(dict, MutableMapping[KT, VT], extra=dict):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
         if cls._gorg is Dict:
             raise TypeError(
-                "Type Dict cannot be instantiated; " "use dict() instead"
+                "Type Dict cannot be instantiated; use dict() instead"
             )
         return _generic_new(dict, cls, *args, **kwds)
 
@@ -2233,7 +2225,6 @@ class DefaultDict(
     MutableMapping[KT, VT],
     extra=collections.defaultdict,
 ):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2243,7 +2234,6 @@ class DefaultDict(
 
 
 class Counter(collections.Counter, Dict[T, int], extra=collections.Counter):
-
     __slots__ = ()
 
     def __new__(cls, *args, **kwds):
@@ -2261,7 +2251,6 @@ if hasattr(collections, "ChainMap"):
         MutableMapping[KT, VT],
         extra=collections.ChainMap,
     ):
-
         __slots__ = ()
 
         def __new__(cls, *args, **kwds):
@@ -2381,8 +2370,7 @@ class NamedTupleMeta(type):
             return super().__new__(cls, typename, bases, ns)
         if not _PY36:
             raise TypeError(
-                "Class syntax for NamedTuple is only supported"
-                " in Python 3.6+"
+                "Class syntax for NamedTuple is only supported in Python 3.6+"
             )
         types = ns.get("__annotations__", {})
         nm_tpl = _make_nmtuple(typename, types.items())

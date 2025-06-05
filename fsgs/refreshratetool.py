@@ -2,7 +2,7 @@ import re
 import subprocess
 import traceback
 
-from fsbc.system import windows, macosx
+from fsbc.system import macosx, windows
 
 if windows:
     # noinspection PyUnresolvedReferences
@@ -294,7 +294,6 @@ class RefreshRateTool(object):
                 and bpp == mode["bpp"]
                 and flags == mode["flags"]
             ):
-
                 # print("trying to override with refresh", int(round(self.game_refresh)))
                 # #refresh == mode['refresh'] and \
                 # settings.DisplayFrequency = int(round(self.game_refresh))

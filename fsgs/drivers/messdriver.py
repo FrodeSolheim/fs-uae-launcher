@@ -153,8 +153,9 @@ class MessDriver(MameDriver):
                 inject(code)
             else:
                 raise Exception(
-                    "inject_fake_input_string cannot "
-                    "handle '{0}' yet".format(c)
+                    "inject_fake_input_string cannot handle '{0}' yet".format(
+                        c
+                    )
                 )
         self.inject_fake_input_string_list(delay, s)
 

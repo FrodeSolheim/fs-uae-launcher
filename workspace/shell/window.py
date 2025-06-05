@@ -32,7 +32,6 @@ class ShellWindow(ui.Window):
 
 
 class ShellWidget(ui.Canvas):
-
     output = ui.Signal()
     exited = ui.Signal()
 

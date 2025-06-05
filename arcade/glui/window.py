@@ -4,38 +4,48 @@ import sys
 import time
 from collections import deque
 
-from arcade.gamecentersettings import ArcadeSettings
-from fsbc import settings
-from fsgs.FSGSDirectories import FSGSDirectories
+from OpenGL import GL as gl
+from OpenGL.GL.ARB.shader_objects import (
+    glCompileShaderARB,
+    glCreateShaderObjectARB,
+    glDeleteObjectARB,
+    glShaderSourceARB,
+)
 
 from arcade.gamecenter import GameCenter
-from arcade.resources import resources
+from arcade.gamecentersettings import ArcadeSettings
+from arcade.glui.animation import AnimateValueBezier, AnimationSystem
+from arcade.glui.bezier import Bezier
+from arcade.glui.constants import TOP_HEIGHT
+from arcade.glui.displaylists import DisplayLists
+from arcade.glui.font import BitmapFont, Font
+from arcade.glui.imageloader import ImageLoader
+from arcade.glui.input import InputHandler
+from arcade.glui.itemmenu import ItemMenu
+from arcade.glui.items import (
+    AllMenuItem,
+    ListItem,
+    MenuItem,
+    NoItem,
+    PlatformItem,
+)
+from arcade.glui.notificationrender import NotificationRender
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing
+from arcade.glui.render import Render
+from arcade.glui.sdl import SDL_IsMinimized
+from arcade.glui.settings import Settings
+from arcade.glui.state import State
+from arcade.glui.texture import Texture
+from arcade.glui.texturemanager import TextureManager
+
+# from arcade.main import Main
+from arcade.resources import logger, resources
+from fsbc import settings
 from fsbc.system import windows
+from fsgs.FSGSDirectories import FSGSDirectories
 from fsgs.option import Option
 from fsgs.platform import PlatformHandler
 from fsgs.util.gamenameutil import GameNameUtil
-
-# from arcade.main import Main
-from arcade.resources import logger
-from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
-from arcade.glui.settings import Settings
-from arcade.glui.sdl import SDL_IsMinimized
-from arcade.glui.imageloader import ImageLoader
-from arcade.glui.itemmenu import ItemMenu
-from arcade.glui.displaylists import DisplayLists
-from arcade.glui.bezier import Bezier
-from arcade.glui.input import InputHandler
-from arcade.glui.animation import AnimationSystem
-from arcade.glui.animation import AnimateValueBezier
-from arcade.glui.state import State
-from arcade.glui.render import Render
-from arcade.glui.notificationrender import NotificationRender
-from arcade.glui.font import Font, BitmapFont
-from arcade.glui.items import MenuItem, AllMenuItem, NoItem, PlatformItem
-from arcade.glui.items import ListItem
-from arcade.glui.texture import Texture
-from arcade.glui.texturemanager import TextureManager
-from arcade.glui.constants import TOP_HEIGHT
 
 # FIXME: rename to manager or director or somethign
 main_window = None
@@ -167,9 +177,9 @@ def set_items_brightness(brightness, duration=1.0, delay=0.0):
 
 
 def compile_shader(source, shader_type):
-    shader = gl.glCreateShaderObjectARB(shader_type)
-    gl.glShaderSourceARB(shader, source)
-    gl.glCompileShaderARB(shader)
+    shader = glCreateShaderObjectARB(shader_type)
+    glShaderSourceARB(shader, source)
+    glCompileShaderARB(shader)
     try:
         status = ctypes.c_int()
         gl.glGetShaderiv(shader, gl.GL_COMPILE_STATUS, ctypes.byref(status))
@@ -178,7 +188,7 @@ def compile_shader(source, shader_type):
         status = gl.glGetShaderiv(shader, gl.GL_COMPILE_STATUS)
     if not status:
         print_log(shader)
-        gl.glDeleteObjectARB(shader)
+        glDeleteObjectARB(shader)
         raise ValueError("Shader compilation failed")
     return shader
 
@@ -541,7 +551,7 @@ def character_press(char):
         print(char_buffer, len(char_buffer))
         print("returning false")
         return False
-    elif char == "BACKSPACE" or char == u"\b":
+    elif char == "BACKSPACE" or char == "\b":
         if ArcadeSettings().search():
             char_buffer = char_buffer[:-1]
             if len(char_buffer) <= 2:
@@ -659,7 +669,6 @@ def default_input_func(button):
     elif button == "SKIP_RIGHT":
         State.get().navigatable.go_right(10)
     elif button == "PRIMARY":
-
         # global char_buffer
         # char_buffer = ""
 
@@ -1029,6 +1038,12 @@ def render_screen():
         time.sleep(0.01)
         return
     # Render.get().dirty = True
+
+    error = gl.glGetError()
+    if error:
+        # FIXME: Why error?
+        print(error)
+
     gl.glClearColor(0.0, 0.0, 0.0, 1.0)
     gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
     do_render()
@@ -1379,6 +1394,10 @@ def on_resize(display_size):
     global display
     global real_display_height, display_yoffset
     global browse_curve, header_curve  # ,screenshot_curve
+
+    error = gl.glGetError()
+    if error:
+        print(error)
 
     DisplayLists.clear()
 

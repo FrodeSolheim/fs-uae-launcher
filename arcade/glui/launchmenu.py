@@ -2,13 +2,19 @@ from arcade.glui.dialog import Dialog
 from arcade.glui.gamecenterrunner import GameCenterRunner
 from arcade.glui.input import InputHandler
 from arcade.glui.menu import Menu
-from arcade.glui.opengl import gl, fs_emu_texturing, fs_emu_blending
+from arcade.glui.opengl import fs_emu_blending, fs_emu_texturing
+from OpenGL import GL as gl
+
 from arcade.glui.render import Render
 from arcade.glui.state import State
 from arcade.glui.texture import Texture
 from arcade.glui.topmenu import GameCenterItem
-from arcade.glui.window import set_current_menu, render_fade
-from arcade.glui.window import set_ingame_status, back_to_menu_from_game
+from arcade.glui.window import (
+    back_to_menu_from_game,
+    render_fade,
+    set_current_menu,
+    set_ingame_status,
+)
 
 STATE_STARTING = 0
 STATE_PREPARING = 1

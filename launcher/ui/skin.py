@@ -1,10 +1,12 @@
-import fsui
+from typing import Self
 import fsbc.system
-from fsbc.util import memoize
-from .Constants import Constants
-from ..option import Option
-from ..launcher_settings import LauncherSettings
 import fsboot
+import fsui
+from fsbc.util import memoize
+
+from ..launcher_settings import LauncherSettings
+from ..option import Option
+from .Constants import Constants
 
 try:
     import workspace
@@ -20,7 +22,7 @@ class LauncherTheme(object):
     __instance = None
 
     @classmethod
-    def get(cls):
+    def get(cls) -> Self:
         if cls.__instance is None:
             cls.__instance = cls()
         return cls.__instance
@@ -29,14 +31,25 @@ class LauncherTheme(object):
         from fsui.qt import QPalette
 
         palette = QPalette()
-        self.sidebar_list_background = fsui.Color(palette.color(QPalette.Base))
+        self.sidebar_list_background = fsui.Color(
+            palette.color(QPalette.ColorRole.Base)
+        )
         self.sidebar_list_row_height = 28
         self.sidebar_list_row_text = fsui.Color(
-            palette.color(QPalette.HighlightedText)
+            palette.color(QPalette.ColorRole.HighlightedText)
         )
         self.sidebar_list_row_background = fsui.Color(
-            palette.color(QPalette.Highlight)
+            palette.color(QPalette.ColorRole.Highlight)
         )
+
+        self.text_color = fsui.Color(
+            palette.color(QPalette.ColorRole.Text)
+        )
+
+        self.window_color = fsui.Color(
+            palette.color(QPalette.ColorRole.Window)
+        )
+        self.dark_mode = self.window_color.red() < 128
 
         if Skin.fws():
             from workspace.ui.theme import WorkspaceTheme as WorkspaceTheme
@@ -54,7 +67,6 @@ class LauncherTheme(object):
 
 
 class Skin(object):
-
     EXTRA_GROUP_MARGIN = 0
     _fws = None
 
@@ -87,12 +99,12 @@ class Skin(object):
             return None
         elif cls.fws():
             return None
-        elif fsbc.system.windows:
-            # FIXME: Should really just check for Windows XP here, or maybe
-            # just remove it altogether.
-            return fsui.Color(LEVEL, LEVEL, LEVEL)
-        elif fsbc.system.macosx:
-            return fsui.Color(237, 237, 237)
+        # elif fsbc.system.windows:
+        #     # FIXME: Should really just check for Windows XP here, or maybe
+        #     # just remove it altogether.
+        #     return fsui.Color(LEVEL, LEVEL, LEVEL)
+        # elif fsbc.system.macosx:
+        #     return fsui.Color(237, 237, 237)
         return None
 
     @classmethod

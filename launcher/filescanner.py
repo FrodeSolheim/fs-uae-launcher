@@ -3,9 +3,10 @@ import os
 import traceback
 
 from fsbc.paths import Paths
+from fsgs.amiga.rommanager import ROMManager
 from fsgs.archive import Archive, archive_extensions
 from fsgs.filedatabase import FileDatabase
-from fsgs.amiga.rommanager import ROMManager
+
 from .i18n import gettext
 
 
@@ -233,7 +234,7 @@ class FileScanner(object):
 
         try:
             st = os.stat(path)
-        except:
+        except Exception:
             print("[FILES] WARNING: Error stat-ing file", repr(path))
             return
         size = st.st_size

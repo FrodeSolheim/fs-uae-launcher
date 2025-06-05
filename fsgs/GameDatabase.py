@@ -52,8 +52,7 @@ class GameDatabase(BaseDatabase):
     def get_ratings_for_game(self, game_uuid):
         cursor = self.internal_cursor()
         cursor.execute(
-            "SELECT like_rating, work_rating FROM rating WHERE "
-            "game_uuid = ?",
+            "SELECT like_rating, work_rating FROM rating WHERE game_uuid = ?",
             (game_uuid,),
         )
         row = cursor.fetchone()

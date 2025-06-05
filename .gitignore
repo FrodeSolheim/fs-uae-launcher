@@ -1,6 +1,10 @@
 *~
 /base-dir
-/build/
+/build/fs-uae-launcher/
+
+/build/_build/
+/build/_dist/
+
 /debian/.debhelper/
 /debian/files
 /debian/fs-uae-launcher
@@ -8,9 +12,11 @@
 /debian/fs-uae-launcher.postinst.debhelper
 /debian/fs-uae-launcher.prerm.debhelper
 /debian/fs-uae-launcher.substvars
+/dist/
 .DS_Store
 *.egg-info
 fontconfig
+/fs-uae
 fs-uae-launcher-*
 fs-uae-launcher_*
 /.idea/tasks.xml
@@ -27,3 +33,4 @@ Lib
 *.pyo
 /setup.py
 *.swp
+*.zip

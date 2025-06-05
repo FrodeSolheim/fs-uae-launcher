@@ -23,7 +23,7 @@ def initialize_locale(language=None):
         try:
             loc, _charset = locale.getdefaultlocale()
             print("[I18N] Locale is", loc)
-        except:
+        except Exception:
             print("[I18N] Exception while checking locale")
             loc = ""
         if not loc:

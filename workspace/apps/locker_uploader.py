@@ -200,7 +200,7 @@ class LockerUploaderTask(Task):
         # FIXME: prefix
         p = "0123456789ABCDEF"[prefix]
         cursor.execute(
-            "SELECT DISTINCT sha1 FROM file " "WHERE hex(sha1) LIKE ?",
+            "SELECT DISTINCT sha1 FROM file WHERE hex(sha1) LIKE ?",
             (p + "%",),
         )
         string_io = StringIO()

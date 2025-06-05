@@ -1,10 +1,9 @@
 from fsbc.task import Task
+from fsgs.context import fsgs
 from fsgs.Database import Database
 from fsgs.filedatabase import FileDatabase
 from fsgs.LockerDatabase import LockerDatabase
-from fsgs.context import fsgs
 from launcher.i18n import gettext
-
 
 # class MaintenanceSettingsPage(SettingsPage):
 #
