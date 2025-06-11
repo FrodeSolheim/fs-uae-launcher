@@ -9,6 +9,7 @@ from fsui.qt import Signal as Signal
 from fsui.qt import get_screen_size as get_screen_size
 from fsui.qt import show_error as show_error
 from fsui.qt import call_after as call_after
+from fsui.qt import call_later as call_later
 from fsui.qt.adapter import Adapter as Adapter
 from fsui.qt.Application import Application as Application
 from fsui.qt.Button import Button as Button
