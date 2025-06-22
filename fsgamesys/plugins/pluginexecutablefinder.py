@@ -1,5 +1,5 @@
 import platform
-from os import path
+from os import path, getenv
 from typing import Optional
 
 import fsboot
@@ -47,6 +47,9 @@ def find_executable(name: str):
         exe_file = find_executable_in_development_project_dir(name)
         if exe_file:
             return exe_file
+    exe_file = find_executable_in_path(name)
+    if exe_file:
+        return exe_file
     exe_file = find_executable_in_plugins_dir(name)
     if exe_file:
         return exe_file
@@ -62,6 +65,14 @@ def find_executable(name: str):
         return exe_file
     return None
 
+def find_executable_in_path(name: str):
+    print("- Find executable in system path")
+    paths = getenv("PATH", "").split(":")
+    for p in paths:
+        exe_file = path.join(p, get_exe_name(name))
+        if check_executable(exe_file):
+            return exe_file
+    return None
 
 def find_executable_in_development_project_dir(name: str):
     print("- Find executable in development project dir")

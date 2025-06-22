@@ -1,5 +1,4 @@
 from enum import Enum
-from tkinter import HORIZONTAL
 from typing import List, Optional, cast
 
 from fsui import Widget

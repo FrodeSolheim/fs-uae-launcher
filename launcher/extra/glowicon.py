@@ -190,8 +190,16 @@ def open_svg(path):
     # global _application
     # if _application is None:
     #     _application = QApplication(sys.argv)
+    qimage_version = QImage.__module__[0:5]
+    print(f"qimage_version: {qimage_version}")
+    if qimage_version == "PyQt6":
+        pixel_format = QImage.Format.Format_RGBA8888
+    elif qimage_version == "PyQt5":
+        pixel_format = QImage.Format_RGBA8888
+    else:
+        raise Exception("Invalid version of QImage: " + qimage_version)
     renderer = QSvgRenderer(path)
-    image = QImage(64, 64, QImage.Format_RGBA8888)
+    image = QImage(64, 64, pixel_format)
     image.fill(0x00000000)
     painter = QPainter(image)
     renderer.render(painter)

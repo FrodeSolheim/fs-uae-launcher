@@ -1,4 +1,3 @@
-from tkinter.font import NORMAL
 from typing import Optional, Union
 
 from typing_extensions import TypedDict
