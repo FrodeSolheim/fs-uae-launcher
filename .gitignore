@@ -27,3 +27,4 @@ Lib
 *.pyo
 /setup.py
 *.swp
+venv

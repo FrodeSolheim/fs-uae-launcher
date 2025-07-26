@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-black = ""
+black = "*"
 mypy = "*"
 nose = "*"
 pyinstaller = "*"
@@ -14,16 +14,13 @@ pytest-mypy = "*"
 rope = "*"
 
 [packages]
-lhafile = "*"
 macholib = "*"
 pefile = "*"
 pillow = "*"
-pyobjc-core = {version = "", sys_platform = "== 'darwin'"}
-pyobjc-framework-cocoa = {version = "", sys_platform = "== 'darwin'"}
-pyobjc-framework-quartz = {version = "", sys_platform = "== 'darwin'"}
 pyopengl = "*"
-pyqt5 = "==5.15.3"
+pyqt5 = "*"
 pywin32-ctypes = "*"
+importlib-metadata = {version = "*", sys_platform = "== 'darwin'"}
 requests = "*"
 sentry-sdk = "*"
 typing-extensions = "*"
