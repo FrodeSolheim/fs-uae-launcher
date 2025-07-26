@@ -38,9 +38,9 @@ BINDIR=fsbuild/_build/pyinstaller/$PACKAGE_NAME
 # with system font cache or config files. For now, assume these library are
 # always present and use the system ones.
 echo "rm $BINDIR/libfreetype.so.6"
-rm $BINDIR/libfreetype.so.6
+rm -f $BINDIR/libfreetype.so.6
 echo "rm $BINDIR/libfontconfig.so.1"
-rm $BINDIR/libfontconfig.so.1
+rm -f $BINDIR/libfontconfig.so.1
 fi
 
 # These do not work with macOS notarization, but might as well remove for all
