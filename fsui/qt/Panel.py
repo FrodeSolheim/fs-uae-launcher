@@ -25,7 +25,7 @@ class Panel(Widget):
         # super(Panel, self).__init__(parent.get_container())
         # super().__init__()
         self._ignore_next_left_down_event = False
-        # self._widget.setFocusPolicy(Qt.NoFocus)
+        # self._widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
     def on_left_down(self):
         pass

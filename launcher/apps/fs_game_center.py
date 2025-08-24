@@ -29,17 +29,17 @@ def app_main():
     window = GameCenterView()
     from fsui.qt import Qt
 
-    # window.setFlags(Qt.FramelessWindowHint)
+    # window.setFlags(Qt.WindowType.FramelessWindowHint)
     window.setFlags(
-        Qt.Window
-        | Qt.FramelessWindowHint
-        | Qt.WindowMinimizeButtonHint
-        | Qt.WindowSystemMenuHint
+        Qt.WindowType.Window
+        | Qt.WindowType.FramelessWindowHint
+        | Qt.WindowType.WindowMinimizeButtonHint
+        | Qt.WindowType.WindowSystemMenuHint
     )
     # window.show()
     window.showMaximized()
     # window.showFullScreen()
-    # window.setWindowState(Qt.WindowFullScreen)
+    # window.setWindowState(Qt.WindowState.WindowFullScreen)
     # window.setVisible(True)
 
     # from fs_uae_launcher.FSUAELauncher import FSUAELauncher

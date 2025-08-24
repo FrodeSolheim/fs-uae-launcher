@@ -133,17 +133,14 @@ def initialize_qt_style(qapplication):
             pa.setColor(QPalette.ColorRole.Window, background)
             pa.setColor(QPalette.ColorRole.AlternateBase, background)
             pa.setColor(QPalette.ColorRole.Button, background)
-
             # pa.setColor(QPalette.ColorRole.Base, QColor(255, 255, 255))
+            pa.setColor(
+                QPalette.ColorGroup.Disabled, QPalette.ColorRole.Base, QColor(241, 241, 241)
+            )
 
-            # No Disabled role any more?
-            # pa.setColor(
-            #     QPalette.ColorRole.Disabled, QPalette.ColorRole.Base, QColor(241, 241, 241)
-            # )
-
-            # pa.setColor(QPalette.Window, QColor("#aeaeae"))
-            # pa.setColor(QPalette.AlternateBase, QColor("#aeaeae"))
-            # pa.setColor(QPalette.Button, ("#aeaeae"))
+            # pa.setColor(QPalette.ColorRole.Window, QColor("#aeaeae"))
+            # pa.setColor(QPalette.ColorRole.AlternateBase, QColor("#aeaeae"))
+            # pa.setColor(QPalette.ColorRole.Button, QColor("#aeaeae"))
 
         elif fusion_variant == "fws" or fusion_variant == "windows10":
             pa.setColor(QPalette.ColorRole.Window, QColor(242, 242, 242))

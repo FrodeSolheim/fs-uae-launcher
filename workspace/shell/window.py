@@ -63,14 +63,14 @@ class ShellWidget(ui.Canvas):
         # FIXME: Using Qt directly
         from fsui.qt import Qt, QPainter, QPixmap
 
-        self._widget.setFocusPolicy(Qt.StrongFocus)
+        self._widget.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
         painter = QPainter()
         pixmap = QPixmap(100, 100)
         painter.begin(pixmap)
         painter.setFont(self.font.qfont())
         size = painter.boundingRect(
-            0, 0, 10000, 1000, Qt.AlignLeft | Qt.AlignTop, " " * columns
+            0, 0, 10000, 1000, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, " " * columns
         )
         painter.end()
         print(size)

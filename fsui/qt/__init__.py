@@ -18,8 +18,8 @@ from fsui.qt.helpers import QParent
 
 def get_screen_size():
     init_qt()
-    screens = QGuiApplication.screens()
-    geometry = screens[0].geometry()
+    screen = QGuiApplication.primaryScreen()
+    geometry = screen.geometry()
     size = geometry.width(), geometry.height()
     print("using screen size", size)
     return size
@@ -84,7 +84,7 @@ def show_error(message, title=None, parent=None):
     # message_box = QMessageBox()
     # message_box.setIcon(QMessageBox.Critical)
     # message_box.setText(message)
-    # message_box.exec_()
+    # message_box.exec()
     QMessageBox.critical(QParent(parent), title, message)
 
 
