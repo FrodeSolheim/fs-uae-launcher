@@ -15,13 +15,13 @@ class Dialog(WindowBase(QDialog)):
 
     def show_modal(self):
         self.center_on_initial_show()
-        # self.setWindowModality(Qt.WindowModal)
-        return self.exec_()
+        # self.setWindowModality(Qt.WindowModality.WindowModal)
+        return self.exec()
 
     def show(self):
         self.center_on_initial_show()
-        self.setWindowModality(Qt.WindowModal)
-        return self.exec_()
+        self.setWindowModality(Qt.WindowModality.WindowModal)
+        return self.exec()
 
     def end_modal(self, value):
         self.done(value)

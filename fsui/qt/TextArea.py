@@ -31,7 +31,7 @@ class TextArea(fsui.qt.QTextEdit, WidgetMixin):
     def append_text(self, text, color=None):
         # text = text.replace("\n", "\r\n")
         # print("Appending text:", repr(text))
-        # self.moveCursor(QTextCursor.End)
+        # self.moveCursor(QTextCursor.MoveOperation.End)
         # self.insertPlainText(text.strip())
         if color is not None:
             self.setTextColor(fsui.qt.QColor(*color))

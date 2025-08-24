@@ -58,14 +58,14 @@ class RealWindow(QMainWindow):
             if maximizable:
                 flags |= Qt.WindowType.WindowMaximizeButtonHint
             # else:
-            #     flags &= ~Qt.WindowMaximizeButtonHint
+            #     flags &= ~Qt.WindowType.WindowMaximizeButtonHint
         else:
             flags |= Qt.WindowType.FramelessWindowHint
             flags |= Qt.WindowType.NoDropShadowWindowHint
             if below:
                 flags |= Qt.WindowType.WindowStaysOnBottomHint
         self.setWindowFlags(flags)
-        # self.setAttribute(Qt.WA_DeleteOnClose, True)
+        # self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
 
         # self._child = weakref.ref(child)
         self._child = child
@@ -332,9 +332,9 @@ class Window(QObject):
         )
 
         # if not border:
-        #     self.setWindowFlags(Qt.FramelessWindowHint |
-        #                         Qt.NoDropShadowWindowHint)
-        #     # self.setWindowFlags(Qt.FramelessWindowHint)
+        #     self.setWindowFlags(Qt.WindowType.FramelessWindowHint |
+        #                         Qt.WindowType.NoDropShadowWindowHint)
+        #     # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
 
         self.center_on_show = True
         self._centered_on_initial_show = False
@@ -489,7 +489,7 @@ class Window(QObject):
             self._real_window.show()
 
     def is_maximized(self):
-        # return self._real_window.windowState() == Qt.WindowMaximized
+        # return self._real_window.windowState() == Qt.WindowState.WindowMaximized
         return self._real_window.is_maximized()
 
     def is_fullscreen(self):
@@ -511,7 +511,7 @@ class Window(QObject):
         self._real_window.set_maximized(maximize, geometry)
 
     def minimize(self):
-        # self.setWindowState(Qt.WindowMinimized)
+        # self.setWindowState(Qt.WindowState.WindowMinimized)
         return self._real_window.minimize()
 
     def get_window_center(self):
@@ -551,7 +551,7 @@ class Window(QObject):
     def center_on_screen(self):
         frame_rect = self._real_window.frameGeometry()
         frame_rect.moveCenter(
-            QGuiApplication.screens()[0].availableGeometry().center()
+            QGuiApplication.primaryScreen().availableGeometry().center()
         )
         self._real_window.move(frame_rect.topLeft())
 
@@ -643,7 +643,7 @@ class FwsWindow(RealWindow):
         # self.layout.add(self.hori_layout, fill=True)
         # self.layout.add(child, fill=True, expand=True)
 
-        # self.setWindowFlags(Qt.FramelessWindowHint)
+        # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         from fsui.qt import Qt
 
         self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)

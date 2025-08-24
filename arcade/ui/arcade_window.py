@@ -242,7 +242,7 @@ class QtWindow(QWidget):
             self.gl_widget = GLWidget(self, self.callbacks)
             self.gl_widget.setMouseTracking(True)
             # if "--show-cursor" not in sys.argv:
-            # self.gl_widget.setCursor(Qt.BlankCursor)
+            # self.gl_widget.setCursor(Qt.CursorShape.BlankCursor)
             self.set_blank_cursor()
             self.gl_widget.setGeometry(
                 0, 0, self.size().width(), self.size().height()

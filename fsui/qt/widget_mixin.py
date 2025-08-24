@@ -90,15 +90,16 @@ class WidgetMixin(MixinBase):
         widget = getattr(self, "_widget", self)
         font = widget.font()
         metrics = QFontMetrics(font)
-        return metrics.width(text), metrics.height()
+        rect = metrics.boundingRect(text)
+        return rect.width(), rect.height()
 
     def set_hand_cursor(self):
         widget = getattr(self, "_widget", self)
-        widget.setCursor(Qt.PointingHandCursor)
+        widget.setCursor(Qt.CursorShape.PointingHandCursor)
 
     def set_normal_cursor(self):
         widget = getattr(self, "_widget", self)
-        widget.setCursor(Qt.ArrowCursor)
+        widget.setCursor(Qt.CursorShape.ArrowCursor)
 
     def is_enabled(self):
         widget = getattr(self, "_widget", self)
@@ -245,7 +246,7 @@ class WidgetMixin(MixinBase):
 
     def get_background_color(self):
         # noinspection PyUnresolvedReferences
-        return Color(self.palette().color(QPalette.Window))
+        return Color(self.palette().color(QPalette.ColorRole.Window))
 
     def set_background_color(self, color):
         # noinspection PyUnresolvedReferences

@@ -42,7 +42,7 @@ class SettingsDialog(PagedDialog):
         )
 
         # FIXME: remove this once the dialog uses Window as base class
-        # self.setAttribute(Qt.WA_DeleteOnClose, True)
+        # self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
 
         # self.add_page(
         #     # gettext("Appearance"), LanguageSettingsPage,

@@ -37,7 +37,7 @@ class FileDialog(QFileDialog):
         return self.selectedFiles()
 
     def show_modal(self):
-        result = self.exec_()
+        result = self.exec()
         print("File dialog result is", result)
         return result
 
@@ -78,7 +78,7 @@ def pick_file(parent=None, message="", directory="", what=FILE):
             dialog.setFileMode(QFileDialog.Directory)
         elif what == FILES:
             dialog.setFileMode(QFileDialog.ExistingFiles)
-        modal_result = dialog.exec_()
+        modal_result = dialog.exec()
         if not modal_result:
             result = None
         elif what == FILES:

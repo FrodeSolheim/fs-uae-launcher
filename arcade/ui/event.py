@@ -71,7 +71,7 @@ class Event:
 
 
 def get_key(ev):
-    # print("Qt key:", ev.key(), int(ev.modifiers()), Qt.KeypadModifier)
+    # print("Qt key:", ev.key(), int(ev.modifiers()), Qt.KeyboardModifier.KeypadModifier)
     if macosx:
         # FIXME: TODO: CHECK
         # if ev.key() == Qt.Key.Key_Meta:

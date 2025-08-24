@@ -1,5 +1,5 @@
 from weakref import ref
-from .qt import Qt, QSignal
+from .qt import Qt, QGuiApplication, QSignal
 
 # from .. import default_window_center, default_window_parent
 
@@ -35,12 +35,12 @@ def WindowBase(BaseClass):
             self.destroyed.connect(self.__destroyed)
             self.closed.connect(self.__closed)
             self._window = ref(self)
-            self.setAttribute(Qt.WA_DeleteOnClose, True)
+            self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
             if not border:
                 self.setWindowFlags(
-                    Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint
+                    Qt.WindowType.FramelessWindowHint | Qt.WindowType.NoDropShadowWindowHint
                 )
-                # self.setWindowFlags(Qt.FramelessWindowHint)
+                # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
             self._centered_on_initial_show = False
             if hasattr(self, "accepted"):
                 self.accepted.connect(self.__accepted)
@@ -113,10 +113,10 @@ def WindowBase(BaseClass):
             if maximize:
                 self.showMaximized()
             else:
-                self.setWindowState(Qt.WindowNoState)
+                self.setWindowState(Qt.WindowState.WindowNoState)
 
         def minimize(self):
-            self.setWindowState(Qt.WindowMinimized)
+            self.setWindowState(Qt.WindowState.WindowMinimized)
 
         def get_window_center(self):
             return self.x() + self.width() // 2, self.y() + self.height() // 2
@@ -137,7 +137,7 @@ def WindowBase(BaseClass):
 
         def center_on_screen(self):
             frect = self.frameGeometry()
-            frect.moveCenter(QDesktopWidget().availableGeometry().center())
+            frect.moveCenter(QGuiApplication.primaryScreen().availableGeometry().center())
             self.move(frect.topLeft())
 
         def set_background_color(self, color):

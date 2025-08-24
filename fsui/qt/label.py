@@ -10,13 +10,13 @@ class Label(fsui.qt.QLabel, WidgetMixin):
         self.init_widget(parent)
 
         self.setTextFormat(fsui.qt.Qt.TextFormat.RichText)
-        # self.setTextInteractionFlags(fsui.qt.Qt.TextBrowserInteraction)
+        # self.setTextInteractionFlags(fsui.qt.Qt.TextInteractionFlag.TextBrowserInteraction)
         self.setTextInteractionFlags(
             Qt.TextInteractionFlag.TextSelectableByMouse
             | Qt.TextInteractionFlag.LinksAccessibleByMouse
         )
         self.setOpenExternalLinks(True)
-        # self.setFocusPolicy(Qt.NoFocus)
+        # self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         # FIXME: focusPolicy()
         # FIXME: make Label more plain, and rather make a InteractiveLabel
@@ -45,7 +45,7 @@ class URLLabel(Label):
         self._label = label
         self._url = url
         Label.__init__(self, parent, self._fix_label())
-        # self.setFocusPolicy(Qt.StrongFocus)
+        # self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
     def set_text(self, label):
         self._label = label
