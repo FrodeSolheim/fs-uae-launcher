@@ -9,7 +9,7 @@ from .irc_broadcaster import IRCBroadcaster
 from .irc_color import IRCColor
 from ..launcher_settings import LauncherSettings
 
-LOBBY_CHANNEL = "#Lobby2.8"
+LOBBY_CHANNEL = "#FS-UAE-Lobby"
 
 
 # noinspection PyUnusedLocal
@@ -55,6 +55,9 @@ class IRC:
             # self.set_active_channel(name)
             IRCBroadcaster.broadcast("channel_list", {"added": name})
             return self.channels[name]
+
+    def get_active_channel(self):
+        return self.active_channel_name
 
     def active_channel(self):
         return self.channel(self.active_channel_name)

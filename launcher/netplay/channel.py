@@ -128,22 +128,43 @@ class Channel:
         self.message("{0}".format(topic), IRCColor.TOPIC)
 
     def on_join(self, nick):
-        if self.irc.me(nick):
-            self.nicks.clear()
-            self.ops.clear()
-            self.voices.clear()
-            self.message("* you joined {0} ".format(self.name), IRCColor.JOIN)
-            self.irc.set_active_channel_name(self.name)
-            IRCBroadcaster.broadcast("joined", {"channel": self.name})
+        from launcher.netplay.irc import LOBBY_CHANNEL
+        if self.name == LOBBY_CHANNEL:
+            # Show welcome only in local UI
+            if self.irc.me(nick):
+                self.message(
+                    f"Welcome to the IRC {self.name}!",
+                    IRCColor.JOIN
+                )
+                # Only the joining user sends the /me action
+                self.irc.handle_command(f"/me has joined the lobby.")
+            self.add_nick(nick)
         else:
-            self.message(
-                "* {0} joined ({1}) ".format(nick, self.name), IRCColor.JOIN
-            )
-            if nick in self.nicks:
-                print("Channel.joined - warning, nick already in list", nick)
+            if self.irc.me(nick):
+                self.nicks.clear()
+                self.ops.clear()
+                self.voices.clear()
+                self.message(
+                    f"You joined the game channel - {self.name}.",
+                    IRCColor.JOIN
+                )
+                self.irc.set_active_channel_name(self.name)
+                IRCBroadcaster.broadcast("joined", {"channel": self.name})
             else:
-                # self.nicks.add(nick)
-                self.add_nick(nick)
+                # Only show this message to the joining user
+                if self.irc.my_nick == nick:
+                    self.message(
+                        f"You joined the channel {self.name} as a user.",
+                        IRCColor.JOIN
+                    )
+                # Show this message to everyone else
+                self.message(
+                    f"* {nick} joined ({self.name})", IRCColor.JOIN
+                )
+                if nick in self.nicks:
+                    print(f"Channel.joined - warning, nick already in list {nick}")
+                else:
+                    self.add_nick(nick)
         IRCBroadcaster.broadcast("nick_list", {"channel": self.name})
 
     # noinspection SpellCheckingInspection

@@ -18,5 +18,5 @@ class NetplayDialog(fsui.Window):
         self.panel = NetplayPanel(self, header=False)
         self.layout.add(self.panel, expand=True, fill=True)
 
-        self.panel.set_min_size((800, 500))
+        self.panel.set_min_size((1030, 860))
         self.panel.on_show()

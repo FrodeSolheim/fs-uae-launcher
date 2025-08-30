@@ -12,6 +12,7 @@ from launcher.settings.monitorbutton import MonitorButton
 from launcher.settings.override_warning import OverrideWarning
 from launcher.settings.videosynccheckbox import VideoSyncCheckBox
 from launcher.ui.behaviors.settingsbehavior import SettingsBehavior
+from launcher.netplay.netplay import close_server_window, Netplay
 
 
 class LaunchGroup(fsui.Group):
@@ -246,6 +247,11 @@ class LaunchDialog(fsui.Window):
 
         self.closed.connect(self.__closed)
 
+        self.netplay_game_id = LauncherConfig.get("__netplay_game")
+        self.netplay_port = LauncherConfig.get("__netplay_port")
+        netplay = Netplay.current()
+        self.netplay_channel = netplay.game_channel if netplay else None
+
     def complete(self):
         print("TaskRunner.complete")
         # Setting task to None so destructors are run now
@@ -257,6 +263,8 @@ class LaunchDialog(fsui.Window):
     def __closed(self):
         LauncherConfig.set("__running", "")
         self.cancel()
+        # Use cached netplay info
+        close_server_window(self.netplay_game_id, self.netplay_port, self.netplay_channel)
         return False
 
     def on_progress(self, progress):

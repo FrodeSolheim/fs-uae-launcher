@@ -2,8 +2,11 @@ import random
 import traceback
 from urllib.parse import parse_qs
 import uuid
+import socket
 
 import requests
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import QTimer
 
 from fsgs.amiga.amiga import Amiga
 from fsgs.context import fsgs
@@ -250,12 +253,13 @@ class Netplay:
             if args["channel"] == self.game_channel:
                 # initialize new player
                 self.player(args["nick"])
+                if args["nick"] == self.irc.my_nick and self.is_op():
+                    self.irc.message(f"You are the Operator for this game channel.")
                 if args["nick"] != self.irc.my_nick:
                     if self.is_op():
-                        # operator - send config to new player(s)
-                        self.irc.channel(self.game_channel).action(
-                            "sends config on arrival of new player"
-                        )
+                        # Broadcast to all users
+                        self.irc.handle_command(f"/me is the Operator for this game channel.")
+                        self.irc.handle_command(f"/me is sending configuration settings to {args['nick']}.")
                         self.send_config()
         elif key == "part":
             if args["channel"] == self.game_channel:
@@ -314,6 +318,18 @@ class Netplay:
         if LauncherConfig.get("__netplay_ready") == "1":
             self.game_info("status set to ready")
 
+    def command_reset(self, args):
+        if len(args) != 0:
+            self.irc.warning("syntax: /reset")
+            return
+        # Get info before resetting config
+        game_id = LauncherConfig.get("__netplay_game")
+        port = LauncherConfig.get("__netplay_port")
+        channel = self.game_channel
+        close_server_window(game_id, port, channel)
+        self.reset_netplay_config()
+        self.connection_tester = None
+
     # noinspection SpellCheckingInspection
     def command_notready(self, args):
         if len(args) != 0:
@@ -369,7 +385,7 @@ class Netplay:
         if len(args) != 0:
             self.irc.warning("syntax: /sendconfig")
             return
-        self.game_info("sending config")
+        self.irc.handle_command(f"/me is sending configuration settings.")
         self.send_config()
 
     def send_config(self):
@@ -381,6 +397,10 @@ class Netplay:
             value = LauncherConfig.get(key)
             message = "__config {0} {1}".format(key, value)
             channel.privmsg(message)
+        # Send end-of-config protocol message
+        self.irc.handle_command(f"/me has sent all configuration settings.")
+        channel.privmsg("__endconfig")
+        # Broadcast to all users that config has been sent
 
     def require_game_channel(self, channel):
         if not self.irc.running:
@@ -488,6 +508,16 @@ class Netplay:
                 )
             )
 
+    @staticmethod
+    def is_port_free(port):
+        """Check if the given port is free on localhost."""
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("127.0.0.1", int(port)))
+                return True
+            except OSError:
+                return False
+
     def command_hostgame(self, args):
         channel = self.irc.active_channel()
         if not self.require_game_channel(channel):
@@ -505,29 +535,59 @@ class Netplay:
             self.irc.warning("hostgame: you need to be an operator")
             return
 
-        server = Server(port, players, password)
-        server.start()
+        # Setup retry logic
+        self._hostgame_attempt = 1
+        self._hostgame_max_retries = 5
+        self._hostgame_port = port
+        self._hostgame_players = players
+        self._hostgame_password = password
+        self._hostgame_addresses = addresses
+        self._hostgame_channel = channel
+        self._hostgame_args = args
+        self._hostgame_backoff_base = 5  # seconds
+        self._hostgame_retry()
 
-        from ..server.ServerWindow import ServerWindow
+    def _hostgame_retry(self):
+        port = self._hostgame_port
+        attempt = self._hostgame_attempt
+        max_retries = self._hostgame_max_retries
+        backoff = min(attempt * self._hostgame_backoff_base, 15)
 
-        window = ServerWindow(None, server)
-        window.show()
+        if self.is_port_free(port):
+            # Proceed with hosting the game
+            server = Server(port, self._hostgame_players, self._hostgame_password)
+            server.start()
+            from ..server.ServerWindow import ServerWindow
+            game_id = str(uuid.uuid4())
+            channel_name = self.irc.get_active_channel()
+            window = ServerWindow(None, server, game_id, port, channel_name)
+            window.show()
+            LauncherConfig.set_multiple(
+                [
+                    ("__netplay_game", game_id),
+                    ("__netplay_password", self._hostgame_password),
+                    ("__netplay_players", str(self._hostgame_players)),
+                    ("__netplay_port", str(port)),
+                    ("__netplay_host", ""),
+                    ("__netplay_addresses", self._hostgame_addresses),
+                ]
+            )
+            self._hostgame_channel.info(
+                "started game id: {0} password: {1} "
+                "server: {2} port: {3}".format(game_id, self._hostgame_password, self._hostgame_addresses, port)
+            )
+            return
 
-        game_id = str(uuid.uuid4())
-        LauncherConfig.set_multiple(
-            [
-                ("__netplay_game", game_id),
-                ("__netplay_password", password),
-                ("__netplay_players", str(players)),
-                ("__netplay_port", str(port)),
-                ("__netplay_host", ""),
-                ("__netplay_addresses", addresses),
-            ]
-        )
-        channel.info(
-            "started game id: {0} password: {1} "
-            "server: {2} port: {3}".format(game_id, password, addresses, port)
-        )
+        if attempt < max_retries:
+            self._hostgame_channel.info(
+                f"Port {port} is busy. Waiting {backoff} seconds before retry {attempt}/{max_retries}..."
+            )
+            self._hostgame_attempt += 1
+            QTimer.singleShot(backoff * 1000, self._hostgame_retry)
+        else:
+            self._hostgame_channel.warning(
+                f"ERROR: Port {port} is still in use after {max_retries} attempts. Please choose another port or close the running server."
+            )
 
     # noinspection SpellCheckingInspection
     def command_setserver(self, args):
@@ -609,6 +669,8 @@ class Netplay:
                 my_config_hash = self.get_config_hash()
                 if my_config_hash != config_hash:
                     channel.privmsg("not the same config hash")
+                    channel.privmsg(f"op hash: {my_config_hash}")
+                    channel.privmsg(f"received hash: {config_hash}")
                     return
                 if LauncherConfig.get("__netplay_ready") != "1":
                     channel.privmsg(
@@ -677,6 +739,9 @@ class Netplay:
         elif command == "__ackverify":
             args = arg.split(" ", 1)
             self.print_verify_response(nick, args[0], " ".join(args[1:]))
+        elif command == "__endconfig":
+            # All config received, confirm or trigger any logic you need
+            self.irc.handle_command(f"/me has received all configuration settings from {nick}")
         else:
             channel.warning("unknown command received: {0}".format(command))
 
@@ -811,3 +876,11 @@ class Netplay:
         file_config[
             "x_hard_drive_{0}_sha1".format(i)
         ] = "hard_drive_{0}".format(i)
+
+def close_server_window(game_id, port, channel):
+    title = f"FS-UAE Netplay Server - Game ID: {game_id}, Port: {port}, Channel: {channel}"
+    for widget in QApplication.topLevelWidgets():
+        if widget.windowTitle() == title:
+            widget.close()
+            return True
+    return False

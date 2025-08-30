@@ -28,3 +28,4 @@ Lib
 /setup.py
 *.swp
 venv
+__pycache__/
