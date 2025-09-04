@@ -1,10 +1,15 @@
 name: macOS
 on:
-  push:
-    branches:
-      - stable
+  workflow_call:
   workflow_dispatch:
-  
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+
 jobs:
   macOS_x86-64:
     runs-on: macos-13
@@ -63,3 +68,4 @@ jobs:
         with:
           name: macOS_x86-64
           path: fsbuild/_dist/*
+        if: github.event_name != 'pull_request'

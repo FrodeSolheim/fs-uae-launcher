@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python Debugger: FS-UAE-Launcher",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "fs-uae-launcher",
+            "console": "integratedTerminal",
+            "env": { "PYTHONPATH": "${workspaceRoot}"}
+        }
+    ]
+}

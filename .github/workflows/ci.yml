@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - stable
+      - release-*
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.ref_name }}-ci
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-linux:
+    name: Build Linux
+    uses: ./.github/workflows/linux.yml
+    permissions:
+      contents: read
+    secrets: inherit
+
+  build-macos-x86:
+    name: Build MacOS x86
+    uses: ./.github/workflows/macos.yml
+    permissions:
+      contents: read
+    secrets: inherit
+
+  build-container:
+    name: Build Container image
+    uses: ./.github/workflows/container.yml
+    permissions:
+      contents: read
+      packages: write # for docker/build-push-action to push to GHCR
+    secrets: inherit
+
+  build-source:
+    name: Build Source bundle
+    uses: ./.github/workflows/source.yml
+    permissions:
+      contents: read
+    secrets: inherit

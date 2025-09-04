@@ -1,8 +1,6 @@
 name: Container
 on:
-  push:
-    branches:
-      - stable
+  workflow_call:
   workflow_dispatch:
 
 defaults:

@@ -1,9 +1,14 @@
 name: Linux
 on:
-  push:
-    branches:
-      - stable
+  workflow_call:
   workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
 
 jobs:
   Linux_x86-64:
@@ -99,3 +104,4 @@ jobs:
         with:
           name: Linux_x86-64
           path: fsbuild/_dist/*
+        if: github.event_name != 'pull_request'
