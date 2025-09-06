@@ -55,9 +55,6 @@ jobs:
       - name: Run uv sync
         run: uv sync
 
-      - name: Update version
-        run: uv run python -m build version
-
       - name: Build
         run: uv run python -m build all
 
