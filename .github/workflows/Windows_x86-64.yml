@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - beta
-      - master
+      - main
       - stable
       - test
   pull_request:
     branches:
       - beta
-      - master
+      - main
       - stable
       - test
 
