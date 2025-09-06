@@ -567,7 +567,10 @@ def update_version_command() -> None:
             version.revision = int(arg[11:])
         elif arg.startswith("--last="):
             version.setLast(int(arg[7:]))
+        elif arg.startswith("--version="):
+            version = Version(arg[10:])
     print(str(version))
+
     if "--print" in sys.argv:
         # Only print version
         pass

@@ -134,6 +134,8 @@ def build():
         f"{dist_dir}",
         "--log-level",
         "DEBUG",
+        "--collect-submodules",
+        "OpenGL"
     ]
     if windows or macos:
         args.append("--windowed")
@@ -222,7 +224,7 @@ def bundle():
         archive = shutil.make_archive(
             os.path.join(resources_dir, item),
             "zip",
-            os.path.join("System", "Launcher", "Resources", item),
+            os.path.join("share", "fs-uae-launcher", "resources", item),
         )
         print(archive)
 

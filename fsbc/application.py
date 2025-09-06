@@ -127,31 +127,31 @@ class Application(object):
         if self._data_dirs is not None:
             return self._data_dirs
         data_dirs = []
-        base_dirs = []
+        # base_dirs = []
 
-        if len(sys.argv) > 0:
-            script_dir = os.path.dirname(sys.argv[0])
-            base_dirs.append(os.path.join(script_dir, "share"))
+        # if len(sys.argv) > 0:
+        #     script_dir = os.path.dirname(sys.argv[0])
+        #     base_dirs.append(os.path.join(script_dir, "share"))
 
-        data_dirs.append(self.executable_dir())
-        if windows:
-            base_dirs.append(os.path.join(self.executable_dir(), "share"))
-        elif macosx:
-            base_dirs.append(
-                os.path.join(self.executable_dir(), "..", "Resources", "share")
-            )
-        else:
-            # FIXME: $XDG_DATA_DIRS, $XDG_DATA_HOME
-            base_dirs.append(
-                os.path.normpath(
-                    os.path.join(self.executable_dir(), "..", "share")
-                )
-            )
-        for dir_name in base_dirs:
-            data_dir = os.path.join(dir_name, self.name)
-            logger.debug("* checking for data dir %s", data_dir)
-            if os.path.exists(data_dir):
-                data_dirs.append(data_dir)
+        # data_dirs.append(self.executable_dir())
+        # if windows:
+        #     base_dirs.append(os.path.join(self.executable_dir(), "share"))
+        # elif macosx:
+        #     base_dirs.append(
+        #         os.path.join(self.executable_dir(), "..", "Resources", "share")
+        #     )
+        # else:
+        #     # FIXME: $XDG_DATA_DIRS, $XDG_DATA_HOME
+        #     base_dirs.append(
+        #         os.path.normpath(
+        #             os.path.join(self.executable_dir(), "..", "share")
+        #         )
+        #     )
+        # for dir_name in base_dirs:
+        #     data_dir = os.path.join(dir_name, self.name)
+        #     logger.debug("* checking for data dir %s", data_dir)
+        #     if os.path.exists(data_dir):
+        #         data_dirs.append(data_dir)
 
         if not macosx:
             data_dir = os.path.join(
@@ -180,6 +180,27 @@ class Application(object):
             )
             if os.path.exists(data_dir):
                 data_dirs.append(data_dir)
+
+        # Unix mode
+        data_dir = os.path.normpath(os.path.join(
+            self.executable_dir(),
+            "..",
+            "share",
+            "fs-uae-launcher",
+            "resources"
+        ))
+        if os.path.exists(data_dir):
+            data_dirs.append(data_dir)
+
+        # Development mode
+        data_dir = os.path.join(
+            self.executable_dir(),
+            "share",
+            "fs-uae-launcher",
+            "resources"
+        )
+        if os.path.exists(data_dir):
+            data_dirs.append(data_dir)
 
         self._data_dirs = data_dirs
         logger.debug("data dirs: %s", repr(data_dirs))

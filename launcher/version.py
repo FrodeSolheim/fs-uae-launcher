@@ -1,3 +1,3 @@
-VERSION = "0.0.0"
+VERSION = "3.2.20"
 PACKAGER = ""
 COMMIT = ""
