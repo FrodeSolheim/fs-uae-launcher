@@ -16,7 +16,7 @@ def find(data):
   return data[start:end].strip()
   
 def get_version(str):
-  m = re.search('\s(\d+)\.(\d+)\s', str)
+  m = re.search(r'\s(\d+)\.(\d+)\s', str)
   if m == None:
     return None
   else:

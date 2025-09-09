@@ -163,7 +163,7 @@ class DiskNameUtil(object):
         return disks
 
 
-flags_pattern = re.compile("\[([^\]]+)\]")
+flags_pattern = re.compile(r"\[([^\]]+)\]")
 
 
 def extract_flags(name):

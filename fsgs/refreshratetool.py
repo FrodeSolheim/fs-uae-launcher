@@ -481,7 +481,7 @@ DP1 disconnected (normal left inverted right x axis y axis)
 DP2 disconnected (normal left inverted right x axis y axis)
 DP3 disconnected (normal left inverted right x axis y axis)
 HDMI1 connected primary 1920x1080+0+0 (normal left inverted right x \
-axis y axis)\ 531mm x 298mm
+axis y axis) 531mm x 298mm
    1920x1080     60.00*+
    Amiga         50.02
    1680x1050     59.88

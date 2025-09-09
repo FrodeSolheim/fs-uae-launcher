@@ -18,7 +18,7 @@ CHANNEL = '#oyoyo-test'
 class MyHandler(DefaultCommandHandler):
     def privmsg(self, nick, chan, msg):
         msg = msg.decode()
-        match = re.match('\!say (.*)', msg)
+        match = re.match(r'\!say (.*)', msg)
         if match:
             to_say = match.group(1).strip()
             print('Saying, "%s"' % to_say)
