@@ -1,7 +1,19 @@
 name: Container
 on:
   workflow_call:
+    inputs:
+      version:
+        type: string
+        description: 'Version tag to set'
+        required: false
+        default: 'edge'
   workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: 'Version tag to set'
+        required: false
+        default: 'edge'
 
 defaults:
   run:
@@ -45,10 +57,7 @@ jobs:
           images: |
             name=ghcr.io/${{ github.repository_owner }}/fs-uae-netplay
           tags: |
-            type=edge
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=${{ inputs.version }}
         env:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
 

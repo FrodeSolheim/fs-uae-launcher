@@ -1,7 +1,19 @@
 name: Linux
 on:
   workflow_call:
+    inputs:
+      version:
+        type: string
+        description: 'Version to set in tarballs'
+        required: false
+        default: '0.0.0-edge'
   workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: 'Version to set in tarballs'
+        required: false
+        default: '0.0.0-edge'
 
 defaults:
   run:
@@ -73,6 +85,11 @@ jobs:
         run: |
           pipenv sync --dev
 
+      - name: Set base version
+        run: |
+          echo "BASEVERSION_FS=${{ inputs.version }}" > BASEVERSION.FS
+        if: ${{ inputs.version }}
+
       - name: Update version
         run: |
           fsbuild/version
@@ -102,6 +119,6 @@ jobs:
       - name: Upload builds to artifact storage
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: Linux_x86-64
+          name: Linux_x86-64-${{ inputs.version }}
           path: fsbuild/_dist/*
         if: github.event_name != 'pull_request'

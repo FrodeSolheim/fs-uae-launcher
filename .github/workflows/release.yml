@@ -1,0 +1,287 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Type of release jobs to perform'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - release
+          - branch
+      tag:
+        description: 'Version tag to add - vX.Y.Z'
+        required: false
+        type: string
+      release_branch:
+        description: 'Release branch to create or release from'
+        type: string
+      source_branch:
+        description: 'Source branch to use for release branch'
+        required: false
+        type: string
+        default: 'stable'
+      dry_run:
+        description: 'Commit to changes'
+        type: boolean
+        default: true
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.ref_name }}-release
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  create-branch:
+    if: ${{ inputs.type == 'branch' }}
+    name: Create release branch
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ inputs.source_branch }}
+
+      - name: Create new release branch
+        run: |
+          branch="${{ inputs.release_branch }}"
+          if git rev-parse --verify remotes/origin/${branch}; then
+            git checkout ${branch}
+            git pull
+            echo "Updating from ${{ inputs.source_branch }}."
+            git merge -Xtheirs ${{ inputs.source_branch }} -m "chore: Merge branch ${{ inputs.source_branch }} into ${branch}"
+            fi
+          else
+            git checkout -b ${branch}
+          fi
+
+          echo "Pushing to branch $branch"
+          if ! ${{ inputs.dry_run }}; then
+              git push origin "${branch}"
+          else
+              echo "DRY RUN not making any changes"
+              git push --dry-run origin "${branch}"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-variables:
+    if: ${{ inputs.type == 'release' }}
+    name: Set variables
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.vars.outputs.version }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ inputs.source_branch }}
+
+      - name: Extract variables
+        id: vars
+        run: |
+          tag=${{ inputs.tag }}
+          echo "version=${tag#v*}" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
+
+  build-linux:
+    if: ${{ inputs.type == 'release' }}
+    name: Build Linux
+    needs: [release-variables]
+    uses: ./.github/workflows/linux.yml
+    with:
+      version: ${{ needs.release-variables.outputs.version }}
+    permissions:
+      contents: read
+    secrets: inherit
+
+  build-macos-x86:
+    if: ${{ inputs.type == 'release' }}
+    name: Build MacOS x86
+    needs: [release-variables]
+    uses: ./.github/workflows/macos.yml
+    with:
+      version: ${{ needs.release-variables.outputs.version }}
+    permissions:
+      contents: read
+    secrets: inherit
+
+  build-container:
+    if: ${{ inputs.type == 'release' }}
+    name: Build Container image
+    needs: [release-variables]
+    uses: ./.github/workflows/container.yml
+    with:
+      version: ${{ needs.release-variables.outputs.version }}
+    permissions:
+      contents: read
+      packages: write # for docker/build-push-action to push to GHCR
+    secrets: inherit
+
+  build-source:
+    if: ${{ inputs.type == 'release' }}
+    name: Build Source bundle
+    needs: [release-variables]
+    uses: ./.github/workflows/source.yml
+    with:
+      version: ${{ needs.release-variables.outputs.version }}
+    permissions:
+      contents: read
+    secrets: inherit
+
+  tag:
+    if: ${{ inputs.type == 'release' }}
+    name: Create Tag on release branch
+    runs-on: ubuntu-24.04
+    needs:
+      - build-source
+      - build-container
+      - build-linux
+      - build-macos-x86
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ inputs.release_branch }}
+          fetch-depth: 0
+
+      - name: Create new release Tag
+        run: |
+          git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --global user.name "${GITHUB_ACTOR}"
+          branch="${{ inputs.release_branch }}"
+          tag="v${{ inputs.tag }}"
+          if ! git rev-parse --verify refs/tags/${tag}; then
+            echo "Adding tag ${tag}."
+            git tag -a ${tag} -m "Version ${tag#v*}"
+            echo "Pushing to tag ${tag} to branch ${branch}"
+            if ! ${{ inputs.dry_run }}; then
+              git push origin "${tag}"
+            else
+              echo "DRY RUN not making any changes"
+              git push --dry-run origin "${tag}"
+            fi
+          else
+            echo "Warning: Tag ${tag} already exists.  Not making any changes"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  github-release:
+    if: ${{ inputs.type == 'release' }}
+    name: Publish release to GitHub
+    runs-on: ubuntu-24.04
+    needs:
+      - release-variables
+      - tag
+      - build-source
+      - build-container
+      - build-linux
+      - build-macos-x86
+    permissions:
+      contents: write # to modify the release
+      issues: write # to close milestone
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ inputs.release_branch }}
+
+      - name: Fetch Source Artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: Source-${{ needs.release-variables.outputs.version }}
+          path: tarballs
+
+      - name: Fetch Linux Artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: Linux_x86-64-${{ needs.release-variables.outputs.version }}
+          path: tarballs
+
+      - name: Fetch MacOS x86 Artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: macOS_x86-64-${{ needs.release-variables.outputs.version }}
+          path: tarballs
+
+      - name: List tarballs
+        run: |
+          find ./tarballs -type f
+
+      - name: Upload Release Assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # clobber overwrites existing assets of the same name
+        run: |
+          if ! ${{ inputs.dry_run }}; then
+            gh release upload --clobber ${{ inputs.tag }} \
+              $(find ./tarballs -type f)
+          else
+            echo "Skipping adding artifact to Github Release, DRY_RUN"
+          fi
+
+      - name: Close Release Milestone
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          milestone_number=$(gh api \
+            -H "Accept: application/vnd.github.v3+json" \
+            /repos/${{ github.repository }}/milestones \
+            | jq --arg version "${{ inputs.tag }}" -r \
+            '.[] | select(.title == $version) | .number')
+          if [ -n "${milestone_number}" ]; then
+            if ! ${{ inputs.dry_run }}; then
+              gh api --method PATCH -H "Accept: application/vnd.github.v3+json" \
+                /repos/${{ github.repository }}/milestones/${milestone_number} \
+                -f "title=${{ inputs.tag }}" \
+                -f "state=closed";
+            else
+              echo "Skipping closing Github Release milestone, DRY_RUN"
+            fi
+          else
+            echo "Github Milestone not available, closed already."
+          fi
+
+      - name: Get Github release id
+        id: release-id
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          release_id=$(gh api \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ github.repository }}/releases \
+            | jq --arg version "${{ inputs.tag }}" -r \
+            '.[] | select(.name == $version) | .id')
+          echo "release_id=${release_id}" >> $GITHUB_OUTPUT
+
+      - name: Publish Github Release
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const {RELEASE_ID} = process.env
+            const release = (await github.rest.repos.updateRelease({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              release_id: `${RELEASE_ID}`,
+              draft: false,
+            }))
+            console.log(`Release published: ${release.data.html_url}`)
+        env:
+          RELEASE_ID: ${{ steps.release-id.outputs.release_id }}
+        if: ${{ ! inputs.dry_run }}

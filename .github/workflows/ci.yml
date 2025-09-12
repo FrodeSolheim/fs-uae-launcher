@@ -1,7 +1,11 @@
 name: CI
 
 on:
-  pull_request:
+  push:
+    branches: # Publish build artifacts to storage
+      - stable
+      - release-*
+  pull_request: # validate build succeeds
     branches:
       - stable
       - release-*
