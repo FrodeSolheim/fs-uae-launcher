@@ -13,201 +13,163 @@ from fsgs.context import fsgs
 from fsgs.platform import PlatformHandler
 from launcher.option import Option
 from .launcher_settings import LauncherSettings
+from .sync_settings import sync_settings
 
-cfg = [
-    ("amiga_model", "", "checksum", "sync"),
-    ("ntsc_mode", "", "checksum", "sync"),
-    ("accuracy", "", "checksum", "sync"),
-    ("chip_memory", "", "checksum", "sync"),
-    ("slow_memory", "", "checksum", "sync"),
-    ("fast_memory", "", "checksum", "sync"),
-    ("zorro_iii_memory", "", "checksum", "sync"),
-    ("bsdsocket_library", "", "checksum", "sync"),
-    ("uaegfx_card", "", "checksum", "sync"),
-    ("joystick_port_0", ""),
-    ("joystick_port_0_mode", "", "checksum", "sync"),
-    ("joystick_port_0_autofire", "", "checksum", "sync"),
-    ("joystick_port_1", ""),
-    ("joystick_port_1_mode", "", "checksum", "sync"),
-    ("joystick_port_1_autofire", "", "checksum", "sync"),
-    ("joystick_port_2", ""),
-    ("joystick_port_2_mode", "", "checksum", "sync"),
-    ("joystick_port_2_autofire", "", "checksum", "sync"),
-    ("joystick_port_3", ""),
-    ("joystick_port_3_mode", "", "checksum", "sync"),
-    ("joystick_port_3_autofire", "", "checksum", "sync"),
-    ("floppy_drive_count", "", "checksum", "sync"),
-    ("cdrom_drive_count", "", "checksum", "sync"),
-    # this is not an Amiga device, so no need to checksum / sync
-    ("joystick_port_4_mode", "", "custom"),
-    ("kickstart_file", ""),
-    ("x_kickstart_file", "", "no_save"),
-    ("x_kickstart_file_sha1", "", "checksum", "sync", "no_save"),
-    ("kickstart_ext_file", ""),
-    ("x_kickstart_ext_file", "", "no_save"),
-    ("x_kickstart_ext_file_sha1", "", "checksum", "sync", "no_save"),
-    (Option.X_WHDLOAD_ARGS, "", "checksum", "sync"),
-    (Option.X_WHDLOAD_VERSION, "", "checksum", "sync"),
-    # (Option.WHDLOAD_SPLASH_DELAY, "", "checksum", "sync"),
-    # (Option.WHDLOAD_QUIT_KEY, "", "checksum", "sync"),
-    ("floppy_drive_count", "", "checksum", "sync"),
-    ("floppy_drive_speed", "", "checksum", "sync"),
-    ("cdrom_drive_count", "", "checksum", "sync"),
-    ("dongle_type", "", "checksum", "sync"),
-    ("__netplay_game", "", "checksum", "sync"),
-    ("__netplay_password", "", "checksum", "sync"),
-    ("__netplay_players", "", "checksum", "sync"),
-    ("__netplay_port", "", "sync"),
-    ("__netplay_addresses", "", "checksum", "sync"),
-    ("__netplay_host", ""),
-    ("__netplay_ready", ""),
-    ("__netplay_state_dir_name", "", "checksum", "sync"),
-    ("__version", "FIXME"),
-    ("__error", ""),
-    ("x_game_uuid", ""),
-    ("x_game_xml_path", ""),
-    ("title", "", "custom"),
-    ("sub_title", "", "custom"),
-    ("viewport", "", "custom"),
-    ("year", ""),
-    ("developer", ""),
-    ("publisher", ""),
-    ("languages", ""),
-    ("players", ""),
-    ("protection", ""),
-    ("hol_url", ""),
-    ("wikipedia_url", ""),
-    ("database_url", ""),
-    ("lemon_url", ""),
-    ("mobygames_url", ""),
-    ("amigamemo_url", ""),
-    ("whdload_url", ""),
-    ("mobygames_url", ""),
-    ("thelegacy_url", ""),
-    ("homepage_url", ""),
-    ("longplay_url", ""),
-    ("variant_uuid", ""),
-    ("game_uuid", ""),
-    ("download_file", ""),
-    ("download_page", ""),
-    ("download_terms", ""),
-    ("download_notice", ""),
-    ("x_missing_files", ""),
-    ("x_game_notice", ""),
-    ("x_variant_notice", ""),
-    ("x_variant_warning", ""),
-    ("x_variant_error", ""),
-    ("x_joy_emu_conflict", ""),
-    ("screen1_sha1", ""),
-    ("screen2_sha1", ""),
-    ("screen3_sha1", ""),
-    ("screen4_sha1", ""),
-    ("screen5_sha1", ""),
-    ("front_sha1", ""),
-    ("title_sha1", ""),
-    ("mouse_integration", "", "checksum", "sync"),
-    ("cdrom_drive_0_delay", "", "checksum", "sync"),
-    ("cpu", "", "checksum", "sync"),
-    ("graphics_card", "", "checksum", "sync"),
-    ("graphics_memory", "", "checksum", "sync"),
-    ("accelerator", "", "checksum", "sync"),
-    ("accelerator_memory", "", "checksum", "sync"),
-    ("blizzard_scsi_kit", "", "checksum", "sync"),
-    ("motherboard_ram", "", "checksum", "sync"),
-    ("sound_card", "", "checksum", "sync"),
-    ("jit_compiler", "", "checksum", "sync"),
-    ("__database", ""),
-    ("platform", ""),
-    ("save_disk", "", "checksum", "sync"),
-    ("network_card", "", "checksum", "sync"),
-    ("freezer_cartridge", "", "checksum", "sync"),
-    (Option.A7800_A78_HEADER, "", "checksum", "sync"),
-    (Option.A7800_MODEL, "", "checksum", "sync"),
-    (Option.A7800_PORT_1_TYPE, "", "checksum", "sync"),
-    (Option.A7800_PORT_2_TYPE, "", "checksum", "sync"),
-    (Option.NES_MODEL, "", "checksum", "sync"),
-    (Option.ATARI_MODEL, "", "checksum", "sync"),
-    (Option.C64_MODEL, "", "checksum", "sync"),
-    (Option.CARTRIDGE_SLOT, "", "checksum", "sync"),
-    (Option.FILE_LIST, "", "custom", "sync"),
-    (Option.FLOPPY_DRIVE_VOLUME_EMPTY, "", "sync"),
-    (Option.GAME_NAME, ""),
-    ("mame_rom_set", "", "custom", "checksum", "sync"),
-    (Option.NEOGEO_MODEL, "", "checksum", "sync"),
-    (Option.NES_INES_HEADER, "", "checksum", "sync"),
-    (Option.NES_MODEL, "", "checksum", "sync"),
-    (Option.SMD_EMULATOR, "", "checksum", "sync"),
-    (Option.SMD_MODEL, "", "checksum", "sync"),
-    (Option.SMD_PORT_1_TYPE, "", "checksum", "sync"),
-    (Option.SMD_PORT_2_TYPE, "", "checksum", "sync"),
-    ("refresh_rate", "", "custom", "checksum", "sync"),
-    (Option.TAPE_DRIVE_0, "", "checksum", "sync"),
-    ("tape_image_0", "", "checksum", "sync"),
-    (Option.VARIANT_NAME, ""),
-    (Option.ZXS_MODEL, "", "checksum", "sync"),
-]
 
-for _i in range(Amiga.MAX_FLOPPY_DRIVES):
-    cfg.append(("floppy_drive_{0}".format(_i), ""))
-    cfg.append(
-        (
-            "x_floppy_drive_{0}_sha1".format(_i),
-            "",
-            "checksum",
-            "sync",
-            "no_save",
-        )
-    )
-for _i in range(Amiga.MAX_FLOPPY_IMAGES):
-    cfg.append(("floppy_image_{0}".format(_i), ""))
-    cfg.append(
-        (
-            "x_floppy_image_{0}_sha1".format(_i),
-            "",
-            "checksum",
-            "sync",
-            "no_save",
-        )
-    )
-for _i in range(Amiga.MAX_CDROM_DRIVES):
-    cfg.append(("cdrom_drive_{0}".format(_i), ""))
-    cfg.append(
-        (
-            "x_cdrom_drive_{0}_sha1".format(_i),
-            "",
-            "checksum",
-            "sync",
-            "no_save",
-        )
-    )
-for _i in range(Amiga.MAX_CDROM_IMAGES):
-    cfg.append(("cdrom_image_{0}".format(_i), ""))
-    cfg.append(
-        (
-            "x_cdrom_image_{0}_sha1".format(_i),
-            "",
-            "checksum",
-            "sync",
-            "no_save",
-        )
-    )
-for _i in range(Amiga.MAX_HARD_DRIVES):
-    cfg.append(("hard_drive_{0}".format(_i), ""))
-    cfg.append(
-        ("hard_drive_{0}_label".format(_i), "", "checksum", "sync", "custom")
-    )
-    cfg.append(
-        (
-            "hard_drive_{0}_priority".format(_i),
-            "",
-            "checksum",
-            "sync",
-            "custom",
-        )
-    )
-    cfg.append(
-        ("x_hard_drive_{0}_sha1".format(_i), "", "checksum", "sync", "no_save")
-    )
+def build_cfg(sync_settings):
+    cfg = [
+        ("amiga_model", "", "checksum", "sync"),
+        ("ntsc_mode", "", "checksum", "sync"),
+        ("accuracy", "", "checksum", "sync"),
+        ("chip_memory", "", "checksum", "sync"),
+        ("slow_memory", "", "checksum", "sync"),
+        ("fast_memory", "", "checksum", "sync"),
+        ("zorro_iii_memory", "", "checksum", "sync"),
+        ("bsdsocket_library", "", "checksum", "sync"),
+        ("uaegfx_card", "", "checksum", "sync"),
+        ("joystick_port_0", ""),
+        ("joystick_port_0_mode", "", "checksum", "sync"),
+        ("joystick_port_0_autofire", "", "checksum", "sync"),
+        ("joystick_port_1", ""),
+        ("joystick_port_1_mode", "", "checksum", "sync"),
+        ("joystick_port_1_autofire", "", "checksum", "sync"),
+        ("joystick_port_2", ""),
+        ("joystick_port_2_mode", "", "checksum", "sync"),
+        ("joystick_port_2_autofire", "", "checksum", "sync"),
+        ("joystick_port_3", ""),
+        ("joystick_port_3_mode", "", "checksum", "sync"),
+        ("joystick_port_3_autofire", "", "checksum", "sync"),
+        ("floppy_drive_count", "", "checksum", "sync"),
+        ("cdrom_drive_count", "", "checksum", "sync"),
+        # this is not an Amiga device, so no need to checksum / sync
+        ("joystick_port_4_mode", "", "custom"),
+        ("kickstart_file", ""),
+        ("x_kickstart_file", "", "no_save"),
+        ("x_kickstart_file_sha1", "", "checksum", "sync", "no_save"),
+        ("kickstart_ext_file", ""),
+        ("x_kickstart_ext_file", "", "no_save"),
+        ("x_kickstart_ext_file_sha1", "", "checksum", "sync", "no_save"),
+        (Option.X_WHDLOAD_ARGS, "", "checksum", "sync"),
+        (Option.X_WHDLOAD_VERSION, "", "checksum", "sync"),
+        # (Option.WHDLOAD_SPLASH_DELAY, "", "checksum", "sync"),
+        # (Option.WHDLOAD_QUIT_KEY, "", "checksum", "sync"),
+        ("floppy_drive_count", "", "checksum", "sync"),
+        ("floppy_drive_speed", "", "checksum", "sync"),
+        ("cdrom_drive_count", "", "checksum", "sync"),
+        ("dongle_type", "", "checksum", "sync"),
+        ("__netplay_game", "", "checksum", "sync"),
+        ("__netplay_password", "", "checksum", "sync"),
+        ("__netplay_players", "", "checksum", "sync"),
+        ("__netplay_port", "", "sync"),
+        ("__netplay_addresses", "", "checksum", "sync"),
+        ("__netplay_host", ""),
+        ("__netplay_ready", ""),
+        ("__netplay_state_dir_name", "", "checksum", "sync"),
+        ("__version", "FIXME"),
+        ("__error", ""),
+        ("x_game_uuid", ""),
+        ("x_game_xml_path", ""),
+        ("title", "", "custom"),
+        ("sub_title", "", "custom"),
+        ("viewport", "", "custom"),
+        ("year", ""),
+        ("developer", ""),
+        ("publisher", ""),
+        ("languages", ""),
+        ("players", ""),
+        ("protection", ""),
+        ("hol_url", ""),
+        ("wikipedia_url", ""),
+        ("database_url", ""),
+        ("lemon_url", ""),
+        ("mobygames_url", ""),
+        ("amigamemo_url", ""),
+        ("whdload_url", ""),
+        ("mobygames_url", ""),
+        ("thelegacy_url", ""),
+        ("homepage_url", ""),
+        ("longplay_url", ""),
+        ("variant_uuid", ""),
+        ("game_uuid", ""),
+        ("download_file", ""),
+        ("download_page", ""),
+        ("download_terms", ""),
+        ("download_notice", ""),
+        ("x_missing_files", ""),
+        ("x_game_notice", ""),
+        ("x_variant_notice", ""),
+        ("x_variant_warning", ""),
+        ("x_variant_error", ""),
+        ("x_joy_emu_conflict", ""),
+        ("screen1_sha1", ""),
+        ("screen2_sha1", ""),
+        ("screen3_sha1", ""),
+        ("screen4_sha1", ""),
+        ("screen5_sha1", ""),
+        ("front_sha1", ""),
+        ("title_sha1", ""),
+        ("mouse_integration", "", "checksum", "sync"),
+        ("cdrom_drive_0_delay", "", "checksum", "sync"),
+        ("cpu", "", "checksum", "sync"),
+        ("graphics_card", "", "checksum", "sync"),
+        ("graphics_memory", "", "checksum", "sync"),
+        ("accelerator", "", "checksum", "sync"),
+        ("accelerator_memory", "", "checksum", "sync"),
+        ("blizzard_scsi_kit", "", "checksum", "sync"),
+        ("motherboard_ram", "", "checksum", "sync"),
+        ("sound_card", "", "checksum", "sync"),
+        ("jit_compiler", "", "checksum", "sync"),
+        ("__database", ""),
+        ("platform", ""),
+        ("save_disk", "", "checksum", "sync"),
+        ("network_card", "", "checksum", "sync"),
+        ("freezer_cartridge", "", "checksum", "sync"),
+        (Option.A7800_A78_HEADER, "", "checksum", "sync"),
+        (Option.A7800_MODEL, "", "checksum", "sync"),
+        (Option.A7800_PORT_1_TYPE, "", "checksum", "sync"),
+        (Option.A7800_PORT_2_TYPE, "", "checksum", "sync"),
+        (Option.NES_MODEL, "", "checksum", "sync"),
+        (Option.ATARI_MODEL, "", "checksum", "sync"),
+        (Option.C64_MODEL, "", "checksum", "sync"),
+        (Option.CARTRIDGE_SLOT, "", "checksum", "sync"),
+        (Option.FILE_LIST, "", "custom", "sync"),
+        (Option.FLOPPY_DRIVE_VOLUME_EMPTY, "", "sync"),
+        (Option.GAME_NAME, ""),
+        ("mame_rom_set", "", "custom", "checksum", "sync"),
+        (Option.NEOGEO_MODEL, "", "checksum", "sync"),
+        (Option.NES_INES_HEADER, "", "checksum", "sync"),
+        (Option.NES_MODEL, "", "checksum", "sync"),
+        (Option.SMD_EMULATOR, "", "checksum", "sync"),
+        (Option.SMD_MODEL, "", "checksum", "sync"),
+        (Option.SMD_PORT_1_TYPE, "", "checksum", "sync"),
+        (Option.SMD_PORT_2_TYPE, "", "checksum", "sync"),
+        ("refresh_rate", "", "custom", "checksum", "sync"),
+        (Option.TAPE_DRIVE_0, "", "checksum", "sync"),
+        ("tape_image_0", "", "checksum", "sync"),
+        (Option.VARIANT_NAME, ""),
+        (Option.ZXS_MODEL, "", "checksum", "sync"),
+    ]
+    for _i in range(sync_settings.MAX_FLOPPY_DRIVES):
+        cfg.append((f"floppy_drive_{_i}", ""))
+        cfg.append((f"x_floppy_drive_{_i}_sha1", "", "checksum", "sync", "no_save"))
+    for _i in range(sync_settings.MAX_FLOPPY_IMAGES):
+        cfg.append((f"floppy_image_{_i}", ""))
+        cfg.append((f"x_floppy_image_{_i}_sha1", "", "checksum", "sync", "no_save"))
+    for _i in range(sync_settings.MAX_CDROM_DRIVES):
+        cfg.append((f"cdrom_drive_{_i}", ""))
+        cfg.append((f"x_cdrom_drive_{_i}_sha1", "", "checksum", "sync", "no_save"))
+    for _i in range(sync_settings.MAX_CDROM_IMAGES):
+        cfg.append((f"cdrom_image_{_i}", ""))
+        cfg.append((f"x_cdrom_image_{_i}_sha1", "", "checksum", "sync", "no_save"))
+    for _i in range(sync_settings.MAX_HARD_DRIVES):
+        cfg.append((f"hard_drive_{_i}", ""))
+        cfg.append((f"hard_drive_{_i}_label", "", "checksum", "sync", "custom"))
+        cfg.append((f"hard_drive_{_i}_priority", "", "checksum", "sync", "custom"))
+        cfg.append((f"x_hard_drive_{_i}_sha1", "", "checksum", "sync", "no_save"))
+    return cfg
+
+
+cfg = build_cfg(sync_settings)
 
 
 class LauncherConfig(object):
@@ -233,27 +195,26 @@ class LauncherConfig(object):
     no_save_keys_set = set([x[0] for x in cfg if "no_save" in x])
 
     reset_values = {}
-    for i in range(Amiga.MAX_FLOPPY_DRIVES):
+    for i in range(sync_settings.MAX_FLOPPY_DRIVES):
         reset_values["floppy_drive_{0}".format(i)] = (
             "x_floppy_drive_{0}_sha1".format(i),
             "",
         )
-    for i in range(Amiga.MAX_FLOPPY_IMAGES):
+    for i in range(sync_settings.MAX_FLOPPY_IMAGES):
         reset_values["floppy_image_{0}".format(i)] = (
             "x_floppy_image_{0}_sha1".format(i),
             "",
         )
-    for i in range(Amiga.MAX_CDROM_DRIVES):
+    for i in range(sync_settings.MAX_CDROM_DRIVES):
         reset_values["cdrom_drive_{0}".format(i)] = (
             "x_cdrom_drive_{0}_sha1".format(i),
             "",
         )
-    for i in range(Amiga.MAX_CDROM_IMAGES):
+    for i in range(sync_settings.MAX_CDROM_IMAGES):
         reset_values["cdrom_image_{0}".format(i)] = (
             "x_cdrom_image_{0}_sha1".format(i),
             "",
         )
-    for i in range(Amiga.MAX_HARD_DRIVES):
         reset_values["hard_drive_{0}".format(i)] = (
             "x_hard_drive_{0}_sha1".format(i),
             "",
@@ -710,31 +671,31 @@ class LauncherConfig(object):
                 sha1 = checksum_tool.checksum(path)
             config[sha1_key] = sha1
 
-        for i in range(Amiga.MAX_FLOPPY_DRIVES):
+        for i in range(sync_settings.MAX_FLOPPY_DRIVES):
             fix_file_checksum(
                 "x_floppy_drive_{0}_sha1".format(i),
                 "floppy_drive_{0}".format(i),
                 FSGSDirectories.get_floppies_dir(),
             )
-        for i in range(Amiga.MAX_FLOPPY_IMAGES):
+        for i in range(sync_settings.MAX_FLOPPY_IMAGES):
             fix_file_checksum(
                 "x_floppy_image_{0}_sha1".format(i),
                 "floppy_image_{0}".format(i),
                 FSGSDirectories.get_floppies_dir(),
             )
-        for i in range(Amiga.MAX_CDROM_DRIVES):
+        for i in range(sync_settings.MAX_CDROM_DRIVES):
             fix_file_checksum(
                 "x_cdrom_drive_{0}_sha1".format(i),
                 "cdrom_drive_{0}".format(i),
                 FSGSDirectories.get_cdroms_dir(),
             )
-        for i in range(Amiga.MAX_CDROM_IMAGES):
+        for i in range(sync_settings.MAX_CDROM_IMAGES):
             fix_file_checksum(
                 "x_cdrom_image_{0}_sha1".format(i),
                 "cdrom_image_{0}".format(i),
                 FSGSDirectories.get_cdroms_dir(),
             )
-        for i in range(Amiga.MAX_HARD_DRIVES):
+        for i in range(sync_settings.MAX_HARD_DRIVES):
             fix_file_checksum(
                 "x_hard_drive_{0}_sha1".format(i),
                 "hard_drive_{0}".format(i),
@@ -764,3 +725,30 @@ class LauncherConfig(object):
             del config[Option.UAEGFX_CARD]
             # FIXME: Set changed!
             config["__changed"] = "1"
+
+    @classmethod
+    def refresh_keys(cls):
+        global cfg
+        cfg = build_cfg(sync_settings)
+        cls.config_keys = [x[0] for x in cfg]
+        cls.default_config = {c[0]: c[1] for c in cfg}
+        cls.key_order = [x[0] for x in cfg]
+        cls.checksum_keys = [x[0] for x in cfg if "checksum" in x]
+        cls.sync_keys_list = [x[0] for x in cfg if "sync" in x]
+        cls.sync_keys_set = set(cls.sync_keys_list)
+        cls.no_custom_config = [x[0] for x in cfg if "custom" not in x]
+        cls.no_custom_config += ["__changed", "__ready", "__config_name"]
+        cls.no_save_keys_set = set([x[0] for x in cfg if "no_save" in x])
+        cls.reset_values = {}
+        for i in range(sync_settings.MAX_FLOPPY_DRIVES):
+            cls.reset_values[f"floppy_drive_{i}"] = (f"x_floppy_drive_{i}_sha1", "")
+        for i in range(sync_settings.MAX_FLOPPY_IMAGES):
+            cls.reset_values[f"floppy_image_{i}"] = (f"x_floppy_image_{i}_sha1", "")
+        for i in range(sync_settings.MAX_CDROM_DRIVES):
+            cls.reset_values[f"cdrom_drive_{i}"] = (f"x_cdrom_drive_{i}_sha1", "")
+        for i in range(sync_settings.MAX_CDROM_IMAGES):
+            cls.reset_values[f"cdrom_image_{i}"] = (f"x_cdrom_image_{i}_sha1", "")
+        for i in range(sync_settings.MAX_HARD_DRIVES):
+            cls.reset_values[f"hard_drive_{i}"] = (f"x_hard_drive_{i}_sha1", "")
+        cls.reset_values["x_kickstart_file"] = ("x_kickstart_file_sha1", "")
+        cls.reset_values["x_kickstart_ext_file"] = ("x_kickstart_ext_file_sha1", "")

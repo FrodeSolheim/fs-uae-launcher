@@ -3,12 +3,11 @@ from fsgs.context import fsgs
 import os
 import json
 from fsbc.paths import Paths
-from fsgs.amiga.amiga import Amiga
 from fsgs.filedatabase import FileDatabase
 from fsgs.network import openretro_url_prefix
 from fsgs.option import Option
 from fsgs.amiga import whdload
-
+from launcher.sync_settings import sync_settings
 
 class ValueConfigLoader(object):
     DB_VERSION_MAX = 1
@@ -157,15 +156,15 @@ class ValueConfigLoader(object):
                 )
 
         default_dir = fsgs.amiga.get_floppies_dir()
-        for i in range(Amiga.MAX_FLOPPY_DRIVES):
+        for i in range(sync_settings.MAX_FLOPPY_DRIVES):
             fix("floppy_drive_{0}".format(i))
-        for i in range(Amiga.MAX_FLOPPY_IMAGES):
+        for i in range(sync_settings.MAX_FLOPPY_IMAGES):
             fix("floppy_image_{0}".format(i))
 
         default_dir = fsgs.amiga.get_cdroms_dir()
-        for i in range(Amiga.MAX_CDROM_DRIVES):
+        for i in range(sync_settings.MAX_CDROM_DRIVES):
             fix("cdrom_drive_{0}".format(i))
-        for i in range(Amiga.MAX_CDROM_IMAGES):
+        for i in range(sync_settings.MAX_CDROM_IMAGES):
             fix("cdrom_image_{0}".format(i))
 
     def set_name_and_uuid(self):

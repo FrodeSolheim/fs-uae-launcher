@@ -1,5 +1,6 @@
 from fsgs.amiga.amiga import Amiga
 from fsgs.option import Option
+from launcher.sync_settings import sync_settings
 
 CONFIG_KEY_BLACKLIST = [
     "_*",
@@ -63,7 +64,7 @@ class ConfigWriter(object):
         c = []
 
         num_drives = 0
-        for i in range(Amiga.MAX_FLOPPY_DRIVES):
+        for i in range(sync_settings.MAX_FLOPPY_DRIVES):
             key = "floppy_drive_{0}".format(i)
             value = self.config.get(key)
             if value:

@@ -5,8 +5,7 @@ from fsgs.archive import Archive
 from fsgs.BaseContext import BaseContext
 from fsgs.checksumtool import ChecksumTool
 from fsgs.FSGSDirectories import FSGSDirectories
-from fsgs.amiga.amiga import Amiga
-
+from launcher.sync_settings import sync_settings
 
 class AmigaContext(BaseContext):
     def __init__(self, main_context):
@@ -30,7 +29,7 @@ class AmigaContext(BaseContext):
 
     def clear_floppy_list(self):
         values = []
-        for i in range(Amiga.MAX_FLOPPY_IMAGES):
+        for i in range(sync_settings.MAX_FLOPPY_IMAGES):
             values.append(("floppy_image_{0}".format(i), ""))
             values.append(("x_floppy_image_{0}_sha1".format(i), ""))
         self.set_config(values)

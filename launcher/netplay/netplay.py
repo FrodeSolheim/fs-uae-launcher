@@ -16,7 +16,7 @@ from .irc_broadcaster import IRCBroadcaster
 from .irc_color import IRCColor
 from ..launcher_config import LauncherConfig
 from ..server.Server import Server
-
+from launcher.sync_settings import sync_settings
 
 class Netplay:
     _current = None
@@ -856,23 +856,23 @@ class Netplay:
             )
 
     file_config = {}
-    for i in range(Amiga.MAX_FLOPPY_DRIVES):
+    for i in range(sync_settings.MAX_FLOPPY_DRIVES):
         file_config[
             "x_floppy_drive_{0}_sha1".format(i)
         ] = "floppy_drive_{0}".format(i)
-    for i in range(Amiga.MAX_FLOPPY_IMAGES):
+    for i in range(sync_settings.MAX_FLOPPY_IMAGES):
         file_config[
             "x_floppy_image_{0}_sha1".format(i)
         ] = "floppy_image_{0}".format(i)
-    for i in range(Amiga.MAX_CDROM_DRIVES):
+    for i in range(sync_settings.MAX_CDROM_DRIVES):
         file_config[
             "x_cdrom_drive_{0}_sha1".format(i)
         ] = "cdrom_drive_{0}".format(i)
-    for i in range(Amiga.MAX_CDROM_IMAGES):
+    for i in range(sync_settings.MAX_CDROM_IMAGES):
         file_config[
             "x_cdrom_image_{0}_sha1".format(i)
         ] = "cdrom_image_{0}".format(i)
-    for i in range(Amiga.MAX_HARD_DRIVES):
+    for i in range(sync_settings.MAX_HARD_DRIVES):
         file_config[
             "x_hard_drive_{0}_sha1".format(i)
         ] = "hard_drive_{0}".format(i)
