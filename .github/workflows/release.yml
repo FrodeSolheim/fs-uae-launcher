@@ -24,9 +24,9 @@ on:
         type: string
         default: 'stable'
       dry_run:
-        description: 'Commit to changes'
+        description: 'DRY RUN'
         type: boolean
-        default: true
+        default: false
 
 defaults:
   run:
@@ -60,7 +60,6 @@ jobs:
             git pull
             echo "Updating from ${{ inputs.source_branch }}."
             git merge -Xtheirs ${{ inputs.source_branch }} -m "chore: Merge branch ${{ inputs.source_branch }} into ${branch}"
-            fi
           else
             git checkout -b ${branch}
           fi
