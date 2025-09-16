@@ -72,6 +72,15 @@ def find_executable_in_development_project_dir(name: str):
         )
         if check_executable(exe_file):
             return exe_file
+        if project_dir_name == "fs-uae":
+            exe_file = path.join(
+                exe_dir,
+                "..",
+                "fs-uae-3-private",
+                get_exe_name(name),
+            )
+            if check_executable(exe_file):
+                return exe_file
     exe_file = path.join(exe_dir, "..", project_dir_name, get_exe_name(name))
     if check_executable(exe_file):
         return exe_file

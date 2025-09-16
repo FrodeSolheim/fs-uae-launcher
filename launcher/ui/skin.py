@@ -1,4 +1,3 @@
-from typing import Self
 import fsbc.system
 import fsboot
 import fsui
@@ -22,7 +21,7 @@ class LauncherTheme(object):
     __instance = None
 
     @classmethod
-    def get(cls) -> Self:
+    def get(cls) -> "LauncherTheme":
         if cls.__instance is None:
             cls.__instance = cls()
         return cls.__instance

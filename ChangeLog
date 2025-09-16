@@ -1,3 +1,8 @@
+Version 3.2.21:
+
+* Restore support for older Python versions.
+* Make the launcher compatible with PyQt5 also.
+
 Version 3.2.x:
 
 * Improved fusion dark theme.

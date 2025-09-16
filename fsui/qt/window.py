@@ -4,7 +4,7 @@ import weakref
 from fsbc.system import macosx
 
 # from fsui import default_window_center, default_window_parent
-from fsui.qt import QMainWindow, QObject, QSignal, QWidget, Qt
+from fsui.qt import QMainWindow, QObject, QSignal, QWidget, Qt, qvalue, qflags
 from fsui.qt import QPainter, QPoint, QRect, QGuiApplication
 from fsui.qt.Image import Image
 from fsui.qt.qt import init_qt, QEvent
@@ -171,15 +171,13 @@ class RealWindow(QMainWindow):
 
     def is_maximized(self):
         return (
-            int(self.windowState().value)
-            & Qt.WindowState.WindowMaximized.value
+            qflags(self.windowState()) & qvalue(Qt.WindowState.WindowMaximized)
             != 0
         )
 
     def is_fullscreen(self):
         return (
-            int(self.windowState().value)
-            & Qt.WindowState.WindowFullScreen.value
+            qflags(self.windowState()) & qvalue(Qt.WindowState.WindowFullScreen)
             != 0
         )
 

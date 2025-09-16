@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 
+import sys
+
+if sys.platform == "darwin" and sys.version_info[1] == 7:
+    # Patch find_library so it finds OpenGL library on newer macOS versions
+    from ctypes import util
+    orig_util_find_library = util.find_library
+    def new_util_find_library( name ):
+        res = orig_util_find_library( name )
+        if res: return res
+        return '/System/Library/Frameworks/'+name+'.framework/'+name
+    util.find_library = new_util_find_library
+
+
 from fsboot import init
 
 init()

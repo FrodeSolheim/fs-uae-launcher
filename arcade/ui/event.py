@@ -2,7 +2,7 @@ from functools import lru_cache
 
 from fsbc.system import macosx
 from fsgs.util import sdl2
-from fsui.qt import QEvent, Qt
+from fsui.qt import QEvent, Qt, is_pyqt6, qvalue, qflags
 
 
 class KeySym:
@@ -54,7 +54,10 @@ class Event:
         else:
             raise Exception("Unexpected event type in create_mouse_event")
         # Normalize coordinates to a 1920x1080 OpenGL-like coordinate system
-        pos = ev.position()
+        if is_pyqt6:
+            pos = ev.position()
+        else:
+            pos = ev.pos()
         x, y = pos.x(), pos.y()
         x = (x * 1920) // window_size[0]
         y = 1080 - (y * 1080) // window_size[1]
@@ -101,7 +104,7 @@ def get_key(ev):
         Qt.Key.Key_Down,
     ]
     if (
-        int(ev.modifiers().value) & Qt.KeyboardModifier.KeypadModifier.value
+        qflags(ev.modifiers()) & qvalue(Qt.KeyboardModifier.KeypadModifier)
         and not macos_arrow_key
     ):
         print("keypad!")

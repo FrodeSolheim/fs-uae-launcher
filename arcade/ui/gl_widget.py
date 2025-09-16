@@ -1,7 +1,12 @@
 import threading
 import traceback
 
-from PyQt6.QtOpenGLWidgets import QOpenGLWidget
+from fsui.qt.qt import is_pyqt6
+
+if is_pyqt6:
+    from PyQt6.QtOpenGLWidgets import QOpenGLWidget
+else:
+    from PyQt5.QtWidgets import QOpenGLWidget
 
 
 # noinspection PyPep8Naming

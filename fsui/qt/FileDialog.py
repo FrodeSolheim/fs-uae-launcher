@@ -22,9 +22,9 @@ class FileDialog(QFileDialog):
         if directory:
             self.setDirectory(directory)
         if dir_mode:
-            self.setFileMode(QFileDialog.Directory)
+            self.setFileMode(QFileDialog.FileMode.Directory)
         if multiple:
-            self.setFileMode(QFileDialog.ExistingFiles)
+            self.setFileMode(QFileDialog.FileMode.ExistingFiles)
         # self.setWindowFlags()
 
     def __del__(self):

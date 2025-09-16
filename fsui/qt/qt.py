@@ -1,38 +1,87 @@
 import functools
 import sys
+from typing import Any
 
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtCore import *  # type: ignore # noqa: F403
-from PyQt6.QtCore import Qt, QUrl
+try:
+    import PyQt6  # type: ignore # noqa: F401
+except ImportError:
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt5.QtCore import *  # type: ignore # noqa: F403
+    from PyQt5.QtCore import Qt, QUrl  # type: ignore
 
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtCore import pyqtSignal as QSignal  # noqa: F401
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt5.QtCore import pyqtSignal as QSignal  # type: ignore # noqa: F401
 
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtCore import pyqtSignal as Signal  # noqa: F401
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt5.QtCore import pyqtSignal as Signal  # type: ignore # noqa: F401
 
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtGui import *  # type: ignore # noqa: F403
-from PyQt6.QtGui import QColor, QDesktopServices, QFont, QPalette
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt5.QtGui import *  # type: ignore # noqa: F403
+    from PyQt5.QtGui import QColor, QDesktopServices, QFont, QPalette  # type: ignore
 
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtOpenGL import *  # type: ignore # noqa: F403
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt5.QtOpenGL import *  # type: ignore # noqa: F403
 
-# noinspection PyUnresolvedReferences, PyPackageRequirements
-from PyQt6.QtWidgets import *  # type: ignore # noqa: F403
-from PyQt6.QtWidgets import QApplication, QStyleFactory
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt5.QtWidgets import *  # type: ignore # noqa: F403
+    from PyQt5.QtWidgets import QApplication, QStyleFactory  # type: ignore
+
+    try:
+        # noinspection PyUnresolvedReferences, PyPackageRequirements
+        from PyQt5.QtX11Extras import *  # type: ignore # noqa: F403
+    except ImportError:
+        pass
+
+    def qflags(obj: Any) -> int:
+        return int(obj)
+
+    def qvalue(obj: Any) -> int:
+        return obj
+
+    is_pyqt6 = False
+
+else:
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt6.QtCore import *  # type: ignore # noqa: F403
+    from PyQt6.QtCore import Qt, QUrl
+
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt6.QtCore import pyqtSignal as QSignal  # noqa: F401
+
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt6.QtCore import pyqtSignal as Signal  # noqa: F401
+
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt6.QtGui import *  # type: ignore # noqa: F403
+    from PyQt6.QtGui import QColor, QDesktopServices, QFont, QPalette
+
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt6.QtOpenGL import *  # type: ignore # noqa: F403
+
+    # noinspection PyUnresolvedReferences, PyPackageRequirements
+    from PyQt6.QtWidgets import *  # type: ignore # noqa: F403
+    from PyQt6.QtWidgets import QApplication, QStyleFactory
+
+    try:
+        # noinspection PyUnresolvedReferences, PyPackageRequirements
+        from PyQt6.QtX11Extras import *  # type: ignore # noqa: F403
+    except ImportError:
+        pass
+
+    def qflags(obj: Any) -> int:
+        return int(obj.value)
+
+    def qvalue(obj: Any) -> int:
+        return obj.value
+
+    is_pyqt6 = True
+
 
 import fsbc.application
 import fsbc.desktop
 import fstd.desktop
 from fsbc.settings import Settings
 from fsgs.option import Option
-
-try:
-    # noinspection PyUnresolvedReferences, PyPackageRequirements
-    from PyQt6.QtX11Extras import *  # type: ignore # noqa: F403
-except ImportError:
-    pass
 
 
 def open_url_in_browser(url):
@@ -41,8 +90,8 @@ def open_url_in_browser(url):
     QDesktopServices.openUrl(QUrl(url))
 
 
-class QtBaseApplication(QApplication):
-    pass
+# class QtBaseApplication(QApplication):
+#     pass
 
 
 @functools.lru_cache()
@@ -72,7 +121,7 @@ def init_qt():
     # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
     fsbc.desktop.set_open_url_in_browser_function(open_url_in_browser)
-    qapplication = QtBaseApplication(sys.argv)
+    qapplication = QApplication(sys.argv)
     initialize_qt_style(qapplication)
     return qapplication
 
@@ -135,7 +184,9 @@ def initialize_qt_style(qapplication):
             pa.setColor(QPalette.ColorRole.Button, background)
             # pa.setColor(QPalette.ColorRole.Base, QColor(255, 255, 255))
             pa.setColor(
-                QPalette.ColorGroup.Disabled, QPalette.ColorRole.Base, QColor(241, 241, 241)
+                QPalette.ColorGroup.Disabled,
+                QPalette.ColorRole.Base,
+                QColor(241, 241, 241),
             )
 
             # pa.setColor(QPalette.ColorRole.Window, QColor("#aeaeae"))

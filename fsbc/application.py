@@ -3,7 +3,6 @@ import os
 import sys
 import threading
 import time
-from typing import Self
 
 import fsboot
 from fsbc.paths import Paths
@@ -20,21 +19,21 @@ class Application(object):
     _instance = None
 
     @classmethod
-    def instance(cls) -> Self:
+    def instance(cls) -> "Application":
         """
         :rtype : Application
         """
         return cls._instance
 
     @classmethod
-    def get_instance(cls) -> Self:
+    def get_instance(cls) -> "Application":
         """
         :deprecated
         """
         return cls._instance
 
     @classmethod
-    def get(cls) -> Self:
+    def get(cls) -> "Application":
         """
         :deprecated
         """

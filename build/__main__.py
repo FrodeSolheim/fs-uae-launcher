@@ -343,6 +343,8 @@ def main():
         args = ["default"]
     for arg in args:
         command = arg
+        if command.startswith("--"):
+            continue
         print("BUILD command:", command)
         if command == "all":
             all()

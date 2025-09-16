@@ -15,6 +15,7 @@ from fsui.qt import (
     QPainter,
     QPen,
     QPoint,
+    is_pyqt6,
 )
 
 CACHE_SIZE = 100
@@ -34,7 +35,10 @@ class Font(object):
     font_ids = {}
 
     def __init__(self, path, size):
-        self.database = QFontDatabase
+        if is_pyqt6:
+            self.database = QFontDatabase
+        else:
+            self.database = QFontDatabase()
         try:
             self.font_id = Font.font_ids[path]
         except Exception:

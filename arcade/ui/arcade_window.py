@@ -10,7 +10,7 @@ from arcade.ui.event import Event
 from arcade.ui.gl_widget import GLWidget
 from fsbc.settings import Settings
 from fsbc.system import macosx
-from fsui.qt import QKeyEvent, Qt, QWidget, init_qt
+from fsui.qt import QKeyEvent, Qt, QWidget, init_qt, qvalue, qflags
 
 CURSOR_SHOW_DURATION = 5.0
 
@@ -328,13 +328,13 @@ class QtWindow(QWidget):
             if macosx:
                 # This should correspond to the Cmd key(s) on OS X
                 return (
-                    int(event.modifiers().value)
-                    & Qt.KeyboardModifier.ControlModifier.value
+                    qflags(event.modifiers())
+                    & qvalue(Qt.KeyboardModifier.ControlModifier)
                 )
             else:
                 return (
-                    int(event.modifiers().value)
-                    & Qt.KeyboardModifier.AltModifier.value
+                    qflags(event.modifiers())
+                    & qvalue(Qt.KeyboardModifier.AltModifier)
                 )
 
         assert isinstance(event, QKeyEvent)
