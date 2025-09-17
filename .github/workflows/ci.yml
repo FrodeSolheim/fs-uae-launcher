@@ -41,7 +41,7 @@ jobs:
 
   MacOS-x86-64:
     name: Build MacOS x86-64
-    uses: ./.github/workflows/macos.yml
+    uses: ./.github/workflows/macOS.yml
     with:
       runner: macos-13
 
