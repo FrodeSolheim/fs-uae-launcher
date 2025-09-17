@@ -47,7 +47,7 @@ jobs:
 
   MacOS-arm64:
     name: Build MacOS arm64
-    uses: ./.github/workflows/macos.yml
+    uses: ./.github/workflows/macOS.yml
     with:
       runner: macos-14
 
