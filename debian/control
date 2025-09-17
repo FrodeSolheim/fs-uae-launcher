@@ -20,3 +20,10 @@ Depends:
  fs-uae
 Description: Launcher and configuration program for FS-UAE.
  FS-UAE Launcher is a graphical user interface for setting up FS-UAE.
+
+Package: fs-uae-arcade
+Architecture: all
+Depends:
+ fs-uae-launcher
+Description: Arcade frontend for FS-UAE.
+ FS-UAE Arcade is an arcade frontend for browsing and running Amiga games.

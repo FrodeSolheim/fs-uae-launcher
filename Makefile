@@ -142,6 +142,7 @@ distdir:
 	cp -a $(oyoyo_dir)/oyoyo $(dist_dir)/
 	cp -a $(workspace_dir)/workspace $(dist_dir)/
 	cp -a share $(dist_dir)/
+	rm -f $(dist_dir)/share/fs-uae-launcher/resources/fsgs/res/input/Makefile
 	mkdir $(dist_dir)/po/
 
 	find $(dist_dir) -name "*.mo" -delete

@@ -139,6 +139,8 @@ def build():
     ]
     if windows or macos:
         args.append("--windowed")
+    if windows:
+        args.extend(["--icon", "../../../icon/fs-uae-launcher.ico"])
     if macos:
         args.extend(
             ["--osx-bundle-identifier", "no.fengestad.fs-uae-launcher"]

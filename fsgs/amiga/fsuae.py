@@ -33,7 +33,19 @@ class FSUAE(object):
         if cwd is not None:
             print("cwd override:", cwd)
         print("using fs-uae executable:", exe)
-        args = [exe] + args
+
+        app_bundle = None
+        if macosx:
+            parts = exe.split("/")
+            print("parts", parts)
+            if parts[-3:] == ["Contents", "MacOS", "fs-uae"]:
+                app_bundle = "/".join(parts[:-3])
+                print("app", app_bundle)
+
+        if app_bundle:
+            args = ["open", "-a", app_bundle, "-n", "--wait-apps", "--args"] + args
+        else:
+            args = [exe] + args
 
         # if "--always-on-top" in sys.argv:
         #     args += ["--always-on-top"]

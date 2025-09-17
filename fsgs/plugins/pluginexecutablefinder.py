@@ -132,11 +132,12 @@ def find_executable_in_side_by_side_plugin(name: str):
     plugin_name = known_executables.get(name)
     if plugin_name is None:
         return None
-    plugin_dir = fsboot.plugin_dir()
-    if plugin_dir is None:
-        print("  Not running in a plugin")
-        return None
-    plugins_dir = path.join(plugin_dir, "..")
+    # plugin_dir = fsboot.plugin_dir()
+    # if plugin_dir is None:
+    #     print("  Not running in a plugin")
+    #     return None
+    # plugins_dir = path.join(plugin_dir, "..")
+    plugins_dir = path.join(fsboot.app_dir(), "..", "..", "..")
     return find_executable_in_dir_containing_plugin(
         name, plugins_dir, plugin_name
     )

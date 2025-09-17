@@ -1,3 +1,9 @@
+Version 3.2.22:
+
+* Fix fs-uae-launcher.exe icon on Windows.
+* On macOS, open FS-UAE.app via "open" and not by running the executable directly (fixes focus).
+* FS-UAE executable was not found correctly in side-by-side configuration.
+
 Version 3.2.21:
 
 * Restore support for older Python versions.

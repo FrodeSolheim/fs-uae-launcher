@@ -401,6 +401,7 @@
 ./linux/03000000ff1100003133000010010000.fs-uae-controller
 ./linux/03000000ff1100004133000010010000.fs-uae-controller
 ./linux/03000000ffff0000ffff000000010000.fs-uae-controller
+./linux/030081b85e0400008e02000014010000.fs-uae-controller
 ./linux/05000000010000000100000003000000.fs-uae-controller
 ./linux/05000000050b00000045000031000000.fs-uae-controller
 ./linux/05000000050b00000045000040000000.fs-uae-controller
@@ -726,6 +727,7 @@
 ./macos/03000000ef0500000300000000020000.fs-uae-controller
 ./macos/03000000f025000021c1000000010000.fs-uae-controller
 ./macos/03000000f0250000c383000000010000.fs-uae-controller
+./macos/0300e12f5e0400008e02000014016800.fs-uae-controller
 ./macos/0500000047532047616d657061640000.fs-uae-controller
 ./macos/05000000484944204465766963650000.fs-uae-controller
 ./macos/050000004c050000cc090000ff070000.fs-uae-controller
@@ -1526,6 +1528,7 @@
 ./windows/03000000ff1100004033000000000000.fs-uae-controller
 ./windows/03000000ff1100004133000000000000.fs-uae-controller
 ./windows/03000000ffff00000000000000000000.fs-uae-controller
+./windows/0300b9695e0400008e02000000007200.fs-uae-controller
 ./windows/78696e70757403000000000000000000.fs-uae-controller
 ./wireless_360_controller_15_6_0_0_macos.conf
 ./wireless_controller_13_6_1_0_linux.conf
@@ -1535,6 +1538,9 @@
 ./wisegroup_ltd/mp_8866_dual_usb_joypad.ini
 ./wisegroup_ltd/tigergame_ps_ps2_game_controller_adapter.ini
 ./x360controller_16_6_0_0_macos.conf
+./xbox_360_controller_11_6_1_0_linux.conf
+./xbox_360_controller_11_6_1_0_windows.conf
+./xbox_360_controller_15_6_0_0_macos.conf
 ./xbox_360_wired_controller_15_6_0_0_macos.conf
 ./xbox_360_wireless_receiver_15_6_0_0_linux.conf
 ./xbox_360_wireless_receiver_15_6_1_0_linux.conf
