@@ -37,7 +37,7 @@ jobs:
     name: Build Linux arm64
     uses: ./.github/workflows/linux.yml
     with:
-      runner: ubuntu-24.04-arm64
+      runner: ubuntu-24.04-arm
 
   MacOS-x86-64:
     name: Build MacOS x86-64
