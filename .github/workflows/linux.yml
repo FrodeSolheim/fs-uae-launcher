@@ -7,6 +7,10 @@ on:
         required: true
         type: string
         default: ubuntu-24.04
+      artifact-name:
+        required: true
+        type: string
+        default: linux
 
 jobs:
   linux:
@@ -42,6 +46,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
+          name: "${{ inputs.artifact-name }}-${{ github.ref_name }}-${{ github.run_id }}"
           path: build/_dist/*
 
       - name: Upload to Dropbox
