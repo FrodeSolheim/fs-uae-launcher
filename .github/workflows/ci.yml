@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - beta
+      - main
+      - stable
+      - test
+  pull_request:
+    branches:
+      - beta
+      - main
+      - stable
+      - test
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.ref_name }}-ci
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  Linux-x86-64:
+    name: Build Linux x86-64
+    uses: ./.github/workflows/linux.yml
+    with:
+      runner: ubuntu-22.04
+
+  Linux-arm64:
+    name: Build Linux arm64
+    uses: ./.github/workflows/linux.yml
+    with:
+      runner: ubuntu-24.04-arm64
+
+  MacOS-x86-64:
+    name: Build MacOS x86-64
+    uses: ./.github/workflows/macos.yml
+    with:
+      runner: macos-13
+
+  MacOS-arm64:
+    name: Build MacOS arm64
+    uses: ./.github/workflows/macos.yml
+    with:
+      runner: macos-14
+
+  Windows-x86-64:
+    name: Build Windows x86-64
+    uses: ./.github/workflows/windows.yml
+    with:
+      runner: windows-2022
+
+  Source:
+    name: Build Source package
+    uses: ./.github/workflows/source.yml
+    with:
+      runner: ubuntu-24.04

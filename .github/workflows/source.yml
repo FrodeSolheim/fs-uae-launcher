@@ -1,22 +1,16 @@
-name: Linux_x86-64
+name: Source
 
 on:
-  push:
-    branches:
-      - beta
-      - main
-      - stable
-      - test
-  pull_request:
-    branches:
-      - beta
-      - main
-      - stable
-      - test
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string
+        default: ubuntu-24.04
 
 jobs:
-  Linux_x86-64:
-    runs-on: ubuntu-22.04
+  Source:
+    runs-on: ${{ inputs.runner }}
 
     env:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -43,8 +37,8 @@ jobs:
       - name: Run uv sync
         run: uv sync
 
-      - name: Build
-        run: uv run python -m build all
+      - name: Build source package
+        run: uv run python -m build bootstrap configure source
 
       - uses: actions/upload-artifact@v4
         with:

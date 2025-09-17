@@ -1,22 +1,16 @@
-name: Source
+name: Windows
 
 on:
-  push:
-    branches:
-      - beta
-      - main
-      - stable
-      - test
-  pull_request:
-    branches:
-      - beta
-      - main
-      - stable
-      - test
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string
+        default: windows-2022
 
 jobs:
-  Source:
-    runs-on: ubuntu-22.04
+  Windows:
+    runs-on: ${{ inputs.runner }}
 
     env:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -24,13 +18,25 @@ jobs:
       DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
       DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
 
+    defaults:
+      run:
+        shell: msys2 {0}
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install packages
-        run: sudo apt install gettext
+        uses: msys2/setup-msys2@v2
+        with:
+          install: >-
+            make
+            dos2unix
+            tar
+            zip
+          path-type: inherit
+          update: true
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -43,8 +49,8 @@ jobs:
       - name: Run uv sync
         run: uv sync
 
-      - name: Build source package
-        run: uv run python -m build bootstrap configure source
+      - name: Build
+        run: uv run python -m build all
 
       - uses: actions/upload-artifact@v4
         with:
