@@ -33,6 +33,7 @@ jobs:
     with:
       runner: ubuntu-22.04
       artifact-name: Linux_x86-64
+    secrets: inherit
 
   Linux-arm64:
     name: Build Linux arm64
@@ -40,6 +41,7 @@ jobs:
     with:
       runner: ubuntu-24.04-arm
       artifact-name: Linux_arm64
+    secrets: inherit
 
   MacOS-x86-64:
     name: Build MacOS x86-64
@@ -47,6 +49,7 @@ jobs:
     with:
       runner: macos-13
       artifact-name: MacOS_x86-64
+    secrets: inherit
 
   MacOS-arm64:
     name: Build MacOS arm64
@@ -54,6 +57,7 @@ jobs:
     with:
       runner: macos-14
       artifact-name: MacOS_arm64
+    secrets: inherit
 
   Windows-x86-64:
     name: Build Windows x86-64
@@ -61,6 +65,7 @@ jobs:
     with:
       runner: windows-2022
       artifact-name: Windows_x86-64
+    secrets: inherit
 
   Source:
     name: Build Source package
@@ -68,3 +73,4 @@ jobs:
     with:
       runner: ubuntu-24.04
       artifact-name: Source
+    secrets: inherit
