@@ -1,22 +1,16 @@
-name: Windows_x86-64
+name: Linux
 
 on:
-  push:
-    branches:
-      - beta
-      - main
-      - stable
-      - test
-  pull_request:
-    branches:
-      - beta
-      - main
-      - stable
-      - test
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string
+        default: ubuntu-24.04
 
 jobs:
-  Windows_x86-64:
-    runs-on: windows-2022
+  linux:
+    runs-on: ${{ inputs.runner }}
 
     env:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -24,25 +18,13 @@ jobs:
       DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
       DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
 
-    defaults:
-      run:
-        shell: msys2 {0}
-
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install packages
-        uses: msys2/setup-msys2@v2
-        with:
-          install: >-
-            make
-            dos2unix
-            tar
-            zip
-          path-type: inherit
-          update: true
+        run: sudo apt install gettext
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5

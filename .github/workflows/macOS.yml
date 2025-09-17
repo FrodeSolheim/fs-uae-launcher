@@ -1,22 +1,16 @@
-name: macOS_ARM64
+name: macOS
 
 on:
-  push:
-    branches:
-      - beta
-      - main
-      - stable
-      - test
-  pull_request:
-    branches:
-      - beta
-      - main
-      - stable
-      - test
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string
+        default: macos-13
 
 jobs:
-  macOS_ARM64:
-    runs-on: macos-14
+  macOS:
+    runs-on: ${{ inputs.runner }}
 
     env:
       APPLE_ID: ${{ secrets.APPLE_ID }}
