@@ -7,6 +7,10 @@ on:
         required: true
         type: string
         default: macos-13
+      artifact-name:
+        required: true
+        type: string
+        default: macos
 
 jobs:
   macOS:
@@ -56,6 +60,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
+          name: "${{ inputs.artifact-name }}-${{ github.run_id }}"
           path: build/_dist/*
 
       - name: Upload to Dropbox
