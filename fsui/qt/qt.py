@@ -159,7 +159,14 @@ def initialize_qt_style(qapplication):
     else:
         use_fusion_theme = True
 
-        if pa.color(QPalette.ColorRole.Window).red() < 128:
+        qt_color_scheme_dark = None
+        try:
+            qt_color_scheme_dark = qapplication.styleHints().colorScheme() == Qt.ColorScheme.Dark
+        except Exception:
+            # It only works on Qt 6.5 or higher
+            pass
+
+        if qt_color_scheme_dark or pa.color(QPalette.ColorRole.Window).red() < 128:
             fusion_variant = "dark"
         elif fstd.desktop.is_running_gnome_3():
             fusion_variant = "adwaita"
