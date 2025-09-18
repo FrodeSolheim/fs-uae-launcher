@@ -127,7 +127,7 @@ if sys.argv[1] == "build_exe":
     else:
         setup_kwargs["executables"] = [Executable(s) for s in scripts]
 
-    setup_kwargs["version"] = "3.2.22"
+    setup_kwargs["version"] = "3.2.35"
     build_exe_options = {
         "includes": [
         #    "ctypes",
@@ -180,7 +180,7 @@ if sys.platform == "win32" and False:
 
 if sys.platform == "darwin":
     setup_kwargs["name"] = title
-    setup_kwargs["version"] = "3.2.22"
+    setup_kwargs["version"] = "3.2.35"
 else:
     setup_kwargs["scripts"] = scripts
 
