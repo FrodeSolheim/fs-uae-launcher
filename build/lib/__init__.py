@@ -14,9 +14,6 @@ import time
 from os import path
 from typing import Dict, List, Optional
 
-import dropbox
-import requests
-
 macos = sys.platform == "darwin"
 windows = sys.platform == "win32"
 linux = sys.platform == "linux"
@@ -680,17 +677,6 @@ def notarizeDmg():
     print(f"[BUILD] Notarized {dmgPath}")
 
 
-def execute_discord_webhook(name, link):
-    webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
-    if not webhook_url:
-        return
-    content = (
-        f"`{name}` was built and uploaded to a Dropbox "
-        f"[shared folder]({link})"
-    )
-    requests.post(webhook_url, {"content": content, "username": "Builder"})
-
-
 def upload_branch_name():
     ref = os.getenv("GITHUB_REF", "")
     try:
@@ -700,44 +686,3 @@ def upload_branch_name():
     if "/" in branch:
         return None
     return branch[0].upper() + branch[1:]
-
-
-def upload_package(dbx, package, version, path):
-    print("Upload", path)
-    name = os.path.basename(path)
-    assert package.lower() in name.lower()
-    assert version in name
-    branch = upload_branch_name()
-    if not branch:
-        print("No upload branch name, skipping upload")
-        return
-    dst = f"/{package}/{branch}/{version}/{name}"
-    with open(path, "rb") as f:
-        dbx.files_upload(f.read(), dst)
-    print("Uploaded ->", dst)
-    if os.getenv("DISCORD_WEBHOOK_URL"):
-        result = dbx.sharing_list_shared_links(f"/{package}")
-        for link in result.links:
-            if link.path_lower == f"/{package}".lower():
-                url = link.url
-                print("Found Dropbox shared link:", url)
-                break
-        else:
-            # Fallback URL, use first result returned
-            url = result.links[0].url
-            print("Found Dropbox shared (fallback) link:", url)
-        execute_discord_webhook(name, url)
-
-
-def upload():
-    dist_dir = "build/_dist"
-    upload_items = os.listdir(dist_dir)
-    dbx = dropbox.Dropbox(
-        app_key=os.getenv("DROPBOX_APP_KEY"),
-        app_secret=os.getenv("DROPBOX_APP_SECRET"),
-        oauth2_refresh_token=os.getenv("DROPBOX_REFRESH_TOKEN"),
-    )
-    package = getPackageInformation().pretty_name
-    version = getPackageInformation().version
-    for item in upload_items:
-        upload_package(dbx, package, version, os.path.join(dist_dir, item))

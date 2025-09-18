@@ -18,7 +18,6 @@ from build.lib import (
     notarizeApp,
     notarizeDmg,
     shell,
-    upload
 )
 
 
@@ -135,7 +134,7 @@ def build():
         "--log-level",
         "DEBUG",
         "--collect-submodules",
-        "OpenGL"
+        "OpenGL",
     ]
     if windows or macos:
         args.append("--windowed")
@@ -200,8 +199,10 @@ def bundle():
 </plist>
 """)
         resources_dir = os.path.join(contents_dir, "Resources")
-        shutil.copy("icon/fs-uae-launcher.icns",
-                    os.path.join(resources_dir, "fs-uae-launcher.icns"))
+        shutil.copy(
+            "icon/fs-uae-launcher.icns",
+            os.path.join(resources_dir, "fs-uae-launcher.icns"),
+        )
 
         locale_dir = os.path.join(resources_dir, "Locale")
     else:
@@ -281,7 +282,7 @@ def archive():
         archive_format = "zip"
     elif macos:
         archive_format = ""
-    else: 
+    else:
         archive_format = "xztar"
 
     if archive_format:
@@ -289,7 +290,7 @@ def archive():
             os.path.join("build", "_dist", archive_base_name),
             archive_format,
             os.path.join("build", "_build"),
-            package.pretty_name
+            package.pretty_name,
         )
         print(archive)
 
@@ -336,7 +337,6 @@ def all():
         notarize_dmg()
     else:
         archive()
-    # upload()
 
 
 def main():
@@ -374,8 +374,6 @@ def main():
             sign_dmg()
         elif command == "notarize-dmg":
             notarize_dmg()
-        elif command == "upload":
-            upload()
         elif command == "source":
             source()
         else:

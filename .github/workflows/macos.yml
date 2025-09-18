@@ -20,10 +20,6 @@ jobs:
       APPLE_ID: ${{ secrets.APPLE_ID }}
       APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
-      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
-      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
       KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
       SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.MACOS_CERTIFICATE_P12_DATA }}
       SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
@@ -62,16 +58,3 @@ jobs:
         with:
           name: "${{ inputs.artifact-name }}-${{ github.run_id }}"
           path: build/_dist/*
-
-      - name: Upload to Dropbox
-        if: >-
-          env.DROPBOX_REFRESH_TOKEN != null && (
-            github.ref == 'refs/heads/beta' ||
-            github.ref == 'refs/heads/dev' ||
-            github.ref == 'refs/heads/main' ||
-            github.ref == 'refs/heads/master' ||
-            github.ref == 'refs/heads/stable' ||
-            github.ref == 'refs/heads/test'
-          )
-        run: |
-          uv run python -m build upload

@@ -16,12 +16,6 @@ jobs:
   Windows:
     runs-on: ${{ inputs.runner }}
 
-    env:
-      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
-      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
-      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
-
     defaults:
       run:
         shell: msys2 {0}
@@ -60,16 +54,3 @@ jobs:
         with:
           name: "${{ inputs.artifact-name }}-${{ github.run_id }}"
           path: build/_dist/*
-
-      - name: Upload to Dropbox
-        if: >-
-          env.DROPBOX_REFRESH_TOKEN != null && (
-            github.ref == 'refs/heads/beta' ||
-            github.ref == 'refs/heads/dev' ||
-            github.ref == 'refs/heads/main' ||
-            github.ref == 'refs/heads/master' ||
-            github.ref == 'refs/heads/stable' ||
-            github.ref == 'refs/heads/test'
-          )
-        run: |
-          uv run python -m build upload

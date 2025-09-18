@@ -36,27 +36,27 @@ jobs:
     secrets: inherit
 
   Linux-arm64:
-    name: Build Linux arm64
+    name: Build Linux ARM64
     uses: ./.github/workflows/linux.yml
     with:
       runner: ubuntu-24.04-arm
-      artifact-name: Linux_arm64
+      artifact-name: Linux_ARM64
     secrets: inherit
 
   MacOS-x86-64:
-    name: Build MacOS x86-64
-    uses: ./.github/workflows/macOS.yml
+    name: Build macOS x86-64
+    uses: ./.github/workflows/macos.yml
     with:
       runner: macos-13
       artifact-name: MacOS_x86-64
     secrets: inherit
 
   MacOS-arm64:
-    name: Build MacOS arm64
-    uses: ./.github/workflows/macOS.yml
+    name: Build macOS ARM64
+    uses: ./.github/workflows/macos.yml
     with:
       runner: macos-14
-      artifact-name: MacOS_arm64
+      artifact-name: macOS_ARM64
     secrets: inherit
 
   Windows-x86-64:
