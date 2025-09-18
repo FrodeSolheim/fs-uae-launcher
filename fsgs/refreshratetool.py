@@ -18,7 +18,14 @@ if windows:
     EDS_RAWMODE = 2
 elif macosx:
     # noinspection PyUnresolvedReferences
-    import Quartz
+    try:
+        import Quartz  # type: ignore
+    except ImportError:
+        # Some people install unofficial newer macOS versions on older hardware, and that breaks
+        # Quartz / Coregraphics (https://github.com/FrodeSolheim/fs-uae-launcher/issues/154).
+        # Easy workaround applied, since Quartz isn't essential.
+        traceback.print_exc()
+        Quartz = None
 
 
 class RefreshRateTool(object):
@@ -169,12 +176,19 @@ class RefreshRateTool(object):
                 bpp = int(settings.BitsPerPel)
                 flags = int(settings.DisplayFlags)
         elif macosx:
-            main_display = Quartz.CGMainDisplayID()
-            current_display = Quartz.CGDisplayPrimaryDisplay(main_display)
-            current_mode = Quartz.CGDisplayCopyDisplayMode(current_display)
-            width = Quartz.CGDisplayModeGetWidth(current_mode)
-            height = Quartz.CGDisplayModeGetHeight(current_mode)
-            refresh = Quartz.CGDisplayModeGetRefreshRate(current_mode)
+            if Quartz is None:
+                print("WARNING: Quartz is not available, using fake values")
+                width = 640
+                height = 480
+                refresh = 0
+            else:
+                main_display = Quartz.CGMainDisplayID()
+                current_display = Quartz.CGDisplayPrimaryDisplay(main_display)
+                current_mode = Quartz.CGDisplayCopyDisplayMode(current_display)
+                width = Quartz.CGDisplayModeGetWidth(current_mode)
+                height = Quartz.CGDisplayModeGetHeight(current_mode)
+                refresh = Quartz.CGDisplayModeGetRefreshRate(current_mode)
+
             if not refresh:
                 print("WARNING: returned refresh rate was 0. assuming 60 Hz")
                 refresh = 60
