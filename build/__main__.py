@@ -42,11 +42,11 @@ def _remove_unwanted_pyqt_files(dir):
     for name in [
         # Linux
         "libgcc_s.so.1",
-        "libQt6Pdf.so.6",
-        "libQt6Svg.so.6",
+        # "libQt6Pdf.so.6",
+        # "libQt6Svg.so.6",
         "libstdc++.so.6",
-        "PyQt6/Qt6/lib/libQt6Pdf.so.6",
-        "PyQt6/Qt6/lib/libQt6Svg.so.6",
+        # "PyQt6/Qt6/lib/libQt6Pdf.so.6",
+        # "PyQt6/Qt6/lib/libQt6Svg.so.6",
         # Windows
         # "d3dcompiler_47.dll",
         # "libcrypto-1_1-x64.dll",
