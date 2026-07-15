@@ -122,6 +122,7 @@ def init_qt():
 
     fsbc.desktop.set_open_url_in_browser_function(open_url_in_browser)
     qapplication = QApplication(sys.argv)
+    qapplication.setDesktopFileName("fs-uae-launcher")
     initialize_qt_style(qapplication)
     return qapplication
 
