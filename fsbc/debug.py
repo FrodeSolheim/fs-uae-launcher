@@ -85,7 +85,7 @@ def _handle_exception(exc_type, exc_value, exc_traceback):
     except:
         pass
     filename = os.path.basename(filename)
-    thread = threading.currentThread()
+    thread = threading.current_thread()
     error_id = "{0}:{1}:{2}:{3}".format(
         exc_type.__name__, filename, function, line
     )
