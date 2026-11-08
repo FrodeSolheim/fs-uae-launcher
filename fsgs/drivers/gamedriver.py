@@ -98,7 +98,7 @@ class GameDriver:
     def write_emulator_pid_file(cls, pid_file, process):
         if pid_file:
             try:
-                with open(pid_file, "w") as f:
+                with open(pid_file, "w", encoding="UTF-8") as f:
                     f.write("{}".format(process.pid))
             except Exception:
                 traceback.print_exc()
