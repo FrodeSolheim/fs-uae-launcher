@@ -47,7 +47,7 @@ jobs:
     name: Build macOS x86-64
     uses: ./.github/workflows/macos.yml
     with:
-      runner: macos-13
+      runner: macos-15
       artifact-name: MacOS_x86-64
     secrets: inherit
 
@@ -55,7 +55,7 @@ jobs:
     name: Build macOS ARM64
     uses: ./.github/workflows/macos.yml
     with:
-      runner: macos-14
+      runner: macos-15
       artifact-name: macOS_ARM64
     secrets: inherit
 
