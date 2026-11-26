@@ -1,0 +1,431 @@
+# Builds FS-UAE Launcher for Linux (x86-64 and ARM64), macOS (x86-64 and
+# ARM64) and Windows (x86-64) with the build script (python -m build all),
+# and the source tarball (make dist-xz), and keeps them as artifacts, named
+# for the version (build/version.py):
+#
+# - A v<version> tag (the version in VERSION.FS): a release,
+#   FS-UAE-Launcher_<version>_<os>_<arch>.<ext>. The release job puts the
+#   archives, the source tarball and SHA256SUMS in a draft GitHub Release, to
+#   be checked and published by hand.
+# - Anything else: a development build,
+#   FS-UAE-Launcher_<version>-dev.<date>T<time>+g<hash>_<os>_<arch>.<ext>. For
+#   pushes to main of FrodeSolheim/fs-uae-launcher, the dev-release job
+#   replaces the files of the rolling "dev" pre-release with the archives.
+#
+# Every build logs its version, origin and commit in the build header at the
+# top of its log file (launcher/version.py).
+
+name: Dist
+
+on:
+  push:
+    branches:
+      - beta
+      - main
+      - stable
+      - test
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - beta
+      - main
+      - stable
+      - test
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+# A newer push to a pull request cancels the run of the older one. Other runs
+# are not cancelled: a cancelled dev-release job could leave the dev
+# pre-release with some files of each build.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  # Who made the build, as the launcher logs it in the build header
+  # (build/version.py): an official build only for
+  # FrodeSolheim/fs-uae-launcher's own runs (pushes, tags and manual runs),
+  # not for pull requests, whose code is not the maintainer's until it is
+  # merged, and not in forks. The run ID finds the run
+  # (https://github.com/<repository>/actions/runs/<run ID>). The origin is
+  # self-declared, not proof: the macOS signature and a release's SHA256SUMS
+  # are.
+  FSUAE_LAUNCHER_BUILD_ORIGIN: >-
+    ${{ format('{0} ({1}, GitHub Actions run {2}{3})',
+      github.repository == 'FrodeSolheim/fs-uae-launcher'
+        && github.event_name != 'pull_request'
+        && 'Official build' || 'Unofficial build',
+      github.repository, github.run_id,
+      github.event_name == 'pull_request'
+        && format(', pull request {0}', github.event.pull_request.number)
+        || '') }}
+
+jobs:
+  linux:
+    name: Linux ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86-64
+            runner: ubuntu-22.04
+          - arch: ARM64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      # Only the commit (actions/checkout's default): build/version.py makes
+      # the version from the commit alone. The checkout of a tag has the tag,
+      # but that of a branch has no tags, so a push to main of a commit that
+      # is also tagged makes a development build (the tag's own run makes the
+      # release). A pull request is built from its own commit, not GitHub's
+      # merge commit, so that the build is named after it.
+      - uses: actions/checkout@v4
+        if: github.event_name != 'pull_request'
+      - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install packages
+        run: sudo apt-get install -y gettext
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.9"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Run uv sync
+        run: uv sync
+
+      - name: Build
+        run: uv run python -m build all
+
+      - name: Find the archive
+        id: archive
+        run: |
+          archive="$(cat build/_build/dist-archive.txt)"
+          echo "path=$archive" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$archive")" >> "$GITHUB_OUTPUT"
+
+      - name: Keep the archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.archive.outputs.name }}
+          path: ${{ steps.archive.outputs.path }}
+          if-no-files-found: error
+          compression-level: 0
+
+  macos:
+    name: macOS ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86-64
+            runner: macos-15-intel
+          - arch: ARM64
+            runner: macos-15
+    runs-on: ${{ matrix.runner }}
+    env:
+      # Signed with the Developer ID certificate and notarized for v* tags
+      # (a release), and for pushes to main and manual runs on main of
+      # FrodeSolheim/fs-uae-launcher (a push's builds go into the dev
+      # pre-release), which fail without the signing secrets rather than make
+      # an unsigned .dmg. Pushes to main and manual runs on main elsewhere
+      # (forks) are signed when the secrets are there, and otherwise made
+      # unsigned (signed ad hoc) with a warning. Never for pull requests or
+      # other runs, which do not get the secrets at all. See macos_signing()
+      # in build/__main__.py.
+      FSUAE_MACOS_SIGNING: >-
+        ${{ startsWith(github.ref, 'refs/tags/v') && 'required'
+          || (github.event_name == 'push'
+            || github.event_name == 'workflow_dispatch')
+            && github.ref == 'refs/heads/main'
+            && github.repository == 'FrodeSolheim/fs-uae-launcher'
+            && 'required'
+          || (github.event_name == 'push'
+            || github.event_name == 'workflow_dispatch')
+            && github.ref == 'refs/heads/main' && 'auto'
+          || 'off' }}
+    steps:
+      # See the Linux job.
+      - uses: actions/checkout@v4
+        if: github.event_name != 'pull_request'
+      - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      # Only when signing: the Developer ID certificate in a temporary
+      # keychain, deleted at the end (build/macos-signing-keychain, with the
+      # same secrets as FS-UAE's dist workflow). A missing secret fails here
+      # when signing is required; otherwise it is a warning (and an
+      # annotation), no keychain is made and the build is unsigned.
+      - name: Set up the signing keychain
+        if: env.FSUAE_MACOS_SIGNING != 'off'
+        env:
+          MACOS_CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          NOTARYTOOL_APPLE_ID: ${{ secrets.NOTARYTOOL_APPLE_ID }}
+          NOTARYTOOL_PASSWORD: ${{ secrets.NOTARYTOOL_PASSWORD }}
+          NOTARYTOOL_TEAM_ID: ${{ secrets.NOTARYTOOL_TEAM_ID }}
+        run: build/macos-signing-keychain create
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.9"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Run uv sync
+        run: uv sync
+
+      # Unsigned (the app signed ad hoc), or signed with the keychain's
+      # identity and notarized with the NOTARYTOOL_* credentials, which only
+      # builds that sign get.
+      - name: Build
+        env:
+          NOTARYTOOL_APPLE_ID: >-
+            ${{ env.FSUAE_MACOS_SIGNING != 'off'
+              && secrets.NOTARYTOOL_APPLE_ID || '' }}
+          NOTARYTOOL_PASSWORD: >-
+            ${{ env.FSUAE_MACOS_SIGNING != 'off'
+              && secrets.NOTARYTOOL_PASSWORD || '' }}
+          NOTARYTOOL_TEAM_ID: >-
+            ${{ env.FSUAE_MACOS_SIGNING != 'off'
+              && secrets.NOTARYTOOL_TEAM_ID || '' }}
+        run: uv run python -m build all
+
+      - name: Delete the signing keychain
+        if: always() && env.FSUAE_MACOS_SIGNING != 'off'
+        run: build/macos-signing-keychain delete
+
+      # See the Linux job.
+      - name: Find the archive
+        id: archive
+        run: |
+          archive="$(cat build/_build/dist-archive.txt)"
+          echo "path=$archive" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$archive")" >> "$GITHUB_OUTPUT"
+
+      - name: Keep the archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.archive.outputs.name }}
+          path: ${{ steps.archive.outputs.path }}
+          if-no-files-found: error
+          compression-level: 0
+
+  windows:
+    name: Windows x86-64
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      # See the Linux job.
+      - uses: actions/checkout@v4
+        if: github.event_name != 'pull_request'
+      - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install packages
+        uses: msys2/setup-msys2@v2
+        with:
+          install: >-
+            make
+            dos2unix
+            tar
+            zip
+          path-type: inherit
+          update: true
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.9"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Run uv sync
+        run: uv sync
+
+      - name: Build
+        run: uv run python -m build all
+
+      # See the Linux job.
+      - name: Find the archive
+        id: archive
+        run: |
+          archive="$(cat build/_build/dist-archive.txt)"
+          echo "path=$archive" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$archive")" >> "$GITHUB_OUTPUT"
+
+      - name: Keep the archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.archive.outputs.name }}
+          path: ${{ steps.archive.outputs.path }}
+          if-no-files-found: error
+          compression-level: 0
+
+  # The source tarball, fs-uae-launcher-<version>.tar.xz, kept as the
+  # artifact "source"; the release job puts it in the draft release.
+  source:
+    name: Source
+    runs-on: ubuntu-24.04
+    steps:
+      # See the Linux job.
+      - uses: actions/checkout@v4
+        if: github.event_name != 'pull_request'
+      - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install packages
+        run: sudo apt-get install -y gettext
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.9"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Run uv sync
+        run: uv sync
+
+      - name: Build the source tarball
+        run: uv run python -m build bootstrap configure source
+
+      - name: Keep the source tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: source
+          path: build/_dist/*.tar.xz
+          if-no-files-found: error
+          compression-level: 0
+
+  # Tag builds (v*): when every archive and the source tarball are made, puts
+  # them in a draft GitHub Release with SHA256SUMS, for the maintainer to
+  # check, edit and publish by hand; it never publishes anything. Running the
+  # workflow again for the tag replaces the files of the draft (see
+  # build/draft-release). A tag that is not v<version> for VERSION.FS fails
+  # the builds (build/version.py), so this job does not run.
+  release:
+    name: Draft release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [linux, macos, windows, source]
+    runs-on: ubuntu-24.04
+    # Only this job and the dev-release job can write to the repository.
+    permissions:
+      contents: write
+    # Two runs for the same tag would otherwise both find no release and
+    # make one each.
+    concurrency:
+      group: release-${{ github.ref }}
+    steps:
+      # See the Linux job (the tag is fetched with the commit).
+      - uses: actions/checkout@v4
+
+      - name: Find the version
+        id: version
+        run: echo "version=$(python3 build/version.py)" >> "$GITHUB_OUTPUT"
+
+      # Every artifact of the run, each in a directory named for it.
+      - name: Get the artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}/artifacts
+
+      - name: Gather the release files
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python3 build/release_files.py --version "$VERSION" \
+              "$RUNNER_TEMP/artifacts" "$RUNNER_TEMP/release"
+
+      - name: Make the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: build/draft-release "$GITHUB_REF_NAME" "$RUNNER_TEMP/release"
+
+  # Pushes to main of FrodeSolheim/fs-uae-launcher (not forks): when every
+  # archive is made, replaces the files of the rolling "dev" pre-release with
+  # them, so that the latest development build can be downloaded without a
+  # GitHub account, from links that stay the same
+  # (https://github.com/FrodeSolheim/fs-uae-launcher/releases/download/dev/<name>),
+  # FS-UAE-Launcher_dev_<os>_<arch>.<ext>, with SHA256SUMS, whose first line
+  # names the version, as do the title and notes. The pre-release is never
+  # marked as the latest release. A run whose builds fail leaves the previous
+  # build there. See build/dev_release.py.
+  dev-release:
+    name: Dev pre-release
+    if: >-
+      github.event_name == 'push' && github.ref == 'refs/heads/main'
+      && github.repository == 'FrodeSolheim/fs-uae-launcher'
+    needs: [linux, macos, windows]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    # One run at a time. A later push's job waits rather than cancel this
+    # one. An earlier push whose builds finish later does not replace a newer
+    # build (dev_release.py checks).
+    concurrency:
+      group: dev-release
+      cancel-in-progress: false
+    steps:
+      # Only the commit, as in the build jobs, so that build/version.py gives
+      # the version they got.
+      - uses: actions/checkout@v4
+
+      - name: Find the version
+        id: version
+        run: echo "version=$(python3 build/version.py)" >> "$GITHUB_OUTPUT"
+
+      # The history, without tags, which tells dev_release.py which commits
+      # are older.
+      - name: Fetch the history
+        run: |
+          if [ "$(git rev-parse --is-shallow-repository)" = true ]; then
+              git fetch --quiet --unshallow --no-tags origin
+          fi
+
+      - name: Get the artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}/artifacts
+
+      - name: Gather the files
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python3 build/release_files.py --dev --version "$VERSION" \
+              "$RUNNER_TEMP/artifacts" "$RUNNER_TEMP/dev-release"
+
+      - name: Replace the files of the dev pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python3 build/dev_release.py --commit "$GITHUB_SHA" \
+              --version "$VERSION" "$RUNNER_TEMP/dev-release"

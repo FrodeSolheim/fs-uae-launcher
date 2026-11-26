@@ -31,6 +31,13 @@ def initialize_application(
         fsbc.logging.setup_logging(name + ".log.txt")
         logging_enabled = True
 
+    # The build header (the version, and where the build comes from), first
+    # in the log file.
+    import launcher.version
+
+    for line in launcher.version.build_header():
+        print(line)
+
     if name is not None:
         Application.app_name = name
         # print(name)

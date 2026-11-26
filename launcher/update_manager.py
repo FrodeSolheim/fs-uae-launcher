@@ -27,6 +27,10 @@ class UpdateManager:
 
     @classmethod
     def series(cls):
+        if launcher.version.is_development_version():
+            # Development builds from the dist workflow are checked against
+            # the releases.
+            return "stable"
         if "dev" in Application.instance().version:
             return "devel"
         elif "beta" in Application.instance().version:
@@ -51,7 +55,17 @@ class UpdateManager:
         version_str = r.text.strip()
         print("latest version available: ", version_str)
         print("current version: ", launcher.version.VERSION)
-        result = compare_versions(version_str, launcher.version.VERSION)
+        if launcher.version.is_development_version():
+            # A development build (<version>-dev.<date>T<time>+g<hash>,
+            # which compare_versions does not take) is older than the
+            # release of its version.
+            result = compare_versions(
+                version_str, launcher.version.base_version()
+            )
+            if result == 0:
+                result = 1
+        else:
+            result = compare_versions(version_str, launcher.version.VERSION)
         print("update check result: ", result)
         if result > 0 and version_str != "9.9.9":
             web_url = "https://fs-uae.net/{0}/download/".format(cls.series())

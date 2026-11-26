@@ -1,3 +1,12 @@
+Version 3.2.36:
+
+* Development builds get versions such as 3.2.36-dev.20261126T1656+gb96cb28950
+  (the commit's date, time and hash), and releases are built from v* tags.
+* The build header at the top of the log file names the version, the origin
+  of the build (official or unofficial), the commit and the build date.
+* The latest development build is available from the "dev" pre-release on
+  GitHub.
+
 Version 3.2.35:
 
 * Dark mode fix for Windows (more reliable detection of dark mode).

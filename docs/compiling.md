@@ -7,8 +7,9 @@ be incorporated into this document include:
   (pipenv install followed by pipenv shell).
 - To build packages, scripts in fsbuild/ are used. See the YAML files
   in .github/workflows for examples.
-- Official builds for x86-64 are built via GitHub actions, so the YAML files
-  in .github/workflows should always be up to date.
+- Official builds are built via GitHub actions, so the YAML files
+  in .github/workflows should always be up to date. See
+  builds-and-releases.md for versions, the dist workflow and releases.
 - PyOpenGL is now an external dependency (for FS-UAE Arcade).
 - Pyinstaller is now used to bundle together the app (instead of cx_Freeze).
 

@@ -26,3 +26,4 @@ fontconfig
 fs-uae-launcher_*
 fs-uae-launcher-*
 Lib
+/launcher/build_info.py

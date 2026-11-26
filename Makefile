@@ -1,4 +1,10 @@
-version := $(strip $(shell cat VERSION.FS))
+# The version of the build (build/version.py), or the VERSION.FS version
+# in a source tarball (which has no build directory). make dist-xz
+# version=<version> overrides it.
+version := $(strip $(shell python3 build/version.py 2> /dev/null || cat VERSION.FS))
+# For Debian and RPM packages, ~ for -, so that a development version sorts
+# before its release.
+package_version = $(subst -,~,$(version))
 build_dir := "."
 dist_name = fs-uae-launcher-$(version)
 dist_dir := $(build_dir)/$(dist_name)
@@ -194,13 +200,16 @@ distdir:
 	cp po/tr.po $(dist_dir)/po
 	cp setup.py $(dist_dir)/
 
-	cp update-version $(dist_dir)/
-	cd $(dist_dir) && ./update-version setup.py --strict
-	cd $(dist_dir) && ./update-version debian/changelog --deb
-	cd $(dist_dir) && ./update-version dist/macos/Info.plist --strict
-	cd $(dist_dir) && ./update-version launcher/version.py
-	cd $(dist_dir) && ./update-version fs-uae-launcher
-	cd $(dist_dir) && ./update-version fs-uae-launcher.spec --rpm
+	# The version and identity of the tarball (see launcher/version.py),
+	# made in a git checkout; a tarball made again from a tarball keeps its.
+	[ ! -f build/version.py ] || python3 build/version.py --source \
+		--version "$(version)" \
+		--write-build-info $(dist_dir)/launcher/build_info.py
+	sed -i.bak -e "1s/([^)]*)/($(package_version)-0)/" \
+		$(dist_dir)/debian/changelog
+	sed -i.bak -e "s/^%define fsbuild_version .*/%define fsbuild_version $(package_version)/" \
+		$(dist_dir)/fs-uae-launcher.spec
+	rm -f $(dist_dir)/debian/changelog.bak $(dist_dir)/fs-uae-launcher.spec.bak
 
 dist: distdir
 	find $(dist_dir) -exec touch \{\} \;

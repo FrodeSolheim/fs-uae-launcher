@@ -1,18 +1,24 @@
 import os
 import shutil
+import subprocess
 import sys
+from pathlib import Path
 
+from build import version as build_version
 from build.lib import (
     arch_name,
     macos,
     os_name,
     run,
-    update_version_command,
     windows,
     # rmtree_if_exists,
     getPackageInformation,
     getAppleCodesignIdentity,
+    getAppleId,
+    getApplePassword,
+    getAppleTeamId,
     getBundlePath,
+    getCodesignKeychainArgs,
     buildDmg,
     signDmg,
     notarizeApp,
@@ -20,14 +26,32 @@ from build.lib import (
     shell,
 )
 
+# Written for the build (build/version.py) and removed after it, so that a
+# checkout that runs the launcher from source makes its version from git.
+BUILD_INFO_PATH = "launcher/build_info.py"
+
 
 def version():
-    update_version_command()
-    info = getPackageInformation()
-    with open("launcher/version.py", "w") as f:
-        f.write(f'VERSION = "{info.version}"\n')
-        f.write('PACKAGER = ""\n')
-        f.write('COMMIT = ""\n')
+    """Prints the version and the identity of a build of the checkout."""
+    try:
+        info = build_version.build_info(Path("."))
+    except build_version.VersionError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+    for key, value in info.items():
+        print(f"{key}={value}")
+
+
+def write_build_info():
+    try:
+        info = build_version.build_info(Path("."))
+    except build_version.VersionError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+    build_version.write_build_info(Path(BUILD_INFO_PATH), info)
+    print(f"Wrote {BUILD_INFO_PATH}:")
+    for key, value in info.items():
+        print(f"  {key}={value}")
 
 
 def bootstrap():
@@ -144,8 +168,13 @@ def build():
         args.extend(
             ["--osx-bundle-identifier", "no.fengestad.fs-uae-launcher"]
         )
+    args.extend(["--hidden-import", "launcher.build_info"])
     args.append(script_name)
-    run(args)
+    write_build_info()
+    try:
+        run(args)
+    finally:
+        os.remove(BUILD_INFO_PATH)
     internal_dir = os.path.join(dist_dir, "fs-uae-launcher", "_internal")
 
     _remove_unwanted_pyqt_files(os.path.join(internal_dir))
@@ -232,22 +261,98 @@ def bundle():
         print(archive)
 
 
-def sign():
+def macos_signing() -> bool:
+    """Whether to sign the macOS app and .dmg with the Developer ID
+    certificate and notarize them. As for FS-UAE's macOS dists: when the
+    notarytool credentials (NOTARYTOOL_APPLE_ID, NOTARYTOOL_PASSWORD,
+    NOTARYTOOL_TEAM_ID) are set and the keychain has the signing identity
+    (getAppleCodesignIdentity), looked for in FSUAE_MACOS_KEYCHAIN when it
+    is set (build/macos-signing-keychain sets it in CI), otherwise in the
+    keychain search list. FSUAE_MACOS_SIGNING changes this: auto (the
+    default) as above, required fails instead of making an unsigned build
+    (for release builds), off never signs."""
+    mode = os.environ.get("FSUAE_MACOS_SIGNING", "") or "auto"
+    if mode not in ("required", "auto", "off"):
+        print(
+            "Error: FSUAE_MACOS_SIGNING must be auto, required or off, "
+            f"not {mode}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    if mode == "off":
+        print(
+            "WARNING: the macOS app and .dmg are not signed or notarized "
+            "(FSUAE_MACOS_SIGNING=off)"
+        )
+        return False
+    missing = [
+        name
+        for name, value in [
+            ("NOTARYTOOL_APPLE_ID", getAppleId()),
+            ("NOTARYTOOL_PASSWORD", getApplePassword()),
+            ("NOTARYTOOL_TEAM_ID", getAppleTeamId()),
+        ]
+        if not value
+    ]
+    if not missing:
+        identity = getAppleCodesignIdentity()
+        keychain = os.environ.get("FSUAE_MACOS_KEYCHAIN", "")
+        identities = subprocess.run(
+            [
+                "security",
+                "find-identity",
+                "-v",
+                "-p",
+                "codesigning",
+                *([keychain] if keychain else []),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        ).stdout
+        if f'"{identity}"' not in identities:
+            where = f" {keychain}" if keychain else ""
+            missing.append(
+                f'the signing identity "{identity}" in the keychain{where}'
+            )
+    if not missing:
+        return True
+    if mode == "required":
+        print(
+            "Error: cannot sign the macOS app (FSUAE_MACOS_SIGNING=required); "
+            f"missing: {', '.join(missing)}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    message = (
+        "The macOS app and .dmg are not signed or notarized; missing: "
+        + ", ".join(missing)
+    )
+    print(f"WARNING: {message}")
+    # Also an annotation on the workflow run.
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        print(f"::warning::{message}")
+    return False
+
+
+def sign(identity=None):
+    """Signs the app with the Developer ID identity, or with the given one
+    ("-" for ad hoc)."""
     args = [
         "codesign",
         "--force",
         "--deep",
         "--options",
         "runtime",
+        *([] if identity else getCodesignKeychainArgs()),
         "--sign",
-        getAppleCodesignIdentity(),
+        identity or getAppleCodesignIdentity(),
         "--digest-algorithm=sha1,sha256",
     ]
     if os.path.exists("build/Entitlements.plist"):
         args.extend(["--entitlements", "build/Entitlements.plist"])
     args.append(getBundlePath())
     run(args)
-    # runCodeSign(args)
 
 
 def notarize():
@@ -272,11 +377,25 @@ def notarize():
     run(["xcrun", "stapler", "staple", bundlePath])
 
 
+def archive_base_name():
+    package = getPackageInformation()
+    return f"{package.pretty_name}_{package.version}_{os_name}_{arch_name}"
+
+
+def dist_archive_path():
+    """The archive (or .dmg) that all() makes, in build/_dist."""
+    if macos:
+        extension = ".dmg"
+    elif windows:
+        extension = ".zip"
+    else:
+        extension = ".tar.xz"
+    # With / also on Windows, for the workflow's shell.
+    return f"build/_dist/{archive_base_name()}{extension}"
+
+
 def archive():
     package = getPackageInformation()
-    archive_base_name = (
-        f"{package.pretty_name}_{package.version}_" + f"{os_name}_{arch_name}"
-    )
     if windows:
         # archive_file = archive_base_name + ".zip"
         archive_format = "zip"
@@ -287,7 +406,7 @@ def archive():
 
     if archive_format:
         archive = shutil.make_archive(
-            os.path.join("build", "_dist", archive_base_name),
+            os.path.join("build", "_dist", archive_base_name()),
             archive_format,
             os.path.join("build", "_build"),
             package.pretty_name,
@@ -308,8 +427,8 @@ def notarize_dmg():
 
 
 def source():
-    run(["make", "dist-xz"])
     package = getPackageInformation()
+    run(["make", "dist-xz", f"version={package.version}"])
     archive = f"{package.name}-{package.version}.tar.xz"
     if not os.path.exists("build/_dist"):
         os.makedirs("build/_dist")
@@ -324,19 +443,29 @@ def default():
 
 
 def all():
-    # version()
+    signing = macos and macos_signing()
     bootstrap()
     configure()
     build()
     bundle()
     if macos:
-        sign()
-        notarize()
-        build_dmg()
-        sign_dmg()
-        notarize_dmg()
+        if signing:
+            sign()
+            notarize()
+            build_dmg()
+            sign_dmg()
+            notarize_dmg()
+        else:
+            # Ad hoc, since the bundle was changed after PyInstaller signed
+            # it (an arm64 app must be signed to run).
+            sign(identity="-")
+            build_dmg()
     else:
         archive()
+    # For the dist workflow, which keeps the archive as an artifact.
+    with open("build/_build/dist-archive.txt", "w") as f:
+        f.write(dist_archive_path() + "\n")
+    print(f"[BUILD] Made {dist_archive_path()}")
 
 
 def main():
